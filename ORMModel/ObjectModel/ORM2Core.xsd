@@ -783,7 +783,9 @@
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapError"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
-			<xs:element name="MandatoryImpliedByMandatoryError" type="MandatoryImpliedByMandatoryError"/>
+			<xs:element name="ImplicationError" type="ImplicationError"/>
+			<xs:element name="ContradictionError" type="ContradictionError"/>
+			<xs:element name="ExclusionContradictsEqualityError" type="ContradictionError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
 			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
@@ -1015,15 +1017,36 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="MandatoryImpliedByMandatoryError">
+	
+	<xs:complexType name="ImplicationError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
+					<xs:choice>
+						<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+						<xs:element name="SetConstraint" type="SetConstraintRef"/>
+					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+
+	<xs:complexType name="ContradictionError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Constraints">
+						<xs:complexType>
+							<xs:choice minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
 	<xs:complexType name="TooManyRoleSequencesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">

@@ -183,7 +183,7 @@
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
-		<se:Attribute ID="Value" WriteStyle="Element"/> 
+		<se:Attribute ID="Value" WriteStyle="Element"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
@@ -446,6 +446,8 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="ArityMismatchError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="ContradictionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
@@ -472,6 +474,7 @@
 		<se:Link RelationshipName="SetConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactSetConstraint" RoleName="FactType" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" Override="true">
 		<se:Attribute ID="IsSimple">
@@ -481,7 +484,6 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Link RelationshipName="MandatoryConstraintHasMandatoryImpliedByMandatoryError" RoleName="ImpliedByMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
@@ -499,8 +501,13 @@
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link RelationshipName="UniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
 	</se:Element>
+
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
 		<se:Link RelationshipName="EqualityConstraintHasEqualityImpliedByMandatoryError" RoleName="EqualityImpliedByMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ExclusionConstraint" SortChildElements="true" Override="true">
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RingConstraint" Override="true">
 		<se:Attribute ID="RingType" Name="Type"/>
@@ -594,8 +601,18 @@
 	<se:Element Class="NMinusOneError" Override="true">
 		<se:Link RelationshipName="UniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="UniquenessConstraint"/>
 	</se:Element>
-	<se:Element Class="MandatoryImpliedByMandatoryError" Override="true">
-		<se:Link RelationshipName="MandatoryConstraintHasMandatoryImpliedByMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
+	<se:Element Class="ImplicationError" Override="true">
+		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
+		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="SetConstraint" Name="SetConstraint"/>
+	</se:Element>
+	<se:Element Class="ContradictionError" Override="true">
+		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ExclusionContradictsEqualityError" Override="true">
+		<se:ChildElement Name="Constraints">
+			<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint"/>
+		</se:ChildElement>
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectType" Name="ObjectType"/>

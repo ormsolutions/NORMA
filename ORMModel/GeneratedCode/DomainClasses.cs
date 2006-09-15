@@ -4487,6 +4487,61 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ContradictionErrorCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ContradictionErrorCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraint
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<ContradictionError> ContradictionErrorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<ContradictionError>(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
+			}
+		}
+		#endregion
+		#region ExclusionContradictsEqualityError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ExclusionContradictsEqualityError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraint
+		/// </summary>
+		public virtual ExclusionContradictsEqualityError ExclusionContradictsEqualityError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId) as ExclusionContradictsEqualityError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ExclusionContradictsSubsetError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ExclusionContradictsSubsetError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraint
+		/// </summary>
+		public virtual ExclusionContradictsSubsetError ExclusionContradictsSubsetError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId) as ExclusionContradictsSubsetError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
 		#region DuplicateNameError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets DuplicateNameError.
@@ -4539,6 +4594,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<CompatibleRolePlayerTypeError>(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraintDomainRoleId);
+			}
+		}
+		#endregion
+		#region ImplicationError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ImplicationError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraint
+		/// </summary>
+		public virtual ImplicationError ImplicationError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId) as ImplicationError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -5440,26 +5515,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ImpliedByUniquenessError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ImpliedByUniquenessError.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraint
-		/// </summary>
-		public virtual UniquenessImpliedByUniquenessError ImpliedByUniquenessError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraintDomainRoleId) as UniquenessImpliedByUniquenessError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraintDomainRoleId, value);
-			}
-		}
-		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel
@@ -5587,26 +5642,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		
-		#endregion
-		#region ImpliedByMandatoryError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ImpliedByMandatoryError.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraint
-		/// </summary>
-		public virtual MandatoryImpliedByMandatoryError ImpliedByMandatoryError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintDomainRoleId) as MandatoryImpliedByMandatoryError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintDomainRoleId, value);
-			}
-		}
 		#endregion
 	}
 }
@@ -5836,6 +5871,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError.SetConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ImplicationError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ImplicationError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraint
+		/// </summary>
+		public virtual ImplicationError ImplicationError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraintDomainRoleId) as ImplicationError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraintDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -6161,6 +6216,158 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<RoleInstance>(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ContradictionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ContradictionError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ContradictionError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("b42b88e4-ca87-4dfa-90be-00606e4be23b")]
+	public abstract partial class ContradictionError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ContradictionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb42b88e4, 0xca87, 0x4dfa, 0x90, 0xbe, 0x00, 0x60, 0x6e, 0x4b, 0xe2, 0x3b);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ContradictionError(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionError
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<SetComparisonConstraint> SetComparisonConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<SetComparisonConstraint>(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ExclusionContradictsEqualityError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("d8714f74-60b7-48f5-bf7d-88d8736cb22a")]
+	public partial class ExclusionContradictsEqualityError : ContradictionError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ExclusionContradictsEqualityError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd8714f74, 0x60b7, 0x48f5, 0xbf, 0x7d, 0x88, 0xd8, 0x73, 0x6c, 0xb2, 0x2a);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ExclusionContradictsEqualityError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ExclusionContradictsEqualityError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.ExclusionContradictsEqualityError
+		/// </summary>
+		public virtual new DslModeling::LinkedElementCollection<SetComparisonConstraint> SetComparisonConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.ExclusionContradictsEqualityErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ExclusionContradictsSubsetError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("f671fe6d-ba8a-4bf2-afb6-be5827996c50")]
+	public partial class ExclusionContradictsSubsetError : ContradictionError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ExclusionContradictsSubsetError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf671fe6d, 0xba8a, 0x4bf2, 0xaf, 0xb6, 0xbe, 0x58, 0x27, 0x99, 0x6c, 0x50);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ExclusionContradictsSubsetError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ExclusionContradictsSubsetError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetError
+		/// </summary>
+		public virtual new DslModeling::LinkedElementCollection<SetComparisonConstraint> SetComparisonConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetErrorDomainRoleId);
 			}
 		}
 		#endregion
@@ -7110,65 +7317,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId, value);
-			}
-		}
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// DomainClass MandatoryImpliedByMandatoryError
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("ffdf5043-1b67-4d75-9d83-dd883a604d67")]
-	public partial class MandatoryImpliedByMandatoryError : ModelError
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// MandatoryImpliedByMandatoryError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xffdf5043, 0x1b67, 0x4d75, 0x9d, 0x83, 0xdd, 0x88, 0x3a, 0x60, 0x4d, 0x67);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public MandatoryImpliedByMandatoryError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public MandatoryImpliedByMandatoryError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region MandatoryConstraint opposite domain role accessor
-		/// <summary>
-		/// Gets or sets MandatoryConstraint.
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryError
-		/// </summary>
-		public virtual MandatoryConstraint MandatoryConstraint
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorDomainRoleId) as MandatoryConstraint;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -11336,26 +11484,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainClass UniquenessImpliedByUniquenessError
+	/// DomainClass ImplicationError
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ImplicationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ImplicationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("c207522c-7723-4e3c-a093-ac7d2ae3a1dd")]
-	public partial class UniquenessImpliedByUniquenessError : ModelError
+	[DslModeling::DomainObjectId("78026aea-19eb-497a-a596-25c929f67aa8")]
+	public partial class ImplicationError : ModelError
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// UniquenessImpliedByUniquenessError domain class Id.
+		/// ImplicationError domain class Id.
 		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc207522c, 0x7723, 0x4e3c, 0xa0, 0x93, 0xac, 0x7d, 0x2a, 0xe3, 0xa1, 0xdd);
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x78026aea, 0x19eb, 0x497a, 0xa5, 0x96, 0x25, 0xc9, 0x29, 0xf6, 0x7a, 0xa8);
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public UniquenessImpliedByUniquenessError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public ImplicationError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
@@ -11365,28 +11513,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public UniquenessImpliedByUniquenessError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public ImplicationError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
 		#endregion
-		#region UniquenessConstraint opposite domain role accessor
+		#region SetConstraint opposite domain role accessor
 		/// <summary>
-		/// Gets or sets UniquenessConstraint.
+		/// Gets or sets SetConstraint.
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessError
+		/// Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationError
 		/// </summary>
-		public virtual UniquenessConstraint UniquenessConstraint
+		public virtual SetConstraint SetConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessErrorDomainRoleId) as UniquenessConstraint;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationErrorDomainRoleId) as SetConstraint;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationErrorDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SetComparisonConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SetComparisonConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationError
+		/// </summary>
+		public virtual SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId) as SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId, value);
 			}
 		}
 		#endregion

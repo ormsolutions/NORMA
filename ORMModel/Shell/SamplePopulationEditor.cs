@@ -2514,7 +2514,7 @@ namespace Neumont.Tools.ORM.Shell
 						Role selectedRole = myFactType.RoleCollection[column - 1].Role;
 						ObjectType rolePlayer = selectedRole.RolePlayer;
 						ObjectTypeInstance instance = null;
-						if (rolePlayer == myProxyObjectType)
+						if (myProxyObjectType != null && rolePlayer == myProxyObjectType)
 						{
 							instance = myProxyObjectType.EntityTypeInstanceCollection[row];
 						}

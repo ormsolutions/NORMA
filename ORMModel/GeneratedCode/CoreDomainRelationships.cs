@@ -5810,6 +5810,695 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship SetComparisonConstraintHasContradictionError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("a1d4a389-9d19-4921-bd0d-d965b53897e3")]
+	public abstract partial class SetComparisonConstraintHasContradictionError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetComparisonConstraintHasContradictionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa1d4a389, 0x9d19, 0x4921, 0xbd, 0x0d, 0xd9, 0x65, 0xb5, 0x38, 0x97, 0xe3);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected SetComparisonConstraintHasContradictionError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraint domain role code
+		
+		/// <summary>
+		/// SetComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0x61f38936, 0x0f1d, 0x4d08, 0xbf, 0x95, 0x75, 0x42, 0x9d, 0x10, 0x8d, 0x6e);
+		
+		/// <summary>
+		/// DomainRole SetComparisonConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ContradictionErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("61f38936-0f1d-4d08-bf95-75429d108d6e")]
+		public abstract SetComparisonConstraint SetComparisonConstraint
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraintCollection of a ContradictionError
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<SetComparisonConstraint> GetSetComparisonConstraintCollection(ContradictionError element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<SetComparisonConstraint>(element, ContradictionErrorDomainRoleId);
+		}
+		#endregion
+		#region ContradictionError domain role code
+		
+		/// <summary>
+		/// ContradictionError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ContradictionErrorDomainRoleId = new global::System.Guid(0x0d23d71a, 0xee1c, 0x42eb, 0xa5, 0x4b, 0xb6, 0xcc, 0x00, 0x91, 0xef, 0x58);
+		
+		/// <summary>
+		/// DomainRole ContradictionError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("0d23d71a-ee1c-42eb-a54b-b6cc0091ef58")]
+		public abstract ContradictionError ContradictionError
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access ContradictionErrorCollection of a SetComparisonConstraint
+		/// <summary>
+		/// Gets a list of ContradictionErrorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<ContradictionError> GetContradictionErrorCollection(SetComparisonConstraint element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<ContradictionError>(element, SetComparisonConstraintDomainRoleId);
+		}
+		#endregion
+		#region SetComparisonConstraint link accessor
+		/// <summary>
+		/// Get the list of SetComparisonConstraintHasContradictionError links to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError> GetLinksToContradictionErrorCollection ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint setComparisonConstraintInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError>(setComparisonConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
+		}
+		#endregion
+		#region ContradictionError link accessor
+		/// <summary>
+		/// Get the list of SetComparisonConstraintHasContradictionError links to a ContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError> GetLinksToSetComparisonConstraintCollection ( global::Neumont.Tools.ORM.ObjectModel.ContradictionError contradictionErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError>(contradictionErrorInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionErrorDomainRoleId);
+		}
+		#endregion
+		#region SetComparisonConstraintHasContradictionError instance accessors
+		
+		/// <summary>
+		/// Get any SetComparisonConstraintHasContradictionError links between a given SetComparisonConstraint and a ContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ContradictionError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError link in links )
+			{
+				if ( target.Equals(link.ContradictionError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetComparisonConstraintHasContradictionError link between a given SetComparisonConstraintand a ContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError GetLink( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ContradictionError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError link in links )
+			{
+				if ( target.Equals(link.ContradictionError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SetComparisonConstraintHasExclusionContradictsEqualityError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("e7e85549-6312-4e65-ad48-4ddf51e8139c")]
+	public partial class SetComparisonConstraintHasExclusionContradictsEqualityError : SetComparisonConstraintHasContradictionError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetComparisonConstraintHasExclusionContradictsEqualityError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe7e85549, 0x6312, 0x4e65, 0xad, 0x48, 0x4d, 0xdf, 0x51, 0xe8, 0x13, 0x9c);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetComparisonConstraintHasExclusionContradictsEqualityError link in the same Partition as the given SetComparisonConstraint
+		/// </summary>
+		/// <param name="source">SetComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ExclusionContradictsEqualityError to use as the target of the relationship.</param>
+		public SetComparisonConstraintHasExclusionContradictsEqualityError(SetComparisonConstraint source, ExclusionContradictsEqualityError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetComparisonConstraintHasExclusionContradictsEqualityError.ExclusionContradictsEqualityErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasExclusionContradictsEqualityError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasExclusionContradictsEqualityError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasExclusionContradictsEqualityError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasExclusionContradictsEqualityError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraint domain role code
+		
+		/// <summary>
+		/// SetComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0xa1cae6f2, 0x1ff6, 0x455c, 0xb3, 0x45, 0xfe, 0x1e, 0xab, 0xa5, 0x4c, 0xc9);
+		
+		/// <summary>
+		/// DomainRole SetComparisonConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExclusionContradictsEqualityError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("a1cae6f2-1ff6-455c-b345-fe1eaba54cc9")]
+		public override SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraintCollection of a ExclusionContradictsEqualityError
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<SetComparisonConstraint> GetSetComparisonConstraintCollection(ExclusionContradictsEqualityError element)
+		{
+			return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(element, ExclusionContradictsEqualityErrorDomainRoleId);
+		}
+		#endregion
+		#region ExclusionContradictsEqualityError domain role code
+		
+		/// <summary>
+		/// ExclusionContradictsEqualityError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExclusionContradictsEqualityErrorDomainRoleId = new global::System.Guid(0x550fe83e, 0x6dd2, 0x49fe, 0xb1, 0x25, 0xca, 0x26, 0xda, 0x12, 0x89, 0x7f);
+		
+		/// <summary>
+		/// DomainRole ExclusionContradictsEqualityError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.ExclusionContradictsEqualityError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/ExclusionContradictsEqualityError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/ExclusionContradictsEqualityError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/ExclusionContradictsEqualityError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("550fe83e-6dd2-49fe-b125-ca26da12897f")]
+		public virtual ExclusionContradictsEqualityError ExclusionContradictsEqualityError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ExclusionContradictsEqualityError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExclusionContradictsEqualityErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExclusionContradictsEqualityErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExclusionContradictsEqualityError of a SetComparisonConstraint
+		/// <summary>
+		/// Gets ExclusionContradictsEqualityError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ExclusionContradictsEqualityError GetExclusionContradictsEqualityError(SetComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetComparisonConstraintDomainRoleId) as ExclusionContradictsEqualityError;
+		}
+		
+		/// <summary>
+		/// Sets ExclusionContradictsEqualityError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetExclusionContradictsEqualityError(SetComparisonConstraint element, ExclusionContradictsEqualityError newExclusionContradictsEqualityError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newExclusionContradictsEqualityError);
+		}
+		#endregion
+		#region ContradictionError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExclusionContradictsEqualityError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionError
+		/// </summary>
+		public override ContradictionError ContradictionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExclusionContradictsEqualityError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExclusionContradictsEqualityError = (ExclusionContradictsEqualityError)value;
+			}
+		}
+		
+		#endregion
+		#region SetComparisonConstraint link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasExclusionContradictsEqualityError link to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError GetLinkToExclusionContradictsEqualityError (global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint setComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError>(setComparisonConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ExclusionContradictsEqualityError link accessor
+		/// <summary>
+		/// Get the list of SetComparisonConstraintHasExclusionContradictsEqualityError links to a ExclusionContradictsEqualityError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError> GetLinksToSetComparisonConstraintCollection ( global::Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError exclusionContradictsEqualityErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError>(exclusionContradictsEqualityErrorInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.ExclusionContradictsEqualityErrorDomainRoleId);
+		}
+		#endregion
+		#region SetComparisonConstraintHasExclusionContradictsEqualityError instance accessors
+		
+		/// <summary>
+		/// Get any SetComparisonConstraintHasExclusionContradictsEqualityError links between a given SetComparisonConstraint and a ExclusionContradictsEqualityError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError link in links )
+			{
+				if ( target.Equals(link.ExclusionContradictsEqualityError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetComparisonConstraintHasExclusionContradictsEqualityError link between a given SetComparisonConstraintand a ExclusionContradictsEqualityError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError GetLink( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError link in links )
+			{
+				if ( target.Equals(link.ExclusionContradictsEqualityError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SetComparisonConstraintHasExclusionContradictsSubsetError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("b4bba5af-05ac-4fec-8288-8d80dc0af16e")]
+	public partial class SetComparisonConstraintHasExclusionContradictsSubsetError : SetComparisonConstraintHasContradictionError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetComparisonConstraintHasExclusionContradictsSubsetError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb4bba5af, 0x05ac, 0x4fec, 0x82, 0x88, 0x8d, 0x80, 0xdc, 0x0a, 0xf1, 0x6e);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetComparisonConstraintHasExclusionContradictsSubsetError link in the same Partition as the given SetComparisonConstraint
+		/// </summary>
+		/// <param name="source">SetComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ExclusionContradictsSubsetError to use as the target of the relationship.</param>
+		public SetComparisonConstraintHasExclusionContradictsSubsetError(SetComparisonConstraint source, ExclusionContradictsSubsetError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasExclusionContradictsSubsetError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasExclusionContradictsSubsetError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasExclusionContradictsSubsetError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasExclusionContradictsSubsetError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraint domain role code
+		
+		/// <summary>
+		/// SetComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0x054006ac, 0x2b5a, 0x4084, 0xad, 0xfb, 0xdf, 0xfc, 0xce, 0xb1, 0x8b, 0x0d);
+		
+		/// <summary>
+		/// DomainRole SetComparisonConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExclusionContradictsSubsetError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("054006ac-2b5a-4084-adfb-dffcceb18b0d")]
+		public override SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraintCollection of a ExclusionContradictsSubsetError
+		/// <summary>
+		/// Gets a list of SetComparisonConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<SetComparisonConstraint> GetSetComparisonConstraintCollection(ExclusionContradictsSubsetError element)
+		{
+			return new DslModeling::LinkedElementCollection<SetComparisonConstraint>(element, ExclusionContradictsSubsetErrorDomainRoleId);
+		}
+		#endregion
+		#region ExclusionContradictsSubsetError domain role code
+		
+		/// <summary>
+		/// ExclusionContradictsSubsetError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExclusionContradictsSubsetErrorDomainRoleId = new global::System.Guid(0x94efa870, 0x8061, 0x41fb, 0x8d, 0x99, 0xfc, 0xdd, 0xba, 0xe7, 0xff, 0x54);
+		
+		/// <summary>
+		/// DomainRole ExclusionContradictsSubsetError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("94efa870-8061-41fb-8d99-fcddbae7ff54")]
+		public virtual ExclusionContradictsSubsetError ExclusionContradictsSubsetError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ExclusionContradictsSubsetError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExclusionContradictsSubsetErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExclusionContradictsSubsetErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExclusionContradictsSubsetError of a SetComparisonConstraint
+		/// <summary>
+		/// Gets ExclusionContradictsSubsetError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ExclusionContradictsSubsetError GetExclusionContradictsSubsetError(SetComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetComparisonConstraintDomainRoleId) as ExclusionContradictsSubsetError;
+		}
+		
+		/// <summary>
+		/// Sets ExclusionContradictsSubsetError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetExclusionContradictsSubsetError(SetComparisonConstraint element, ExclusionContradictsSubsetError newExclusionContradictsSubsetError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newExclusionContradictsSubsetError);
+		}
+		#endregion
+		#region ContradictionError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExclusionContradictsSubsetError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionError
+		/// </summary>
+		public override ContradictionError ContradictionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExclusionContradictsSubsetError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExclusionContradictsSubsetError = (ExclusionContradictsSubsetError)value;
+			}
+		}
+		
+		#endregion
+		#region SetComparisonConstraint link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasExclusionContradictsSubsetError link to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError GetLinkToExclusionContradictsSubsetError (global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint setComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError>(setComparisonConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ExclusionContradictsSubsetError link accessor
+		/// <summary>
+		/// Get the list of SetComparisonConstraintHasExclusionContradictsSubsetError links to a ExclusionContradictsSubsetError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError> GetLinksToSetComparisonConstraintCollection ( global::Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError exclusionContradictsSubsetErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError>(exclusionContradictsSubsetErrorInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetErrorDomainRoleId);
+		}
+		#endregion
+		#region SetComparisonConstraintHasExclusionContradictsSubsetError instance accessors
+		
+		/// <summary>
+		/// Get any SetComparisonConstraintHasExclusionContradictsSubsetError links between a given SetComparisonConstraint and a ExclusionContradictsSubsetError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError link in links )
+			{
+				if ( target.Equals(link.ExclusionContradictsSubsetError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetComparisonConstraintHasExclusionContradictsSubsetError link between a given SetComparisonConstraintand a ExclusionContradictsSubsetError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError GetLink( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError link in links )
+			{
+				if ( target.Equals(link.ExclusionContradictsSubsetError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship MandatoryConstraintHasPopulationMandatoryError
 	/// Description for
 	/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError
@@ -11604,266 +12293,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship MandatoryConstraintHasMandatoryImpliedByMandatoryError
-	/// Description for
-	/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("3efcb5a8-2dcb-478e-bd02-5898c36c9143")]
-	public partial class MandatoryConstraintHasMandatoryImpliedByMandatoryError : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// MandatoryConstraintHasMandatoryImpliedByMandatoryError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x3efcb5a8, 0x2dcb, 0x478e, 0xbd, 0x02, 0x58, 0x98, 0xc3, 0x6c, 0x91, 0x43);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a MandatoryConstraintHasMandatoryImpliedByMandatoryError link in the same Partition as the given MandatoryConstraint
-		/// </summary>
-		/// <param name="source">MandatoryConstraint to use as the source of the relationship.</param>
-		/// <param name="target">MandatoryImpliedByMandatoryError to use as the target of the relationship.</param>
-		public MandatoryConstraintHasMandatoryImpliedByMandatoryError(MandatoryConstraint source, MandatoryImpliedByMandatoryError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintDomainRoleId, source), new DslModeling::RoleAssignment(MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public MandatoryConstraintHasMandatoryImpliedByMandatoryError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public MandatoryConstraintHasMandatoryImpliedByMandatoryError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public MandatoryConstraintHasMandatoryImpliedByMandatoryError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public MandatoryConstraintHasMandatoryImpliedByMandatoryError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region MandatoryConstraint domain role code
-		
-		/// <summary>
-		/// MandatoryConstraint domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid MandatoryConstraintDomainRoleId = new global::System.Guid(0x2a540753, 0x3f31, 0x4b4a, 0x95, 0x01, 0xbf, 0x4a, 0xe4, 0x77, 0x9c, 0xcf);
-		
-		/// <summary>
-		/// DomainRole MandatoryConstraint
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraint
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedByMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("2a540753-3f31-4b4a-9501-bf4ae4779ccf")]
-		public virtual MandatoryConstraint MandatoryConstraint
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (MandatoryConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, MandatoryConstraintDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, MandatoryConstraintDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access MandatoryConstraint of a MandatoryImpliedByMandatoryError
-		/// <summary>
-		/// Gets MandatoryConstraint.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static MandatoryConstraint GetMandatoryConstraint(MandatoryImpliedByMandatoryError element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ImpliedByMandatoryErrorDomainRoleId) as MandatoryConstraint;
-		}
-		
-		/// <summary>
-		/// Sets MandatoryConstraint.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetMandatoryConstraint(MandatoryImpliedByMandatoryError element, MandatoryConstraint newMandatoryConstraint)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImpliedByMandatoryErrorDomainRoleId, newMandatoryConstraint);
-		}
-		#endregion
-		#region ImpliedByMandatoryError domain role code
-		
-		/// <summary>
-		/// ImpliedByMandatoryError domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ImpliedByMandatoryErrorDomainRoleId = new global::System.Guid(0x41b3c5f6, 0x37e4, 0x49e3, 0x8f, 0x5d, 0x8d, 0xa4, 0xc3, 0x77, 0xc2, 0x4f);
-		
-		/// <summary>
-		/// DomainRole ImpliedByMandatoryError
-		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryError
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/ImpliedByMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/ImpliedByMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "MandatoryConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/ImpliedByMandatoryError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("41b3c5f6-37e4-49e3-8f5d-8da4c377c24f")]
-		public virtual MandatoryImpliedByMandatoryError ImpliedByMandatoryError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (MandatoryImpliedByMandatoryError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ImpliedByMandatoryErrorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ImpliedByMandatoryErrorDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ImpliedByMandatoryError of a MandatoryConstraint
-		/// <summary>
-		/// Gets ImpliedByMandatoryError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static MandatoryImpliedByMandatoryError GetImpliedByMandatoryError(MandatoryConstraint element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MandatoryConstraintDomainRoleId) as MandatoryImpliedByMandatoryError;
-		}
-		
-		/// <summary>
-		/// Sets ImpliedByMandatoryError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetImpliedByMandatoryError(MandatoryConstraint element, MandatoryImpliedByMandatoryError newImpliedByMandatoryError)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, MandatoryConstraintDomainRoleId, newImpliedByMandatoryError);
-		}
-		#endregion
-		#region MandatoryConstraint link accessor
-		/// <summary>
-		/// Get the MandatoryConstraintHasMandatoryImpliedByMandatoryError link to a MandatoryConstraint.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError GetLinkToImpliedByMandatoryError (global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint mandatoryConstraintInstance)
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError>(mandatoryConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MandatoryConstraint not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region ImpliedByMandatoryError link accessor
-		/// <summary>
-		/// Get the MandatoryConstraintHasMandatoryImpliedByMandatoryError link to a MandatoryImpliedByMandatoryError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError GetLinkToMandatoryConstraint (global::Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError impliedByMandatoryErrorInstance)
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError>(impliedByMandatoryErrorInstance, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ImpliedByMandatoryError not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region MandatoryConstraintHasMandatoryImpliedByMandatoryError instance accessors
-		
-		/// <summary>
-		/// Get any MandatoryConstraintHasMandatoryImpliedByMandatoryError links between a given MandatoryConstraint and a MandatoryImpliedByMandatoryError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint source, global::Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError target )
-		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError>(source, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError link in links )
-			{
-				if ( target.Equals(link.ImpliedByMandatoryError) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one MandatoryConstraintHasMandatoryImpliedByMandatoryError link between a given MandatoryConstraintand a MandatoryImpliedByMandatoryError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError GetLink( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint source, global::Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError>(source, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError link in links )
-			{
-				if ( target.Equals(link.ImpliedByMandatoryError) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
 	/// DomainRelationship FrequencyConstraintHasFrequencyConstraintMinMaxError
 	/// Description for
 	/// Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError
@@ -16519,33 +16948,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship UniquenessConstraintHasUniquenessImpliedByUniquenessError
-	/// Description for
-	/// Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError
+	/// DomainRelationship SetConstraintHasImplicationError
+	/// Description for Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("8adb8b72-8510-486a-87ce-760c7607460c")]
-	public partial class UniquenessConstraintHasUniquenessImpliedByUniquenessError : DslModeling::ElementLink
+	[DslModeling::DomainObjectId("7dea2631-58ef-46a6-b9e1-a8eda2948ae3")]
+	public partial class SetConstraintHasImplicationError : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// UniquenessConstraintHasUniquenessImpliedByUniquenessError domain class Id.
+		/// SetConstraintHasImplicationError domain class Id.
 		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8adb8b72, 0x8510, 0x486a, 0x87, 0xce, 0x76, 0x0c, 0x76, 0x07, 0x46, 0x0c);
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7dea2631, 0x58ef, 0x46a6, 0xb9, 0xe1, 0xa8, 0xed, 0xa2, 0x94, 0x8a, 0xe3);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a UniquenessConstraintHasUniquenessImpliedByUniquenessError link in the same Partition as the given UniquenessConstraint
+		/// Creates a SetConstraintHasImplicationError link in the same Partition as the given SetConstraint
 		/// </summary>
-		/// <param name="source">UniquenessConstraint to use as the source of the relationship.</param>
-		/// <param name="target">UniquenessImpliedByUniquenessError to use as the target of the relationship.</param>
-		public UniquenessConstraintHasUniquenessImpliedByUniquenessError(UniquenessConstraint source, UniquenessImpliedByUniquenessError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraintDomainRoleId, source), new DslModeling::RoleAssignment(UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessErrorDomainRoleId, target)}, null)
+		/// <param name="source">SetConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ImplicationError to use as the target of the relationship.</param>
+		public SetConstraintHasImplicationError(SetConstraint source, ImplicationError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetConstraintHasImplicationError.SetConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetConstraintHasImplicationError.ImplicationErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -16554,7 +16982,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public UniquenessConstraintHasUniquenessImpliedByUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public SetConstraintHasImplicationError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -16565,7 +16993,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public UniquenessConstraintHasUniquenessImpliedByUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public SetConstraintHasImplicationError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -16575,7 +17003,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public UniquenessConstraintHasUniquenessImpliedByUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public SetConstraintHasImplicationError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -16586,125 +17014,125 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public UniquenessConstraintHasUniquenessImpliedByUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public SetConstraintHasImplicationError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region UniquenessConstraint domain role code
+		#region SetConstraint domain role code
 		
 		/// <summary>
-		/// UniquenessConstraint domain role Id.
+		/// SetConstraint domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid UniquenessConstraintDomainRoleId = new global::System.Guid(0xdc738b91, 0xf33f, 0x409a, 0xb3, 0x97, 0x2d, 0x18, 0xf7, 0x7a, 0xcc, 0x65);
+		public static readonly global::System.Guid SetConstraintDomainRoleId = new global::System.Guid(0x11e75e00, 0x142e, 0x4f4f, 0xb9, 0xb1, 0xab, 0x55, 0x11, 0x21, 0x84, 0x40);
 		
 		/// <summary>
-		/// DomainRole UniquenessConstraint
+		/// DomainRole SetConstraint
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraint
+		/// Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedByUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("dc738b91-f33f-409a-b397-2d18f77acc65")]
-		public virtual UniquenessConstraint UniquenessConstraint
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImplicationError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("11e75e00-142e-4f4f-b9b1-ab5511218440")]
+		public virtual SetConstraint SetConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (UniquenessConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, UniquenessConstraintDomainRoleId);
+				return (SetConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetConstraintDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, UniquenessConstraintDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetConstraintDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access UniquenessConstraint of a UniquenessImpliedByUniquenessError
+		#region Static methods to access SetConstraint of a ImplicationError
 		/// <summary>
-		/// Gets UniquenessConstraint.
+		/// Gets SetConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static UniquenessConstraint GetUniquenessConstraint(UniquenessImpliedByUniquenessError element)
+		public static SetConstraint GetSetConstraint(ImplicationError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ImpliedByUniquenessErrorDomainRoleId) as UniquenessConstraint;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ImplicationErrorDomainRoleId) as SetConstraint;
 		}
 		
 		/// <summary>
-		/// Sets UniquenessConstraint.
+		/// Sets SetConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetUniquenessConstraint(UniquenessImpliedByUniquenessError element, UniquenessConstraint newUniquenessConstraint)
+		public static void SetSetConstraint(ImplicationError element, SetConstraint newSetConstraint)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImpliedByUniquenessErrorDomainRoleId, newUniquenessConstraint);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImplicationErrorDomainRoleId, newSetConstraint);
 		}
 		#endregion
-		#region ImpliedByUniquenessError domain role code
+		#region ImplicationError domain role code
 		
 		/// <summary>
-		/// ImpliedByUniquenessError domain role Id.
+		/// ImplicationError domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ImpliedByUniquenessErrorDomainRoleId = new global::System.Guid(0x8f790b28, 0x0b92, 0x408b, 0xac, 0xba, 0x86, 0xf3, 0x56, 0xb7, 0xc7, 0xc9);
+		public static readonly global::System.Guid ImplicationErrorDomainRoleId = new global::System.Guid(0x2ff88d36, 0x6636, 0x4e33, 0xb1, 0x1d, 0xdb, 0x60, 0x13, 0xfb, 0x7b, 0xa2);
 		
 		/// <summary>
-		/// DomainRole ImpliedByUniquenessError
+		/// DomainRole ImplicationError
 		/// Description for
-		/// Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessError
+		/// Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationError
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/ImpliedByUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/ImpliedByUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "UniquenessConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/ImpliedByUniquenessError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("8f790b28-0b92-408b-acba-86f356b7c7c9")]
-		public virtual UniquenessImpliedByUniquenessError ImpliedByUniquenessError
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/ImplicationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/ImplicationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/ImplicationError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("2ff88d36-6636-4e33-b11d-db6013fb7ba2")]
+		public virtual ImplicationError ImplicationError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (UniquenessImpliedByUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ImpliedByUniquenessErrorDomainRoleId);
+				return (ImplicationError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ImplicationErrorDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ImpliedByUniquenessErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ImplicationErrorDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ImpliedByUniquenessError of a UniquenessConstraint
+		#region Static methods to access ImplicationError of a SetConstraint
 		/// <summary>
-		/// Gets ImpliedByUniquenessError.
+		/// Gets ImplicationError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static UniquenessImpliedByUniquenessError GetImpliedByUniquenessError(UniquenessConstraint element)
+		public static ImplicationError GetImplicationError(SetConstraint element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UniquenessConstraintDomainRoleId) as UniquenessImpliedByUniquenessError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetConstraintDomainRoleId) as ImplicationError;
 		}
 		
 		/// <summary>
-		/// Sets ImpliedByUniquenessError.
+		/// Sets ImplicationError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetImpliedByUniquenessError(UniquenessConstraint element, UniquenessImpliedByUniquenessError newImpliedByUniquenessError)
+		public static void SetImplicationError(SetConstraint element, ImplicationError newImplicationError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, UniquenessConstraintDomainRoleId, newImpliedByUniquenessError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newImplicationError);
 		}
 		#endregion
-		#region UniquenessConstraint link accessor
+		#region SetConstraint link accessor
 		/// <summary>
-		/// Get the UniquenessConstraintHasUniquenessImpliedByUniquenessError link to a UniquenessConstraint.
+		/// Get the SetConstraintHasImplicationError link to a SetConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError GetLinkToImpliedByUniquenessError (global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint uniquenessConstraintInstance)
+		public static global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError GetLinkToImplicationError (global::Neumont.Tools.ORM.ObjectModel.SetConstraint setConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError>(uniquenessConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraintDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of UniquenessConstraint not obeyed.");
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError>(setConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -16715,16 +17143,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ImpliedByUniquenessError link accessor
+		#region ImplicationError link accessor
 		/// <summary>
-		/// Get the UniquenessConstraintHasUniquenessImpliedByUniquenessError link to a UniquenessImpliedByUniquenessError.
+		/// Get the SetConstraintHasImplicationError link to a ImplicationError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError GetLinkToUniquenessConstraint (global::Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError impliedByUniquenessErrorInstance)
+		public static global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError GetLinkToSetConstraint (global::Neumont.Tools.ORM.ObjectModel.ImplicationError implicationErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError>(impliedByUniquenessErrorInstance, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ImpliedByUniquenessError not obeyed.");
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError>(implicationErrorInstance, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ImplicationError not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -16735,20 +17163,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region UniquenessConstraintHasUniquenessImpliedByUniquenessError instance accessors
+		#region SetConstraintHasImplicationError instance accessors
 		
 		/// <summary>
-		/// Get any UniquenessConstraintHasUniquenessImpliedByUniquenessError links between a given UniquenessConstraint and a UniquenessImpliedByUniquenessError.
+		/// Get any SetConstraintHasImplicationError links between a given SetConstraint and a ImplicationError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint source, global::Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.SetConstraint source, global::Neumont.Tools.ORM.ObjectModel.ImplicationError target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError>(source, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError link in links )
 			{
-				if ( target.Equals(link.ImpliedByUniquenessError) )
+				if ( target.Equals(link.ImplicationError) )
 				{
 					outLinks.Add(link);
 				}
@@ -16756,16 +17184,276 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one UniquenessConstraintHasUniquenessImpliedByUniquenessError link between a given UniquenessConstraintand a UniquenessImpliedByUniquenessError.
+		/// Get the one SetConstraintHasImplicationError link between a given SetConstraintand a ImplicationError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError GetLink( global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint source, global::Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError target )
+		public static global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError GetLink( global::Neumont.Tools.ORM.ObjectModel.SetConstraint source, global::Neumont.Tools.ORM.ObjectModel.ImplicationError target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError>(source, global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError link in links )
 			{
-				if ( target.Equals(link.ImpliedByUniquenessError) )
+				if ( target.Equals(link.ImplicationError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SetComparisonConstraintHasImplicationError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("6f9e9e77-3da6-4b01-b3ab-f46fb4c43ca8")]
+	public partial class SetComparisonConstraintHasImplicationError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetComparisonConstraintHasImplicationError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6f9e9e77, 0x3da6, 0x4b01, 0xb3, 0xab, 0xf4, 0x6f, 0xb4, 0xc4, 0x3c, 0xa8);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetComparisonConstraintHasImplicationError link in the same Partition as the given SetComparisonConstraint
+		/// </summary>
+		/// <param name="source">SetComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ImplicationError to use as the target of the relationship.</param>
+		public SetComparisonConstraintHasImplicationError(SetComparisonConstraint source, ImplicationError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasImplicationError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasImplicationError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasImplicationError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasImplicationError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraint domain role code
+		
+		/// <summary>
+		/// SetComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0xbce096ee, 0x2383, 0x42c8, 0xb5, 0x2c, 0xc5, 0x43, 0xcd, 0x25, 0x22, 0x64);
+		
+		/// <summary>
+		/// DomainRole SetComparisonConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImplicationError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("bce096ee-2383-42c8-b52c-c543cd252264")]
+		public virtual SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraint of a ImplicationError
+		/// <summary>
+		/// Gets SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SetComparisonConstraint GetSetComparisonConstraint(ImplicationError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ImplicationErrorDomainRoleId) as SetComparisonConstraint;
+		}
+		
+		/// <summary>
+		/// Sets SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSetComparisonConstraint(ImplicationError element, SetComparisonConstraint newSetComparisonConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImplicationErrorDomainRoleId, newSetComparisonConstraint);
+		}
+		#endregion
+		#region ImplicationError domain role code
+		
+		/// <summary>
+		/// ImplicationError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ImplicationErrorDomainRoleId = new global::System.Guid(0xda7f46c4, 0xa975, 0x4dcb, 0xb1, 0xde, 0x1f, 0xc7, 0x79, 0x45, 0x28, 0x65);
+		
+		/// <summary>
+		/// DomainRole ImplicationError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("da7f46c4-a975-4dcb-b1de-1fc779452865")]
+		public virtual ImplicationError ImplicationError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ImplicationError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ImplicationErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ImplicationErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ImplicationError of a SetComparisonConstraint
+		/// <summary>
+		/// Gets ImplicationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ImplicationError GetImplicationError(SetComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetComparisonConstraintDomainRoleId) as ImplicationError;
+		}
+		
+		/// <summary>
+		/// Sets ImplicationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetImplicationError(SetComparisonConstraint element, ImplicationError newImplicationError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newImplicationError);
+		}
+		#endregion
+		#region SetComparisonConstraint link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasImplicationError link to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError GetLinkToImplicationError (global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint setComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError>(setComparisonConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ImplicationError link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasImplicationError link to a ImplicationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError GetLinkToSetComparisonConstraint (global::Neumont.Tools.ORM.ObjectModel.ImplicationError implicationErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError>(implicationErrorInstance, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ImplicationError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SetComparisonConstraintHasImplicationError instance accessors
+		
+		/// <summary>
+		/// Get any SetComparisonConstraintHasImplicationError links between a given SetComparisonConstraint and a ImplicationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ImplicationError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError link in links )
+			{
+				if ( target.Equals(link.ImplicationError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetComparisonConstraintHasImplicationError link between a given SetComparisonConstraintand a ImplicationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError GetLink( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint source, global::Neumont.Tools.ORM.ObjectModel.ImplicationError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError>(source, global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError link in links )
+			{
+				if ( target.Equals(link.ImplicationError) )
 				{
 					return link;
 				}

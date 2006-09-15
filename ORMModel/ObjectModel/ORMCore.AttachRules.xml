@@ -26,10 +26,10 @@
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRolePlayerChangeRule"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceDeleting"/>
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeHasEntityTypeInstanceAdded"/>
-		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceDeleting"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeleted"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
@@ -151,7 +151,14 @@
 		<arg:Rule class="SetComparisonConstraint.ExternalRoleConstraintDeleted"/>
 		<arg:Rule class="SetComparisonConstraint.FactAdded"/>
 		<arg:Rule class="SetComparisonConstraint.FactSetComparisonConstraintAdded"/>
+		<arg:Rule class="SetComparisonConstraint.RemoveSetComparisonConstraintHasContradictionErrorRule"/>
 		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceDeleted"/>
+		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceHasRoleDeleted"/>
+		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceHasRoleRolePlayerChanged"/>
+		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintHasRoleSequenceAdded"/>
+		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintHasRoleSequenceDeleted"/>
+		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintHasRoleSequenceRolePlayerChanged"/>
 		<arg:Rule class="SetConstraint.ConstraintAdded"/>
 		<arg:Rule class="SetConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForAdd"/>
@@ -162,6 +169,9 @@
 		<arg:Rule class="SetConstraint.FactAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintDeleted"/>
+		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleDeleted"/>
+		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleRolePlayerChanged"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesAddRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesDeleteRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentRolePlayerTypesAddRule"/>

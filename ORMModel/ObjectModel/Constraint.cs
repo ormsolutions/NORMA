@@ -24,6 +24,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
+using System.Text;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -42,37 +43,170 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Get the type of this constraint
 		/// </summary>
-		ConstraintType ConstraintType { get; }
+		ConstraintType ConstraintType
+		{
+			get;
+		}
 		/// <summary>
 		/// Get the role settings for this constraint
 		/// </summary>
-		RoleSequenceStyles RoleSequenceStyles { get; }
+		RoleSequenceStyles RoleSequenceStyles
+		{
+			get;
+		}
 		/// <summary>
 		/// Get the details of how this constraint is stored.
 		/// </summary>
-		ConstraintStorageStyle ConstraintStorageStyle { get; }
+		ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get;
+		}
 		/// <summary>
 		/// Get details on whether this is an internal or external constraint
 		/// </summary>
-		bool ConstraintIsInternal { get;}
+		bool ConstraintIsInternal
+		{
+			get;
+		}
 		/// <summary>
 		/// Retrieve the model for the current constraint
 		/// </summary>
-		ORMModel Model { get; }
+		ORMModel Model
+		{
+			get;
+		}
 		/// <summary>
 		/// Get or set the constraint modality.
 		/// </summary>
-		ConstraintModality Modality { get; set; }
+		ConstraintModality Modality
+		{
+			get;
+			set;
+		}
 		/// <summary>
 		/// Get or set the preferred identifier for this constraint.
 		/// Valid for uniqueness constraint types.
 		/// </summary>
-		ObjectType PreferredIdentifierFor { get; set; }
+		ObjectType PreferredIdentifierFor
+		{
+			get;
+			set;
+		}
 		/// <summary>
 		/// Called during a transaction to tell the constraint
 		/// to revalidate all column compatibility settings.
 		/// </summary>
 		void ValidateColumnCompatibility();
+
+		/// <summary>
+		/// Returns a list of IntersectingConstraintValidation objects
+		/// each of which represents an intersecting constraint pattern the constraint
+		/// can participate in.
+		/// </summary>
+		/// <returns></returns>
+		IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo();
+	}
+	/// <summary>
+	/// All interesections between different costraints that produce errors belong to one of the
+	/// defined patterns in this enum and each pattern is validated in its own way
+	/// </summary>
+	public enum IntersectingConstraintPattern
+	{
+		/// <summary>
+		/// Pertains to 2 SetContaints (Uniqueness or Mandatory) existing together
+		/// For example, simple mandatory implies disjunctive mandatory; intenal uniqueness implies
+		/// external uniqueness
+		/// </summary>
+		SetConstraintSubset,
+		/// <summary>
+		/// Pertains to 2 SetContaints (Uniqueness or Mandatory) existing together
+		/// For example, simple mandatory implies disjunctive mandatory; intenal uniqueness implies
+		/// external uniqueness
+		/// </summary>
+		SetConstraintSuperset,
+		/// <summary>
+		/// Pertains to 2 SetComparisonContaints (Exclusion, Equality, Subset) existing
+		/// in a subset relationship.  This pattern is used for a set comparison constraint that cannot be a 
+		/// subset of another set comparison constraint (for example, exclusion cannot be a subset of 
+		/// equality)
+		/// </summary>
+		SetComparisonConstraintSubset,
+		/// <summary>
+		/// Pertains to 2 SetComparisonContaints (Exclusion, Equality, Subset) existing
+		/// in a subset relationship.  This pattern is used for a set comparison constraint that cannot be a 
+		/// superset of another set comparison constraint (for example, equality cannot be a superset of 
+		/// exclusion)
+		/// </summary>
+		SetComparisonConstraintSuperset,
+		/// <summary>
+		/// Pertains to a SetContaint (Uniqueness or Mandatory) and a SetComparisonContaint (Exclusion, 
+		/// Equality, Subset) existing together
+		/// </summary>
+		SetSetComparisonConstraintSubset
+	}
+
+
+	/// <summary>
+	/// Used for set constraints: mandatory and uniqueness
+	/// in the cases when one implies the other of the same type
+	/// </summary>
+	public struct IntersectingConstraintValidation
+	{
+		private IntersectingConstraintPattern myConstPattern;
+		private Guid myDomainRoleFromError;
+		private ConstraintType[] myConstraintsInPotentialConflict;
+
+		/// <summary>
+		/// Constructor for the struct IntersectingConstraintValidation
+		/// </summary>
+		/// <param name="pattern">Pattern this constraint can participate in and produce error</param>
+		/// <param name="domainRoleFromError">GUID of the error produced on this contraint in a particular situation</param>
+		/// <param name="constraintsInPotentialConflict">Given the pattern, what type should the other constraint
+		/// be of to produce the error</param>
+		public IntersectingConstraintValidation(IntersectingConstraintPattern pattern,
+			Guid domainRoleFromError,
+			params ConstraintType[] constraintsInPotentialConflict)
+		{
+			this.myConstPattern = pattern;
+			this.myDomainRoleFromError = domainRoleFromError;
+			this.myConstraintsInPotentialConflict = constraintsInPotentialConflict;
+		}
+
+		/// <summary>
+		/// For each IntersectingConstraintPattern, there are 2 types of constraints:
+		/// the one for which the validation is being done and the other that can conlict with it.
+		/// For example, for SetComparisonConstraintSubset pattern, if the validation is being done
+		/// for exclusion constraint, it can potentially conflict with equality constraint, because
+		/// exclusion cannot be a subset of equality
+		/// </summary>
+		public ConstraintType[] ConstraintsInPotentialConflict
+		{
+			get
+			{
+				return myConstraintsInPotentialConflict;
+			}
+		}
+		/// <summary>
+		/// The pattern a constraint can participate in with another constraint to produce an error
+		/// </summary>
+		public IntersectingConstraintPattern IntersectionValidationPattern
+		{
+			get
+			{
+				return myConstPattern;
+			}
+		}
+		/// <summary>
+		/// GUID for the error the constraint will produce if it is indeed found to participate in a
+		/// particular intersectingConstraintPattern
+		/// </summary>
+		public Guid DomainRoleFromError
+		{
+			get
+			{
+				return myDomainRoleFromError;
+			}
+		}
 	}
 	#endregion // IConstraint interface
 	#region Constraint class
@@ -484,7 +618,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return duplicateName;
 				}
+				ImplicationError implicationError = ImplicationError;
+				if (implicationError != null)
+				{
+					yield return implicationError;
+				}
 			}
+
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
@@ -931,7 +1071,219 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateColumnCompatibility();
 		}
+		/// <summary>
+		/// Implements IConstraint.GetIntersectingConstraintValidationInfo.
+		/// Default implementation returns null.
+		/// </summary>
+		protected static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return null;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
 		#endregion // IConstraint Implementation
+		#region Pattern Rules
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
+		private sealed partial class SetConstraintRoleSequenceHasRoleAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				ProcessSetConstraintPattern(sequence.Constraint, link.Role);
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
+		private sealed partial class SetConstraintRoleSequenceHasRoleDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				ProcessSetConstraintPattern(sequence.Constraint, link.Role);
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
+		private sealed partial class SetConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRole = e.DomainRole.Id;
+				ConstraintRoleSequence newSequence = null;
+				Role newRole = null;
+				if (changedRole == ConstraintRoleSequence.DomainClassId)
+				{
+					newSequence = e.NewRolePlayer as ConstraintRoleSequence;
+					ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ElementLink;
+					newRole = link.Role;
+					ProcessSetConstraintPattern((e.OldRolePlayer as ConstraintRoleSequence).Constraint, newRole);
+				}
+				else if (changedRole == Role.DomainClassId)
+				{
+					ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ElementLink;
+					newSequence = link.ConstraintRoleSequence;
+					newRole = e.NewRolePlayer as Role;
+					ProcessSetConstraintPattern(newSequence.Constraint, e.OldRolePlayer as Role);
+				}
+				if (newSequence != null)
+				{
+					ProcessSetConstraintPattern(newSequence.Constraint, newRole);
+				}
+			}
+		}
+
+		private static void ProcessSetConstraintPattern(IConstraint constraint, Role role)
+		{
+			if (constraint != null)
+			{
+				IList<IntersectingConstraintValidation> validations = constraint.GetIntersectingConstraintValidationInfo();
+				int validationCount = validations.Count;
+				for (int iValidation = 0; iValidation < validationCount; ++iValidation)
+				{
+					IntersectingConstraintValidation validationInfo = validations[iValidation];
+					switch (validationInfo.IntersectionValidationPattern)
+					{
+						case IntersectingConstraintPattern.SetConstraintSubset:
+							SetConstraint setConstraint = constraint as SetConstraint;
+							Debug.Assert(setConstraint != null);
+							ORMCoreDomainModel.DelayValidateElement(setConstraint, DelayValidateSetConstraintSubsetPattern);
+							break;
+						case IntersectingConstraintPattern.SetConstraintSuperset:
+							ConstraintRoleSequence sequence = constraint as ConstraintRoleSequence;
+							List<Role> roles = new List<Role>(sequence.RoleCollection);
+							if (role != null && !roles.Contains(role))
+							{
+								roles.Add(role);
+							}
+							int roleCount = roles.Count;
+							List<IConstraint> intersectingConstraints = new List<IConstraint>();
+							for (int i = 0; i < roleCount; ++i)
+							{
+								Role selectedRole = roles[i];
+								LinkedElementCollection<ConstraintRoleSequence> sequences = selectedRole.ConstraintRoleSequenceCollection;
+								int sequenceCount = sequences.Count;
+								for (int j = 0; j < sequenceCount; ++j)
+								{
+									ConstraintRoleSequence eligibleSequence = sequences[j];
+									if (eligibleSequence != sequence)
+									{
+										IConstraint eligibleConstraint = eligibleSequence.Constraint;
+										if ((validationInfo.ConstraintsInPotentialConflict as IList<ConstraintType>).Contains(eligibleConstraint.ConstraintType))
+										{
+											if (!intersectingConstraints.Contains(eligibleConstraint))
+											{
+												intersectingConstraints.Add(eligibleConstraint);
+											}
+										}
+									}
+								}
+							}
+							int intersectingConstraintCount = intersectingConstraints.Count;
+							for (int i = 0; i < intersectingConstraintCount; ++i)
+							{
+								SetConstraint intersectingSetConstraint = intersectingConstraints[i] as SetConstraint;
+								Debug.Assert(intersectingSetConstraint != null);
+								ORMCoreDomainModel.DelayValidateElement(intersectingSetConstraint, DelayValidateSetConstraintSubsetPattern);
+							}
+							break;
+						default:
+							// Isn't a SetConstraint, move on
+							break;
+					}
+				}
+			}
+			return;
+		}
+		#endregion
+		#region Constraint Pattern Validation
+		/// <summary>
+		/// Validator callback for SetConstraint Subset Pattern
+		/// </summary>
+		protected static void DelayValidateSetConstraintSubsetPattern(ModelElement element)
+		{
+			(element as SetConstraint).ValidateSetConstraintSubsetPattern(null);
+		}
+
+		/// <summary>
+		/// Validates the SetConstraint Subset Pattern
+		/// </summary>
+		/// <param name="notifyAdded"></param>
+		protected void ValidateSetConstraintSubsetPattern(INotifyElementAdded notifyAdded)
+		{
+			IList<IntersectingConstraintValidation> validations = this.Constraint.GetIntersectingConstraintValidationInfo();
+			int validationCount = validations.Count;
+			for (int i = 0; i < validationCount; ++i)
+			{
+				IntersectingConstraintValidation validationInfo = validations[i];
+				if (validationInfo.IntersectionValidationPattern != IntersectingConstraintPattern.SetConstraintSubset)
+				{
+					continue;
+				}
+				bool hasError = false;
+				LinkedElementCollection<Role> constraintRoles = this.RoleCollection;
+				int constraintRoleCount = constraintRoles.Count;
+				for (int iConstraintRole = 0; iConstraintRole < constraintRoleCount; ++iConstraintRole)
+				{
+					Role constraintRole = constraintRoles[iConstraintRole];
+					LinkedElementCollection<ConstraintRoleSequence> intersectingSequences = constraintRole.ConstraintRoleSequenceCollection;
+					int intersectingSequenceCount = intersectingSequences.Count;
+					for (int iIntersectingSequence = 0; !hasError && iIntersectingSequence < intersectingSequenceCount; ++iIntersectingSequence)
+					{
+						ConstraintRoleSequence intersectingSequence = intersectingSequences[iIntersectingSequence];
+						if (intersectingSequence != this)
+						{
+							IConstraint intersectingConstraint = intersectingSequence.Constraint;
+							if ((validationInfo.ConstraintsInPotentialConflict as IList<ConstraintType>).Contains(intersectingConstraint.ConstraintType))
+							{
+								SetConstraint intersectingSetConstraint = (SetConstraint)intersectingSequence;
+								LinkedElementCollection<Role> intersectingRoles = intersectingSetConstraint.RoleCollection;
+								int intersectingRoleCount = intersectingRoles.Count;
+								if (intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
+								{
+									hasError = true; // Assume we have the problem, disprove it
+									for (int iIntersectingRole = 0; hasError && iIntersectingRole < intersectingRoleCount; ++iIntersectingRole)
+									{
+										Role intersectingRole = intersectingRoles[iIntersectingRole];
+										// Finding a role that is not contained in the set of roles for this constraint
+										// means that it is not a true subset.
+										if (intersectingRole != constraintRole && constraintRoles.IndexOf(intersectingRole) == -1)
+										{
+											hasError = false;
+										}
+									}
+								}
+							}
+						}
+					}
+					Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
+					Store store = Store;
+					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(this, domainRoleErrorId);
+					if (hasError)
+					{
+						if (error == null)
+						{
+							error = (ModelError)store.ElementFactory.CreateElement(store.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
+							DomainRoleInfo.SetLinkedElement(this, domainRoleErrorId, error);
+							error.Model = Constraint.Model;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error, true);
+							}
+						}
+					}
+					else if (error != null)
+					{
+						error.Delete();
+					}
+				}
+			}
+		}
+		#endregion
 	}
 	public partial class SetConstraint : IHierarchyContextEnabled
 	{
@@ -941,33 +1293,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static IHierarchyContextEnabled ForwardHierarchyContextTo
 		{
-			get { return null; }
+			get
+			{
+				return null;
+			}
 		}
 		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
 		{
-			get { return ForwardHierarchyContextTo; }
+			get
+			{
+				return ForwardHierarchyContextTo;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.ForcedHierarchyContextElementCollection"/>
 		/// </summary>
 		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
 		{
-			get { return null; }
+			get
+			{
+				return null;
+			}
 		}
 		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
 		{
-			get { return ForcedHierarchyContextElementCollection; }
+			get
+			{
+				return ForcedHierarchyContextElementCollection;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextPlacementPriority"/>
 		/// </summary>
 		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
 		{
-			get { return HierarchyContextPlacementPriority.VeryLow; }
+			get
+			{
+				return HierarchyContextPlacementPriority.VeryLow;
+			}
 		}
 		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
 		{
-			get { return HierarchyContextPlacementPriority; }
+			get
+			{
+				return HierarchyContextPlacementPriority;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
@@ -991,11 +1361,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static bool ContinueWalkingHierarchyContext
 		{
-			get { return false; }
+			get
+			{
+				return false;
+			}
 		}
 		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
 		{
-			get { return ContinueWalkingHierarchyContext; }
+			get
+			{
+				return ContinueWalkingHierarchyContext;
+			}
 		}
 		#endregion
 	}
@@ -1828,6 +2204,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return duplicateName;
 				}
+
+				ImplicationError implicationError = ImplicationError;
+				if (implicationError != null)
+				{
+					yield return implicationError;
+				}
+
+				foreach (ContradictionError contradictionError in ContradictionErrorCollection)
+				{
+					yield return contradictionError;
+				}
 			}
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
@@ -1876,6 +2263,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SetComparisonConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.GetIntersectingConstraintValidationInfo.
+		/// Default implementation returns null.
+		/// </summary>
+		protected static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return null;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
 		ORMModel IConstraint.Model
 		{
 			get
@@ -1958,6 +2357,347 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValidateColumnCompatibility();
 		}
 		#endregion // IConstraint Implementation
+		#region Pattern Rules
+		[RuleOn(typeof(SetComparisonConstraintHasContradictionError), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		private sealed partial class RemoveSetComparisonConstraintHasContradictionErrorRule : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				SetComparisonConstraintHasContradictionError link = e.ModelElement as SetComparisonConstraintHasContradictionError;
+				ContradictionError error = link.ContradictionError;
+				if (!error.IsDeleted)
+				{
+					if (error.SetComparisonConstraintCollection.Count < 2)
+					{
+						error.Delete();
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
+		private sealed partial class SetComparisonConstraintRoleSequenceHasRoleAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				ProcessSetComparisonConstraintPattern(sequence.Constraint, link.Role);
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
+		private sealed partial class SetComparisonConstraintRoleSequenceHasRoleDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				ProcessSetComparisonConstraintPattern(sequence.Constraint, link.Role);
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
+		private sealed partial class SetComparisonConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRole = e.DomainRole.Id;
+				ConstraintRoleSequence newSequence = null;
+				Role newRole = null;
+				if (changedRole == ConstraintRoleSequence.DomainClassId)
+				{
+					newSequence = e.NewRolePlayer as ConstraintRoleSequence;
+					ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ElementLink;
+					newRole = link.Role;
+					ProcessSetComparisonConstraintPattern((e.OldRolePlayer as ConstraintRoleSequence).Constraint, newRole);
+				}
+				else if (changedRole == Role.DomainClassId)
+				{
+					ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ElementLink;
+					newSequence = link.ConstraintRoleSequence;
+					newRole = e.NewRolePlayer as Role;
+					ProcessSetComparisonConstraintPattern(newSequence.Constraint, e.OldRolePlayer as Role);
+				}
+				if (newSequence != null)
+				{
+					ProcessSetComparisonConstraintPattern(newSequence.Constraint, newRole);
+				}
+			}
+		}
+
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
+		private sealed partial class SetComparisonConstraintHasRoleSequenceAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+				SetComparisonConstraint constraint = link.ExternalConstraint;
+				ProcessSetComparisonConstraintPattern(constraint, null);
+			}
+		}
+
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // DeleteRule
+		private sealed partial class SetComparisonConstraintHasRoleSequenceDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+				SetComparisonConstraint constraint = link.ExternalConstraint;
+				ProcessSetComparisonConstraintPattern(constraint, null);
+			}
+		}
+
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // RolePlayerChangeRule
+		private sealed partial class SetComparisonConstraintHasRoleSequenceRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRole = e.DomainRole.Id;
+				IConstraint newConstraint = null;
+				if (changedRole == SetComparisonConstraint.DomainClassId)
+				{
+					newConstraint = e.NewRolePlayer as IConstraint;
+					ProcessSetComparisonConstraintPattern(e.OldRolePlayer as IConstraint, null);
+				}
+				else if (changedRole == SetComparisonConstraintRoleSequence.DomainClassId)
+				{
+					SetComparisonConstraintHasRoleSequence link = (SetComparisonConstraintHasRoleSequence)e.ElementLink;
+					newConstraint = link.ExternalConstraint;
+				}
+				if (newConstraint != null)
+				{
+					ProcessSetComparisonConstraintPattern(newConstraint, null);
+				}
+			}
+		}
+
+		private static void ProcessSetComparisonConstraintPattern(IConstraint constraint, Role role)
+		{
+			if (constraint != null)
+			{
+				IList<IntersectingConstraintValidation> validations = constraint.GetIntersectingConstraintValidationInfo();
+				int validationCount = validations.Count;
+				for (int iValidation = 0; iValidation < validationCount; ++iValidation)
+				{
+					IntersectingConstraintValidation validationInfo = validations[iValidation];
+					switch (validationInfo.IntersectionValidationPattern)
+					{
+						case IntersectingConstraintPattern.SetComparisonConstraintSubset:
+		                    SetComparisonConstraint setComparisonConstraint = constraint as SetComparisonConstraint;
+		                    Debug.Assert(setComparisonConstraint != null);
+		                    ORMCoreDomainModel.DelayValidateElement(setComparisonConstraint, DelayValidateSetComparisonConstraintSubsetPattern);
+		                    break;
+		                case IntersectingConstraintPattern.SetComparisonConstraintSuperset:
+		                    SetComparisonConstraint comparisonSequence = constraint as SetComparisonConstraint;
+		                    Debug.Assert(comparisonSequence != null);
+		                    LinkedElementCollection<SetComparisonConstraintRoleSequence> comparisonConstraintSequences = comparisonSequence.RoleSequenceCollection;
+		                    int comparisonConstraintSequencesCount = comparisonConstraintSequences.Count;
+		                    List<IConstraint> potentialIntersectingConstraints = new List<IConstraint>();
+		                    for (int i = 0; i < comparisonConstraintSequencesCount; ++i)
+		                    {
+		                        SetComparisonConstraintRoleSequence comparisonConstraintSequence = comparisonConstraintSequences[i];
+		                        List<Role> comparisonConstraintRoles = new List<Role>(comparisonConstraintSequence.RoleCollection);
+		                        if (role != null && !comparisonConstraintRoles.Contains(role))
+		                        {
+		                            comparisonConstraintRoles.Add(role);
+		                        }
+		                        int comparisonConstraintRoleCount = comparisonConstraintRoles.Count;
+		                        for (int j = 0; j < comparisonConstraintRoleCount; ++j)
+		                        {
+		                            Role selectedRole = comparisonConstraintRoles[j];
+		                            LinkedElementCollection<ConstraintRoleSequence> sequences = selectedRole.ConstraintRoleSequenceCollection;
+		                            int sequenceCount = sequences.Count;
+		                            for (int k = 0; k < sequenceCount; ++k)
+		                            {
+		                                ConstraintRoleSequence eligibleSequence = sequences[k];
+										IConstraint eligibleConstraint = eligibleSequence.Constraint;
+										if (eligibleConstraint != constraint && (validationInfo.ConstraintsInPotentialConflict as IList<ConstraintType>).Contains(eligibleConstraint.ConstraintType))
+										{
+											if (!potentialIntersectingConstraints.Contains(eligibleConstraint))
+											{
+												potentialIntersectingConstraints.Add(eligibleConstraint);
+											}
+										}
+		                            }
+		                        }
+		                    }
+		                    int potentialIntersectingConstraintCount = potentialIntersectingConstraints.Count;
+		                    for (int i = 0; i < potentialIntersectingConstraintCount; ++i)
+		                    {
+		                        SetComparisonConstraint intersectingSetComparisonConstraint = potentialIntersectingConstraints[i] as SetComparisonConstraint;
+		                        Debug.Assert(intersectingSetComparisonConstraint != null);
+		                        ORMCoreDomainModel.DelayValidateElement(intersectingSetComparisonConstraint, DelayValidateSetComparisonConstraintSubsetPattern);
+		                    }
+		                    break;
+		                case IntersectingConstraintPattern.SetSetComparisonConstraintSubset:
+		                    return; // UNDONE: Implement SetSetComparisonConstraintSubset Pattern
+		                    break;
+						default:
+							// Not a set comparison constraint, don't care about it
+							return;
+					}
+				}
+			}
+		}
+		#endregion
+		#region Constraint Pattern Validation
+		/// <summary>
+		/// Validator Callback for SetComparisonConstraint Subset Pattern
+		/// </summary>
+		protected static void DelayValidateSetComparisonConstraintSubsetPattern(ModelElement element)
+		{
+
+			(element as SetComparisonConstraint).ValidateSetComparisonConstraintSubsetPattern(null);
+		}
+
+		/// <summary>
+		/// Validates the SetComparisonConstraint Subset Pattern
+		/// </summary>
+		/// <param name="notifyAdded"></param>
+		private void ValidateSetComparisonConstraintSubsetPattern(INotifyElementAdded notifyAdded)
+		{
+			IList<IntersectingConstraintValidation> validations = (this as IConstraint).GetIntersectingConstraintValidationInfo();
+			int validationCount = validations.Count;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
+			int constraintSequenceCount = constraintSequences.Count;
+			for (int iValidationInfo = 0; iValidationInfo < validationCount; ++iValidationInfo)
+			{
+				IntersectingConstraintValidation validationInfo = validations[iValidationInfo];
+				if (validationInfo.IntersectionValidationPattern != IntersectingConstraintPattern.SetComparisonConstraintSubset)
+				{
+					continue;
+				}
+				List<IConstraint> constraintsToCheck = new List<IConstraint>();
+				for (int iConstraintSequence = 0; iConstraintSequence < constraintSequenceCount; ++iConstraintSequence)
+				{
+					ConstraintRoleSequence sequence = constraintSequences[iConstraintSequence];
+					LinkedElementCollection<Role> roles = sequence.RoleCollection;
+					int roleCount = roles.Count;
+					for (int iRole = 0; iRole < roleCount; ++iRole)
+					{
+						Role selectedRole = roles[iRole];
+						LinkedElementCollection<ConstraintRoleSequence> eligibleSequences = selectedRole.ConstraintRoleSequenceCollection;
+						int eligibleSequenceCount = eligibleSequences.Count;
+						for (int k = 0; k < eligibleSequenceCount; ++k)
+						{
+							ConstraintRoleSequence eligibleSequence = eligibleSequences[k];
+							IConstraint intersectingConstraint = eligibleSequence.Constraint;
+							if (intersectingConstraint != this && (validationInfo.ConstraintsInPotentialConflict as IList<ConstraintType>).Contains(intersectingConstraint.ConstraintType))
+							{
+								if (!constraintsToCheck.Contains(intersectingConstraint))
+								{
+									constraintsToCheck.Add(intersectingConstraint);
+								}
+							}
+						}
+					}
+				}
+				int constraintsToCheckCount = constraintsToCheck.Count;
+				List<IConstraint> constraintsInError = new List<IConstraint>();
+				// Loop through constraints to check for overlap
+				for (int iConstraintsToCheck = 0; iConstraintsToCheck < constraintsToCheckCount; ++iConstraintsToCheck)
+				{
+					SetComparisonConstraint constraint = constraintsToCheck[iConstraintsToCheck] as SetComparisonConstraint;
+					Debug.Assert(constraint != null);
+					LinkedElementCollection<SetComparisonConstraintRoleSequence> intersectingSequences = constraint.RoleSequenceCollection;
+					int intersectingSequenceCount = intersectingSequences.Count;
+					// Loop through the ConstraintRoleSequences of the validating constraint
+					bool conflicting = true;
+					for (int iConstraintSequence = 0; conflicting && iConstraintSequence < constraintSequenceCount; ++iConstraintSequence)
+					{
+						ConstraintRoleSequence constraintSequence = constraintSequences[iConstraintSequence];
+						LinkedElementCollection<Role> constraintRoles = constraintSequence.RoleCollection;
+						int constraintRoleCount = constraintRoles.Count;
+						// If no roles, bail out
+						if (constraintRoleCount > 0)
+						{
+							// Pull out the first role for checking
+							Role firstConstraintRole = constraintRoles[0];
+							bool sequenceConflict = false;
+							// Loop through the ConstraintRoleSequences of the currently selected constraint
+							for (int iIntersectingSequence = 0; !sequenceConflict && iIntersectingSequence < intersectingSequenceCount; ++iIntersectingSequence)
+							{
+								ConstraintRoleSequence intersectingSequence = intersectingSequences[iIntersectingSequence];
+								LinkedElementCollection<Role> intersectingRoles = intersectingSequence.RoleCollection;
+								int intersectingRoleCount = intersectingRoles.Count;
+								// Loop through the Roles of the currently selected ConstraintRoleSequence
+								for (int iIntersectingRole = 0; !sequenceConflict && iIntersectingRole < intersectingRoleCount && iIntersectingRole <= intersectingRoleCount - constraintRoleCount; ++iIntersectingRole)
+								{
+									Role intersectingRole = intersectingRoles[iIntersectingRole];
+									// If the currently selected role matches the first constraint role, check the rest
+									if (intersectingRole == firstConstraintRole)
+									{
+										bool roleOrderConflict = true;
+										// Loops through the remaining roles of the current constraint role sequence of the validating constraint
+										for (int iConstraintRole = 1; roleOrderConflict && iConstraintRole < constraintRoleCount; ++iConstraintRole)
+										{
+											if (constraintRoles[iConstraintRole] != intersectingRoles[iIntersectingRole + iConstraintRole])
+											{
+												roleOrderConflict = false;
+											}
+										}
+										// Found a matching role order, pass it up
+										if (roleOrderConflict)
+										{
+											sequenceConflict = true;
+										}
+									}
+								}
+							}
+							// Didn't find a sequence that conflicts with the current one being checked, so no conflict
+							if (!sequenceConflict)
+							{
+								conflicting = false;
+							}
+						}
+					}
+					if (conflicting)
+					{
+						constraintsInError.Add(constraint);
+					}
+				}
+				int constraintsInErrorCount = constraintsInError.Count;
+				Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
+				Store store = Store;
+				DomainRoleInfo constraintRoleInfo = store.DomainDataDirectory.FindDomainRole(domainRoleErrorId);
+				DomainClassInfo errorType = constraintRoleInfo.OppositeDomainRole.RolePlayer;
+				ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(this, domainRoleErrorId);
+				if (constraintsInErrorCount > 0)
+				{
+					if (error == null)
+					{
+						error = (ModelError)store.ElementFactory.CreateElement(errorType);
+						DomainRoleInfo.SetLinkedElement(this, domainRoleErrorId, error);
+
+						for (int iConstraintInError = 0; iConstraintInError < constraintsInErrorCount; ++iConstraintInError)
+						{
+							DomainRoleInfo.SetLinkedElement((ModelElement)constraintsInError[iConstraintInError], domainRoleErrorId, error);
+						}
+						error.Model = this.Model;
+						error.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(error, true);
+						}
+					}
+				}
+				else if (error != null)
+				{
+					foreach (ElementLink errorLink in DomainRoleInfo.GetElementLinks<ElementLink>(this, domainRoleErrorId))
+					{
+						if (errorLink.GetDomainRelationship() == constraintRoleInfo.DomainRelationship)
+						{
+							errorLink.Delete();
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+
+		#endregion
 	}
 	public partial class SetComparisonConstraint : IHierarchyContextEnabled
 	{
@@ -1967,55 +2707,85 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static IHierarchyContextEnabled ForwardHierarchyContextTo
 		{
-			get { return null; }
+			get
+			{
+				return null;
+			}
 		}
 		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
 		{
-			get { return ForwardHierarchyContextTo; }
+			get
+			{
+				return ForwardHierarchyContextTo;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.ForcedHierarchyContextElementCollection"/>
 		/// </summary>
 		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
 		{
-			get { return null; }
+			get
+			{
+				return null;
+			}
 		}
 		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
 		{
-			get { return ForcedHierarchyContextElementCollection; }
+			get
+			{
+				return ForcedHierarchyContextElementCollection;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextPlacementPriority"/>
 		/// </summary>
 		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
 		{
-			get { return HierarchyContextPlacementPriority.VeryLow; }
+			get
+			{
+				return HierarchyContextPlacementPriority.VeryLow;
+			}
 		}
 		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
 		{
-			get { return HierarchyContextPlacementPriority; }
+			get
+			{
+				return HierarchyContextPlacementPriority;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
 		/// </summary>
 		protected static int HierarchyContextDecrementCount
 		{
-			get { return 0; }
+			get
+			{
+				return 0;
+			}
 		}
 		int IHierarchyContextEnabled.HierarchyContextDecrementCount
 		{
-			get { return HierarchyContextDecrementCount; }
+			get
+			{
+				return HierarchyContextDecrementCount;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.ContinueWalkingHierarchyContext"/>
 		/// </summary>
 		protected static bool ContinueWalkingHierarchyContext
 		{
-			get { return false; }
+			get
+			{
+				return false;
+			}
 		}
 		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
 		{
-			get { return ContinueWalkingHierarchyContext; }
+			get
+			{
+				return ContinueWalkingHierarchyContext;
+			}
 		}
 		#endregion
 	}
@@ -2065,7 +2835,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Get the constraint that owns this role sequence
 		/// </summary>
-		public abstract IConstraint Constraint { get;}
+		public abstract IConstraint Constraint
+		{
+			get;
+		}
 		#endregion // ConstraintRoleSequence Specific
 	}
 	public partial class SetComparisonConstraintRoleSequence
@@ -3362,6 +4135,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return nMinusOneError;
 				}
+				//TODO: pretty sure we don't need this - gets handled in the SetConstraint GetErrorCollection
+				//ImplicationError uniquenessImpliedByUniquenessError = ImplicationError;
+				//if (uniquenessImpliedByUniquenessError != null)
+				//{
+				//    yield return uniquenessImpliedByUniquenessError;
+				//}
 			}
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
@@ -3369,6 +4148,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				yield return baseError;
 			}
 		}
+
 		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
 			return GetErrorCollection(filter);
@@ -3687,14 +4467,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				yield return baseError;
 			}
-			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
-			{
-				MandatoryImpliedByMandatoryError impliedDisjunctive = ImpliedByMandatoryError;
-				if (impliedDisjunctive != null)
-				{
-					yield return impliedDisjunctive;
-				}
-			}
+			//TODO: pretty sure we don't need this - gets handled in the SetConstraint GetErrorCollection
+			//if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			//{
+			//    ImplicationError impliedDisjunctive = ImplicationError;
+			//    if (impliedDisjunctive != null)
+			//    {
+			//        yield return impliedDisjunctive;
+			//    }
+			//}
 		}
 		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
@@ -3711,7 +4492,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			base.ValidateErrors(notifyAdded);
-			ValidateImpliedByMandatoryError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -3736,84 +4516,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void DelayValidateMandatoryImpliedByMandatoryError(ModelElement element)
 		{
-			(element as MandatoryConstraint).ValidateImpliedByMandatoryError(null);
+			//TODO: get rid of this line below
+			//(element as MandatoryConstraint).ValidateConstraintPatternError(null);
 		}
-		/// <summary>
-		/// Verify that we the disjunctive mandatory constraint is not attached to a role that
-		/// also has a simple mandatory or contains the full set of roles from another disjunctive
-		/// mandatory constraint.
-		/// </summary>
-		/// <param name="notifyAdded">Set during deserialization</param>
-		private void ValidateImpliedByMandatoryError(INotifyElementAdded notifyAdded)
-		{
-			if (!IsDeleted)
-			{
-				bool hasError = false;
-				LinkedElementCollection<Role> constraintRoles = RoleCollection;
-				int constraintRoleCount = constraintRoles.Count;
-				for (int iConstraint = 0; !hasError && iConstraint < constraintRoleCount; ++iConstraint)
-				{
-					Role constraintRole = constraintRoles[iConstraint];
-					LinkedElementCollection<ConstraintRoleSequence> intersectingSequences = constraintRole.ConstraintRoleSequenceCollection;
-					int intersectingSequenceCount = intersectingSequences.Count;
-					for (int iIntersectingSequence = 0; !hasError && iIntersectingSequence < intersectingSequenceCount; ++iIntersectingSequence)
-					{
-						ConstraintRoleSequence intersectingSequence = intersectingSequences[iIntersectingSequence];
-						if (intersectingSequence != this)
-						{
-							IConstraint intersectingConstraint = intersectingSequence.Constraint;
-							switch (intersectingConstraint.ConstraintType)
-							{
-								case ConstraintType.SimpleMandatory:
-									hasError = true;
-									break;
-								case ConstraintType.DisjunctiveMandatory:
-									{
-										MandatoryConstraint intersectingMandatory = intersectingSequence as MandatoryConstraint;
-										LinkedElementCollection<Role> intersectingRoles = intersectingMandatory.RoleCollection;
-										int intersectingRoleCount = intersectingRoles.Count;
-										if (intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
-										{
-											hasError = true; // Assume we have the problem, disprove it
-											for (int iIntersectingRole = 0; iIntersectingRole < intersectingRoleCount; ++iIntersectingRole)
-											{
-												Role intersectingRole = intersectingRoles[iIntersectingRole];
-												// Finding a role that is not contained in the set of roles for this constraint
-												// means that it is not a true subset.
-												if (intersectingRole != constraintRole && constraintRoles.IndexOf(intersectingRole) == -1)
-												{
-													hasError = false;
-													break;
-												}
-											}
-										}
-									}
-									break;
-							}
-						}
-					}
-				}
-				MandatoryImpliedByMandatoryError error = ImpliedByMandatoryError;
-				if (hasError)
-				{
-					if (error == null)
-					{
-						error = new MandatoryImpliedByMandatoryError(Store);
-						error.MandatoryConstraint = this;
-						error.Model = Model;
-						error.GenerateErrorText();
-						if (notifyAdded != null)
-						{
-							notifyAdded.ElementAdded(error, true);
-						}
-					}
-				}
-				else if (error != null)
-				{
-					error.Delete();
-				}
-			}
-		}
+
 		/// <summary>
 		/// Verify the state of the MandatoryImpliedByMandatoryError when
 		/// a mandatory constraint is added to or removed from a role. Helper function for
@@ -3829,16 +4535,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			IConstraint constraint = roleSequence.Constraint;
 			Debug.Assert(constraint != null); // Only multicolumn role sequences can ever have a null constraints
-			MandatoryConstraint currentDisjunctive = null;
+			SetConstraint currentDisjunctive = null;
 			bool checkIntersection = false;
 			switch (constraint.ConstraintType)
 			{
 				case ConstraintType.SimpleMandatory:
+					//case ConstraintType.InternalUniqueness: //TODO: 01 This conflicts with 
+					//ImpliedInternalUniquenessConstraintError - we'll see which to keep
 					checkIntersection = true;
 					break;
 				case ConstraintType.DisjunctiveMandatory:
 					checkIntersection = true;
 					currentDisjunctive = roleSequence as MandatoryConstraint;
+					break;
+				case ConstraintType.ExternalUniqueness:
+					checkIntersection = true;
+					currentDisjunctive = roleSequence as UniquenessConstraint;
 					break;
 			}
 			if (checkIntersection)
@@ -3850,9 +4562,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int i = 0; i < constraintCount; ++i)
 				{
 					currentSequence = constraints[i];
-					if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+					if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory
+						||
+						currentSequence.Constraint.ConstraintType == ConstraintType.ExternalUniqueness)
 					{
-						ORMCoreDomainModel.DelayValidateElement(currentSequence, DelayValidateMandatoryImpliedByMandatoryError);
+						//ORMCoreDomainModel.DelayValidateElement(currentSequence,
+						//    DelayValidateConstraintPatternError);
 					}
 				}
 				if (currentDisjunctive != null)
@@ -3873,7 +4588,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								currentSequence = constraints[i];
 								if (currentSequence != currentDisjunctive)
 								{
-									if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+									if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory
+									||
+									currentSequence.Constraint.ConstraintType == ConstraintType.ExternalUniqueness)
 									{
 										ORMCoreDomainModel.DelayValidateElement(currentSequence, DelayValidateMandatoryImpliedByMandatoryError);
 									}
@@ -4747,7 +5464,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
-			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
 		}
 		#endregion
 		#region IRepresentModelElements Members
@@ -4812,87 +5532,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion //IRepresentModelElements Implementation
 	}
 	#endregion // EqualityImpliedByMandatoryError class
-	#region MandatoryImpliedByMandatoryError class
-	public partial class MandatoryImpliedByMandatoryError : IRepresentModelElements
-	{
-		#region Base overrides
-		/// <summary>
-		/// Generate text for the error
-		/// </summary>
-		public override void GenerateErrorText()
-		{
-			SetConstraint parent = this.MandatoryConstraint;
-			string parentName = (parent != null) ? parent.Name : "";
-			string modelName = this.Model.Name;
-			string currentText = Name;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.MandatoryImpliedByMandatoryError, parentName, modelName);
-			if (currentText != newText)
-			{
-				Name = newText;
-			}
-		}
-		/// <summary>
-		/// Regenerate the error text when the constraint name changes
-		/// </summary>
-		public override RegenerateErrorTextEvents RegenerateEvents
-		{
-			get
-			{
-				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
-			}
-		}
-		#endregion // Base overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Implements IRepresentModelElements.GetRepresentedElements
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { MandatoryConstraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
-	}
-	#endregion // MandatoryImpliedByMandatoryError class
-	#region UniquenessImpliedByUniquenessError class
-	public partial class UniquenessImpliedByUniquenessError : IRepresentModelElements
-	{
-		#region Base Overrides
-		/// <summary>
-		/// Generates the text for the error to be displayed.
-		/// </summary>
-		public override void GenerateErrorText()
-		{
-			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintUniquenessImplied, UniquenessConstraint.Name, Model.Name);
-		}
-		/// <summary>
-		/// Regenerate error text when the constraint name or model name changes
-		/// </summary>
-		public override RegenerateErrorTextEvents RegenerateEvents
-		{
-			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
-		}
-		#endregion //Base Overrides
-		#region IRepresentModelElements Implementation
-		/// <summary>
-		/// Returns object associated with this error
-		/// </summary>
-		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
-		{
-			return new ModelElement[] { this.UniquenessConstraint };
-		}
-		ModelElement[] IRepresentModelElements.GetRepresentedElements()
-		{
-			return GetRepresentedElements();
-		}
-		#endregion // IRepresentModelElements Implementation
-	}
-	#endregion // UniquenessImpliedByUniquenessError class
 	#region RingConstraintTypeNotSpecifiedError class
 	public partial class RingConstraintTypeNotSpecifiedError : IRepresentModelElements
 	{
@@ -4944,6 +5583,120 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion //IRepresentModelElements Implementation
 	}
 	#endregion // RingConstraintTypeNotSpecifiedError class
+	#region ImplicationError
+	//public partial class UniquenessImpliedByUniquenessError : IRepresentModelElements
+	//{
+	//    #region Base Overrides
+	//    /// <summary>
+	//    /// Generates the text for the error to be displayed.
+	//    /// </summary>
+	//    public override void GenerateErrorText()
+	//    {
+	//        Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintUniquenessImplied, UniquenessConstraint.Name, Model.Name);
+	//    }
+	//    /// <summary>
+	//    /// Regenerate error text when the constraint name or model name changes
+	//    /// </summary>
+	//    public override RegenerateErrorTextEvents RegenerateEvents
+	//    {
+	//        get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
+	//    }
+	//    #endregion //Base Overrides
+	//    #region IRepresentModelElements Implementation
+	//    /// <summary>
+	//    /// Returns object associated with this error
+	//    /// </summary>
+	//    /// <returns></returns>
+	//    protected ModelElement[] GetRepresentedElements()
+	//    {
+	//        return new ModelElement[] { this.UniquenessConstraint };
+	//    }
+	//    ModelElement[] IRepresentModelElements.GetRepresentedElements()
+	//    {
+	//        return GetRepresentedElements();
+	//    }
+	//    #endregion // IRepresentModelElements Implementation
+	//}
+	public partial class ImplicationError
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generates the text for the error to be displayed.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string myName;
+			//Do not know whether the underlying constraint is Set or SetComparison
+			//The error has property for each
+			if (this.SetComparisonConstraint != null)
+			{
+				myName = SetComparisonConstraint.Name;
+				Debug.Assert(SetConstraint == null);
+			}
+			else
+			{
+				myName = SetConstraint.Name;
+			}
+
+			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplication, myName, Model.Name);
+		}
+		/// <summary>
+		/// Regenerate error text when the constraint name or model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion //Base Overrides
+	}
+	#endregion
+	#region ContradictionError
+	public partial class ContradictionError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			StringBuilder sb = new StringBuilder();
+
+			int numOfConstraints = SetComparisonConstraintCollection.Count;
+
+			for (int i = 0; i < numOfConstraints; i++)
+			{
+				sb.Append(SetComparisonConstraintCollection[i].Name);
+
+				if (i == numOfConstraints - 2)
+				{
+					sb.Append(" and ");
+				}
+				else if (i != numOfConstraints - 1)
+				{
+					sb.Append(", ");
+				}
+			}
+			string myConstraints = sb.ToString();
+
+			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, myConstraints, Model.Name);
+
+		}
+		/// <summary>
+		/// Regenerate the error text when the model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion
 	#endregion // ModelError classes
 	#region ExclusionType enum
 	/// <summary>
@@ -5179,6 +5932,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class UniquenessConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
+            {
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetConstraintSubset,
+				//    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+				//    ConstraintType.InternalUniqueness,
+				//    ConstraintType.ExternalUniqueness),
+
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetConstraintSuperset,
+				//    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+				//    ConstraintType.InternalUniqueness,
+				//    ConstraintType.ExternalUniqueness)
+
+            };
+		/// <summary>
+		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
+		/// </summary>
+		/// <returns></returns>
+		protected new static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return myIntersectingValidationInfo;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness or ConstraintType.ExternalUniqueness.
 		/// </summary>
@@ -5239,6 +6021,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EqualityConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
+            {
+				//TODO: DEFINE ERRORS!
+				////Implication - Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				//    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Equality),
+
+				////Implication - Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				//    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Equality,
+				//    ConstraintType.Subset),
+				
+				//Contradiction
+				new IntersectingConstraintValidation(
+				    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				    SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
+				    ConstraintType.Exclusion)
+
+				////Bad ORM
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				//    EqualityIsSubsetOfSubsetError.EqualityConstraintDomainRoleId,
+				//    ConstraintType.Subset),
+
+				////Bad ORM
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				//    EqualityIsSubsetOfExclusionError.EqualityConstraintDomainRoleId,
+				//    ConstraintType.Exclusion)
+            };
+		/// <summary>
+		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
+		/// </summary>
+		/// <returns></returns>
+		protected new static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return myIntersectingValidationInfo;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
+
+
+
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.Equality.
 		/// </summary>
@@ -5278,6 +6109,54 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExclusionConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
+            {
+				//TODO: DEFINE ERRORS!
+				////Implication - disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				//    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Exclusion),
+
+				////Implication - disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				//    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Exclusion),
+				
+				////Contradiction - disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				//    SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Subset),
+				
+				//Contradiction
+				new IntersectingConstraintValidation(
+				    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				    SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
+				    ConstraintType.Equality),
+
+				////Bad ORM
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				//    EqualityIsSubsetOfExclusionError.ExclusionConstraintDomainRoleId,
+				//    ConstraintType.Equality)
+            };
+		/// <summary>
+		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
+		/// </summary>
+		/// <returns></returns>
+		protected new static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return myIntersectingValidationInfo;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
+
+
+
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.Exclusion.
 		/// </summary>
@@ -5317,6 +6196,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MandatoryConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
+            {
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetConstraintSubset,
+				//    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+				//    ConstraintType.SimpleMandatory,
+				//    ConstraintType.DisjunctiveMandatory),
+				
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetConstraintSuperset,
+				//    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+				//    ConstraintType.SimpleMandatory,
+				//    ConstraintType.DisjunctiveMandatory)
+            };
+		/// <summary>
+		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
+		/// </summary>
+		/// <returns></returns>
+		protected new static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return myIntersectingValidationInfo;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.SimpleMandatory or ConstraintType.DisjunctiveMandatory.
 		/// </summary>
@@ -5377,6 +6284,54 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SubsetConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
+            {
+				//TODO: DEFINE ERRORS!
+				////Implication - if they are in the same direction (it will be bad ORM if they are in different
+				////direction and should be handled differently)
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+				//    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Subset),
+
+				////Implication - if they are in the same direction (it will be bad ORM if they are in different
+				////direction and should be handled differently)
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				//    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Subset),
+				
+				////Contradiction
+				// Disabled pending testing
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				//    SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
+				//    ConstraintType.Exclusion),
+				
+				////Bad ORM
+				//new IntersectingConstraintValidation(
+				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+				//    EqualityIsSubsetOfSubsetError.EqualityConstraintDomainRoleId,
+				//    ConstraintType.Equality)
+            };
+		/// <summary>
+		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
+		/// </summary>
+		/// <returns></returns>
+		protected new static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return myIntersectingValidationInfo;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
+
+
+
+
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.Subset.
 		/// </summary>

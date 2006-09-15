@@ -300,8 +300,11 @@
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText">
 		<comment type="summary">The error message that is returned when attempting to add a new reading to a fact and the text is not valid.  It needs to have a number of place holders equal to the number of roles in the fact and they need to have their positions identified by number using the replacement syntax of String.Format. For example: "{0} has {1}"</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorConstraintUniquenessImplied" model="Model" resourceName="ModelError.Constraint.UniquenessImpliedByUniquenessError.Text">
-		<comment type="summary">Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.</comment>
+	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text">
+		<comment type="summary">Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text">
+		<comment type="summary">Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text">
 		<comment type="summary">Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.</comment>
@@ -710,9 +713,6 @@
 	</ResourceString>
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
 		<comment type="summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
-	</ResourceString>
-	<ResourceString name="MandatoryImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.MandatoryImpliedByMandatoryError.Message">
-		<comment type="summary">The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.</comment>
 	</ResourceString>
 	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message">
 		<comment type="summary">The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</comment>

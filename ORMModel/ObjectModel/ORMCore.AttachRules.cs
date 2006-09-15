@@ -44,10 +44,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasEntityTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
@@ -169,7 +169,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(SetComparisonConstraint).GetNestedType("ExternalRoleConstraintDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("FactAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("FactSetComparisonConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("RemoveSetComparisonConstraintHasContradictionErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintRoleSequenceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintHasRoleSequenceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintHasRoleSequenceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintHasRoleSequenceRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("ConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("EnforceRoleSequenceValidityForAdd", BindingFlags.Public | BindingFlags.NonPublic),
@@ -180,6 +187,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(SetConstraint).GetNestedType("FactAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("FactSetConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("FactSetConstraintDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentRolePlayerTypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -369,6 +379,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class EntityTypeInstance
 	{
+		private partial class EntityTypeInstanceDeleting
+		{
+			public EntityTypeInstanceDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
 		private partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
@@ -392,16 +412,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class EntityTypeHasEntityTypeInstanceAdded
 		{
 			public EntityTypeHasEntityTypeInstanceAdded()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class EntityTypeInstance
-	{
-		private partial class EntityTypeInstanceDeleting
-		{
-			public EntityTypeInstanceDeleting()
 			{
 				base.IsEnabled = false;
 			}
@@ -1589,9 +1599,79 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class SetComparisonConstraint
 	{
+		private partial class RemoveSetComparisonConstraintHasContradictionErrorRule
+		{
+			public RemoveSetComparisonConstraintHasContradictionErrorRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
 		private partial class SetComparisonConstraintRoleSequenceDeleted
 		{
 			public SetComparisonConstraintRoleSequenceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintRoleSequenceHasRoleAdded
+		{
+			public SetComparisonConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintRoleSequenceHasRoleDeleted
+		{
+			public SetComparisonConstraintRoleSequenceHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintRoleSequenceHasRoleRolePlayerChanged
+		{
+			public SetComparisonConstraintRoleSequenceHasRoleRolePlayerChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintHasRoleSequenceAdded
+		{
+			public SetComparisonConstraintHasRoleSequenceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintHasRoleSequenceDeleted
+		{
+			public SetComparisonConstraintHasRoleSequenceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintHasRoleSequenceRolePlayerChanged
+		{
+			public SetComparisonConstraintHasRoleSequenceRolePlayerChanged()
 			{
 				base.IsEnabled = false;
 			}
@@ -1692,6 +1772,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class FactSetConstraintDeleted
 		{
 			public FactSetConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class SetConstraintRoleSequenceHasRoleAdded
+		{
+			public SetConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class SetConstraintRoleSequenceHasRoleDeleted
+		{
+			public SetConstraintRoleSequenceHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class SetConstraintRoleSequenceHasRoleRolePlayerChanged
+		{
+			public SetConstraintRoleSequenceHasRoleRolePlayerChanged()
 			{
 				base.IsEnabled = false;
 			}

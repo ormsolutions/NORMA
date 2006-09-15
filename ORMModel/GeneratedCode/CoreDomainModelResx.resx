@@ -653,6 +653,30 @@
     <value>PopulationUniquenessError</value>
     <comment>DisplayName for DomainClass &apos;PopulationUniquenessError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ContradictionError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ContradictionError.DisplayName" xml:space="preserve">
+    <value>ContradictionError</value>
+    <comment>DisplayName for DomainClass &apos;ContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsEqualityError</value>
+    <comment>DisplayName for DomainClass &apos;ExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsSubsetError</value>
+    <comment>DisplayName for DomainClass &apos;ExclusionContradictsSubsetError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;PopulationMandatoryError&apos;</comment>
@@ -772,14 +796,6 @@
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.DisplayName" xml:space="preserve">
     <value>EntityTypeRequiresReferenceSchemeError</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeRequiresReferenceSchemeError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;MandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>MandatoryImpliedByMandatoryError</value>
-    <comment>DisplayName for DomainClass &apos;MandatoryImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError.Description" xml:space="preserve">
     <value></value>
@@ -1349,13 +1365,13 @@
     <value>CompatibleSupertypesError</value>
     <comment>DisplayName for DomainClass &apos;CompatibleSupertypesError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ImplicationError.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;UniquenessImpliedByUniquenessError&apos;</comment>
+    <comment>Description for DomainClass &apos;ImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessImpliedByUniquenessError.DisplayName" xml:space="preserve">
-    <value>UniquenessImpliedByUniquenessError</value>
-    <comment>DisplayName for DomainClass &apos;UniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ImplicationError.DisplayName" xml:space="preserve">
+    <value>ImplicationError</value>
+    <comment>DisplayName for DomainClass &apos;ImplicationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PreferredIdentifierRequiresMandatoryError.Description" xml:space="preserve">
     <value></value>
@@ -2229,6 +2245,102 @@
     <value>Role Instance Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;RoleInstanceHasPopulationUniquenessError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError</value>
+    <comment>Description for DomainClass &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.DisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Has Contradiction Error</value>
+    <comment>DisplayName for DomainClass &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.SetComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>SetComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Contradiction Error Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.ContradictionError</value>
+    <comment>Description for DomainRole &apos;ContradictionError&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.DisplayName" xml:space="preserve">
+    <value>ContradictionError</value>
+    <comment>DisplayName for DomainRole &apos;ContradictionError&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ContradictionError&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError</value>
+    <comment>Description for DomainClass &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.DisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Has Exclusion Contradicts Equality Error</value>
+    <comment>DisplayName for DomainClass &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/SetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/SetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>SetComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusion Contradicts Equality Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/ExclusionContradictsEqualityError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError.ExclusionContradictsEqualityError</value>
+    <comment>Description for DomainRole &apos;ExclusionContradictsEqualityError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/ExclusionContradictsEqualityError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsEqualityError</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionContradictsEqualityError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsEqualityError/ExclusionContradictsEqualityError.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionContradictsEqualityError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsEqualityError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError</value>
+    <comment>Description for DomainClass &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.DisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Has Exclusion Contradicts Subset Error</value>
+    <comment>DisplayName for DomainClass &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/SetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/SetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>SetComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusion Contradicts Subset Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetError</value>
+    <comment>Description for DomainRole &apos;ExclusionContradictsSubsetError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsSubsetError</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionContradictsSubsetError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionContradictsSubsetError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError</value>
     <comment>Description for DomainClass &apos;MandatoryConstraintHasPopulationMandatoryError&apos;</comment>
@@ -2965,38 +3077,6 @@
     <value>Object Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferenceSchemeError&apos; on DomainRelationship &apos;ObjectTypeHasEntityTypeRequiresReferenceSchemeError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError</value>
-    <comment>Description for DomainClass &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>Mandatory Constraint Has Mandatory Implied By Mandatory Error</value>
-    <comment>DisplayName for DomainClass &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraint</value>
-    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.DisplayName" xml:space="preserve">
-    <value>MandatoryConstraint</value>
-    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Implied By Mandatory Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/ImpliedByMandatoryError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryError</value>
-    <comment>Description for DomainRole &apos;ImpliedByMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/ImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>ImpliedByMandatoryError</value>
-    <comment>DisplayName for DomainRole &apos;ImpliedByMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/ImpliedByMandatoryError.PropertyDisplayName" xml:space="preserve">
-    <value>Mandatory Constraint</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ImpliedByMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasMandatoryImpliedByMandatoryError&apos;</comment>
-  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError</value>
     <comment>Description for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintMinMaxError&apos;</comment>
@@ -3605,37 +3685,69 @@
     <value>Object Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;CompatibleSupertypesError&apos; on DomainRelationship &apos;ObjectTypeHasCompatibleSupertypesError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError</value>
-    <comment>Description for DomainClass &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError</value>
+    <comment>Description for DomainClass &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.DisplayName" xml:space="preserve">
-    <value>Uniqueness Constraint Has Uniqueness Implied By Uniqueness Error</value>
-    <comment>DisplayName for DomainClass &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.DisplayName" xml:space="preserve">
+    <value>Set Constraint Has Implication Error</value>
+    <comment>DisplayName for DomainClass &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraint</value>
-    <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/SetConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.SetConstraint</value>
+    <comment>Description for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.DisplayName" xml:space="preserve">
-    <value>UniquenessConstraint</value>
-    <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/SetConstraint.DisplayName" xml:space="preserve">
+    <value>SetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Implied By Uniqueness Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/SetConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Implication Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/ImpliedByUniquenessError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.ImpliedByUniquenessError</value>
-    <comment>Description for DomainRole &apos;ImpliedByUniquenessError&apos; on DomainRelationship &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/ImplicationError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationError</value>
+    <comment>Description for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/ImpliedByUniquenessError.DisplayName" xml:space="preserve">
-    <value>ImpliedByUniquenessError</value>
-    <comment>DisplayName for DomainRole &apos;ImpliedByUniquenessError&apos; on DomainRelationship &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/ImplicationError.DisplayName" xml:space="preserve">
+    <value>ImplicationError</value>
+    <comment>DisplayName for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetConstraintHasImplicationError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/ImpliedByUniquenessError.PropertyDisplayName" xml:space="preserve">
-    <value>Uniqueness Constraint</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ImpliedByUniquenessError&apos; on DomainRelationship &apos;UniquenessConstraintHasUniquenessImpliedByUniquenessError&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError/ImplicationError.PropertyDisplayName" xml:space="preserve">
+    <value>Set Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError</value>
+    <comment>Description for DomainClass &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.DisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Has Implication Error</value>
+    <comment>DisplayName for DomainClass &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/SetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.SetComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/SetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>SetComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Implication Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationError</value>
+    <comment>Description for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.DisplayName" xml:space="preserve">
+    <value>ImplicationError</value>
+    <comment>DisplayName for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError</value>

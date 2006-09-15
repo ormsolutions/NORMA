@@ -783,13 +783,23 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.
+		/// Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.
 		/// </summary>
-		public static string ModelErrorConstraintUniquenessImplied
+		public static string ModelErrorConstraintImplication
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.UniquenessImpliedByUniquenessError.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.Text");
+			}
+		}
+		/// <summary>
+		/// Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.
+		/// </summary>
+		public static string ModelErrorConstraintContradiction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ContradictionError.Text");
 			}
 		}
 		/// <summary>
@@ -2150,16 +2160,6 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.Message");
-			}
-		}
-		/// <summary>
-		/// The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.
-		/// </summary>
-		public static string MandatoryImpliedByMandatoryError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.MandatoryImpliedByMandatoryError.Message");
 			}
 		}
 		/// <summary>
