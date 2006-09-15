@@ -1542,8 +1542,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="commandText">The text from the command</param>
 		protected virtual void OnMenuDeleteShape(string commandText)
 		{
-			int count = SelectionCount;
-			if (count > 0)
+			int pelCount = SelectionCount;
+			if (pelCount > 0)
 			{
 				ModelingDocData docData = this.DocData as ModelingDocData;
 				Debug.Assert(docData != null);
@@ -1602,31 +1602,45 @@ namespace Neumont.Tools.ORM.Shell
 								}
 							}
 							pel.Delete();
-							if (backingMel != null && !backingMel.IsDeleted && PresentationViewsSubject.GetPresentation(backingMel).Count == 0)
+							int newPelCount;
+							LinkedElementCollection<PresentationElement> remainingPels;
+							if (backingMel != null && !backingMel.IsDeleted && (newPelCount = (remainingPels = PresentationViewsSubject.GetPresentation(backingMel)).Count) != 0)
 							{
-								if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt)
+								Partition partition = store.DefaultPartition;
+								for (int i = newPelCount - 1; i >= 0; --i)
 								{
-									IVsUIShell shell;
-									if (null != (shell = (IVsUIShell)ServiceProvider.GetService(typeof(IVsUIShell))))
+									if (remainingPels[i].Partition != partition)
 									{
-										Guid g = new Guid();
-										int pnResult;
-										shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
-											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
-											"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
-											OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
-										if (pnResult == (int)DialogResult.No)
-										{
-											continue;
-										}
+										--newPelCount;
 									}
 								}
-								backingMel.Delete();
-								if (backingObjectifiedType != null && !backingObjectifiedType.IsDeleted && PresentationViewsSubject.GetPresentation(backingObjectifiedType).Count <= 1)
+
+								if (newPelCount == 0)
 								{
-									// Remove the corresponding backing objectified type. Removing the facttype shape pel
-									// added a new shape for the object, so we expect 1 presentation role player here.
-									backingObjectifiedType.Delete();
+									if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt)
+									{
+										IVsUIShell shell;
+										if (null != (shell = (IVsUIShell)ServiceProvider.GetService(typeof(IVsUIShell))))
+										{
+											Guid g = new Guid();
+											int pnResult;
+											shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
+												string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
+												"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+												OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
+											if (pnResult == (int)DialogResult.No)
+											{
+												continue;
+											}
+										}
+									}
+									backingMel.Delete();
+									if (backingObjectifiedType != null && !backingObjectifiedType.IsDeleted && PresentationViewsSubject.GetPresentation(backingObjectifiedType).Count <= 1)
+									{
+										// Remove the corresponding backing objectified type. Removing the facttype shape pel
+										// added a new shape for the object, so we expect 1 presentation role player here.
+										backingObjectifiedType.Delete();
+									}
 								}
 							}
 						}

@@ -1292,7 +1292,7 @@ namespace Neumont.Tools.ORM.OIALModel
 							// the check
 							int factListCount = factList.Count;
 							ObjectType oppositeRolePlayer = role.OppositeRole.Role.RolePlayer;
-							if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null &&
+							if ((id == Guid.Empty || id == objectId) && oppositeRolePlayer != null &&
 								(factListCount == 0 || factList[factListCount - 1] != factType))
 							{
 								factList.Add(factType);
@@ -1512,12 +1512,12 @@ namespace Neumont.Tools.ORM.OIALModel
 				int count = playedRoles.Count;
 				for (int i = 0; i < count; ++i)
 				{
-					RoleBase oppositeRoleBase = playedRoles[i].OppositeRole;
-					if (oppositeRoleBase == null)
+					Role playedRole = playedRoles[i];
+					if (playedRole.FactType.RoleCollection.Count != 2)
 					{
 						continue;
 					}
-					Role oppRole = oppositeRoleBase.Role;
+					Role oppRole = playedRole.OppositeRole.Role;
 					LinkedElementCollection<ConstraintRoleSequence> roleSequenceConstraints = oppRole.ConstraintRoleSequenceCollection;
 					int constraintsCount = roleSequenceConstraints.Count;
 					for (int j = 0; j < constraintsCount; ++j)

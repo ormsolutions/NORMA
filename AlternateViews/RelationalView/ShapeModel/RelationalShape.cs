@@ -197,9 +197,14 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						{
 							LinkedElementCollection<PresentationElement> tableShapes = PresentationViewsSubject.GetPresentation(table);
 							int tableShapesCount = tableShapes.Count;
+							ConceptType conceptType = table.ConceptType;
+							if (conceptType == null)
+							{
+								continue;
+							}
 							if (tableShapesCount > 0)
 							{
-								positionDictionary.Add(table.ConceptType.ObjectType, ((NodeShape)tableShapes[0]).Location);
+								positionDictionary.Add(conceptType.ObjectType, ((NodeShape)tableShapes[0]).Location);
 								Debug.Assert(tableShapesCount == 1);
 							}
 						}
