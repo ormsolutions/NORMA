@@ -32,9 +32,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		{
 			return new ORMDocServices();
 		}
-		private class ORMDocServices : IORMToolServices, IORMFontAndColorService, IORMToolTestServices, IORMToolTestSuiteReportFactory, IServiceProvider
+		private class ORMDocServices : IORMToolServices, IORMFontAndColorService, IORMToolTestServices, IORMToolTestSuiteReportFactory, IORMPropertyProviderService, IServiceProvider
 		{
 			#region IORMToolServices Implementation
+			IORMPropertyProviderService IORMToolServices.PropertyProviderService
+			{
+				get
+				{
+					return this;
+				}
+			}
 			IORMFontAndColorService IORMToolServices.FontAndColorService
 			{
 				get
@@ -99,15 +106,29 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				Font font = new Font(new FontFamily("Times New Roman"), 10, FontStyle.Regular);
 				return font;
 			}
-			FONTFLAGS IORMFontAndColorService.GetFontFlags(ORMDesignerColor colorIndex)
+			FontStyle IORMFontAndColorService.GetFontStyle(ORMDesignerColor colorIndex)
 			{
-				return FONTFLAGS.FF_BOLD;
+				return FontStyle.Bold;
 			}
 			Color IORMFontAndColorService.GetForeColor(ORMDesignerColor colorIndex)
 			{
 				return Color.White;
 			}
 			#endregion // IORMFontAndColorService Implementation
+			#region IORMPropertyProviderService Implementation
+			void IORMPropertyProviderService.GetProvidedProperties(IORMExtendableElement extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
+			{
+				// We don't yet need to support this for testing.
+			}
+			void IORMPropertyProviderService.RegisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+			{
+				// We don't yet need to support this for testing.
+			}
+			void IORMPropertyProviderService.UnregisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+			{
+				// We don't yet need to support this for testing.
+			}
+			#endregion // IORMPropertyProviderService Implementation
 			#region IServiceProvider Implementation
 			object IServiceProvider.GetService(Type serviceType)
 			{

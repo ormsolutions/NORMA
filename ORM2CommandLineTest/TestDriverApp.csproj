@@ -53,10 +53,13 @@
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <HintPath>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

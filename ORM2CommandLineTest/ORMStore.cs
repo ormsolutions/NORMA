@@ -33,6 +33,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			#endregion // Constructors
 			#region IORMToolServices Implementation
+			IORMPropertyProviderService IORMToolServices.PropertyProviderService
+			{
+				get
+				{
+					return myServices.PropertyProviderService;
+				}
+			}
 			IORMToolTaskProvider IORMToolServices.TaskProvider
 			{
 				get
