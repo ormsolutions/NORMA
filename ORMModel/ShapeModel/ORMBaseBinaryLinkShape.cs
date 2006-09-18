@@ -229,17 +229,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return TypeDescriptor.GetComponentName(ToShape.ModelElement);
 			}
 		}
-		/// <summary>
-		/// MSBUG: Call PurgeLayoutObjects before the shape deletion processing gets too serious
-		/// </summary>
-		protected override void OnDeleting()
-		{
-			base.OnDeleting();
-			if (!Store.InUndoRedoOrRollback)
-			{
-				PurgeLayoutObjects();
-			}
-		}
 		#endregion // Accessibility Properties
 	}
 	#region LinkConnectorShape class
@@ -315,17 +304,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return SizeD.Empty;
-			}
-		}
-		/// <summary>
-		/// MSBUG: Call PurgeLayoutObjects before the shape deletion processing gets too serious
-		/// </summary>
-		protected override void OnDeleting()
-		{
-			base.OnDeleting();
-			if (!Store.InUndoRedoOrRollback)
-			{
-				PurgeLayoutObjects();
 			}
 		}
 	}

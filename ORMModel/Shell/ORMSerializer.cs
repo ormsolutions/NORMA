@@ -2733,7 +2733,20 @@ namespace Neumont.Tools.ORM.Shell
 			if (objectValue == null)
 			{
 				DomainTypeDescriptor.TypeDescriptorContext context = DomainTypeDescriptor.CreateTypeDescriptorContext(element, domainPropertyInfo);
-				objectValue = context.PropertyDescriptor.Converter.ConvertFromInvariantString(context, stringValue);
+				TypeConverter converter = context.PropertyDescriptor.Converter;
+				Type stringType = typeof(string);
+				if (converter.CanConvertFrom(context, stringType))
+				{
+					objectValue = converter.ConvertFromInvariantString(context, stringValue);
+				}
+				else if (propertyType.IsAssignableFrom(stringType))
+				{
+					objectValue = stringValue;
+				}
+				else
+				{
+					Debug.Fail("Could not deserialize property!");
+				}
 			}
 			if (objectValue != null)
 			{

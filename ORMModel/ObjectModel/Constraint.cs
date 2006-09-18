@@ -2484,33 +2484,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 					switch (validationInfo.IntersectionValidationPattern)
 					{
 						case IntersectingConstraintPattern.SetComparisonConstraintSubset:
-		                    SetComparisonConstraint setComparisonConstraint = constraint as SetComparisonConstraint;
-		                    Debug.Assert(setComparisonConstraint != null);
-		                    ORMCoreDomainModel.DelayValidateElement(setComparisonConstraint, DelayValidateSetComparisonConstraintSubsetPattern);
-		                    break;
-		                case IntersectingConstraintPattern.SetComparisonConstraintSuperset:
-		                    SetComparisonConstraint comparisonSequence = constraint as SetComparisonConstraint;
-		                    Debug.Assert(comparisonSequence != null);
-		                    LinkedElementCollection<SetComparisonConstraintRoleSequence> comparisonConstraintSequences = comparisonSequence.RoleSequenceCollection;
-		                    int comparisonConstraintSequencesCount = comparisonConstraintSequences.Count;
-		                    List<IConstraint> potentialIntersectingConstraints = new List<IConstraint>();
-		                    for (int i = 0; i < comparisonConstraintSequencesCount; ++i)
-		                    {
-		                        SetComparisonConstraintRoleSequence comparisonConstraintSequence = comparisonConstraintSequences[i];
-		                        List<Role> comparisonConstraintRoles = new List<Role>(comparisonConstraintSequence.RoleCollection);
-		                        if (role != null && !comparisonConstraintRoles.Contains(role))
-		                        {
-		                            comparisonConstraintRoles.Add(role);
-		                        }
-		                        int comparisonConstraintRoleCount = comparisonConstraintRoles.Count;
-		                        for (int j = 0; j < comparisonConstraintRoleCount; ++j)
-		                        {
-		                            Role selectedRole = comparisonConstraintRoles[j];
-		                            LinkedElementCollection<ConstraintRoleSequence> sequences = selectedRole.ConstraintRoleSequenceCollection;
-		                            int sequenceCount = sequences.Count;
-		                            for (int k = 0; k < sequenceCount; ++k)
-		                            {
-		                                ConstraintRoleSequence eligibleSequence = sequences[k];
+							SetComparisonConstraint setComparisonConstraint = constraint as SetComparisonConstraint;
+							Debug.Assert(setComparisonConstraint != null);
+							ORMCoreDomainModel.DelayValidateElement(setComparisonConstraint, DelayValidateSetComparisonConstraintSubsetPattern);
+							break;
+						case IntersectingConstraintPattern.SetComparisonConstraintSuperset:
+							SetComparisonConstraint comparisonSequence = constraint as SetComparisonConstraint;
+							Debug.Assert(comparisonSequence != null);
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> comparisonConstraintSequences = comparisonSequence.RoleSequenceCollection;
+							int comparisonConstraintSequencesCount = comparisonConstraintSequences.Count;
+							List<IConstraint> potentialIntersectingConstraints = new List<IConstraint>();
+							for (int i = 0; i < comparisonConstraintSequencesCount; ++i)
+							{
+								SetComparisonConstraintRoleSequence comparisonConstraintSequence = comparisonConstraintSequences[i];
+								List<Role> comparisonConstraintRoles = new List<Role>(comparisonConstraintSequence.RoleCollection);
+								if (role != null && !comparisonConstraintRoles.Contains(role))
+								{
+									comparisonConstraintRoles.Add(role);
+								}
+								int comparisonConstraintRoleCount = comparisonConstraintRoles.Count;
+								for (int j = 0; j < comparisonConstraintRoleCount; ++j)
+								{
+									Role selectedRole = comparisonConstraintRoles[j];
+									LinkedElementCollection<ConstraintRoleSequence> sequences = selectedRole.ConstraintRoleSequenceCollection;
+									int sequenceCount = sequences.Count;
+									for (int k = 0; k < sequenceCount; ++k)
+									{
+										ConstraintRoleSequence eligibleSequence = sequences[k];
 										IConstraint eligibleConstraint = eligibleSequence.Constraint;
 										if (eligibleConstraint != constraint && (validationInfo.ConstraintsInPotentialConflict as IList<ConstraintType>).Contains(eligibleConstraint.ConstraintType))
 										{
@@ -2519,20 +2519,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 												potentialIntersectingConstraints.Add(eligibleConstraint);
 											}
 										}
-		                            }
-		                        }
-		                    }
-		                    int potentialIntersectingConstraintCount = potentialIntersectingConstraints.Count;
-		                    for (int i = 0; i < potentialIntersectingConstraintCount; ++i)
-		                    {
-		                        SetComparisonConstraint intersectingSetComparisonConstraint = potentialIntersectingConstraints[i] as SetComparisonConstraint;
-		                        Debug.Assert(intersectingSetComparisonConstraint != null);
-		                        ORMCoreDomainModel.DelayValidateElement(intersectingSetComparisonConstraint, DelayValidateSetComparisonConstraintSubsetPattern);
-		                    }
-		                    break;
-		                case IntersectingConstraintPattern.SetSetComparisonConstraintSubset:
-		                    return; // UNDONE: Implement SetSetComparisonConstraintSubset Pattern
-		                    break;
+									}
+								}
+							}
+							int potentialIntersectingConstraintCount = potentialIntersectingConstraints.Count;
+							for (int i = 0; i < potentialIntersectingConstraintCount; ++i)
+							{
+								SetComparisonConstraint intersectingSetComparisonConstraint = potentialIntersectingConstraints[i] as SetComparisonConstraint;
+								Debug.Assert(intersectingSetComparisonConstraint != null);
+								ORMCoreDomainModel.DelayValidateElement(intersectingSetComparisonConstraint, DelayValidateSetComparisonConstraintSubsetPattern);
+							}
+							break;
+						case IntersectingConstraintPattern.SetSetComparisonConstraintSubset:
+							// UNDONE: Implement SetSetComparisonConstraintSubset Pattern
+							break;
 						default:
 							// Not a set comparison constraint, don't care about it
 							return;
@@ -2695,7 +2695,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		
+
 
 		#endregion
 	}

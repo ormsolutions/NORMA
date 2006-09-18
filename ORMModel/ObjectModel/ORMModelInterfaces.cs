@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Shell;
@@ -31,7 +32,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// or directly on a store for non-VS loading and validation
 	/// of the object model.
 	/// </summary>
-	[CLSCompliant(false)]
 	public interface IORMToolServices
 	{
 		/// <summary>
@@ -42,6 +42,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the service for getting current font and color information
 		/// </summary>
 		IORMFontAndColorService FontAndColorService { get;}
+		/// <summary>
+		/// Retrieve the service for registering and unregistering <see cref="ORMPropertyProvisioning"/>s.
+		/// </summary>
+		IORMPropertyProviderService PropertyProviderService { get;}
 		/// <summary>
 		/// Retrieve the context service provider. Can be null in some situations,
 		/// such as when the model is being loaded outside the Visual Studio environment.
@@ -65,6 +69,65 @@ namespace Neumont.Tools.ORM.ObjectModel
 		bool CanAddTransaction { get; set;}
 	}
 	#endregion // IORMToolServices interface
+	#region ORMPropertyProvisioning delegate
+	/// <summary>
+	/// Adds extension <see cref="PropertyDescriptor"/>s for the <see cref="IORMExtendableElement"/> specified
+	/// by <paramref name="extendableElement"/> to the <see cref="PropertyDescriptorCollection"/> specified by
+	/// <paramref name="properties"/>.
+	/// </summary>
+	public delegate void ORMPropertyProvisioning(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties);
+	#endregion // ORMPropertyProvisioning delegate
+	#region IORMPropertyProviderService interface
+	/// <summary>
+	/// Provides methods for registrating and unregistrating <see cref="ORMPropertyProvisioning"/>s for
+	/// <see cref="IORMExtendableElement"/>s.
+	/// </summary>
+	public interface IORMPropertyProviderService
+	{
+		/// <summary>
+		/// Registers the <see cref="ORMPropertyProvisioning"/> specified by <paramref name="propertyProvisioning"/> for the
+		/// type specified by <typeparamref name="TExtendableElement"/>.
+		/// </summary>
+		/// <typeparam name="TExtendableElement">
+		/// The type for which the <see cref="ORMPropertyProvisioning"/> should be added. This type specified must
+		/// by a subtype of <see cref="ModelElement"/> and implement <see cref="IORMExtendableElement"/>.
+		/// </typeparam>
+		/// <param name="propertyProvisioning">
+		/// The <see cref="ORMPropertyProvisioning"/> being registered.
+		/// </param>
+		/// <param name="includeSubtypes">
+		/// Specifies whether the <see cref="ORMPropertyProvisioning"/> should also be registered for subtypes of
+		/// <typeparamref name="TExtendableElement"/>.
+		/// </param>
+		void RegisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+			where TExtendableElement : ModelElement, IORMExtendableElement;
+
+		/// <summary>
+		/// Unregisters the <see cref="ORMPropertyProvisioning"/> specified by <paramref name="propertyProvisioning"/> for the
+		/// type specified by <typeparamref name="TExtendableElement"/>.
+		/// </summary>
+		/// <typeparam name="TExtendableElement">
+		/// The type for which the <see cref="ORMPropertyProvisioning"/> should be removed. This type specified must
+		/// by a subtype of <see cref="ModelElement"/> and implement <see cref="IORMExtendableElement"/>.
+		/// </typeparam>
+		/// <param name="propertyProvisioning">
+		/// The <see cref="ORMPropertyProvisioning"/> being unregistered.
+		/// </param>
+		/// <param name="includeSubtypes">
+		/// Specifies whether the <see cref="ORMPropertyProvisioning"/> should also be unregistered for subtypes of
+		/// <typeparamref name="TExtendableElement"/>.
+		/// </param>
+		void UnregisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+			where TExtendableElement : ModelElement, IORMExtendableElement;
+
+		/// <summary>
+		/// Adds extension <see cref="PropertyDescriptor"/>s for the <see cref="IORMExtendableElement"/> specified
+		/// by <paramref name="extendableElement"/> to the <see cref="PropertyDescriptorCollection"/> specified by
+		/// <paramref name="properties"/>.
+		/// </summary>
+		void GetProvidedProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties);
+	}
+	#endregion // IORMPropertyProviderService interface
 	#region IRepresentedModelElements interface
 	/// <summary>
 	/// Retrieve the ModelElement associated with object. Implemented

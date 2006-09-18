@@ -761,7 +761,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Snippet Sets Schema definition classes
 		#region Directory and file loading methods
 		/// <summary>
-		/// Load all verbalization snippets provided by substores in the provided store
+		/// Load all verbalization snippets provided by <see cref="DomainModel"/>s in the provided <see cref="Store"/>.
 		/// </summary>
 		/// <param name="store">The store to load</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
@@ -848,7 +848,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		/// <summary>
-		/// Load all verbalization snippets provided by substores in the provided store
+		/// Load all verbalization snippets provided by <see cref="DomainModel"/>s in the provided <see cref="Store"/>.
 		/// </summary>
 		/// <param name="providers">The snippet providers</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>

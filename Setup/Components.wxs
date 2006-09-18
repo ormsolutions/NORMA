@@ -113,6 +113,9 @@
 									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
 									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\.orm">
+									<Registry Type="string" Value="ORMCustomTool"/>
+								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool">
 									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</Registry>
@@ -124,6 +127,9 @@
 									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
 									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\.orm">
+									<Registry Type="string" Value="ORMCustomTool"/>
+								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool">
 									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</Registry>
@@ -134,6 +140,9 @@
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\ORMCustomTool">
 									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
 									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\.orm">
+									<Registry Type="string" Value="ORMCustomTool"/>
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{E6FDF869-F3D1-11D4-8576-0002A516ECE8}\ORMCustomTool">
 									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>

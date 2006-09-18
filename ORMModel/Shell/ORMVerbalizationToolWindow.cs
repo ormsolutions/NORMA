@@ -257,15 +257,15 @@ namespace Neumont.Tools.ORM.Shell
 					retVal[0] = font.FontFamily.Name;
 					retVal[1] = (font.Size * 72f).ToString(CultureInfo.InvariantCulture);
 					retVal[2] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerPredicateText));
-					retVal[3] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerPredicateText) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[3] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerPredicateText) & FontStyle.Bold)) ? boldWeight : normalWeight;
 					retVal[4] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerObjectName));
-					retVal[5] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerObjectName) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[5] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerObjectName) & FontStyle.Bold)) ? boldWeight : normalWeight;
 					retVal[6] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerFormalItem));
-					retVal[7] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerFormalItem) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[7] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerFormalItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
 					retVal[8] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerNotesItem));
-					retVal[9] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerNotesItem) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[9] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerNotesItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
 					retVal[10] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerRefMode));
-					retVal[11] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerRefMode) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[11] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerRefMode) & FontStyle.Bold)) ? boldWeight : normalWeight;
 				}
 				myDocumentHeaderReplacementFields = retVal;
 			}

@@ -234,7 +234,7 @@
 													</xs:attribute>
 													<xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
 														<xs:annotation>
-															<xs:documentation>The default prefix for all elements in this substore</xs:documentation>
+															<xs:documentation>The default prefix for all elements in this DomainModel</xs:documentation>
 														</xs:annotation>
 													</xs:attribute>
 												</xs:complexType>

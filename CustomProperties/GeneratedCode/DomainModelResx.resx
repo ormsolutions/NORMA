@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.Description" xml:space="preserve">
+    <value>The extension created for model element custom properties</value>
+    <comment>Description for DslLibrary &apos;CustomProperties&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.DisplayName" xml:space="preserve">
+    <value>Custom Properties</value>
+    <comment>DisplayName for DslLibrary &apos;CustomProperties&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup</value>
+    <comment>Description for DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.DisplayName" xml:space="preserve">
+    <value>CustomPropertyGroup</value>
+    <comment>DisplayName for DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/IsDefault.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.IsDefault</value>
+    <comment>Description for DomainProperty &apos;IsDefault&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/IsDefault.DisplayName" xml:space="preserve">
+    <value>IsDefault</value>
+    <comment>DisplayName for DomainProperty &apos;IsDefault&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Description.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Description</value>
+    <comment>Description for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Description.DisplayName" xml:space="preserve">
+    <value>Description</value>
+    <comment>DisplayName for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition</value>
+    <comment>Description for DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.DisplayName" xml:space="preserve">
+    <value>CustomPropertyDefinition</value>
+    <comment>DisplayName for DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Description.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Description</value>
+    <comment>Description for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Description.DisplayName" xml:space="preserve">
+    <value>Description</value>
+    <comment>DisplayName for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Category.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Category</value>
+    <comment>Description for DomainProperty &apos;Category&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Category.DisplayName" xml:space="preserve">
+    <value>Category</value>
+    <comment>DisplayName for DomainProperty &apos;Category&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.DataType</value>
+    <comment>Description for DomainProperty &apos;DataType&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DataType.DisplayName" xml:space="preserve">
+    <value>DataType</value>
+    <comment>DisplayName for DomainProperty &apos;DataType&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DefaultValue.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Default</value>
+    <comment>Description for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DefaultValue.DisplayName" xml:space="preserve">
+    <value>Default</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/ORMTypes.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.ORMTypes</value>
+    <comment>Description for DomainProperty &apos;ORMTypes&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/ORMTypes.DisplayName" xml:space="preserve">
+    <value>ORMTypes</value>
+    <comment>DisplayName for DomainProperty &apos;ORMTypes&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/CustomEnumValue.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.CustomEnumValue</value>
+    <comment>Description for DomainProperty &apos;CustomEnumValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/CustomEnumValue.DisplayName" xml:space="preserve">
+    <value>CustomEnumValue</value>
+    <comment>DisplayName for DomainProperty &apos;CustomEnumValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomProperty</value>
+    <comment>Description for DomainClass &apos;CustomProperty&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty.DisplayName" xml:space="preserve">
+    <value>CustomProperty</value>
+    <comment>DisplayName for DomainClass &apos;CustomProperty&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty/Value.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomProperty.Value</value>
+    <comment>Description for DomainProperty &apos;Value&apos; on DomainClass &apos;CustomProperty&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty/Value.DisplayName" xml:space="preserve">
+    <value>Value</value>
+    <comment>DisplayName for DomainProperty &apos;Value&apos; on DomainClass &apos;CustomProperty&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition</value>
+    <comment>Description for DomainClass &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.DisplayName" xml:space="preserve">
+    <value>Custom Property Has Custom Property Definition</value>
+    <comment>DisplayName for DomainClass &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty</value>
+    <comment>Description for DomainRole &apos;CustomProperty&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.DisplayName" xml:space="preserve">
+    <value>CustomProperty</value>
+    <comment>DisplayName for DomainRole &apos;CustomProperty&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.PropertyDisplayName" xml:space="preserve">
+    <value>Custom Property Definition</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CustomProperty&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition</value>
+    <comment>Description for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.DisplayName" xml:space="preserve">
+    <value>CustomPropertyDefinition</value>
+    <comment>DisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName" xml:space="preserve">
+    <value>Custom Property Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition</value>
+    <comment>Description for DomainClass &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.DisplayName" xml:space="preserve">
+    <value>Custom Property Group Contains Custom Property Definition</value>
+    <comment>DisplayName for DomainClass &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup</value>
+    <comment>Description for DomainRole &apos;CustomPropertyGroup&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.DisplayName" xml:space="preserve">
+    <value>CustomPropertyGroup</value>
+    <comment>DisplayName for DomainRole &apos;CustomPropertyGroup&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.PropertyDisplayName" xml:space="preserve">
+    <value>Custom Property Definition Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CustomPropertyGroup&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition</value>
+    <comment>Description for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.DisplayName" xml:space="preserve">
+    <value>CustomPropertyDefinition</value>
+    <comment>DisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName" xml:space="preserve">
+    <value>Custom Property Group</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/None.DisplayName" xml:space="preserve">
+    <value>None</value>
+    <comment>Display name for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/None.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.None</value>
+    <comment>Description for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EntityType.DisplayName" xml:space="preserve">
+    <value>EntityType</value>
+    <comment>Display name for EnumerationLiteral &apos;EntityType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EntityType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.EntityType</value>
+    <comment>Description for EnumerationLiteral &apos;EntityType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueType.DisplayName" xml:space="preserve">
+    <value>ValueType</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ValueType</value>
+    <comment>Description for EnumerationLiteral &apos;ValueType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>Display name for EnumerationLiteral &apos;FactType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FactType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.FactType</value>
+    <comment>Description for EnumerationLiteral &apos;FactType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubtypeFact.DisplayName" xml:space="preserve">
+    <value>SubtypeFact</value>
+    <comment>Display name for EnumerationLiteral &apos;SubtypeFact&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubtypeFact.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.SubtypeFact</value>
+    <comment>Description for EnumerationLiteral &apos;SubtypeFact&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>Display name for EnumerationLiteral &apos;Role&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/Role.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.Role</value>
+    <comment>Description for EnumerationLiteral &apos;Role&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FrequencyConstraint.DisplayName" xml:space="preserve">
+    <value>FrequencyConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;FrequencyConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FrequencyConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.FrequencyConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;FrequencyConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>MandatoryConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;MandatoryConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.MandatoryConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;MandatoryConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/RingConstraint.DisplayName" xml:space="preserve">
+    <value>RingConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;RingConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/RingConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.RingConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;RingConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/UniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>UniquenessConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;UniquenessConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.UniquenessConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;UniquenessConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EqualityConstraint.DisplayName" xml:space="preserve">
+    <value>EqualityConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;EqualityConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EqualityConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.EqualityConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;EqualityConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ExclusionConstraint.DisplayName" xml:space="preserve">
+    <value>ExclusionConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;ExclusionConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ExclusionConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ExclusionConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;ExclusionConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubsetConstraint.DisplayName" xml:space="preserve">
+    <value>SubsetConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;SubsetConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubsetConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.SubsetConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;SubsetConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueConstraint.DisplayName" xml:space="preserve">
+    <value>ValueConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ValueConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;ValueConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/AllConstraints.DisplayName" xml:space="preserve">
+    <value>AllConstraints</value>
+    <comment>Display name for EnumerationLiteral &apos;AllConstraints&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/AllConstraints.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.AllConstraints</value>
+    <comment>Description for EnumerationLiteral &apos;AllConstraints&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/String.DisplayName" xml:space="preserve">
+    <value>String</value>
+    <comment>Display name for EnumerationLiteral &apos;String&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/String.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.String</value>
+    <comment>Description for EnumerationLiteral &apos;String&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Integer.DisplayName" xml:space="preserve">
+    <value>Integer</value>
+    <comment>Display name for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Integer.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.Integer</value>
+    <comment>Description for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Decimal.DisplayName" xml:space="preserve">
+    <value>Decimal</value>
+    <comment>Display name for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Decimal.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.Decimal</value>
+    <comment>Description for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/DateTime.DisplayName" xml:space="preserve">
+    <value>DateTime</value>
+    <comment>Display name for EnumerationLiteral &apos;DateTime&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/DateTime.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.DateTime</value>
+    <comment>Description for EnumerationLiteral &apos;DateTime&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/CustomEnumeration.DisplayName" xml:space="preserve">
+    <value>CustomEnumeration</value>
+    <comment>Display name for EnumerationLiteral &apos;CustomEnumeration&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/CustomEnumeration.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.CustomEnumeration</value>
+    <comment>Description for EnumerationLiteral &apos;CustomEnumeration&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->

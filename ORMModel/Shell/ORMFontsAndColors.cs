@@ -119,7 +119,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Abstract 
 	/// </summary>
-	[CLSCompliant(false)]
 	public interface IORMFontAndColorService
 	{
 		/// <summary>
@@ -142,11 +141,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>A new font object</returns>
 		Font GetFont(ORMDesignerColorCategory fontCategory);
 		/// <summary>
-		/// Retrieve font flag information for the specified index
+		/// Retrieve font style information for the specified index
 		/// </summary>
 		/// <param name="colorIndex">Item to retrieve</param>
-		/// <returns>FONTFLAGS</returns>
-		FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex);
+		FontStyle GetFontStyle(ORMDesignerColor colorIndex);
 	}
 	#endregion // IORMFontAndColorService interface
 	/// <summary>
@@ -442,7 +440,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			public Color ForeColor;
 			public Color BackColor;
-			public FONTFLAGS FontFlags;
+			public FontStyle FontStyle;
 		}
 		#endregion // ColorItem stucture
 		#region ColorRetriever structure
@@ -508,9 +506,22 @@ namespace Neumont.Tools.ORM.Shell
 				myGetItemParam[0] = item;
 				ErrorHandler.ThrowOnFailure(myStorage.GetItem(myIndexConverter(itemIndex), myGetItemParam));
 				item = myGetItemParam[0];
-				retVal.FontFlags = (item.bFontFlagsValid != 0) ? (FONTFLAGS)item.dwFontFlags : FONTFLAGS.FF_DEFAULT;
+				retVal.FontStyle = (item.bFontFlagsValid != 0) ? GetFontStyleFromFontFlags((FONTFLAGS)item.dwFontFlags) : FontStyle.Regular;
 				retVal.ForeColor = (item.bForegroundValid != 0) ? TranslateColorValue(item.crForeground) : Color.Empty;
 				retVal.BackColor = (item.bBackgroundValid != 0) ? TranslateColorValue(item.crBackground) : Color.Empty;
+				return retVal;
+			}
+			private static FontStyle GetFontStyleFromFontFlags(FONTFLAGS fontFlags)
+			{
+				FontStyle retVal = FontStyle.Regular;
+				if ((fontFlags & FONTFLAGS.FF_BOLD) != 0)
+				{
+					retVal |= FontStyle.Bold;
+				}
+				if ((fontFlags & FONTFLAGS.FF_STRIKETHROUGH) != 0)
+				{
+					retVal |= FontStyle.Strikeout;
+				}
 				return retVal;
 			}
 			/// <summary>
@@ -736,17 +747,15 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		/// <summary>
 		/// Retrieve font flag information for the specified index.
-		/// Implements IORMFontAndColorService.GetFontFlags
+		/// Implements IORMFontAndColorService.GetFontStyle
 		/// </summary>
 		/// <param name="colorIndex">Item to retrieve</param>
-		/// <returns>FONTFLAGS</returns>
-		[CLSCompliant(false)]
-		protected FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex)
+		protected FontStyle GetFontFlags(ORMDesignerColor colorIndex)
 		{
 			int index;
-			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).FontFlags;
+			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).FontStyle;
 		}
-		FONTFLAGS IORMFontAndColorService.GetFontFlags(ORMDesignerColor colorIndex)
+		FontStyle IORMFontAndColorService.GetFontStyle(ORMDesignerColor colorIndex)
 		{
 			return GetFontFlags(colorIndex);
 		}

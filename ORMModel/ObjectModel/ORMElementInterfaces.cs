@@ -25,15 +25,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region IORMExtendableElement
 	/// <summary>
-	/// An <see cref="ModelElement">ORM element</see> that can be extended.
+	/// An ORM <see cref="ModelElement"/> that can be extended.
 	/// </summary>
 	/// <remarks>
-	/// In order to support <see cref="IORMPropertyExtension"/>s, implementions
-	/// must ensure that their <see cref="ICustomTypeDescriptor.GetProperties(Attribute[])"/>
+	/// In order to support <see cref="IORMPropertyExtension"/>s and <see cref="ORMPropertyProvisioning"/>s,
+	/// implementions must ensure that their <see cref="ICustomTypeDescriptor.GetProperties(Attribute[])"/>
 	/// method calls <see cref="ExtendableElementUtility.GetExtensionProperties"/>.
 	/// </remarks>
 	public interface IORMExtendableElement
 	{
+		/// <summary>
+		/// See <see cref="ModelElement.Store"/>.
+		/// </summary>
+		Store Store { get;}
+
+		/// <summary>
+		/// The <see cref="IORMToolServices"/> for this <see cref="IORMExtendableElement"/>.
+		/// </summary>
+		IORMToolServices ORMToolServices { get;}
+
 		/// <summary>
 		/// The collection of extension <see cref="ModelElement"/>s.
 		/// </summary>

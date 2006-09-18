@@ -209,17 +209,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// MSBUG: Call PurgeLayoutObjects before the shape deletion processing gets too serious
-		/// </summary>
-		protected override void OnDeleting()
-		{
-			base.OnDeleting();
-			if (!Store.InUndoRedoOrRollback)
-			{
-				PurgeLayoutObjects();
-			}
-		}
-		/// <summary>
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape children
 		/// </summary>
 		/// <param name="child">The child being configured</param>

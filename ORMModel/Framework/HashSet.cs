@@ -132,6 +132,7 @@ namespace Neumont.Tools.Modeling
 			Type valueType = typeof(TValue);
 			Type keyedType = typeof(IKeyed<TKey>);
 			Type keyType = typeof(TKey);
+			Type underlyingValueType;
 
 			// First, try using a provider that defers to TValue's IKeyed<TKey> implementation.
 			if (keyedType.IsAssignableFrom(valueType))
@@ -139,9 +140,8 @@ namespace Neumont.Tools.Modeling
 				return (IKeyProvider<TKey, TValue>)Activator.CreateInstance(typeof(GenericKeyProvider<,>).MakeGenericType(keyType, valueType));
 			}
 			// Second, if TValue is Nullable...
-			else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+			else if ((underlyingValueType = Nullable.GetUnderlyingType(valueType)) != null)
 			{
-				Type underlyingValueType = valueType.GetGenericArguments()[0];
 				// ... try using a provider that defers to the underlying type's IKeyed<Key> implementation.
 				if (keyedType.IsAssignableFrom(underlyingValueType))
 				{

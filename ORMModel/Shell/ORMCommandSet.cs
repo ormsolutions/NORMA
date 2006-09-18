@@ -17,6 +17,7 @@
 //#define HIDENEWMODELBROWSER 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling.Shell;
@@ -28,6 +29,7 @@ using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Microsoft.VisualStudio;
+using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.Shell
 {	
@@ -39,261 +41,258 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="serviceProvider">IServiceProvider</param>
 		/// <returns></returns>
-		public static object CreateCommandSet(IServiceProvider serviceProvider)
+		public static CommandSet CreateCommandSet(IServiceProvider serviceProvider)
 		{
 			return new ORMDesignerCommandSet(serviceProvider);
 		}
 		/// <summary>
 		/// Command objects for the ORMDesignerDocView
 		/// </summary>
-		protected class ORMDesignerCommandSet : MarshalByRefObject, IDisposable
+		protected class ORMDesignerCommandSet : CommandSet, IDisposable
 		{
-			private IMenuCommandService myMenuService;
-			private IMonitorSelectionService myMonitorSelection;
-			private IServiceProvider myServiceProvider;
-
 			/// <summary>
 			/// Commands
 			/// </summary>
-			private MenuCommand[] myCommands;
+			private List<MenuCommand> myCommands;
 
 			/// <summary>
 			/// ORMDesignerCommandSet constructor
 			/// </summary>
 			/// <param name="serviceProvider"></param>
 			public ORMDesignerCommandSet(IServiceProvider serviceProvider)
+				: base(serviceProvider)
 			{
-				this.myServiceProvider = serviceProvider;
-				#region Array of menu commands
-				myCommands = new MenuCommand[]
-				{
-				// Commands
-#if DEBUG
-				new MenuCommand(
-				new EventHandler(OnMenuDebugViewStore),
-				ORMDesignerCommandIds.DebugViewStore),
-#endif // DEBUG
-				new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusReferenceModesWindow),
-				new EventHandler(OnMenuReferenceModesWindow),
-				ORMDesignerCommandIds.ViewReferenceModeEditor)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusStandardWindow),
-				new EventHandler(OnMenuNotesWindow),
-				ORMDesignerCommandIds.ViewNotesWindow)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusStandardWindow),
-				new EventHandler(OnMenuContextWindow),
-				ORMDesignerCommandIds.NewContextWindow)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusCopyImage),
-				new EventHandler(OnMenuCopyImage),
-				ORMDesignerCommandIds.CopyImage)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDeleteAlternate),
-				new EventHandler(OnMenuDeleteAlternate),
-				ORMDesignerCommandIds.DeleteAlternate)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusSelectAll),
-				new EventHandler(OnMenuSelectAll),
-				StandardCommands.SelectAll)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDelete),
-				new EventHandler(OnMenuDelete),
-				StandardCommands.Delete)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusReadingsWindow),
-				new EventHandler(OnMenuReadingsWindow),
-				ORMDesignerCommandIds.ViewReadingEditor)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusInsertRole),
-				new EventHandler(OnMenuInsertRoleBefore),
-				ORMDesignerCommandIds.InsertRoleBefore)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusInsertRole),
-				new EventHandler(OnMenuInsertRoleAfter),
-				ORMDesignerCommandIds.InsertRoleAfter)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusFactEditorWindow),
-				new EventHandler(OnMenuFactEditorWindow),
-				ORMDesignerCommandIds.ViewFactEditor)
-				// Constraint editing commands
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusActivateRoleSequence),
-				new EventHandler(OnMenuActivateRoleSequence),
-				ORMDesignerCommandIds.ViewActivateRoleSequence)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDeleteRowSequence),
-				new EventHandler(OnMenuDeleteRowSequence),
-				ORMDesignerCommandIds.ViewDeleteRoleSequence)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusMoveRoleSequenceUp),
-				new EventHandler(OnMenuMoveRoleSequenceUp),
-				ORMDesignerCommandIds.ViewMoveRoleSequenceUp)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusMoveRoleSequenceDown),
-				new EventHandler(OnMenuMoveRoleSequenceDown),
-				ORMDesignerCommandIds.ViewMoveRoleSequenceDown)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusEditExternalConstraint),
-				new EventHandler(OnMenuEditExternalConstraint),
-				ORMDesignerCommandIds.ViewEditExternalConstraint)
-
-				// Verbalization Commands
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusShowPositiveVerbalization),
-				new EventHandler(OnMenuShowPositiveVerbalization),
-				ORMDesignerCommandIds.ShowPositiveVerbalization)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusShowNegativeVerbalization),
-				new EventHandler(OnMenuShowNegativeVerbalization),
-				ORMDesignerCommandIds.ShowNegativeVerbalization)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusStandardWindow),
-				new EventHandler(OnMenuVerbalizationWindow),
-				ORMDesignerCommandIds.ViewVerbalizationBrowser)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusStandardWindow),
-				new EventHandler(OnMenuSamplePopulationEditor),
-				ORMDesignerCommandIds.ViewSamplePopulationEditor)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusStandardWindow),
-				new EventHandler(OnMenuViewORMModelBrowser),
-				ORMDesignerCommandIds.ViewModelBrowser)
-				,new DynamicStatusMenuCommand(
-#if !HIDENEWMODELBROWSER
-				new EventHandler(OnStatusStandardWindow),
-#else
-				delegate(object sender, EventArgs e){(sender as MenuCommand).Visible = false;},
-#endif
-				new EventHandler(OnMenuViewNewORMModelBrowser),
-				ORMDesignerCommandIds.ViewNewModelBrowser)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAutoLayout),
-				new EventHandler(OnMenuAutoLayout),
-				ORMDesignerCommandIds.AutoLayout)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusToggleSimpleMandatory),
-				new EventHandler(OnMenuToggleSimpleMandatory),
-				ORMDesignerCommandIds.ToggleSimpleMandatory)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAddInternalUniqueness),
-				new EventHandler(OnMenuAddInternalUniqueness),
-				ORMDesignerCommandIds.AddInternalUniqueness)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusExtensionManager),
-				new EventHandler(OnMenuExtensionManager),
-				ORMDesignerCommandIds.ExtensionManager)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusMoveRoleLeft), 
-				new EventHandler(OnMenuMoveRoleLeft),
-				ORMDesignerCommandIds.MoveRoleLeft)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusMoveRoleRight), 
-				new EventHandler(OnMenuMoveRoleRight),
-				ORMDesignerCommandIds.MoveRoleRight)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusObjectifyFactType), 
-				new EventHandler(OnMenuObjectifyFactType),
-				ORMDesignerCommandIds.ObjectifyFactType)
-				// Alignment Commands
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAlignShapes),
-				new EventHandler(OnMenuAlignShapes),
-				StandardCommands.AlignBottom)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAlignShapes),
-				new EventHandler(OnMenuAlignShapes),
-				StandardCommands.AlignHorizontalCenters)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAlignShapes),
-				new EventHandler(OnMenuAlignShapes),
-				StandardCommands.AlignLeft)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAlignShapes),
-				new EventHandler(OnMenuAlignShapes),
-				StandardCommands.AlignRight)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAlignShapes),
-				new EventHandler(OnMenuAlignShapes),
-				StandardCommands.AlignTop)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAlignShapes),
-				new EventHandler(OnMenuAlignShapes),
-				StandardCommands.AlignVerticalCenters)
-				,new DynamicErrorCommand(
-				new EventHandler(OnStatusErrorList),
-				new EventHandler(OnMenuErrorList),
-				ORMDesignerCommandIds.ErrorList)
-				,new MenuCommand(
-				new EventHandler(OnMenuNewWindow),
-				new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
-				//Reading Editor Commands
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAddReading),
-				new EventHandler(OnMenuAddReading),
-				ORMDesignerCommandIds.ReadingEditorAddReading)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusAddReadingOrder),
-				new EventHandler(OnMenuAddReadingOrder),
-				ORMDesignerCommandIds.ReadingEditorAddReadingOrder)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDeleteReading),
-				new EventHandler(OnMenuDeleteReading),
-				ORMDesignerCommandIds.ReadingEditorDeleteReading)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusPromoteReading),
-				new EventHandler(OnMenuPromoteReading),
-				ORMDesignerCommandIds.ReadingEditorPromoteReading)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDemoteReading),
-				new EventHandler(OnMenuDemoteReading),
-				ORMDesignerCommandIds.ReadingEditorDemoteReading)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusReadingEditorPromoteReadingOrder),
-				new EventHandler(OnMenuReadingEditorPromoteReadingOrder),
-				ORMDesignerCommandIds.ReadingEditorPromoteReadingOrder)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusReadingEditorDemoteReadingOrder),
-				new EventHandler(OnMenuReadingEditorDemoteReadingOrder),
-				ORMDesignerCommandIds.ReadingEditorDemoteReadingOrder)
-			};
-				#endregion
-				AddCommands(myCommands);
-			}
-
-			/// <summary>
-			/// Called to add a set of commands. This should be called
-			/// by Initialize.
-			/// </summary>
-			/// <param name="commands">Commands to add</param>
-			protected virtual void AddCommands(MenuCommand[] commands)
-			{
-				IMenuCommandService menuService = MenuService; // Use the accessor to force creation
-				if (menuService != null)
-				{
-					int count = commands.Length;
-					for (int i = 0; i < count; ++i)
+				List<MenuCommand> commands = this.myCommands = new List<MenuCommand>
+				(
+					#region Array of menu commands
+					new MenuCommand[]
 					{
-						menuService.AddCommand(commands[i]);
+						// Commands
+					#if DEBUG
+						new MenuCommand(
+						new EventHandler(OnMenuDebugViewStore),
+						ORMDesignerCommandIds.DebugViewStore),
+					#endif // DEBUG
+						new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusReferenceModesWindow),
+						new EventHandler(OnMenuReferenceModesWindow),
+						ORMDesignerCommandIds.ViewReferenceModeEditor)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuNotesWindow),
+						ORMDesignerCommandIds.ViewNotesWindow)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuContextWindow),
+						ORMDesignerCommandIds.NewContextWindow)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusCopyImage),
+						new EventHandler(OnMenuCopyImage),
+						ORMDesignerCommandIds.CopyImage)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDeleteAlternate),
+						new EventHandler(OnMenuDeleteAlternate),
+						ORMDesignerCommandIds.DeleteAlternate)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusSelectAll),
+						new EventHandler(OnMenuSelectAll),
+						StandardCommands.SelectAll)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDelete),
+						new EventHandler(OnMenuDelete),
+						StandardCommands.Delete)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusReadingsWindow),
+						new EventHandler(OnMenuReadingsWindow),
+						ORMDesignerCommandIds.ViewReadingEditor)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusInsertRole),
+						new EventHandler(OnMenuInsertRoleBefore),
+						ORMDesignerCommandIds.InsertRoleBefore)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusInsertRole),
+						new EventHandler(OnMenuInsertRoleAfter),
+						ORMDesignerCommandIds.InsertRoleAfter)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusFactEditorWindow),
+						new EventHandler(OnMenuFactEditorWindow),
+						ORMDesignerCommandIds.ViewFactEditor)
+						// Constraint editing commands
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusActivateRoleSequence),
+						new EventHandler(OnMenuActivateRoleSequence),
+						ORMDesignerCommandIds.ViewActivateRoleSequence)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDeleteRowSequence),
+						new EventHandler(OnMenuDeleteRowSequence),
+						ORMDesignerCommandIds.ViewDeleteRoleSequence)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusMoveRoleSequenceUp),
+						new EventHandler(OnMenuMoveRoleSequenceUp),
+						ORMDesignerCommandIds.ViewMoveRoleSequenceUp)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusMoveRoleSequenceDown),
+						new EventHandler(OnMenuMoveRoleSequenceDown),
+						ORMDesignerCommandIds.ViewMoveRoleSequenceDown)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusEditExternalConstraint),
+						new EventHandler(OnMenuEditExternalConstraint),
+						ORMDesignerCommandIds.ViewEditExternalConstraint)
+
+						// Verbalization Commands
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusShowPositiveVerbalization),
+						new EventHandler(OnMenuShowPositiveVerbalization),
+						ORMDesignerCommandIds.ShowPositiveVerbalization)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusShowNegativeVerbalization),
+						new EventHandler(OnMenuShowNegativeVerbalization),
+						ORMDesignerCommandIds.ShowNegativeVerbalization)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuVerbalizationWindow),
+						ORMDesignerCommandIds.ViewVerbalizationBrowser)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuSamplePopulationEditor),
+						ORMDesignerCommandIds.ViewSamplePopulationEditor)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusStandardWindow),
+						new EventHandler(OnMenuViewORMModelBrowser),
+						ORMDesignerCommandIds.ViewModelBrowser)
+						,new DynamicStatusMenuCommand(
+					#if !HIDENEWMODELBROWSER
+						new EventHandler(OnStatusStandardWindow),
+					#else
+						delegate(object sender, EventArgs e){(sender as MenuCommand).Visible = false;},
+					#endif
+						new EventHandler(OnMenuViewNewORMModelBrowser),
+						ORMDesignerCommandIds.ViewNewModelBrowser)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAutoLayout),
+						new EventHandler(OnMenuAutoLayout),
+						ORMDesignerCommandIds.AutoLayout)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusToggleSimpleMandatory),
+						new EventHandler(OnMenuToggleSimpleMandatory),
+						ORMDesignerCommandIds.ToggleSimpleMandatory)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAddInternalUniqueness),
+						new EventHandler(OnMenuAddInternalUniqueness),
+						ORMDesignerCommandIds.AddInternalUniqueness)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusExtensionManager),
+						new EventHandler(OnMenuExtensionManager),
+						ORMDesignerCommandIds.ExtensionManager)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusMoveRoleLeft), 
+						new EventHandler(OnMenuMoveRoleLeft),
+						ORMDesignerCommandIds.MoveRoleLeft)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusMoveRoleRight), 
+						new EventHandler(OnMenuMoveRoleRight),
+						ORMDesignerCommandIds.MoveRoleRight)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusObjectifyFactType), 
+						new EventHandler(OnMenuObjectifyFactType),
+						ORMDesignerCommandIds.ObjectifyFactType)
+						// Alignment Commands
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAlignShapes),
+						new EventHandler(OnMenuAlignShapes),
+						StandardCommands.AlignBottom)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAlignShapes),
+						new EventHandler(OnMenuAlignShapes),
+						StandardCommands.AlignHorizontalCenters)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAlignShapes),
+						new EventHandler(OnMenuAlignShapes),
+						StandardCommands.AlignLeft)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAlignShapes),
+						new EventHandler(OnMenuAlignShapes),
+						StandardCommands.AlignRight)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAlignShapes),
+						new EventHandler(OnMenuAlignShapes),
+						StandardCommands.AlignTop)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAlignShapes),
+						new EventHandler(OnMenuAlignShapes),
+						StandardCommands.AlignVerticalCenters)
+						,new DynamicErrorCommand(
+						new EventHandler(OnStatusErrorList),
+						new EventHandler(OnMenuErrorList),
+						ORMDesignerCommandIds.ErrorList)
+						,new MenuCommand(
+						new EventHandler(OnMenuNewWindow),
+						new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
+						//Reading Editor Commands
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAddReading),
+						new EventHandler(OnMenuAddReading),
+						ORMDesignerCommandIds.ReadingEditorAddReading)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusAddReadingOrder),
+						new EventHandler(OnMenuAddReadingOrder),
+						ORMDesignerCommandIds.ReadingEditorAddReadingOrder)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDeleteReading),
+						new EventHandler(OnMenuDeleteReading),
+						ORMDesignerCommandIds.ReadingEditorDeleteReading)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusPromoteReading),
+						new EventHandler(OnMenuPromoteReading),
+						ORMDesignerCommandIds.ReadingEditorPromoteReading)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDemoteReading),
+						new EventHandler(OnMenuDemoteReading),
+						ORMDesignerCommandIds.ReadingEditorDemoteReading)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusReadingEditorPromoteReadingOrder),
+						new EventHandler(OnMenuReadingEditorPromoteReadingOrder),
+						ORMDesignerCommandIds.ReadingEditorPromoteReadingOrder)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusReadingEditorDemoteReadingOrder),
+						new EventHandler(OnMenuReadingEditorDemoteReadingOrder),
+						ORMDesignerCommandIds.ReadingEditorDemoteReadingOrder)
+					}
+					#endregion
+				);
+
+				// Get Print and Page Setup command handlers from our base class
+				foreach (MenuCommand menuCommand in base.GetMenuCommands())
+				{
+					CommandID commandID = menuCommand.CommandID;
+					if (commandID.Equals(CommonModelingCommands.PageSetup) || commandID.Equals(CommonModelingCommands.Print))
+					{
+						commands.Add(menuCommand);
 					}
 				}
 			}
+
+			/// <summary>
+			/// See <see cref="CommandSet.GetMenuCommands"/>.
+			/// </summary>
+			protected override IList<MenuCommand> GetMenuCommands()
+			{
+				return this.myCommands;
+			}
+
 			/// <summary>
 			/// Called to remove a set of commands. This should be called
 			/// by Dispose.
 			/// </summary>
 			/// <param name="commands">Commands to add</param>
-			protected virtual void RemoveCommands(MenuCommand[] commands)
+			protected virtual void RemoveCommands(IList<MenuCommand> commands)
 			{
-
-				IMenuCommandService menuService = myMenuService;
+				IMenuCommandService menuService = base.MenuService;
 				if (menuService != null)
 				{
-					int count = commands.Length;
-					for (int i = 0; i < count; ++i)
+					foreach (MenuCommand menuCommand in commands)
 					{
-						menuService.RemoveCommand(commands[i]);
+						menuService.RemoveCommand(menuCommand);
 					}
 				}
 			}
@@ -306,9 +305,6 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					RemoveCommands(myCommands);
 				}
-				myMenuService = null;
-				myMonitorSelection = null;
-				myServiceProvider = null;
 				myCommands = null;
 			}
 
@@ -981,54 +977,15 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // Menu actions
 			#endregion // External Constraint editing menu options
-			/// <summary>
-			/// Retrieve the menu service from the service provider
-			/// specified in the constructor
-			/// </summary>
-			protected IMenuCommandService MenuService
-			{
-				get
-				{
-					IMenuCommandService menuService = myMenuService;
-					if (menuService == null)
-					{
-						try
-						{
-							myMenuService = menuService = (IMenuCommandService)myServiceProvider.GetService(typeof(IMenuCommandService));
-						}
-						catch (InvalidCastException)
-						{
-							Debug.Fail("CommandSet relies on the menu command service, which is unavailable.");
-							throw;
-						}
-					}
-
-					return menuService;
-				}
-			}
-			/// <summary>
-			/// Load the monitor selection service
-			/// </summary>
-			private IMonitorSelectionService MonitorSelection
-			{
-				get
-				{
-					IMonitorSelectionService monitorSelect = myMonitorSelection;
-					if (monitorSelect == null)
-					{
-						myMonitorSelection = monitorSelect = (IMonitorSelectionService)myServiceProvider.GetService(typeof(IMonitorSelectionService));
-					}
-					return monitorSelect;
-				}
-			}
+			
 			/// <summary>
 			/// Currently focused document
 			/// </summary>
-			protected ORMDesignerDocData CurrentData
+			protected ORMDesignerDocData CurrentORMData
 			{
 				get
 				{
-					return MonitorSelection.CurrentDocument as ORMDesignerDocData;
+					return base.CurrentDocData as ORMDesignerDocData;
 				}
 			}
 			/// <summary>
@@ -1038,7 +995,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return MonitorSelection.CurrentDocumentView as ORMDesignerDocView;
+					return base.CurrentDocView as ORMDesignerDocView;
 				}
 			}
 		}
@@ -1214,15 +1171,15 @@ namespace Neumont.Tools.ORM.Shell
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
 			public static readonly CommandID ViewMoveRoleSequenceDown = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleSequenceDown);
-            /// <summary>
-            /// Available to any type that is in a state of error
-            /// </summary>
-            public static readonly CommandID ErrorList = new CommandID(guidORMDesignerCommandSet, cmdIdErrorList);
+			/// <summary>
+			/// Available to any type that is in a state of error
+			/// </summary>
+			public static readonly CommandID ErrorList = new CommandID(guidORMDesignerCommandSet, cmdIdErrorList);
 			/// <summary>
 			/// Indicates the number of command ids reserved for reporting errors
 			/// </summary>
 			public const int ErrorListLength = cmdIdErrorListEnd - cmdIdErrorList + 1;
-            #endregion //CommandID objects for menus
+			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
 
@@ -1329,10 +1286,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// Control-Delete and does the command not handled directly by delete.
 			/// </summary>
 			private const int cmdIdDeleteAlternate = 0x2914;
-            /// <summary>
-            /// The context menu for the local errors
-            /// </summary>
-            private const int cmdIdErrorList = 0x2a00;
+			/// <summary>
+			/// The context menu for the local errors
+			/// </summary>
+			private const int cmdIdErrorList = 0x2a00;
 			/// <summary>
 			/// The last allowed id for an error list
 			/// </summary>

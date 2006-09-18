@@ -25,6 +25,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ORMModelElement
 	public abstract partial class ORMModelElement : IORMExtendableElement, IModelErrorOwner
 	{
+		/// <summary>
+		/// The <see cref="IORMToolServices"/> for this <see cref="ORMModelElement"/>.
+		/// </summary>
+		public IORMToolServices ORMToolServices
+		{
+			get
+			{
+				return (IORMToolServices)Store;
+			}
+		}
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Implements IModelErrorOwner.GetErrorCollection

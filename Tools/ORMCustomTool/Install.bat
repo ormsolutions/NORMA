@@ -153,6 +153,7 @@ GOTO:EOF
 :_AddRegGenerator
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\ORMCustomTool /f /ve /d "ORM Custom Tool"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\ORMCustomTool /f /v "CLSID" /d "{977BD01E-F2B4-4341-9C47-459420624A20}"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\.orm /f /ve /d "ORMCustomTool"
 GOTO:EOF
 
 :_AddRegExtender

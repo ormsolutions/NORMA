@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The commands supported by this package
 		/// </summary>
-		private object myCommandSet;
+		private CommandSet myCommandSet;
 		private IVsWindowFrame myFactEditorToolWindow;
 		private ORMDesignerFontsAndColors myFontAndColorService;
 		private ORMDesignerSettings myDesignerSettings;
@@ -125,22 +125,31 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Debug.Assert(mySingleton == null); // Should only be loaded once per IDE session
 			mySingleton = this;
-			// System.ComponentModel.TypeDescriptor is failing to find our TypeDescriptorProvider classes.
-			// This fixes it.
-			// UNDONE: This is first getting called with the OptionsPage on the call stack
-			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyOnce;
-		}
-		private static Assembly ResolveAssemblyOnce(object sender, ResolveEventArgs args)
-		{
-			Assembly assembly = typeof(ORMDesignerPackage).Assembly;
-			if (string.Equals(args.Name, assembly.FullName, StringComparison.Ordinal))
-			{
-				AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssemblyOnce;
-				return assembly;
-			}
-			return null;
 		}
 		#endregion
+
+		#region Assembly Resolve Hack
+		[EditorBrowsable(EditorBrowsableState.Never)] // Hide from IntelliSense
+		private static readonly Dictionary<string, Assembly> KnownAssemblies = GetKnownAssemblies();
+		[EditorBrowsable(EditorBrowsableState.Never)] // Hide from IntelliSense
+		private static Dictionary<string, Assembly> GetKnownAssemblies()
+		{
+			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(1, StringComparer.Ordinal);
+			Assembly packageAssembly = typeof(ORMDesignerPackage).Assembly;
+			knownAssemblies[packageAssembly.FullName] = packageAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs e)
+			{
+				// System.ComponentModel.TypeDescriptor is failing to find our TypeDescriptionProvider classes.
+				// This fixes it.
+				// UNDONE: This is first getting called with the OptionsPage on the call stack
+				Assembly knownAssembly;
+				ORMDesignerPackage.KnownAssemblies.TryGetValue(e.Name, out knownAssembly);
+				return knownAssembly;
+			};
+			return knownAssemblies;
+		}
+		#endregion // Assembly Resolve Hack
+
 		#region Properties
 		/// <summary>
 		/// Gets the singleton command set create for this package.
@@ -282,7 +291,8 @@ namespace Neumont.Tools.ORM.Shell
 				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 				
 				// setup commands
-				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
+				CommandSet commandSet = myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
+				commandSet.Initialize();
 
 				// Create tool windows
 #if !HIDENEWMODELBROWSER
@@ -701,10 +711,76 @@ namespace Neumont.Tools.ORM.Shell
 
 		#region Extension DomainModels
 		/// <summary>
+		/// Returns an <see cref="IDictionary{String,Type}"/> containing the namespaces and <see cref="DomainModel"/> types
+		/// of extension <see cref="DomainModel"/>s that should automatically be loaded.
+		/// </summary>
+		/// <remarks>
+		/// If no extensions are set to auto-load, <see langword="null"/> is returned.
+		/// </remarks>
+		public static IDictionary<string, Type> GetAutoLoadExtensions()
+		{
+			ORMDesignerPackage singleton = mySingleton;
+			if (singleton == null)
+			{
+				return null;
+			}
+			List<string> autoLoadNamespaces = new List<string>();
+			using (RegistryKey applicationRegistryRoot = singleton.ApplicationRegistryRoot)
+			{
+				GetAutoLoadExtensionNamespaces(autoLoadNamespaces, applicationRegistryRoot);
+			}
+			using (RegistryKey userRegistryRoot = singleton.UserRegistryRoot)
+			{
+				GetAutoLoadExtensionNamespaces(autoLoadNamespaces, userRegistryRoot);
+			}
+			int autoLoadNamespacesCount = autoLoadNamespaces.Count;
+			if (autoLoadNamespacesCount > 0)
+			{
+				Dictionary<string, Type> autoLoadExtensions = new Dictionary<string, Type>(autoLoadNamespacesCount, StringComparer.Ordinal);
+				foreach (string @namespace in autoLoadNamespaces)
+				{
+					if (!autoLoadExtensions.ContainsKey(@namespace))
+					{
+						Type type = GetExtensionDomainModel(@namespace);
+						if (type != null)
+						{
+							autoLoadExtensions.Add(@namespace, type);
+						}
+					}
+				}
+				return autoLoadExtensions;
+			}
+			return null;
+		}
+		/// <summary>
+		/// Adds the namespaces for the auto-load extensions registered in <paramref name="hkeyBase"/> to <paramref name="autoLoadNamespaces"/>.
+		/// </summary>
+		private static void GetAutoLoadExtensionNamespaces(List<string> autoLoadNamespaces, RegistryKey hkeyBase)
+		{
+			using (RegistryKey extensions = hkeyBase.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
+			{
+				if (extensions != null)
+				{
+					string[] namespaces = extensions.GetValue("AutoLoadNamespaces") as string[];
+					if (namespaces != null)
+					{
+						for (int i = 0; i < namespaces.Length; i++)
+						{
+							string @namespace = namespaces[i];
+							if (!string.IsNullOrEmpty(@namespace))
+							{
+								autoLoadNamespaces.Add(@namespace);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Retrieves the <see cref="DomainModel"/> for a specific extension namespace.
 		/// </summary>
 		/// <remarks>If a <see cref="DomainModel"/> cannot be found for a namespace, <see langword="null"/> is returned.</remarks>
-		public static Type GetExtensionSubStore(string extensionNamespace)
+		public static Type GetExtensionDomainModel(string extensionNamespace)
 		{
 			RegistryKey applicationRegistryRoot = null;
 			RegistryKey userRegistryRoot = null;
@@ -731,8 +807,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Adds the extension <see cref="DomainModel"/> <see cref="Type"/>s from the <paramref name="extensionPath"/>
-		/// under <paramref name="hkeyBase"/> to the <see cref="ICollection{Type}"/> <paramref name="extensionSubStoreTypes"/>.
+		/// Loads and returns the extension <see cref="DomainModel"/> <see cref="Type"/> for <paramref name="extensionNamespace"/>.
 		/// </summary>
 		private static Type LoadExtension(string extensionNamespace, RegistryKey hkeyBase)
 		{
@@ -747,7 +822,7 @@ namespace Neumont.Tools.ORM.Shell
 						string extensionTypeString = hkeyExtension.GetValue("Class") as string;
 						if (string.IsNullOrEmpty(extensionTypeString))
 						{
-							// If we don't have an extension type name, just go on to the next registered extension
+							// If we don't have an extension type name, just return null
 							return null;
 						}
 
@@ -763,10 +838,12 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
 
-						Type extensionType = Assembly.Load(extensionAssemblyName).GetType(extensionTypeString, true, false);
+						Assembly extensionAssembly = Assembly.Load(extensionAssemblyName);
+						Type extensionType = extensionAssembly.GetType(extensionTypeString, true, false);
 
 						if (extensionType.IsSubclassOf(typeof(DomainModel)))
 						{
+							ORMDesignerPackage.KnownAssemblies[extensionAssembly.FullName] = extensionAssembly;
 							return extensionType;
 						}
 					}

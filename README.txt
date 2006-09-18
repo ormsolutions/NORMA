@@ -11,9 +11,9 @@ they can be obtained, are as follows:
 PLiX - Programming Language in XML
 	Homepage: https://sourceforge.net/projects/plix
 
-Microsoft Visual Studio 2005 SDK (June 2006 release or later)
-	Homepage: http://msdn.microsoft.com/vstudio/extend
-	Download: http://affiliate.vsipmembers.com/affiliate/downloadfiles.aspx
+Microsoft Visual Studio 2005 SDK (v3.0 or later)
+	Homepage: http://www.microsoft.com/extendvs
+	Download: http://go.microsoft.com/fwlink/?LinkId=73702
 
 
 Additional components used by other portions of this software include:

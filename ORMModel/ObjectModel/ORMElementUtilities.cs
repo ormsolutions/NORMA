@@ -115,6 +115,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				throw new ArgumentNullException("properties");
 			}
+			extendableElement.ORMToolServices.PropertyProviderService.GetProvidedProperties(extendableElement, properties);
 			foreach (ModelElement extension in extendableElement.ExtensionCollection)
 			{
 				IORMPropertyExtension customPropertyExtension = extension as IORMPropertyExtension;

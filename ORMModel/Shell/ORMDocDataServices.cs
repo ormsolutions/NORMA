@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Reflection;
@@ -29,11 +30,11 @@ using ShellUndoManager = Microsoft.VisualStudio.Modeling.Shell.UndoManager;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 
 namespace Neumont.Tools.ORM.Shell
@@ -98,7 +99,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected class ORMStore : Store, IORMToolServices
 		{
 			#region Member Variables
-			private IORMToolServices myServices;
+			private readonly IORMToolServices myServices;
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -107,12 +108,29 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="services">IORMToolServices to defer to</param>
 			/// <param name="serviceProvider">Global service provider</param>
 			public ORMStore(IORMToolServices services, IServiceProvider serviceProvider)
-				: base(serviceProvider)
+				: base(serviceProvider, null)
 			{
 				myServices = services;
 			}
 			#endregion // Constructors
 			#region IORMToolServices Implementation
+			/// <summary>
+			/// Defer to <see cref="IORMToolServices.PropertyProviderService"/> on the document.
+			/// </summary>
+			protected IORMPropertyProviderService PropertyProviderService
+			{
+				get
+				{
+					return myServices.PropertyProviderService;
+				}
+			}
+			IORMPropertyProviderService IORMToolServices.PropertyProviderService
+			{
+				get
+				{
+					return PropertyProviderService;
+				}
+			}
 			/// <summary>
 			/// Defer to TaskProvider on the document. Implements
 			/// IORMToolServices.TaskProvider
@@ -785,11 +803,162 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		#endregion // Store services passthrough
+		#region ORMPropertyProviderService class
+		private sealed class ORMPropertyProviderService : IORMPropertyProviderService, IDisposable
+		{
+			#region RuntimeTypeHandleEqualityComparer class
+			/// <summary>
+			/// <see cref="RuntimeTypeHandle"/> has a strongly-typed <c>Equals</c> method (<see cref="RuntimeTypeHandle.Equals(RuntimeTypeHandle)"/>),
+			/// but does not implement <see cref="IEquatable{RuntimeTypeHandle}"/>. Therefore, we use this <see cref="IEqualityComparer{RuntimeTypeHandle}"/>
+			/// implementation (which defers to that method) in order to avoid boxing.
+			/// </summary>
+			private sealed class RuntimeTypeHandleEqualityComparer : IEqualityComparer<RuntimeTypeHandle>
+			{
+				private RuntimeTypeHandleEqualityComparer()
+					: base()
+				{
+				}
+				public static readonly RuntimeTypeHandleEqualityComparer Instance = new RuntimeTypeHandleEqualityComparer();
+				public bool Equals(RuntimeTypeHandle x, RuntimeTypeHandle y)
+				{
+					return x.Equals(y);
+				}
+				public int GetHashCode(RuntimeTypeHandle obj)
+				{
+					return obj.GetHashCode();
+				}
+			}
+			#endregion // RuntimeTypeHandleEqualityComparer class
+
+			private readonly Store myStore;
+			private readonly Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> myProvisioningDictionary;
+
+			public ORMPropertyProviderService(Store store)
+				: base()
+			{
+				Debug.Assert(store != null);
+				this.myStore = store;
+				this.myProvisioningDictionary = new Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning>(RuntimeTypeHandleEqualityComparer.Instance);
+			}
+
+			public void Dispose()
+			{
+				this.myProvisioningDictionary.Clear();
+			}
+
+			public void RegisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+				where TExtendableElement : ModelElement, IORMExtendableElement
+			{
+				if ((object)propertyProvisioning == null)
+				{
+					throw new ArgumentNullException("propertyProvisioning");
+				}
+				
+				Type extendableElementType = typeof(TExtendableElement);
+
+				this.RegisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
+				if (includeSubtypes)
+				{
+					Store store = this.myStore;
+					DomainClassInfo domainClassInfo = store.DomainDataDirectory.GetDomainClass(extendableElementType);
+					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
+					{
+						this.RegisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
+					}
+				}
+			}
+			private void RegisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ORMPropertyProvisioning propertyProvisioning)
+			{
+				Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> provisioningDictionary = this.myProvisioningDictionary;
+				ORMPropertyProvisioning existingPropertyProvider;
+				provisioningDictionary.TryGetValue(extendableElementRuntimeTypeHandle, out existingPropertyProvider);
+				provisioningDictionary[extendableElementRuntimeTypeHandle] = (ORMPropertyProvisioning)Delegate.Combine(existingPropertyProvider, propertyProvisioning);
+			}
+
+			public void UnregisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+				where TExtendableElement : ModelElement, IORMExtendableElement
+			{
+				if ((object)propertyProvisioning == null)
+				{
+					throw new ArgumentNullException("propertyProvisioning");
+				}
+
+				Type extendableElementType = typeof(TExtendableElement);
+
+				this.UnregisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
+				if (includeSubtypes)
+				{
+					Store store = this.myStore;
+					DomainClassInfo domainClassInfo = store.DomainDataDirectory.GetDomainClass(extendableElementType);
+					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
+					{
+						this.UnregisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
+					}
+				}
+			}
+			private void UnregisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ORMPropertyProvisioning propertyProvisioning)
+			{
+				Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> provisioningDictionary = this.myProvisioningDictionary;
+				ORMPropertyProvisioning existingPropertyProvisioning;
+				provisioningDictionary.TryGetValue(extendableElementRuntimeTypeHandle, out existingPropertyProvisioning);
+				existingPropertyProvisioning = (ORMPropertyProvisioning)Delegate.Remove(existingPropertyProvisioning, propertyProvisioning);
+				if ((object)existingPropertyProvisioning == null)
+				{
+					provisioningDictionary.Remove(extendableElementRuntimeTypeHandle);
+				}
+				else
+				{
+					provisioningDictionary[extendableElementRuntimeTypeHandle] = existingPropertyProvisioning;
+				}
+			}
+
+			public void GetProvidedProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			{
+				if (extendableElement == null)
+				{
+					throw new ArgumentNullException("extendableElement");
+				}
+				if (properties == null)
+				{
+					throw new ArgumentNullException("properties");
+				}
+
+				ORMPropertyProvisioning propertyProvisioning;
+				if (this.myProvisioningDictionary.TryGetValue(extendableElement.GetType().TypeHandle, out propertyProvisioning))
+				{
+					// We don't need to check propertyProvisioning for null, since UnregisterPropertyProvider would have removed it from the
+					// dictionary if there were no provisionings left.
+					propertyProvisioning(extendableElement, properties);
+				}
+			}
+		}
+		#endregion // ORMPropertyProvisioningService class
 		#region IORMToolServices Implementation
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
 		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
 		private int myCustomBlockCanAddTransactionCount;
+		private IORMPropertyProviderService myPropertyProviderService;
+
+		/// <summary>
+		/// Retrieve the <see cref="IORMPropertyProviderService"/> for this document.
+		/// Implements <see cref="IORMToolServices.PropertyProviderService"/>.
+		/// </summary>
+		protected IORMPropertyProviderService PropertyProviderService
+		{
+			get
+			{
+				return myPropertyProviderService ?? (myPropertyProviderService = new ORMPropertyProviderService(Store));
+			}
+		}
+		IORMPropertyProviderService IORMToolServices.PropertyProviderService
+		{
+			get
+			{
+				return PropertyProviderService;
+			}
+		}
+
 		/// <summary>
 		/// Retrieve the task provider for this document. Created
 		/// on demand using the CreateTaskProvider method. Implements

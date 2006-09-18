@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<se:CustomSerializedElements
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<se:Copyright name="Common Public License Copyright Notice">
+		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
+		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
+		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
+		<se:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</se:CopyrightLine>
+		<se:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</se:CopyrightLine>
+		<se:CopyrightLine>* the terms of this license.                                               *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
+		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
+	</se:Copyright>
+	<se:DomainModel Class="CustomPropertiesDomainModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="cp" URI="http://schemas.orm.net/ORM/CustomProperties" SchemaFile="CustomProperties.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="CustomPropertyGroup" Name="CustomPropertyGroup"/>
+		</se:RootElements>
+	</se:DomainModel>
+	<se:Element Class="CustomPropertyGroup">
+		<se:Attribute ID="Name" Name="name"/>
+		<se:Attribute ID="Description" Name="description">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic type="methodCall" dataTypeName=".string" name="IsNullOrEmpty">
+					<plx:passParam>
+						<plx:callThis accessor="this" type="property" name="Description"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsDefault" Name="isDefault"/>
+		<se:ChildElement Name="CustomPropertyDefinitions">
+			<se:Link RelationshipName="CustomPropertyGroupContainsCustomPropertyDefinition" RoleName="CustomPropertyDefinition"/>
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="CustomPropertyDefinition">
+		<se:Attribute ID="Name" Name="name"/>
+		<se:Attribute ID="Description" Name="description">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic type="methodCall" dataTypeName=".string" name="IsNullOrEmpty">
+					<plx:passParam>
+						<plx:callThis accessor="this" type="property" name="Description"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="Category" Name="category">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:callStatic type="methodCall" dataTypeName=".string" name="IsNullOrEmpty">
+							<plx:passParam>
+								<plx:callThis accessor="this" type="property" name="Category"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:callThis accessor="this" type="property" name="Category"/>
+							</plx:left>
+							<plx:right>
+								<plx:string>Default</plx:string>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DataType" Name="dataType"/>
+		<se:Attribute ID="DefaultValue" Name="defaultValue">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:callThis accessor="this" type="property" name="DefaultValue"/>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CustomEnumValue" Name="customEnumValues">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic type="methodCall" dataTypeName=".string" name="IsNullOrEmpty">
+					<plx:passParam>
+						<plx:callThis accessor="this" type="property" name="CustomEnumValue"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="ORMTypes" Name="ORMTypes"/>
+		<se:Link Name="CustomProperty" WriteStyle="NotWritten" RelationshipName="CustomPropertyHasCustomPropertyDefinition" RoleName="CustomProperty" />
+		<!--<se:Link Name="CustomEnumValue" RelationshipName="CustomPropertyDefinitionHasCustomEnumValue" RoleName="CustomEnumValue" WriteStyle="Element"/>
+		<se:Link Name="ORMType" RelationshipName="CustomPropertyDefinitionHasORMType" RoleName="ORMType" WriteStyle="Element"/>-->
+	</se:Element>
+	<!--CustomProperty per Model element node-->
+	<se:Element Class="CustomProperty">
+		<se:Attribute ID="Value" Name="value"/>
+		<se:Link RelationshipName="CustomPropertyHasCustomPropertyDefinition" RoleName="CustomPropertyDefinition" Name="CustomPropertyDefinition"/>
+	</se:Element>
+</se:CustomSerializedElements>

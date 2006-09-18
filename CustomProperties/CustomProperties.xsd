@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cp="http://schemas.orm.net/ORM/CustomProperties" targetNamespace="http://schemas.orm.net/ORM/CustomProperties" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:appinfo source="zlib/libpng License Copyright Notice">
+			Copyright © Neumont University. All rights reserved.
+
+			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+			3. This notice may not be removed or altered from any source distribution.
+		</xs:appinfo>
+		<xs:appinfo source="Contributors">Rolando Sanidad, Matt Huntington, Kevin M. Owen</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="CustomProperty">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CustomPropertyDefinition">
+					<xs:complexType>
+						<xs:attribute name="ref" use="required" type="xs:IDREF"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" use="required" type="xs:ID"/>
+			<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CustomPropertyGroups">
+		<xs:annotation>
+			<xs:documentation>A collection of custom property groups associated with an oil:model</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="cp:CustomPropertyGroup" maxOccurs="unbounded" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="CustomPropertyGroupKey">
+			<xs:annotation>
+				<xs:documentation>Name attribute of Custom Property Groups is unique and their primary identifier</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="cp:CustomPropertyGroup"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+	
+	<xs:element name="CustomPropertyGroup">
+		<xs:annotation>
+			<xs:documentation>A collection of custom property definitions for a particular namespace</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CustomPropertyDefinitions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="cp:CustomPropertyDefinition" maxOccurs="unbounded" minOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+
+			<!--<xs:attribute name="namespace" use="required" type="xs:anyURI">
+				<xs:annotation>
+					<xs:documentation>Namespace the custom property group belongs to</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>-->
+			<!--<xs:attribute name="prefix" use="required" type="cp:propertyNameType">
+				<xs:annotation>
+					<xs:documentation>Prefix associated with the namespace</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>-->
+			<xs:attribute name="id" use="required" type="xs:ID"/>
+			<xs:attribute name="name" use="required" type="cp:propertyNameType">
+				<xs:annotation>
+					<xs:documentation>Name of the custom property group</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>Short description of the custom property group</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="isDefault" type="xs:boolean" default="false">
+				<xs:annotation>
+					<xs:documentation>Default group of which all defined properties will be loaded and cannot be deleted at the model level</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="CustomPropertyDefinitionKey">
+			<xs:annotation>
+				<xs:documentation>Custom property's name is unique and primary identifier</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="cp:CustomPropertyDefinition"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+	
+	<xs:element name="CustomPropertyDefinition">
+		<xs:annotation>
+			<xs:documentation>A custom property associated with a group</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<!--<xs:sequence>
+				<xs:element ref="cp:CustomEnumValues" maxOccurs="1" minOccurs="0"/>
+				<xs:element ref="cp:ORMTypes" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>-->
+			<xs:attribute name="id" use="required" type="xs:ID"/>
+			<xs:attribute name="name" use="required" type="cp:propertyNameType">
+				<xs:annotation>
+					<xs:documentation>Name of the property</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" use="optional" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Description of the property</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="category" use="optional" type="cp:propertyNameType">
+				<xs:annotation>
+					<xs:documentation>Category the property belongs to</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="dataType" use="required" type="cp:dataTypeTypes">
+				<xs:annotation>
+					<xs:documentation>Data type of the property's value</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="defaultValue" use="optional" type="xs:anySimpleType">
+				<xs:annotation>
+					<xs:documentation>Default value to be used for the property, zero (0) for numeric properties, empty string for all others.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="customEnumValues" use="optional" type="xs:string"/>
+			<xs:attribute name="ORMTypes" use="required" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="CustomEnumValues">
+		<xs:annotation>
+			<xs:documentation>Contains information about the value of the property and ORM Types associated with the property</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="cp:CustomEnumValue" maxOccurs="unbounded" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="CustomEnumValueUniquenessConstraint">
+			<xs:selector xpath="cp:CustomEnumValue"/>
+			<xs:field xpath="@value"/>
+		</xs:unique>
+	</xs:element>
+	
+	<xs:element name="CustomEnumValue">
+		<xs:annotation>
+			<xs:documentation>A custom enumeration</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="value" type="cp:propertyNameType"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="ORMTypes">
+		<xs:annotation>
+			<xs:documentation>A collection of ORM Types the property is associated with</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="cp:ORMType" maxOccurs="unbounded" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="ORMTypeUniquessConstraint">
+			<xs:selector xpath="cp:ORMType"/>
+			<xs:field xpath="@value"/>
+		</xs:unique>
+	</xs:element>
+	
+	<xs:element name="ORMType">
+		<xs:annotation>
+			<xs:documentation>An ORM model type associated with the property</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>An enumeration of ORM model types that supports custom properties</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="EntityType"/>
+						<xs:enumeration value="ValueType"/>
+						<xs:enumeration value="FactType"/>
+						<xs:enumeration value="SubtypeFact"/>
+						<xs:enumeration value="Role"/>
+						<xs:enumeration value="FrequencyConstraint"/>
+						<xs:enumeration value="MandatoryConstraint"/>
+						<xs:enumeration value="RingConstraint"/>
+						<xs:enumeration value="UniquenessConstraint"/>
+						<xs:enumeration value="EqualityConstraint"/>
+						<xs:enumeration value="ExclusionConstraint"/>
+						<xs:enumeration value="SubsetConstraint"/>
+						<xs:enumeration value="ValueConstraint"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="propertyNameType">
+		<xs:annotation>
+			<xs:documentation>Type used for property names, groups, categories, etc.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token"/>
+	</xs:simpleType>
+	<xs:simpleType name="dataTypeTypes">
+		<xs:annotation>
+			<xs:documentation>List of data types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="String"/>
+			<xs:enumeration value="Integer"/>
+			<xs:enumeration value="Decimal"/>
+			<xs:enumeration value="DateTime"/>
+			<!--<xs:enumeration value="CustomEnum"/>-->
+		</xs:restriction>
+	</xs:simpleType>
+	<!--
+		CustomPropertyGroup
+			@Namespace
+			@Prefix
+			@Name
+			@Description
+			@isDefault
+			CustomPropertyDefinition
+				@Name
+				@Description
+				@Category
+				@DataType
+				@DefaultValue
+				CustomEnumValues
+					CustomEnumValue
+						@value
+				ORMTypes
+					ORMType
+						@name
+	-->
+</xs:schema>

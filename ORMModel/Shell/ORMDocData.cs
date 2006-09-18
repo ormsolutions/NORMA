@@ -68,11 +68,14 @@ namespace Neumont.Tools.ORM.Shell
 				myFlags &= ~flags;
 			}
 		}
+
 		#endregion // Private flags
 		#region Member variables
 		private Stream myFileStream;
-		private IDictionary<string, Type> myExtensionSubStores;
-		private static readonly Dictionary<string, Type> myStandardSubStores = InitializeStandardSubStores();
+		private IDictionary<string, Type> myExtensionDomainModels;
+		private static readonly Dictionary<string, Type> myStandardDomainModels = InitializeStandardDomainModels();
+		private delegate void StoreDiagramMappingDataClearChangesDelegate();
+		private static readonly StoreDiagramMappingDataClearChangesDelegate myStoreDiagramMappingDataClearChanges = InitializeStoreDiagramMappingDataClearChanges();
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -85,42 +88,67 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Initialize the dictionary of standard <see cref="DomainModel"/>s needed for the tool.
 		/// </summary>
-		private static Dictionary<string, Type> InitializeStandardSubStores()
+		private static Dictionary<string, Type> InitializeStandardDomainModels()
 		{
-			Dictionary<string, Type> standardSubStores = new Dictionary<string, Type>();
-			standardSubStores.Add(ORMCoreDomainModel.XmlNamespace, typeof(ORMCoreDomainModel));
-			standardSubStores.Add(ORMShapeDomainModel.XmlNamespace, typeof(ORMShapeDomainModel));
-			return standardSubStores;
+			Dictionary<string, Type> standardDomainModels = new Dictionary<string, Type>();
+			standardDomainModels.Add(ORMCoreDomainModel.XmlNamespace, typeof(ORMCoreDomainModel));
+			standardDomainModels.Add(ORMShapeDomainModel.XmlNamespace, typeof(ORMShapeDomainModel));
+			return standardDomainModels;
+		}
+		private static StoreDiagramMappingDataClearChangesDelegate InitializeStoreDiagramMappingDataClearChanges()
+		{
+			Type storeDiagramMappingDataType = typeof(Diagram).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.StoreDiagramMappingData", false, false);
+			if (storeDiagramMappingDataType != null)
+			{
+				PropertyInfo instanceProperty = storeDiagramMappingDataType.GetProperty("Instance", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly, null, storeDiagramMappingDataType, Type.EmptyTypes, null);
+				if (instanceProperty != null)
+				{
+					MethodInfo getInstanceMethod = instanceProperty.GetGetMethod(true);
+					if (getInstanceMethod != null)
+					{
+						object instance = getInstanceMethod.Invoke(null, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly, null, null, CultureInfo.InvariantCulture);
+						if (instance != null)
+						{
+							MethodInfo clearChangesMethod = storeDiagramMappingDataType.GetMethod("ClearChanges", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly, null, CallingConventions.HasThis, Type.EmptyTypes, null);
+							if (clearChangesMethod != null)
+							{
+								return (StoreDiagramMappingDataClearChangesDelegate)Delegate.CreateDelegate(typeof(StoreDiagramMappingDataClearChangesDelegate), instance, clearChangesMethod, false);
+							}
+						}
+					}
+				}
+			}
+			return null;
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
 		/// <summary>
-		/// Return array of types of the substores used by the designer
+		/// Retrieves an <see cref="IList{Type}"/> of the <see cref="Type"/>s of the <see cref="DomainModel"/>s used by the designer.
 		/// </summary>
 		protected override IList<Type> GetDomainModels()
 		{
+			Dictionary<string, Type> standardDomainModels = myStandardDomainModels;
 			// Always have 1 for the CoreDesignSurface. Note that the framework automatically
-			// loads the core model (ModelElement, ElementLink, etc).
-			int knownCount = 1 + myStandardSubStores.Count;
-			int count = knownCount;
-			IDictionary<string, Type> extensionSubstores = myExtensionSubStores;
-			if (extensionSubstores != null)
+			// loads CoreDomainModel (which contains ModelElement, ElementLink, and ElementDeserializedRule).
+			int count = standardDomainModels.Count + 1;
+			IDictionary<string, Type> extensionDomainModels = myExtensionDomainModels;
+			if (extensionDomainModels != null)
 			{
-				count += extensionSubstores.Count;
+				count += extensionDomainModels.Count;
 			}
 			List<Type> retVal = new List<Type>(count);
 			retVal.Add(typeof(CoreDesignSurfaceDomainModel));
-			retVal.AddRange(myStandardSubStores.Values);
-			if (extensionSubstores != null)
+			retVal.AddRange(standardDomainModels.Values);
+			if (extensionDomainModels != null)
 			{
-				retVal.AddRange(extensionSubstores.Values);
+				retVal.AddRange(extensionDomainModels.Values);
 			}
 			return retVal;
 		}
 		/// <summary>
-		/// Reload this document from a file stream instead of from disk
+		/// Reload this document from a <see cref="Stream"/> instead of from a file.
 		/// </summary>
-		/// <param name="stream">The stream to load</param>
+		/// <param name="stream">The <see cref="Stream"/> to load</param>
 		public void ReloadFromStream(Stream stream)
 		{
 			myFileStream = stream;
@@ -135,9 +163,50 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="isReload">Tells us if the file is being reloaded or not.</param>
 		private int LoadDocDataFromStream(string fileName, bool isReload, Stream inputStream)
 		{
+			// HACK: MSBUG: StoreDiagramMappingData can end up containing information from old, disposed Stores if any
+			// TransactionCommittingRule makes model changes after the DiagramCommittingRule has already run. Since the
+			// FireTime, Priority, and IsEnabled properties of TransactionCommittingRules are completely ignored, we have
+			// no way to prevent this from occurring. The only full solution is to not use TransactionCommittingRules at
+			// all, but we have no way to stop others from doing so. In case they do, by clearing StoreDiagramMappingData
+			// here, we at least avoid a crash during load. We need to do this on both regular loads and reloads, since
+			// StoreDiagramMappingData is a static singleton.
+			StoreDiagramMappingDataClearChangesDelegate clearChanges = myStoreDiagramMappingDataClearChanges;
+			if ((object)clearChanges != null)
+			{
+				clearChanges();
+			}
+
 			if (isReload)
 			{
 				this.RemoveModelingEventHandlers();
+
+				IDisposable propertyProviderService = this.myPropertyProviderService as IDisposable;
+				if (propertyProviderService != null)
+				{
+					propertyProviderService.Dispose();
+				}
+				// Null out the myPropertyProviderService field so that a new instance will be created
+				// with the new Store next time it is needed
+				this.myPropertyProviderService = null;
+
+				foreach (ModelingDocView view in DocViews)
+				{
+					MultiDiagramDocView multiDiagramDocView = view as MultiDiagramDocView;
+					if (multiDiagramDocView != null)
+					{
+						multiDiagramDocView.RemoveAllDiagrams();
+					}
+				}
+
+				// Remove items from the ErrorList (TaskList) when isReload is true.
+				// The Tasks in the ErrorList (TaskList) are not removed when isReload is true.
+				// So, we have duplicates when a file is reloaded
+				// (after a custom extension is removed or added)!
+				IORMToolTaskProvider taskProvider = this.myTaskProvider;
+				if (taskProvider != null)
+				{
+					taskProvider.RemoveAllTasks();
+				}
 			}
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;
@@ -152,7 +221,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					XmlReaderSettings readerSettings = new XmlReaderSettings();
 					readerSettings.CloseInput = false;
-					Dictionary<string, Type> documentExtensions = null;
+					IDictionary<string, Type> documentExtensions = ORMDesignerPackage.GetAutoLoadExtensions();
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{
 						reader.MoveToContent();
@@ -169,7 +238,7 @@ namespace Neumont.Tools.ORM.Shell
 											!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
 										{
-											Type extensionType = ORMDesignerPackage.GetExtensionSubStore(URI);
+											Type extensionType = ORMDesignerPackage.GetExtensionDomainModel(URI);
 											if (extensionType != null)
 											{
 												if (documentExtensions == null)
@@ -184,25 +253,9 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 					}
-					myExtensionSubStores = documentExtensions;
+					myExtensionDomainModels = documentExtensions;
 					stream.Position = 0;
 
-					if (isReload)
-					{
-						foreach (ModelingDocView view in DocViews)
-						{
-							MultiDiagramDocView multiDiagramDocView = view as MultiDiagramDocView;
-							if (multiDiagramDocView != null)
-							{
-								multiDiagramDocView.RemoveAllDiagrams();
-							}
-						}
-						// Remove items from the ErrorList (TaskList) when isReload is true.
-						// The Tasks in the ErrorList (TaskList) are not removed when isReload is true.
-						// So, we have duplicates when a file is reloaded
-						// (after a custom extension is removed or added)!
-						this.TaskProvider.RemoveAllTasks();
-					}
 					retVal = base.LoadDocData(fileName, isReload);
 				}
 				finally
@@ -291,12 +344,6 @@ namespace Neumont.Tools.ORM.Shell
 			//Synchronize();
 
 			// Save it out.
-#if OLDSERIALIZE
-			using (FileStream fileStream = File.Create(fileName + '1'))
-			{
-				(new ORMSerializer(Store)).Save1(fileStream);
-			}
-#endif // OLDSERIALIZE
 			using (FileStream fileStream = File.Create(fileName))
 			{
 				(new ORMSerializer(Store)).Save(fileStream);
@@ -330,8 +377,7 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				// UNDONE: Localize this.
-				string formatList = "ORM Diagram (*.orm)|*.orm|";
-				return formatList.Replace("|", "\n");
+				return "ORM Diagram (*.orm)\n*.orm\n";
 			}
 		}
 		/// <summary>
