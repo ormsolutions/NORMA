@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
@@ -29,8 +30,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// A delegate callback to use with the <see cref="ORMCoreDomainModel.DelayValidateElement"/> method.
 	/// The delegate will be called when the current transaction finishes committing.
 	/// </summary>
-	/// <param name="element">The element to validate</param>
-	public delegate void ElementValidator(ModelElement element);
+	/// <param name="element">The <see cref="ModelElement"/> to validate</param>
+	public delegate void ElementValidation(ModelElement element);
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
@@ -54,22 +55,132 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // InitializingToolboxItems property
+		#region TransactionRulesFixupHack class
+		[RuleOn(typeof(CoreDomainModel))]
+		private sealed class TransactionRulesFixupHack : TransactionBeginningRule
+		{
+			// UNDONE: There are still a few situations that this doesn't handle:
+			//
+			// If one or more new DomainModels are loaded during a transaction (before TransactionCommitting but after TransactionBeginning),
+			// we will miss resorting the rules since we won't get called until the next transaction, and by then the 'committingRules' field
+			// will no longer be null. We could partially work around this by resorting the rules at the start of every transaction (whether
+			// or not the field is null), but the extra overhead that would cause isn't really worth it since for our purposes we don't load
+			// new DomainModels in the middle of transactions anyway.
+			// 
+			// The fact that StoreDiagramMappingData is a static singleton and the way in which it is used leads to serious race conditions
+			// when multiple Stores are being used at the same time (e.g. if two documents are open). ElementEventArgs from one transaction
+			// can and do end up being processed by LineRoutingRule during the commit of completely unrelated transactions in separate Stores.
+			// This has lead to some really bizarre behavior and obscure bugs. Unfortunately, we haven't been able to come up with anything
+			// that we can do about it, since all of this is happening deep in the bowels of Store and Diagram.
+
+			private static readonly RuntimeFieldHandle CommittingRulesFieldHandle = InitializeCommittingRulesFieldHandle();
+			private static RuntimeFieldHandle InitializeCommittingRulesFieldHandle()
+			{
+				const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding;
+				Type ruleManagerType = typeof(RuleManager);
+				FieldInfo committingRulesFieldInfo = ruleManagerType.GetField("committingRules", bindingFlags);
+				return (committingRulesFieldInfo != null && committingRulesFieldInfo.FieldType == typeof(List<TransactionCommittingRule>)) ? committingRulesFieldInfo.FieldHandle : default(RuntimeFieldHandle);
+			}
+			private delegate void GetCommittingRulesDelegate(RuleManager @this);
+			private static readonly GetCommittingRulesDelegate GetCommittingRules = InitializeGetCommittingRules();
+			private static GetCommittingRulesDelegate InitializeGetCommittingRules()
+			{
+				const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding;
+				Type ruleManagerType = typeof(RuleManager);
+				MethodInfo getCommittingRulesMethodInfo = ruleManagerType.GetMethod("GetCommittingRules", bindingFlags, null, CallingConventions.HasThis, Type.EmptyTypes, null);
+				return (getCommittingRulesMethodInfo != null) ?
+					(GetCommittingRulesDelegate)Delegate.CreateDelegate(typeof(GetCommittingRulesDelegate), getCommittingRulesMethodInfo, false) : null;
+			}
+
+			public TransactionRulesFixupHack()
+				: base()
+			{
+				if (CommittingRulesFieldHandle.Value == IntPtr.Zero || (object)GetCommittingRules == null)
+				{
+					base.IsEnabled = false;
+				}
+			}
+
+			public sealed override void TransactionBeginning(TransactionBeginningEventArgs e)
+			{
+				if (!base.IsEnabled)
+				{
+					// We have to check this ourselves since the RuleManager doesn't bother to...
+					return;
+				}
+
+				RuleManager ruleManager = e.Transaction.Store.RuleManager;
+
+				FieldInfo committingRulesFieldInfo = FieldInfo.GetFieldFromHandle(CommittingRulesFieldHandle);
+				if (committingRulesFieldInfo.GetValue(ruleManager) == null)
+				{
+					// The committingRules field will only be null if a new DomainModel has been added since the last time this ran,
+					// in which case, we need to resort the rules.
+					GetCommittingRules(ruleManager);
+					List<TransactionCommittingRule> committingRules = (List<TransactionCommittingRule>)committingRulesFieldInfo.GetValue(ruleManager);
+					Debug.Assert(committingRules != null);
+					committingRules.Sort(RulePriorityComparer<TransactionCommittingRule>.Instance);
+				}
+			}
+
+			#region RulePriorityComparer class
+			private sealed class RulePriorityComparer<TRule> : IComparer<TRule>
+				where TRule : Rule
+			{
+				private RulePriorityComparer()
+					: base()
+				{
+				}
+				public static readonly RulePriorityComparer<TRule> Instance = new RulePriorityComparer<TRule>();
+				public int Compare(TRule x, TRule y)
+				{
+					if ((object)x == (object)y)
+					{
+						return 0;
+					}
+					else if ((object)x == null)
+					{
+						return -1;
+					}
+					else if ((object)y == null)
+					{
+						return 1;
+					}
+					else
+					{
+						int diff = ((int)x.FireTime).CompareTo((int)y.FireTime);
+						if (diff == 0)
+						{
+							diff = x.Priority.CompareTo(y.Priority);
+							if (diff == 0)
+							{
+								diff = x.CompareTo(y);
+							}
+						}
+						return diff;
+					}
+				}
+			}
+			#endregion // RulePriorityComparer class
+		}
+		#endregion // TransactionRulesFixupHack class
 		#region Delayed Model Validation
 		private static readonly object DelayedValidationContextKey = new object();
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
-		[RuleOn(typeof(ORMCoreDomainModel), FireTime = TimeToFire.LocalCommit)] // TransactionCommittingRule
+		[RuleOn(typeof(ORMCoreDomainModel), Priority = Int32.MinValue)] // TransactionCommittingRule
 		private sealed partial class DelayValidateElements : TransactionCommittingRule
 		{
 			public sealed override void TransactionCommitting(TransactionCommitEventArgs e)
 			{
 				Dictionary<object, object> contextInfo = e.Transaction.Context.ContextInfo;
-				while (contextInfo.ContainsKey(DelayedValidationContextKey)) // Let's do a while in case a new validator is added by the other validators
+				object validatorsObject;
+				while (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
 				{
-					Dictionary<ElementValidatorKey, object> validators = (Dictionary<ElementValidatorKey, object>)contextInfo[DelayedValidationContextKey];
+					Dictionary<ElementValidator, object> validators = (Dictionary<ElementValidator, object>)validatorsObject;
 					contextInfo.Remove(DelayedValidationContextKey);
-					foreach (ElementValidatorKey key in validators.Keys)
+					foreach (ElementValidator key in validators.Keys)
 					{
 						key.Validate();
 					}
@@ -77,53 +188,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// A structure to use as a key for tracking <see cref="ModelElement"/> validation.
+		/// A structure to use for <see cref="ModelElement"/> validation.
 		/// </summary>
-		private struct ElementValidatorKey
+		private struct ElementValidator : IEquatable<ElementValidator>
 		{
 			/// <summary>
-			/// Initializes a new instance of <see cref="ElementValidatorKey"/>.
+			/// Initializes a new instance of <see cref="ElementValidator"/>.
 			/// </summary>
-			public ElementValidatorKey(ModelElement element, ElementValidator validator)
+			public ElementValidator(ModelElement element, ElementValidation validation)
 			{
-				Element = element;
-				Validator = validator;
+				this.Element = element;
+				this.Validation = validation;
 			}
 			/// <summary>
-			/// Invokes <see cref="Validator"/>, passing it <see cref="Element"/>.
+			/// Invokes <see cref="Validation"/>, passing it <see cref="Element"/>.
 			/// </summary>
 			public void Validate()
 			{
-				this.Validator(this.Element);
+				this.Validation(this.Element);
 			}
 			/// <summary>
 			/// The <see cref="ModelElement"/> to validate.
 			/// </summary>
-			public readonly ModelElement Element;
+			private readonly ModelElement Element;
 			/// <summary>
 			/// The callback valdiation function.
 			/// </summary>
-			public readonly ElementValidator Validator;
+			private readonly ElementValidation Validation;
+			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
+			public override int GetHashCode()
+			{
+				return this.Element.GetHashCode() ^ this.Validation.GetHashCode();
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				return obj is ElementValidator && this.Equals((ElementValidator)obj);
+			}
+			/// <summary>See <see cref="IEquatable{ElementValidator}.Equals"/>.</summary>
+			public bool Equals(ElementValidator other)
+			{
+				return this.Element.Equals(other.Element) && this.Validation.Equals(other.Validation);
+			}
 		}
 		/// <summary>
-		/// Called inside a transaction register a callback function validate an
+		/// Called inside a transaction register a callback function that validates an
 		/// element when the transaction completes. There are multiple model changes
 		/// that can trigger most validation rules. Registering validation rules for delayed
-		/// validation ensures that the validation code only runs once for any given objects.
+		/// validation ensures that the validation code only runs once for any given object.
 		/// </summary>
 		/// <param name="element">The element to validate</param>
-		/// <param name="validator">The validation function to run</param>
+		/// <param name="validation">The validation function to run</param>
 		/// <returns>true if this element/validator pair is being added for the first time in this transaction</returns>
-		public static bool DelayValidateElement(ModelElement element, ElementValidator validator)
+		public static bool DelayValidateElement(ModelElement element, ElementValidation validation)
 		{
+			if (element == null)
+			{
+				throw new ArgumentNullException("element");
+			}
+			if ((object)validation == null)
+			{
+				throw new ArgumentNullException("validation");
+			}
 			Store store = element.Store;
 			Debug.Assert(store.TransactionActive);
 			Dictionary<object, object> contextDictionary = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-			Dictionary<ElementValidatorKey, object> dictionary = null;
-			ElementValidatorKey key = new ElementValidatorKey(element, validator);
-			if (contextDictionary.ContainsKey(DelayedValidationContextKey))
+			object dictionaryObject;
+			Dictionary<ElementValidator, object> dictionary;
+			ElementValidator key = new ElementValidator(element, validation);
+			if (contextDictionary.TryGetValue(DelayedValidationContextKey, out dictionaryObject))
 			{
-				dictionary = (Dictionary<ElementValidatorKey, object>)contextDictionary[DelayedValidationContextKey];
+				dictionary = (Dictionary<ElementValidator, object>)dictionaryObject;
 				if (dictionary.ContainsKey(key))
 				{
 					return false; // We're already validating this one
@@ -131,8 +266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				dictionary = new Dictionary<ElementValidatorKey, object>();
-				contextDictionary[DelayedValidationContextKey] = dictionary;
+				contextDictionary[DelayedValidationContextKey] = dictionary = new Dictionary<ElementValidator, object>();
 			}
 			dictionary[key] = null;
 			return true;

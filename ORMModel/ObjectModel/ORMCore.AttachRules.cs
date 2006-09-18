@@ -131,6 +131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ValueTypeInstanceValueChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(DelayValidateElements),
+						typeof(TransactionRulesFixupHack),
 						typeof(ORMModel).GetNestedType("RemoveDuplicateConstraintNameErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("RemoveDuplicateObjectTypeNameErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingOrderHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
@@ -232,6 +233,212 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
+		private static Type[] myInitiallyDisabledRuleTypes;
+		private static Type[] InitiallyDisabledRuleTypes
+		{
+			get
+			{
+				Type[] retVal = ORMCoreDomainModel.myInitiallyDisabledRuleTypes;
+				if (retVal == null)
+				{
+					Type[] customDomainModelTypes = ORMCoreDomainModel.CustomDomainModelTypes;
+					retVal = new Type[]{
+						customDomainModelTypes[0],
+						customDomainModelTypes[1],
+						customDomainModelTypes[2],
+						customDomainModelTypes[3],
+						customDomainModelTypes[4],
+						customDomainModelTypes[5],
+						customDomainModelTypes[6],
+						customDomainModelTypes[7],
+						customDomainModelTypes[8],
+						customDomainModelTypes[9],
+						customDomainModelTypes[10],
+						customDomainModelTypes[11],
+						customDomainModelTypes[12],
+						customDomainModelTypes[13],
+						customDomainModelTypes[14],
+						customDomainModelTypes[15],
+						customDomainModelTypes[16],
+						customDomainModelTypes[17],
+						customDomainModelTypes[18],
+						customDomainModelTypes[19],
+						customDomainModelTypes[20],
+						customDomainModelTypes[21],
+						customDomainModelTypes[22],
+						customDomainModelTypes[23],
+						customDomainModelTypes[24],
+						customDomainModelTypes[25],
+						customDomainModelTypes[26],
+						customDomainModelTypes[27],
+						customDomainModelTypes[28],
+						customDomainModelTypes[29],
+						customDomainModelTypes[30],
+						customDomainModelTypes[31],
+						customDomainModelTypes[32],
+						customDomainModelTypes[33],
+						customDomainModelTypes[34],
+						customDomainModelTypes[35],
+						customDomainModelTypes[36],
+						customDomainModelTypes[37],
+						customDomainModelTypes[38],
+						customDomainModelTypes[39],
+						customDomainModelTypes[40],
+						customDomainModelTypes[41],
+						customDomainModelTypes[42],
+						customDomainModelTypes[43],
+						customDomainModelTypes[44],
+						customDomainModelTypes[45],
+						customDomainModelTypes[46],
+						customDomainModelTypes[47],
+						customDomainModelTypes[48],
+						customDomainModelTypes[49],
+						customDomainModelTypes[50],
+						customDomainModelTypes[51],
+						customDomainModelTypes[52],
+						customDomainModelTypes[53],
+						customDomainModelTypes[54],
+						customDomainModelTypes[55],
+						customDomainModelTypes[56],
+						customDomainModelTypes[57],
+						customDomainModelTypes[58],
+						customDomainModelTypes[59],
+						customDomainModelTypes[60],
+						customDomainModelTypes[61],
+						customDomainModelTypes[62],
+						customDomainModelTypes[63],
+						customDomainModelTypes[64],
+						customDomainModelTypes[65],
+						customDomainModelTypes[66],
+						customDomainModelTypes[67],
+						customDomainModelTypes[68],
+						customDomainModelTypes[69],
+						customDomainModelTypes[70],
+						customDomainModelTypes[71],
+						customDomainModelTypes[72],
+						customDomainModelTypes[73],
+						customDomainModelTypes[74],
+						customDomainModelTypes[75],
+						customDomainModelTypes[76],
+						customDomainModelTypes[77],
+						customDomainModelTypes[78],
+						customDomainModelTypes[79],
+						customDomainModelTypes[80],
+						customDomainModelTypes[81],
+						customDomainModelTypes[82],
+						customDomainModelTypes[83],
+						customDomainModelTypes[84],
+						customDomainModelTypes[85],
+						customDomainModelTypes[86],
+						customDomainModelTypes[87],
+						customDomainModelTypes[88],
+						customDomainModelTypes[89],
+						customDomainModelTypes[90],
+						customDomainModelTypes[91],
+						customDomainModelTypes[92],
+						customDomainModelTypes[93],
+						customDomainModelTypes[94],
+						customDomainModelTypes[95],
+						customDomainModelTypes[98],
+						customDomainModelTypes[99],
+						customDomainModelTypes[100],
+						customDomainModelTypes[101],
+						customDomainModelTypes[102],
+						customDomainModelTypes[103],
+						customDomainModelTypes[104],
+						customDomainModelTypes[105],
+						customDomainModelTypes[106],
+						customDomainModelTypes[107],
+						customDomainModelTypes[108],
+						customDomainModelTypes[109],
+						customDomainModelTypes[110],
+						customDomainModelTypes[111],
+						customDomainModelTypes[112],
+						customDomainModelTypes[113],
+						customDomainModelTypes[114],
+						customDomainModelTypes[115],
+						customDomainModelTypes[116],
+						customDomainModelTypes[117],
+						customDomainModelTypes[118],
+						customDomainModelTypes[119],
+						customDomainModelTypes[120],
+						customDomainModelTypes[121],
+						customDomainModelTypes[122],
+						customDomainModelTypes[123],
+						customDomainModelTypes[124],
+						customDomainModelTypes[125],
+						customDomainModelTypes[126],
+						customDomainModelTypes[127],
+						customDomainModelTypes[128],
+						customDomainModelTypes[129],
+						customDomainModelTypes[130],
+						customDomainModelTypes[131],
+						customDomainModelTypes[132],
+						customDomainModelTypes[133],
+						customDomainModelTypes[134],
+						customDomainModelTypes[135],
+						customDomainModelTypes[136],
+						customDomainModelTypes[137],
+						customDomainModelTypes[138],
+						customDomainModelTypes[139],
+						customDomainModelTypes[140],
+						customDomainModelTypes[141],
+						customDomainModelTypes[142],
+						customDomainModelTypes[143],
+						customDomainModelTypes[144],
+						customDomainModelTypes[145],
+						customDomainModelTypes[146],
+						customDomainModelTypes[147],
+						customDomainModelTypes[148],
+						customDomainModelTypes[149],
+						customDomainModelTypes[150],
+						customDomainModelTypes[151],
+						customDomainModelTypes[152],
+						customDomainModelTypes[153],
+						customDomainModelTypes[154],
+						customDomainModelTypes[155],
+						customDomainModelTypes[156],
+						customDomainModelTypes[157],
+						customDomainModelTypes[158],
+						customDomainModelTypes[159],
+						customDomainModelTypes[160],
+						customDomainModelTypes[161],
+						customDomainModelTypes[162],
+						customDomainModelTypes[163],
+						customDomainModelTypes[164],
+						customDomainModelTypes[165],
+						customDomainModelTypes[166],
+						customDomainModelTypes[167],
+						customDomainModelTypes[168],
+						customDomainModelTypes[169],
+						customDomainModelTypes[170],
+						customDomainModelTypes[171],
+						customDomainModelTypes[172],
+						customDomainModelTypes[173],
+						customDomainModelTypes[174],
+						customDomainModelTypes[175],
+						customDomainModelTypes[176],
+						customDomainModelTypes[177],
+						customDomainModelTypes[178],
+						customDomainModelTypes[179],
+						customDomainModelTypes[180],
+						customDomainModelTypes[181],
+						customDomainModelTypes[182],
+						customDomainModelTypes[183],
+						customDomainModelTypes[184],
+						customDomainModelTypes[185],
+						customDomainModelTypes[186],
+						customDomainModelTypes[187],
+						customDomainModelTypes[188],
+						customDomainModelTypes[189],
+						customDomainModelTypes[190],
+						customDomainModelTypes[191],
+						customDomainModelTypes[192]};
+					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
+				}
+				return retVal;
+			}
+		}
 		/// <summary>
 		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
 		/// </summary>
@@ -263,7 +470,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
 		{
-			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
+			Type[] disabledRuleTypes = ORMCoreDomainModel.InitiallyDisabledRuleTypes;
 			int count = disabledRuleTypes.Length;
 			for (int i = 0; i < count; ++i)
 			{
@@ -1202,16 +1409,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class ValueTypeInstanceValueChanged
 		{
 			public ValueTypeInstanceValueChanged()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMCoreDomainModel
-	{
-		private partial class DelayValidateElements
-		{
-			public DelayValidateElements()
 			{
 				base.IsEnabled = false;
 			}

@@ -112,7 +112,8 @@
 		<arg:Rule class="ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceDeleted"/>
 		<arg:Rule class="ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChanged"/>
 		<arg:Rule class="ObjectTypeInstance.ValueTypeInstanceValueChanged"/>
-		<arg:Rule class="ORMCoreDomainModel.DelayValidateElements"/>
+		<arg:Rule class="ORMCoreDomainModel.DelayValidateElements" alwaysOn="true"/>
+		<arg:Rule class="ORMCoreDomainModel.TransactionRulesFixupHack" alwaysOn="true"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateConstraintNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>
 		<arg:Rule class="Reading.ReadingOrderHasRoleDeleted"/>
