@@ -15,9 +15,11 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -360,6 +362,128 @@ namespace Neumont.Tools.Modeling
 	#endregion // KeyProvider
 
 	#region HashSet class
+
+	#region HashSet base class
+	/// <summary>
+	/// This class supports <see cref="HashSet{TKey,TValue}"/> and is not intended to be used directly from your code.
+	/// </summary>
+	[Serializable]
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public abstract class HashSet
+	{
+		// This class exists to prevent a separate copy of the precomputed primes array from being stored for each
+		// closed constructed type instantiation of HashSet<TKey, TValue>.
+
+		/*protected AND*/ internal HashSet()
+			: base()
+		{
+		}
+
+		#region GetNewCapacity method
+
+		#region PrecomputedPrimes array
+		private const int MaxPrecomputedPrime = 7199369;
+		private static readonly int[] PrecomputedPrimes = new int[] { 3, 7, 11, 17, 23, 29, 37, 47,
+			59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919, 1103, 1327, 1597,
+			1931, 2333, 2801, 3371, 4049, 4861, 5839, 7013, 8419, 10103, 12143, 14591, 17519, 21023,
+			25229, 30293, 36353, 43627, 52361, 62851, 75431, 90523, 108631, 130363, 156437, 187751,
+			225307, 270371, 324449, 389357, 467237, 560689, 672827, 807403, 968897, 1162687, 1395263,
+			1674319, 2009191, 2411033, 2893249, 3471899, 4166287, 4999559, 5999471, MaxPrecomputedPrime };
+		#endregion // PrecomputedPrimes array
+
+		private byte _primesIndex;
+
+		/*protected AND*/ internal int GetNewCapacity(int minCapacity, bool isInitialCapacity)
+		{
+			int newPrime;
+
+			// First try the precomputed primes
+			if (minCapacity <= MaxPrecomputedPrime)
+			{
+				int[] precomputedPrimes = PrecomputedPrimes;
+				for (byte i = this._primesIndex; i < precomputedPrimes.Length; i++)
+				{
+					newPrime = precomputedPrimes[i];
+					if (newPrime >= minCapacity)
+					{
+						this._primesIndex = i;
+						return newPrime;
+					}
+				}
+			}
+
+			// If we have run out of precomputed primes, we need to calculate a new one
+			// If this isn't the initial capacity, try for 150% of the requested capacity, so that we won't have to resize for a while
+			for (newPrime = (isInitialCapacity ? minCapacity : (int)(minCapacity * 1.5)) | 1; newPrime < int.MaxValue; newPrime += 2)
+			{
+				int maxPossibleDivisor = (int)Math.Sqrt(newPrime);
+				for (int possibleDivisor = 3; possibleDivisor <= maxPossibleDivisor; possibleDivisor += 2)
+				{
+					if (newPrime % possibleDivisor == 0)
+					{
+						goto L_ContinueOuterLoop;
+					}
+				}
+				return newPrime;
+
+			L_ContinueOuterLoop:
+				continue;
+			}
+
+			// If we haven't found a prime yet, just return the minimum capacity
+			return minCapacity;
+		}
+		#endregion // GetNewCapacity method
+
+		#region DebugView class
+		[Serializable]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		/*protected AND*/ internal sealed class DebugView<TKey, TValue>
+		{
+			private readonly HashSet<TKey, TValue> _hashSet;
+			public DebugView(HashSet<TKey, TValue> hashSet)
+			{
+				this._hashSet = hashSet;
+			}
+
+			[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+			public KeyValuePair<TKey, TValue>[] Items
+			{
+				get
+				{
+					HashSet<TKey, TValue> hashSet = this._hashSet;
+					KeyValuePair<TKey, TValue>[] items = new KeyValuePair<TKey, TValue>[hashSet.Count];
+					hashSet.CopyTo(items, 0);
+					return items;
+				}
+			}
+		}
+		#endregion // DebugView class
+
+		#region KeyCollectionDebugView class
+		[Serializable]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		/*protected AND*/ internal sealed class KeyCollectionDebugView<TKey, TValue>
+		{
+			private readonly HashSet<TKey, TValue>.KeyCollection _keyCollection;
+			public KeyCollectionDebugView(HashSet<TKey, TValue>.KeyCollection keyCollection)
+			{
+				this._keyCollection = keyCollection;
+			}
+
+			[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+			public TKey[] Items
+			{
+				get
+				{
+					return this._keyCollection.ToArray();
+				}
+			}
+		}
+		#endregion // KeyCollectionDebugView class
+	}
+	#endregion // HashSet base class
+
 	/// <summary>
 	/// Represents a <c>set</c> of <typeparamref name="TValue"/> instances.
 	/// </summary>
@@ -427,13 +551,17 @@ namespace Neumont.Tools.Modeling
 	/// <seealso cref="IEqualityComparer{T}"/>
 	/// <seealso cref="EqualityComparer{T}.Default"/>
 	[Serializable]
-	public sealed class HashSet<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<TValue>
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(typeof(DebugView<,>))]
+	[EditorBrowsable(EditorBrowsableState.Always)]
+	public sealed class HashSet<TKey, TValue> : HashSet, IDictionary<TKey, TValue>, ICollection<TValue>, IDictionary, ICollection
 	{
 		#region Entry class
 		[Serializable]
 		private sealed class Entry
 		{
 			public Entry(TValue value, int hash)
+				: base()
 			{
 				this.Value = value;
 				this.Hash = hash;
@@ -443,61 +571,6 @@ namespace Neumont.Tools.Modeling
 			public Entry NextEntry;
 		}
 		#endregion // Entry class
-
-		#region GetNewCapacity method
-
-		#region PrecomputedPrimes array
-		private const int MaxPrecomputedPrime = 7199369;
-		private static readonly int[] PrecomputedPrimes = new int[] { 3, 7, 11, 17, 23, 29, 37, 47, 59,
-			71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919, 1103, 1327, 1597,
-			1931, 2333, 2801, 3371, 4049, 4861, 5839, 7013, 8419, 10103, 12143, 14591, 17519, 21023,
-			25229, 30293, 36353, 43627, 52361, 62851, 75431, 90523, 108631, 130363, 156437, 187751,
-			225307, 270371, 324449, 389357, 467237, 560689, 672827, 807403, 968897, 1162687, 1395263,
-			1674319, 2009191, 2411033, 2893249, 3471899, 4166287, 4999559, 5999471, MaxPrecomputedPrime };
-		#endregion // PrecomputedPrimes array
-
-		private byte _primesIndex;
-		private int GetNewCapacity(int minCapacity, bool isInitialCapacity)
-		{
-			int newPrime;
-			
-			// First try the precomputed primes
-			if (minCapacity <= MaxPrecomputedPrime)
-			{
-				int[] precomputedPrimes = PrecomputedPrimes;
-				for (byte i = this._primesIndex; i < precomputedPrimes.Length; i++)
-				{
-					newPrime = precomputedPrimes[i];
-					if (newPrime >= minCapacity)
-					{
-						this._primesIndex = i;
-						return newPrime;
-					}
-				}
-			}
-
-			// If we have run out of precomputed primes, we need to calculate a new one
-			// If this isn't the initial capacity, try for 150% of the requested capacity, so that we won't have to resize for a while
-			for (newPrime = (isInitialCapacity ? minCapacity : (int)(minCapacity * 1.5)) | 1; newPrime < int.MaxValue; newPrime += 2)
-			{
-				int maxPossibleDivisor = (int)Math.Sqrt(newPrime);
-				for (int possibleDivisor = 3; possibleDivisor <= maxPossibleDivisor; possibleDivisor += 2)
-				{
-					if (newPrime % possibleDivisor == 0)
-					{
-						goto Label_ContinueOuterLoop;
-					}
-				}
-				return newPrime;
-
-			Label_ContinueOuterLoop:
-				continue;
-			}
-
-			// If we haven't found a prime yet, just return the minimum capacity
-			return minCapacity;
-		}
-		#endregion // GetNewCapacity method
 
 		#region Constructors
 		/// <summary>
@@ -652,29 +725,24 @@ namespace Neumont.Tools.Modeling
 			this._keyComparer = keyEqualityComparer;
 			this._valueComparer = valueEqualityComparer;
 
-			if (initialCapacity > 0)
-			{
-				this.EnsureCapacity(initialCapacity, true);
-			}
+			this._entries = (initialCapacity > 0) ? new Entry[base.GetNewCapacity(initialCapacity, true)] : EmptyArray;
 		}
 		#endregion // Constructors
 
-		private int _capacity;
+		private static readonly Entry[] EmptyArray = new Entry[0];
+
 		private int _size;
 		private Entry[] _entries;
 
 		#region EnsureCapacity and ProcessEntryForResize methods
-		private void EnsureCapacity(int minCapacity, bool isInitialCapacity)
+		private void EnsureCapacity(int minCapacity)
 		{
-			int capacity = this._capacity;
-			if (minCapacity > capacity)
+			Entry[] oldEntries = this._entries;
+			if (minCapacity > oldEntries.Length)
 			{
-				capacity = this._capacity = this.GetNewCapacity(minCapacity, isInitialCapacity);
+				this._entries = new Entry[base.GetNewCapacity(minCapacity, false)];
 				this._size = 0;
-
-				Entry[] oldEntries = this._entries;
-				this._entries = new Entry[capacity];
-
+				
 				for (int i = 0; i < oldEntries.Length; i++)
 				{
 					this.ProcessEntryForResize(oldEntries[i]);
@@ -738,7 +806,7 @@ namespace Neumont.Tools.Modeling
 			{
 				throw new ArgumentNullException("value");
 			}
-			this.EnsureCapacity(this._size + 1, false);
+			this.EnsureCapacity(this._size + 1);
 			return this.AddEntry(new Entry(value, this._keyComparer.GetHashCode(this._keyProvider.GetKey(value))), duplicateKeyBehavior);
 		}
 		[Serializable]
@@ -752,7 +820,7 @@ namespace Neumont.Tools.Modeling
 		{
 			Entry[] entries = this._entries;
 			int hash = newEntry.Hash;
-			int index = hash % this._capacity;
+			int index = Math.Abs(hash % entries.Length);
 
 			Entry existingEntry = entries[index];
 			if (existingEntry != null)
@@ -805,7 +873,7 @@ namespace Neumont.Tools.Modeling
 				throw new ArgumentNullException("value");
 			}
 			this.EnsureGivenKeyMatchesProvider(key, value, false);
-			this.EnsureCapacity(this._size + 1, false);
+			this.EnsureCapacity(this._size + 1);
 			this.AddEntry(new Entry(value, this._keyComparer.GetHashCode(key)), DuplicateKeyBehavior.Throw);
 		}
 		void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
@@ -815,6 +883,22 @@ namespace Neumont.Tools.Modeling
 		void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
 		{
 			this.AddKeyValuePair(item.Key, item.Value);
+		}
+		void IDictionary.Add(object key, object value)
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (!IsKeyTypeCompatible(key))
+			{
+				throw KeyTypeMismatchException(key);
+			}
+			if (!(value is TValue))
+			{
+				throw ValueTypeMismatchException(value);
+			}
+			this.AddKeyValuePair((TKey)key, (TValue)value);
 		}
 		#endregion // Add methods
 
@@ -826,11 +910,15 @@ namespace Neumont.Tools.Modeling
 				throw new ArgumentNullException("value");
 			}
 			this.EnsureGivenKeyMatchesProvider(key, value, false);
-			
+
+			Entry[] entries = this._entries;
 			IEqualityComparer<TKey> keyComparer = this._keyComparer;
 			int hash = keyComparer.GetHashCode(key);
-			int index = hash % this._capacity;
-			Entry[] entries = this._entries;
+			if (entries.Length <= 0)
+			{
+				entries = this._entries = new Entry[base.GetNewCapacity(1, true)];
+			}
+			int index = Math.Abs(hash % entries.Length);
 
 			Entry existingEntry = entries[index];
 			if (existingEntry != null)
@@ -862,7 +950,7 @@ namespace Neumont.Tools.Modeling
 					existingEntry.NextEntry = new Entry(value, hash);
 					// Don't call EnsureCapacity until after we have added the new Entry,
 					// since it could cause the location where it needs to be added to change.
-					this.EnsureCapacity(++this._size, false);
+					this.EnsureCapacity(++this._size);
 				}
 			}
 			else
@@ -870,7 +958,7 @@ namespace Neumont.Tools.Modeling
 				entries[index] = new Entry(value, hash);
 				// Don't call EnsureCapacity until after we have added the new Entry,
 				// since it could cause the location where it needs to be added to change.
-				this.EnsureCapacity(++this._size, false);
+				this.EnsureCapacity(++this._size);
 			}
 		}
 		#endregion // ReplaceOrAdd method
@@ -914,29 +1002,35 @@ namespace Neumont.Tools.Modeling
 		private int RemoveKey(TKey key, bool throwOnDuplicates)
 		{
 			int entriesRemoved = 0;
-			IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
-			IEqualityComparer<TKey> keyComparer = this._keyComparer;
-			int hash = keyComparer.GetHashCode(key);
-			int index = hash % this._capacity;
-			Entry[] entries = this._entries;
-			for (Entry previousEntry = null, entry = entries[index]; entry != null; previousEntry = entry, entry = entry.NextEntry)
+			if (this._size > 0)
 			{
-				if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(entry.Value), key))
+				Entry[] entries = this._entries;
+				IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
+				IEqualityComparer<TKey> keyComparer = this._keyComparer;
+				int hash = keyComparer.GetHashCode(key);
+				int index = Math.Abs(hash % entries.Length);
+				for (Entry previousEntry = null, entry = entries[index]; entry != null; previousEntry = entry, entry = entry.NextEntry)
 				{
-					if (throwOnDuplicates && entriesRemoved > 0)
+					if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(entry.Value), key))
 					{
-						throw DuplicateKeyGetRemoveOrReplaceException(key);
+						if (throwOnDuplicates && entriesRemoved > 0)
+						{
+							throw DuplicateKeyGetRemoveOrReplaceException(key);
+						}
+						if (previousEntry == null)
+						{
+							entries[index] = entry.NextEntry;
+						}
+						else
+						{
+							previousEntry.NextEntry = entry.NextEntry;
+						}
+						entriesRemoved++;
 					}
-					if (previousEntry == null)
-					{
-						entries[index] = entry;
-					}
-					else
-					{
-						previousEntry.NextEntry = entry.NextEntry;
-					}
-					this._size--;
-					entriesRemoved++;
+				}
+				if (entriesRemoved > 0)
+				{
+					this._size -= entriesRemoved;
 				}
 			}
 			return entriesRemoved;
@@ -958,24 +1052,27 @@ namespace Neumont.Tools.Modeling
 			{
 				throw new ArgumentNullException("value");
 			}
-			IEqualityComparer<TValue> valueComparer = this._valueComparer;
-			int hash = this._keyComparer.GetHashCode(this._keyProvider.GetKey(value));
-			int index = hash % this._capacity;
-			Entry[] entries = this._entries;
-			for (Entry previousEntry = null, entry = entries[index]; entry != null; previousEntry = entry, entry = entry.NextEntry)
+			if (this._size > 0)
 			{
-				if (entry.Hash == hash && valueComparer.Equals(entry.Value, value))
+				Entry[] entries = this._entries;
+				IEqualityComparer<TValue> valueComparer = this._valueComparer;
+				int hash = this._keyComparer.GetHashCode(this._keyProvider.GetKey(value));
+				int index = Math.Abs(hash % entries.Length);
+				for (Entry previousEntry = null, entry = entries[index]; entry != null; previousEntry = entry, entry = entry.NextEntry)
 				{
-					if (previousEntry == null)
+					if (entry.Hash == hash && valueComparer.Equals(entry.Value, value))
 					{
-						entries[index] = entry;
+						if (previousEntry == null)
+						{
+							entries[index] = entry.NextEntry;
+						}
+						else
+						{
+							previousEntry.NextEntry = entry.NextEntry;
+						}
+						this._size--;
+						return true;
 					}
-					else
-					{
-						previousEntry.NextEntry = entry.NextEntry;
-					}
-					this._size--;
-					return true;
 				}
 			}
 			return false;
@@ -983,6 +1080,13 @@ namespace Neumont.Tools.Modeling
 		bool IDictionary<TKey, TValue>.Remove(TKey key)
 		{
 			return this.RemoveSingle(key);
+		}
+		void IDictionary.Remove(object key)
+		{
+			if (IsKeyTypeCompatible(key))
+			{
+				this.RemoveSingle((TKey)key);
+			}
 		}
 		bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
 		{
@@ -1063,18 +1167,21 @@ namespace Neumont.Tools.Modeling
 		{
 			// Empty collection if missing
 			List<TValue> values = new List<TValue>(1);
-			IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
-			IEqualityComparer<TKey> keyComparer = this._keyComparer;
-			int hash = keyComparer.GetHashCode(key);
-			for (Entry entry = this._entries[hash % this._capacity]; entry != null; entry = entry.NextEntry)
+			if (this._size > 0)
 			{
-				TValue value;
-				if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(value = entry.Value), key))
+				Entry[] entries = this._entries;
+				IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
+				IEqualityComparer<TKey> keyComparer = this._keyComparer;
+				int hash = keyComparer.GetHashCode(key);
+				for (Entry entry = entries[Math.Abs(hash % entries.Length)]; entry != null; entry = entry.NextEntry)
 				{
-					values.Add(value);
+					TValue value;
+					if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(value = entry.Value), key))
+					{
+						values.Add(value);
+					}
 				}
 			}
-
 			return values;
 		}
 		#endregion // GetValues method and variants
@@ -1275,11 +1382,16 @@ namespace Neumont.Tools.Modeling
 		}
 		private bool TryGetValue(TKey key, ref TValue value, bool checkForDuplicates)
 		{
+			if (this._size <= 0)
+			{
+				return false;
+			}
+			Entry[] entries = this._entries;
 			IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
 			IEqualityComparer<TKey> keyComparer = this._keyComparer;
 			int hash = keyComparer.GetHashCode(key);
 			bool foundKey = false;
-			for (Entry entry = this._entries[hash % this._capacity]; entry != null; entry = entry.NextEntry)
+			for (Entry entry = entries[Math.Abs(hash % entries.Length)]; entry != null; entry = entry.NextEntry)
 			{
 				if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(entry.Value), key))
 				{
@@ -1316,14 +1428,18 @@ namespace Neumont.Tools.Modeling
 		/// </returns>
 		public bool ContainsKey(TKey key)
 		{
-			IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
-			IEqualityComparer<TKey> keyComparer = this._keyComparer;
-			int hash = keyComparer.GetHashCode(key);
-			for (Entry entry = this._entries[hash % this._capacity]; entry != null; entry = entry.NextEntry)
+			Entry[] entries = this._entries;
+			if (this._size > 0)
 			{
-				if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(entry.Value), key))
+				IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
+				IEqualityComparer<TKey> keyComparer = this._keyComparer;
+				int hash = keyComparer.GetHashCode(key);
+				for (Entry entry = entries[Math.Abs(hash % entries.Length)]; entry != null; entry = entry.NextEntry)
 				{
-					return true;
+					if (entry.Hash == hash && keyComparer.Equals(keyProvider.GetKey(entry.Value), key))
+					{
+						return true;
+					}
 				}
 			}
 			return false;
@@ -1348,13 +1464,17 @@ namespace Neumont.Tools.Modeling
 			{
 				throw new ArgumentNullException("value");
 			}
-			IEqualityComparer<TValue> valueComparer = this._valueComparer;
-			int hash = this._keyComparer.GetHashCode(this._keyProvider.GetKey(value));
-			for (Entry entry = this._entries[hash % this._capacity]; entry != null; entry = entry.NextEntry)
+			Entry[] entries = this._entries;
+			if (this._size > 0)
 			{
-				if (entry.Hash == hash && valueComparer.Equals(entry.Value, value))
+				IEqualityComparer<TValue> valueComparer = this._valueComparer;
+				int hash = this._keyComparer.GetHashCode(this._keyProvider.GetKey(value));
+				for (Entry entry = entries[Math.Abs(hash % entries.Length)]; entry != null; entry = entry.NextEntry)
 				{
-					return true;
+					if (entry.Hash == hash && valueComparer.Equals(entry.Value, value))
+					{
+						return true;
+					}
 				}
 			}
 			return false;
@@ -1365,6 +1485,10 @@ namespace Neumont.Tools.Modeling
 			this.EnsureGivenKeyMatchesProvider(item.Key, value, true);
 			return this.Contains(value);
 		}
+		bool IDictionary.Contains(object key)
+		{
+			return IsKeyTypeCompatible(key) && this.ContainsKey((TKey)key);
+		}
 		#endregion // Contains methods
 
 		#region Clear method
@@ -1374,11 +1498,25 @@ namespace Neumont.Tools.Modeling
 		public void Clear()
 		{
 			this._size = 0;
-			Array.Clear(this._entries, 0, this._capacity);
+			Array.Clear(this._entries, 0, this._entries.Length);
 		}
 		#endregion // Clear method
 
 		#region CopyTo and ToArray methods
+		/// <summary>
+		/// Copies the contents of this <see cref="HashSet{TKey,TValue}"/> to a new <typeparamref name="TValue"/>
+		/// array and returns it.
+		/// </summary>
+		/// <returns>
+		/// A new <typeparamref name="TValue"/> array containing a copy of the contents of this
+		/// <see cref="HashSet{TKey,TValue}"/>.
+		/// </returns>
+		public TValue[] ToArray()
+		{
+			TValue[] array = new TValue[this._size];
+			this.CopyToInternal(array, 0);
+			return array;
+		}
 		/// <summary>
 		/// Copies the contents of this <see cref="HashSet{TKey,TValue}"/> to the <typeparamref name="TValue"/>
 		/// array specified by <paramref name="array"/>.
@@ -1391,7 +1529,8 @@ namespace Neumont.Tools.Modeling
 		/// <paramref name="array"/> is <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
-		/// <paramref name="array"/> is not large enough to hold the contents of this <see cref="HashSet{TKey,TValue}"/>.
+		/// The number of elements in this <see cref="HashSet{TKey,TValue}"/> is greater than the available space in
+		/// the destination <paramref name="array"/>.
 		/// </exception>
 		public void CopyTo(TValue[] array)
 		{
@@ -1422,27 +1561,16 @@ namespace Neumont.Tools.Modeling
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// <paramref name="arrayIndex"/> is less than 0.
 		/// </exception>
-		/// /// <exception cref="ArgumentOutOfRangeException">
+		/// <exception cref="ArgumentOutOfRangeException">
 		/// <paramref name="arrayIndex"/> is greater than or equal to the length of <paramref name="array"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
-		/// Starting at <paramref name="arrayIndex"/>, <paramref name="array"/> is not large enough to hold the contents of
-		/// this <see cref="HashSet{TKey,TValue}"/>.
+		/// The number of elements in this <see cref="HashSet{TKey,TValue}"/> is greater than the available space from
+		/// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
 		/// </exception>
 		public void CopyTo(TValue[] array, int arrayIndex)
 		{
-			if (array == null)
-			{
-				throw new ArgumentNullException("array");
-			}
-			if (arrayIndex < 0 || arrayIndex > array.Length)
-			{
-				throw new ArgumentOutOfRangeException("arrayIndex");
-			}
-			if (array.Length - arrayIndex > this._size)
-			{
-				throw ArrayTooSmallException();
-			}
+			this.VerifyArrayForCopy(array, arrayIndex, true);
 			this.CopyToInternal(array, arrayIndex);
 		}
 		private void CopyToInternal(TValue[] array, int arrayIndex)
@@ -1462,33 +1590,37 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		/// <summary>
-		/// Copies the contents of this <see cref="HashSet{TKey,TValue}"/> to a new <typeparamref name="TValue"/>
-		/// array and returns it.
+		/// Copies the contents of this <see cref="HashSet{TKey,TValue}"/> to the <see cref="KeyValuePair{TKey,TValue}"/>
+		/// array specified by <paramref name="array"/>, starting at the array index specified by <paramref name="arrayIndex"/>.
 		/// </summary>
-		/// <returns>
-		/// A new <typeparamref name="TValue"/> array containing a copy of the contents of this
-		/// <see cref="HashSet{TKey,TValue}"/>.
-		/// </returns>
-		public TValue[] ToArray()
+		/// <param name="array">
+		/// The <see cref="KeyValuePair{TKey,TValue}"/> array to which the contents of this <see cref="HashSet{TKey,TValue}"/>
+		/// should be copied.
+		/// </param>
+		/// <param name="arrayIndex">
+		/// The zero-based index in <paramref name="array"/> at which copying should begin.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="array"/> is <see langword="null"/>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="arrayIndex"/> is less than 0.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="arrayIndex"/> is greater than or equal to the length of <paramref name="array"/>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// The number of elements in this <see cref="HashSet{TKey,TValue}"/> is greater than the available space from
+		/// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
+		/// </exception>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
 		{
-			TValue[] array = new TValue[this._size];
-			this.CopyToInternal(array, 0);
-			return array;
+			this.VerifyArrayForCopy(array, arrayIndex, true);
+			this.CopyToInternal(array, arrayIndex);
 		}
-		void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+		private void CopyToInternal(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
 		{
-			if (array == null)
-			{
-				throw new ArgumentNullException("array");
-			}
-			if (arrayIndex < 0 || arrayIndex > array.Length)
-			{
-				throw new ArgumentOutOfRangeException("arrayIndex");
-			}
-			if (array.Length - arrayIndex > this._size)
-			{
-				throw ArrayTooSmallException();
-			}
 			IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
 			Entry[] entries = this._entries;
 			for (int i = 0; i < entries.Length; i++)
@@ -1505,8 +1637,123 @@ namespace Neumont.Tools.Modeling
 				}
 			}
 		}
-		#endregion // CopyTo and ToArray methods
+		/// <summary>
+		/// Copies the contents of this <see cref="HashSet{TKey,TValue}"/> to the <see cref="DictionaryEntry"/>
+		/// array specified by <paramref name="array"/>, starting at the array index specified by <paramref name="arrayIndex"/>.
+		/// </summary>
+		/// <param name="array">
+		/// The <see cref="DictionaryEntry"/> array to which the contents of this <see cref="HashSet{TKey,TValue}"/>
+		/// should be copied.
+		/// </param>
+		/// <param name="arrayIndex">
+		/// The zero-based index in <paramref name="array"/> at which copying should begin.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="array"/> is <see langword="null"/>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="arrayIndex"/> is less than 0.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="arrayIndex"/> is greater than or equal to the length of <paramref name="array"/>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// The number of elements in this <see cref="HashSet{TKey,TValue}"/> is greater than the available space from
+		/// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
+		/// </exception>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		public void CopyTo(DictionaryEntry[] array, int arrayIndex)
+		{
+			this.VerifyArrayForCopy(array, arrayIndex, true);
+			this.CopyToInternal(array, arrayIndex);
+		}
+		private void CopyToInternal(DictionaryEntry[] array, int arrayIndex)
+		{
+			IKeyProvider<TKey, TValue> keyProvider = this._keyProvider;
+			Entry[] entries = this._entries;
+			for (int i = 0; i < entries.Length; i++)
+			{
+				Entry currentEntry = entries[i];
+				if (currentEntry != null)
+				{
+					do
+					{
+						TValue currentValue = currentEntry.Value;
+						array[arrayIndex++] = new DictionaryEntry(keyProvider.GetKey(currentValue), currentValue);
+					}
+					while ((currentEntry = currentEntry.NextEntry) != null);
+				}
+			}
+		}
+		void ICollection.CopyTo(Array array, int index)
+		{
+			this.VerifyArrayForCopy(array, index, false);
 
+			TValue[] valueArray = array as TValue[];
+			if (valueArray != null)
+			{
+				this.CopyToInternal(valueArray, index);
+				return;
+			}
+
+			KeyValuePair<TKey, TValue>[] keyValuePairArray = array as KeyValuePair<TKey, TValue>[];
+			if (keyValuePairArray != null)
+			{
+				this.CopyToInternal(keyValuePairArray, index);
+				return;
+			}
+
+			DictionaryEntry[] dictionaryEntryArray = array as DictionaryEntry[];
+			if (dictionaryEntryArray != null)
+			{
+				this.CopyToInternal(dictionaryEntryArray, index);
+				return;
+			}
+
+			TKey[] keyArray = array as TKey[];
+			if (keyArray != null)
+			{
+				this.Keys.CopyTo(keyArray, index);
+				return;
+			}
+
+			Type elementType = array.GetType().GetElementType();
+
+			if (elementType.IsAssignableFrom(typeof(TValue)))
+			{
+				CopyFromEnumerator(this.GetEnumerator(), array, index);
+				return;
+			}
+
+			if (elementType.IsAssignableFrom(typeof(KeyValuePair<TKey, TValue>)))
+			{
+				CopyFromEnumerator(this.GetKeyValuePairEnumerator(), array, index);
+				return;
+			}
+
+			if (elementType.IsAssignableFrom(typeof(DictionaryEntry)))
+			{
+				CopyFromEnumerator(this.GetDictionaryEnumerator(), array, index);
+				return;
+			}
+
+			if (elementType.IsAssignableFrom(typeof(TKey)))
+			{
+				CopyFromEnumerator(this.GetKeyEnumerator(), array, index);
+				return;
+			}
+
+			throw new ArrayTypeMismatchException();
+		}
+		private static void CopyFromEnumerator<TEnumerator>(TEnumerator enumerator, Array array, int index)
+			where TEnumerator : struct, IEnumerator
+		{
+			while (enumerator.MoveNext())
+			{
+				array.SetValue(enumerator.Current, index++);
+			}
+		}
+		#endregion // CopyTo and ToArray methods
 
 
 		#region Exception helper methods
@@ -1525,12 +1772,6 @@ namespace Neumont.Tools.Modeling
 			// UNDONE: Localize this
 			return new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Multiple values for key '{0}' exist in this collection.", duplicateKey), "key");
 		}
-		private static ArgumentException ValueTypeMismatchException(object value)
-		{
-			// UNDONE: Localize this
-			// This corresponds to "Arg_WrongType" in mscorlib.resources.
-			return new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The value '{0}' is not of type '{1}' and cannot be used in this generic collection.", value, typeof(TValue)), "value");
-		}
 		private static NotSupportedException MutatingKeyCollectionNotSupportedException()
 		{
 			// UNDONE: Localize this
@@ -1546,12 +1787,46 @@ namespace Neumont.Tools.Modeling
 		{
 			return new KeyNotFoundException();
 		}
+		private static ArgumentException ValueTypeMismatchException(object value)
+		{
+			// UNDONE: Localize this
+			// This corresponds to "Arg_WrongType" in mscorlib.resources.
+			return new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The value '{0}' is not of type '{1}' and cannot be used in this generic collection.", value, typeof(TValue)), "value");
+		}
+		private static ArgumentException KeyTypeMismatchException(object key)
+		{
+			// UNDONE: Localize this
+			return new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The key '{0}' is not of type '{1}' and cannot be used in this generic collection.", key, typeof(TKey)), "key");
+		}
+		private static bool IsKeyTypeCompatible(object key)
+		{
+			Type keyType;
+			// Check that is is the correct type, or it is null and not a ValueType, or it is null and a ValueType and Nullable<>
+			return (key is TKey) || (key == null && (!(keyType = typeof(TKey)).IsValueType || (keyType.IsGenericType && keyType.GetGenericTypeDefinition() == typeof(Nullable<>))));
+		}
 		private void EnsureGivenKeyMatchesProvider(TKey key, TValue value, bool paramIsItem)
 		{
 			if (!this._keyComparer.Equals(this._keyProvider.GetKey(value), key))
 			{
 				// UNDONE: Localize this
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The given key '{0}' does not match the key returned by the IKeyProvider for value '{1}'.", key, value), paramIsItem ? "item" : "key");
+			}
+		}
+		private void VerifyArrayForCopy(Array array, int arrayIndex, bool indexIsArrayIndex)
+		{
+			if (array == null)
+			{
+				throw new ArgumentNullException("array");
+			}
+			if (arrayIndex < 0 || arrayIndex > array.Length)
+			{
+				// While the 'arrayIndex > array.Length' check above should technically be '>=' instead,
+				// the more relaxed check is needed for compatibility with Dictionary<TKey,TValue>
+				throw new ArgumentOutOfRangeException(indexIsArrayIndex ? "arrayIndex" : "index");
+			}
+			if (array.Length - arrayIndex < this._size)
+			{
+				throw ArrayTooSmallException();
 			}
 		}
 		#endregion // Exception helper methods
@@ -1675,6 +1950,37 @@ namespace Neumont.Tools.Modeling
 				this.ReplaceOrAdd(key, value);
 			}
 		}
+		object IDictionary.this[object key]
+		{
+			get
+			{
+				if (IsKeyTypeCompatible(key))
+				{
+					TValue value = default(TValue);
+					if (this.TryGetValue((TKey)key, out value))
+					{
+						return value;
+					}
+				}
+				return null;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				if (!IsKeyTypeCompatible(key))
+				{
+					throw KeyTypeMismatchException(key);
+				}
+				if (!(value is TValue))
+				{
+					throw ValueTypeMismatchException(value);
+				}
+				this.ReplaceOrAdd((TKey)key, (TValue)value);
+			}
+		}
 		#endregion // Indexer
 
 		#region Keys properties
@@ -1685,13 +1991,28 @@ namespace Neumont.Tools.Modeling
 		/// </summary>
 		[Serializable]
 		[StructLayout(LayoutKind.Auto)]
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(typeof(KeyCollectionDebugView<,>))]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public struct KeyCollection : ICollection<TKey>
+		public struct KeyCollection : ICollection<TKey>, ICollection
 		{
 			private readonly HashSet<TKey, TValue> _hashSet;
 			internal KeyCollection(HashSet<TKey, TValue> hashSet)
 			{
 				this._hashSet = hashSet;
+			}
+
+			void ICollection<TKey>.Add(TKey item)
+			{
+				throw MutatingKeyCollectionNotSupportedException();
+			}
+			void ICollection<TKey>.Clear()
+			{
+				throw MutatingKeyCollectionNotSupportedException();
+			}
+			bool ICollection<TKey>.Remove(TKey item)
+			{
+				throw MutatingKeyCollectionNotSupportedException();
 			}
 
 			/// <summary>
@@ -1717,6 +2038,20 @@ namespace Neumont.Tools.Modeling
 			}
 
 			/// <summary>
+			/// Copies the keys for the contents of this <see cref="HashSet{TKey,TValue}"/> to a new <typeparamref name="TKey"/>
+			/// array and returns it.
+			/// </summary>
+			/// <returns>
+			/// A new <typeparamref name="TKey"/> array containing a copy of the keys for the contents of this
+			/// <see cref="HashSet{TKey,TValue}"/>.
+			/// </returns>
+			public TKey[] ToArray()
+			{
+				TKey[] array = new TKey[this._hashSet._size];
+				this.CopyToInternal(array, 0);
+				return array;
+			}
+			/// <summary>
 			/// Copies the <typeparamref name="TKey"/> instances of the <see cref="HashSet{TKey,TValue}"/> to the
 			/// <typeparamref name="TKey"/> array specified by <paramref name="array"/>, starting at the array index
 			/// specified by <paramref name="arrayIndex"/>.
@@ -1734,30 +2069,22 @@ namespace Neumont.Tools.Modeling
 			/// <exception cref="ArgumentOutOfRangeException">
 			/// <paramref name="arrayIndex"/> is less than 0.
 			/// </exception>
-			/// /// <exception cref="ArgumentOutOfRangeException">
+			/// <exception cref="ArgumentOutOfRangeException">
 			/// <paramref name="arrayIndex"/> is greater than or equal to the length of <paramref name="array"/>.
 			/// </exception>
 			/// <exception cref="ArgumentException">
-			/// Starting at <paramref name="arrayIndex"/>, <paramref name="array"/> is not large enough to hold the contents of
-			/// this <see cref="HashSet{TKey,TValue}"/>.
+			/// The number of elements in the <see cref="HashSet{TKey,TValue}"/> is greater than the available space from
+			/// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
 			/// </exception>
 			public void CopyTo(TKey[] array, int arrayIndex)
 			{
-				if (array == null)
-				{
-					throw new ArgumentNullException("array");
-				}
-				if (arrayIndex < 0 || arrayIndex > array.Length)
-				{
-					throw new ArgumentOutOfRangeException("arrayIndex");
-				}
-				HashSet<TKey, TValue> hashSet = this._hashSet;
-				if (array.Length - arrayIndex > hashSet._size)
-				{
-					throw ArrayTooSmallException();
-				}
-				IKeyProvider<TKey, TValue> keyProvider = hashSet._keyProvider;
-				Entry[] entries = hashSet._entries;
+				this._hashSet.VerifyArrayForCopy(array, arrayIndex, true);
+				this.CopyToInternal(array, arrayIndex);
+			}
+			private void CopyToInternal(TKey[] array, int arrayIndex)
+			{
+				IKeyProvider<TKey, TValue> keyProvider = this._hashSet._keyProvider;
+				Entry[] entries = this._hashSet._entries;
 				for (int i = 0; i < entries.Length; i++)
 				{
 					Entry currentEntry = entries[i];
@@ -1768,6 +2095,32 @@ namespace Neumont.Tools.Modeling
 							array[arrayIndex++] = keyProvider.GetKey(currentEntry.Value);
 						}
 						while ((currentEntry = currentEntry.NextEntry) != null);
+					}
+				}
+			}
+			void ICollection.CopyTo(Array array, int index)
+			{
+				TKey[] keyArray = array as TKey[];
+				if (keyArray != null)
+				{
+					this.CopyTo(keyArray, index);
+				}
+				else
+				{
+					this._hashSet.VerifyArrayForCopy(array, index, false);
+					IKeyProvider<TKey, TValue> keyProvider = this._hashSet._keyProvider;
+					Entry[] entries = this._hashSet._entries;
+					for (int i = 0; i < entries.Length; i++)
+					{
+						Entry currentEntry = entries[i];
+						if (currentEntry != null)
+						{
+							do
+							{
+								array.SetValue(keyProvider.GetKey(currentEntry.Value), index++);
+							}
+							while ((currentEntry = currentEntry.NextEntry) != null);
+						}
 					}
 				}
 			}
@@ -1800,21 +2153,23 @@ namespace Neumont.Tools.Modeling
 				}
 			}
 
-			void ICollection<TKey>.Add(TKey item)
+			bool ICollection.IsSynchronized
 			{
-				throw MutatingKeyCollectionNotSupportedException();
-			}
-			void ICollection<TKey>.Clear()
-			{
-				throw MutatingKeyCollectionNotSupportedException();
-			}
-			bool ICollection<TKey>.Remove(TKey item)
-			{
-				throw MutatingKeyCollectionNotSupportedException();
+				get
+				{
+					return false;
+				}
 			}
 
+			object ICollection.SyncRoot
+			{
+				get
+				{
+					return this._hashSet;
+				}
+			}
 
-			#region IEnumerable Members
+			#region GetEnumerator methods
 			/// <summary>
 			/// Returns an <see cref="Enumerator.KeyEnumerator"/> that iterates through the <typeparamref name="TKey"/>
 			/// instances in the <see cref="HashSet{TKey,TValue}"/>.
@@ -1834,11 +2189,11 @@ namespace Neumont.Tools.Modeling
 			{
 				return this._hashSet.GetKeyEnumerator();
 			}
-			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			IEnumerator IEnumerable.GetEnumerator()
 			{
 				return this._hashSet.GetKeyEnumerator();
 			}
-			#endregion
+			#endregion // GetEnumerator methods
 		}
 		#endregion // KeyCollection struct
 
@@ -1859,6 +2214,13 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		ICollection<TKey> IDictionary<TKey, TValue>.Keys
+		{
+			get
+			{
+				return new KeyCollection(this);
+			}
+		}
+		ICollection IDictionary.Keys
 		{
 			get
 			{
@@ -1886,12 +2248,43 @@ namespace Neumont.Tools.Modeling
 				return this;
 			}
 		}
+		ICollection IDictionary.Values
+		{
+			get
+			{
+				return this;
+			}
+		}
 		#endregion // Values properties
+
+		#region ICollection and IDictionary properties
+		bool ICollection.IsSynchronized
+		{
+			get
+			{
+				return false;
+			}
+		}
+		object ICollection.SyncRoot
+		{
+			get
+			{
+				return this;
+			}
+		}
+		bool IDictionary.IsFixedSize
+		{
+			get
+			{
+				return false;
+			}
+		}
+		#endregion // ICollection and IDictionary properties
 
 		#endregion // Properties
 
 
-		#region IEnumerable Members
+		#region GetEnumerator methods and variants
 
 		#region Enumerator structs
 		/// <summary>
@@ -1900,7 +2293,7 @@ namespace Neumont.Tools.Modeling
 		[Serializable]
 		[StructLayout(LayoutKind.Auto)]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public struct Enumerator : IEnumerator<TValue>
+		public struct Enumerator : IEnumerator<TValue>, IEnumerable<TValue>
 		{
 			private readonly HashSet<TKey, TValue> _hashSet;
 			private int _index;
@@ -1918,7 +2311,7 @@ namespace Neumont.Tools.Modeling
 			/// Sets this <see cref="Enumerator"/> to its initial position,
 			/// which is before the first element in the collection.
 			/// </summary>
-			/// <seealso cref="System.Collections.IEnumerator.Reset"/>
+			/// <seealso cref="IEnumerator.Reset"/>
 			public void Reset()
 			{
 				this._index = -1;
@@ -1930,13 +2323,13 @@ namespace Neumont.Tools.Modeling
 			/// <summary>
 			/// Advances this <see cref="Enumerator"/> to the next element of the collection.
 			/// </summary>
-			/// <seealso cref="System.Collections.IEnumerator.MoveNext"/>
+			/// <seealso cref="IEnumerator.MoveNext"/>
 			public bool MoveNext()
 			{
 				Entry currentEntry = this._currentEntry;
-				if (currentEntry != null && currentEntry.NextEntry != null)
+				if (currentEntry != null && (currentEntry = currentEntry.NextEntry) != null)
 				{
-					this._currentEntry = currentEntry.NextEntry;
+					this._currentEntry = currentEntry;
 					return true;
 				}
 				else
@@ -1952,6 +2345,7 @@ namespace Neumont.Tools.Modeling
 						}
 					}
 				}
+				this._currentEntry = null;
 				return false;
 			}
 			#endregion // MoveNext method
@@ -1972,7 +2366,7 @@ namespace Neumont.Tools.Modeling
 					return currentEntry.Value;
 				}
 			}
-			object System.Collections.IEnumerator.Current
+			object IEnumerator.Current
 			{
 				get
 				{
@@ -1990,15 +2384,42 @@ namespace Neumont.Tools.Modeling
 			}
 			#endregion // Dispose method
 
+			#region GetEnumerator methods
+			/// <summary>
+			/// Returns an <see cref="Enumerator"/> that iterates through the <typeparamref name="TValue"/>
+			/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="Enumerator"/>.
+			/// </summary>
+			/// <returns>
+			/// An <see cref="Enumerator"/> that iterates through the <typeparamref name="TValue"/>
+			/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="Enumerator"/>.
+			/// </returns>
+			[EditorBrowsable(EditorBrowsableState.Advanced)]
+			public Enumerator GetEnumerator()
+			{
+				Enumerator enumerator = this;
+				enumerator.Reset();
+				return enumerator;
+			}
+			IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
+			{
+				return this.GetEnumerator();
+			}
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return this.GetEnumerator();
+			}
+			#endregion // GetEnumerator methods
+
 			#region KeyEnumerator struct
 			/// <summary>
 			/// Enumerates the <typeparamref name="TKey"/> instances of a <see cref="HashSet{TKey,TValue}"/>.
 			/// </summary>
 			[Serializable]
 			[StructLayout(LayoutKind.Auto)]
-			public struct KeyEnumerator : IEnumerator<TKey>
+			[EditorBrowsable(EditorBrowsableState.Advanced)]
+			public struct KeyEnumerator : IEnumerator<TKey>, IEnumerable<TKey>
 			{
-				private readonly Enumerator _enumerator;
+				private Enumerator _enumerator;
 				internal KeyEnumerator(HashSet<TKey, TValue> hashSet)
 				{
 					this._enumerator = new Enumerator(hashSet);
@@ -2010,11 +2431,10 @@ namespace Neumont.Tools.Modeling
 				{
 					get
 					{
-						Enumerator enumerator = this._enumerator;
-						return enumerator._hashSet._keyProvider.GetKey(enumerator.Current);
+						return this._enumerator._hashSet._keyProvider.GetKey(this._enumerator.Current);
 					}
 				}
-				object System.Collections.IEnumerator.Current
+				object IEnumerator.Current
 				{
 					get
 					{
@@ -2030,7 +2450,7 @@ namespace Neumont.Tools.Modeling
 				/// <summary>
 				/// Advances this <see cref="KeyEnumerator"/> to the next element of the collection.
 				/// </summary>
-				/// <seealso cref="System.Collections.IEnumerator.MoveNext"/>
+				/// <seealso cref="IEnumerator.MoveNext"/>
 				public bool MoveNext()
 				{
 					return this._enumerator.MoveNext();
@@ -2039,11 +2459,36 @@ namespace Neumont.Tools.Modeling
 				/// Sets this <see cref="KeyEnumerator"/> to its initial position,
 				/// which is before the first element in the collection.
 				/// </summary>
-				/// <seealso cref="System.Collections.IEnumerator.Reset"/>
+				/// <seealso cref="IEnumerator.Reset"/>
 				public void Reset()
 				{
 					this._enumerator.Reset();
 				}
+				#region GetEnumerator methods
+				/// <summary>
+				/// Returns a <see cref="KeyEnumerator"/> that iterates through the <typeparamref name="TKey"/>
+				/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="KeyEnumerator"/>.
+				/// </summary>
+				/// <returns>
+				/// A <see cref="KeyEnumerator"/> that iterates through the <typeparamref name="TKey"/>
+				/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="KeyEnumerator"/>.
+				/// </returns>
+				[EditorBrowsable(EditorBrowsableState.Advanced)]
+				public KeyEnumerator GetEnumerator()
+				{
+					KeyEnumerator enumerator = this;
+					enumerator._enumerator.Reset();
+					return enumerator;
+				}
+				IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				IEnumerator IEnumerable.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				#endregion // GetEnumerator methods
 			}
 			#endregion // KeyEnumerator struct
 
@@ -2053,9 +2498,10 @@ namespace Neumont.Tools.Modeling
 			/// </summary>
 			[Serializable]
 			[StructLayout(LayoutKind.Auto)]
-			public struct KeyValuePairEnumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+			[EditorBrowsable(EditorBrowsableState.Advanced)]
+			public struct KeyValuePairEnumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerator<DictionaryEntry>, IEnumerable<DictionaryEntry>, IDictionaryEnumerator
 			{
-				private readonly Enumerator _enumerator;
+				private Enumerator _enumerator;
 				internal KeyValuePairEnumerator(HashSet<TKey, TValue> hashSet)
 				{
 					this._enumerator = new Enumerator(hashSet);
@@ -2067,16 +2513,68 @@ namespace Neumont.Tools.Modeling
 				{
 					get
 					{
-						Enumerator enumerator = this._enumerator;
-						TValue value = enumerator.Current;
-						return new KeyValuePair<TKey, TValue>(enumerator._hashSet._keyProvider.GetKey(value), value);
+						return new KeyValuePair<TKey, TValue>(this._enumerator._hashSet._keyProvider.GetKey(this._enumerator.Current), this._enumerator.Current);
 					}
 				}
-				object System.Collections.IEnumerator.Current
+				object IEnumerator.Current
 				{
 					get
 					{
 						return this.Current;
+					}
+				}
+				/// <summary>
+				/// Gets the <see cref="DictionaryEntry"/> instance at the current position of this <see cref="KeyValuePairEnumerator"/>.
+				/// </summary>
+				[EditorBrowsable(EditorBrowsableState.Advanced)]
+				public DictionaryEntry Entry
+				{
+					get
+					{
+						return new DictionaryEntry(this._enumerator._hashSet._keyProvider.GetKey(this._enumerator.Current), this._enumerator.Current);
+					}
+				}
+				DictionaryEntry IEnumerator<DictionaryEntry>.Current
+				{
+					get
+					{
+						return this.Entry;
+					}
+				}
+				/// <summary>
+				/// Gets the <typeparamref name="TKey"/> instance at the current position of this <see cref="KeyValuePairEnumerator"/>.
+				/// </summary>
+				[EditorBrowsable(EditorBrowsableState.Advanced)]
+				public TKey Key
+				{
+					get
+					{
+						return this._enumerator._hashSet._keyProvider.GetKey(this._enumerator.Current);
+					}
+				}
+				/// <summary>
+				/// Gets the <typeparamref name="TValue"/> instance at the current position of this <see cref="KeyValuePairEnumerator"/>.
+				/// </summary>
+				[EditorBrowsable(EditorBrowsableState.Advanced)]
+				public TValue Value
+				{
+					get
+					{
+						return this._enumerator.Current;
+					}
+				}
+				object IDictionaryEnumerator.Key
+				{
+					get
+					{
+						return this.Key;
+					}
+				}
+				object IDictionaryEnumerator.Value
+				{
+					get
+					{
+						return this.Value;
 					}
 				}
 				/// <summary>Does nothing.</summary>
@@ -2088,7 +2586,7 @@ namespace Neumont.Tools.Modeling
 				/// <summary>
 				/// Advances this <see cref="KeyValuePairEnumerator"/> to the next element of the collection.
 				/// </summary>
-				/// <seealso cref="System.Collections.IEnumerator.MoveNext"/>
+				/// <seealso cref="IEnumerator.MoveNext"/>
 				public bool MoveNext()
 				{
 					return this._enumerator.MoveNext();
@@ -2097,16 +2595,149 @@ namespace Neumont.Tools.Modeling
 				/// Sets this <see cref="KeyValuePairEnumerator"/> to its initial position,
 				/// which is before the first element in the collection.
 				/// </summary>
-				/// <seealso cref="System.Collections.IEnumerator.Reset"/>
+				/// <seealso cref="IEnumerator.Reset"/>
 				public void Reset()
 				{
 					this._enumerator.Reset();
 				}
+				#region GetEnumerator methods
+				/// <summary>
+				/// Returns a <see cref="KeyValuePairEnumerator"/> that iterates through the <see cref="KeyValuePair{TKey,TValue}"/>
+				/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="KeyValuePairEnumerator"/>.
+				/// </summary>
+				/// <returns>
+				/// A <see cref="KeyValuePairEnumerator"/> that iterates through the <see cref="KeyValuePair{TKey,TValue}"/>
+				/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="KeyValuePairEnumerator"/>.
+				/// </returns>
+				[EditorBrowsable(EditorBrowsableState.Advanced)]
+				public KeyValuePairEnumerator GetEnumerator()
+				{
+					KeyValuePairEnumerator enumerator = this;
+					enumerator._enumerator.Reset();
+					return enumerator;
+				}
+				IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				IEnumerator<DictionaryEntry> IEnumerable<DictionaryEntry>.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				IEnumerator IEnumerable.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				#endregion // GetEnumerator methods
 			}
 			#endregion // KeyValuePairEnumerator struct
+
+			#region DictionaryEnumerator struct
+			/// <summary>
+			/// Enumerates the <see cref="DictionaryEntry"/> instances of a <see cref="HashSet{TKey,TValue}"/>.
+			/// </summary>
+			[Serializable]
+			[StructLayout(LayoutKind.Auto)]
+			[EditorBrowsable(EditorBrowsableState.Advanced)]
+			public struct DictionaryEnumerator : IEnumerator<DictionaryEntry>, IEnumerable<DictionaryEntry>, IDictionaryEnumerator
+			{
+				private Enumerator _enumerator;
+				internal DictionaryEnumerator(HashSet<TKey, TValue> hashSet)
+				{
+					this._enumerator = new Enumerator(hashSet);
+				}
+				/// <summary>
+				/// Gets the <see cref="DictionaryEntry"/> instance at the current position of this <see cref="DictionaryEnumerator"/>.
+				/// </summary>
+				public DictionaryEntry Current
+				{
+					get
+					{
+						return new DictionaryEntry(this._enumerator._hashSet._keyProvider.GetKey(this._enumerator.Current), this._enumerator.Current);
+					}
+				}
+				object IEnumerator.Current
+				{
+					get
+					{
+						return this.Current;
+					}
+				}
+				DictionaryEntry IDictionaryEnumerator.Entry
+				{
+					get
+					{
+						return this.Current;
+					}
+				}
+				object IDictionaryEnumerator.Key
+				{
+					get
+					{
+						return this._enumerator._hashSet._keyProvider.GetKey(this._enumerator.Current);
+					}
+				}
+				object IDictionaryEnumerator.Value
+				{
+					get
+					{
+						return this._enumerator.Current;
+					}
+				}
+				/// <summary>Does nothing.</summary>
+				[EditorBrowsable(EditorBrowsableState.Never)]
+				public void Dispose()
+				{
+					// Do nothing
+				}
+				/// <summary>
+				/// Advances this <see cref="DictionaryEnumerator"/> to the next element of the collection.
+				/// </summary>
+				/// <seealso cref="IEnumerator.MoveNext"/>
+				public bool MoveNext()
+				{
+					return this._enumerator.MoveNext();
+				}
+				/// <summary>
+				/// Sets this <see cref="DictionaryEnumerator"/> to its initial position,
+				/// which is before the first element in the collection.
+				/// </summary>
+				/// <seealso cref="IEnumerator.Reset"/>
+				public void Reset()
+				{
+					this._enumerator.Reset();
+				}
+				#region GetEnumerator methods
+				/// <summary>
+				/// Returns a <see cref="DictionaryEnumerator"/> that iterates through the <see cref="DictionaryEntry"/>
+				/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="DictionaryEnumerator"/>.
+				/// </summary>
+				/// <returns>
+				/// A <see cref="DictionaryEnumerator"/> that iterates through the <see cref="DictionaryEntry"/>
+				/// instances in the same <see cref="HashSet{TKey,TValue}"/> as this <see cref="DictionaryEnumerator"/>.
+				/// </returns>
+				[EditorBrowsable(EditorBrowsableState.Advanced)]
+				public DictionaryEnumerator GetEnumerator()
+				{
+					DictionaryEnumerator enumerator = this;
+					enumerator._enumerator.Reset();
+					return enumerator;
+				}
+				IEnumerator<DictionaryEntry> IEnumerable<DictionaryEntry>.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				IEnumerator IEnumerable.GetEnumerator()
+				{
+					return this.GetEnumerator();
+				}
+				#endregion // GetEnumerator methods
+			}
+			#endregion // DictionaryEnumerator struct
 		}
 
 		#endregion // Enumerator structs
+
 		/// <summary>
 		/// Returns an <see cref="Enumerator"/> that iterates through the <typeparamref name="TValue"/>
 		/// instances in this <see cref="HashSet{TKey,TValue}"/>.
@@ -2116,6 +2747,14 @@ namespace Neumont.Tools.Modeling
 		/// instances in this <see cref="HashSet{TKey,TValue}"/>.
 		/// </returns>
 		public Enumerator GetEnumerator()
+		{
+			return new Enumerator(this);
+		}
+		IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
+		{
+			return new Enumerator(this);
+		}
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return new Enumerator(this);
 		}
@@ -2149,17 +2788,24 @@ namespace Neumont.Tools.Modeling
 		{
 			return new Enumerator.KeyValuePairEnumerator(this);
 		}
-		IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
+		/// <summary>
+		/// Returns an <see cref="Enumerator.DictionaryEnumerator"/> that iterates through the <see cref="DictionaryEntry"/>
+		/// instances in this <see cref="HashSet{TKey,TValue}"/>.
+		/// </summary>
+		/// <returns>
+		/// An <see cref="Enumerator.DictionaryEnumerator"/> that iterates through the <see cref="DictionaryEntry"/>
+		/// instances in this <see cref="HashSet{TKey,TValue}"/>.
+		/// </returns>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		public Enumerator.DictionaryEnumerator GetDictionaryEnumerator()
 		{
-			return new Enumerator(this);
+			return new Enumerator.DictionaryEnumerator(this);
 		}
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		IDictionaryEnumerator IDictionary.GetEnumerator()
 		{
-			return new Enumerator(this);
+			return new Enumerator.DictionaryEnumerator(this);
 		}
-		#endregion // IEnumerable Members
-
-
+		#endregion // GetEnumerator methods and variants
 	}
 	#endregion // HashSet class
 }
