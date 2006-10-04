@@ -1141,6 +1141,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (constraint != null)
 			{
 				IList<IntersectingConstraintValidation> validations = constraint.GetIntersectingConstraintValidationInfo();
+				if (validations == null)
+				{
+					return;
+				}
 				int validationCount = validations.Count;
 				for (int iValidation = 0; iValidation < validationCount; ++iValidation)
 				{
@@ -1215,6 +1219,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void ValidateSetConstraintSubsetPattern(INotifyElementAdded notifyAdded)
 		{
 			IList<IntersectingConstraintValidation> validations = this.Constraint.GetIntersectingConstraintValidationInfo();
+			if (validations == null)
+			{
+				return;
+			}
 			int validationCount = validations.Count;
 			for (int i = 0; i < validationCount; ++i)
 			{
@@ -2477,6 +2485,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (constraint != null)
 			{
 				IList<IntersectingConstraintValidation> validations = constraint.GetIntersectingConstraintValidationInfo();
+				if (validations == null)
+				{
+					return;
+				}
 				int validationCount = validations.Count;
 				for (int iValidation = 0; iValidation < validationCount; ++iValidation)
 				{
@@ -2558,6 +2570,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void ValidateSetComparisonConstraintSubsetPattern(INotifyElementAdded notifyAdded)
 		{
 			IList<IntersectingConstraintValidation> validations = (this as IConstraint).GetIntersectingConstraintValidationInfo();
+			if (validations == null)
+			{
+				return;
+			}
 			int validationCount = validations.Count;
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
 			int constraintSequenceCount = constraintSequences.Count;
