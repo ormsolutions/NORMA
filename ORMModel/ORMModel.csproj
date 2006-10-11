@@ -166,52 +166,52 @@
     <Compile Include="Shell\SamplePopulationEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GeneratedCode\CoreDomainRelationships.cs">
+    <Compile Include="ObjectModel\GeneratedCode\CoreDomainRelationships.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreDomainRelationships.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\ShapeDomainModel.cs">
+    <Compile Include="ShapeModel\GeneratedCode\ShapeDomainModel.cs">
       <DependentUpon>ShapeDomainModel.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GeneratedCode\ShapeDomainRelationships.cs">
-      <DependentUpon>ShapeDomainRelationships.tt</DependentUpon>
+    <Compile Include="ShapeModel\GeneratedCode\ShapeDomainRelationships.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ShapeDomainRelationships.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\ConnectionBuilders.cs">
+    <Compile Include="ShapeModel\GeneratedCode\ConnectionBuilders.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConnectionBuilders.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\Connectors.cs">
+    <Compile Include="ShapeModel\GeneratedCode\Connectors.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Connectors.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\Diagram.cs">
+    <Compile Include="ShapeModel\GeneratedCode\Diagram.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Diagram.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\DomainClasses.cs">
+    <Compile Include="ObjectModel\GeneratedCode\DomainClasses.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainClasses.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\CoreDomainModel.cs">
+    <Compile Include="ObjectModel\GeneratedCode\CoreDomainModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreDomainModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\Shapes.cs">
+    <Compile Include="ShapeModel\GeneratedCode\Shapes.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Shapes.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\ToolboxHelper.cs">
+    <Compile Include="ShapeModel\GeneratedCode\ToolboxHelper.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolboxHelper.tt</DependentUpon>
@@ -459,7 +459,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GeneratedCode\ShapeDomainModelResx.resx">
+    <EmbeddedResource Include="ShapeModel\GeneratedCode\ShapeDomainModelResx.resx">
+			<LogicalName>Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx.resources</LogicalName>
       <DependentUpon>ShapeDomainModelResx.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
@@ -471,7 +472,8 @@
     <EmbeddedResource Include="ShapeModel\ORMShapeDomainModel.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GeneratedCode\CoreDomainModelResx.resx">
+    <EmbeddedResource Include="ObjectModel\GeneratedCode\CoreDomainModelResx.resx">
+			<LogicalName>Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx.resources</LogicalName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreDomainModelResx.tt</DependentUpon>
@@ -492,51 +494,51 @@
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="GeneratedCode\ConnectionBuilders.tt">
+    <None Include="ShapeModel\GeneratedCode\ConnectionBuilders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ConnectionBuilders.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\Connectors.tt">
+    <None Include="ShapeModel\GeneratedCode\Connectors.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Connectors.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\ShapeDomainModel.tt">
+    <None Include="ShapeModel\GeneratedCode\ShapeDomainModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ShapeDomainModel.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\ShapeDomainModelResx.tt">
+    <None Include="ShapeModel\GeneratedCode\ShapeDomainModelResx.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ShapeDomainModelResx.resx</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\ShapeDomainRelationships.tt">
+    <None Include="ShapeModel\GeneratedCode\ShapeDomainRelationships.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ShapeDomainRelationships.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\Diagram.tt">
+    <None Include="ShapeModel\GeneratedCode\Diagram.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Diagram.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainClasses.tt">
+    <None Include="ObjectModel\GeneratedCode\DomainClasses.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainClasses.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\CoreDomainModel.tt">
+    <None Include="ObjectModel\GeneratedCode\CoreDomainModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CoreDomainModel.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\CoreDomainModelResx.tt">
+    <None Include="ObjectModel\GeneratedCode\CoreDomainModelResx.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CoreDomainModelResx.resx</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\CoreDomainRelationships.tt">
+    <None Include="ObjectModel\GeneratedCode\CoreDomainRelationships.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CoreDomainRelationships.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\Shapes.tt">
+    <None Include="ShapeModel\GeneratedCode\Shapes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Shapes.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\ToolboxHelper.tt">
+    <None Include="ShapeModel\GeneratedCode\ToolboxHelper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToolboxHelper.cs</LastGenOutput>
     </None>

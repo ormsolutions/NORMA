@@ -706,79 +706,79 @@ A DomainClass can be serialized as a moniker only if
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="EntityTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.EntityType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.EntityType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ValueTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ValueType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ValueType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ObjectifiedFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ObjectifiedFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ObjectifiedFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="UnaryFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.UnaryFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.UnaryFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="BinaryFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.BinaryFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.BinaryFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="TernaryFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.TernaryFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.TernaryFactType.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="RoleConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.RoleConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.RoleConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="SubtypeConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="InternalUniquenessConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ExternalUniquenessConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ExternalUniquenessConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ExternalUniquenessConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="EqualityConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.EqualityConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.EqualityConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ExclusionConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ExclusionConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ExclusionConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="InclusiveOrConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="SubsetConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.SubsetConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.SubsetConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="FrequencyConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="RingConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.RingConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.RingConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ExternalConstraintConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ModelNoteToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ModelNote.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ModelNote.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ModelNoteConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-    <value>..\Resources\Toolbox.ModelNoteConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\Resources\Toolbox.ModelNoteConnector.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
 </root>

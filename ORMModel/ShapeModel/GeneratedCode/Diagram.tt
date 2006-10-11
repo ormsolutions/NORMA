@@ -13,6 +13,6 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-<#@ include file="Dsl\DomainModelCodeGenerator.tt" #>
-<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ShapeModel/ORMShape.dsl';generatedResourceFile='ShapeDomainModelResx';validation=''" #>
-<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ORMShape.dsl';generatedResourceFile='ShapeDomainModelResx';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
+<#@ include file="Dsl\Diagram.tt" #>
