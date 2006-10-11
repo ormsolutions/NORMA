@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DILSupportFunctionsDataGenerator", "DILSupportFunctionsDataGenerator.csproj", "{3A0168D6-AC2D-4462-92A0-123F51E35477}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DILSupportFunctionsDataGenerator|Any CPU = DILSupportFunctionsDataGenerator|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A0168D6-AC2D-4462-92A0-123F51E35477}.DILSupportFunctionsDataGenerator|Any CPU.ActiveCfg = DILSupportFunctionsDataGenerator|Any CPU
+		{3A0168D6-AC2D-4462-92A0-123F51E35477}.DILSupportFunctionsDataGenerator|Any CPU.Build.0 = DILSupportFunctionsDataGenerator|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
