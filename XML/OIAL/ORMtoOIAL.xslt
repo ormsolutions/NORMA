@@ -47,9 +47,19 @@
 			<!-- Make sure the model has been co-referenced... -->
 			<xsl:apply-templates select="$SourceModel" mode="CoRefORMModel"/>
 		</xsl:variable>
-		<xsl:variable name="Model" select="exsl:node-set($ModelFragment)/child::*"/>
-
-		<xsl:variable name="objectsAndFacts" select="($Model/orm:Objects|$Model/orm:Facts)/child::*"/>
+		<!-- UNDONE: Until we add proper support for derived facts and derivation rules, just strip out facts that are fully derived. -->
+		<xsl:variable name="ModelFragment2">
+			<xsl:for-each select="exsl:node-set($ModelFragment)/child::*">
+				<xsl:copy>
+					<xsl:copy-of select="@*"/>
+					<xsl:copy-of select="child::*[not(self::orm:Facts)]"/>
+					<orm:Facts>
+						<xsl:copy-of select="orm:Facts/child::*[not(orm:DerivationRule/orm:DerivationExpression/@DerivationStorage='Derived')]"/>
+					</orm:Facts>
+				</xsl:copy>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="Model" select="exsl:node-set($ModelFragment2)/child::*"/>
 
 		<xsl:variable name="SingleRoleMandatoryConstraints" select="$Model/orm:Constraints/orm:MandatoryConstraint[count(orm:RoleSequence/child::*)=1]"/>
 		<xsl:variable name="SingleRoleUniquenessConstraints" select="$Model/orm:Constraints/orm:UniquenessConstraint[count(orm:RoleSequence/child::*)=1]"/>
