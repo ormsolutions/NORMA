@@ -136,6 +136,9 @@
         <oil:typeRef targetConceptType="Person" targetChild="HatType_HatTypeStyle_HatTypeStyle_Description" />
       </oil:roleSequence>
     </oil:equalityConstraint>
+    <oil:conceptTypeRef name="Husband" target="Person" oppositeName="Wife" mandatory="false" sourceRoleRef="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6">
+      <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint14" sourceRef="_BEEBB37E-4607-48AB-B10C-3D87B83D5A4C" modality="alethic" isPreferred="false" />
+    </oil:conceptTypeRef>
     <oil:informationType name="OwnsCar_vin" formatRef="vin" mandatory="false" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_ED495E3B-6C47-4D22-B01C-0E0C805C6664">
       <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint22" sourceRef="_50710E80-100C-47A9-B5D3-B86A8E75B7B9" modality="alethic" isPreferred="false" />
     </oil:informationType>
@@ -162,6 +165,14 @@
     <oil:informationType name="MandatoryUniqueString" formatRef="MandatoryUniqueString" mandatory="alethic" sourceRef="_05B33E84-9567-412A-8ABF-DC395F52C220" sourceRoleRef="_36E5694F-1B3C-495C-ACBF-209DC6C2F4BD">
       <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint67" sourceRef="_DBE5D226-1A64-4D1E-BC02-8E702E7560BC" modality="alethic" isPreferred="false" />
     </oil:informationType>
+    <oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
+      <oil:roleSequence>
+        <oil:typeRef targetConceptType="Person" targetChild="Wife" />
+      </oil:roleSequence>
+      <oil:roleSequence>
+        <oil:typeRef targetConceptType="Person" targetChild="Husband" />
+      </oil:roleSequence>
+    </oil:exclusionConstraint>
     <oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_F40FEEF1-947A-453D-8B63-C791930EB876" isPreferred="false">
       <oil:roleSequence>
         <oil:typeRef targetConceptType="Person" targetChild="FirstName" />
@@ -174,14 +185,6 @@
         <oil:typeRef targetConceptType="Person" targetChild="Date_YMD" />
       </oil:roleSequence>
     </oil:roleSequenceUniquenessConstraint>
-    <oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
-      <oil:roleSequence>
-        <oil:typeRef targetConceptType="Person" targetChild="Wife" />
-      </oil:roleSequence>
-      <oil:roleSequence>
-        <oil:typeRef targetConceptType="Person" targetChild="Husband" />
-      </oil:roleSequence>
-    </oil:exclusionConstraint>
   </oil:conceptType>
   <oil:conceptType name="Task" sourceRef="_779E9788-0C2F-44B6-B958-AEEC22593966">
     <oil:conceptTypeRef name="Person" target="Person" oppositeName="Task" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />

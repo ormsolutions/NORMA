@@ -356,12 +356,14 @@
 		<!-- $nonPreferredIdentifierDirectFacts that are alethicly mandatory -->
 		<xsl:variable name="mandatoryNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[@id=$mandatoryDirectFacts/@id]"/>
 		
-		<!-- TODO: The comment says $nonPreferredIdentifierDirectFacts but the code says $directFacts... Which is correct? -->
-		<!-- $nonPreferredIdentifierDirectFacts on which this object type is functionally dependent. -->
-		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and not(@id=$directPlayedRoles/@ref)]]"/>
+		<!-- $directFacts on which this object type is functionally dependent (i.e. $directFacts containing an alethicly unique role that is also in in $directFactsOppositeRoles) -->
+		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and @id=$directFactsOppositeRoles/@id]]"/>
 
+		<!-- $directPlayedRoles that are functional for this object type -->
+		<xsl:variable name="functionalDirectPlayedRoles" select="$directPlayedRoles[@ref=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref]"/>
+		
 		<!-- $directFacts in which this object type plays a functional role -->
-		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and @id=$directPlayedRoles/@ref]]"/>
+		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:FactRoles/child::*/@id=$functionalDirectPlayedRoles/@ref]"/>
 
 		<!-- The intersection of $mandatoryDirectFacts, $dependentDirectFacts, and $functionalDirectFacts. -->
 		<xsl:variable name="mandatoryDependentFunctionalDirectFacts" select="$mandatoryDirectFacts[@id=$dependentDirectFacts/@id and @id=$functionalDirectFacts/@id]"/>
@@ -429,6 +431,9 @@
 		<dependentDirectFacts>
 			<xsl:copy-of select="$dependentDirectFacts"/>
 		</dependentDirectFacts>
+		<functionalDirectPlayedRoles>
+			<xsl:copy-of select="$functionalDirectPlayedRoles"/>
+		</functionalDirectPlayedRoles>
 		<functionalDirectFacts>
 			<xsl:copy-of select="$functionalDirectFacts"/>
 		</functionalDirectFacts>
@@ -605,9 +610,11 @@
 
 			<!-- Process both of the above. -->
 			<xsl:for-each select="$absorbedFunctionalDirectFacts | $absorbedSubtypeMetaFacts">
-				<xsl:variable name="thisRole" select="orm:FactRoles/child::*[orm:RolePlayer/@ref=$thisObjectTypeId]"/>
+				<!-- $thisRole is the role that the orm:Fact or orm:SubtypeFact is being absorbed towards. It is always played by this object type, and it is always functional. -->
+				<!-- If there are two candidates for $thisRole (i.e. in a fully alethic one-to-one with both roles played by the same object type), the first role is used. -->
+				<xsl:variable name="thisRole" select="orm:FactRoles/child::*[@id=$thisObjectTypeInformation/functionalDirectPlayedRoles/child::*/@ref][1]"/>
 				<xsl:variable name="thisRoleId" select="$thisRole/@id"/>
-				<xsl:variable name="oppositeRole" select="orm:FactRoles/child::*[not(orm:RolePlayer/@ref=$thisObjectTypeId)]"/>
+				<xsl:variable name="oppositeRole" select="orm:FactRoles/child::*[not(@id=$thisRoleId)]"/>
 				<xsl:variable name="oppositeRoleId" select="$oppositeRole/@id"/>
 				<xsl:variable name="oppositeRolePlayerId" select="$oppositeRole/orm:RolePlayer/@ref"/>
 				<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
@@ -704,7 +711,7 @@
 							<xsl:with-param name="OilConstraints" select="$oilConstraints"/>
 						</xsl:call-template>
 					</xsl:when>
-					<xsl:when test="$oppositeRolePlayerDesiredParentOrTopLevelTypeId = $thisObjectTypeId">
+					<xsl:when test="($oppositeRolePlayerDesiredParentOrTopLevelTypeId = $thisObjectTypeId) and not($oppositeRolePlayerId = $thisObjectTypeId)">
 						<xsl:apply-templates select="$oppositeRolePlayer" mode="GenerateConceptTypes">
 							<xsl:with-param name="Model" select="$Model"/>
 							<xsl:with-param name="SingleRoleMandatoryConstraints" select="$SingleRoleMandatoryConstraints"/>
@@ -718,7 +725,7 @@
 							<xsl:with-param name="OilConstraintsFromParent" select="$oilConstraints"/>
 						</xsl:apply-templates>
 					</xsl:when>
-					<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
+					<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerId = $thisObjectTypeId) or ($oppositeRolePlayerId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
 						<oil:conceptTypeRef name="{$name}" target="{$oppositeRolePlayerName}" oppositeName="{$oppositeName}"  mandatory="{$mandatory}" sourceRoleRef="{$thisRoleId}">
 							<xsl:copy-of select="$oilConstraints"/>
 						</oil:conceptTypeRef>
