@@ -207,6 +207,19 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	<xsl:template name="GetUnaryFactRoleName">
+		<xsl:param name="Model"/>
+		<xsl:param name="UnaryFact"/>
+		<xsl:choose>
+			<xsl:when test="string-length($UnaryFact/orm:FactRoles/child::*/@Name)">
+				<xsl:value-of select="string-length($UnaryFact/orm:FactRoles/child::*/@Name)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="reading" select="translate(normalize-space($UnaryFact/orm:ReadingOrders/orm:ReadingOrder[1]/orm:Readings/orm:Reading[1]/orm:Data/text()),' ','')"/>
+				<xsl:value-of select="concat(substring-before($reading,'{0}'),substring-after($reading,'{0}'))"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:template match="orm:Facts/orm:Fact" mode="CoRefORM">
 		<xsl:param name="Model"/>
 		<xsl:param name="RoleMap"/>
@@ -220,25 +233,20 @@
 				<xsl:for-each select="$fact/orm:FactRoles/orm:Role">
 					<orm:Fact id="{$factId}{$CoRefFactIdDecorator}{position()}">
 						<orm:FactRoles>
-							<xsl:variable name="RoleNameEndDecorator">
-								<xsl:choose>
-									<xsl:when test="string-length(@Name)">
-										<xsl:value-of select="@Name"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="$Model/orm:Objects/child::*[@id=current()/orm:RolePlayer/@ref]/@Name"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<!-- UNDONE: Consider getting multiplicity right for both these roles -->
-							<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" _IsMandatory="true">
-								<xsl:copy-of select="@Name"/>
-								<orm:RolePlayer ref="{$factId}"/>
-							</orm:Role>
 							<xsl:copy>
 								<xsl:copy-of select="@*[local-name()!='_Multiplicity']"/>
 								<xsl:copy-of select="orm:RolePlayer"/>
 							</xsl:copy>
+							<!-- UNDONE: Consider getting multiplicity right for both these roles -->
+							<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" _IsMandatory="true">
+								<xsl:attribute name="Name">
+									<xsl:call-template name="GetUnaryFactRoleName">
+										<xsl:with-param name="Model" select="$Model"/>
+										<xsl:with-param name="UnaryFact" select="$fact"/>
+									</xsl:call-template>
+								</xsl:attribute>
+								<orm:RolePlayer ref="{$factId}"/>
+							</orm:Role>
 						</orm:FactRoles>
 						<orm:InternalConstraints>
 							<orm:UniquenessConstraint ref="{@id}{$CoRefInternalUniquenessIdDecorator}"/>
@@ -307,7 +315,15 @@
 				<xsl:with-param name="UnobjectifiedUnaryFacts" select="$UnobjectifiedUnaryFacts"/>
 			</xsl:apply-templates>
 			<xsl:for-each select="$UnobjectifiedUnaryFacts">
-				<orm:ValueType Name="{orm:FactRoles/orm:Role/@Name}" id="{@id}">
+				<orm:ValueType id="{@id}">
+					<xsl:attribute name="Name">
+						<xsl:value-of select="$Model/orm:Objects/child::*[@id=current()/orm:FactRoles/orm:Role/orm:RolePlayer/@ref]/@Name"/>
+						<xsl:text>_</xsl:text>
+						<xsl:call-template name="GetUnaryFactRoleName">
+							<xsl:with-param name="Model" select="$Model"/>
+							<xsl:with-param name="UnaryFact" select="."/>
+						</xsl:call-template>
+					</xsl:attribute>
 					<orm:PlayedRoles>
 						<orm:Role ref="{orm:FactRoles/orm:Role/@id}{$CoRefOppositeRoleIdDecorator}"/>
 					</orm:PlayedRoles>
