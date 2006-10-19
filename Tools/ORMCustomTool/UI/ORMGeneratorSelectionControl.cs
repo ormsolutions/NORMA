@@ -43,7 +43,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private readonly BuildItemGroup _buildItemGroup;
 		private readonly Dictionary<string, BuildItem> _buildItemsByGenerator;
 		private Dictionary<string, string> _removedItems;
-
+		private readonly string _projectItemRelativePath;
 		private ORMGeneratorSelectionControl()
 		{
 			this.InitializeComponent();
@@ -53,7 +53,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			: this()
 		{
 			Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
-			BuildItemGroup originalBuildItemGroup = ORMCustomTool.GetBuildItemGroup(project, projectItem.Name);
+			string projectFullPath = project.FullFileName;
+			string projectItemRelativePath = (string)projectItem.Properties.Item("LocalPath").Value;
+			projectItemRelativePath = (new Uri(projectFullPath)).MakeRelativeUri(new Uri(projectItemRelativePath)).ToString();
+			this._projectItemRelativePath = projectItemRelativePath;
+
+			BuildItemGroup originalBuildItemGroup = ORMCustomTool.GetBuildItemGroup(project, projectItemRelativePath);
 			_projectItem = projectItem;
 			this._project = project;
 			this._originalBuildItemGroup = originalBuildItemGroup;
@@ -62,7 +67,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			if (originalBuildItemGroup == null)
 			{
 				buildItemGroup = project.AddNewItemGroup();
-				buildItemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItem.Name, ITEMGROUP_CONDITIONEND);
+				buildItemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItemRelativePath, ITEMGROUP_CONDITIONEND);
 			}
 			else
 			{
@@ -78,8 +83,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			this._buildItemGroup = buildItemGroup;
 
 			string condition = buildItemGroup.Condition.Trim();
-			string sourceFileName = condition.Substring(ITEMGROUP_CONDITIONSTART.Length, condition.Length - (ITEMGROUP_CONDITIONSTART.Length + ITEMGROUP_CONDITIONEND.Length));
-			this._sourceFileName = sourceFileName;
+
+			string sourceFileName = this._sourceFileName = projectItem.Name;
+
 			this.textBox_ORMFileName.Text = sourceFileName;
 
 			this.button_SaveChanges.Click += new EventHandler(this.SaveChanges);
@@ -195,15 +201,16 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				try
 				{
 					EnvDTE.ProjectItems projectItems = _projectItem.ProjectItems;
-					string itemDirectory = (new FileInfo((string)_projectItem.Properties.Item("LocalPath").Value)).DirectoryName;
+					string itemDirectory = (new FileInfo((string)_project.FullFileName)).DirectoryName;
 					foreach (BuildItem item in this._buildItemGroup)
 					{
-						string fileName = itemDirectory + Path.DirectorySeparatorChar + item.Include;
-						if (File.Exists(fileName))
+						string filePath = string.Concat(itemDirectory, Path.DirectorySeparatorChar, item.Include);
+						string fileName = (new FileInfo(item.Include)).Name;
+						if (File.Exists(filePath))
 						{
 							try
 							{
-								projectItems.AddFromFile(fileName);
+								projectItems.AddFromFile(filePath);
 							}
 							catch (ArgumentException)
 							{
@@ -216,7 +223,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							{
 								tmpFile = Path.GetTempFileName();
 							}
-							projectItems.AddFromTemplate(tmpFile, item.Include);
+							projectItems.AddFromTemplate(tmpFile, fileName);
 						}
 						removeItems[item.Include] = null;
 					}

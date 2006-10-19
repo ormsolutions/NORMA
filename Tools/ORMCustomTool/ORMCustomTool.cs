@@ -159,7 +159,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						IVsUIHierarchy uiHierarchy;
 						IVsWindowFrame windowFrame;
 						object viewObject;
-						uint[] itemIdOpen = new uint[]{itemId};
+						uint[] itemIdOpen = new uint[] { itemId };
 						int fOpen;
 						if (null != textLines &&
 							null != (shellDoc = GetService<IVsUIShellOpenDocument>()) &&
@@ -241,7 +241,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			// Don't call SetSite on _serviceProvider, we want the site to call back to use to us
 			_dteServiceProvider = null;
 			_codeDomProvider = null;
-		}		
+		}
 		#endregion // IObjectWithSite Members
 		#region IOleServiceProvider Members
 		int IOleServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
@@ -441,7 +441,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
  Any generation errors will appear as #error lines in this file,
  followed by the exception message and stack trace.";
 			report(message, ReportType.Comment, null);
-			
+
 			EnvDTE.ProjectItem projectItem = this.GetService<EnvDTE.ProjectItem>();
 			Debug.Assert(projectItem != null);
 			string projectItemName = projectItem.Name;
@@ -462,13 +462,16 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 
 			// This is actually the full project path for the next couple of lines, and then it is changed to the project directory.
-			string projectDirectory = projectItem.ContainingProject.FullName;
-			Project project = Engine.GlobalEngine.GetLoadedProject(projectDirectory);
+			string projectPath = projectItem.ContainingProject.FullName;
+			Project project = Engine.GlobalEngine.GetLoadedProject(projectPath);
 			Debug.Assert(project != null);
-			projectDirectory = Path.GetDirectoryName(projectDirectory);
 			pGenerateProgress.Progress(1, 20);
 
-			BuildItemGroup ormBuildItemGroup = GetBuildItemGroup(project, projectItemName);
+			// Get the relative path of the project item.
+			string projectItemFullPath = (string)projectItem.Properties.Item("LocalPath").Value;
+			string projectItemRelPath = (new Uri(projectPath)).MakeRelativeUri(new Uri(projectItemFullPath)).ToString();
+
+			BuildItemGroup ormBuildItemGroup = GetBuildItemGroup(project, projectItemRelPath);
 			pGenerateProgress.Progress(1, 10);
 
 			if (ormBuildItemGroup == null || ormBuildItemGroup.Count <= 0)
@@ -578,7 +581,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 									report(message, ReportType.Error, ex);
 								}
 
-								string fullItemPath = Path.Combine(projectDirectory, buildItem.FinalItemSpec);
+								string fullItemPath = Path.Combine(Path.GetDirectoryName(projectPath), buildItem.FinalItemSpec);
 								bool textLinesReloadRequired;
 								IVsTextLines textLines = GetTextLinesForDocument(fullItemPath, out textLinesReloadRequired);
 								// Write the result out to the appropriate file...
@@ -719,7 +722,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						readOnlyStream.CloseBackingStream();
 					}
 				}
-				
+
 				pGenerateProgress.Progress(progressTotal, progressTotal);
 			}
 		}

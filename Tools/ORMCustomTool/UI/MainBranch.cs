@@ -20,6 +20,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Microsoft.Build.BuildEngine;
+using EnvDTE;
+using System.IO;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -204,9 +206,20 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				StateRefreshChanges retVal = StateRefreshChanges.None;
 				if (formatBranch.SelectedORMGenerator == null)
 				{
+					Microsoft.Build.BuildEngine.Project project = Parent._project;
+					EnvDTE.ProjectItem projectItem = Parent._projectItem;
+
+					string sourceFileName = _parent._sourceFileName;
+					string projectItemPath = (string)projectItem.Properties.Item("LocalPath").Value;
+					string projectPath = project.FullFileName;
+					string newItemDirectory = (new Uri(projectPath)).MakeRelativeUri(new Uri(projectItemPath)).ToString();
+					newItemDirectory = Path.GetDirectoryName(newItemDirectory);
+
 					retVal = StateRefreshChanges.Current | StateRefreshChanges.Children;
 					IORMGenerator useGenerator = formatBranch.ORMGenerators[branchGeneratorIndex];
-					BuildItem newBuildItem = useGenerator.AddGeneratedFileBuildItem(_parent._buildItemGroup, _parent._sourceFileName, null);
+					string outputFileName = useGenerator.GetOutputFileDefaultName(sourceFileName);
+					outputFileName = Path.Combine(newItemDirectory, outputFileName);
+					BuildItem newBuildItem = useGenerator.AddGeneratedFileBuildItem(_parent._buildItemGroup, sourceFileName, outputFileName); //string.Concat(newItemPath, Path.DirectorySeparatorChar, _parent._sourceFileName));
 					_parent.BuildItemsByGenerator[useGenerator.OfficialName] = newBuildItem;
 					_parent.RemoveRemovedItem(newBuildItem);
 					formatBranch.SelectedORMGenerator = useGenerator;
