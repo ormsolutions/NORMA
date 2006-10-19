@@ -158,33 +158,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			/// <returns>true if the generator can be removed without removing a prerequisite for another generator</returns>
 			private bool CanRemoveGenerator(OutputFormatBranch branch)
 			{
-				IList<OutputFormatBranch> branchValues = _branches.Values;
-				IORMGenerator selectedGenerator = branch.SelectedORMGenerator;
-				if (selectedGenerator != null)
-				{
-					// Don't allow this to uncheck if another tool is using it
-					int branchCount = branchValues.Count;
-					string outputFormat = selectedGenerator.ProvidesOutputFormat;
-					int i = 0;
-					for (; i < branchCount; ++i)
-					{
-						OutputFormatBranch currentBranch = branchValues[i];
-						if (!object.ReferenceEquals(currentBranch, branch))
-						{
-							IORMGenerator testGenerator = currentBranch.SelectedORMGenerator;
-							if (testGenerator != null &&
-								testGenerator.RequiresInputFormats.Contains(outputFormat))
-							{
-								return false;
-							}
-						}
-					}
-					if (i == branchCount)
-					{
-						return true;
-					}
-				}
-				return false;
+				return !branch.IsDependency;
 			}
 			public override int VisibleItemCount
 			{

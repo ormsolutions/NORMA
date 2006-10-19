@@ -61,6 +61,8 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				this._providesOutputFormat = generatorKey.GetValue("ProvidesOutputFormat", null) as string;
 				Debug.Assert(this._providesOutputFormat != null);
 				this._compilable = Convert.ToBoolean((int)generatorKey.GetValue("Compilable", 0));
+				this._generatesSupportFile = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesSupportFile", 0));
+				this._customTool = generatorKey.GetValue("CustomTool", null) as string;
 
 				string sourceInputFormat = this._sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
 				Debug.Assert(sourceInputFormat != null);
@@ -118,6 +120,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			private readonly string _transformCanonicalUri;
 			private readonly string _transformLocalPath;
 			private readonly XslCompiledTransform _transform;
+			private readonly string _customTool;
 			private XmlWriterSettings _xmlWriterSettings;
 			private DateTime _transformLoadedTime;
 
@@ -143,6 +146,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			public string ProvidesOutputFormat
 			{
 				get { return this._providesOutputFormat; }
+			}
+
+			private readonly bool _generatesSupportFile;
+			public bool GeneratesSupportFile
+			{
+				get { return this._generatesSupportFile; }
 			}
 
 			private readonly string _sourceInputFormat;

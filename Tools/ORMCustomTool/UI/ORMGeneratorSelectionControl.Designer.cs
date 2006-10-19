@@ -111,7 +111,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "ORMGeneratorSelectionControl";
 			this.ShowIcon = false;
-			this.ShowInTaskbar = false;
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

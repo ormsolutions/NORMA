@@ -20,6 +20,7 @@ using System.Windows.Forms;
 using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -39,6 +40,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				private IORMGenerator _selectedORMGenerator;
 				private readonly List<IORMGenerator> _ormGenerators;
 				private readonly MainBranch _mainBranch;
+				private int _selectedUseCount;
 				
 				public IORMGenerator SelectedORMGenerator
 				{
@@ -48,7 +50,81 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					}
 					set
 					{
+						IORMGenerator oldGenerator = _selectedORMGenerator;
+						if (oldGenerator == value)
+						{
+							return;
+						}
+						if (value != null)
+						{
+							_selectedUseCount = -1;
+							// Note that we add new dependencies first so we don't toggle
+							// a support file off, then back on.
+							UpdateDependencyUseCounts(value, true);
+						}
+						else
+						{
+							_selectedUseCount = 0;
+						}
 						this._selectedORMGenerator = value;
+						if (oldGenerator != null)
+						{
+							UpdateDependencyUseCounts(oldGenerator, false);
+						}
+					}
+				}
+				/// <summary>
+				/// Update dependency counts for branches of required formats
+				/// </summary>
+				/// <param name="generator">The generator to add or remove dependencies for</param>
+				/// <param name="addOrRemove">true to add a dependency, false to remove</param>
+				private void UpdateDependencyUseCounts(IORMGenerator generator, bool addOrRemove)
+				{
+					IList<string> requiredFormats = generator.RequiresInputFormats;
+					int dependencyCount = requiredFormats.Count;
+					if (dependencyCount != 0)
+					{
+						SortedList<string, OutputFormatBranch> branchDictionary = _mainBranch._branches;
+						for (int i = 0; i < dependencyCount; ++i)
+						{
+							OutputFormatBranch dependentUponBranch;
+							if (branchDictionary.TryGetValue(requiredFormats[i], out dependentUponBranch))
+							{
+								int currentUseCount = dependentUponBranch._selectedUseCount;
+								if (addOrRemove)
+								{
+									if (currentUseCount != -1 && dependentUponBranch._selectedORMGenerator != null)
+									{
+										dependentUponBranch._selectedUseCount = currentUseCount + 1;
+									}
+								}
+								else
+								{
+									IORMGenerator selectedGenerator = dependentUponBranch._selectedORMGenerator;
+									bool autoRemove = (selectedGenerator != null) ? selectedGenerator.GeneratesSupportFile : false;
+									if (currentUseCount > 0)
+									{
+										dependentUponBranch._selectedUseCount = currentUseCount - 1;
+										autoRemove = autoRemove && currentUseCount == 1;
+									}
+									else if (autoRemove)
+									{
+										if (currentUseCount == -1)
+										{
+											autoRemove = !dependentUponBranch.IsDependency;
+										}
+										else
+										{
+											autoRemove = false;
+										}
+									}
+									if (autoRemove)
+									{
+										_mainBranch.RemoveGenerator(dependentUponBranch);
+									}
+								}
+							}
+						}
 					}
 				}
 
@@ -65,6 +141,59 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					get
 					{
 						return this._mainBranch;
+					}
+				}
+				/// <summary>
+				/// Determine if the current branch is required by other branches
+				/// </summary>
+				public bool IsDependency
+				{
+					get
+					{
+						IList<OutputFormatBranch> allBranches = _mainBranch._branches.Values;
+						int useCount = _selectedUseCount;
+						bool retVal = false;
+						switch (useCount)
+						{
+							case 0:
+								// We've already determined that this is not a dependency, or there is no generator
+								break;
+							case -1:
+								// We don't know if this is a dependency or not
+								{
+									IORMGenerator selectedGenerator = _selectedORMGenerator;
+									Debug.Assert(selectedGenerator != null, "_selectedUseCount should be zero if there is no selected generator");
+									useCount = 0;
+									if (selectedGenerator != null)
+									{
+										// Don't allow this to uncheck if another tool is using it
+										int branchCount = allBranches.Count;
+										string outputFormat = selectedGenerator.ProvidesOutputFormat;
+										int i = 0;
+										for (; i < branchCount; ++i)
+										{
+											OutputFormatBranch currentBranch = allBranches[i];
+											if (currentBranch != this)
+											{
+												IORMGenerator testGenerator = currentBranch.SelectedORMGenerator;
+												if (testGenerator != null &&
+													testGenerator.RequiresInputFormats.Contains(outputFormat))
+												{
+													++useCount;
+												}
+											}
+										}
+									}
+									_selectedUseCount = useCount;
+									retVal = useCount > 0;
+									break;
+								}
+							default:
+								// We've already calculated that this is a dependency
+								retVal = true;
+								break;
+						}
+						return retVal;
 					}
 				}
 
