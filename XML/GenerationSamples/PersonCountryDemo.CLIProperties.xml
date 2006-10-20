@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<prop:Properties conceptTypeName="Person">
+		<prop:Property name="Person_id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" isIdentity="true">
+			<prop:DataType dataTypeName=".object" />
+		</prop:Property>
+		<prop:Property name="LastName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="FirstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="Title" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="Country" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
+			<prop:DataType dataTypeName="Country" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="Country">
+		<prop:Property name="Country_name" mandatory="alethic" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="Region_Region_code" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="PersonViaCountryCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Country">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="Person" />
+			</prop:DataType>
+		</prop:Property>
+	</prop:Properties>
+</prop:AllProperties>

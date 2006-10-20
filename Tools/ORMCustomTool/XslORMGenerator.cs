@@ -182,6 +182,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				{
 					buildItem.SetMetadata(ITEMMETADATA_DESIGNTIME, "True");
 				}
+				string customTool = this._customTool;
+				if (!string.IsNullOrEmpty(customTool))
+				{
+					buildItem.SetMetadata(ITEMMETADATA_GENERATOR, customTool);
+				}
 				buildItem.SetMetadata(ITEMMETADATA_DEPENDENTUPON, sourceFileName);
 				buildItem.SetMetadata(ITEMMETADATA_ORMGENERATOR, this.OfficialName);
 				return buildItem;

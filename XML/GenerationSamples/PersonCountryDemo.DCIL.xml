@@ -53,6 +53,21 @@
 		<dcl:referenceConstraint name="Country_FK" targetTable="Country">
 			<dcl:columnRef sourceName="Cntry_Cntry_nm" targetName="Country_name" />
 		</dcl:referenceConstraint>
+		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="FLOAT" />
+		</dcl:column>
+		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
+		</dcl:column>
+		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+		</dcl:column>
 	</dcl:table>
 	<dcl:table name="Country">
 		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
@@ -63,6 +78,21 @@
 		</dcl:uniquenessConstraint>
 		<dcl:column name="Region_Region_code" isNullable="true" isIdentity="false">
 			<dcl:domainDataTypeRef name="Region_code" />
+		</dcl:column>
+		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="FLOAT" />
+		</dcl:column>
+		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
+		</dcl:column>
+		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
 		</dcl:column>
 	</dcl:table>
 </dcl:schema>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/2006-01/OIALModel" xmlns:rvw="http://schemas.neumont.edu/ORM/Views/RelationalView" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_AA456D07-4B8E-43CB-9F7B-093F42087891" Name="SampleModel">
 		<orm:Objects>
 			<orm:EntityType id="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" Name="Person" _ReferenceMode="id">
@@ -3420,11 +3420,4 @@
 		</ormDiagram:Shapes>
 		<ormDiagram:Subject ref="_AA456D07-4B8E-43CB-9F7B-093F42087891" />
 	</ormDiagram:ORMDiagram>
-	<oial:Model id="_788D8E26-FBE0-4D67-9325-538F2F5FE6F1">
-		<oial:ORMModel ref="_AA456D07-4B8E-43CB-9F7B-093F42087891" />
-	</oial:Model>
-	<rvw:RelationalModel id="_C37AD611-ABE7-4F17-A6D3-3A0B18733840" DisplayDataTypes="true">
-		<rvw:OIALModel ref="_788D8E26-FBE0-4D67-9325-538F2F5FE6F1" />
-	</rvw:RelationalModel>
-	<rvw:RelationalDiagram id="_2A3F8DE0-7340-40DC-BC7B-6D1B87514D8F" SubjectRef="_C37AD611-ABE7-4F17-A6D3-3A0B18733840" />
 </ormRoot:ORM2>

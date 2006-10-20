@@ -75,6 +75,27 @@
 		<ddl:columnDefinition name="Cntry_Cntry_nm">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC1" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
@@ -91,6 +112,27 @@
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="Region_Region_code">
 			<ddt:domain name="Region_code" schema="PersonCountryDemo" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC3" />

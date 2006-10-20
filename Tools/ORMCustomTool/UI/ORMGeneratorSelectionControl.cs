@@ -31,8 +31,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		// TODO: Remove these once this is nested within ORMCustomTool.
 		private const string ITEMGROUP_CONDITIONSTART = "Exists('";
 		private const string ITEMGROUP_CONDITIONEND = "')";
-		private const string ITEMMETADATA_ORMGENERATOR = "ORMGenerator";
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
+		private const string ITEMMETADATA_GENERATOR = "Generator";
+		private const string ITEMMETADATA_ORMGENERATOR = "ORMGenerator";
 
 		private readonly MainBranch _mainBranch;
 		private readonly EnvDTE.ProjectItem _projectItem;
@@ -223,7 +224,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							{
 								tmpFile = Path.GetTempFileName();
 							}
-							projectItems.AddFromTemplate(tmpFile, fileName);
+							EnvDTE.ProjectItem projectItem = projectItems.AddFromTemplate(tmpFile, fileName);
+							string customTool = item.GetMetadata(ITEMMETADATA_GENERATOR);
+							if (!string.IsNullOrEmpty(customTool))
+							{
+								projectItem.Properties.Item("CustomTool").Value = customTool;
+							}
 						}
 						removeItems[item.Include] = null;
 					}

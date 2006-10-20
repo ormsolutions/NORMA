@@ -15,6 +15,8 @@
 #endregion
 
 using System;
+using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -26,8 +28,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Designer.Interfaces;
-using System.CodeDom;
-using System.CodeDom.Compiler;
+using Microsoft.VisualStudio.TextManager.Interop;
 using VSLangProj;
 
 using Debug = System.Diagnostics.Debug;
@@ -38,7 +39,6 @@ using ErrorHandler = Microsoft.VisualStudio.ErrorHandler;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using IVsTextLines = Microsoft.VisualStudio.TextManager.Interop.IVsTextLines;
 using IVsTextView = Microsoft.VisualStudio.TextManager.Interop.IVsTextView;
-using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -55,6 +55,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string EXTENSION_XML = ".xml";
 		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio\Generators";
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
+		private const string ITEMMETADATA_GENERATOR = "Generator";
 		private const string ITEMMETADATA_ORMGENERATOR = "ORMGenerator";
 		private const string ITEMMETADATA_AUTOGEN = "AutoGen";
 		private const string ITEMMETADATA_DESIGNTIME = "DesignTime";
@@ -723,6 +724,19 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					}
 				}
 
+				foreach (EnvDTE.ProjectItem childProjectItem in projectItem.ProjectItems)
+				{
+					EnvDTE.Property customToolProperty = childProjectItem.Properties.Item("CustomTool");
+					if (customToolProperty != null && !string.IsNullOrEmpty(customToolProperty.Value as string))
+					{
+						VSProjectItem vsChildProjectItem = childProjectItem.Object as VSProjectItem;
+						if (vsChildProjectItem != null)
+						{
+							vsChildProjectItem.RunCustomTool();
+						}
+					}
+				}
+				
 				pGenerateProgress.Progress(progressTotal, progressTotal);
 			}
 		}

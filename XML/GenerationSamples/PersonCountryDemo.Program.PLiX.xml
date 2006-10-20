@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+	<plx:namespaceImport name="System" />
+	<plx:namespaceImport name="System.Collections.Generic" />
+	<plx:namespaceImport name="System.Windows.Forms" />
+	<plx:namespace name="PersonCountryDemo">
+		<plx:class name="Program" modifier="static" visibility="public">
+			<plx:function name="Main" modifier="static" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>The main entry point for the application.</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:callInstance name="EnableVisualStyles">
+					<plx:callObject>
+						<plx:nameRef name="Application" />
+					</plx:callObject>
+				</plx:callInstance>
+				<plx:callInstance name="SetCompatibleTextRenderingDefault">
+					<plx:callObject>
+						<plx:nameRef name="Application" />
+					</plx:callObject>
+					<plx:passParam type="in">
+						<plx:falseKeyword />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="Run">
+					<plx:callObject>
+						<plx:nameRef name="Application" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew type="new" dataTypeName="PersonCountryDemoTester" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

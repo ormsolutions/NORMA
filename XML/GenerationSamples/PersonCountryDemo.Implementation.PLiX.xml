@@ -1,0 +1,3007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+	<plx:namespaceImport name="System" />
+	<plx:namespaceImport name="System.Collections.Generic" />
+	<plx:namespaceImport name="System.Collections.ObjectModel" />
+	<plx:namespaceImport name="System.ComponentModel" />
+	<plx:namespaceImport name="System.Xml" />
+	<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute" />
+	<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute" />
+	<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute" />
+	<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute" />
+	<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind" />
+	<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet" />
+	<plx:namespace name="PersonCountryDemo">
+		<plx:class visibility="public" modifier="sealed" name="PersonCountryDemoContext">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="PersonCountryDemoContext" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="PersonCountryDemoContext" />
+			</plx:trailingInfo>
+			<plx:attribute dataTypeName="GeneratedCodeAttribute">
+				<plx:passParam>
+					<plx:string>OIALtoPLiX</plx:string>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:string>1.0</plx:string>
+				</plx:passParam>
+			</plx:attribute>
+			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+				<plx:passParam>
+					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+				</plx:passParam>
+				<plx:passParam>
+					<plx:binaryOperator type="assignNamed">
+						<plx:left>
+							<plx:nameRef type="namedParameter" name="CharSet" />
+						</plx:left>
+						<plx:right>
+							<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:passParam>
+			</plx:attribute>
+			<plx:implementsInterface dataTypeName="IPersonCountryDemoContext" />
+			<plx:function name=".construct" visibility="public">
+				<plx:local name="constraintEnforcementCollectionCallbacksByTypeDictionary" dataTypeName="Dictionary">
+					<plx:passTypeParam dataTypeName="Type" />
+					<plx:passTypeParam dataTypeName=".object" />
+					<plx:initialize>
+						<plx:callNew dataTypeName="Dictionary">
+							<plx:passTypeParam dataTypeName="Type" />
+							<plx:passTypeParam dataTypeName=".object" />
+							<plx:passParam>
+								<plx:value type="i4" data="1" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="constraintEnforcementCollectionCallbacksByTypeAndNameDictionary" dataTypeName="Dictionary">
+					<plx:passTypeParam dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					<plx:passTypeParam dataTypeName=".object" />
+					<plx:initialize>
+						<plx:callNew dataTypeName="Dictionary">
+							<plx:passTypeParam dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+							<plx:passTypeParam dataTypeName=".object" />
+							<plx:passParam>
+								<plx:value type="i4" data="0" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="local" name="constraintEnforcementCollectionCallbacksByTypeDictionary" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="local" name="constraintEnforcementCollectionCallbacksByTypeAndNameDictionary" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance type="methodCall" name="Add">
+					<plx:callObject>
+						<plx:nameRef type="local" name="constraintEnforcementCollectionCallbacksByTypeDictionary" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:typeOf dataTypeName="ConstraintEnforcementCollection">
+							<plx:passTypeParam dataTypeName="Country" />
+							<plx:passTypeParam dataTypeName="Person" />
+						</plx:typeOf>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callNew dataTypeName="ConstraintEnforcementCollectionCallbacks">
+							<plx:passTypeParam dataTypeName="Country" />
+							<plx:passTypeParam dataTypeName="Person" />
+							<plx:passParam>
+								<plx:callNew type="newDelegate" dataTypeName="PotentialCollectionModificationCallback">
+									<plx:passTypeParam dataTypeName="Country" />
+									<plx:passTypeParam dataTypeName="Person" />
+									<plx:passParam>
+										<plx:callThis accessor="this" type="methodReference" name="OnCountryPersonViaCountryCollectionAdding" />
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew type="newDelegate" dataTypeName="CommittedCollectionModificationCallback">
+									<plx:passTypeParam dataTypeName="Country" />
+									<plx:passTypeParam dataTypeName="Person" />
+									<plx:passParam>
+										<plx:callThis accessor="this" type="methodReference" name="OnCountryPersonViaCountryCollectionAdded" />
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew type="newDelegate" dataTypeName="CommittedCollectionModificationCallback">
+									<plx:passTypeParam dataTypeName="Country" />
+									<plx:passTypeParam dataTypeName="Person" />
+									<plx:passParam>
+										<plx:callThis accessor="this" type="methodReference" name="OnCountryPersonViaCountryCollectionRemoved" />
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local name="PersonList" dataTypeName="List">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:initialize>
+						<plx:callNew dataTypeName="List">
+							<plx:passTypeParam dataTypeName="Person" />
+						</plx:callNew>
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="_PersonList" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="local" name="PersonList" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="_PersonReadOnlyCollection" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="ReadOnlyCollection">
+							<plx:passTypeParam dataTypeName="Person" />
+							<plx:passParam>
+								<plx:nameRef type="local" name="PersonList" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:local name="CountryList" dataTypeName="List">
+					<plx:passTypeParam dataTypeName="Country" />
+					<plx:initialize>
+						<plx:callNew dataTypeName="List">
+							<plx:passTypeParam dataTypeName="Country" />
+						</plx:callNew>
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="_CountryList" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="local" name="CountryList" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="_CountryReadOnlyCollection" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="ReadOnlyCollection">
+							<plx:passTypeParam dataTypeName="Country" />
+							<plx:passParam>
+								<plx:nameRef type="local" name="CountryList" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function visibility="private" modifier="static" name="GetDifferentContextsException">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="Exception Helpers" />
+				</plx:leadingInfo>
+				<plx:attribute dataTypeName="SuppressMessageAttribute">
+					<plx:passParam>
+						<plx:string>Microsoft.Usage</plx:string>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string>CA2208:InstantiateArgumentExceptionsCorrectly</plx:string>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:returns dataTypeName="ArgumentException" />
+				<plx:return>
+					<plx:callNew dataTypeName="ArgumentException">
+						<plx:passParam>
+							<plx:string>All objects in a relationship must be part of the same Context.</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string>value</plx:string>
+						</plx:passParam>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" modifier="static" name="GetConstraintEnforcementFailedException">
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="Exception Helpers" />
+					<plx:pragma type="region" data="Lookup and External Constraint Enforcement" />
+				</plx:trailingInfo>
+				<plx:param name="paramName" dataTypeName=".string" />
+				<plx:returns dataTypeName="ArgumentException" />
+				<plx:return>
+					<plx:callNew dataTypeName="ArgumentException">
+						<plx:passParam>
+							<plx:string>Argument failed constraint enforcement.</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="paramName" />
+						</plx:passParam>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
+			<plx:field visibility="private" readOnly="true" name="_PersonPerson_idDictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam dataTypeName=".object" />
+				<plx:passTypeParam dataTypeName="Person" />
+				<plx:initialize>
+					<plx:callNew dataTypeName="Dictionary">
+						<plx:passTypeParam dataTypeName=".object" />
+						<plx:passTypeParam dataTypeName="Person" />
+					</plx:callNew>
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name="GetPersonByPerson_id">
+				<plx:interfaceMember memberName="GetPersonByPerson_id" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Person_id" dataTypeName=".object" />
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance type="indexerCall" name=".implied">
+						<plx:callObject>
+							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Person_id" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="public" name="TryGetPersonByPerson_id">
+				<plx:interfaceMember memberName="TryGetPersonByPerson_id" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Person_id" dataTypeName=".object" />
+				<plx:param type="out" name="Person" dataTypeName="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance type="methodCall" name="TryGetValue">
+						<plx:callObject>
+							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Person_id" />
+						</plx:passParam>
+						<plx:passParam type="out">
+							<plx:nameRef type="parameter" name="Person" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:field visibility="private" readOnly="true" name="_CountryCountry_nameDictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam dataTypeName=".string" />
+				<plx:passTypeParam dataTypeName="Country" />
+				<plx:initialize>
+					<plx:callNew dataTypeName="Dictionary">
+						<plx:passTypeParam dataTypeName=".string" />
+						<plx:passTypeParam dataTypeName="Country" />
+					</plx:callNew>
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name="GetCountryByCountry_name">
+				<plx:interfaceMember memberName="GetCountryByCountry_name" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:returns dataTypeName="Country" />
+				<plx:return>
+					<plx:callInstance type="indexerCall" name=".implied">
+						<plx:callObject>
+							<plx:callThis type="field" name="_CountryCountry_nameDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Country_name" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="public" name="TryGetCountryByCountry_name">
+				<plx:interfaceMember memberName="TryGetCountryByCountry_name" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:param type="out" name="Country" dataTypeName="Country" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance type="methodCall" name="TryGetValue">
+						<plx:callObject>
+							<plx:callThis type="field" name="_CountryCountry_nameDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Country_name" />
+						</plx:passParam>
+						<plx:passParam type="out">
+							<plx:nameRef type="parameter" name="Country" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:delegate visibility="private" name="PotentialCollectionModificationCallback">
+				<plx:leadingInfo>
+					<plx:pragma type="closeRegion" data="Lookup and External Constraint Enforcement" />
+					<plx:pragma type="region" data="ConstraintEnforcementCollection" />
+				</plx:leadingInfo>
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:returns dataTypeName=".boolean" />
+			</plx:delegate>
+			<plx:delegate visibility="private" name="CommittedCollectionModificationCallback">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+			</plx:delegate>
+			<plx:class visibility="private" modifier="sealed" name="ConstraintEnforcementCollectionCallbacks">
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="adding" dataTypeName="PotentialCollectionModificationCallback">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:param>
+					<plx:param name="added" dataTypeName="CommittedCollectionModificationCallback">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:param>
+					<plx:param name="removing" dataTypeName="PotentialCollectionModificationCallback">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:param>
+					<plx:param name="removed" dataTypeName="CommittedCollectionModificationCallback">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:param>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="Adding" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="adding" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="Added" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="added" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="Removing" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="removing" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="Removed" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="removed" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:field visibility="public" readOnly="true" name="Adding" dataTypeName="PotentialCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+				</plx:field>
+				<plx:field visibility="public" readOnly="true" name="Added" dataTypeName="CommittedCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+				</plx:field>
+				<plx:field visibility="public" readOnly="true" name="Removing" dataTypeName="PotentialCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+				</plx:field>
+				<plx:field visibility="public" readOnly="true" name="Removed" dataTypeName="CommittedCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+				</plx:field>
+			</plx:class>
+			<plx:structure visibility="private" name="ConstraintEnforcementCollectionTypeAndPropertyNameKey">
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:implementsInterface dataTypeName="IEquatable">
+					<plx:passTypeParam dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+				</plx:implementsInterface>
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="type" dataTypeName="Type" />
+					<plx:param name="name" dataTypeName=".string" />
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="Type" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="type" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="Name" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="name" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:field visibility="public" readOnly="true" name="Type" dataTypeName="Type" />
+				<plx:field visibility="public" readOnly="true" name="Name" dataTypeName=".string" />
+				<plx:function visibility="public" modifier="override" name="GetHashCode">
+					<plx:returns dataTypeName=".i4" />
+					<plx:return>
+						<plx:binaryOperator type="bitwiseExclusiveOr">
+							<plx:left>
+								<plx:callInstance type="methodCall" name="GetHashCode">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="Type" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance type="methodCall" name="GetHashCode">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="Name" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" modifier="override" overload="true" name="Equals">
+					<plx:param name="obj" dataTypeName=".object" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:return>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="typeEquality">
+									<plx:left>
+										<plx:nameRef type="parameter" name="obj" />
+									</plx:left>
+									<plx:right>
+										<plx:directTypeReference dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:callThis accessor="this" type="methodCall" name="Equals">
+									<plx:passParam>
+										<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey">
+											<plx:nameRef type="parameter" name="obj" />
+										</plx:cast>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" overload="true" name="Equals">
+					<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable">
+						<plx:passTypeParam dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					</plx:interfaceMember>
+					<plx:param name="other" dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:return>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:callInstance type="methodCall" name="Equals">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="Type" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callInstance type="field" name="Type">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="other" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance type="methodCall" name="Equals">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="Name" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callInstance type="field" name="Name">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="other" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:return>
+				</plx:function>
+				<plx:operatorFunction type="equality">
+					<plx:param name="left" dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					<plx:param name="right" dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:return>
+						<plx:callInstance type="methodCall" name="Equals">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="left" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="right" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:operatorFunction>
+				<plx:operatorFunction type="inequality">
+					<plx:param name="left" dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					<plx:param name="right" dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:return>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance type="methodCall" name="Equals">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="left" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="right" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:return>
+				</plx:operatorFunction>
+			</plx:structure>
+			<plx:field visibility="private" readOnly="true" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam dataTypeName="Type" />
+				<plx:passTypeParam dataTypeName=".object" />
+			</plx:field>
+			<plx:field visibility="private" readOnly="true" name="_ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey" />
+				<plx:passTypeParam dataTypeName=".object" />
+			</plx:field>
+			<plx:function visibility="private" overload="true" name="OnAdding">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="adding" dataTypeName="PotentialCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Adding">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:typeOf dataTypeName="ConstraintEnforcementCollection">
+												<plx:passTypeParam dataTypeName="TClass" />
+												<plx:passTypeParam dataTypeName="TProperty" />
+											</plx:typeOf>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="adding" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:callInstance type="delegateCall" name=".implied">
+							<plx:callObject>
+								<plx:nameRef type="local" name="adding" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="value" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnAdding">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="propertyName" dataTypeName=".string" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="adding" dataTypeName="PotentialCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Adding">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callNew dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey">
+												<plx:passParam>
+													<plx:typeOf dataTypeName="ConstraintEnforcementCollectionWithPropertyName">
+														<plx:passTypeParam dataTypeName="TClass" />
+														<plx:passTypeParam dataTypeName="TProperty" />
+													</plx:typeOf>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef type="parameter" name="propertyName" />
+												</plx:passParam>
+											</plx:callNew>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="adding" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:callInstance type="delegateCall" name=".implied">
+							<plx:callObject>
+								<plx:nameRef type="local" name="adding" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="value" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnAdded">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:local name="added" dataTypeName="CommittedCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Added">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:typeOf dataTypeName="ConstraintEnforcementCollection">
+												<plx:passTypeParam dataTypeName="TClass" />
+												<plx:passTypeParam dataTypeName="TProperty" />
+											</plx:typeOf>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="added" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="delegateCall" name=".implied">
+						<plx:callObject>
+							<plx:nameRef type="local" name="added" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="value" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnAdded">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="propertyName" dataTypeName=".string" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:local name="added" dataTypeName="CommittedCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Added">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callNew dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey">
+												<plx:passParam>
+													<plx:typeOf dataTypeName="ConstraintEnforcementCollectionWithPropertyName">
+														<plx:passTypeParam dataTypeName="TClass" />
+														<plx:passTypeParam dataTypeName="TProperty" />
+													</plx:typeOf>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef type="parameter" name="propertyName" />
+												</plx:passParam>
+											</plx:callNew>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="added" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="delegateCall" name=".implied">
+						<plx:callObject>
+							<plx:nameRef type="local" name="added" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="value" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnRemoving">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="removing" dataTypeName="PotentialCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Removing">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:typeOf dataTypeName="ConstraintEnforcementCollection">
+												<plx:passTypeParam dataTypeName="TClass" />
+												<plx:passTypeParam dataTypeName="TProperty" />
+											</plx:typeOf>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="removing" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:callInstance type="delegateCall" name=".implied">
+							<plx:callObject>
+								<plx:nameRef type="local" name="removing" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="value" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnRemoving">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="propertyName" dataTypeName=".string" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="removing" dataTypeName="PotentialCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Removing">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callNew dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey">
+												<plx:passParam>
+													<plx:typeOf dataTypeName="ConstraintEnforcementCollectionWithPropertyName">
+														<plx:passTypeParam dataTypeName="TClass" />
+														<plx:passTypeParam dataTypeName="TProperty" />
+													</plx:typeOf>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef type="parameter" name="propertyName" />
+												</plx:passParam>
+											</plx:callNew>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="removing" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:callInstance type="delegateCall" name=".implied">
+							<plx:callObject>
+								<plx:nameRef type="local" name="removing" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="value" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnRemoved">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:local name="removed" dataTypeName="CommittedCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Removed">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:typeOf dataTypeName="ConstraintEnforcementCollection">
+												<plx:passTypeParam dataTypeName="TClass" />
+												<plx:passTypeParam dataTypeName="TProperty" />
+											</plx:typeOf>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="removed" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="delegateCall" name=".implied">
+						<plx:callObject>
+							<plx:nameRef type="local" name="removed" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="value" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnRemoved">
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:param name="propertyName" dataTypeName=".string" />
+				<plx:param name="instance" dataTypeName="TClass" />
+				<plx:param name="value" dataTypeName="TProperty" />
+				<plx:local name="removed" dataTypeName="CommittedCollectionModificationCallback">
+					<plx:passTypeParam dataTypeName="TClass" />
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callInstance type="field" name="Removed">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="ConstraintEnforcementCollectionCallbacks">
+									<plx:passTypeParam dataTypeName="TClass" />
+									<plx:passTypeParam dataTypeName="TProperty" />
+									<plx:callInstance type="indexerCall" name=".implied">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callNew dataTypeName="ConstraintEnforcementCollectionTypeAndPropertyNameKey">
+												<plx:passParam>
+													<plx:typeOf dataTypeName="ConstraintEnforcementCollectionWithPropertyName">
+														<plx:passTypeParam dataTypeName="TClass" />
+														<plx:passTypeParam dataTypeName="TProperty" />
+													</plx:typeOf>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nameRef type="parameter" name="propertyName" />
+												</plx:passParam>
+											</plx:callNew>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef type="local" name="removed" />
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="delegateCall" name=".implied">
+						<plx:callObject>
+							<plx:nameRef type="local" name="removed" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="value" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>
+			<plx:class visibility="private" modifier="sealed" name="ConstraintEnforcementCollection">
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:implementsInterface dataTypeName="ICollection">
+					<plx:passTypeParam dataTypeName="TProperty" />
+				</plx:implementsInterface>
+				<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
+				<plx:field visibility="private" readOnly="true" name="_list" dataTypeName="List">
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callNew dataTypeName="List">
+							<plx:passTypeParam dataTypeName="TProperty" />
+						</plx:callNew>
+					</plx:initialize>
+				</plx:field>
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="instance" dataTypeName="TClass" />
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_instance" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
+					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
+					<plx:return>
+						<plx:callThis accessor="this" type="methodCall" name="GetEnumerator" />
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="GetEnumerator">
+					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="IEnumerator">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:returns>
+					<plx:return>
+						<plx:callInstance type="methodCall" name="GetEnumerator">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_list" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="Add">
+					<plx:interfaceMember memberName="Add" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="item" dataTypeName="TProperty" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>item</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance type="methodCall" name="OnAdding">
+								<plx:callObject>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_instance" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:condition>
+						<plx:callInstance type="methodCall" name="Add">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_list" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="item" />
+							</plx:passParam>
+						</plx:callInstance>
+						<plx:callInstance type="methodCall" name="OnAdded">
+							<plx:callObject>
+								<plx:callInstance type="property" name="Context">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_instance" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callThis accessor="this" type="field" name="_instance" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="item" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:branch>
+				</plx:function>
+				<plx:function visibility="public" name="Remove">
+					<plx:interfaceMember memberName="Remove" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="item" dataTypeName="TProperty" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>item</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance type="methodCall" name="OnRemoving">
+								<plx:callObject>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_instance" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:condition>
+						<plx:branch>
+							<plx:condition>
+								<plx:callInstance type="methodCall" name="Remove">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_list" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef type="parameter" name="item" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:condition>
+							<plx:callInstance type="methodCall" name="OnRemoved">
+								<plx:callObject>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_instance" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:passParam>
+							</plx:callInstance>
+							<plx:return>
+								<plx:trueKeyword />
+							</plx:return>
+						</plx:branch>
+					</plx:branch>
+					<plx:return>
+						<plx:falseKeyword />
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="Clear">
+					<plx:interfaceMember memberName="Clear" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:loop>
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef type="local" name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="property" name="Count">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_list" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment>
+								<plx:nameRef name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:callThis accessor="this" type="methodCall" name="Remove">
+							<plx:passParam>
+								<plx:callInstance type="indexerCall" name=".implied">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_list" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="i" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callThis>
+					</plx:loop>
+				</plx:function>
+				<plx:function visibility="public" name="Contains">
+					<plx:interfaceMember memberName="Contains" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="item" dataTypeName="TProperty" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:return>
+						<plx:callInstance name="Contains">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_list" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="item" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="CopyTo">
+					<plx:interfaceMember memberName="CopyTo" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="array" dataTypeName="TProperty" dataTypeIsSimpleArray="true" />
+					<plx:param name="arrayIndex" dataTypeName=".i4" />
+					<plx:callInstance name="CopyTo">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="_list" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="array" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="arrayIndex" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:function>
+				<plx:property visibility="public" name="Count">
+					<plx:interfaceMember memberName="Count" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName=".i4" />
+					<plx:get>
+						<plx:return>
+							<plx:callInstance type="property" name="Count">
+								<plx:callObject>
+									<plx:callThis accessor="this" type="field" name="_list" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="IsReadOnly">
+					<plx:interfaceMember memberName="IsReadOnly" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName=".boolean" />
+					<plx:get>
+						<plx:return>
+							<plx:falseKeyword />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+			</plx:class>
+			<plx:class visibility="private" modifier="sealed" name="ConstraintEnforcementCollectionWithPropertyName">
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="ConstraintEnforcementCollection" />
+				</plx:trailingInfo>
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:typeParam requireReferenceType="true" name="TClass">
+					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
+				</plx:typeParam>
+				<plx:typeParam name="TProperty" />
+				<plx:implementsInterface dataTypeName="ICollection">
+					<plx:passTypeParam dataTypeName="TProperty" />
+				</plx:implementsInterface>
+				<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
+				<plx:field visibility="private" readOnly="true" name="_PropertyName" dataTypeName=".string" />
+				<plx:field visibility="private" readOnly="true" name="_list" dataTypeName="List">
+					<plx:passTypeParam dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callNew dataTypeName="List">
+							<plx:passTypeParam dataTypeName="TProperty" />
+						</plx:callNew>
+					</plx:initialize>
+				</plx:field>
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="instance" dataTypeName="TClass" />
+					<plx:param name="propertyName" dataTypeName=".string" />
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_instance" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_PropertyName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="propertyName" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
+					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
+					<plx:return>
+						<plx:callThis accessor="this" type="methodCall" name="GetEnumerator" />
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="GetEnumerator">
+					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="IEnumerator">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:returns>
+					<plx:return>
+						<plx:callInstance type="methodCall" name="GetEnumerator">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_list" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="Add">
+					<plx:interfaceMember memberName="Add" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="item" dataTypeName="TProperty" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>item</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance type="methodCall" name="OnAdding">
+								<plx:callObject>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_PropertyName" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_instance" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:condition>
+						<plx:callInstance type="methodCall" name="Add">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_list" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="item" />
+							</plx:passParam>
+						</plx:callInstance>
+						<plx:callInstance type="methodCall" name="OnAdded">
+							<plx:callObject>
+								<plx:callInstance type="property" name="Context">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_instance" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callThis accessor="this" type="field" name="_PropertyName" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callThis accessor="this" type="field" name="_instance" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="item" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:branch>
+				</plx:function>
+				<plx:function visibility="public" name="Remove">
+					<plx:interfaceMember memberName="Remove" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="item" dataTypeName="TProperty" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>item</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance type="methodCall" name="OnRemoving">
+								<plx:callObject>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_PropertyName" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_instance" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:condition>
+						<plx:branch>
+							<plx:condition>
+								<plx:callInstance type="methodCall" name="Remove">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_list" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef type="parameter" name="item" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:condition>
+							<plx:callInstance type="methodCall" name="OnRemoved">
+								<plx:callObject>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_PropertyName" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="_instance" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item" />
+								</plx:passParam>
+							</plx:callInstance>
+							<plx:return>
+								<plx:trueKeyword />
+							</plx:return>
+						</plx:branch>
+					</plx:branch>
+					<plx:return>
+						<plx:falseKeyword />
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="Clear">
+					<plx:interfaceMember memberName="Clear" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:loop>
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef type="local" name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="property" name="Count">
+										<plx:callObject>
+											<plx:callThis accessor="this" type="field" name="_list" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment>
+								<plx:nameRef name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:callThis accessor="this" type="methodCall" name="Remove">
+							<plx:passParam>
+								<plx:callInstance type="indexerCall" name=".implied">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_list" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="i" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callThis>
+					</plx:loop>
+				</plx:function>
+				<plx:function visibility="public" name="Contains">
+					<plx:interfaceMember memberName="Contains" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="item" dataTypeName="TProperty" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:return>
+						<plx:callInstance name="Contains">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_list" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="item" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" name="CopyTo">
+					<plx:interfaceMember memberName="CopyTo" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:param name="array" dataTypeName="TProperty" dataTypeIsSimpleArray="true" />
+					<plx:param name="arrayIndex" dataTypeName=".i4" />
+					<plx:callInstance name="CopyTo">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="_list" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="array" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="arrayIndex" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:function>
+				<plx:property visibility="public" name="Count">
+					<plx:interfaceMember memberName="Count" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName=".i4" />
+					<plx:get>
+						<plx:return>
+							<plx:callInstance type="property" name="Count">
+								<plx:callObject>
+									<plx:callThis accessor="this" type="field" name="_list" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="IsReadOnly">
+					<plx:interfaceMember memberName="IsReadOnly" dataTypeName="ICollection">
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName=".boolean" />
+					<plx:get>
+						<plx:return>
+							<plx:falseKeyword />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+			</plx:class>
+			<plx:function visibility="public" name="CreatePerson">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="Person" />
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="CreatePerson" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="LastName" dataTypeName=".string" />
+				<plx:param name="FirstName" dataTypeName=".string" />
+				<plx:returns dataTypeName="Person" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="LastName" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callNew dataTypeName="ArgumentNullException">
+							<plx:passParam>
+								<plx:string>LastName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="FirstName" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callNew dataTypeName="ArgumentNullException">
+							<plx:passParam>
+								<plx:string>FirstName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnPersonLastNameChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="LastName" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+							<plx:passParam>
+								<plx:string>LastName</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnPersonFirstNameChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="FirstName" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+							<plx:passParam>
+								<plx:string>FirstName</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:throw>
+				</plx:branch>
+				<plx:return>
+					<plx:callNew dataTypeName="PersonCore">
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="LastName" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="FirstName" />
+						</plx:passParam>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnPersonLastNameChanging">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="newValue" dataTypeName=".string" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnPersonFirstNameChanging">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="newValue" dataTypeName=".string" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnPersonTitleChanging">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="newValue" dataTypeName=".string" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnPersonCountryChanging">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="newValue" dataTypeName="Country" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="newValue" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="property" name="Context">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="newValue" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callStatic type="methodCall" name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext" />
+						</plx:throw>
+					</plx:branch>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnPersonCountryChanged">
+				<plx:param name="instance" dataTypeName="Person" />
+				<plx:param name="oldValue" dataTypeName="Country" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:callInstance type="property" name="Country">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="instance" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="methodCall" name="Add">
+						<plx:callObject>
+							<plx:cast dataTypeName="ICollection">
+								<plx:passTypeParam dataTypeName="Person" />
+								<plx:callInstance type="property" name="PersonViaCountryCollection">
+									<plx:callObject>
+										<plx:callInstance type="property" name="Country">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="instance" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="oldValue" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="methodCall" name="Remove">
+						<plx:callObject>
+							<plx:cast type="exceptionCast" dataTypeName="ICollection">
+								<plx:passTypeParam dataTypeName="Person" />
+								<plx:callInstance name="PersonViaCountryCollection" type="property">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="oldValue" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>
+			<plx:field visibility="private" readOnly="true" name="_PersonList" dataTypeName="List">
+				<plx:passTypeParam dataTypeName="Person" />
+			</plx:field>
+			<plx:field visibility="private" readOnly="true" name="_PersonReadOnlyCollection" dataTypeName="ReadOnlyCollection">
+				<plx:passTypeParam dataTypeName="Person" />
+			</plx:field>
+			<plx:property visibility="public" name="PersonCollection">
+				<plx:interfaceMember memberName="PersonCollection" dataTypeName="IPersonCountryDemoContext" />
+				<plx:returns dataTypeName="IEnumerable">
+					<plx:passTypeParam dataTypeName="Person" />
+				</plx:returns>
+				<plx:get>
+					<plx:return>
+						<plx:callThis accessor="this" type="field" name="_PersonReadOnlyCollection" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:class visibility="private" modifier="sealed" name="PersonCore">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="PersonCore" />
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="PersonCore" />
+					<plx:pragma type="closeRegion" data="Person" />
+				</plx:trailingInfo>
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:derivesFromClass dataTypeName="Person" />
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="context" dataTypeName="PersonCountryDemoContext" />
+					<plx:param name="LastName" dataTypeName=".string" />
+					<plx:param name="FirstName" dataTypeName=".string" />
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_Context" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="context" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_LastName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="LastName" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_FirstName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="FirstName" />
+						</plx:right>
+					</plx:assign>
+					<plx:callInstance type="methodCall" name="Add">
+						<plx:callObject>
+							<plx:callInstance type="field" name="_PersonList">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="context" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:function>
+				<plx:field visibility="private" readOnly="true" name="_Context" dataTypeName="PersonCountryDemoContext" />
+				<plx:property visibility="public" modifier="override" name="Context">
+					<plx:returns dataTypeName="PersonCountryDemoContext" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Context" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Person_id" dataTypeName=".object">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>Person_id</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="Person_id">
+					<plx:returns dataTypeName=".object" />
+					<plx:get>
+						<plx:return>
+							<plx:thisKeyword />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_LastName" dataTypeName=".string">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>LastName</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="LastName">
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_LastName" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:valueKeyword />
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentNullException">
+									<plx:passParam>
+										<plx:string>value</plx:string>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:throw>
+						</plx:branch>
+						<plx:local name="oldValue" dataTypeName=".string">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_LastName" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+										<plx:passParam>
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnPersonLastNameChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="RaiseLastNameChangingEvent">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_LastName" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callThis accessor="base" type="methodCall" name="RaiseLastNameChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_FirstName" dataTypeName=".string">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>FirstName</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="FirstName">
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_FirstName" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:valueKeyword />
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentNullException">
+									<plx:passParam>
+										<plx:string>value</plx:string>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:throw>
+						</plx:branch>
+						<plx:local name="oldValue" dataTypeName=".string">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_FirstName" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+										<plx:passParam>
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnPersonFirstNameChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="RaiseFirstNameChangingEvent">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_FirstName" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callThis accessor="base" type="methodCall" name="RaiseFirstNameChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Title" dataTypeName=".string">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>Title</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="Title">
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Title" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:local name="oldValue" dataTypeName=".string">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_Title" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+										<plx:passParam>
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnPersonTitleChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="RaiseTitleChangingEvent">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_Title" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callThis accessor="base" type="methodCall" name="RaiseTitleChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Country" dataTypeName="Country">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>Country</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="Country">
+					<plx:returns dataTypeName="Country" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Country" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:local name="oldValue" dataTypeName="Country">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_Country" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnPersonCountryChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="RaiseCountryChangingEvent">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_Country" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="OnPersonCountryChanged">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_Context" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:thisKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:callThis accessor="base" type="methodCall" name="RaiseCountryChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+			</plx:class>
+			<plx:function visibility="public" name="CreateCountry">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="Country" />
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="CreateCountry" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:returns dataTypeName="Country" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="Country_name" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callNew dataTypeName="ArgumentNullException">
+							<plx:passParam>
+								<plx:string>Country_name</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnCountryCountry_nameChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="Country_name" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+							<plx:passParam>
+								<plx:string>Country_name</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:throw>
+				</plx:branch>
+				<plx:return>
+					<plx:callNew dataTypeName="CountryCore">
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="Country_name" />
+						</plx:passParam>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnCountryCountry_nameChanging">
+				<plx:param name="instance" dataTypeName="Country" />
+				<plx:param name="newValue" dataTypeName=".string" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="currentInstance" dataTypeName="Country" />
+				<plx:branch>
+					<plx:condition>
+						<plx:callInstance name="TryGetValue">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="_CountryCountry_nameDictionary" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="newValue" />
+							</plx:passParam>
+							<plx:passParam type="out">
+								<plx:nameRef type="local" name="currentInstance" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:condition>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="local" name="currentInstance" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef type="parameter" name="instance" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:falseKeyword />
+						</plx:return>
+					</plx:branch>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" overload="true" name="OnCountryCountry_nameChanged">
+				<plx:param name="instance" dataTypeName="Country" />
+				<plx:param name="oldValue" dataTypeName=".string" />
+				<plx:callInstance type="methodCall" name="Add">
+					<plx:callObject>
+						<plx:callThis accessor="this" type="field" name="_CountryCountry_nameDictionary" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callInstance type="property" name="Country_name">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="instance" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:nameRef type="parameter" name="oldValue" />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="methodCall" name="Remove">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="_CountryCountry_nameDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="oldValue" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>
+			<plx:function visibility="private" name="OnCountryRegion_Region_codeChanging">
+				<plx:param name="instance" dataTypeName="Country" />
+				<plx:param name="newValue" dataTypeName=".string" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnCountryPersonViaCountryCollectionAdding">
+				<plx:param name="instance" dataTypeName="Country" />
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:thisKeyword />
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance type="property" name="Context">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="value" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext" />
+					</plx:throw>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword />
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="private" name="OnCountryPersonViaCountryCollectionAdded">
+				<plx:param name="instance" dataTypeName="Country" />
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance type="property" name="Country">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="value" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="parameter" name="instance" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function visibility="private" name="OnCountryPersonViaCountryCollectionRemoved">
+				<plx:param name="instance" dataTypeName="Country" />
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:callInstance type="property" name="Country">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="value" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef type="parameter" name="instance" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance type="property" name="Country">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="value" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword />
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+			</plx:function>
+			<plx:field visibility="private" readOnly="true" name="_CountryList" dataTypeName="List">
+				<plx:passTypeParam dataTypeName="Country" />
+			</plx:field>
+			<plx:field visibility="private" readOnly="true" name="_CountryReadOnlyCollection" dataTypeName="ReadOnlyCollection">
+				<plx:passTypeParam dataTypeName="Country" />
+			</plx:field>
+			<plx:property visibility="public" name="CountryCollection">
+				<plx:interfaceMember memberName="CountryCollection" dataTypeName="IPersonCountryDemoContext" />
+				<plx:returns dataTypeName="IEnumerable">
+					<plx:passTypeParam dataTypeName="Country" />
+				</plx:returns>
+				<plx:get>
+					<plx:return>
+						<plx:callThis accessor="this" type="field" name="_CountryReadOnlyCollection" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:class visibility="private" modifier="sealed" name="CountryCore">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="CountryCore" />
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="CountryCore" />
+					<plx:pragma type="closeRegion" data="Country" />
+				</plx:trailingInfo>
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:derivesFromClass dataTypeName="Country" />
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="context" dataTypeName="PersonCountryDemoContext" />
+					<plx:param name="Country_name" dataTypeName=".string" />
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_Context" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="context" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_PersonViaCountryCollection" />
+						</plx:left>
+						<plx:right>
+							<plx:callNew dataTypeName="ConstraintEnforcementCollection">
+								<plx:passTypeParam dataTypeName="Country" />
+								<plx:passTypeParam dataTypeName="Person" />
+								<plx:passParam>
+									<plx:thisKeyword />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_Country_name" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="Country_name" />
+						</plx:right>
+					</plx:assign>
+					<plx:callInstance type="methodCall" name="OnCountryCountry_nameChanged">
+						<plx:callObject>
+							<plx:nameRef type="parameter" name="context" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nullKeyword />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance type="methodCall" name="Add">
+						<plx:callObject>
+							<plx:callInstance type="field" name="_CountryList">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="context" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:function>
+				<plx:field visibility="private" readOnly="true" name="_Context" dataTypeName="PersonCountryDemoContext" />
+				<plx:property visibility="public" modifier="override" name="Context">
+					<plx:returns dataTypeName="PersonCountryDemoContext" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Context" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Country_name" dataTypeName=".string">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>Country_name</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="Country_name">
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Country_name" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:valueKeyword />
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentNullException">
+									<plx:passParam>
+										<plx:string>value</plx:string>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:throw>
+						</plx:branch>
+						<plx:local name="oldValue" dataTypeName=".string">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_Country_name" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+										<plx:passParam>
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnCountryCountry_nameChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="RaiseCountry_nameChangingEvent">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_Country_name" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="OnCountryCountry_nameChanged">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="field" name="_Context" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:thisKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:callThis accessor="base" type="methodCall" name="RaiseCountry_nameChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="false" name="_Region_Region_code" dataTypeName=".string">
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>Region_Region_code</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="Region_Region_code">
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_Region_Region_code" />
+						</plx:return>
+					</plx:get>
+					<plx:set>
+						<plx:local name="oldValue" dataTypeName=".string">
+							<plx:initialize>
+								<plx:callThis accessor="this" type="field" name="_Region_Region_code" />
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+										<plx:passParam>
+											<plx:nameRef type="local" name="oldValue" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:valueKeyword />
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:callInstance type="methodCall" name="OnCountryRegion_Region_codeChanging">
+												<plx:callObject>
+													<plx:callThis accessor="this" type="field" name="_Context" />
+												</plx:callObject>
+												<plx:passParam>
+													<plx:thisKeyword />
+												</plx:passParam>
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="base" type="methodCall" name="RaiseRegion_Region_codeChangingEvent">
+												<plx:passParam>
+													<plx:valueKeyword />
+												</plx:passParam>
+											</plx:callThis>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="_Region_Region_code" />
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword />
+									</plx:right>
+								</plx:assign>
+								<plx:callThis accessor="base" type="methodCall" name="RaiseRegion_Region_codeChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue" />
+									</plx:passParam>
+								</plx:callThis>
+							</plx:branch>
+						</plx:branch>
+					</plx:set>
+				</plx:property>
+				<plx:field visibility="private" readOnly="true" name="_PersonViaCountryCollection" dataTypeName="IEnumerable">
+					<plx:passTypeParam dataTypeName="Person" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:passParam>
+							<plx:string>PersonViaCountryCollection</plx:string>
+						</plx:passParam>
+					</plx:attribute>
+				</plx:field>
+				<plx:property visibility="public" modifier="override" name="PersonViaCountryCollection">
+					<plx:returns dataTypeName="IEnumerable">
+						<plx:passTypeParam dataTypeName="Person" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					</plx:returns>
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_PersonViaCountryCollection" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+			</plx:class>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

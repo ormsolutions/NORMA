@@ -33,10 +33,10 @@
 		<odt:decimalNumber name="OptionalUniqueDecimal" totalDigits="9" />
 		<odt:decimalNumber name="MandatoryUniqueDecimal" totalDigits="9" />
 		<odt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
-		<odt:boolean name="isFromProstateCancer" />
-		<odt:boolean name="isViolent" />
-		<odt:boolean name="isBloody" />
-		<odt:boolean name="hasParents" />
+		<odt:boolean name="NaturalDeath_20" />
+		<odt:boolean name="UnnaturalDeath_9" />
+		<odt:boolean name="UnnaturalDeath_8" />
+		<odt:boolean name="Person_10" />
 	</oil:informationTypeFormats>
 	<oil:conceptType name="PersonDrivesCar" sourceRef="_72D0A608-D62A-4A03-9A14-695CE9F67496">
 		<oil:conceptTypeRef name="DrivenByPerson" target="Person" oppositeName="PersonDrivesCar" mandatory="alethic" sourceRoleRef="_5E7AEB81-DCB6-441C-82AD-EADB5354CDFE" />
@@ -136,22 +136,25 @@
 				<oil:typeRef targetConceptType="Person" targetChild="HatType_HatTypeStyle_HatTypeStyle_Description" />
 			</oil:roleSequence>
 		</oil:equalityConstraint>
+		<oil:conceptTypeRef name="Husband" target="Person" oppositeName="Wife" mandatory="false" sourceRoleRef="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6">
+			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint14" sourceRef="_BEEBB37E-4607-48AB-B10C-3D87B83D5A4C" modality="alethic" isPreferred="false" />
+		</oil:conceptTypeRef>
 		<oil:informationType name="OwnsCar_vin" formatRef="vin" mandatory="false" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_ED495E3B-6C47-4D22-B01C-0E0C805C6664">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint22" sourceRef="_50710E80-100C-47A9-B5D3-B86A8E75B7B9" modality="alethic" isPreferred="false" />
 		</oil:informationType>
 		<oil:conceptType name="Death" sourceRef="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" mandatory="false" sourceRoleRef="_CF6F1E78-7D74-4ED9-B3FA-FD7141238AB4">
 			<oil:conceptType name="NaturalDeath" sourceRef="_DDE8D226-F41E-4524-8BD8-051DDBC37E21" mandatory="false" sourceRoleRef="_03B4EB5F-3A90-45D2-95EB-EE0AEA9844B8">
-				<oil:informationType name="isFromProstateCancer" formatRef="isFromProstateCancer" mandatory="alethic" sourceRef="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_coref_fact1" sourceRoleRef="_965293C9-8AD7-4C73-B54C-818DC450C11B" />
+				<oil:informationType name="20" formatRef="NaturalDeath_20" mandatory="alethic" sourceRef="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_coref_fact1" sourceRoleRef="_965293C9-8AD7-4C73-B54C-818DC450C11B" />
 			</oil:conceptType>
 			<oil:conceptType name="UnnaturalDeath" sourceRef="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" mandatory="false" sourceRoleRef="_C0B623D1-7CD0-49CC-B419-4F2EFAEA77B8">
-				<oil:informationType name="isViolent" formatRef="isViolent" mandatory="alethic" sourceRef="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_coref_fact1" sourceRoleRef="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8" />
-				<oil:informationType name="isBloody" formatRef="isBloody" mandatory="alethic" sourceRef="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_coref_fact1" sourceRoleRef="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7" />
+				<oil:informationType name="9" formatRef="UnnaturalDeath_9" mandatory="alethic" sourceRef="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_coref_fact1" sourceRoleRef="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8" />
+				<oil:informationType name="8" formatRef="UnnaturalDeath_8" mandatory="alethic" sourceRef="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_coref_fact1" sourceRoleRef="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7" />
 			</oil:conceptType>
 			<oil:informationType name="Date_YMD" formatRef="YMD" mandatory="false" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_0AE5870D-43CB-45E4-B252-5B06DA9A5443" />
 			<oil:informationType name="DeathCause_DeathCause_Type" formatRef="DeathCause_Type" mandatory="alethic" sourceRef="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" sourceRoleRef="_90A1343B-5AFD-4EDF-ABF3-868915B25477" />
 		</oil:conceptType>
 		<oil:informationType name="Gender_Gender_Code" formatRef="Gender_Code" mandatory="alethic" sourceRef="_FF723148-C1AB-4835-84CD-996B28BC4027" sourceRoleRef="_94C9DD40-B34A-4BF7-A0B8-CAEA067FF7A0" />
-		<oil:informationType name="hasParents" formatRef="hasParents" mandatory="alethic" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
+		<oil:informationType name="10" formatRef="Person_10" mandatory="alethic" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
 		<oil:conceptTypeRef name="ValueType1DoesSomethingElseWith" target="ValueType1" oppositeName="DoesSomethingElseWithPerson" mandatory="false" sourceRoleRef="_37C4F90B-50F3-4655-9946-C6D796CA4FDB" />
 		<oil:informationType name="OptionalUniqueDecimal" formatRef="OptionalUniqueDecimal" mandatory="false" sourceRef="_2BD0D7D3-0B11-45F9-9D8F-1BA51BB7A138" sourceRoleRef="_42291EC4-DB35-459F-A7F9-A3517D1C709C">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint65" sourceRef="_30FE89A6-1F2E-416E-A6A0-0CC3021BFA4D" modality="alethic" isPreferred="false" />
@@ -162,6 +165,14 @@
 		<oil:informationType name="MandatoryUniqueString" formatRef="MandatoryUniqueString" mandatory="alethic" sourceRef="_05B33E84-9567-412A-8ABF-DC395F52C220" sourceRoleRef="_36E5694F-1B3C-495C-ACBF-209DC6C2F4BD">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint67" sourceRef="_DBE5D226-1A64-4D1E-BC02-8E702E7560BC" modality="alethic" isPreferred="false" />
 		</oil:informationType>
+		<oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Person" targetChild="Wife" />
+			</oil:roleSequence>
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Person" targetChild="Husband" />
+			</oil:roleSequence>
+		</oil:exclusionConstraint>
 		<oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_F40FEEF1-947A-453D-8B63-C791930EB876" isPreferred="false">
 			<oil:roleSequence>
 				<oil:typeRef targetConceptType="Person" targetChild="FirstName" />
@@ -174,14 +185,6 @@
 				<oil:typeRef targetConceptType="Person" targetChild="Date_YMD" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
-		<oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Person" targetChild="Wife" />
-			</oil:roleSequence>
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Person" targetChild="Husband" />
-			</oil:roleSequence>
-		</oil:exclusionConstraint>
 	</oil:conceptType>
 	<oil:conceptType name="Task" sourceRef="_779E9788-0C2F-44B6-B958-AEEC22593966">
 		<oil:conceptTypeRef name="Person" target="Person" oppositeName="Task" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />

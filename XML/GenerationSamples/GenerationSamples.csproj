@@ -18,21 +18,63 @@
       <LastGenOutput>PersonCountryDemo.ORMCustomToolReport.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="PersonCountryDemo.ORMCustomToolReport.cs">
+  <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
+    <None Include="PersonCountryDemo.Abstract.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.Abstract.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.CLIProperties.xml">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-    </Compile>
-    <Compile Include="SampleModel.ORMCustomToolReport.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
+      <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
+    </None>
     <None Include="PersonCountryDemo.CoRef.orm">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestForm.Designer.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormDesigner</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestForm.Designer.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestForm.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestForm</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestForm.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestForm.resx">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormResx</ORMGenerator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.resx">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControlResx</ORMGenerator>
+      <SubType>Designer</SubType>
     </None>
     <None Include="PersonCountryDemo.DB2.sql">
       <AutoGen>True</AutoGen>
@@ -49,10 +91,12 @@
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>DCILtoDDIL</ORMGenerator>
     </None>
-    <None Include="PersonCountryDemo.html">
+    <None Include="PersonCountryDemo.Implementation.PLiX.xml">
       <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>TVtoHTML</ORMGenerator>
+      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.Implementation.PLiX.cs</LastGenOutput>
     </None>
     <None Include="PersonCountryDemo.OIAL.xml">
       <AutoGen>True</AutoGen>
@@ -69,15 +113,17 @@
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoOWL</ORMGenerator>
     </None>
-    <None Include="PersonCountryDemo.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoPLiX</ORMGenerator>
-    </None>
     <None Include="PersonCountryDemo.PostgreSQL.sql">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Program.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormProgram</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.Program.PLiX.cs</LastGenOutput>
     </None>
     <None Include="PersonCountryDemo.SQLServer.sql">
       <AutoGen>True</AutoGen>
@@ -89,35 +135,135 @@
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
     </None>
-    <None Include="PersonCountryDemo.TV.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DCILtoTV</ORMGenerator>
-    </None>
     <None Include="PersonCountryDemo.xsd">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
-      <SubType>Designer</SubType>
     </None>
-    <Compile Include="PersonCountryDemo.cs">
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PersonCountryDemo.Abstract.PLiX.cs">
       <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>PLiXtoCSharp</ORMGenerator>
+      <DependentUpon>PersonCountryDemo.Abstract.PLiX.xml</DependentUpon>
     </Compile>
-    <Compile Include="PersonCountryDemo.vb">
+    <Compile Include="PersonCountryDemo.DataLayerTestForm.Designer.PLiX.cs">
       <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonCountryDemo.DataLayerTestForm.Designer.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="PersonCountryDemo.DataLayerTestForm.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.DataLayerTestForm.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="PersonCountryDemo.DataLayerTestFormInputControl.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.DataLayerTestFormInputControl.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="PersonCountryDemo.Implementation.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.Implementation.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="PersonCountryDemo.ORMCustomToolReport.cs">
+      <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>PLiXtoVisualBasic</ORMGenerator>
+    </Compile>
+    <Compile Include="PersonCountryDemo.Program.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.Program.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.Abstract.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.Abstract.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.DataLayerTestForm.Designer.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.DataLayerTestForm.Designer.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.DataLayerTestForm.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.DataLayerTestForm.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.DataLayerTestFormInputControl.Designer.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.DataLayerTestFormInputControl.Designer.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.DataLayerTestFormInputControl.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.DataLayerTestFormInputControl.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.Implementation.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.Implementation.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.ORMCustomToolReport.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+    </Compile>
+    <Compile Include="SampleModel.Program.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.Program.PLiX.xml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup Condition="Exists('SampleModel.orm')">
+    <None Include="SampleModel.Abstract.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
+      <LastGenOutput>SampleModel.Abstract.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.CLIProperties.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
+    </None>
     <None Include="SampleModel.CoRef.orm">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
+    </None>
+    <None Include="SampleModel.DataLayerTestForm.Designer.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormDesigner</ORMGenerator>
+      <LastGenOutput>SampleModel.DataLayerTestForm.Designer.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.DataLayerTestForm.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestForm</ORMGenerator>
+      <LastGenOutput>SampleModel.DataLayerTestForm.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.DataLayerTestForm.resx">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormResx</ORMGenerator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SampleModel.DataLayerTestFormInputControl.Designer.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
+      <LastGenOutput>SampleModel.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.DataLayerTestFormInputControl.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
+      <LastGenOutput>SampleModel.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.DataLayerTestFormInputControl.resx">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControlResx</ORMGenerator>
+      <SubType>Designer</SubType>
     </None>
     <None Include="SampleModel.DB2.sql">
       <AutoGen>True</AutoGen>
@@ -134,10 +280,12 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DCILtoDDIL</ORMGenerator>
     </None>
-    <None Include="SampleModel.html">
+    <None Include="SampleModel.Implementation.PLiX.xml">
       <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
       <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>TVtoHTML</ORMGenerator>
+      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
+      <LastGenOutput>SampleModel.Implementation.PLiX.cs</LastGenOutput>
     </None>
     <None Include="SampleModel.OIAL.xml">
       <AutoGen>True</AutoGen>
@@ -154,15 +302,17 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoOWL</ORMGenerator>
     </None>
-    <None Include="SampleModel.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>OIALtoPLiX</ORMGenerator>
-    </None>
     <None Include="SampleModel.PostgreSQL.sql">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Program.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormProgram</ORMGenerator>
+      <LastGenOutput>SampleModel.Program.PLiX.cs</LastGenOutput>
     </None>
     <None Include="SampleModel.SQLServer.sql">
       <AutoGen>True</AutoGen>
@@ -174,28 +324,10 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
     </None>
-    <None Include="SampleModel.TV.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>DCILtoTV</ORMGenerator>
-    </None>
     <None Include="SampleModel.xsd">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
-      <SubType>Designer</SubType>
     </None>
-    <Compile Include="SampleModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>PLiXtoCSharp</ORMGenerator>
-    </Compile>
-    <Compile Include="SampleModel.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>PLiXtoVisualBasic</ORMGenerator>
-    </Compile>
   </ItemGroup>
 </Project>

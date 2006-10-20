@@ -111,6 +111,27 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC18" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
@@ -143,6 +164,27 @@
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC23" />
@@ -188,6 +230,27 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC26" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
@@ -208,6 +271,27 @@
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC33" />
@@ -268,7 +352,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="hasParents">
+		<ddl:columnDefinition name="&quot;10&quot;">
 			<ddt:boolean type="BOOLEAN" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
@@ -288,6 +372,9 @@
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="Husband_Person_id">
+			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="VT1DSEWVT1V">
 			<ddt:exactNumeric type="BIGINT" />
@@ -313,14 +400,35 @@
 		<ddl:columnDefinition name="DDCDCT">
 			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DNDFPC">
+		<ddl:columnDefinition name="Dth_NtrlDth_20">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DUDV">
+		<ddl:columnDefinition name="Dth_UnntrlDth_9">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DUDB">
+		<ddl:columnDefinition name="Dth_UnntrlDth_8">
 			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC2" />
@@ -399,6 +507,27 @@
 		<ddl:columnDefinition name="Person_Person_id">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC16" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
@@ -415,6 +544,27 @@
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="DSWPP">
 			<ddt:exactNumeric type="BIGINT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="INSERT_DATE">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="UPDATE_DATE">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ERROR_FLAG_IND">
+			<ddt:approximateNumeric type="FLOAT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SOURCE_SYSTEM_CD">
+			<ddt:characterString type="CHARACTER VARYING" length="10" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="STUDY_SHORT_NAME">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="VlTyp1Vl_Unq" />
@@ -461,6 +611,17 @@
 			<dep:constraintNameDefinition name="Person_FK" />
 			<ddl:referentialConstraintDefinition>
 				<ddl:column name="Person_Person_id" />
+				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
+					<ddl:referenceColumn name="Person_id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="Person" schema="SampleModel">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="Husband_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="Husband_Person_id" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<ddl:referenceColumn name="Person_id" />
 				</ddl:referencesSpecification>

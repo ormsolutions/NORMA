@@ -331,25 +331,25 @@
 			</orm:PlayedRoles>
 			<orm:PreferredIdentifier ref="_144EEAB0-D64E-4439-B9E1-AF58CA1E3257" />
 		</orm:EntityType>
-		<orm:ValueType Name="isFromProstateCancer" id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4">
+		<orm:ValueType id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4" Name="NaturalDeath_20">
 			<orm:PlayedRoles>
 				<orm:Role ref="_965293C9-8AD7-4C73-B54C-818DC450C11B_opposite" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_Data_Type" ref="_true_or_false_logical_Data_Type" Scale="0" Length="0" />
 		</orm:ValueType>
-		<orm:ValueType Name="isViolent" id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF">
+		<orm:ValueType id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF" Name="UnnaturalDeath_9">
 			<orm:PlayedRoles>
 				<orm:Role ref="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8_opposite" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_Data_Type" ref="_true_or_false_logical_Data_Type" Scale="0" Length="0" />
 		</orm:ValueType>
-		<orm:ValueType Name="isBloody" id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE">
+		<orm:ValueType id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE" Name="UnnaturalDeath_8">
 			<orm:PlayedRoles>
 				<orm:Role ref="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7_opposite" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_Data_Type" ref="_true_or_false_logical_Data_Type" Scale="0" Length="0" />
 		</orm:ValueType>
-		<orm:ValueType Name="hasParents" id="_B3958780-E433-4992-963B-E34C33E62DB7">
+		<orm:ValueType id="_B3958780-E433-4992-963B-E34C33E62DB7" Name="Person_10">
 			<orm:PlayedRoles>
 				<orm:Role ref="_65D25484-9FF7-407D-B870-B628A66A5A0F_opposite" />
 			</orm:PlayedRoles>
@@ -1052,11 +1052,11 @@
 		</orm:Fact>
 		<orm:Fact id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_coref_fact1">
 			<orm:FactRoles>
-				<orm:Role id="_965293C9-8AD7-4C73-B54C-818DC450C11B_opposite" _IsMandatory="true" Name="isFromProstateCancer">
-					<orm:RolePlayer ref="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4" />
-				</orm:Role>
 				<orm:Role id="_965293C9-8AD7-4C73-B54C-818DC450C11B" _IsMandatory="false" Name="isFromProstateCancer">
 					<orm:RolePlayer ref="_DDE8D226-F41E-4524-8BD8-051DDBC37E21" />
+				</orm:Role>
+				<orm:Role id="_965293C9-8AD7-4C73-B54C-818DC450C11B_opposite" _IsMandatory="true" Name="20">
+					<orm:RolePlayer ref="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4" />
 				</orm:Role>
 			</orm:FactRoles>
 			<orm:InternalConstraints>
@@ -1065,11 +1065,11 @@
 		</orm:Fact>
 		<orm:Fact id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_coref_fact1">
 			<orm:FactRoles>
-				<orm:Role id="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8_opposite" _IsMandatory="true" Name="isViolent">
-					<orm:RolePlayer ref="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF" />
-				</orm:Role>
 				<orm:Role id="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8" _IsMandatory="false" Name="isViolent">
 					<orm:RolePlayer ref="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" />
+				</orm:Role>
+				<orm:Role id="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8_opposite" _IsMandatory="true" Name="9">
+					<orm:RolePlayer ref="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF" />
 				</orm:Role>
 			</orm:FactRoles>
 			<orm:InternalConstraints>
@@ -1078,11 +1078,11 @@
 		</orm:Fact>
 		<orm:Fact id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_coref_fact1">
 			<orm:FactRoles>
-				<orm:Role id="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7_opposite" _IsMandatory="true" Name="isBloody">
-					<orm:RolePlayer ref="_7D989A2C-9CFF-464F-822E-FE41B6758ACE" />
-				</orm:Role>
 				<orm:Role id="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7" _IsMandatory="false" Name="isBloody">
 					<orm:RolePlayer ref="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" />
+				</orm:Role>
+				<orm:Role id="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7_opposite" _IsMandatory="true" Name="8">
+					<orm:RolePlayer ref="_7D989A2C-9CFF-464F-822E-FE41B6758ACE" />
 				</orm:Role>
 			</orm:FactRoles>
 			<orm:InternalConstraints>
@@ -1235,11 +1235,11 @@
 		</orm:SubtypeFact>
 		<orm:Fact id="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1">
 			<orm:FactRoles>
-				<orm:Role id="_65D25484-9FF7-407D-B870-B628A66A5A0F_opposite" _IsMandatory="true" Name="hasParents">
-					<orm:RolePlayer ref="_B3958780-E433-4992-963B-E34C33E62DB7" />
-				</orm:Role>
 				<orm:Role id="_65D25484-9FF7-407D-B870-B628A66A5A0F" _IsMandatory="false" Name="hasParents">
 					<orm:RolePlayer ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
+				</orm:Role>
+				<orm:Role id="_65D25484-9FF7-407D-B870-B628A66A5A0F_opposite" _IsMandatory="true" Name="10">
+					<orm:RolePlayer ref="_B3958780-E433-4992-963B-E34C33E62DB7" />
 				</orm:Role>
 			</orm:FactRoles>
 			<orm:InternalConstraints>
@@ -2122,6 +2122,16 @@
 		</orm:Fact>
 	</orm:Facts>
 	<orm:Constraints>
+		<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
+			<orm:RoleSequences>
+				<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29">
+					<orm:Role ref="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6" />
+				</orm:RoleSequence>
+				<orm:RoleSequence id="_6C551D9F-5659-487B-8104-C9A7B39CD535">
+					<orm:Role ref="_089D0A43-FD48-4580-A6A6-45A6FA189DEA" />
+				</orm:RoleSequence>
+			</orm:RoleSequences>
+		</orm:ExclusionConstraint>
 		<orm:UniquenessConstraint id="_F40FEEF1-947A-453D-8B63-C791930EB876" Name="ExternalUniquenessConstraint1">
 			<orm:RoleSequence>
 				<orm:Role ref="_0D9E47FC-891C-45C5-95E6-CEC245F61265" />
@@ -2779,16 +2789,6 @@
 				<orm:Role ref="_30AB5954-45CE-4694-8F39-9E56ACF49F90" />
 			</orm:RoleSequence>
 		</orm:UniquenessConstraint>
-		<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
-			<orm:RoleSequences>
-				<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29">
-					<orm:Role ref="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6" />
-				</orm:RoleSequence>
-				<orm:RoleSequence id="_6C551D9F-5659-487B-8104-C9A7B39CD535">
-					<orm:Role ref="_089D0A43-FD48-4580-A6A6-45A6FA189DEA" />
-				</orm:RoleSequence>
-			</orm:RoleSequences>
-		</orm:ExclusionConstraint>
 		<orm:UniquenessConstraint id="_965293C9-8AD7-4C73-B54C-818DC450C11B_unique" Name="_965293C9-8AD7-4C73-B54C-818DC450C11B_unique" IsInternal="true">
 			<orm:RoleSequence>
 				<orm:Role ref="_965293C9-8AD7-4C73-B54C-818DC450C11B" />

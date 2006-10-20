@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+	<plx:namespaceImport name="System" />
+	<plx:namespaceImport name="System.Collections.Generic" />
+	<plx:namespaceImport name="System.Collections.ObjectModel" />
+	<plx:namespaceImport name="System.ComponentModel" />
+	<plx:namespaceImport name="System.Xml" />
+	<plx:namespaceImport name="System.Data" />
+	<plx:namespaceImport name="System.Data.SqlClient" />
+	<plx:namespaceImport name="System.Drawing" />
+	<plx:namespaceImport name="System.Text" />
+	<plx:namespaceImport name="System.Windows.Forms" />
+	<plx:namespace name="PersonCountryDemo">
+		<plx:class name="PersonCountryDemoTester" partial="true" visibility="public">
+			<plx:derivesFromClass dataTypeName="Form" />
+			<plx:function name=".construct" visibility="public">
+				<plx:callThis name="InitializeComponent" type="methodCall" />
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

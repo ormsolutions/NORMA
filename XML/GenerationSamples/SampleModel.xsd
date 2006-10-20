@@ -157,6 +157,7 @@
 					<xs:element name="FemalePerson" type="oxs:FemalePersonIdentifier" />
 					<xs:element name="ChildPerson" type="oxs:ChildPersonIdentifier" />
 					<xs:element name="Death" type="oxs:DeathIdentifier" />
+					<xs:element name="Husband" type="oxs:PersonIdentifier" />
 					<xs:element name="ValueType1DoesSomethingElseWith" type="oxs:ValueType1Identifier" />
 					<xs:sequence minOccurs="0">
 						<xs:annotation>
@@ -181,7 +182,7 @@
 				<xs:attribute name="HatTypeStyle_Description" type="oxs:HatTypeStyle_Description" use="optional" />
 				<xs:attribute name="vin" type="xs:integer" use="optional" />
 				<xs:attribute name="Gender_Code" type="oxs:Gender_Code" use="required" />
-				<xs:attribute name="hasParents" type="xs:boolean" use="required" />
+				<xs:attribute name="Person_10" type="xs:boolean" use="required" />
 				<xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
 				<xs:attribute name="MandatoryUniqueDecimal" type="oxs:MandatoryUniqueDecimal" use="required" />
 				<xs:attribute name="MandatoryUniqueString" type="oxs:MandatoryUniqueString" use="required" />
@@ -322,6 +323,10 @@
 		</xs:keyref>
 		<xs:keyref name="PersonHasNickNamePersonRef" refer="PersonKey">
 			<xs:selector xpath="oxs:PersonHasNickNameElements/oxs:PersonHasNickName" />
+			<xs:field xpath="oxs:Person/@Person_id" />
+		</xs:keyref>
+		<xs:keyref name="PersonHusbandRef" refer="PersonKey">
+			<xs:selector xpath="oxs:PersonElements/oxs:Person" />
 			<xs:field xpath="oxs:Person/@Person_id" />
 		</xs:keyref>
 		<xs:keyref name="PersonValueType1DoesSomethingElseWithRef" refer="ValueType1Key">
