@@ -24,7 +24,7 @@
 	extension-element-prefixes="exsl">
 	
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	<xsl:param name="OIAL" select="document('C:\Documents and Settings\rsanidad\My Documents\ORM Project\DataLayerFormGeneration\DataLayerFormGeneration\Portfolio.OIAL.xml')/*"/>
+	<xsl:param name="OIAL" />
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
