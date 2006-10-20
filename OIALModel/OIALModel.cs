@@ -1,4 +1,4 @@
-// Uncomment the following line for the OIALModel to get unaries from the ORMModel
+// Uncomment the following line for the OIALModel to binarize unaries from the ORMModel.
 #define USE_UNBINARIZED_UNARIES
 #region Common Public License Copyright Notice
 /**************************************************************************\
@@ -30,10 +30,23 @@ using ObjModel = Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
+	#region OIALRegenerationEventArgs Class
+	/// <summary>
+	/// Provides data for the <see cref="E:Neumont.Tools.ORM.OIALModel.OIALModel.OIALRegenerating" /> event.
+	/// </summary>
 	public class OIALRegenerationEventArgs : ModelingEventArgs
 	{
+		/// <summary>
+		/// Specifies the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> that raised the event.
+		/// </summary>
 		private readonly OIALModel myOIALModel;
+		/// <summary>
+		/// Specifies the <see cref="T:Microsoft.VisualStudio.Modeling.Transaction"/> in which the event was raised.
+		/// </summary>
 		private readonly Transaction myTransaction;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel.OIALRegenerationEventArgs" /> class.	
+		/// </summary>
 		public OIALRegenerationEventArgs(OIALModel oialModel, Transaction transaction)
 		{
 			if (oialModel == null)
@@ -47,7 +60,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			this.myOIALModel = oialModel;
 			this.myTransaction = transaction;
 		}
-
+		/// <summary>
+		/// Gets the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> that raised the event.
+		/// </summary>
 		public OIALModel OIALModel
 		{
 			get
@@ -55,6 +70,9 @@ namespace Neumont.Tools.ORM.OIALModel
 				return this.myOIALModel;
 			}
 		}
+		/// <summary>
+		/// Gets the <see cref="T:Microsoft.VisualStudio.Modeling.Transaction"/> in which the event was raised.
+		/// </summary>
 		public Transaction Transaction
 		{
 			get
@@ -63,6 +81,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
+	#endregion // OIALRegenerationEventArgs Class
 	#region OIALModel Rules and Validation
 	public partial class OIALModel
 	{
@@ -813,7 +832,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		#endregion // Initializers
 		#region ORMToOIAL Algorithms
 		/// <summary>
-		/// Determines to which object types all fact types in the diagram (after being
+		/// Determines to which object types all one-to-one fact types in the diagram (after being
 		/// co-referenced) are absorbed.
 		/// </summary>
 		/// <param name="modelFactTypes">
@@ -1621,11 +1640,13 @@ namespace Neumont.Tools.ORM.OIALModel
 				string constraintName = constraint.Name;
 				ConstraintModality constraintModality = constraint.Modality;
 				bool isDisjunctiveMandatoryConstraint = constraint is MandatoryConstraint;
-				List<ConceptTypeChild> conceptTypeHasChildCollection = GetConceptTypeChildRelationshipsForSetConstraints(constraint.RoleCollection, isDisjunctiveMandatoryConstraint);
+				LinkedElementCollection<Role> roleCollection = constraint.RoleCollection;
+				List<ConceptTypeChild> conceptTypeHasChildCollection = GetConceptTypeChildRelationshipsForSetConstraints(roleCollection, isDisjunctiveMandatoryConstraint);
 				if (conceptTypeHasChildCollection == null)
 				{
 					return;
 				}
+				int collectionCount = roleCollection.Count;
 				if (conceptTypeHasChildCollection.Count != 0)
 				{
 					MinTwoChildrenChildSequence minTwoChildrenChildSequence = new MinTwoChildrenChildSequence(store);
@@ -1635,10 +1656,28 @@ namespace Neumont.Tools.ORM.OIALModel
 					UniquenessConstraint uConstraint = constraint as UniquenessConstraint;
 					if (uConstraint != null)
 					{
+						bool isPreferred = uConstraint.IsPreferred;
+						bool ignoreIfPrimary = true;
+						if (isPreferred)
+						{
+							for (int i = 0; i < collectionCount; ++i)
+							{
+								RoleBase oppositeRole = roleCollection[i].OppositeRole;
+								if (oppositeRole != null)
+								{
+									if (myTopLevelTypes.Contains(oppositeRole.Role.RolePlayer.Id))
+									{
+										ignoreIfPrimary = false;
+										break;
+									}
+								}
+							}
+						}
 						childSequenceConstraint = new ChildSequenceUniquenessConstraint(store,
 							new PropertyAssignment(ChildSequenceUniquenessConstraint.NameDomainPropertyId, constraintName),
-							new PropertyAssignment(ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
-							new PropertyAssignment(ChildSequenceUniquenessConstraint.ModalityDomainPropertyId, constraintModality));
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, isPreferred),
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.ModalityDomainPropertyId, constraintModality),
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.ShouldIgnoreDomainPropertyId, ignoreIfPrimary));
 					}
 					else if (isDisjunctiveMandatoryConstraint)
 					{

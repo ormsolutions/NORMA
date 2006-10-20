@@ -17,14 +17,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.OIALModel;
-using System.Drawing;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -37,28 +35,50 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	internal partial class RelationalModel
 	{		
 		#region Validation Rules
+		/// <summary>
+		/// Overrides the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> for delayed validation.
+		/// </summary>
 		[RuleOn(typeof(Table))]
 		private sealed partial class DelayedFixUpDiagram : AddRule
 		{
-			private static readonly FixUpDiagram myFixUpDiagram = new FixUpDiagram();
+			/// <summary>
+			/// Holds a instance of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram"/>.
+			/// </summary>
+			private static readonly FixUpDiagram FixUpDiagram = new FixUpDiagram();
+			/// <summary>
+			/// Notifies the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram"/> that an
+			/// element has been added after a call to <see cref="M:Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElement"/>.
+			/// </summary>
+			/// <param name="e">ElementAddedEventArgs</param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelElement childElement = e.ModelElement;
 				if (childElement is Table)
 				{
-					ORMCoreDomainModel.DelayValidateElement(childElement, delegate(ModelElement target)
-					{
-						myFixUpDiagram.ElementAdded(e);
-					});
+					ORMCoreDomainModel.DelayValidateElement(childElement,
+						delegate(ModelElement target)
+						{
+							FixUpDiagram.ElementAdded(e);
+						}
+					);
 				}
 			}
 		}
-
+		/// <summary>
+		/// Overrides the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> for delayed validation.
+		/// </summary>
 		[RuleOn(typeof(TableHasColumn))]
 		private sealed partial class DelayedCompartmentItemAddRule : AddRule
 		{
-			private static readonly CompartmentItemAddRule myCompartmentItemAddRule = new CompartmentItemAddRule();
-
+			/// <summary>
+			/// Holds a instance of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/>.
+			/// </summary>
+			private static readonly CompartmentItemAddRule CompartmentItemAddRule = new CompartmentItemAddRule();
+			/// <summary>
+			/// Notifies the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> that an
+			/// element has been added after a call to <see cref="M:Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElement"/>.
+			/// </summary>
+			/// <param name="e">ElementAddedEventArgs</param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelElement childElement = e.ModelElement;
@@ -68,30 +88,44 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					ORMCoreDomainModel.DelayValidateElement(childElement,
 						delegate(ModelElement target)
 						{
-							myCompartmentItemAddRule.ElementAdded(e);
-						});
+							CompartmentItemAddRule.ElementAdded(e);
+						}
+					);
 				}
 			}
-
 		}
-
-		[RuleOn(typeof(TableReferencesTable), InitiallyDisabled = true)]
+		/// <summary>
+		/// Overrides the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> for delayed validation.
+		/// </summary>
+		[RuleOn(typeof(TableReferencesTable))]
 		private sealed partial class DelayedForeignKeyItemAddRule : AddRule
 		{
-			private static readonly FixUpDiagram myFixUpDiagram = new FixUpDiagram();
+			/// <summary>
+			/// Holds a instance of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/>.
+			/// </summary>
+			private static readonly FixUpDiagram FixUpDiagram = new FixUpDiagram();
+			/// <summary>
+			/// Notifies the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram"/> that an
+			/// element has been added after a call to <see cref="M:Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElement"/>.
+			/// </summary>
+			/// <param name="e">ElementAddedEventArgs</param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				TableReferencesTable tableRef = e.ModelElement as TableReferencesTable;
 				if (tableRef != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(tableRef, delegate(ModelElement target)
-					{
-						myFixUpDiagram.ElementAdded(e);
-					});
+					ORMCoreDomainModel.DelayValidateElement(tableRef,
+						delegate(ModelElement target)
+						{
+							FixUpDiagram.ElementAdded(e);
+						}
+					);
 				}
 			}
 		}
-
+		/// <summary>
+		/// Generates the tables when the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/> has been added to the model.
+		/// </summary>
 		[RuleOn(typeof(RelationalDiagram))] // AddRule
 		private sealed partial class DelayedRelationalDiagramAddRule : AddRule
 		{
@@ -100,41 +134,42 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				RelationalDiagram relDiagram = e.ModelElement as RelationalDiagram;
 				if (relDiagram != null)
 				{
-					relDiagram.Store.RuleManager.EnableRule(typeof(DelayedForeignKeyItemAddRule));
-					ORMCoreDomainModel.DelayValidateElement(relDiagram, delegate(ModelElement target)
-					{
-						RelationalModel relModel = relDiagram.ModelElement as RelationalModel;
-						if (relModel != null)
+					ORMCoreDomainModel.DelayValidateElement(relDiagram,
+						delegate(ModelElement target)
 						{
-							relModel.GenerateTables(relModel.OIALModel);
+							RelationalModel relModel = relDiagram.ModelElement as RelationalModel;
+							if (relModel != null)
+							{
+								relModel.GenerateTables(relModel.OIALModel);
+							}
 						}
-					});
+					);
 				}
 			}
 		}
-
-		[RuleOn(typeof(RelationalDiagram))] // DeleteRule
-		private sealed partial class RelationalDiagramDeleteRule : DeleteRule
-		{
-			public override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				RelationalDiagram relDiagram = e.ModelElement as RelationalDiagram;
-				if (relDiagram != null)
-				{
-					relDiagram.Store.RuleManager.DisableRule(typeof(DelayedForeignKeyItemAddRule));
-				}
-			}
-		}
-
+		/// <summary>
+		/// Assigns the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel"/> to a
+		/// <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> when the latter is associated with an
+		/// <see cref="T:Neumont.Tools.ORM.ObjectModel.ORMModel"/>.
+		/// </summary>
 		[RuleOn(typeof(OIALModelHasORMModel))]
 		private sealed partial class DelayedOIALModelAddedRule : AddRule
 		{
+			/// <summary>
+			/// Schedules the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel"/> to be added
+			/// to <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> after a delay.
+			/// </summary>
+			/// <param name="e">ElementAddedEventArgs</param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				OIALModelHasORMModel link = e.ModelElement as OIALModelHasORMModel;
 				ORMCoreDomainModel.DelayValidateElement(link.OIALModel, AddRelationalModel);
 			}
-
+			/// <summary>
+			/// Schedules the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel"/> to be added
+			/// to <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> after a delay.
+			/// </summary>
+			/// <param name="element"><see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/>.</param>
 			private void AddRelationalModel(ModelElement element)
 			{
 				OIALModel.OIALModel oialModel = element as OIALModel.OIALModel;
@@ -147,15 +182,21 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// Called whenever a <see cref="ConceptType"/> is added to the model, so that we can regenerate the RelationalView.
+		/// Called whenever a <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/> is added to the model,
+		/// so that we can regenerate the RelationalView.
 		/// </summary>
 		[RuleOn(typeof(OIALModelHasConceptType))] // AddRule
 		private sealed partial class DelayedConceptTypeAddedRule : AddRule
 		{
 			/// <summary>
-			/// Standard override. Process the added <see cref="ConceptType"/>.
+			/// Denotes whether the <see cref="E:Neumont.Tools.ORM.OIALModel.OIALModel.OIALRegenerating"/> event has
+			/// been subscribed to.
 			/// </summary>
-			/// <param name="e"></param>
+			private bool myRegisteredRegeneratingHandler;
+			/// <summary>
+			/// Delay validates the call to re-generate all the tables in the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel"/>.
+			/// </summary>
+			/// <param name="e">ElementAddedEventArgs</param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelElement childElement = e.ModelElement;
@@ -164,7 +205,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					ORMCoreDomainModel.DelayValidateElement(childElement, AddTables);
 				}
 			}
-			private bool myRegisteredRegeneratingHandler;
 			/// <summary>
 			/// The callback function sent to <see cref="ORMCoreDomainModel.DelayValidateElement"/> to add function to the
 			/// <see cref="RelationalModel"/>.
@@ -213,17 +253,27 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					myRegisteredRegeneratingHandler = true;
 				}
 				LinkedElementCollection<PresentationElement> presentationElement = PresentationViewsSubject.GetPresentation(relationalModel);
-				if (presentationElement.Count != 0 && ++myConceptTypeCount == oialModel.ConceptTypeCollection.Count)
+				if (presentationElement.Count != 0 && ++ConceptTypeCount == oialModel.ConceptTypeCollection.Count)
 				{
-					myConceptTypeCount = 0;
+					ConceptTypeCount = 0;
 					relationalModel.GenerateTables(oialModel);
 				}
 			}
 		}
+		/// <summary>
+		/// A key that references a dictionary of table positions in the current transaction context.
+		/// </summary>
 		public static readonly object TablePositionDictionaryKey = new object();
+		/// <summary>
+		/// Handles the storage of table positions.
+		/// </summary>
 		[RuleOn(typeof(TableShape))] // AddRule
 		private sealed partial class TableShapeAddRule : AddRule
 		{
+			/// <summary>
+			/// Delay validates the call to record the table positions.
+			/// </summary>
+			/// <param name="e">ElementAddedEventArgs</param>
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelElement modelElement = e.ModelElement;
@@ -232,7 +282,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					ORMCoreDomainModel.DelayValidateElement(modelElement, ProcessTableShape);
 				}
 			}
-
+			/// <summary>
+			/// Records the position of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> in the
+			/// transaction context.
+			/// </summary>
+			/// <param name="modelElement">The <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> to be validated.</param>
 			private void ProcessTableShape(ModelElement modelElement)
 			{
 				TableShape tableShape = modelElement as TableShape;
@@ -261,21 +315,21 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// The string that denotes a primary key.
 		/// </summary>
-		private const string PRIMARY_KEY = "PK";
+		private const string PrimaryKeyString = "PK";
 		/// <summary>
 		/// The string that prepends an alternate key.
 		/// </summary>
-		private const string ALTERNATE_KEY = "U";
+		private const string AlternateKeyString = "U";
 		/// <summary>
 		/// The string that prepends a foreign key.
 		/// </summary>
-		private const string FOREIGN_KEY = "FK";
+		private const string ForeignKeyString = "FK";
 		/// <summary>
 		/// A counter for <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/>s that call the
 		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel.DelayedConceptTypeAddedRule"/>. Ensures
 		/// that only one call to generate tables is made per <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> regeneration.
 		/// </summary>
-		private static int myConceptTypeCount = 0;
+		private static int ConceptTypeCount = 0;
 		/// <summary>
 		/// Generates the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.Table"/> objects for the <see cref="RelationalModel"/>.
 		/// </summary>
@@ -285,8 +339,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			using (Transaction t = Store.TransactionManager.BeginTransaction())
 			{
-				myConceptTypeCount = 0;
-				//RecordTablePositions(t);
+				ConceptTypeCount = 0;
 				// Reset the tables and foreign key count.
 				TableCollection.Clear();
 
@@ -317,19 +370,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				}
 			}
 		}
-
-		private void RecordTablePositions(Transaction currentTransaction)
-		{
-			Dictionary<ObjectType, PointD> tablePositions = currentTransaction.TopLevelTransaction.Context.ContextInfo[TablePositionDictionaryKey] as Dictionary<ObjectType, PointD>;
-			if (tablePositions != null)
-			{
-				foreach (Table table in TableCollection)
-				{
-					TableShape tableShape = PresentationViewsSubject.GetPresentation(table)[0] as TableShape;
-					tablePositions.Add(table.ConceptType.ObjectType, tableShape.Location);
-				}
-			}
-		}
 		#endregion // Initializers
 		#region Getting Columns For Concept Types
 		/// <summary>
@@ -344,6 +384,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.Column"/> objects should be added.</param>
 		/// <param name="uniquenessConstraintCount">The current number of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint"/>
 		/// objects on the current table.</param>
+		/// <param name="foreignKeyCount">The current number of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ForeignKey"/> objects
+		/// on the current table.</param>
 		/// <returns><see cref="T:System.Collections.IEnumerable&lt;Column&gt;"/></returns>
 		private IEnumerable<Column> GenerateColumnsForConceptType(Table table, OIALModel.OIALModel oialModel, ConceptType conceptType, bool isTopLevel, ref int uniquenessConstraintCount, ref int foreignKeyCount)
 		{
@@ -372,7 +414,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						if (uConstraint.Modality == ConstraintModality.Alethic)
 						{
 							bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
-							string constraintName = isPrimary ? PRIMARY_KEY : string.Concat(ALTERNATE_KEY, ++uniquenessConstraintCount);
+							string constraintName = isPrimary ? PrimaryKeyString : string.Concat(AlternateKeyString, ++uniquenessConstraintCount);
 
 							// Uniqueness constraints cannot be preferred if the ConceptType of interest is not top-level.
 							UniquenessConstraint relationalUniquenessConstraint = new UniquenessConstraint(theStore,
@@ -390,7 +432,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					IEnumerable<Column> foreignKeyColumns = GetPreferredIdentifierColumnsForConceptTypeRef(oialModel, conceptTypeRef, isNullable, newPrefix);
 					tableColumns.AddRange(foreignKeyColumns);
 					ForeignKey foreignKey = new ForeignKey(theStore,
-						new PropertyAssignment(ForeignKey.NameDomainPropertyId, string.Concat(FOREIGN_KEY, ++foreignKeyCount)));
+						new PropertyAssignment(ForeignKey.NameDomainPropertyId, string.Concat(ForeignKeyString, ++foreignKeyCount)));
 					foreignKey.Table = table;
 					foreignKey.ColumnCollection.AddRange(foreignKeyColumns);
 					table.ReferencedTableCollection.Add(FindTable(conceptTypeRef.ReferencedConceptType));
@@ -416,7 +458,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				ChildSequenceUniquenessConstraint uConstraint = childSequenceConstraint as ChildSequenceUniquenessConstraint;
 				if (uConstraint != null && uConstraint.Modality == ConstraintModality.Alethic)
 				{
-					bool addConstraint = false, shouldContinue = false;
+					bool addConstraint = false;
 					LinkedElementCollection<ConceptTypeChild> conceptTypeChildCollection = uConstraint.ChildSequence.ConceptTypeChildCollection;
 					foreach (ConceptTypeChild conceptTypeChild in conceptTypeChildCollection)
 					{
@@ -431,38 +473,21 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						}
 					}
 					
-					//if (shouldContinue)
-					//{
-					//    continue;
-					//}
 					// Ensures that the parents of all ConceptTypeChild objects in this UniquenessConstraint belong to this ConceptType
 					if (addConstraint)
 					{
-						// If the first path role of any ConceptTypeChild (The first is chosen arbitrarily here.) does not have
-						// the corresponding uniqueness constraint on it, then it will not be mapped to the logical level.
-
-						bool firstRoleHasUniquenessConstraint = false;
-						LinkedElementCollection<ConstraintRoleSequence> roleConstraints = conceptTypeChildCollection[0].PathRoleCollection[0].Role.ConstraintRoleSequenceCollection;
-						foreach (ConstraintRoleSequence constraintRoleSequence in roleConstraints)
+						// If the uniqueness constraint should be ignored because of extenuating circumstances,
+						// then we do not process it.
+						if (!uConstraint.ShouldIgnore)
 						{
-							ObjectModel.UniquenessConstraint objUniquenessConstraint = constraintRoleSequence.Constraint as ObjectModel.UniquenessConstraint;
-							if (objUniquenessConstraint != null && objUniquenessConstraint.IsPreferred && objUniquenessConstraint.Modality == ConstraintModality.Alethic)
-							{
-								firstRoleHasUniquenessConstraint = true;
-								break;
-							}
+							bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
+							string constraintName = isPrimary ? "PK" : string.Concat("U", ++uniquenessConstraintCount);
+							UniquenessConstraint uniquenessConstraint = new UniquenessConstraint(theStore,
+								new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, constraintName),
+								new PropertyAssignment(UniquenessConstraint.IsPreferredDomainPropertyId, isPrimary));
+							uniquenessConstraint.ColumnCollection.AddRange(GetColumnReferences(oialModel, conceptTypeChildCollection, tableColumns, prefix));
+							table.ConstraintCollection.Add(uniquenessConstraint);
 						}
-						if (!firstRoleHasUniquenessConstraint)
-						{
-							continue;
-						}
-						bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
-						string constraintName = isPrimary ? "PK" : string.Concat("U", ++uniquenessConstraintCount);
-						UniquenessConstraint uniquenessConstraint = new UniquenessConstraint(theStore,
-							new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, constraintName),
-							new PropertyAssignment(UniquenessConstraint.IsPreferredDomainPropertyId, isPrimary));
-						uniquenessConstraint.ColumnCollection.AddRange(GetColumnReferences(oialModel, conceptTypeChildCollection, tableColumns, prefix));
-						table.ConstraintCollection.Add(uniquenessConstraint);
 					}
 				}
 			}
@@ -470,15 +495,16 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			if (isTopLevel)
 			{
 				// Ordering the columns in the table
-				List<Column> primaryKeyColumns = new List<Column>();
-				List<Column> alternateKeyedColumns = new List<Column>();
-				List<Column> otherMandatoryColumns = new List<Column>();
-				List<Column> otherColumns = new List<Column>();
+				IList<Column> primaryKeyColumns = new List<Column>();
+				IList<Column> alternateKeyedColumns = new List<Column>();
+				IList<Column> otherMandatoryColumns = new List<Column>();
+				IList<Column> otherColumns = new List<Column>();
 				for (int i = 0; i < tableColumns.Count; ++i)
 				{
 					int newAppendage = 1;
 					Column column = tableColumns[i];
-					for (int j = 0; j < tableColumns.Count; ++j)
+					int j;
+					for (j = 0; j < tableColumns.Count; ++j)
 					{
 						Column newColumn = tableColumns[j];
 						if (column.Name == newColumn.Name && !column.Equals(newColumn))
@@ -488,9 +514,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					}
 					LinkedElementCollection<Constraint> constraints = column.ConstraintCollection;
 					bool isPrimary = false, isKeyed = false;
-					foreach (Constraint constraint in constraints)
+					int constraintCount = constraints.Count;
+					for (j = 0; j < constraintCount; ++j)
 					{
-						UniquenessConstraint uniquenessConstraint = constraint as UniquenessConstraint;
+						UniquenessConstraint uniquenessConstraint = constraints[j] as UniquenessConstraint;
 						if (uniquenessConstraint != null)
 						{
 							if (uniquenessConstraint.IsPreferred)
@@ -548,7 +575,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		/// <param name="oialModel">The <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> which contains information about the
 		/// passed <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptTypeRef"/>.</param>
-		/// <param name="conceptTypeRef">The <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/> whose target columns are of interest.</param>
+		/// <param name="conceptType">The <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/> whose target columns are of interest.</param>
 		/// <param name="isTopLevel">If the concept type being passed is top level, then <see langword="true"/>. Otherwise, <see langword="false"/>.</param>
 		/// <param name="prefix">A <see cref="T:System.String"/> which is prepended to the names of all columns generated by this method call.</param>
 		/// <returns><see cref="T:System.Collections.IEnumerable&lt;Column&gt;"/></returns>
@@ -647,8 +674,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <param name="model">The <see cref="OIALModel"/> referenced by this <see cref="RelationalModel"/>.</param>
 		/// <param name="conceptTypeChildren">A <see cref="LinkedElementCollection&lt;ConceptTypeChild&gt;"/> which references all
 		/// the <see cref="ConceptTypeChild"/> relationships contained by a <see cref="UniquenessConstraint"/>.</param>
-		/// <param name="table">The <see cref="Table"/> on which <see cref="UniquenessConstraints"/> are currently being generated.</param>
-		/// <returns>IEnumerable&lt;Column&gt;</returns>
+		/// <param name="tableColumns">The <see cref="T:Neumont.Tools.ORM.Views.RelationalView.Column"/> objects in the table.</param>
+		/// <param name="prefix">The prefix to be applied to the columns.</param>
+		/// <returns><see cref="T:Neumont.Tools.ORM.Views.RelationalView.IEnumerable&lt;Column&gt;" /></returns>
 		private IEnumerable<Column> GetColumnReferences(OIALModel.OIALModel model, LinkedElementCollection<ConceptTypeChild> conceptTypeChildren, ICollection<Column> tableColumns, string prefix)
 		{
 			List<Column> columns = new List<Column>();
@@ -803,7 +831,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <param name="childSequenceConstraints">The ChildSequenceConstraintCollection of the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/>.
 		/// </param>
 		/// <param name="conceptType">The <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/> whose constraints are of interest.</param>
-		/// <returns><see cref="System.Collections.Generics&lt;ChildSequenceUniquenessConstraint&gt;"/> if there are any in the collection.
+		/// <returns><see cref="T:System.Collections.Generics.ICollection&lt;ChildSequenceUniquenessConstraint&gt;"/> if there are any in the collection.
 		/// Otherwise, <see langword="null"/>.</returns>
 		private ICollection<ChildSequenceUniquenessConstraint> GetPreferredChildSequenceUniquenessConstraints(LinkedElementCollection<ChildSequenceConstraint> childSequenceConstraints, ConceptType conceptType)
 		{
@@ -863,7 +891,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			return preferredIdentifierInformationTypes.Count == 0 ? null : preferredIdentifierInformationTypes;
 		}
-
+		/// <summary>
+		/// Camel cases the input string.
+		/// </summary>
+		/// <param name="columnName">The underscore-delimited string which should be camel-cased.</param>
+		/// <returns>A <see cref="T:System.String"/> representation of the input string.</returns>
 		private static string CamelCase(string columnName)
 		{
 			string[] splitStrings = columnName.Split('_');
@@ -902,7 +934,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					return table;
 				}
 			}
-			Debug.Fail("No table created for this concept type.");
+			Debug.Fail("No table created for Concept Type " + conceptType.Name + ".");
 			return null;
 		}
 		/// <summary>
@@ -990,7 +1022,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 
 	internal partial class RelationalDiagram
 	{
-		private const string myDefaultName = "Relational View";
+		/// <summary>
+		/// Specifies the default name of the relational view tab.
+		/// </summary>
+		private const string DefaultName = "Relational View";
 
 		/// <summary>
 		/// Constructor
@@ -1010,7 +1045,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		public RelationalDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
-			this.Name = myDefaultName;
+			this.Name = DefaultName;
 		}
 		/// <summary>
 		/// Stop all auto shape selection on transaction commit except when
@@ -1024,17 +1059,25 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			return null;
 		}
+		/// <summary>
+		/// Disallows changing the name of the Relational Diagram
+		/// </summary>
 		[RuleOn(typeof(RelationalDiagram))]
-		private class NameChangeRule : ChangeRule
+		private sealed class NameChangeRule : ChangeRule
 		{
+			/// <summary>
+			/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
+			/// its default name if changed by a user.
+			/// </summary>
+			/// <param name="e"><see cref="Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs"/>.</param>
 			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				if (e.DomainProperty.Id == Diagram.NameDomainPropertyId)
 				{
 					RelationalDiagram diagram = e.ModelElement as RelationalDiagram;
-					if (diagram != null && diagram.Name != myDefaultName)
+					if (diagram != null && diagram.Name != DefaultName)
 					{
-						diagram.Name = myDefaultName;
+						diagram.Name = DefaultName;
 					}
 				}
 			}

@@ -285,6 +285,14 @@
     <value>ChildSequenceUniquenessConstraint</value>
     <comment>DisplayName for DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/ShouldIgnore.Description" xml:space="preserve">
+    <value>Describes whether views should ignore generating primary key notation for this constraint even though the &lt;see cref=&quot;P:Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.IsPreferred&quot; /&gt; property may be true.</value>
+    <comment>Description for DomainProperty &apos;ShouldIgnore&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/ShouldIgnore.DisplayName" xml:space="preserve">
+    <value>ShouldIgnore</value>
+    <comment>DisplayName for DomainProperty &apos;ShouldIgnore&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/IsPreferred.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.IsPreferred</value>
     <comment>Description for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>

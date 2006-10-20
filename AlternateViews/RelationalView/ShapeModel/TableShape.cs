@@ -1,11 +1,23 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.Modeling.Diagrams.Design;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -20,7 +32,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -35,12 +46,14 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			// for this shape does not get initialized until after the size has been set. We temporarily
 			// disable this rule until a better solution can be found.
 			RuleManager ruleManager = partition.Store.RuleManager;
-			Type crappyRuleType = typeof(ShapeElement).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ShapeSizeChangeRule", true, false);
-			ruleManager.DisableRule(crappyRuleType);
+			Type shapeSizeChangeRuleType = typeof(ShapeElement).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ShapeSizeChangeRule", true, false);
+			ruleManager.DisableRule(shapeSizeChangeRuleType);
 			AbsoluteBounds = new RectangleD(PointD.Empty, DefaultSize);
-			ruleManager.EnableRule(crappyRuleType);
+			ruleManager.EnableRule(shapeSizeChangeRuleType);
 		}
-
+		/// <summary>
+		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> can be expanded or collapsed.
+		/// </summary>
 		public override bool CanExpandAndCollapse
 		{
 			get
@@ -48,7 +61,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return false;
 			}
 		}
-
+		/// <summary>
+		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> has a shadow.
+		/// </summary>
 		public override bool HasShadow
 		{
 			get
@@ -56,7 +71,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return false;
 			}
 		}
-
 		/// <summary>
 		/// Overridden to allow a read-only <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> to be added
 		/// to the collection of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects.
@@ -66,16 +80,22 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
 			base.InitializeShapeFields(shapeFields);
+			// Removes the text field from the shape field list.
 			shapeFields.RemoveAt(1);
-			TableTextField field1 = new TableTextField("TableNameDecorator");
-			field1.DefaultText = global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeTableNameDecoratorDefaultText");
-			field1.DefaultFocusable = true;
-			field1.DefaultAutoSize = true;
-			field1.AnchoringBehavior.MinimumHeightInLines = 1;
-			field1.AnchoringBehavior.MinimumWidthInCharacters = 1;
-			field1.DefaultFontId = new StyleSetResourceId(string.Empty, "ShapeTextBold10");
-			shapeFields.Add(field1);
+			// 
+			TableTextField textField = new TableTextField("TableNameDecorator");
+			textField.DefaultText = RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeTableNameDecoratorDefaultText");
+			textField.DefaultFocusable = true;
+			textField.DefaultAutoSize = true;
+			textField.AnchoringBehavior.MinimumHeightInLines = 1;
+			textField.AnchoringBehavior.MinimumWidthInCharacters = 1;
+			textField.DefaultFontId = new StyleSetResourceId(string.Empty, "ShapeTextBold10");
+			shapeFields.Add(textField);
 		}
+
+		/// <summary>
+		/// Gets the resizable sides on this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/>.
+		/// </summary>
 		public override NodeSides ResizableSides
 		{
 			get
@@ -84,21 +104,33 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 	}
-
+	/// <summary>
+	/// A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> that disallows selection and focus of the element.
+	/// </summary>
 	internal class TableTextField : TextField
 	{
+		/// <summary>
+		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is selectable.
+		/// </summary>
+		/// <param name="parentShape">parentShape</param>
+		/// <returns><see langword="false" />.</returns>
 		public override bool GetSelectable(ShapeElement parentShape)
 		{
 			return false;
 		}
-
+		/// <summary>
+		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is focusable.
+		/// </summary>
+		/// <param name="parentShape">parentShape</param>
+		/// <returns><see langword="false" />.</returns>
 		public override bool GetFocusable(ShapeElement parentShape)
 		{
 			return false;
 		}
-
-		//override 
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> class.	
+		/// </summary>
+		/// <param name="fieldName">The name of the field.</param>
 		public TableTextField(string fieldName) : base(fieldName)
 		{
 

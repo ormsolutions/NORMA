@@ -22,7 +22,7 @@
 		<arg:Rule class="RelationalModel.DelayedConceptTypeAddedRule" alwaysOn="true"/>
 		<arg:Rule class="RelationalModel.DelayedForeignKeyItemAddRule" alwaysOn="true"/>
 		<arg:Rule class="RelationalModel.DelayedRelationalDiagramAddRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.RelationalDiagramDeleteRule" alwaysOn="true"/>
+		<!--<arg:Rule class="RelationalModel.RelationalDiagramDeleteRule" alwaysOn="true"/>-->
 		<arg:Rule class="RelationalModel.TableShapeAddRule" alwaysOn="true"/>
 		<arg:Rule class="RelationalDiagram.NameChangeRule" alwaysOn="true"/>
 		<!-- This is not really a rule, but an element that we want to add to the directory. -->

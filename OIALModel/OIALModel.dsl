@@ -194,6 +194,11 @@
 				<DomainClassMoniker Name="SingleChildSequenceConstraint"/>
 			</BaseClass>
 			<Properties>
+				<DomainProperty Name="ShouldIgnore" DefaultValue="False" DisplayName="ShouldIgnore" Id="D9ED0DD6-B1B5-48AB-BBF8-401B7F1CC843" Description="Describes whether views should ignore generating primary key notation for this constraint even though the &lt;see cref=&quot;P:Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.IsPreferred&quot; /&gt; property may be true.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="IsPreferred" DefaultValue="False" DisplayName="IsPreferred" Id="0EEBF253-C79B-45D3-A975-F3F59B5603CA">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>

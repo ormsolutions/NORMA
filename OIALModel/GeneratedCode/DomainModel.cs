@@ -118,6 +118,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				new DomainMemberInfo(typeof(OIALNamedElement), "Name", OIALNamedElement.NameDomainPropertyId, typeof(OIALNamedElement.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Constraint), "Modality", Constraint.ModalityDomainPropertyId, typeof(Constraint.ModalityPropertyHandler)),
 				new DomainMemberInfo(typeof(SingleChildUniquenessConstraint), "IsPreferred", SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, typeof(SingleChildUniquenessConstraint.IsPreferredPropertyHandler)),
+				new DomainMemberInfo(typeof(ChildSequenceUniquenessConstraint), "ShouldIgnore", ChildSequenceUniquenessConstraint.ShouldIgnoreDomainPropertyId, typeof(ChildSequenceUniquenessConstraint.ShouldIgnorePropertyHandler)),
 				new DomainMemberInfo(typeof(ChildSequenceUniquenessConstraint), "IsPreferred", ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, typeof(ChildSequenceUniquenessConstraint.IsPreferredPropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeChild), "Mandatory", ConceptTypeChild.MandatoryDomainPropertyId, typeof(ConceptTypeChild.MandatoryPropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeChild), "Name", ConceptTypeChild.NameDomainPropertyId, typeof(ConceptTypeChild.NamePropertyHandler)),

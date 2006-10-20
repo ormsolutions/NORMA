@@ -433,10 +433,7 @@ namespace Neumont.Tools.ORM.Shell
 					contextMenu.Opening += delegate(object sender, CancelEventArgs e)
 					{
 						DiagramView designer = base.GetDesignerAtPoint(((ContextMenuStrip)sender).Location);
-						if (designer != null)
-						{
-							renamePageMenuItem.Enabled = deletePageMenuItem.Enabled = designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram";
-						}
+						renamePageMenuItem.Enabled = deletePageMenuItem.Enabled = (designer == null || designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram");
 					};
 				}
 #endif // !DISABLE_RELATIONAL_VIEW_HACK

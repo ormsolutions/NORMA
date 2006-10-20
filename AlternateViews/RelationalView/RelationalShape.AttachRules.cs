@@ -40,7 +40,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						typeof(RelationalModel).GetNestedType("DelayedConceptTypeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("DelayedForeignKeyItemAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("DelayedRelationalDiagramAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RelationalModel).GetNestedType("RelationalDiagramDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("TableShapeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("NameChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ColumnElementListCompartment)};

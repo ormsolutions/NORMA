@@ -1327,6 +1327,95 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
+		#region ShouldIgnore domain property code
+		
+		/// <summary>
+		/// ShouldIgnore domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ShouldIgnoreDomainPropertyId = new global::System.Guid(0xd9ed0dd6, 0xb1b5, 0x48ab, 0xbb, 0xf8, 0x40, 0x1b, 0x7f, 0x1c, 0xc8, 0x43);
+		
+		/// <summary>
+		/// Storage for ShouldIgnore
+		/// </summary>
+		private global::System.Boolean shouldIgnorePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of ShouldIgnore domain property.
+		/// Describes whether views should ignore generating primary key notation for this
+		/// constraint even though the <see
+		/// cref="P:Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.IsPreferred" /> property may be true.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/ShouldIgnore.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/ShouldIgnore.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("d9ed0dd6-b1b5-48ab-bbf8-401b7f1cc843")]
+		public global::System.Boolean ShouldIgnore
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return shouldIgnorePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ShouldIgnorePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ChildSequenceUniquenessConstraint.ShouldIgnore domain property.
+		/// </summary>
+		internal sealed partial class ShouldIgnorePropertyHandler : DslModeling::DomainPropertyValueHandler<ChildSequenceUniquenessConstraint, global::System.Boolean>
+		{
+			private ShouldIgnorePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ChildSequenceUniquenessConstraint.ShouldIgnore domain property value handler.
+			/// </summary>
+			public static readonly ShouldIgnorePropertyHandler Instance = new ShouldIgnorePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ChildSequenceUniquenessConstraint.ShouldIgnore domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ShouldIgnoreDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ChildSequenceUniquenessConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.shouldIgnorePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ChildSequenceUniquenessConstraint element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.shouldIgnorePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region IsPreferred domain property code
 		
 		/// <summary>
