@@ -24,7 +24,7 @@
 	extension-element-prefixes="exsl">
 	
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	<xsl:param name="OIAL"/>
+	<xsl:param name="OIAL" select="document('C:\Documents and Settings\rsanidad\My Documents\ORM Project\DataLayerFormGeneration\DataLayerFormGeneration\Portfolio.OIAL.xml')/*"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
@@ -58,7 +58,9 @@
 					</plx:namespace>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates select="$OIAL" mode="OIALtoPLiX_Abstract"/>
+					<xsl:apply-templates select="$OIAL" mode="OIALtoPLiX_Abstract">
+						<xsl:with-param name="ModelContextName" select="concat($ModelName, 'Context')"/>
+					</xsl:apply-templates>
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:root>
@@ -92,7 +94,7 @@
 	</xsl:template>
 
 	<xsl:template match="oil:model" mode="OIALtoPLiX_Abstract">
-		<xsl:param name="ModelContextName"/>
+		<xsl:param name="ModelContextName" />
 		<xsl:variable name="Model" select="."/>
 		<plx:namespace name="{$ModelName}">
 
