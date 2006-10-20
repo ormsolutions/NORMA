@@ -1,8 +1,7 @@
 @ECHO OFF
 SETLOCAL
 
-REM FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
-set VSDIR=C:\Program Files\Microsoft Visual Studio 8.0\Common7\IDE
+FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
 SET XMLDir=%~dp0\..\..\XML
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
