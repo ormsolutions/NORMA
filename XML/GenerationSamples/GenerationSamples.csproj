@@ -11,11 +11,11 @@
   <ItemGroup>
     <None Include="SampleModel.orm">
       <Generator>ORMCustomTool</Generator>
-      <LastGenOutput>SampleModel.ORMCustomToolReport.cs</LastGenOutput>
+      <LastGenOutput>SampleModel._ORMCustomToolReport.cs</LastGenOutput>
     </None>
     <None Include="PersonCountryDemo.orm">
       <Generator>ORMCustomTool</Generator>
-      <LastGenOutput>PersonCountryDemo.ORMCustomToolReport.cs</LastGenOutput>
+      <LastGenOutput>PersonCountryDemo._ORMCustomToolReport.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
@@ -166,7 +166,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.Implementation.PLiX.xml</DependentUpon>
     </Compile>
-    <Compile Include="PersonCountryDemo.ORMCustomToolReport.cs">
+    <Compile Include="PersonCountryDemo._ORMCustomToolReport.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
     </Compile>
@@ -198,7 +198,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.Implementation.PLiX.xml</DependentUpon>
     </Compile>
-    <Compile Include="SampleModel.ORMCustomToolReport.cs">
+    <Compile Include="SampleModel._ORMCustomToolReport.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
     </Compile>

@@ -99,8 +99,43 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					new VirtualTreeColumnHeader("Generated Format", 0.30f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled),
 					new VirtualTreeColumnHeader("Generated File Name", 1f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled)
 				}, true);
-			MainBranch mainBranch;
-			tree.Root = mainBranch = this._mainBranch = new MainBranch(this);
+			MainBranch mainBranch = this._mainBranch = new MainBranch(this);
+			int totalCount = mainBranch.VisibleItemCount;
+			int[] primaryIndices = new int[totalCount];
+			for (int i = 0; i < totalCount; ++i)
+			{
+				if (mainBranch.IsPrimaryDisplayItem(i))
+				{
+					primaryIndices[i] = i - totalCount;
+				}
+				else
+				{
+					primaryIndices[i] = i + 1;
+				}
+			}
+			Array.Sort<int>(primaryIndices);
+			int lastPrimary = -1;
+			for (int i = 0; i < totalCount; ++i)
+			{
+				int modifiedIndex = primaryIndices[i];
+				if (modifiedIndex < 0)
+				{
+					primaryIndices[i] = modifiedIndex + totalCount;
+				}
+				else
+				{
+					if (lastPrimary == -1)
+					{
+						lastPrimary = i - 1;
+					}
+					primaryIndices[i] = modifiedIndex - 1;
+				}
+			}
+			tree.Root = (lastPrimary == -1) ? (IBranch)mainBranch : new BranchPartition(
+				mainBranch,
+				primaryIndices,
+				new BranchPartitionSection(0, lastPrimary + 1, null),
+				new BranchPartitionSection(lastPrimary + 1, totalCount - lastPrimary - 1, "Intermediate and Secondary Files")); // UNDONE: Localize Header
 			this.virtualTreeControl.ShowToolTips = true;
 			this.virtualTreeControl.FullCellSelect = true;
 

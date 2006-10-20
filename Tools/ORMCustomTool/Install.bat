@@ -1,7 +1,8 @@
 @ECHO OFF
 SETLOCAL
 
-FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
+REM FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
+set VSDIR=C:\Program Files\Microsoft Visual Studio 8.0\Common7\IDE
 SET XMLDir=%~dp0\..\..\XML
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
@@ -52,7 +53,7 @@ CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarize
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt" "" "1"
 CALL:_AddXslORMGenerator "OIALtoXSD" "OIAL to XSD" "Transforms an OIAL file to XML Schema." ".xsd" "OIAL" "XSD" "%ORMTransformsDir%\OIALtoXSD.xslt"
 CALL:_AddXslORMGenerator "OIALtoOWL" "OIAL to OWL" "Transforms an OIAL file to OWL." ".owl" "OIAL" "OWL" "%ORMTransformsDir%\OIALtoOWL.xslt"
-CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to DCIL." ".DCIL.xml" "OIAL" "DCIL" "%ORMTransformsDir%\OIALtoDCIL.xslt"
+CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to DCIL." ".DCIL.xml" "OIAL" "DCIL" "%ORMTransformsDir%\OIALtoDCIL.xslt" "" "1"
 
 CALL:_AddXslORMGenerator "OIALtoCLIProperties" "OIAL to CLI Properties" "Transforms an OIAL file to CLI (Common Language Infrastructure) Properties" ".CLIProperties.xml" "OIAL" "CLIProperties" "%ORMTransformsDir%\OIALtoCLIProperties.xslt" "" "1"
 CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "OIAL" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "NUPlixLoader"
@@ -63,10 +64,10 @@ CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In
 
 CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "DataLayerTestFormDesigner\0DataLayerTestFormResx\0DataLayerTestFormInputControl\0"
 CALL:_AddXslORMGenerator "DataLayerTestFormDesigner" "Data Layer Test Form Designer" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm_Designer.xslt" "NUPlixLoader" "1"
-CALL:_AddXslORMGenerator "DataLayerTestFormResx" "Data Layer Test Form Resx" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.resx" "PLiX_Implementation" "DataLayerTestFormResx" "%ORMTransformsDir%\DataLayerTestForm\OIALtoDataLayerTestForm.resx.xslt"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "1" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0DataLayerTestFormInputControlResx\0"
+CALL:_AddXslORMGenerator "DataLayerTestFormResx" "Data Layer Test Form Resx" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.resx" "PLiX_Implementation" "DataLayerTestFormResx" "%ORMTransformsDir%\DataLayerTestForm\OIALtoDataLayerTestForm.resx.xslt" "" "1"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0DataLayerTestFormInputControlResx\0"
 CALL:_AddXslORMGenerator "DataLayerTestFormInputControlDesigner" "Data Layer Test Form Input Control Designer" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControlDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "NUPlixLoader" "1" "" "OIAL\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControlResx" "Data Layer Test Form Input Control Resx" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.resx" "PLiX_Implementation" "DataLayerTestFormInputControlResx" "%ORMTransformsDir%\DataLayerTestForm\OIALtoInputControl.resx.xslt"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControlResx" "Data Layer Test Form Input Control Resx" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.resx" "PLiX_Implementation" "DataLayerTestFormInputControlResx" "%ORMTransformsDir%\DataLayerTestForm\OIALtoInputControl.resx.xslt" "" "1"
 CALL:_AddXslORMGenerator "DataLayerTestFormProgram" "Data Layer Test Form Program Class" "Generates the Program file to launch the generated form." ".Program.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormProgram" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_Program.xslt" "NUPlixLoader" "" "" "" "DataLayerTestForm\0"
 
 :: Install and register DIL Transforms
@@ -78,7 +79,7 @@ XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoSQLServer.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoOracle.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DomainInliner.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DIL\DILSupportFunctions.xslt" "%DILTransformsDir%\"
-CALL:_AddXslORMGenerator "DCILtoDDIL" "DCIL to DDIL" "Transforms DCIL to DDIL." ".DDIL.xml" "DCIL" "DDIL" "%DILTransformsDir%\DCILtoDDIL.xslt"
+CALL:_AddXslORMGenerator "DCILtoDDIL" "DCIL to DDIL" "Transforms DCIL to DDIL." ".DDIL.xml" "DCIL" "DDIL" "%DILTransformsDir%\DCILtoDDIL.xslt" "" "1"
 CALL:_AddXslORMGenerator "DDILtoSQLStandard" "DDIL to SQL Standard" "Transforms DDIL to Standard-dialect SQL." ".SQLStandard.sql" "DDIL" "SQL_SQLStandard" "%DILTransformsDir%\DDILtoSQLStandard.xslt"
 CALL:_AddXslORMGenerator "DDILtoPostgreSQL" "DDIL to PostgreSQL" "Transforms DDIL to PostgreSQL-dialect SQL." ".PostgreSQL.sql" "DDIL" "SQL_PostgreSQL" "%DILTransformsDir%\DDILtoPostgreSQL.xslt"
 CALL:_AddXslORMGenerator "DDILtoDB2" "DDIL to DB2" "Transforms DDIL to DB2-dialect SQL." ".DB2.sql" "DDIL" "SQL_DB2" "%DILTransformsDir%\DDILtoDB2.xslt"
@@ -86,7 +87,7 @@ CALL:_AddXslORMGenerator "DDILtoSQLServer" "DDIL to SQL Server" "Transforms DDIL
 CALL:_AddXslORMGenerator "DDILtoOracle" "DDIL to Oracle" "Transforms DDIL to Oracle-dialect SQL." ".Oracle.sql" "DDIL" "SQL_Oracle" "%DILTransformsDir%\DDILtoOracle.xslt"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\DCILtoTV.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\TVtoHTML.xslt" "%DILTransformsDir%\"
-CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to TableView." ".TableView.xml" "DCIL" "TV" "%DILTransformsDir%\DCILtoTV.xslt"
+CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to TableView." ".TableView.xml" "DCIL" "TV" "%DILTransformsDir%\DCILtoTV.xslt" "" "1"
 CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".TableView.html" "TV" "TableViewHTML" "%DILTransformsDir%\TVtoHTML.xslt"
 
 GOTO:EOF

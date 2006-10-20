@@ -543,9 +543,6 @@
       <LastGenOutput>ToolboxHelper.cs</LastGenOutput>
     </None>
     <None Include="ObjectModel\ORMCore.dsl" />
-    <None Include="ObjectModel\VerbalizationGenerator.xsx">
-      <DependentUpon>VerbalizationGenerator.xsd</DependentUpon>
-    </None>
     <None Include="ShapeModel\ORMShape.dsl" />
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd">
       <SubType>Designer</SubType>

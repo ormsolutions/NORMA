@@ -69,6 +69,23 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				}
 			}
 
+			public bool IsPrimaryDisplayItem(int index)
+			{
+				OutputFormatBranch branch = _branches.Values[index];
+				IList<IORMGenerator> generators = branch.ORMGenerators;
+				int generatorCount = generators.Count;
+				bool retVal = true;
+				for (int i = 0; i < generatorCount; ++i)
+				{
+					if (generators[i].GeneratesSupportFile)
+					{
+						retVal = false;
+						break;
+					}
+				}
+				return retVal;
+			}
+
 			public override object GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (style == ObjectStyle.ExpandedBranch)

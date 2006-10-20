@@ -50,7 +50,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 	public sealed partial class ORMCustomTool : IVsSingleFileGenerator, IObjectWithSite, IOleServiceProvider, IServiceProvider
 	{
 		#region Private Constants
-		private const string DEFAULT_EXTENSION_DECORATOR = ".ORMCustomToolReport.";
+		private const string DEFAULT_EXTENSION_DECORATOR = "._ORMCustomToolReport."; // Add the _ here to put it above other generators
 		private const string EXTENSION_ORM = ".orm";
 		private const string EXTENSION_XML = ".xml";
 		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio\Generators";
