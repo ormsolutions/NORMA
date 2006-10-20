@@ -9,6 +9,7 @@
 
 
 :: The "CALL:_AddXslORMGenerator" lines go here
+
 GOTO:EOF
 
 
@@ -26,8 +27,6 @@ IF NOT "%~8"=="" (ECHO 	^<Registry Type="string" Name="CustomTool" Value="%~8"/^
 IF NOT "%~9"=="" (ECHO 	^<Registry Type="integer" Name="GeneratesSupportFile" Value="%~9"/^> >> Output.WiX.xml)
 SHIFT /8
 IF NOT "%~9"=="" (ECHO 	^<Registry Type="integer" Name="Compilable" Value="%~9"/^> >> Output.WiX.xml)
-SHIFT /8
-IF NOT "%~9"=="" (ECHO 	^<Registry Type="integer" Name="GeneratesSupportFile" Value="%~9"/^> >> Output.WiX.xml)
 SHIFT /8
 IF NOT "%~9"=="" (CALL:_GenerateMultiString "ReferenceInputFormats" "%~9")
 SHIFT /8
