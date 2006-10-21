@@ -67,9 +67,7 @@
 					<plx:throw>
 						<plx:callNew dataTypeName="ArgumentNullException">
 							<plx:passParam>
-								<plx:string>
-									<xsl:text>instance</xsl:text>
-								</plx:string>
+								<plx:string data="instance"/>
 							</plx:passParam>
 						</plx:callNew>
 					</plx:throw>
@@ -151,14 +149,10 @@
 				</plx:leadingInfo>
 				<plx:attribute dataTypeName="SuppressMessageAttribute">
 					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="'Microsoft.Naming'"/>
-						</plx:string>
+						<plx:string data="Microsoft.Naming"/>
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="'CA1711:IdentifiersShouldNotHaveIncorrectSuffix'"/>
-						</plx:string>
+						<plx:string data="CA1711:IdentifiersShouldNotHaveIncorrectSuffix"/>
 					</plx:passParam>
 				</plx:attribute>
 				<plx:typeParam name="TClass"/>

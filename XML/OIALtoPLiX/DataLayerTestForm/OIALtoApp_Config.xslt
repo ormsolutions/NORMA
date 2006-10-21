@@ -19,13 +19,13 @@
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	exclude-result-prefixes="oil odt"
+	exclude-result-prefixes="oil odt prop"
 	extension-element-prefixes="exsl">
 	
 	<!-- Input file:  [ORM Model Name].Implementation.PLiX.xml -->
 	<!-- Output file:  app.config -->
 	
-	<xsl:param name="OIAL" select="document('Portfolio.OIAL.xml')/child::*"/>
+	<xsl:param name="OIAL"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
 
@@ -48,7 +48,7 @@
 		<xsl:element name="configuration">
 			<xsl:element name="connectionStrings">
 				<!-- Add a connection string -->
-				<xsl:call-template name="AddConnectionString" />
+				<xsl:call-template name="AddConnectionString"/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>

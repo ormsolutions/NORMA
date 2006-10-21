@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<prop:Properties conceptTypeName="PersonDrivesCar">
 		<prop:Property name="DrivesCar_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".i4" />
@@ -73,7 +73,7 @@
 		<prop:Property name="Gender_Gender_Code" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="10" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+		<prop:Property name="hasParents" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".boolean" />
 		</prop:Property>
 		<prop:Property name="OptionalUniqueDecimal" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
@@ -193,7 +193,7 @@
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="NaturalDeath">
-		<prop:Property name="20" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+		<prop:Property name="isFromProstateCancer" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".boolean" />
 		</prop:Property>
 		<prop:Property name="Death" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="NaturalDeath">
@@ -201,10 +201,10 @@
 		</prop:Property>
 	</prop:Properties>
 	<prop:Properties conceptTypeName="UnnaturalDeath">
-		<prop:Property name="9" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+		<prop:Property name="isViolent" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".boolean" />
 		</prop:Property>
-		<prop:Property name="8" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+		<prop:Property name="isBloody" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".boolean" />
 		</prop:Property>
 		<prop:Property name="Death" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="UnnaturalDeath">

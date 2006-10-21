@@ -20,7 +20,6 @@
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
 

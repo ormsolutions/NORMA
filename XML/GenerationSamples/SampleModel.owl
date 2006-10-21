@@ -138,7 +138,7 @@
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="#Person_10" />
+				<owl:onProperty rdf:resource="#Person_hasParents" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 			<owl:Restriction>
@@ -189,7 +189,7 @@
 		<!--Preferred Id-->
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="#NaturalDeath_20" />
+				<owl:onProperty rdf:resource="#NaturalDeath_isFromProstateCancer" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -198,11 +198,11 @@
 		<!--Preferred Id-->
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="#UnnaturalDeath_9" />
+				<owl:onProperty rdf:resource="#UnnaturalDeath_isViolent" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="#UnnaturalDeath_8" />
+				<owl:onProperty rdf:resource="#UnnaturalDeath_isBloody" />
 				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -338,19 +338,19 @@
 		<rdfs:domain rdf:resource="#Person" />
 		<rdfs:range rdf:resource="xs:string" />
 	</owl:DatatypeProperty>
-	<owl:DatatypeProperty rdf:ID="NaturalDeath_20">
+	<owl:DatatypeProperty rdf:ID="NaturalDeath_isFromProstateCancer">
 		<rdfs:domain rdf:resource="#NaturalDeath" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
-	<owl:DatatypeProperty rdf:ID="UnnaturalDeath_9">
+	<owl:DatatypeProperty rdf:ID="UnnaturalDeath_isViolent">
 		<rdfs:domain rdf:resource="#UnnaturalDeath" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
-	<owl:DatatypeProperty rdf:ID="UnnaturalDeath_8">
+	<owl:DatatypeProperty rdf:ID="UnnaturalDeath_isBloody">
 		<rdfs:domain rdf:resource="#UnnaturalDeath" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
-	<owl:DatatypeProperty rdf:ID="Person_10">
+	<owl:DatatypeProperty rdf:ID="Person_hasParents">
 		<rdfs:domain rdf:resource="#Person" />
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>

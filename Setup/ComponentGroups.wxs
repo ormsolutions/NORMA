@@ -35,6 +35,9 @@
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevJSharpComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationCoreComponent"/>
+			<ComponentRef Id="NORMAVSOIALModelExtensionComponent"/>
+			<ComponentRef Id="NORMAVSRelationalViewExtensionComponent"/>
+			<ComponentRef Id="NORMAVSCustomPropertiesExtensionComponent"/>
 			<ComponentRef Id="ORMSchemaCatalogComponent"/>
 			<ComponentRef Id="ORMSchemasComponent"/>
 			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>
@@ -56,6 +59,7 @@
 			<!-- OIAL-to-PLiX transforms go here. -->
 			<ComponentRef Id="ORMClassModelSchemasComponent"/>
 			<ComponentRef Id="ORMClassModelTransformsComponent"/>
+			<ComponentRef Id="ORMClassModelTransformsTestFormComponent"/>
 		</ComponentGroup>
 		<ComponentGroup Id="XmlSchemaGenerationFeatureComponents">
 			<!-- OIAL-to-XSD transforms go here. -->
@@ -64,7 +68,6 @@
 		<ComponentGroup Id="RelationalSchemaGenerationFeatureComponents">
 			<!-- OIAL-to-SQL transforms go here. -->
 			<ComponentRef Id="ORMRelationalSchemaTransformsComponent"/>
-			<ComponentRef Id="DataLayerTestFormComponent"/>
 			<ComponentRef Id="DILSchemaCatalogComponent"/>
 			<ComponentRef Id="DILSchemasComponent"/>
 			<ComponentRef Id="DILTransformsComponent"/>

@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration>OIALtoPLiX</Configuration>
+    <Platform>AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{42EFFFFF-AFDE-49E1-996E-97C9E8C0C375}</ProjectGuid>
@@ -9,10 +9,12 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="DataLayerTestForm\OIALtoApp_Config.xslt" />
+    <Content Include="DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" />
+    <Content Include="DataLayerTestForm\OIALtoPLiX_InputControl.xslt" />
+    <Content Include="DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" />
     <Content Include="OIALtoCLIProperties.xslt" />
     <Content Include="OIALtoPLiX_Abstract.xslt" />
-    <Content Include="OIALtoPLiX_DataLayerTestForm.xslt" />
-    <Content Include="OIALtoPLiX_DataLayerTestForm_Designer.xslt" />
     <Content Include="OIALtoPLiX_DataLayer_Implementation.xslt" />
     <Content Include="OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" />
     <Content Include="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" />
@@ -25,10 +27,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="OIALtoPLiX_Properties.xsx">
-      <DependentUpon>OIALtoPLiX_Properties.xsd</DependentUpon>
-    </None>
-    <None Include="SampleModel.PLiX.xml" />
-    <None Include="SampleModel.PLiX.cs" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
 </Project>

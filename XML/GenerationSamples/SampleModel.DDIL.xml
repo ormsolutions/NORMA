@@ -352,7 +352,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="&quot;10&quot;">
+		<ddl:columnDefinition name="hasParents">
 			<ddt:boolean type="BOOLEAN" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
@@ -400,13 +400,13 @@
 		<ddl:columnDefinition name="DDCDCT">
 			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Dth_NtrlDth_20">
+		<ddl:columnDefinition name="DNDFPC">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Dth_UnntrlDth_9">
+		<ddl:columnDefinition name="DUDV">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Dth_UnntrlDth_8">
+		<ddl:columnDefinition name="DUDB">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="INSERT_DATE">

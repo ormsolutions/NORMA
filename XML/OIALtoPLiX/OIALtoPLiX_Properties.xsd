@@ -12,8 +12,8 @@
 		</xs:appinfo>
 		<xs:appinfo source="Contributors">Kevin M. Owen, Jaron Briggs, Benjamin Kiefer, Roland Sanidad</xs:appinfo>
 	</xs:annotation>
-	<xs:import namespace="http://schemas.orm.net/OIAL" />
-	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" />
+	<xs:import namespace="http://schemas.orm.net/OIAL"/>
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
 
 	<xs:element name="AllProperties">
 		<xs:annotation>
@@ -21,7 +21,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="prop:Properties" maxOccurs="unbounded" minOccurs="0" />
+				<xs:element ref="prop:Properties" maxOccurs="unbounded" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -31,7 +31,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="prop:Property" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="prop:Property" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="conceptTypeName" use="required" type="xs:string">
 				<xs:annotation>
@@ -40,12 +40,12 @@
 			</xs:attribute>
 		</xs:complexType>
 		<xs:key name="PropertiesKey">
-			<xs:selector xpath="." />
-			<xs:field xpath="@conceptTypeName" />
+			<xs:selector xpath="."/>
+			<xs:field xpath="@conceptTypeName"/>
 		</xs:key>
 		<xs:key name="PropertyKey">
-			<xs:selector xpath="prop:Property" />
-			<xs:field xpath="@name" />
+			<xs:selector xpath="prop:Property"/>
+			<xs:field xpath="@name"/>
 		</xs:key>
 	</xs:element>
 	<xs:element name="Property">
@@ -54,7 +54,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="prop:DataType" />
+				<xs:element ref="prop:DataType"/>
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="xs:token">
 				<xs:annotation>
@@ -66,28 +66,28 @@
 					<xs:documentation>Whether this Property is alethicly mandatory, deonticly mandatory, or not mandatory.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isUnique" use="required" type="xs:boolean">
+			<xs:attribute name="isUnique" use="required" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>Whether this Property (on its own) uniquely identifies its parent.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isCollection" use="required" type="xs:boolean">
+			<xs:attribute name="isCollection" use="required" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>Whether this Property is a collection.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isCustomType" use="required" type="xs:boolean">
+			<xs:attribute name="isCustomType" use="required" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>If true, the data type of this Property is a custom-generated type which should be notified when this property changes.</xs:documentation>
 					<xs:documentation>Note that a Property can have both @isCollection and @isCutomType be true, meaning that it is a collection of custom types.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isIdentity" use="optional" type="xs:boolean">
+			<xs:attribute name="isIdentity" use="optional" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>If true, the value of this Property is auto-generated; therefore, any property generated must be read-only.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
+			<xs:attribute name="canBeNull" use="required" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>Can the prop:DataType contained within this prop:Property be null?</xs:documentation>
 				</xs:annotation>
@@ -106,7 +106,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="plx:typeRefType" />
+				<xs:extension base="plx:typeRefType"/>
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
@@ -116,7 +116,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence minOccurs="0">
-				<xs:element ref="prop:DataType" />
+				<xs:element ref="prop:DataType"/>
 				<xs:any minOccurs="0" processContents="strict" namespace="http://schemas.neumont.edu/CodeGeneration/PLiX">
 					<xs:annotation>
 						<xs:documentation>Constraint enforcement code, if any, for this data type. Should return plx:trueKeyword if the value is valid.</xs:documentation>
@@ -129,12 +129,12 @@
 					<xs:documentation>The name of the oil:informationTypeFormat that this prop:FormatMapping is for.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
+			<xs:attribute name="canBeNull" use="required" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>Can the prop:DataType contained within this prop:FormatMapping be null?</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isIdentity" use="optional" default="false" type="xs:boolean">
+			<xs:attribute name="isIdentity" use="optional" default="false" type="oil:canonicalBoolean">
 				<xs:annotation>
 					<xs:documentation>Is this prop:FormatMapping for an odt:identity?</xs:documentation>
 				</xs:annotation>

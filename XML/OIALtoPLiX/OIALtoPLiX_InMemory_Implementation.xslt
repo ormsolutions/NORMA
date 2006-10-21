@@ -508,7 +508,7 @@
 			</plx:function>
 
 			<plx:function visibility="private" name="On{@name}Changed">
-				<plx:param name="instance" dataTypeName="{$uniqueConceptTypeName}" />
+				<plx:param name="instance" dataTypeName="{$uniqueConceptTypeName}"/>
 				<plx:param name="oldValue" dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:param>
@@ -1773,15 +1773,15 @@
 												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Context"/>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:thisKeyword />
+												<plx:thisKeyword/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:valueKeyword />
+												<plx:valueKeyword/>
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:left>
 									<plx:right>
-										<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangingEvent">
+										<plx:callThis accessor="base" type="methodCall" name="On{@name}Changing">
 											<plx:passParam>
 												<plx:valueKeyword/>
 											</plx:passParam>
@@ -1810,7 +1810,7 @@
 									</plx:passParam>
 								</plx:callInstance>
 							</xsl:if>
-							<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangedEvent">
+							<plx:callThis accessor="base" type="methodCall" name="On{@name}Changed">
 								<plx:passParam>
 									<plx:nameRef type="local" name="oldValue"/>
 								</plx:passParam>

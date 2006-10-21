@@ -331,25 +331,25 @@
 			</orm:PlayedRoles>
 			<orm:PreferredIdentifier ref="_144EEAB0-D64E-4439-B9E1-AF58CA1E3257" />
 		</orm:EntityType>
-		<orm:ValueType id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4" Name="NaturalDeath_20">
+		<orm:ValueType id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4" Name="NaturalDeath_isFromProstateCancer">
 			<orm:PlayedRoles>
 				<orm:Role ref="_965293C9-8AD7-4C73-B54C-818DC450C11B_opposite" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_Data_Type" ref="_true_or_false_logical_Data_Type" Scale="0" Length="0" />
 		</orm:ValueType>
-		<orm:ValueType id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF" Name="UnnaturalDeath_9">
+		<orm:ValueType id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF" Name="UnnaturalDeath_isViolent">
 			<orm:PlayedRoles>
 				<orm:Role ref="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8_opposite" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_Data_Type" ref="_true_or_false_logical_Data_Type" Scale="0" Length="0" />
 		</orm:ValueType>
-		<orm:ValueType id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE" Name="UnnaturalDeath_8">
+		<orm:ValueType id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE" Name="UnnaturalDeath_isBloody">
 			<orm:PlayedRoles>
 				<orm:Role ref="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7_opposite" />
 			</orm:PlayedRoles>
 			<orm:ConceptualDataType id="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_Data_Type" ref="_true_or_false_logical_Data_Type" Scale="0" Length="0" />
 		</orm:ValueType>
-		<orm:ValueType id="_B3958780-E433-4992-963B-E34C33E62DB7" Name="Person_10">
+		<orm:ValueType id="_B3958780-E433-4992-963B-E34C33E62DB7" Name="Person_hasParents">
 			<orm:PlayedRoles>
 				<orm:Role ref="_65D25484-9FF7-407D-B870-B628A66A5A0F_opposite" />
 			</orm:PlayedRoles>
@@ -1055,7 +1055,7 @@
 				<orm:Role id="_965293C9-8AD7-4C73-B54C-818DC450C11B" _IsMandatory="false" Name="isFromProstateCancer">
 					<orm:RolePlayer ref="_DDE8D226-F41E-4524-8BD8-051DDBC37E21" />
 				</orm:Role>
-				<orm:Role id="_965293C9-8AD7-4C73-B54C-818DC450C11B_opposite" _IsMandatory="true" Name="20">
+				<orm:Role id="_965293C9-8AD7-4C73-B54C-818DC450C11B_opposite" _IsMandatory="true" Name="isFromProstateCancer">
 					<orm:RolePlayer ref="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4" />
 				</orm:Role>
 			</orm:FactRoles>
@@ -1068,7 +1068,7 @@
 				<orm:Role id="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8" _IsMandatory="false" Name="isViolent">
 					<orm:RolePlayer ref="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" />
 				</orm:Role>
-				<orm:Role id="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8_opposite" _IsMandatory="true" Name="9">
+				<orm:Role id="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8_opposite" _IsMandatory="true" Name="isViolent">
 					<orm:RolePlayer ref="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF" />
 				</orm:Role>
 			</orm:FactRoles>
@@ -1081,7 +1081,7 @@
 				<orm:Role id="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7" _IsMandatory="false" Name="isBloody">
 					<orm:RolePlayer ref="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" />
 				</orm:Role>
-				<orm:Role id="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7_opposite" _IsMandatory="true" Name="8">
+				<orm:Role id="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7_opposite" _IsMandatory="true" Name="isBloody">
 					<orm:RolePlayer ref="_7D989A2C-9CFF-464F-822E-FE41B6758ACE" />
 				</orm:Role>
 			</orm:FactRoles>
@@ -1238,7 +1238,7 @@
 				<orm:Role id="_65D25484-9FF7-407D-B870-B628A66A5A0F" _IsMandatory="false" Name="hasParents">
 					<orm:RolePlayer ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
 				</orm:Role>
-				<orm:Role id="_65D25484-9FF7-407D-B870-B628A66A5A0F_opposite" _IsMandatory="true" Name="10">
+				<orm:Role id="_65D25484-9FF7-407D-B870-B628A66A5A0F_opposite" _IsMandatory="true" Name="hasParents">
 					<orm:RolePlayer ref="_B3958780-E433-4992-963B-E34C33E62DB7" />
 				</orm:Role>
 			</orm:FactRoles>

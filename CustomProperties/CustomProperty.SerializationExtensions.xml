@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="CustomPropertiesDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="cp" URI="http://schemas.orm.net/ORM/CustomProperties" SchemaFile="CustomProperties.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="cp" URI="http://schemas.neumont.edu/ORM/Preview/CustomProperties" SchemaFile="CustomProperties.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="CustomPropertyGroup" Name="CustomPropertyGroup"/>

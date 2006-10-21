@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<plx:namespaceImport name="System" />
 	<plx:namespaceImport name="System.Collections.Generic" />
 	<plx:namespaceImport name="System.ComponentModel" />
@@ -10,16 +10,25 @@
 	<plx:namespaceImport name="System.Data.SqlClient" />
 	<plx:namespaceImport name="System.Configuration" />
 	<plx:namespace name="PersonCountryDemo">
-		<plx:pragma type="region" data="CountryCore_InputControl" />
 		<plx:class name="CountryCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="CountryCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="CountryCore_InputControl" />
-		<plx:pragma type="region" data="Create_CountryCore_InputControl" />
 		<plx:class name="Create_CountryCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Create_CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Create_CountryCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
@@ -33,7 +42,7 @@
 								<plx:callObject>
 									<plx:callStatic name="ConnectionStrings" dataTypeName="ConfigurationManager" dataTypeQualifier="System.Configuration" type="property">
 										<plx:passParam>
-											<plx:string>connString</plx:string>
+											<plx:string data="connString" />
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:callObject>
@@ -57,7 +66,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Database Connection for Create on CountryCore&quot;" />
+								<plx:string data="Get Database Connection for Create on CountryCore" />
 							</plx:passParam>
 						</plx:callStatic>
 						<plx:return>
@@ -100,7 +109,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;Country_name&quot;" />
+															<plx:string data="Country_name" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -146,7 +155,7 @@
 																</plx:callInstance>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="&quot;Country_name&quot;" />
+																<plx:string data="Country_name" />
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -180,7 +189,7 @@
 																		</plx:callInstance>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:value data="&quot;Country_name&quot;" />
+																		<plx:string data="Country_name" />
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -191,7 +200,7 @@
 											<plx:right>
 												<plx:callInstance name="Country_name" type="property">
 													<plx:callObject>
-														<plx:nameRef name="this.abstractTypeVar" />
+														<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -228,7 +237,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;Country_name&quot;" />
+															<plx:string data="Country_name" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -262,7 +271,7 @@
 																</plx:callInstance>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="&quot;Region_Region_code&quot;" />
+																<plx:string data="Region_Region_code" />
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -296,7 +305,7 @@
 																		</plx:callInstance>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:value data="&quot;Region_Region_code&quot;" />
+																		<plx:string data="Region_Region_code" />
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -307,7 +316,7 @@
 											<plx:right>
 												<plx:callInstance name="Region_Region_code" type="property">
 													<plx:callObject>
-														<plx:nameRef name="this.abstractTypeVar" />
+														<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -344,7 +353,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;Region_Region_code&quot;" />
+															<plx:string data="Region_Region_code" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -374,16 +383,20 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Create Country&quot;" />
+								<plx:string data="Create Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
 				</plx:try>
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Create_CountryCore_InputControl" />
-		<plx:pragma type="region" data="Collection_CountryCore_InputControl" />
 		<plx:class name="Collection_CountryCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Collection_CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Collection_CountryCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
@@ -397,7 +410,7 @@
 								<plx:callObject>
 									<plx:callStatic name="ConnectionStrings" dataTypeName="ConfigurationManager" dataTypeQualifier="System.Configuration" type="property">
 										<plx:passParam>
-											<plx:string>connString</plx:string>
+											<plx:string data="connString" />
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:callObject>
@@ -421,7 +434,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Database Connection for Collection on CountryCore&quot;" />
+								<plx:string data="Get Database Connection for Collection on CountryCore" />
 							</plx:passParam>
 						</plx:callStatic>
 						<plx:return>
@@ -449,7 +462,7 @@
 						</plx:callObject>
 					</plx:callInstance>
 					<plx:autoDispose localName="iterator" dataTypeName="IEnumerator">
-						<plx:passTypeParam dataTypeName="Country" dataTypeQualifier="PersonCountryDemo" />
+						<plx:passTypeParam dataTypeName="Country" />
 						<plx:initialize>
 							<plx:callInstance name="GetEnumerator" type="methodCall">
 								<plx:callObject>
@@ -498,7 +511,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Country_name&quot;" />
+													<plx:string data="Country_name" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -507,7 +520,11 @@
 								<plx:right>
 									<plx:callInstance name="Country_name" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current" />
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -532,7 +549,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Region_Region_code&quot;" />
+													<plx:string data="Region_Region_code" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -541,7 +558,11 @@
 								<plx:right>
 									<plx:callInstance name="Region_Region_code" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current" />
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -561,16 +582,20 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Collection of Country&quot;" />
+								<plx:string data="Get Collection of Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
 				</plx:try>
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="CollectionCountryCore_InputControl" />
-		<plx:pragma type="region" data="Select_CountryCore_InputControl" />
 		<plx:class name="Select_CountryCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Select_CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Select_CountryCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
@@ -584,7 +609,7 @@
 								<plx:callObject>
 									<plx:callStatic name="ConnectionStrings" dataTypeName="ConfigurationManager" dataTypeQualifier="System.Configuration" type="property">
 										<plx:passParam>
-											<plx:string>connString</plx:string>
+											<plx:string data="connString" />
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:callObject>
@@ -608,7 +633,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Database Connection for Select on CountryCore&quot;" />
+								<plx:string data="Get Database Connection for Select on CountryCore" />
 							</plx:passParam>
 						</plx:callStatic>
 						<plx:return>
@@ -635,7 +660,7 @@
 						</plx:condition>
 						<plx:case>
 							<plx:condition>
-								<plx:nameRef name="&quot;Country_name&quot;" />
+								<plx:string data="Country_name" />
 							</plx:condition>
 							<plx:assign>
 								<plx:left>
@@ -667,7 +692,7 @@
 																	</plx:callInstance>
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value data="&quot;Country_name&quot;" />
+																	<plx:string data="Country_name" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:callObject>
@@ -716,7 +741,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Select Country&quot;" />
+								<plx:string data="Select Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -776,7 +801,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:nameRef name="&quot;There is no selected Country.&quot;" />
+								<plx:string data="There is no selected Country." />
 							</plx:right>
 						</plx:assign>
 					</plx:branch>
@@ -822,7 +847,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:nameRef name="&quot;The current selected Country:&quot;" />
+								<plx:string data="The current selected Country:" />
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -845,7 +870,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Country_name&quot;" />
+												<plx:string data="Country_name" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -854,7 +879,7 @@
 							<plx:right>
 								<plx:callInstance name="Country_name" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar" />
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -872,7 +897,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Country_name&quot;" />
+												<plx:string data="Country_name" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -902,7 +927,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Region_Region_code&quot;" />
+												<plx:string data="Region_Region_code" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -911,7 +936,7 @@
 							<plx:right>
 								<plx:callInstance name="Region_Region_code" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar" />
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -929,7 +954,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Region_Region_code&quot;" />
+												<plx:string data="Region_Region_code" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -962,7 +987,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Display Country&quot;" />
+								<plx:string data="Display Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -985,7 +1010,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;Country_name&quot;" />
+											<plx:string data="Country_name" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -1008,7 +1033,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;Region_Region_code&quot;" />
+											<plx:string data="Region_Region_code" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -1032,7 +1057,7 @@
 						</plx:condition>
 						<plx:case>
 							<plx:condition>
-								<plx:nameRef name="&quot;Country_name&quot;" />
+								<plx:string data="Country_name" />
 							</plx:condition>
 							<plx:assign>
 								<plx:left>
@@ -1047,7 +1072,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Country_name&quot;" />
+													<plx:string data="Country_name" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -1070,7 +1095,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Change Selection Mode for Country&quot;" />
+								<plx:string data="Change Selection Mode for Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -1109,7 +1134,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Country_name&quot;" />
+													<plx:string data="Country_name" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -1147,7 +1172,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Region_Region_code&quot;" />
+													<plx:string data="Region_Region_code" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -1202,7 +1227,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Save Country&quot;" />
+								<plx:string data="Save Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -1222,7 +1247,7 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:string />
+							<plx:callStatic type="field" name="Empty" dataTypeName=".string" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -1259,7 +1284,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Cancel Edit Country&quot;" />
+								<plx:string data="Cancel Edit Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -1282,7 +1307,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:string>The changed data has not been saved.</plx:string>
+								<plx:string data="The changed data has not been saved." />
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -1320,24 +1345,32 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Begin Edit Country&quot;" />
+								<plx:string data="Begin Edit Country" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
 				</plx:try>
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Select_CountryCore_InputControl" />
-		<plx:pragma type="region" data="PersonCore_InputControl" />
 		<plx:class name="PersonCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="PersonCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="PersonCore_InputControl" />
-		<plx:pragma type="region" data="Create_PersonCore_InputControl" />
 		<plx:class name="Create_PersonCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Create_PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Create_PersonCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
@@ -1351,7 +1384,7 @@
 								<plx:callObject>
 									<plx:callStatic name="ConnectionStrings" dataTypeName="ConfigurationManager" dataTypeQualifier="System.Configuration" type="property">
 										<plx:passParam>
-											<plx:string>connString</plx:string>
+											<plx:string data="connString" />
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:callObject>
@@ -1375,7 +1408,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Database Connection for Create on PersonCore&quot;" />
+								<plx:string data="Get Database Connection for Create on PersonCore" />
 							</plx:passParam>
 						</plx:callStatic>
 						<plx:return>
@@ -1418,7 +1451,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;LastName&quot;" />
+															<plx:string data="LastName" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -1447,7 +1480,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;FirstName&quot;" />
+															<plx:string data="FirstName" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -1493,7 +1526,7 @@
 																</plx:callInstance>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="&quot;LastName&quot;" />
+																<plx:string data="LastName" />
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -1527,7 +1560,7 @@
 																		</plx:callInstance>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:value data="&quot;LastName&quot;" />
+																		<plx:string data="LastName" />
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -1538,7 +1571,7 @@
 											<plx:right>
 												<plx:callInstance name="LastName" type="property">
 													<plx:callObject>
-														<plx:nameRef name="this.abstractTypeVar" />
+														<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -1575,7 +1608,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;LastName&quot;" />
+															<plx:string data="LastName" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -1609,7 +1642,7 @@
 																</plx:callInstance>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="&quot;FirstName&quot;" />
+																<plx:string data="FirstName" />
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -1643,7 +1676,7 @@
 																		</plx:callInstance>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:value data="&quot;FirstName&quot;" />
+																		<plx:string data="FirstName" />
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -1654,7 +1687,7 @@
 											<plx:right>
 												<plx:callInstance name="FirstName" type="property">
 													<plx:callObject>
-														<plx:nameRef name="this.abstractTypeVar" />
+														<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -1691,7 +1724,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;FirstName&quot;" />
+															<plx:string data="FirstName" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -1725,7 +1758,7 @@
 																</plx:callInstance>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="&quot;Title&quot;" />
+																<plx:string data="Title" />
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -1759,7 +1792,7 @@
 																		</plx:callInstance>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:value data="&quot;Title&quot;" />
+																		<plx:string data="Title" />
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -1770,7 +1803,7 @@
 											<plx:right>
 												<plx:callInstance name="Title" type="property">
 													<plx:callObject>
-														<plx:nameRef name="this.abstractTypeVar" />
+														<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -1807,7 +1840,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;Title&quot;" />
+															<plx:string data="Title" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -1841,7 +1874,7 @@
 																</plx:callInstance>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="&quot;Country&quot;" />
+																<plx:string data="Country" />
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -1882,7 +1915,7 @@
 																						</plx:callInstance>
 																					</plx:callObject>
 																					<plx:passParam>
-																						<plx:value data="&quot;Country&quot;" />
+																						<plx:string data="Country" />
 																					</plx:passParam>
 																				</plx:callInstance>
 																			</plx:callObject>
@@ -1897,7 +1930,11 @@
 											<plx:right>
 												<plx:callInstance name="Country_name" type="property">
 													<plx:callObject>
-														<plx:nameRef name="this.abstractTypeVar.Country" />
+														<plx:callInstance name="Country" type="property">
+															<plx:callObject>
+																<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
+															</plx:callObject>
+														</plx:callInstance>
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -1939,7 +1976,7 @@
 																	</plx:callInstance>
 																</plx:callObject>
 																<plx:passParam>
-																	<plx:value data="&quot;Country&quot;" />
+																	<plx:string data="Country" />
 																</plx:passParam>
 															</plx:callInstance>
 														</plx:callObject>
@@ -1971,16 +2008,20 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Create Person&quot;" />
+								<plx:string data="Create Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
 				</plx:try>
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Create_PersonCore_InputControl" />
-		<plx:pragma type="region" data="Collection_PersonCore_InputControl" />
 		<plx:class name="Collection_PersonCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Collection_PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Collection_PersonCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
@@ -1994,7 +2035,7 @@
 								<plx:callObject>
 									<plx:callStatic name="ConnectionStrings" dataTypeName="ConfigurationManager" dataTypeQualifier="System.Configuration" type="property">
 										<plx:passParam>
-											<plx:string>connString</plx:string>
+											<plx:string data="connString" />
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:callObject>
@@ -2018,7 +2059,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Database Connection for Collection on PersonCore&quot;" />
+								<plx:string data="Get Database Connection for Collection on PersonCore" />
 							</plx:passParam>
 						</plx:callStatic>
 						<plx:return>
@@ -2046,7 +2087,7 @@
 						</plx:callObject>
 					</plx:callInstance>
 					<plx:autoDispose localName="iterator" dataTypeName="IEnumerator">
-						<plx:passTypeParam dataTypeName="Person" dataTypeQualifier="PersonCountryDemo" />
+						<plx:passTypeParam dataTypeName="Person" />
 						<plx:initialize>
 							<plx:callInstance name="GetEnumerator" type="methodCall">
 								<plx:callObject>
@@ -2095,7 +2136,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Person_id&quot;" />
+													<plx:string data="Person_id" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -2104,7 +2145,11 @@
 								<plx:right>
 									<plx:callInstance name="Person_id" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current" />
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -2129,7 +2174,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;LastName&quot;" />
+													<plx:string data="LastName" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -2138,7 +2183,11 @@
 								<plx:right>
 									<plx:callInstance name="LastName" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current" />
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -2163,7 +2212,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;FirstName&quot;" />
+													<plx:string data="FirstName" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -2172,7 +2221,11 @@
 								<plx:right>
 									<plx:callInstance name="FirstName" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current" />
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -2197,7 +2250,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Title&quot;" />
+													<plx:string data="Title" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -2206,7 +2259,11 @@
 								<plx:right>
 									<plx:callInstance name="Title" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current" />
+											<plx:callInstance name="Current" type="property">
+												<plx:callObject>
+													<plx:nameRef name="iterator" />
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -2231,7 +2288,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Country&quot;" />
+													<plx:string data="Country" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -2240,7 +2297,15 @@
 								<plx:right>
 									<plx:callInstance name="Country_name" type="property">
 										<plx:callObject>
-											<plx:nameRef name="iterator.Current.Country" />
+											<plx:callInstance name="Country" type="property">
+												<plx:callObject>
+													<plx:callInstance name="Current" type="property">
+														<plx:callObject>
+															<plx:nameRef name="iterator" />
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:right>
@@ -2260,16 +2325,20 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Collection of Person&quot;" />
+								<plx:string data="Get Collection of Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
 				</plx:try>
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="CollectionPersonCore_InputControl" />
-		<plx:pragma type="region" data="Select_PersonCore_InputControl" />
 		<plx:class name="Select_PersonCore_InputControl" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Select_PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Select_PersonCore_InputControl" />
+			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="UserControl" />
 			<plx:function name=".construct" visibility="public">
 				<plx:callThis name="InitializeComponent" type="methodCall" />
@@ -2283,7 +2352,7 @@
 								<plx:callObject>
 									<plx:callStatic name="ConnectionStrings" dataTypeName="ConfigurationManager" dataTypeQualifier="System.Configuration" type="property">
 										<plx:passParam>
-											<plx:string>connString</plx:string>
+											<plx:string data="connString" />
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:callObject>
@@ -2307,7 +2376,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Get Database Connection for Select on PersonCore&quot;" />
+								<plx:string data="Get Database Connection for Select on PersonCore" />
 							</plx:passParam>
 						</plx:callStatic>
 						<plx:return>
@@ -2334,7 +2403,7 @@
 						</plx:condition>
 						<plx:case>
 							<plx:condition>
-								<plx:nameRef name="&quot;Person_id&quot;" />
+								<plx:string data="Person_id" />
 							</plx:condition>
 							<plx:assign>
 								<plx:left>
@@ -2364,7 +2433,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;Person_id&quot;" />
+															<plx:string data="Person_id" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -2411,7 +2480,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Select Person&quot;" />
+								<plx:string data="Select Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -2471,7 +2540,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:nameRef name="&quot;There is no selected Person.&quot;" />
+								<plx:string data="There is no selected Person." />
 							</plx:right>
 						</plx:assign>
 					</plx:branch>
@@ -2517,7 +2586,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:nameRef name="&quot;The current selected Person:&quot;" />
+								<plx:string data="The current selected Person:" />
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -2540,7 +2609,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Person_id&quot;" />
+												<plx:string data="Person_id" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2549,7 +2618,7 @@
 							<plx:right>
 								<plx:callInstance name="Person_id" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar" />
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -2567,7 +2636,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Person_id&quot;" />
+												<plx:string data="Person_id" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2597,7 +2666,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;LastName&quot;" />
+												<plx:string data="LastName" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2606,7 +2675,7 @@
 							<plx:right>
 								<plx:callInstance name="LastName" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar" />
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -2624,7 +2693,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;LastName&quot;" />
+												<plx:string data="LastName" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2654,7 +2723,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;FirstName&quot;" />
+												<plx:string data="FirstName" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2663,7 +2732,7 @@
 							<plx:right>
 								<plx:callInstance name="FirstName" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar" />
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -2681,7 +2750,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;FirstName&quot;" />
+												<plx:string data="FirstName" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2711,7 +2780,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Title&quot;" />
+												<plx:string data="Title" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2720,7 +2789,7 @@
 							<plx:right>
 								<plx:callInstance name="Title" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar" />
+										<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -2738,7 +2807,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Title&quot;" />
+												<plx:string data="Title" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2768,7 +2837,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Country&quot;" />
+												<plx:string data="Country" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2777,7 +2846,11 @@
 							<plx:right>
 								<plx:callInstance name="Country_name" type="property">
 									<plx:callObject>
-										<plx:nameRef name="this.abstractTypeVar.Country" />
+										<plx:callInstance name="Country" type="property">
+											<plx:callObject>
+												<plx:callThis name="abstractTypeVar" type="field" accessor="this" />
+											</plx:callObject>
+										</plx:callInstance>
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -2795,7 +2868,7 @@
 												</plx:callInstance>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:value data="&quot;Country&quot;" />
+												<plx:string data="Country" />
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:callObject>
@@ -2828,7 +2901,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Display Person&quot;" />
+								<plx:string data="Display Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -2851,7 +2924,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;Person_id&quot;" />
+											<plx:string data="Person_id" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -2874,7 +2947,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;LastName&quot;" />
+											<plx:string data="LastName" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -2897,7 +2970,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;FirstName&quot;" />
+											<plx:string data="FirstName" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -2920,7 +2993,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;Title&quot;" />
+											<plx:string data="Title" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -2943,7 +3016,7 @@
 											</plx:callInstance>
 										</plx:callObject>
 										<plx:passParam>
-											<plx:value data="&quot;Country&quot;" />
+											<plx:string data="Country" />
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:callObject>
@@ -2967,7 +3040,7 @@
 						</plx:condition>
 						<plx:case>
 							<plx:condition>
-								<plx:nameRef name="&quot;Person_id&quot;" />
+								<plx:string data="Person_id" />
 							</plx:condition>
 							<plx:assign>
 								<plx:left>
@@ -2982,7 +3055,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Person_id&quot;" />
+													<plx:string data="Person_id" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -3005,7 +3078,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Change Selection Mode for Person&quot;" />
+								<plx:string data="Change Selection Mode for Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -3044,7 +3117,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;LastName&quot;" />
+													<plx:string data="LastName" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -3082,7 +3155,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;FirstName&quot;" />
+													<plx:string data="FirstName" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -3120,7 +3193,7 @@
 													</plx:callInstance>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:value data="&quot;Title&quot;" />
+													<plx:string data="Title" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -3163,7 +3236,7 @@
 															</plx:callInstance>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:value data="&quot;Country&quot;" />
+															<plx:string data="Country" />
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -3220,7 +3293,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Save Person&quot;" />
+								<plx:string data="Save Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -3240,7 +3313,7 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:string />
+							<plx:callStatic type="field" name="Empty" dataTypeName=".string" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -3277,7 +3350,7 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Cancel Edit Person&quot;" />
+								<plx:string data="Cancel Edit Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
@@ -3300,7 +3373,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:string>The changed data has not been saved.</plx:string>
+								<plx:string data="The changed data has not been saved." />
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -3338,13 +3411,12 @@
 								</plx:callInstance>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="&quot;Begin Edit Person&quot;" />
+								<plx:string data="Begin Edit Person" />
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:catch>
 				</plx:try>
 			</plx:function>
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Select_PersonCore_InputControl" />
 	</plx:namespace>
 </plx:root>

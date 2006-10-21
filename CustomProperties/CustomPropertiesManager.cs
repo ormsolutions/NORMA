@@ -19,7 +19,6 @@ namespace Neumont.Tools.ORM.CustomProperties
 		private static string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Neumont\ORM\GroupsAndDefinitions.xml";
 		private static XmlNamespaceManager _namespaceManager;
 		private static XmlDocument _loadedDoc;
-		private static string _customPropertiesNamespace = "http://schemas.orm.net/ORM/CustomProperties";
 		private static Store _store;
 		private const int _groupLevel = 1;
 		private const int _definitionLevel = 2;
@@ -38,13 +37,6 @@ namespace Neumont.Tools.ORM.CustomProperties
 			get
 			{
 				return _loadedDoc;
-			}
-		}
-		internal static string CustomPropertiesNamespace
-		{
-			get
-			{
-				return _customPropertiesNamespace;
 			}
 		}
 		internal static XmlNamespaceManager NamespaceManager
@@ -169,7 +161,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			if (rootNode == _machineNode)
 			{
 				XmlNode node = _loadedDoc.SelectSingleNode("//def:CustomPropertyGroups", _namespaceManager);
-				XmlNode newGroup = _loadedDoc.CreateNode("element", "CustomPropertyGroup", _customPropertiesNamespace);
+				XmlNode newGroup = _loadedDoc.CreateNode("element", "CustomPropertyGroup", CustomPropertiesDomainModel.XmlNamespace);
 				XmlAttribute nameAttrib = _loadedDoc.CreateAttribute("name");
 				XmlAttribute descAttrib = _loadedDoc.CreateAttribute("description");
 				XmlAttribute idAttrib = _loadedDoc.CreateAttribute("id");
@@ -208,8 +200,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 				groupXmlNode = groupNode.Tag as XmlNode;
 				CustomPropertyGroup groupObject = groupNode.Tag as CustomPropertyGroup;
 
-				XmlNode newProperty = _loadedDoc.CreateNode("element", "CustomPropertyDefinition", _customPropertiesNamespace);
-				XmlNode newOrmTypes = _loadedDoc.CreateElement("ORMTypes", _customPropertiesNamespace);
+				XmlNode newProperty = _loadedDoc.CreateNode("element", "CustomPropertyDefinition", CustomPropertiesDomainModel.XmlNamespace);
+				XmlNode newOrmTypes = _loadedDoc.CreateElement("ORMTypes", CustomPropertiesDomainModel.XmlNamespace);
 				newProperty.AppendChild(newOrmTypes);
 				groupXmlNode.AppendChild(newProperty);
 
@@ -268,7 +260,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 
 			//Create the XML for the Group and it's attributes.
 			XmlNode groupsNode = _loadedDoc.SelectSingleNode("//def:CustomPropertyGroups", _namespaceManager);
-			XmlNode newGroup = _loadedDoc.CreateNode("element", "CustomPropertyGroup", _customPropertiesNamespace);
+			XmlNode newGroup = _loadedDoc.CreateNode("element", "CustomPropertyGroup", CustomPropertiesDomainModel.XmlNamespace);
 			XmlAttribute nameAttrib = _loadedDoc.CreateAttribute("name");
 			XmlAttribute descAttrib = _loadedDoc.CreateAttribute("description");
 			XmlAttribute idAttrib = _loadedDoc.CreateAttribute("id");
@@ -294,8 +286,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 				CustomPropertyDefinition newDef = nd.Tag as CustomPropertyDefinition;
 
 				//Create the XML objects for the definition.
-				XmlNode newProperty = _loadedDoc.CreateNode("element", "CustomPropertyDefinition", _customPropertiesNamespace);
-				XmlNode newOrmTypes = _loadedDoc.CreateElement("ORMTypes", _customPropertiesNamespace);
+				XmlNode newProperty = _loadedDoc.CreateNode("element", "CustomPropertyDefinition", CustomPropertiesDomainModel.XmlNamespace);
+				XmlNode newOrmTypes = _loadedDoc.CreateElement("ORMTypes", CustomPropertiesDomainModel.XmlNamespace);
 				newProperty.AppendChild(newOrmTypes);
 				newGroup.AppendChild(newProperty);
 
@@ -514,7 +506,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 					else
 					{
 						_loadedDoc.AppendChild(_loadedDoc.CreateXmlDeclaration("1.0", "UTF-8", string.Empty));
-						XmlNode newGroups = _loadedDoc.CreateNode("element", "CustomPropertyGroups", "http://schemas.orm.net/ORM/CustomProperties");
+						XmlNode newGroups = _loadedDoc.CreateNode("element", "CustomPropertyGroups", CustomPropertiesDomainModel.XmlNamespace);
 						_loadedDoc.AppendChild(newGroups);
 					}
 				}
@@ -522,7 +514,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 				if (_namespaceManager == null)
 				{
 					_namespaceManager = new XmlNamespaceManager(_loadedDoc.NameTable);
-					_namespaceManager.AddNamespace("def", _customPropertiesNamespace);
+					_namespaceManager.AddNamespace("def", CustomPropertiesDomainModel.XmlNamespace);
 					_namespaceManager.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
 				}
@@ -721,7 +713,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			if ((typesValue & typeToLookFor) == typeToLookFor)
 			{
-				XmlNode newOrmType = _loadedDoc.CreateElement("ORMType", _customPropertiesNamespace);
+				XmlNode newOrmType = _loadedDoc.CreateElement("ORMType", CustomPropertiesDomainModel.XmlNamespace);
 				XmlAttribute nameAttrib = CustomPropertiesManager.LoadedDocument.CreateAttribute("name");
 				nameAttrib.Value = typeToLookFor.ToString();
 				ORMTypesNode.AppendChild(newOrmType);

@@ -2182,7 +2182,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseLastNameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnLastNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2198,7 +2198,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseLastNameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnLastNameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -2278,7 +2278,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseFirstNameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnFirstNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2294,7 +2294,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseFirstNameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnFirstNameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -2353,7 +2353,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseTitleChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnTitleChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2369,7 +2369,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseTitleChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnTitleChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -2428,7 +2428,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseCountryChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnCountryChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2455,7 +2455,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseCountryChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnCountryChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -2872,7 +2872,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseCountry_nameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnCountry_nameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2899,7 +2899,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseCountry_nameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnCountry_nameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -2958,7 +2958,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseRegion_Region_codeChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnRegion_Region_codeChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2974,7 +2974,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseRegion_Region_codeChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnRegion_Region_codeChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -2984,7 +2984,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_PersonViaCountryCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="Person" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="Person" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>PersonViaCountryCollection</plx:string>
@@ -2993,7 +2993,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="PersonViaCountryCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="Person" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="Person" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>

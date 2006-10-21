@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -12,7 +12,7 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
@@ -22,16 +22,16 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
-	
+
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	<xsl:param name="OIAL" />
+	<xsl:param name="OIAL"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
 	<xsl:variable name="ConceptTypes" select="$OIAL//oil:conceptType"/>
 	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties"/>
 	<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$OIAL//oil:roleSequenceUniquenessConstraint"/>
-	
+
 	<xsl:template match="/">
 		<plx:root>
 			<plx:namespaceImport name="System"/>
@@ -48,7 +48,7 @@
 			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
 			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
 			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
-			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>			
+			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
 			<xsl:choose>
 				<xsl:when test="$DefaultNamespace">
 					<plx:namespace name="{$DefaultNamespace}">
@@ -94,7 +94,7 @@
 	</xsl:template>
 
 	<xsl:template match="oil:model" mode="OIALtoPLiX_Abstract">
-		<xsl:param name="ModelContextName" />
+		<xsl:param name="ModelContextName"/>
 		<xsl:variable name="Model" select="."/>
 		<plx:namespace name="{$ModelName}">
 
@@ -169,35 +169,33 @@
 				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword/>
+									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+											</plx:left>
+											<plx:right>
+												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="{count($eventProperties)}"/>
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
-							</plx:left>
-							<plx:right>
-								<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="{count($eventProperties)}"/>
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -302,7 +300,7 @@
 			</xsl:for-each>
 		</plx:class>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateImplicitConversionOperators">
 		<xsl:param name="SourceClassName"/>
 		<xsl:param name="ConversionCallObject"/>
@@ -346,7 +344,7 @@
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateExplicitConversionOperators">
 		<xsl:param name="SourceClassName"/>
 		<xsl:param name="ConversionCallObject"/>
@@ -388,7 +386,7 @@
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateVirtualPropertiesFromParents">
 		<xsl:param name="ExcludeNames"/>
 		<xsl:param name="AllProperties"/>
@@ -589,7 +587,7 @@
 			<xsl:with-param name="EventIndex" select="$EventIndex"/>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template name="GeneratePropertyChangeEvent">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="ChangeType"/>
@@ -618,7 +616,7 @@
 			</plx:onRemove>
 		</plx:event>
 	</xsl:template>
-	
+
 	<xsl:template name="GetPropertyChangeEventOnAddRemoveCode">
 		<xsl:param name="EventIndex"/>
 		<xsl:param name="MethodName"/>
@@ -653,19 +651,15 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	
+
 	<xsl:template name="GeneratePropertyChangeEventRaiseMethod">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="ChangeType"/>
 		<xsl:param name="EventIndex"/>
 		<xsl:variable name="isChanging" select="$ChangeType='Changing'"/>
 		<xsl:variable name="isChanged" select="$ChangeType='Changed'"/>
-		<plx:function visibility="protected" name="Raise{@name}{$ChangeType}Event">
+		<plx:function visibility="protected" name="On{@name}{$ChangeType}">
 			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
-			<xsl:call-template name="GenerateSuppressMessageAttribute">
-				<xsl:with-param name="category" select="'Microsoft.Design'"/>
-				<xsl:with-param name="checkId" select="'CA1030:UseEventsWhereAppropriate'"/>
-			</xsl:call-template>
 			<xsl:choose>
 				<xsl:when test="$isChanging">
 					<plx:param name="newValue">
@@ -826,7 +820,7 @@
 						</plx:return>
 					</xsl:when>
 					<xsl:when test="$isChanged">
-						<plx:callThis name="RaisePropertyChangedEvent">
+						<plx:callThis name="OnPropertyChanged">
 							<plx:passParam>
 								<plx:string>
 									<xsl:value-of select="@name"/>
@@ -843,7 +837,7 @@
 			</xsl:if>
 		</plx:function>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateINotifyPropertyChangedImplementation">
 		<plx:field visibility="private" name="{$PrivateMemberPrefix}propertyChangedEventHandler" dataTypeName="PropertyChangedEventHandler"/>
 		<plx:event visibility="privateInterfaceMember" name="PropertyChanged">
@@ -894,7 +888,7 @@
 				</plx:assign>
 			</plx:onRemove>
 		</plx:event>
-		<plx:function visibility="private" name="RaisePropertyChangedEvent">
+		<plx:function visibility="private" name="OnPropertyChanged">
 			<plx:param name="propertyName" dataTypeName=".string"/>
 			<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 				<plx:initialize>

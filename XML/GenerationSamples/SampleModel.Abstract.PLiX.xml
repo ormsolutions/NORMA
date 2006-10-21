@@ -44,40 +44,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="2" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="2" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -132,7 +128,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -184,8 +180,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="DrivesCar_vinChanging">
@@ -257,15 +253,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDrivesCar_vinChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDrivesCar_vinChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -416,15 +404,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDrivesCar_vinChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDrivesCar_vinChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -498,7 +478,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>DrivesCar_vin</plx:string>
 						</plx:passParam>
@@ -574,15 +554,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDrivenByPersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDrivenByPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -733,15 +705,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDrivenByPersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDrivenByPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -815,7 +779,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>DrivenByPerson</plx:string>
 						</plx:passParam>
@@ -923,40 +887,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="4" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="4" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -1011,7 +971,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -1063,8 +1023,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="CarSold_vinChanging">
@@ -1136,15 +1096,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseCarSold_vinChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnCarSold_vinChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -1295,15 +1247,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseCarSold_vinChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnCarSold_vinChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -1377,7 +1321,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>CarSold_vin</plx:string>
 						</plx:passParam>
@@ -1453,15 +1397,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseSaleDate_YMDChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnSaleDate_YMDChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -1612,15 +1548,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseSaleDate_YMDChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnSaleDate_YMDChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -1694,7 +1622,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>SaleDate_YMD</plx:string>
 						</plx:passParam>
@@ -1770,15 +1698,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseBuyerChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnBuyerChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -1929,15 +1849,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseBuyerChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnBuyerChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -2011,7 +1923,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Buyer</plx:string>
 						</plx:passParam>
@@ -2087,15 +1999,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseSellerChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnSellerChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -2246,15 +2150,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseSellerChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnSellerChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -2328,7 +2224,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Seller</plx:string>
 						</plx:passParam>
@@ -2474,40 +2370,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="3" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="3" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -2562,7 +2454,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -2614,8 +2506,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="Car_vinChanging">
@@ -2687,15 +2579,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseCar_vinChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnCar_vinChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -2846,15 +2730,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseCar_vinChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnCar_vinChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -2928,7 +2804,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Car_vin</plx:string>
 						</plx:passParam>
@@ -3004,15 +2880,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseRating_Nr_IntegerChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnRating_Nr_IntegerChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -3163,15 +3031,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseRating_Nr_IntegerChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnRating_Nr_IntegerChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -3245,7 +3105,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Rating_Nr_Integer</plx:string>
 						</plx:passParam>
@@ -3321,15 +3181,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseCriterion_NameChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnCriterion_NameChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -3480,15 +3332,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseCriterion_NameChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnCriterion_NameChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -3562,7 +3406,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Criterion_Name</plx:string>
 						</plx:passParam>
@@ -3689,40 +3533,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="2" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="2" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -3777,7 +3617,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -3829,8 +3669,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="NickNameChanging">
@@ -3902,15 +3742,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseNickNameChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnNickNameChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -4061,15 +3893,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseNickNameChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnNickNameChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -4143,7 +3967,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>NickName</plx:string>
 						</plx:passParam>
@@ -4219,15 +4043,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -4378,15 +4194,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -4460,7 +4268,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Person</plx:string>
 						</plx:passParam>
@@ -4568,40 +4376,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="20" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="20" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -4656,7 +4460,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -4708,8 +4512,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="FirstNameChanging">
@@ -4781,15 +4585,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseFirstNameChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnFirstNameChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -4940,15 +4736,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseFirstNameChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnFirstNameChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -5022,7 +4810,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>FirstName</plx:string>
 						</plx:passParam>
@@ -5098,15 +4886,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDate_YMDChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDate_YMDChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -5257,15 +5037,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDate_YMDChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDate_YMDChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -5339,7 +5111,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Date_YMD</plx:string>
 						</plx:passParam>
@@ -5415,15 +5187,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseLastNameChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnLastNameChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -5574,15 +5338,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseLastNameChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnLastNameChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -5656,7 +5412,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>LastName</plx:string>
 						</plx:passParam>
@@ -5732,15 +5488,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseOptionalUniqueStringChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnOptionalUniqueStringChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -5891,15 +5639,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseOptionalUniqueStringChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnOptionalUniqueStringChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -5973,7 +5713,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>OptionalUniqueString</plx:string>
 						</plx:passParam>
@@ -6051,15 +5791,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseHatType_ColorARGBChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnHatType_ColorARGBChanging">
 				<plx:param name="newValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
@@ -6222,15 +5954,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseHatType_ColorARGBChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnHatType_ColorARGBChanged">
 				<plx:param name="oldValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
@@ -6312,7 +6036,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>HatType_ColorARGB</plx:string>
 						</plx:passParam>
@@ -6388,15 +6112,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseHatType_HatTypeStyle_HatTypeStyle_DescriptionChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnHatType_HatTypeStyle_HatTypeStyle_DescriptionChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -6547,15 +6263,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseHatType_HatTypeStyle_HatTypeStyle_DescriptionChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnHatType_HatTypeStyle_HatTypeStyle_DescriptionChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -6629,7 +6337,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>HatType_HatTypeStyle_HatTypeStyle_Description</plx:string>
 						</plx:passParam>
@@ -6707,15 +6415,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseOwnsCar_vinChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnOwnsCar_vinChanging">
 				<plx:param name="newValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
@@ -6878,15 +6578,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseOwnsCar_vinChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnOwnsCar_vinChanged">
 				<plx:param name="oldValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
@@ -6968,7 +6660,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>OwnsCar_vin</plx:string>
 						</plx:passParam>
@@ -7044,15 +6736,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseGender_Gender_CodeChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnGender_Gender_CodeChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -7203,15 +6887,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseGender_Gender_CodeChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnGender_Gender_CodeChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -7285,14 +6961,14 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Gender_Gender_Code</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
 			</plx:function>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -7361,15 +7037,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise10ChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnhasParentsChanging">
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -7418,7 +7086,7 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="10" />
+									<plx:callThis accessor="this" type="property" name="hasParents" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="newValue" />
@@ -7451,7 +7119,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -7520,15 +7188,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise10ChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnhasParentsChanged">
 				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -7583,7 +7243,7 @@
 									<plx:nameRef type="parameter" name="oldValue" />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="10" />
+									<plx:callThis accessor="this" type="property" name="hasParents" />
 								</plx:passParam>
 							</plx:callNew>
 						</plx:passParam>
@@ -7602,9 +7262,9 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
-							<plx:string>10</plx:string>
+							<plx:string>hasParents</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
@@ -7680,15 +7340,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseOptionalUniqueDecimalChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnOptionalUniqueDecimalChanging">
 				<plx:param name="newValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".decimal" />
 				</plx:param>
@@ -7851,15 +7503,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseOptionalUniqueDecimalChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnOptionalUniqueDecimalChanged">
 				<plx:param name="oldValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".decimal" />
 				</plx:param>
@@ -7941,7 +7585,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>OptionalUniqueDecimal</plx:string>
 						</plx:passParam>
@@ -8017,15 +7661,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMandatoryUniqueDecimalChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMandatoryUniqueDecimalChanging">
 				<plx:param name="newValue" dataTypeName=".decimal" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -8176,15 +7812,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMandatoryUniqueDecimalChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMandatoryUniqueDecimalChanged">
 				<plx:param name="oldValue" dataTypeName=".decimal" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -8258,7 +7886,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>MandatoryUniqueDecimal</plx:string>
 						</plx:passParam>
@@ -8334,15 +7962,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMandatoryUniqueStringChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMandatoryUniqueStringChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -8493,15 +8113,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMandatoryUniqueStringChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMandatoryUniqueStringChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -8575,7 +8187,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>MandatoryUniqueString</plx:string>
 						</plx:passParam>
@@ -8651,15 +8263,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseHusbandChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnHusbandChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -8810,15 +8414,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseHusbandChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnHusbandChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -8892,7 +8488,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Husband</plx:string>
 						</plx:passParam>
@@ -8968,15 +8564,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseValueType1DoesSomethingElseWithChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnValueType1DoesSomethingElseWithChanging">
 				<plx:param name="newValue" dataTypeName="ValueType1" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -9127,15 +8715,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseValueType1DoesSomethingElseWithChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnValueType1DoesSomethingElseWithChanged">
 				<plx:param name="oldValue" dataTypeName="ValueType1" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -9209,7 +8789,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>ValueType1DoesSomethingElseWith</plx:string>
 						</plx:passParam>
@@ -9285,15 +8865,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMalePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMalePersonChanging">
 				<plx:param name="newValue" dataTypeName="MalePerson" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -9444,15 +9016,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMalePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMalePersonChanged">
 				<plx:param name="oldValue" dataTypeName="MalePerson" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -9526,7 +9090,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>MalePerson</plx:string>
 						</plx:passParam>
@@ -9602,15 +9166,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseFemalePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnFemalePersonChanging">
 				<plx:param name="newValue" dataTypeName="FemalePerson" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -9761,15 +9317,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseFemalePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnFemalePersonChanged">
 				<plx:param name="oldValue" dataTypeName="FemalePerson" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -9843,7 +9391,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>FemalePerson</plx:string>
 						</plx:passParam>
@@ -9919,15 +9467,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseChildPersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnChildPersonChanging">
 				<plx:param name="newValue" dataTypeName="ChildPerson" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -10078,15 +9618,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseChildPersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnChildPersonChanged">
 				<plx:param name="oldValue" dataTypeName="ChildPerson" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -10160,7 +9692,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>ChildPerson</plx:string>
 						</plx:passParam>
@@ -10236,15 +9768,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathChanging">
 				<plx:param name="newValue" dataTypeName="Death" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -10395,15 +9919,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathChanged">
 				<plx:param name="oldValue" dataTypeName="Death" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -10477,7 +9993,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Death</plx:string>
 						</plx:passParam>
@@ -10553,15 +10069,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseWifeViaHusbandCollectionChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnWifeViaHusbandCollectionChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -10712,15 +10220,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseWifeViaHusbandCollectionChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnWifeViaHusbandCollectionChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -10794,7 +10294,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>WifeViaHusbandCollection</plx:string>
 						</plx:passParam>
@@ -10948,7 +10448,7 @@
 				<plx:get />
 				<plx:set />
 			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="10">
+			<plx:property visibility="public" modifier="abstract" name="hasParents">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
 						<plx:falseKeyword />
@@ -11247,7 +10747,7 @@
 							<plx:nameRef type="parameter" name="provider" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:string>Person{0}{{{0}{1}FirstName = "{2}",{0}{1}Person_id = "{3}",{0}{1}Date_YMD = "{4}",{0}{1}LastName = "{5}",{0}{1}OptionalUniqueString = "{6}",{0}{1}HatType_ColorARGB = "{7}",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = "{8}",{0}{1}OwnsCar_vin = "{9}",{0}{1}Gender_Gender_Code = "{10}",{0}{1}10 = "{11}",{0}{1}OptionalUniqueDecimal = "{12}",{0}{1}MandatoryUniqueDecimal = "{13}",{0}{1}MandatoryUniqueString = "{14}",{0}{1}Husband = {15},{0}{1}ValueType1DoesSomethingElseWith = {16},{0}{1}MalePerson = {17},{0}{1}FemalePerson = {18},{0}{1}ChildPerson = {19},{0}{1}Death = {20},{0}{1}WifeViaHusbandCollection = {21}{0}}}</plx:string>
+							<plx:string>Person{0}{{{0}{1}FirstName = "{2}",{0}{1}Person_id = "{3}",{0}{1}Date_YMD = "{4}",{0}{1}LastName = "{5}",{0}{1}OptionalUniqueString = "{6}",{0}{1}HatType_ColorARGB = "{7}",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = "{8}",{0}{1}OwnsCar_vin = "{9}",{0}{1}Gender_Gender_Code = "{10}",{0}{1}hasParents = "{11}",{0}{1}OptionalUniqueDecimal = "{12}",{0}{1}MandatoryUniqueDecimal = "{13}",{0}{1}MandatoryUniqueString = "{14}",{0}{1}Husband = {15},{0}{1}ValueType1DoesSomethingElseWith = {16},{0}{1}MalePerson = {17},{0}{1}FemalePerson = {18},{0}{1}ChildPerson = {19},{0}{1}Death = {20},{0}{1}WifeViaHusbandCollection = {21}{0}}}</plx:string>
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
@@ -11283,7 +10783,7 @@
 							<plx:callThis accessor="this" type="property" name="Gender_Gender_Code" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="10" />
+							<plx:callThis accessor="this" type="property" name="hasParents" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callThis accessor="this" type="property" name="OptionalUniqueDecimal" />
@@ -11595,40 +11095,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="1" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="1" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -11683,7 +11179,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -11735,8 +11231,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="PersonChanging">
@@ -11808,15 +11304,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -11967,15 +11455,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -12049,7 +11529,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Person</plx:string>
 						</plx:passParam>
@@ -13138,11 +12618,11 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="10">
+			<plx:property visibility="public" modifier="virtual" name="hasParents">
 				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="10">
+						<plx:callInstance type="property" name="hasParents">
 							<plx:callObject>
 								<plx:callInstance type="property" name="Person">
 									<plx:callObject>
@@ -13156,7 +12636,7 @@
 				<plx:set>
 					<plx:assign>
 						<plx:left>
-							<plx:callInstance type="property" name="10">
+							<plx:callInstance type="property" name="hasParents">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -13172,7 +12652,7 @@
 					</plx:assign>
 				</plx:set>
 			</plx:property>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -13181,7 +12661,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -13199,7 +12679,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -13215,7 +12695,7 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -13224,7 +12704,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -13242,7 +12722,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -14485,40 +13965,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="1" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="1" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -14573,7 +14049,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -14625,8 +14101,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="PersonChanging">
@@ -14698,15 +14174,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -14857,15 +14325,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -14939,7 +14399,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Person</plx:string>
 						</plx:passParam>
@@ -16028,11 +15488,11 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="10">
+			<plx:property visibility="public" modifier="virtual" name="hasParents">
 				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="10">
+						<plx:callInstance type="property" name="hasParents">
 							<plx:callObject>
 								<plx:callInstance type="property" name="Person">
 									<plx:callObject>
@@ -16046,7 +15506,7 @@
 				<plx:set>
 					<plx:assign>
 						<plx:left>
-							<plx:callInstance type="property" name="10">
+							<plx:callInstance type="property" name="hasParents">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -16062,7 +15522,7 @@
 					</plx:assign>
 				</plx:set>
 			</plx:property>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -16071,7 +15531,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -16089,7 +15549,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -16105,7 +15565,7 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -16114,7 +15574,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -16132,7 +15592,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -17375,40 +16835,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="4" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="4" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -17463,7 +16919,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -17515,8 +16971,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="BirthOrder_BirthOrder_NrChanging">
@@ -17588,15 +17044,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseBirthOrder_BirthOrder_NrChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnBirthOrder_BirthOrder_NrChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -17747,15 +17195,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseBirthOrder_BirthOrder_NrChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnBirthOrder_BirthOrder_NrChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -17829,7 +17269,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>BirthOrder_BirthOrder_Nr</plx:string>
 						</plx:passParam>
@@ -17905,15 +17345,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseFatherChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnFatherChanging">
 				<plx:param name="newValue" dataTypeName="MalePerson" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -18064,15 +17496,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseFatherChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnFatherChanged">
 				<plx:param name="oldValue" dataTypeName="MalePerson" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -18146,7 +17570,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Father</plx:string>
 						</plx:passParam>
@@ -18222,15 +17646,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMotherChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMotherChanging">
 				<plx:param name="newValue" dataTypeName="FemalePerson" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -18381,15 +17797,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseMotherChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnMotherChanged">
 				<plx:param name="oldValue" dataTypeName="FemalePerson" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -18463,7 +17871,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Mother</plx:string>
 						</plx:passParam>
@@ -18539,15 +17947,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -18698,15 +18098,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -18780,7 +18172,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Person</plx:string>
 						</plx:passParam>
@@ -19909,11 +19301,11 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="10">
+			<plx:property visibility="public" modifier="virtual" name="hasParents">
 				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="10">
+						<plx:callInstance type="property" name="hasParents">
 							<plx:callObject>
 								<plx:callInstance type="property" name="Person">
 									<plx:callObject>
@@ -19927,7 +19319,7 @@
 				<plx:set>
 					<plx:assign>
 						<plx:left>
-							<plx:callInstance type="property" name="10">
+							<plx:callInstance type="property" name="hasParents">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -19943,7 +19335,7 @@
 					</plx:assign>
 				</plx:set>
 			</plx:property>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -19952,7 +19344,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -19970,7 +19362,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -19986,7 +19378,7 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -19995,7 +19387,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -20013,7 +19405,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -21256,40 +20648,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="5" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="5" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -21344,7 +20732,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -21396,8 +20784,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="Date_YMDChanging">
@@ -21471,15 +20859,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDate_YMDChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDate_YMDChanging">
 				<plx:param name="newValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
@@ -21642,15 +21022,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDate_YMDChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDate_YMDChanged">
 				<plx:param name="oldValue" dataTypeName="Nullable">
 					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
@@ -21732,7 +21104,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Date_YMD</plx:string>
 						</plx:passParam>
@@ -21808,15 +21180,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathCause_DeathCause_TypeChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathCause_DeathCause_TypeChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -21967,15 +21331,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathCause_DeathCause_TypeChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathCause_DeathCause_TypeChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -22049,7 +21405,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>DeathCause_DeathCause_Type</plx:string>
 						</plx:passParam>
@@ -22125,15 +21481,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseNaturalDeathChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnNaturalDeathChanging">
 				<plx:param name="newValue" dataTypeName="NaturalDeath" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -22284,15 +21632,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseNaturalDeathChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnNaturalDeathChanged">
 				<plx:param name="oldValue" dataTypeName="NaturalDeath" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -22366,7 +21706,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>NaturalDeath</plx:string>
 						</plx:passParam>
@@ -22442,15 +21782,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseUnnaturalDeathChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnUnnaturalDeathChanging">
 				<plx:param name="newValue" dataTypeName="UnnaturalDeath" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -22601,15 +21933,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseUnnaturalDeathChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnUnnaturalDeathChanged">
 				<plx:param name="oldValue" dataTypeName="UnnaturalDeath" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -22683,7 +22007,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>UnnaturalDeath</plx:string>
 						</plx:passParam>
@@ -22759,15 +22083,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -22918,15 +22234,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -23000,7 +22308,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Person</plx:string>
 						</plx:passParam>
@@ -24030,11 +23338,11 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="10">
+			<plx:property visibility="public" modifier="virtual" name="hasParents">
 				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="10">
+						<plx:callInstance type="property" name="hasParents">
 							<plx:callObject>
 								<plx:callInstance type="property" name="Person">
 									<plx:callObject>
@@ -24048,7 +23356,7 @@
 				<plx:set>
 					<plx:assign>
 						<plx:left>
-							<plx:callInstance type="property" name="10">
+							<plx:callInstance type="property" name="hasParents">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -24064,7 +23372,7 @@
 					</plx:assign>
 				</plx:set>
 			</plx:property>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -24073,7 +23381,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -24091,7 +23399,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -24107,7 +23415,7 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -24116,7 +23424,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -24134,7 +23442,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -25471,40 +24779,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="2" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="2" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -25559,7 +24863,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -25611,11 +24915,11 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
-			<plx:event visibility="public" name="20Changing">
+			<plx:event visibility="public" name="isFromProstateCancerChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="NaturalDeath" />
@@ -25684,15 +24988,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise20ChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnisFromProstateCancerChanging">
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -25741,7 +25037,7 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="20" />
+									<plx:callThis accessor="this" type="property" name="isFromProstateCancer" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="newValue" />
@@ -25774,7 +25070,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="20Changed">
+			<plx:event visibility="public" name="isFromProstateCancerChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="NaturalDeath" />
@@ -25843,15 +25139,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise20ChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnisFromProstateCancerChanged">
 				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -25906,7 +25194,7 @@
 									<plx:nameRef type="parameter" name="oldValue" />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="20" />
+									<plx:callThis accessor="this" type="property" name="isFromProstateCancer" />
 								</plx:passParam>
 							</plx:callNew>
 						</plx:passParam>
@@ -25925,9 +25213,9 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
-							<plx:string>20</plx:string>
+							<plx:string>isFromProstateCancer</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
@@ -26001,15 +25289,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathChanging">
 				<plx:param name="newValue" dataTypeName="Death" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -26160,15 +25440,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathChanged">
 				<plx:param name="oldValue" dataTypeName="Death" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -26242,14 +25514,14 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Death</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
 			</plx:function>
-			<plx:property visibility="public" modifier="abstract" name="20">
+			<plx:property visibility="public" modifier="abstract" name="isFromProstateCancer">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
 						<plx:falseKeyword />
@@ -26300,7 +25572,7 @@
 							<plx:nameRef type="parameter" name="provider" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:string>NaturalDeath{0}{{{0}{1}20 = "{2}",{0}{1}Death = {3}{0}}}</plx:string>
+							<plx:string>NaturalDeath{0}{{{0}{1}isFromProstateCancer = "{2}",{0}{1}Death = {3}{0}}}</plx:string>
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
@@ -26309,7 +25581,7 @@
 							<plx:string>&#x09;</plx:string>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="20" />
+							<plx:callThis accessor="this" type="property" name="isFromProstateCancer" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:string>TODO: Recursively call ToString for customTypes...</plx:string>
@@ -27903,11 +27175,11 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="10">
+			<plx:property visibility="public" modifier="virtual" name="hasParents">
 				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="10">
+						<plx:callInstance type="property" name="hasParents">
 							<plx:callObject>
 								<plx:callInstance type="property" name="Person">
 									<plx:callObject>
@@ -27925,7 +27197,7 @@
 				<plx:set>
 					<plx:assign>
 						<plx:left>
-							<plx:callInstance type="property" name="10">
+							<plx:callInstance type="property" name="hasParents">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -27945,7 +27217,7 @@
 					</plx:assign>
 				</plx:set>
 			</plx:property>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -27954,7 +27226,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -27976,7 +27248,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -27996,7 +27268,7 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -28005,7 +27277,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -28027,7 +27299,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -29514,40 +28786,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="3" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="3" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -29602,7 +28870,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -29654,11 +28922,11 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
-			<plx:event visibility="public" name="9Changing">
+			<plx:event visibility="public" name="isViolentChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
@@ -29727,15 +28995,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise9ChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnisViolentChanging">
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -29784,7 +29044,7 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="9" />
+									<plx:callThis accessor="this" type="property" name="isViolent" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="newValue" />
@@ -29817,7 +29077,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="9Changed">
+			<plx:event visibility="public" name="isViolentChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
@@ -29886,15 +29146,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise9ChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnisViolentChanged">
 				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -29949,7 +29201,7 @@
 									<plx:nameRef type="parameter" name="oldValue" />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="9" />
+									<plx:callThis accessor="this" type="property" name="isViolent" />
 								</plx:passParam>
 							</plx:callNew>
 						</plx:passParam>
@@ -29968,14 +29220,14 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
-							<plx:string>9</plx:string>
+							<plx:string>isViolent</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
 			</plx:function>
-			<plx:event visibility="public" name="8Changing">
+			<plx:event visibility="public" name="isBloodyChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
@@ -30044,15 +29296,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise8ChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnisBloodyChanging">
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -30101,7 +29345,7 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="8" />
+									<plx:callThis accessor="this" type="property" name="isBloody" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="newValue" />
@@ -30134,7 +29378,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="8Changed">
+			<plx:event visibility="public" name="isBloodyChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
@@ -30203,15 +29447,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="Raise8ChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnisBloodyChanged">
 				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -30266,7 +29502,7 @@
 									<plx:nameRef type="parameter" name="oldValue" />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="8" />
+									<plx:callThis accessor="this" type="property" name="isBloody" />
 								</plx:passParam>
 							</plx:callNew>
 						</plx:passParam>
@@ -30285,9 +29521,9 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
-							<plx:string>8</plx:string>
+							<plx:string>isBloody</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
@@ -30361,15 +29597,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathChanging">
 				<plx:param name="newValue" dataTypeName="Death" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -30520,15 +29748,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDeathChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDeathChanged">
 				<plx:param name="oldValue" dataTypeName="Death" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -30602,14 +29822,14 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Death</plx:string>
 						</plx:passParam>
 					</plx:callThis>
 				</plx:branch>
 			</plx:function>
-			<plx:property visibility="public" modifier="abstract" name="9">
+			<plx:property visibility="public" modifier="abstract" name="isViolent">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
 						<plx:falseKeyword />
@@ -30625,7 +29845,7 @@
 				<plx:get />
 				<plx:set />
 			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="8">
+			<plx:property visibility="public" modifier="abstract" name="isBloody">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
 						<plx:falseKeyword />
@@ -30676,7 +29896,7 @@
 							<plx:nameRef type="parameter" name="provider" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:string>UnnaturalDeath{0}{{{0}{1}9 = "{2}",{0}{1}8 = "{3}",{0}{1}Death = {4}{0}}}</plx:string>
+							<plx:string>UnnaturalDeath{0}{{{0}{1}isViolent = "{2}",{0}{1}isBloody = "{3}",{0}{1}Death = {4}{0}}}</plx:string>
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
@@ -30685,10 +29905,10 @@
 							<plx:string>&#x09;</plx:string>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="9" />
+							<plx:callThis accessor="this" type="property" name="isViolent" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="8" />
+							<plx:callThis accessor="this" type="property" name="isBloody" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:string>TODO: Recursively call ToString for customTypes...</plx:string>
@@ -32282,11 +31502,11 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:property visibility="public" modifier="virtual" name="10">
+			<plx:property visibility="public" modifier="virtual" name="hasParents">
 				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="10">
+						<plx:callInstance type="property" name="hasParents">
 							<plx:callObject>
 								<plx:callInstance type="property" name="Person">
 									<plx:callObject>
@@ -32304,7 +31524,7 @@
 				<plx:set>
 					<plx:assign>
 						<plx:left>
-							<plx:callInstance type="property" name="10">
+							<plx:callInstance type="property" name="hasParents">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -32324,7 +31544,7 @@
 					</plx:assign>
 				</plx:set>
 			</plx:property>
-			<plx:event visibility="public" name="10Changing">
+			<plx:event visibility="public" name="hasParentsChanging">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -32333,7 +31553,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -32355,7 +31575,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changing">
+							<plx:callInstance type="event" name="hasParentsChanging">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -32375,7 +31595,7 @@
 					</plx:detachEvent>
 				</plx:onRemove>
 			</plx:event>
-			<plx:event visibility="public" name="10Changed">
+			<plx:event visibility="public" name="hasParentsChanged">
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -32384,7 +31604,7 @@
 				<plx:onAdd>
 					<plx:attachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -32406,7 +31626,7 @@
 				<plx:onRemove>
 					<plx:detachEvent>
 						<plx:left>
-							<plx:callInstance type="event" name="10Changed">
+							<plx:callInstance type="event" name="hasParentsChanged">
 								<plx:callObject>
 									<plx:callInstance type="property" name="Person">
 										<plx:callObject>
@@ -33893,40 +33113,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="2" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="2" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -33981,7 +33197,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -34033,8 +33249,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="PersonChanging">
@@ -34106,15 +33322,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -34265,15 +33473,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaisePersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -34347,7 +33547,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>Person</plx:string>
 						</plx:passParam>
@@ -34454,40 +33654,36 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
-			<plx:implementsInterface dataTypeName="IHas" />
+			<plx:implementsInterface dataTypeName="IHasSampleModelContext" />
 			<plx:function visibility="protected" name=".construct" />
 			<plx:field visibility="private" name="_events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 			<plx:property visibility="private" name="Events">
 				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System" />
 				<plx:get>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
+					<plx:return>
+						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+							<plx:nullFallbackOperator>
 								<plx:left>
-									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:callThis accessor="this" type="field" name="_events" />
-									</plx:cast>
+									<plx:callThis accessor="this" type="field" name="_events" />
 								</plx:left>
 								<plx:right>
-									<plx:nullKeyword />
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:assign>
+											<plx:left>
+												<plx:callThis accessor="this" type="field" name="_events" />
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:passParam>
+														<plx:value type="i4" data="2" />
+													</plx:passParam>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
 								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:callThis accessor="this" type="field" name="_events" />
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-									<plx:passParam>
-										<plx:value type="i4" data="2" />
-									</plx:passParam>
-								</plx:callNew>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_events" />
+							</plx:nullFallbackOperator>
+						</plx:inlineStatement>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -34542,7 +33738,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:function visibility="private" name="OnPropertyChanged">
 				<plx:param name="propertyName" dataTypeName=".string" />
 				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 					<plx:initialize>
@@ -34594,8 +33790,8 @@
 				</plx:branch>
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:interfaceMember memberName="Context" dataTypeName="IHas" />
-				<plx:returns dataTypeName="" />
+				<plx:interfaceMember memberName="Context" dataTypeName="IHasSampleModelContext" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="ValueType1ValueChanging">
@@ -34667,15 +33863,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseValueType1ValueChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnValueType1ValueChanging">
 				<plx:param name="newValue" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -34826,15 +34014,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseValueType1ValueChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnValueType1ValueChanged">
 				<plx:param name="oldValue" dataTypeName=".i4" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -34908,7 +34088,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>ValueType1Value</plx:string>
 						</plx:passParam>
@@ -34984,15 +34164,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDoesSomethingWithPersonChangingEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDoesSomethingWithPersonChanging">
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -35143,15 +34315,7 @@
 					</plx:assign>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="RaiseDoesSomethingWithPersonChangedEvent">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
-					<plx:passParam>
-						<plx:string>Microsoft.Design</plx:string>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
-					</plx:passParam>
-				</plx:attribute>
+			<plx:function visibility="protected" name="OnDoesSomethingWithPersonChanged">
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
@@ -35225,7 +34389,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callThis name="RaisePropertyChangedEvent">
+					<plx:callThis name="OnPropertyChanged">
 						<plx:passParam>
 							<plx:string>DoesSomethingWithPerson</plx:string>
 						</plx:passParam>
@@ -35318,12 +34482,12 @@
 				</plx:return>
 			</plx:function>
 		</plx:class>
-		<plx:interface visibility="public" name="IHas">
+		<plx:interface visibility="public" name="IHasSampleModelContext">
 			<plx:leadingInfo>
-				<plx:pragma type="region" data="IHas" />
+				<plx:pragma type="region" data="IHasSampleModelContext" />
 			</plx:leadingInfo>
 			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="IHas" />
+				<plx:pragma type="closeRegion" data="IHasSampleModelContext" />
 			</plx:trailingInfo>
 			<plx:attribute dataTypeName="GeneratedCodeAttribute">
 				<plx:passParam>
@@ -35334,16 +34498,16 @@
 				</plx:passParam>
 			</plx:attribute>
 			<plx:property visibility="public" modifier="abstract" name="Context">
-				<plx:returns dataTypeName="" />
+				<plx:returns dataTypeName="SampleModelContext" />
 				<plx:get />
 			</plx:property>
 		</plx:interface>
-		<plx:interface visibility="public" name="I">
+		<plx:interface visibility="public" name="ISampleModelContext">
 			<plx:leadingInfo>
-				<plx:pragma type="region" data="I" />
+				<plx:pragma type="region" data="ISampleModelContext" />
 			</plx:leadingInfo>
 			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="I" />
+				<plx:pragma type="closeRegion" data="ISampleModelContext" />
 			</plx:trailingInfo>
 			<plx:attribute dataTypeName="GeneratedCodeAttribute">
 				<plx:passParam>
@@ -35584,7 +34748,7 @@
 				<plx:param name="Date_YMD" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
-				<plx:param name="10" dataTypeName=".boolean" />
+				<plx:param name="hasParents" dataTypeName=".boolean" />
 				<plx:param name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
 				<plx:param name="MandatoryUniqueString" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
@@ -35640,7 +34804,7 @@
 				<plx:get />
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreateNaturalDeath">
-				<plx:param name="20" dataTypeName=".boolean" />
+				<plx:param name="isFromProstateCancer" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="NaturalDeath" />
 			</plx:function>
@@ -35651,8 +34815,8 @@
 				<plx:get />
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreateUnnaturalDeath">
-				<plx:param name="9" dataTypeName=".boolean" />
-				<plx:param name="8" dataTypeName=".boolean" />
+				<plx:param name="isViolent" dataTypeName=".boolean" />
+				<plx:param name="isBloody" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="UnnaturalDeath" />
 			</plx:function>

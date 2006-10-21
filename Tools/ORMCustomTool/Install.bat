@@ -23,30 +23,29 @@ CALL:_InstallExtenderReg "8.0"
 CALL:_InstallCustomToolReg "8.0Exp"
 CALL:_InstallExtenderReg "8.0Exp"
 
+:: Get rid of old transform registrations
+REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators" /f 1>NUL 2>&1
+
 :: Install and register ORM Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\OIAL\CoRefORM.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoOWL\OIALtoOWL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
 
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_Abstract.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
 
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm_Designer.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoDataLayerTestForm.resx.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoInputControl.resx.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
-XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_Program.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
 
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".CoRef.orm" "ORM" "CoRefORM" "%ORMTransformsDir%\CoRefORM.xslt" "" "1"
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt" "" "1"
@@ -61,13 +60,9 @@ CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayerWithSproc" "CLIProperties 
 CALL:_AddXslORMGenerator "CLIPropertiesToPliXDataLayerSprocFree" "CLIProperties to PLiX Sproc Free Data Layer" "Transforms a CLI Properties file to Sproc Free Data Layer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "NUPlixLoader" "" "" "OIAL\0" "PLiX_Abstract\0"
 CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "NUPlixLoader" "" "" "OIAL\0" "PLiX_Abstract\0"
 
-CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "DataLayerTestFormDesigner\0DataLayerTestFormResx\0DataLayerTestFormInputControl\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormDesigner" "Data Layer Test Form Designer" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm_Designer.xslt" "NUPlixLoader" "1"
-CALL:_AddXslORMGenerator "DataLayerTestFormResx" "Data Layer Test Form Resx" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.resx" "PLiX_Implementation" "DataLayerTestFormResx" "%ORMTransformsDir%\DataLayerTestForm\OIALtoDataLayerTestForm.resx.xslt" "" "1"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0DataLayerTestFormInputControlResx\0"
+CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "DataLayerTestFormInputControl\0"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0"
 CALL:_AddXslORMGenerator "DataLayerTestFormInputControlDesigner" "Data Layer Test Form Input Control Designer" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControlDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "NUPlixLoader" "1" "" "OIAL\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControlResx" "Data Layer Test Form Input Control Resx" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.resx" "PLiX_Implementation" "DataLayerTestFormInputControlResx" "%ORMTransformsDir%\DataLayerTestForm\OIALtoInputControl.resx.xslt" "" "1"
-CALL:_AddXslORMGenerator "DataLayerTestFormProgram" "Data Layer Test Form Program Class" "Generates the Program file to launch the generated form." ".Program.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormProgram" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_Program.xslt" "NUPlixLoader" "" "" "" "DataLayerTestForm\0"
 
 :: Install and register DIL Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"

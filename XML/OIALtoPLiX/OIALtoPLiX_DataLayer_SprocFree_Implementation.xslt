@@ -30,7 +30,7 @@
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:template match="/">
-		<xsl:apply-imports />
+		<xsl:apply-imports/>
 	</xsl:template>
 	
 </xsl:stylesheet>

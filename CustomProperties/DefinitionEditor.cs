@@ -73,7 +73,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 					XmlNode valuesCol = _definitionNode.SelectSingleNode("def:CustomEnumValues", CustomPropertiesManager.NamespaceManager);
 					if (valuesCol == null)
 					{
-						valuesCol = CustomPropertiesManager.LoadedDocument.CreateElement("CustomEnumValues", CustomPropertiesManager.CustomPropertiesNamespace);
+						valuesCol = CustomPropertiesManager.LoadedDocument.CreateElement("CustomEnumValues", CustomPropertiesDomainModel.XmlNamespace);
 						_definitionNode.AppendChild(valuesCol);
 					}
 					else
@@ -86,7 +86,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 
 					foreach (string newValue in enums)
 					{
-						XmlNode newNode = CustomPropertiesManager.LoadedDocument.CreateElement("CustomEnumValue", CustomPropertiesManager.CustomPropertiesNamespace);
+						XmlNode newNode = CustomPropertiesManager.LoadedDocument.CreateElement("CustomEnumValue", CustomPropertiesDomainModel.XmlNamespace);
 						XmlAttribute valueAttrib = CustomPropertiesManager.LoadedDocument.CreateAttribute("value");
 						newNode.Attributes.Append(valueAttrib);
 
@@ -177,7 +177,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			{
 				if (e.Node.Checked)
 				{
-					XmlNode newType = CustomPropertiesManager.LoadedDocument.CreateNode("element", "ORMType", CustomPropertiesManager.CustomPropertiesNamespace);
+					XmlNode newType = CustomPropertiesManager.LoadedDocument.CreateNode("element", "ORMType", CustomPropertiesDomainModel.XmlNamespace);
 					XmlAttribute nameAttrib = CustomPropertiesManager.LoadedDocument.CreateAttribute("name");
 					nameAttrib.Value = (string)e.Node.Tag;
 					_definitionNode.SelectSingleNode("def:ORMTypes", CustomPropertiesManager.NamespaceManager).AppendChild(newType);

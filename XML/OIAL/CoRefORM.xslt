@@ -212,7 +212,7 @@
 		<xsl:param name="UnaryFact"/>
 		<xsl:choose>
 			<xsl:when test="string-length($UnaryFact/orm:FactRoles/child::*/@Name)">
-				<xsl:value-of select="string-length($UnaryFact/orm:FactRoles/child::*/@Name)"/>
+				<xsl:value-of select="$UnaryFact/orm:FactRoles/child::*/@Name"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="reading" select="translate(normalize-space($UnaryFact/orm:ReadingOrders/orm:ReadingOrder[1]/orm:Readings/orm:Reading[1]/orm:Data/text()),' ','')"/>

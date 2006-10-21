@@ -106,14 +106,10 @@
 				<!-- Suppress the 'OperationsShouldNotOverflow' FxCop warning -->
 				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="'Microsoft.Usage'"/>
-						</plx:string>
+						<plx:string data="Microsoft.Usage"/>
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="'CA2233:OperationsShouldNotOverflow'"/>
-						</plx:string>
+						<plx:string data="CA2233:OperationsShouldNotOverflow"/>
 					</plx:passParam>
 				</plx:attribute>
 				<plx:param type="in" name="value" dataTypeName=".i4"/>
@@ -405,14 +401,10 @@
 				<!-- Suppress the 'AvoidExcessiveParametersOnGenericTypes' FxCop warning -->
 				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="'Microsoft.Design'"/>
-						</plx:string>
+						<plx:string data="Microsoft.Design"/>
 					</plx:passParam>
 					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="'CA1005:AvoidExcessiveParametersOnGenericTypes'"/>
-						</plx:string>
+						<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes"/>
 					</plx:passParam>
 				</plx:attribute>
 			</xsl:if>
@@ -457,9 +449,7 @@
 								<plx:throw>
 									<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System">
 										<plx:passParam>
-											<plx:string>
-												<xsl:value-of select="@paramName"/>
-											</plx:string>
+											<plx:string data="{@paramName}"/>
 										</plx:passParam>
 									</plx:callNew>
 								</plx:throw>

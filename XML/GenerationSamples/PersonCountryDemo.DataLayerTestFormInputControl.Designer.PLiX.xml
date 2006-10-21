@@ -1,19 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<plx:namespace name="PersonCountryDemo">
-		<plx:pragma type="region" data="CountryCore_InputControl" />
 		<plx:class name="CountryCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="CountryCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:initialize>
-					<plx:nullKeyword />
-				</plx:initialize>
 			</plx:field>
-			<plx:field name="actionTabs" visibility="private" dataTypeName="System.Windows.Forms.TabControl" />
+			<plx:field name="actionTabs" visibility="private" dataTypeName="TabControl" dataTypeQualifier="System.Windows.Forms" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -47,13 +49,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" />
@@ -330,21 +335,24 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="540" />
+								<plx:value data="540" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="500" />
+								<plx:value data="500" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
 				</plx:assign>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="CountryCore_InputControl" />
-		<plx:pragma type="region" data="Create_CountryCore_InputControl" />
 		<plx:class name="Create_CountryCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Create_CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Create_CountryCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
@@ -354,13 +362,13 @@
 					<plx:nullKeyword />
 				</plx:initialize>
 			</plx:field>
-			<plx:field name="lblCreate" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="btnCreate" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="dgvCreate" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="pnlDisplay" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="Create_Country_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext" />
-			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo" />
-			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Country" dataTypeQualifier="PersonCountryDemo" />
+			<plx:field name="lblCreate" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnCreate" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvCreate" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlDisplay" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="Create_Country_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext" />
+			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" />
+			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Country" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -394,13 +402,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" />
@@ -417,7 +428,7 @@
 						<plx:callThis name="Create_Country_connect" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext">
+						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="GetConnection" />
 							</plx:passParam>
@@ -432,7 +443,7 @@
 						<plx:callThis name="testVar" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="PersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo">
+						<plx:callNew dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="Create_Country_connect" />
 							</plx:passParam>
@@ -470,7 +481,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -482,7 +493,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;lblCreate&quot;" />
+						<plx:string data="lblCreate" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -494,7 +505,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Enter data to Create Country by:&quot;" />
+						<plx:string data="Enter data to Create Country by:" />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -519,10 +530,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -536,7 +547,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnCreate&quot;" />
+						<plx:string data="btnCreate" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -548,7 +559,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="3" />
+						<plx:value data="3" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -560,7 +571,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Create&quot;" />
+						<plx:string data="Create" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -611,7 +622,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -623,7 +634,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -635,7 +646,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;dgvCreate&quot;" />
+						<plx:string data="dgvCreate" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -647,7 +658,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="0" />
+						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -663,10 +674,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -682,10 +693,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -697,7 +708,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -732,7 +743,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -758,10 +769,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -775,7 +786,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlDisplay</plx:string>
+						<plx:string data="pnlDisplay" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -799,7 +810,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" />
+						<plx:value data="1" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -824,10 +835,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="SizeF" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="6F" />
+								<plx:value data="6" type="r4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="13F" />
+								<plx:value data="13" type="r4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -837,7 +848,7 @@
 						<plx:callThis name="AutoScaleMode" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.AutoScaleMode.Font" />
+						<plx:callStatic type="field" name="Font" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -845,7 +856,7 @@
 						<plx:callThis name="BorderStyle" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.BorderStyle.Fixed3D" />
+						<plx:callStatic type="field" name="Fixed3D" dataTypeName="BorderStyle" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -877,7 +888,7 @@
 						<plx:callThis name="Name" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;icCreateCountryInputControl&quot;" />
+						<plx:string data="icCreateCountryInputControl" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -887,10 +898,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="530" />
+								<plx:value data="530" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="490" />
+								<plx:value data="490" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -908,12 +919,15 @@
 					</plx:passParam>
 				</plx:callThis>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Create_CountryCore_InputControl" />
-		<plx:pragma type="region" data="Collection_CountryCore_InputControl" />
 		<plx:class name="Collection_CountryCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Collection_CountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Collection_CountryCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
@@ -923,13 +937,13 @@
 					<plx:nullKeyword />
 				</plx:initialize>
 			</plx:field>
-			<plx:field name="lblCollection" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="btnCollection" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="dgvCollection" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="pnlDisplay" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="Collection_Country_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext" />
-			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo" />
-			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Country" dataTypeQualifier="PersonCountryDemo" />
+			<plx:field name="lblCollection" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnCollection" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvCollection" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlDisplay" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="Collection_Country_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext" />
+			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" />
+			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Country" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -963,13 +977,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" accessor="this" />
@@ -986,7 +1003,7 @@
 						<plx:callThis name="Collection_Country_connect" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext">
+						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="GetConnection" />
 							</plx:passParam>
@@ -1001,7 +1018,7 @@
 						<plx:callThis name="testVar" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="PersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo">
+						<plx:callNew dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="Collection_Country_connect" />
 							</plx:passParam>
@@ -1039,7 +1056,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1051,7 +1068,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;lblCollection&quot;" />
+						<plx:string data="lblCollection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1063,7 +1080,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Click the Collection button to refresh the list of Country records.&quot;" />
+						<plx:string data="Click the Collection button to refresh the list of Country records." />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -1088,10 +1105,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1105,7 +1122,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnCollection&quot;" />
+						<plx:string data="btnCollection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1117,7 +1134,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="3" />
+						<plx:value data="3" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1129,7 +1146,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Collection&quot;" />
+						<plx:string data="Collection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1180,7 +1197,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1192,7 +1209,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1204,7 +1221,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;dgvCollection&quot;" />
+						<plx:string data="dgvCollection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1216,7 +1233,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="0" />
+						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -1232,10 +1249,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -1251,10 +1268,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -1266,7 +1283,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1301,7 +1318,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1327,10 +1344,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1344,7 +1361,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlDisplay</plx:string>
+						<plx:string data="pnlDisplay" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1368,7 +1385,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" />
+						<plx:value data="1" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -1393,10 +1410,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="SizeF" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="6F" />
+								<plx:value data="6" type="r4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="13F" />
+								<plx:value data="13" type="r4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1406,7 +1423,7 @@
 						<plx:callThis name="AutoScaleMode" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.AutoScaleMode.Font" />
+						<plx:callStatic type="field" name="Font" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1414,7 +1431,7 @@
 						<plx:callThis name="BorderStyle" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.BorderStyle.Fixed3D" />
+						<plx:callStatic type="field" name="Fixed3D" dataTypeName="BorderStyle" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -1446,7 +1463,7 @@
 						<plx:callThis name="Name" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;icCollectionCountryInputControl&quot;" />
+						<plx:string data="icCollectionCountryInputControl" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1456,10 +1473,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="530" />
+								<plx:value data="530" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="490" />
+								<plx:value data="490" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1477,12 +1494,15 @@
 					</plx:passParam>
 				</plx:callThis>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Collection_CountryCore_InputControl" />
-		<plx:pragma type="region" data="Select_CountryCore_InputControl" />
 		<plx:class name="Select_CountryCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="SelectCountryCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Select_CountryCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
@@ -1492,22 +1512,22 @@
 					<plx:nullKeyword />
 				</plx:initialize>
 			</plx:field>
-			<plx:field name="lblSelectionMode" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="cbxSelectionMode" visibility="private" dataTypeName="System.Windows.Forms.ComboBox" />
-			<plx:field name="lblCurrentObject" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="dgvCurrentObject" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="btnSave" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="btnCancel" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="pnlSave" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="editMode" visibility="private" dataTypeName="bool" />
-			<plx:field name="lblNeedToSave" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="lblSelect" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="btnSelect" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="dgvSelect" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="pnlDisplay" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="Select_Country_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext" />
-			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo" />
-			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Country" dataTypeQualifier="PersonCountryDemo" />
+			<plx:field name="lblSelectionMode" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="cbxSelectionMode" visibility="private" dataTypeName="ComboBox" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="lblCurrentObject" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvCurrentObject" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnSave" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnCancel" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlSave" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="editMode" visibility="private" dataTypeName=".boolean" />
+			<plx:field name="lblNeedToSave" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="lblSelect" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnSelect" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvSelect" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlDisplay" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="Select_Country_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext" />
+			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" />
+			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Country" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -1541,13 +1561,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" />
@@ -1586,10 +1609,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1617,10 +1640,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="200" />
+								<plx:value data="200" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="15" />
+								<plx:value data="15" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1659,10 +1682,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="300" />
+								<plx:value data="300" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1676,7 +1699,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnCancel&quot;" />
+						<plx:string data="btnCancel" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1688,7 +1711,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="6" />
+						<plx:value data="6" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1700,7 +1723,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Cancel&quot;" />
+						<plx:string data="Cancel" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1753,10 +1776,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1770,7 +1793,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnSave&quot;" />
+						<plx:string data="btnSave" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1782,7 +1805,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="7" />
+						<plx:value data="7" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1794,7 +1817,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Save&quot;" />
+						<plx:string data="Save" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1871,10 +1894,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1888,7 +1911,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlSave</plx:string>
+						<plx:string data="pnlSave" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -1912,7 +1935,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="5" />
+						<plx:value data="5" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -1985,10 +2008,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2002,7 +2025,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>lblSelectionMode</plx:string>
+						<plx:string data="lblSelectionMode" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2039,10 +2062,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="100" />
+								<plx:value data="100" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2056,7 +2079,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>cbxSelectionMode</plx:string>
+						<plx:string data="cbxSelectionMode" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2070,10 +2093,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="200" />
+								<plx:value data="200" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="15" />
+								<plx:value data="15" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2099,7 +2122,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="2" />
+						<plx:value data="2" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:attachEvent>
@@ -2127,7 +2150,7 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:nameRef name="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:comment />
@@ -2152,10 +2175,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="45" />
+								<plx:value data="45" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2181,7 +2204,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>lblCurrentObject</plx:string>
+						<plx:string data="lblCurrentObject" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2193,7 +2216,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;There is no selected Country.&quot;" />
+						<plx:string data="There is no selected Country." />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -2216,7 +2239,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2228,7 +2251,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2242,10 +2265,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="265" />
+								<plx:value data="265" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2273,10 +2296,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="500" />
+								<plx:value data="500" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="150" />
+								<plx:value data="150" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2290,7 +2313,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="4" />
+						<plx:value data="4" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -2306,10 +2329,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -2325,7 +2348,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;Country_name&quot;" />
+										<plx:string data="Country_name" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -2348,10 +2371,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -2367,7 +2390,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;Region_Region_code&quot;" />
+										<plx:string data="Region_Region_code" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -2429,7 +2452,7 @@
 						<plx:callThis name="Select_Country_connect" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext">
+						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="GetConnection" />
 							</plx:passParam>
@@ -2444,7 +2467,7 @@
 						<plx:callThis name="testVar" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="PersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo">
+						<plx:callNew dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="Select_Country_connect" />
 							</plx:passParam>
@@ -2482,7 +2505,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2494,7 +2517,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;lblSelect&quot;" />
+						<plx:string data="lblSelect" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2506,7 +2529,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Enter data to Select Country by:&quot;" />
+						<plx:string data="Enter data to Select Country by:" />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -2531,10 +2554,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2548,7 +2571,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnSelect&quot;" />
+						<plx:string data="btnSelect" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2560,7 +2583,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="3" />
+						<plx:value data="3" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2572,7 +2595,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Select&quot;" />
+						<plx:string data="Select" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2623,7 +2646,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2635,7 +2658,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2647,7 +2670,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;dgvSelect&quot;" />
+						<plx:string data="dgvSelect" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2659,7 +2682,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="0" />
+						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -2675,10 +2698,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country_name&quot;" />
+						<plx:string data="Country_name" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -2694,10 +2717,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Region_Region_code&quot;" />
+						<plx:string data="Region_Region_code" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -2709,7 +2732,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2744,7 +2767,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2770,10 +2793,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2787,7 +2810,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlDisplay</plx:string>
+						<plx:string data="pnlDisplay" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2811,7 +2834,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" />
+						<plx:value data="1" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -2836,10 +2859,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="SizeF" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="6F" />
+								<plx:value data="6" type="r4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="13F" />
+								<plx:value data="13" type="r4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2849,7 +2872,7 @@
 						<plx:callThis name="AutoScaleMode" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.AutoScaleMode.Font" />
+						<plx:callStatic type="field" name="Font" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2857,7 +2880,7 @@
 						<plx:callThis name="BorderStyle" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.BorderStyle.Fixed3D" />
+						<plx:callStatic type="field" name="Fixed3D" dataTypeName="BorderStyle" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -2889,7 +2912,7 @@
 						<plx:callThis name="Name" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;icSelectCountryInputControl&quot;" />
+						<plx:string data="icSelectCountryInputControl" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -2899,10 +2922,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="530" />
+								<plx:value data="530" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="490" />
+								<plx:value data="490" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -3005,22 +3028,22 @@
 					</plx:assign>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Select_CountryCore_InputControl" />
-		<plx:pragma type="region" data="PersonCore_InputControl" />
 		<plx:class name="PersonCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="PersonCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:initialize>
-					<plx:nullKeyword />
-				</plx:initialize>
 			</plx:field>
-			<plx:field name="actionTabs" visibility="private" dataTypeName="System.Windows.Forms.TabControl" />
+			<plx:field name="actionTabs" visibility="private" dataTypeName="TabControl" dataTypeQualifier="System.Windows.Forms" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -3054,13 +3077,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" />
@@ -3337,21 +3363,24 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="540" />
+								<plx:value data="540" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="500" />
+								<plx:value data="500" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
 				</plx:assign>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="PersonCore_InputControl" />
-		<plx:pragma type="region" data="Create_PersonCore_InputControl" />
 		<plx:class name="Create_PersonCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Create_PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Create_PersonCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
@@ -3361,13 +3390,13 @@
 					<plx:nullKeyword />
 				</plx:initialize>
 			</plx:field>
-			<plx:field name="lblCreate" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="btnCreate" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="dgvCreate" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="pnlDisplay" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="Create_Person_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext" />
-			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo" />
-			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Person" dataTypeQualifier="PersonCountryDemo" />
+			<plx:field name="lblCreate" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnCreate" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvCreate" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlDisplay" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="Create_Person_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext" />
+			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" />
+			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Person" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -3401,13 +3430,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" />
@@ -3424,7 +3456,7 @@
 						<plx:callThis name="Create_Person_connect" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext">
+						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="GetConnection" />
 							</plx:passParam>
@@ -3439,7 +3471,7 @@
 						<plx:callThis name="testVar" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="PersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo">
+						<plx:callNew dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="Create_Person_connect" />
 							</plx:passParam>
@@ -3477,7 +3509,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3489,7 +3521,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;lblCreate&quot;" />
+						<plx:string data="lblCreate" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3501,7 +3533,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Enter data to Create Person by:&quot;" />
+						<plx:string data="Enter data to Create Person by:" />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -3526,10 +3558,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -3543,7 +3575,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnCreate&quot;" />
+						<plx:string data="btnCreate" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3555,7 +3587,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="3" />
+						<plx:value data="3" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3567,7 +3599,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Create&quot;" />
+						<plx:string data="Create" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3618,7 +3650,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3630,7 +3662,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3642,7 +3674,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;dgvCreate&quot;" />
+						<plx:string data="dgvCreate" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3654,7 +3686,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="0" />
+						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -3670,29 +3702,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCreate" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -3708,10 +3721,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
+						<plx:string data="FirstName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
+						<plx:string data="FirstName" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -3727,10 +3740,29 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="Title" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="Title" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Columns" type="property">
+							<plx:callObject>
+								<plx:callInstance name="dgvCreate" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="Country" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="Country" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -3742,7 +3774,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3777,7 +3809,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3803,10 +3835,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -3820,7 +3852,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlDisplay</plx:string>
+						<plx:string data="pnlDisplay" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3844,7 +3876,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" />
+						<plx:value data="1" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -3869,10 +3901,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="SizeF" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="6F" />
+								<plx:value data="6" type="r4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="13F" />
+								<plx:value data="13" type="r4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -3882,7 +3914,7 @@
 						<plx:callThis name="AutoScaleMode" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.AutoScaleMode.Font" />
+						<plx:callStatic type="field" name="Font" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3890,7 +3922,7 @@
 						<plx:callThis name="BorderStyle" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.BorderStyle.Fixed3D" />
+						<plx:callStatic type="field" name="Fixed3D" dataTypeName="BorderStyle" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -3922,7 +3954,7 @@
 						<plx:callThis name="Name" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;icCreatePersonInputControl&quot;" />
+						<plx:string data="icCreatePersonInputControl" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -3932,10 +3964,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="530" />
+								<plx:value data="530" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="490" />
+								<plx:value data="490" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -3953,12 +3985,15 @@
 					</plx:passParam>
 				</plx:callThis>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Create_PersonCore_InputControl" />
-		<plx:pragma type="region" data="Collection_PersonCore_InputControl" />
 		<plx:class name="Collection_PersonCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Collection_PersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Collection_PersonCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
@@ -3968,13 +4003,13 @@
 					<plx:nullKeyword />
 				</plx:initialize>
 			</plx:field>
-			<plx:field name="lblCollection" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="btnCollection" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="dgvCollection" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="pnlDisplay" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="Collection_Person_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext" />
-			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo" />
-			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Person" dataTypeQualifier="PersonCountryDemo" />
+			<plx:field name="lblCollection" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnCollection" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvCollection" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlDisplay" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="Collection_Person_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext" />
+			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" />
+			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Person" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -4008,13 +4043,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" accessor="this" />
@@ -4031,7 +4069,7 @@
 						<plx:callThis name="Collection_Person_connect" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext">
+						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="GetConnection" />
 							</plx:passParam>
@@ -4046,7 +4084,7 @@
 						<plx:callThis name="testVar" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="PersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo">
+						<plx:callNew dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="Collection_Person_connect" />
 							</plx:passParam>
@@ -4084,7 +4122,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4096,7 +4134,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;lblCollection&quot;" />
+						<plx:string data="lblCollection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4108,7 +4146,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Click the Collection button to refresh the list of Person records.&quot;" />
+						<plx:string data="Click the Collection button to refresh the list of Person records." />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -4133,10 +4171,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4150,7 +4188,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnCollection&quot;" />
+						<plx:string data="btnCollection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4162,7 +4200,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="3" />
+						<plx:value data="3" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4174,7 +4212,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Collection&quot;" />
+						<plx:string data="Collection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4225,7 +4263,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4237,7 +4275,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4249,7 +4287,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;dgvCollection&quot;" />
+						<plx:string data="dgvCollection" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4261,7 +4299,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="0" />
+						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -4277,29 +4315,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Person_id&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Person_id&quot;" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCollection" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -4315,29 +4334,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCollection" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -4353,10 +4353,48 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="FirstName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="FirstName" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Columns" type="property">
+							<plx:callObject>
+								<plx:callInstance name="dgvCollection" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="Title" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="Title" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Columns" type="property">
+							<plx:callObject>
+								<plx:callInstance name="dgvCollection" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="Country" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="Country" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -4368,7 +4406,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4403,7 +4441,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4429,10 +4467,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4446,7 +4484,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlDisplay</plx:string>
+						<plx:string data="pnlDisplay" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4470,7 +4508,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" />
+						<plx:value data="1" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -4495,10 +4533,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="SizeF" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="6F" />
+								<plx:value data="6" type="r4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="13F" />
+								<plx:value data="13" type="r4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4508,7 +4546,7 @@
 						<plx:callThis name="AutoScaleMode" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.AutoScaleMode.Font" />
+						<plx:callStatic type="field" name="Font" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4516,7 +4554,7 @@
 						<plx:callThis name="BorderStyle" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.BorderStyle.Fixed3D" />
+						<plx:callStatic type="field" name="Fixed3D" dataTypeName="BorderStyle" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -4548,7 +4586,7 @@
 						<plx:callThis name="Name" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;icCollectionPersonInputControl&quot;" />
+						<plx:string data="icCollectionPersonInputControl" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4558,10 +4596,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="530" />
+								<plx:value data="530" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="490" />
+								<plx:value data="490" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4579,12 +4617,15 @@
 					</plx:passParam>
 				</plx:callThis>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Collection_PersonCore_InputControl" />
-		<plx:pragma type="region" data="Select_PersonCore_InputControl" />
 		<plx:class name="Select_PersonCore_InputControl" partial="true" visibility="public">
-			<plx:field name="components" visibility="private" dataTypeName="System.ComponentModel.IContainer">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="SelectPersonCore_InputControl" />
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Select_PersonCore_InputControl" />
+			</plx:trailingInfo>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Required designer variable.</summary>
@@ -4594,22 +4635,22 @@
 					<plx:nullKeyword />
 				</plx:initialize>
 			</plx:field>
-			<plx:field name="lblSelectionMode" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="cbxSelectionMode" visibility="private" dataTypeName="System.Windows.Forms.ComboBox" />
-			<plx:field name="lblCurrentObject" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="dgvCurrentObject" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="btnSave" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="btnCancel" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="pnlSave" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="editMode" visibility="private" dataTypeName="bool" />
-			<plx:field name="lblNeedToSave" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="lblSelect" visibility="private" dataTypeName="System.Windows.Forms.Label" />
-			<plx:field name="btnSelect" visibility="private" dataTypeName="System.Windows.Forms.Button" />
-			<plx:field name="dgvSelect" visibility="private" dataTypeName="System.Windows.Forms.DataGridView" />
-			<plx:field name="pnlDisplay" visibility="private" dataTypeName="System.Windows.Forms.Panel" />
-			<plx:field name="Select_Person_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext" />
-			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo" />
-			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Person" dataTypeQualifier="PersonCountryDemo" />
+			<plx:field name="lblSelectionMode" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="cbxSelectionMode" visibility="private" dataTypeName="ComboBox" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="lblCurrentObject" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvCurrentObject" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnSave" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnCancel" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlSave" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="editMode" visibility="private" dataTypeName=".boolean" />
+			<plx:field name="lblNeedToSave" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="lblSelect" visibility="private" dataTypeName="Label" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="btnSelect" visibility="private" dataTypeName="Button" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="dgvSelect" visibility="private" dataTypeName="DataGridView" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="pnlDisplay" visibility="private" dataTypeName="Panel" dataTypeQualifier="System.Windows.Forms" />
+			<plx:field name="Select_Person_connect" visibility="private" dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext" />
+			<plx:field name="testVar" visibility="private" dataTypeName="IPersonCountryDemoContext" />
+			<plx:field name="abstractTypeVar" visibility="private" dataTypeName="Person" />
 			<plx:function name="Dispose" modifier="override" overload="true" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -4643,13 +4684,16 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="region" data="Component Designer generated code" />
 			<plx:function name="InitializeComponent" visibility="private">
 				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
 					<plx:docComment>
 						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
 				<plx:assign>
 					<plx:left>
 						<plx:callThis name="components" type="field" />
@@ -4688,10 +4732,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4719,10 +4763,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="200" />
+								<plx:value data="200" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="15" />
+								<plx:value data="15" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4761,10 +4805,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="300" />
+								<plx:value data="300" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4778,7 +4822,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnCancel&quot;" />
+						<plx:string data="btnCancel" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4790,7 +4834,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="6" />
+						<plx:value data="6" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4802,7 +4846,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Cancel&quot;" />
+						<plx:string data="Cancel" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4855,10 +4899,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4872,7 +4916,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnSave&quot;" />
+						<plx:string data="btnSave" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4884,7 +4928,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="7" />
+						<plx:value data="7" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4896,7 +4940,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Save&quot;" />
+						<plx:string data="Save" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -4973,10 +5017,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4990,7 +5034,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlSave</plx:string>
+						<plx:string data="pnlSave" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5014,7 +5058,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="5" />
+						<plx:value data="5" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -5087,10 +5131,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5104,7 +5148,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>lblSelectionMode</plx:string>
+						<plx:string data="lblSelectionMode" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5141,10 +5185,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="100" />
+								<plx:value data="100" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5158,7 +5202,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>cbxSelectionMode</plx:string>
+						<plx:string data="cbxSelectionMode" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5172,10 +5216,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="200" />
+								<plx:value data="200" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="15" />
+								<plx:value data="15" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5201,7 +5245,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="2" />
+						<plx:value data="2" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:attachEvent>
@@ -5229,7 +5273,7 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:nameRef name="&quot;Person_id&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:comment />
@@ -5254,10 +5298,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="45" />
+								<plx:value data="45" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5283,7 +5327,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>lblCurrentObject</plx:string>
+						<plx:string data="lblCurrentObject" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5295,7 +5339,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;There is no selected Person.&quot;" />
+						<plx:string data="There is no selected Person." />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -5318,7 +5362,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5330,7 +5374,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5344,10 +5388,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="265" />
+								<plx:value data="265" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5375,10 +5419,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="500" />
+								<plx:value data="500" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="150" />
+								<plx:value data="150" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5392,7 +5436,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="4" />
+						<plx:value data="4" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -5408,10 +5452,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Person_id&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Person_id&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -5427,7 +5471,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;Person_id&quot;" />
+										<plx:string data="Person_id" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -5450,10 +5494,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -5469,7 +5513,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;LastName&quot;" />
+										<plx:string data="LastName" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -5492,10 +5536,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
+						<plx:string data="FirstName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
+						<plx:string data="FirstName" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -5511,7 +5555,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;FirstName&quot;" />
+										<plx:string data="FirstName" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -5534,10 +5578,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
+						<plx:string data="Title" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
+						<plx:string data="Title" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -5553,7 +5597,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;Title&quot;" />
+										<plx:string data="Title" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -5576,10 +5620,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="Country" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="Country" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -5595,7 +5639,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;Country&quot;" />
+										<plx:string data="Country" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -5630,7 +5674,7 @@
 										</plx:callInstance>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:value data="&quot;Person_id&quot;" />
+										<plx:string data="Person_id" />
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:callObject>
@@ -5680,7 +5724,7 @@
 						<plx:callThis name="Select_Person_connect" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemo.PersonCountryDemoContext">
+						<plx:callNew dataTypeName="ConnectionDelegate" dataTypeQualifier="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="GetConnection" />
 							</plx:passParam>
@@ -5695,7 +5739,7 @@
 						<plx:callThis name="testVar" accessor="this" type="field" />
 					</plx:left>
 					<plx:right>
-						<plx:callNew dataTypeName="PersonCountryDemoContext" dataTypeQualifier="PersonCountryDemo">
+						<plx:callNew dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:nameRef name="Select_Person_connect" />
 							</plx:passParam>
@@ -5733,7 +5777,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5745,7 +5789,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;lblSelect&quot;" />
+						<plx:string data="lblSelect" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5757,7 +5801,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Enter data to Select Person by:&quot;" />
+						<plx:string data="Enter data to Select Person by:" />
 					</plx:right>
 				</plx:assign>
 				<plx:comment />
@@ -5782,10 +5826,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="400" />
+								<plx:value data="400" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="10" />
+								<plx:value data="10" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5799,7 +5843,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;btnSelect&quot;" />
+						<plx:string data="btnSelect" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5811,7 +5855,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="3" />
+						<plx:value data="3" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5823,7 +5867,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;Select&quot;" />
+						<plx:string data="Select" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5874,7 +5918,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5886,7 +5930,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize" />
+						<plx:callStatic name="AutoSize" dataTypeName="DataGridViewColumnHeadersHeightSizeMode" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5898,7 +5942,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;dgvSelect&quot;" />
+						<plx:string data="dgvSelect" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -5910,7 +5954,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="0" />
+						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -5926,29 +5970,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Person_id&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Person_id&quot;" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvSelect" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:value data="&quot;LastName&quot;" />
+						<plx:string data="Person_id" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -5964,29 +5989,10 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;FirstName&quot;" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvSelect" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:value data="&quot;Title&quot;" />
+						<plx:string data="LastName" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
@@ -6002,10 +6008,48 @@
 						</plx:callInstance>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="FirstName" />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:value data="&quot;Country&quot;" />
+						<plx:string data="FirstName" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Columns" type="property">
+							<plx:callObject>
+								<plx:callInstance name="dgvSelect" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="Title" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="Title" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Columns" type="property">
+							<plx:callObject>
+								<plx:callInstance name="dgvSelect" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="Country" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="Country" />
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
@@ -6017,7 +6061,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Both" dataTypeName="ScrollBars" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -6052,7 +6096,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+						<plx:callStatic name="Top" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="field" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -6078,10 +6122,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Point" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="0" />
+								<plx:value data="0" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -6095,7 +6139,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string>pnlDisplay</plx:string>
+						<plx:string data="pnlDisplay" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -6119,7 +6163,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" />
+						<plx:value data="1" type="i4" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -6144,10 +6188,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="SizeF" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="6F" />
+								<plx:value data="6" type="r4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="13F" />
+								<plx:value data="13" type="r4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -6157,7 +6201,7 @@
 						<plx:callThis name="AutoScaleMode" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.AutoScaleMode.Font" />
+						<plx:callStatic type="field" name="Font" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -6165,7 +6209,7 @@
 						<plx:callThis name="BorderStyle" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="System.Windows.Forms.BorderStyle.Fixed3D" />
+						<plx:callStatic type="field" name="Fixed3D" dataTypeName="BorderStyle" dataTypeQualifier="System.Windows.Forms" />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -6197,7 +6241,7 @@
 						<plx:callThis name="Name" type="field" accessor="this" />
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="&quot;icSelectPersonInputControl&quot;" />
+						<plx:string data="icSelectPersonInputControl" />
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -6207,10 +6251,10 @@
 					<plx:right>
 						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
 							<plx:passParam>
-								<plx:value data="530" />
+								<plx:value data="530" type="i4" />
 							</plx:passParam>
 							<plx:passParam>
-								<plx:value data="490" />
+								<plx:value data="490" type="i4" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -6313,8 +6357,6 @@
 					</plx:assign>
 				</plx:branch>
 			</plx:function>
-			<plx:pragma type="closeRegion" data="Component Designer generated code" />
 		</plx:class>
-		<plx:pragma type="closeRegion" data="Select_PersonCore_InputControl" />
 	</plx:namespace>
 </plx:root>

@@ -455,10 +455,10 @@ namespace PersonCountryDemo
 					string oldValue = this._LastName;
 					if (!(object.Equals(oldValue, value)))
 					{
-						if (this._Context.OnPersonLastNameChanging(this, value) && base.RaiseLastNameChangingEvent(value))
+						if (this._Context.OnPersonLastNameChanging(this, value) && base.OnLastNameChanging(value))
 						{
 							this._LastName = value;
-							base.RaiseLastNameChangedEvent(oldValue);
+							base.OnLastNameChanged(oldValue);
 						}
 					}
 				}
@@ -480,10 +480,10 @@ namespace PersonCountryDemo
 					string oldValue = this._FirstName;
 					if (!(object.Equals(oldValue, value)))
 					{
-						if (this._Context.OnPersonFirstNameChanging(this, value) && base.RaiseFirstNameChangingEvent(value))
+						if (this._Context.OnPersonFirstNameChanging(this, value) && base.OnFirstNameChanging(value))
 						{
 							this._FirstName = value;
-							base.RaiseFirstNameChangedEvent(oldValue);
+							base.OnFirstNameChanged(oldValue);
 						}
 					}
 				}
@@ -501,10 +501,10 @@ namespace PersonCountryDemo
 					string oldValue = this._Title;
 					if (!(object.Equals(oldValue, value)))
 					{
-						if (this._Context.OnPersonTitleChanging(this, value) && base.RaiseTitleChangingEvent(value))
+						if (this._Context.OnPersonTitleChanging(this, value) && base.OnTitleChanging(value))
 						{
 							this._Title = value;
-							base.RaiseTitleChangedEvent(oldValue);
+							base.OnTitleChanged(oldValue);
 						}
 					}
 				}
@@ -522,11 +522,11 @@ namespace PersonCountryDemo
 					Country oldValue = this._Country;
 					if ((object)oldValue != value)
 					{
-						if (this._Context.OnPersonCountryChanging(this, value) && base.RaiseCountryChangingEvent(value))
+						if (this._Context.OnPersonCountryChanging(this, value) && base.OnCountryChanging(value))
 						{
 							this._Country = value;
 							this._Context.OnPersonCountryChanged(this, oldValue);
-							base.RaiseCountryChangedEvent(oldValue);
+							base.OnCountryChanged(oldValue);
 						}
 					}
 				}
@@ -636,11 +636,11 @@ namespace PersonCountryDemo
 					string oldValue = this._Country_name;
 					if (!(object.Equals(oldValue, value)))
 					{
-						if (this._Context.OnCountryCountry_nameChanging(this, value) && base.RaiseCountry_nameChangingEvent(value))
+						if (this._Context.OnCountryCountry_nameChanging(this, value) && base.OnCountry_nameChanging(value))
 						{
 							this._Country_name = value;
 							this._Context.OnCountryCountry_nameChanged(this, oldValue);
-							base.RaiseCountry_nameChangedEvent(oldValue);
+							base.OnCountry_nameChanged(oldValue);
 						}
 					}
 				}
@@ -658,10 +658,10 @@ namespace PersonCountryDemo
 					string oldValue = this._Region_Region_code;
 					if (!(object.Equals(oldValue, value)))
 					{
-						if (this._Context.OnCountryRegion_Region_codeChanging(this, value) && base.RaiseRegion_Region_codeChangingEvent(value))
+						if (this._Context.OnCountryRegion_Region_codeChanging(this, value) && base.OnRegion_Region_codeChanging(value))
 						{
 							this._Region_Region_code = value;
-							base.RaiseRegion_Region_codeChangedEvent(oldValue);
+							base.OnRegion_Region_codeChanged(oldValue);
 						}
 					}
 				}

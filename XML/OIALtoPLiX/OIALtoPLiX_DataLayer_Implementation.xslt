@@ -25,8 +25,10 @@
 
 	<xsl:import href="OIALtoPLiX.xslt"/>
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	<xsl:param name="OIAL" select="document('C:\Documents and Settings\ttubbs\Desktop\SummitAwardsSummer06\SummitAwardsSummer06\Restaurant.OIAL.xml')/child::*"/>
-	<xsl:param name="SprocParam" />
+	
+	<xsl:param name="OIAL"/>
+	<xsl:param name="SprocParam"/>
+	
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
@@ -92,7 +94,7 @@
 				<plx:delegate visibility="private" name="CreateCallback">
 					<plx:typeParam name="T" requireReferenceType="true"/>
 					<plx:param name="reader" dataTypeName="IDataReader"/>
-					<plx:returns dataTypeName="T" />
+					<plx:returns dataTypeName="T"/>
 				</plx:delegate>
 
 				<plx:delegate visibility="public" name="ConnectionDelegate">
@@ -211,7 +213,7 @@
 						<plx:passTypeParam dataTypeName="T"/>
 					</plx:implementsInterface>
 					<plx:implementsInterface dataTypeName="IEnumerator">
-						<plx:passTypeParam dataTypeName="T" />
+						<plx:passTypeParam dataTypeName="T"/>
 					</plx:implementsInterface>
 					<plx:field readOnly="true" name="{$PrivateMemberPrefix}reader" dataTypeName="IDataReader" visibility="private"/>
 					<plx:field readOnly="true" name="{$PrivateMemberPrefix}creator" dataTypeName="CreateCallback" visibility="private">
@@ -329,7 +331,7 @@
 						</plx:branch>
 						<plx:fallbackBranch>
 							<plx:return>
-								<plx:falseKeyword />
+								<plx:falseKeyword/>
 							</plx:return>
 						</plx:fallbackBranch>
 					</plx:function>
@@ -362,7 +364,7 @@
 					<plx:function name="Reset" visibility="privateInterfaceMember">
 						<plx:interfaceMember memberName="Reset" dataTypeName="IEnumerator" dataTypeQualifier="System.Collections"/>
 						<plx:throw>
-							<plx:callNew type="new" dataTypeName="NotSupportedException" />
+							<plx:callNew type="new" dataTypeName="NotSupportedException"/>
 						</plx:throw>
 					</plx:function>
 				</plx:structure>
@@ -462,7 +464,7 @@
 					<plx:initialize>
 						<plx:callInstance type="methodCall" name="CreateCommand">
 							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
+								<plx:callThis type="methodCall" accessor="this" name="GetConnection"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:initialize>
@@ -685,7 +687,7 @@
 					<plx:initialize>
 						<plx:callInstance type="methodCall" name="CreateCommand">
 							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
+								<plx:callThis type="methodCall" accessor="this" name="GetConnection"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:initialize>
@@ -721,7 +723,7 @@
 						</plx:callInstance>
 					</plx:branch>
 
-					<xsl:call-template name="GenerateIDBCommandType" />
+					<xsl:call-template name="GenerateIDBCommandType"/>
 					
 					<plx:assign>
 						<plx:left>
@@ -898,13 +900,13 @@
 				<plx:initialize>
 					<plx:callInstance type="methodCall" name="CreateCommand">
 						<plx:callObject>
-							<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
+							<plx:callThis type="methodCall" accessor="this" name="GetConnection"/>
 						</plx:callObject>
 					</plx:callInstance>
 				</plx:initialize>
 			</plx:local>
 
-			<xsl:call-template name="GenerateIDBCommandType" />
+			<xsl:call-template name="GenerateIDBCommandType"/>
 
 			<plx:assign>
 				<plx:left>
@@ -963,7 +965,7 @@
 										<!-- Instead of using a parameter to get the identity, use ExecuteScalar method of the command object and just return the identity -->
 										<!--<xsl:choose>
 											<xsl:when test="$mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName">
-												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName, $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')" />
+												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName, $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')"/>
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')"/>
@@ -1020,7 +1022,7 @@
 					<xsl:with-param name="parameterName" select="concat(@parentName, @name)"/>
 					<xsl:with-param name="parameterValue" select="*"/>
 					<xsl:with-param name="isIdentity" select="@isIdentity"/>
-					<xsl:with-param name="parentName" select="@parentName" />
+					<xsl:with-param name="parentName" select="@parentName"/>
 				</xsl:call-template>
 			</xsl:for-each>
 
@@ -1100,7 +1102,7 @@
 											<xsl:otherwise>
 												<plx:callInstance name="Value" type="property">
 													<plx:callObject>
-														<plx:nameRef name="parameter{@name}" />
+														<plx:nameRef name="parameter{@name}"/>
 													</plx:callObject>
 												</plx:callInstance>
 											</xsl:otherwise>
@@ -1147,7 +1149,7 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
-				<xsl:call-template name="GenerateIDBCommandType" />
+				<xsl:call-template name="GenerateIDBCommandType"/>
 				<plx:assign>
 					<plx:left>
 						<plx:callInstance name="CommandText" type="property">
@@ -1203,7 +1205,7 @@
 
 				<plx:return>
 					<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
-						<plx:passTypeParam dataTypeName="{@name}" />
+						<plx:passTypeParam dataTypeName="{@name}"/>
 						<plx:passParam>
 							<plx:callInstance name="ExecuteReader" type="methodCall">
 								<plx:callObject>
@@ -1212,7 +1214,7 @@
 								<plx:passParam>
 									<plx:binaryOperator type ="bitwiseOr">
 										<plx:left>
-											<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field" />
+											<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field"/>
 										</plx:left>
 										<plx:right>
 											<plx:callStatic name="CloseConnection" dataTypeName="CommandBehavior" type="field"/>
@@ -1223,7 +1225,7 @@
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callNew dataTypeName="CreateCallback" type="new">
-								<plx:passTypeParam dataTypeName="{@name}" />
+								<plx:passTypeParam dataTypeName="{@name}"/>
 								<plx:passParam>
 									<plx:callThis name="Create{@name}" accessor="this" type="methodReference"/>
 								</plx:passParam>
@@ -1454,7 +1456,7 @@
 							</plx:initialize>
 						</plx:local>
 						
-						<xsl:call-template name="GenerateIDBCommandType" />
+						<xsl:call-template name="GenerateIDBCommandType"/>
 						
 						<plx:assign>
 							<plx:left>
@@ -1543,7 +1545,7 @@
 						</plx:branch>
 						<plx:return>
 							<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
-								<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}" />
+								<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}"/>
 								<plx:passParam>
 									<plx:callInstance name="ExecuteReader" type="methodCall">
 										<plx:callObject>
@@ -1552,7 +1554,7 @@
 										<plx:passParam>
 											<plx:binaryOperator type ="bitwiseOr">
 												<plx:left>
-													<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field" />
+													<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field"/>
 												</plx:left>
 												<plx:right>
 													<plx:callStatic name="CloseConnection" dataTypeName="CommandBehavior" type="field"/>
@@ -1563,7 +1565,7 @@
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callNew dataTypeName="CreateCallback" type="new">
-										<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}" />
+										<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}"/>
 										<plx:passParam>
 											<plx:callInstance name="Create{prop:DataType/plx:passTypeParam/@dataTypeName}" type="methodReference">
 												<plx:callObject>
@@ -1739,7 +1741,7 @@
 						</plx:condition>
 						<plx:branch>
 							<plx:condition>
-								<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangingEvent">
+								<plx:callThis accessor="base" type="methodCall" name="On{@name}Changing">
 									<plx:passParam>
 										<plx:valueKeyword/>
 									</plx:passParam>
@@ -1751,14 +1753,14 @@
 										<plx:callObject>
 											<plx:callInstance type="methodCall" name="GetConnection">
 												<plx:callObject>
-													<plx:callThis type="property" accessor="this" name="Context" />
+													<plx:callThis type="property" accessor="this" name="Context"/>
 												</plx:callObject>
 											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:initialize>
 							</plx:local>
-							<xsl:call-template name="GenerateIDBCommandType" />
+							<xsl:call-template name="GenerateIDBCommandType"/>
 							<plx:assign>
 								<plx:left>
 									<plx:callInstance type="property" name="CommandText">
@@ -1930,7 +1932,7 @@
 										object is that it would require a trip to the DB to build it, in essence each
 										set method will require at least 2 transactions against the DB (get the old info
 										and update with the new info).-->
-								<!--<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangedEvent">
+								<!--<plx:callThis accessor="base" type="methodCall" name="On{@name}Changed">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue"/>
 									</plx:passParam>
@@ -2099,7 +2101,7 @@
 
 	<xsl:template name="GenerateCreateObjectReaderBlock">
 		<xsl:param name="ObjectToCreateName"/>
-		<xsl:param name="CommandName" />
+		<xsl:param name="CommandName"/>
 		<plx:branch>
 			<plx:condition>
 				<plx:binaryOperator type="inequality">
@@ -2115,7 +2117,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
+						<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property"/>
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
@@ -2189,7 +2191,7 @@
 		<xsl:param name="parameterName"/>
 		<xsl:param name="parameterValue"/>
 		<xsl:param name="isIdentity" select="'false'"/>
-		<xsl:param name="parentName" />
+		<xsl:param name="parentName"/>
 		<xsl:if test="(($parentName or ($isIdentity != 'true')) and $SprocFree) or not($SprocFree)">
 			<!-- Declare and initialize parameter -->
 			<plx:local name="parameter{$parameterName}" dataTypeName="IDataParameter">
@@ -2228,7 +2230,7 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:callStatic name="Output" type="property" dataTypeName="ParameterDirection" />
+							<plx:callStatic name="Output" type="property" dataTypeName="ParameterDirection"/>
 						</plx:right>
 					</plx:assign>
 				</xsl:when>
@@ -2369,10 +2371,10 @@
 			<plx:right>
 				<xsl:choose>
 					<xsl:when test="$SprocFree">
-						<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+						<plx:callStatic type="field" name="Text" dataTypeName="CommandType"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
+						<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:right>

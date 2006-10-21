@@ -33,10 +33,10 @@
 		<odt:decimalNumber name="OptionalUniqueDecimal" totalDigits="9" />
 		<odt:decimalNumber name="MandatoryUniqueDecimal" totalDigits="9" />
 		<odt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
-		<odt:boolean name="NaturalDeath_20" />
-		<odt:boolean name="UnnaturalDeath_9" />
-		<odt:boolean name="UnnaturalDeath_8" />
-		<odt:boolean name="Person_10" />
+		<odt:boolean name="NaturalDeath_isFromProstateCancer" />
+		<odt:boolean name="UnnaturalDeath_isViolent" />
+		<odt:boolean name="UnnaturalDeath_isBloody" />
+		<odt:boolean name="Person_hasParents" />
 	</oil:informationTypeFormats>
 	<oil:conceptType name="PersonDrivesCar" sourceRef="_72D0A608-D62A-4A03-9A14-695CE9F67496">
 		<oil:conceptTypeRef name="DrivenByPerson" target="Person" oppositeName="PersonDrivesCar" mandatory="alethic" sourceRoleRef="_5E7AEB81-DCB6-441C-82AD-EADB5354CDFE" />
@@ -144,17 +144,17 @@
 		</oil:informationType>
 		<oil:conceptType name="Death" sourceRef="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" mandatory="false" sourceRoleRef="_CF6F1E78-7D74-4ED9-B3FA-FD7141238AB4">
 			<oil:conceptType name="NaturalDeath" sourceRef="_DDE8D226-F41E-4524-8BD8-051DDBC37E21" mandatory="false" sourceRoleRef="_03B4EB5F-3A90-45D2-95EB-EE0AEA9844B8">
-				<oil:informationType name="20" formatRef="NaturalDeath_20" mandatory="alethic" sourceRef="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_coref_fact1" sourceRoleRef="_965293C9-8AD7-4C73-B54C-818DC450C11B" />
+				<oil:informationType name="isFromProstateCancer" formatRef="NaturalDeath_isFromProstateCancer" mandatory="alethic" sourceRef="_B1406FD9-CAAE-48BD-9AFB-C432232A32C4_coref_fact1" sourceRoleRef="_965293C9-8AD7-4C73-B54C-818DC450C11B" />
 			</oil:conceptType>
 			<oil:conceptType name="UnnaturalDeath" sourceRef="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" mandatory="false" sourceRoleRef="_C0B623D1-7CD0-49CC-B419-4F2EFAEA77B8">
-				<oil:informationType name="9" formatRef="UnnaturalDeath_9" mandatory="alethic" sourceRef="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_coref_fact1" sourceRoleRef="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8" />
-				<oil:informationType name="8" formatRef="UnnaturalDeath_8" mandatory="alethic" sourceRef="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_coref_fact1" sourceRoleRef="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7" />
+				<oil:informationType name="isViolent" formatRef="UnnaturalDeath_isViolent" mandatory="alethic" sourceRef="_0FD5DEF7-B3C3-49A6-837D-DE91FCE968DF_coref_fact1" sourceRoleRef="_750CCACC-4358-47DB-99BD-D0C33BBEA1D8" />
+				<oil:informationType name="isBloody" formatRef="UnnaturalDeath_isBloody" mandatory="alethic" sourceRef="_7D989A2C-9CFF-464F-822E-FE41B6758ACE_coref_fact1" sourceRoleRef="_AACEB3BA-6D92-4927-B1AF-30CCEEC980D7" />
 			</oil:conceptType>
 			<oil:informationType name="Date_YMD" formatRef="YMD" mandatory="false" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_0AE5870D-43CB-45E4-B252-5B06DA9A5443" />
 			<oil:informationType name="DeathCause_DeathCause_Type" formatRef="DeathCause_Type" mandatory="alethic" sourceRef="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" sourceRoleRef="_90A1343B-5AFD-4EDF-ABF3-868915B25477" />
 		</oil:conceptType>
 		<oil:informationType name="Gender_Gender_Code" formatRef="Gender_Code" mandatory="alethic" sourceRef="_FF723148-C1AB-4835-84CD-996B28BC4027" sourceRoleRef="_94C9DD40-B34A-4BF7-A0B8-CAEA067FF7A0" />
-		<oil:informationType name="10" formatRef="Person_10" mandatory="alethic" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
+		<oil:informationType name="hasParents" formatRef="Person_hasParents" mandatory="alethic" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
 		<oil:conceptTypeRef name="ValueType1DoesSomethingElseWith" target="ValueType1" oppositeName="DoesSomethingElseWithPerson" mandatory="false" sourceRoleRef="_37C4F90B-50F3-4655-9946-C6D796CA4FDB" />
 		<oil:informationType name="OptionalUniqueDecimal" formatRef="OptionalUniqueDecimal" mandatory="false" sourceRef="_2BD0D7D3-0B11-45F9-9D8F-1BA51BB7A138" sourceRoleRef="_42291EC4-DB35-459F-A7F9-A3517D1C709C">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint65" sourceRef="_30FE89A6-1F2E-416E-A6A0-0CC3021BFA4D" modality="alethic" isPreferred="false" />

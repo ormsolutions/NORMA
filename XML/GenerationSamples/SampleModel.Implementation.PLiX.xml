@@ -2721,11 +2721,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:field visibility="private" readOnly="true" name="_PersonOwnsCar_vinDictionary" dataTypeName="Dictionary">
-				<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+				<plx:passTypeParam dataTypeName=".i4" />
 				<plx:passTypeParam dataTypeName="Person" />
 				<plx:initialize>
 					<plx:callNew dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName=".i4" />
 						<plx:passTypeParam dataTypeName="Person" />
 					</plx:callNew>
 				</plx:initialize>
@@ -2765,11 +2765,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:field visibility="private" readOnly="true" name="_PersonOptionalUniqueDecimalDictionary" dataTypeName="Dictionary">
-				<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+				<plx:passTypeParam dataTypeName=".decimal" />
 				<plx:passTypeParam dataTypeName="Person" />
 				<plx:initialize>
 					<plx:callNew dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName=".decimal" />
 						<plx:passTypeParam dataTypeName="Person" />
 					</plx:callNew>
 				</plx:initialize>
@@ -4992,7 +4992,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDrivesCar_vinChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDrivesCar_vinChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -5019,7 +5019,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDrivesCar_vinChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDrivesCar_vinChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -5099,7 +5099,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDrivenByPersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDrivenByPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -5126,7 +5126,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDrivenByPersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDrivenByPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -6829,7 +6829,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseCarSold_vinChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnCarSold_vinChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -6856,7 +6856,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseCarSold_vinChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnCarSold_vinChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -6913,7 +6913,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseSaleDate_YMDChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnSaleDate_YMDChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -6940,7 +6940,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseSaleDate_YMDChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnSaleDate_YMDChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -7020,7 +7020,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseBuyerChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnBuyerChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -7047,7 +7047,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseBuyerChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnBuyerChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -7127,7 +7127,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseSellerChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnSellerChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -7154,7 +7154,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseSellerChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnSellerChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -7719,7 +7719,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseCar_vinChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnCar_vinChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -7746,7 +7746,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseCar_vinChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnCar_vinChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -7803,7 +7803,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseRating_Nr_IntegerChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnRating_Nr_IntegerChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -7819,7 +7819,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseRating_Nr_IntegerChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnRating_Nr_IntegerChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -7899,7 +7899,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseCriterion_NameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnCriterion_NameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -7926,7 +7926,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseCriterion_NameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnCriterion_NameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -8547,7 +8547,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseNickNameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnNickNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -8574,7 +8574,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseNickNameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnNickNameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -8654,7 +8654,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -8681,7 +8681,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -8700,7 +8700,7 @@
 				<plx:param name="Date_YMD" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
-				<plx:param name="10" dataTypeName=".boolean" />
+				<plx:param name="hasParents" dataTypeName=".boolean" />
 				<plx:param name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
 				<plx:param name="MandatoryUniqueString" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
@@ -8875,12 +8875,12 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnPerson10Changing">
+							<plx:callThis accessor="this" type="methodCall" name="OnPersonhasParentsChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="10" />
+									<plx:nameRef type="parameter" name="hasParents" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
@@ -8888,7 +8888,7 @@
 					<plx:throw>
 						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
 							<plx:passParam>
-								<plx:string>10</plx:string>
+								<plx:string>hasParents</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
@@ -8953,7 +8953,7 @@
 							<plx:nameRef type="parameter" name="Gender_Gender_Code" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="10" />
+							<plx:nameRef type="parameter" name="hasParents" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="MandatoryUniqueDecimal" />
@@ -9576,7 +9576,7 @@
 			<plx:function visibility="private" name="OnPersonHatType_ColorARGBChanging">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
@@ -9594,7 +9594,7 @@
 			<plx:function visibility="private" name="OnPersonOwnsCar_vinChanging">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
 				<plx:branch>
@@ -9650,7 +9650,7 @@
 			<plx:function visibility="private" overload="true" name="OnPersonOwnsCar_vinChanged">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="oldValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
 				<plx:branch>
 					<plx:condition>
@@ -9714,7 +9714,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="OnPerson10Changing">
+			<plx:function visibility="private" name="OnPersonhasParentsChanging">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
@@ -9725,7 +9725,7 @@
 			<plx:function visibility="private" name="OnPersonOptionalUniqueDecimalChanging">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".decimal" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
 				<plx:branch>
@@ -9781,7 +9781,7 @@
 			<plx:function visibility="private" overload="true" name="OnPersonOptionalUniqueDecimalChanged">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="oldValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".decimal" />
 				</plx:param>
 				<plx:branch>
 					<plx:condition>
@@ -11278,7 +11278,7 @@
 					<plx:param name="Date_YMD" dataTypeName=".i4" />
 					<plx:param name="LastName" dataTypeName=".string" />
 					<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
-					<plx:param name="10" dataTypeName=".boolean" />
+					<plx:param name="hasParents" dataTypeName=".boolean" />
 					<plx:param name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
 					<plx:param name="MandatoryUniqueString" dataTypeName=".string" />
 					<plx:assign>
@@ -11446,10 +11446,10 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_10" />
+							<plx:callThis accessor="this" type="field" name="_hasParents" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="10" />
+							<plx:nameRef type="parameter" name="hasParents" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -11583,7 +11583,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseFirstNameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnFirstNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -11610,7 +11610,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseFirstNameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnFirstNameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -11682,7 +11682,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDate_YMDChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDate_YMDChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -11709,7 +11709,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDate_YMDChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDate_YMDChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -11789,7 +11789,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseLastNameChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnLastNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -11816,7 +11816,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseLastNameChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnLastNameChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -11875,7 +11875,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseOptionalUniqueStringChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnOptionalUniqueStringChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -11902,7 +11902,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseOptionalUniqueStringChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnOptionalUniqueStringChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -11912,7 +11912,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_HatType_ColorARGB" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>HatType_ColorARGB</plx:string>
@@ -11921,7 +11921,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="HatType_ColorARGB">
 					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName=".i4" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -11930,7 +11930,7 @@
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+							<plx:passTypeParam dataTypeName=".i4" />
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_HatType_ColorARGB" />
 							</plx:initialize>
@@ -11993,7 +11993,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseHatType_ColorARGBChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnHatType_ColorARGBChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12009,7 +12009,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseHatType_ColorARGBChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnHatType_ColorARGBChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12068,7 +12068,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseHatType_HatTypeStyle_HatTypeStyle_DescriptionChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnHatType_HatTypeStyle_HatTypeStyle_DescriptionChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12084,7 +12084,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseHatType_HatTypeStyle_HatTypeStyle_DescriptionChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnHatType_HatTypeStyle_HatTypeStyle_DescriptionChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12094,7 +12094,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_OwnsCar_vin" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>OwnsCar_vin</plx:string>
@@ -12103,7 +12103,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="OwnsCar_vin">
 					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName=".i4" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -12112,7 +12112,7 @@
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+							<plx:passTypeParam dataTypeName=".i4" />
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_OwnsCar_vin" />
 							</plx:initialize>
@@ -12175,7 +12175,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseOwnsCar_vinChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnOwnsCar_vinChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12202,7 +12202,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseOwnsCar_vinChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnOwnsCar_vinChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12282,7 +12282,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseGender_Gender_CodeChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnGender_Gender_CodeChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12298,7 +12298,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseGender_Gender_CodeChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnGender_Gender_CodeChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12307,24 +12307,24 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_10" dataTypeName=".boolean">
+				<plx:field visibility="private" readOnly="false" name="_hasParents" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
-							<plx:string>10</plx:string>
+							<plx:string>hasParents</plx:string>
 						</plx:passParam>
 					</plx:attribute>
 				</plx:field>
-				<plx:property visibility="public" modifier="override" name="10">
+				<plx:property visibility="public" modifier="override" name="hasParents">
 					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_10" />
+							<plx:callThis accessor="this" type="field" name="_hasParents" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_10" />
+								<plx:callThis accessor="this" type="field" name="_hasParents" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -12342,7 +12342,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnPerson10Changing">
+											<plx:callInstance type="methodCall" name="OnPersonhasParentsChanging">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_Context" />
 												</plx:callObject>
@@ -12355,7 +12355,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="Raise10ChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnhasParentsChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12365,13 +12365,13 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_10" />
+										<plx:callThis accessor="this" type="field" name="_hasParents" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="Raise10ChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnhasParentsChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12381,7 +12381,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_OptionalUniqueDecimal" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".decimal" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>OptionalUniqueDecimal</plx:string>
@@ -12390,7 +12390,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="OptionalUniqueDecimal">
 					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName=".decimal" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -12399,7 +12399,7 @@
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+							<plx:passTypeParam dataTypeName=".decimal" />
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_OptionalUniqueDecimal" />
 							</plx:initialize>
@@ -12462,7 +12462,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseOptionalUniqueDecimalChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnOptionalUniqueDecimalChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12489,7 +12489,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseOptionalUniqueDecimalChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnOptionalUniqueDecimalChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12546,7 +12546,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseMandatoryUniqueDecimalChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnMandatoryUniqueDecimalChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12573,7 +12573,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseMandatoryUniqueDecimalChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnMandatoryUniqueDecimalChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12653,7 +12653,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseMandatoryUniqueStringChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnMandatoryUniqueStringChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12680,7 +12680,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseMandatoryUniqueStringChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnMandatoryUniqueStringChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12739,7 +12739,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseHusbandChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnHusbandChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12766,7 +12766,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseHusbandChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnHusbandChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12825,7 +12825,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseValueType1DoesSomethingElseWithChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnValueType1DoesSomethingElseWithChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12852,7 +12852,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseValueType1DoesSomethingElseWithChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnValueType1DoesSomethingElseWithChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12911,7 +12911,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseMalePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnMalePersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -12938,7 +12938,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseMalePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnMalePersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -12997,7 +12997,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseFemalePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnFemalePersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -13024,7 +13024,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseFemalePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnFemalePersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -13083,7 +13083,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseChildPersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnChildPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -13110,7 +13110,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseChildPersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnChildPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -13169,7 +13169,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDeathChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDeathChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -13196,7 +13196,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDeathChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDeathChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -13206,7 +13206,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_PersonDrivesCarViaDrivenByPersonCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="PersonDrivesCar" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="PersonDrivesCar" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>PersonDrivesCarViaDrivenByPersonCollection</plx:string>
@@ -13215,7 +13215,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="PersonDrivesCarViaDrivenByPersonCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="PersonDrivesCar" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="PersonDrivesCar" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -13224,7 +13224,7 @@
 					</plx:get>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_PersonBoughtCarFromPersonOnDateViaBuyerCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>PersonBoughtCarFromPersonOnDateViaBuyerCollection</plx:string>
@@ -13233,7 +13233,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="PersonBoughtCarFromPersonOnDateViaBuyerCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -13242,7 +13242,7 @@
 					</plx:get>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_PersonBoughtCarFromPersonOnDateViaSellerCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>PersonBoughtCarFromPersonOnDateViaSellerCollection</plx:string>
@@ -13251,7 +13251,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="PersonBoughtCarFromPersonOnDateViaSellerCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -13260,7 +13260,7 @@
 					</plx:get>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_PersonHasNickNameViaPersonCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="PersonHasNickName" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="PersonHasNickName" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>PersonHasNickNameViaPersonCollection</plx:string>
@@ -13269,7 +13269,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="PersonHasNickNameViaPersonCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="PersonHasNickName" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="PersonHasNickName" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -13327,7 +13327,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseWifeViaHusbandCollectionChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnWifeViaHusbandCollectionChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -13354,7 +13354,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseWifeViaHusbandCollectionChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnWifeViaHusbandCollectionChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -13364,7 +13364,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_TaskViaPersonCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="Task" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="Task" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>TaskViaPersonCollection</plx:string>
@@ -13373,7 +13373,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="TaskViaPersonCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="Task" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="Task" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -13382,7 +13382,7 @@
 					</plx:get>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="ValueType1" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="ValueType1" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection</plx:string>
@@ -13391,7 +13391,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="ValueType1" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="ValueType1" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -13792,7 +13792,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -13819,7 +13819,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -13829,7 +13829,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_ChildPersonViaFatherCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="ChildPerson" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="ChildPerson" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>ChildPersonViaFatherCollection</plx:string>
@@ -13838,7 +13838,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="ChildPersonViaFatherCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="ChildPerson" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="ChildPerson" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -14239,7 +14239,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -14266,7 +14266,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -14276,7 +14276,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_ChildPersonViaMotherCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="ChildPerson" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="ChildPerson" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>ChildPersonViaMotherCollection</plx:string>
@@ -14285,7 +14285,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="ChildPersonViaMotherCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="ChildPerson" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="ChildPerson" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -15332,7 +15332,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseBirthOrder_BirthOrder_NrChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnBirthOrder_BirthOrder_NrChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -15359,7 +15359,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseBirthOrder_BirthOrder_NrChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnBirthOrder_BirthOrder_NrChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -15439,7 +15439,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseFatherChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnFatherChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -15466,7 +15466,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseFatherChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnFatherChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -15546,7 +15546,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseMotherChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnMotherChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -15573,7 +15573,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseMotherChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnMotherChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -15653,7 +15653,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -15680,7 +15680,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -15799,7 +15799,7 @@
 			<plx:function visibility="private" name="OnDeathDate_YMDChanging">
 				<plx:param name="instance" dataTypeName="Death" />
 				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
@@ -16206,7 +16206,7 @@
 					</plx:get>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_Date_YMD" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName=".i4" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>Date_YMD</plx:string>
@@ -16215,7 +16215,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="Date_YMD">
 					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName=".i4" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
@@ -16224,7 +16224,7 @@
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".i4" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+							<plx:passTypeParam dataTypeName=".i4" />
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_Date_YMD" />
 							</plx:initialize>
@@ -16287,7 +16287,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDate_YMDChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDate_YMDChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -16303,7 +16303,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDate_YMDChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDate_YMDChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -16383,7 +16383,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDeathCause_DeathCause_TypeChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDeathCause_DeathCause_TypeChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -16399,7 +16399,7 @@
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDeathCause_DeathCause_TypeChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDeathCause_DeathCause_TypeChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -16458,7 +16458,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseNaturalDeathChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnNaturalDeathChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -16485,7 +16485,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseNaturalDeathChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnNaturalDeathChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -16544,7 +16544,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseUnnaturalDeathChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnUnnaturalDeathChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -16571,7 +16571,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseUnnaturalDeathChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnUnnaturalDeathChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -16651,7 +16651,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -16678,7 +16678,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -16693,7 +16693,7 @@
 					<plx:pragma type="region" data="NaturalDeath" />
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreateNaturalDeath" dataTypeName="ISampleModelContext" />
-				<plx:param name="20" dataTypeName=".boolean" />
+				<plx:param name="isFromProstateCancer" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="NaturalDeath" />
 				<plx:branch>
@@ -16720,12 +16720,12 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnNaturalDeath20Changing">
+							<plx:callThis accessor="this" type="methodCall" name="OnNaturalDeathisFromProstateCancerChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="20" />
+									<plx:nameRef type="parameter" name="isFromProstateCancer" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
@@ -16733,7 +16733,7 @@
 					<plx:throw>
 						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
 							<plx:passParam>
-								<plx:string>20</plx:string>
+								<plx:string>isFromProstateCancer</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
@@ -16765,7 +16765,7 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="20" />
+							<plx:nameRef type="parameter" name="isFromProstateCancer" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="Death" />
@@ -16773,7 +16773,7 @@
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="OnNaturalDeath20Changing">
+			<plx:function visibility="private" name="OnNaturalDeathisFromProstateCancerChanging">
 				<plx:param name="instance" dataTypeName="NaturalDeath" />
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
@@ -16899,7 +16899,7 @@
 				<plx:derivesFromClass dataTypeName="NaturalDeath" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="20" dataTypeName=".boolean" />
+					<plx:param name="isFromProstateCancer" dataTypeName=".boolean" />
 					<plx:param name="Death" dataTypeName="Death" />
 					<plx:assign>
 						<plx:left>
@@ -16911,10 +16911,10 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_20" />
+							<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="20" />
+							<plx:nameRef type="parameter" name="isFromProstateCancer" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -16958,24 +16958,24 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_20" dataTypeName=".boolean">
+				<plx:field visibility="private" readOnly="false" name="_isFromProstateCancer" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
-							<plx:string>20</plx:string>
+							<plx:string>isFromProstateCancer</plx:string>
 						</plx:passParam>
 					</plx:attribute>
 				</plx:field>
-				<plx:property visibility="public" modifier="override" name="20">
+				<plx:property visibility="public" modifier="override" name="isFromProstateCancer">
 					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_20" />
+							<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_20" />
+								<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -16993,7 +16993,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnNaturalDeath20Changing">
+											<plx:callInstance type="methodCall" name="OnNaturalDeathisFromProstateCancerChanging">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_Context" />
 												</plx:callObject>
@@ -17006,7 +17006,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="Raise20ChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnisFromProstateCancerChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -17016,13 +17016,13 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_20" />
+										<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="Raise20ChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnisFromProstateCancerChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -17102,7 +17102,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDeathChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDeathChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -17129,7 +17129,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDeathChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDeathChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -17144,8 +17144,8 @@
 					<plx:pragma type="region" data="UnnaturalDeath" />
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreateUnnaturalDeath" dataTypeName="ISampleModelContext" />
-				<plx:param name="9" dataTypeName=".boolean" />
-				<plx:param name="8" dataTypeName=".boolean" />
+				<plx:param name="isViolent" dataTypeName=".boolean" />
+				<plx:param name="isBloody" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="UnnaturalDeath" />
 				<plx:branch>
@@ -17172,12 +17172,12 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnUnnaturalDeath9Changing">
+							<plx:callThis accessor="this" type="methodCall" name="OnUnnaturalDeathisViolentChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="9" />
+									<plx:nameRef type="parameter" name="isViolent" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
@@ -17185,7 +17185,7 @@
 					<plx:throw>
 						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
 							<plx:passParam>
-								<plx:string>9</plx:string>
+								<plx:string>isViolent</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
@@ -17193,12 +17193,12 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnUnnaturalDeath8Changing">
+							<plx:callThis accessor="this" type="methodCall" name="OnUnnaturalDeathisBloodyChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="8" />
+									<plx:nameRef type="parameter" name="isBloody" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
@@ -17206,7 +17206,7 @@
 					<plx:throw>
 						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
 							<plx:passParam>
-								<plx:string>8</plx:string>
+								<plx:string>isBloody</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
@@ -17238,10 +17238,10 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="9" />
+							<plx:nameRef type="parameter" name="isViolent" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="8" />
+							<plx:nameRef type="parameter" name="isBloody" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="Death" />
@@ -17249,7 +17249,7 @@
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="OnUnnaturalDeath9Changing">
+			<plx:function visibility="private" name="OnUnnaturalDeathisViolentChanging">
 				<plx:param name="instance" dataTypeName="UnnaturalDeath" />
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
@@ -17257,7 +17257,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="OnUnnaturalDeath8Changing">
+			<plx:function visibility="private" name="OnUnnaturalDeathisBloodyChanging">
 				<plx:param name="instance" dataTypeName="UnnaturalDeath" />
 				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
@@ -17383,8 +17383,8 @@
 				<plx:derivesFromClass dataTypeName="UnnaturalDeath" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
-					<plx:param name="9" dataTypeName=".boolean" />
-					<plx:param name="8" dataTypeName=".boolean" />
+					<plx:param name="isViolent" dataTypeName=".boolean" />
+					<plx:param name="isBloody" dataTypeName=".boolean" />
 					<plx:param name="Death" dataTypeName="Death" />
 					<plx:assign>
 						<plx:left>
@@ -17396,18 +17396,18 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_9" />
+							<plx:callThis accessor="this" type="field" name="_isViolent" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="9" />
+							<plx:nameRef type="parameter" name="isViolent" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_8" />
+							<plx:callThis accessor="this" type="field" name="_isBloody" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="8" />
+							<plx:nameRef type="parameter" name="isBloody" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -17451,24 +17451,24 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_9" dataTypeName=".boolean">
+				<plx:field visibility="private" readOnly="false" name="_isViolent" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
-							<plx:string>9</plx:string>
+							<plx:string>isViolent</plx:string>
 						</plx:passParam>
 					</plx:attribute>
 				</plx:field>
-				<plx:property visibility="public" modifier="override" name="9">
+				<plx:property visibility="public" modifier="override" name="isViolent">
 					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_9" />
+							<plx:callThis accessor="this" type="field" name="_isViolent" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_9" />
+								<plx:callThis accessor="this" type="field" name="_isViolent" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -17486,7 +17486,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnUnnaturalDeath9Changing">
+											<plx:callInstance type="methodCall" name="OnUnnaturalDeathisViolentChanging">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_Context" />
 												</plx:callObject>
@@ -17499,7 +17499,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="Raise9ChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnisViolentChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -17509,13 +17509,13 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_9" />
+										<plx:callThis accessor="this" type="field" name="_isViolent" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="Raise9ChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnisViolentChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -17524,24 +17524,24 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_8" dataTypeName=".boolean">
+				<plx:field visibility="private" readOnly="false" name="_isBloody" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
-							<plx:string>8</plx:string>
+							<plx:string>isBloody</plx:string>
 						</plx:passParam>
 					</plx:attribute>
 				</plx:field>
-				<plx:property visibility="public" modifier="override" name="8">
+				<plx:property visibility="public" modifier="override" name="isBloody">
 					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_8" />
+							<plx:callThis accessor="this" type="field" name="_isBloody" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_8" />
+								<plx:callThis accessor="this" type="field" name="_isBloody" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -17559,7 +17559,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnUnnaturalDeath8Changing">
+											<plx:callInstance type="methodCall" name="OnUnnaturalDeathisBloodyChanging">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_Context" />
 												</plx:callObject>
@@ -17572,7 +17572,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="Raise8ChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnisBloodyChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -17582,13 +17582,13 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_8" />
+										<plx:callThis accessor="this" type="field" name="_isBloody" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="Raise8ChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnisBloodyChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -17668,7 +17668,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDeathChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDeathChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -17695,7 +17695,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDeathChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDeathChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -17970,7 +17970,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -17997,7 +17997,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaisePersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -18476,7 +18476,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseValueType1ValueChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnValueType1ValueChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -18503,7 +18503,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseValueType1ValueChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnValueType1ValueChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -18562,7 +18562,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="RaiseDoesSomethingWithPersonChangingEvent">
+											<plx:callThis accessor="base" type="methodCall" name="OnDoesSomethingWithPersonChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -18589,7 +18589,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="RaiseDoesSomethingWithPersonChangedEvent">
+								<plx:callThis accessor="base" type="methodCall" name="OnDoesSomethingWithPersonChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -18599,7 +18599,7 @@
 					</plx:set>
 				</plx:property>
 				<plx:field visibility="private" readOnly="true" name="_DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection" dataTypeName="IEnumerable">
-					<plx:passTypeParam dataTypeName="Person" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+					<plx:passTypeParam dataTypeName="Person" />
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection</plx:string>
@@ -18608,7 +18608,7 @@
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection">
 					<plx:returns dataTypeName="IEnumerable">
-						<plx:passTypeParam dataTypeName="Person" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+						<plx:passTypeParam dataTypeName="Person" />
 					</plx:returns>
 					<plx:get>
 						<plx:return>
