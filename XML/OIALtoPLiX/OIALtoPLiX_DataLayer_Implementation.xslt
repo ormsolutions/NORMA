@@ -23,7 +23,6 @@
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
 
-	<xsl:import href="OIALtoPLiX.xslt"/>
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
 	
 	<xsl:param name="OIAL"/>

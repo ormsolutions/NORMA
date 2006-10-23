@@ -80,11 +80,16 @@
 		<?define RootSuffixCmd=""?>
 	<?endif?>
 	<!-- The Visual Studio registry root used for installation. -->
-	<?define VSRegRoot="SOFTWARE\Microsoft\VisualStudio\$(var.RootSuffix)"?>
+	<?define VSBaseRegRoot="SOFTWARE\Microsoft\VisualStudio"?>
+	<?define DSLRegRoot="$(var.VSBaseRegRoot)\DSLTools\2.0"?>
+	<?define VSRegRoot="$(var.VSBaseRegRoot)\$(var.RootSuffix)"?>
 	<?define VSClsidRoot="$(var.VSRegRoot)\CLSID"?>
 	<?define NORMAVSRegRoot="$(var.VSRegRoot)\Neumont\ORM Architect"?>
 	<?define NORMAVSExtensionsRegRoot="$(var.NORMAVSRegRoot)\Extensions"?>
-	<?define NORMARegRoot="SOFTWARE\Neumont\ORM Architect for Visual Studio"?>
+	<?define NeumontRegRoot="SOFTWARE\Neumont"?>
+	<?define NORMARegRoot="$(var.NeumontRegRoot)\ORM Architect for Visual Studio"?>
+	<?define PLiXRegRoot="$(var.NeumontRegRoot)\PLiX for Visual Studio"?>
+	<?define PLiXMinimumSchemaVersion="2"?>
 	<!-- The default target directory for installation (under ProgramFilesFolder). -->
 	<!-- NOTE: This is intentionally not being localized, so that the installation location is constant. -->
 	<?define DefaultCompanyDir="Neumont"?>

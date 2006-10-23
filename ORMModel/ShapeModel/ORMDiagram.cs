@@ -285,7 +285,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					if (!elementPosition.IsEmpty)
 					{
-						DropTargetContext.Set(transaction, Id, elementPosition, null);
+						DropTargetContext.Set(transaction.TopLevelTransaction, Id, elementPosition, null);
 					}
 					FixUpLocalDiagram(null, element);
 					if (factType != null && factType.RoleCollection != null)

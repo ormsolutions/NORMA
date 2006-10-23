@@ -430,7 +430,7 @@ namespace Neumont.Tools.ORM.Shell
 					subscriber.RemoveModelingEventHandlers(addedPreLoad, addedPostLoad, false);
 				}
 			}
-			if (addedPreLoad)
+			if (addedPostLoad)
 			{
 				RemoveTabRestoreEvents();
 				RemoveErrorReportingEvents();

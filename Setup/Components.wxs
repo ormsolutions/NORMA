@@ -399,7 +399,7 @@
 									</Registry>
 								</Registry>
 
-								<File Id="OIALtoPLiX_DataLayer_Implementation.xslt" Name="O2P_DLS.xsl" LongName="OIALtoPLiX_DataLayer_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt"
+								<!--<File Id="OIALtoPLiX_DataLayer_Implementation.xslt" Name="O2P_DLS.xsl" LongName="OIALtoPLiX_DataLayer_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXDataLayerWithSproc">
 									<Registry Type="string" Name="Type" Value="XSLT"/>
@@ -437,7 +437,7 @@
 									<Registry Type="multiString" Name="PrequisiteInputFormats">
 										<RegistryValue>PLiX_Abstract</RegistryValue>
 									</Registry>
-								</Registry>
+								</Registry>-->
 
 								<File Id="OIALtoPLiX_InMemory_Implementation.xslt" Name="O2P_IM.xsl" LongName="OIALtoPLiX_InMemory_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
@@ -460,7 +460,7 @@
 								</Registry>
 
 							</Component>
-							<Directory Id="ORMDataLayerTestFormDIR" Name="DtaTstFm" LongName="DataLayerTestForm">
+							<!--<Directory Id="ORMDataLayerTestFormDIR" Name="DtaTstFm" LongName="DataLayerTestForm">
 								<Component Id="ORMClassModelTransformsTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" Name="OIL2DLTF.xsl" LongName="OIALtoPLiX_DataLayerTestForm.xslt" src="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
@@ -515,7 +515,7 @@
 										</Registry>
 									</Registry>
 								</Component>
-							</Directory>
+							</Directory>-->
 
 							<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIALtoXSD.xslt" Name="OIAL2XSD.xsl" LongName="OIALtoXSD.xslt" src="..\XML\OIALtoXSD\OIALtoXSD.xslt"

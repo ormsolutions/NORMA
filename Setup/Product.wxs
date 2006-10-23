@@ -53,13 +53,17 @@
 		<!-- Technically, since DSL Tools requires VS, we don't even need to do this check, but since we have to get the properties anyway, we might as well. It gives the user a more appropriate error message, anyway. -->
 		<Condition Message="$(loc.VisualStudio2005Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
 		
-		<Property Id="DSLTOOLSPACKAGECLASS">
-			<!-- The value that we look up on the next line doesn't have to be Class, it only has to be a value that will always be present in the DSL Tools package registry key. -->
-			<RegistrySearch Id="DSLToolsPackageClassRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Packages\{d1091694-ea72-4bdd-8918-78324cc25448}" Name="Class" Type="raw" Win64="$(var.Win64)"/>
+		<Property Id="DSLTOOLSREDISTINSTALL">
+			<RegistrySearch Id="DSLToolsRedistInstallRegistrySearch" Root="HKLM" Key="$(var.DSLRegRoot)" Name="RedistInstall" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<!-- Make sure the DSL Tools redistributable or SDK is installed. -->
-		<Condition Message="$(loc.DSLToolsRequired)">DSLTOOLSPACKAGECLASS OR Installed</Condition>
+		<Condition Message="$(loc.DSLToolsRequired)">DSLTOOLSREDISTINSTALL OR Installed</Condition>
 
+		<Property Id="PLIXSCHEMAVERSION">
+			<RegistrySearch Id="PLiXSchemaVersionRegistrySearch" Root="HKLM" Key="$(var.PLiXRegRoot)" Name="SchemaVersion" Type="raw" Win64="$(var.Win64)"/>
+		</Property>
+		<Condition Message="$(loc.PLiXRequired)">(PLIXSCHEMAVERSION >= $(var.PLiXMinimumSchemaVersion)) OR Installed</Condition>
+		
 		<!-- Get the package GUIDs for the various VS packages. -->
 		<Property Id="VCSHARPPACKAGEGUID">
 			<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C#" Name="Package" Type="raw" Win64="$(var.Win64)"/>
