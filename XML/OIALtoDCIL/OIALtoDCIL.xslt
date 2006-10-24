@@ -354,7 +354,7 @@
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:for-each select="oil:informationType">
+		<xsl:for-each select="oil:informationType[not(child::oil:singleRoleUniquenessConstraint/@isPreferred='true' and ancestor::oil:conceptType[@name!=parent::oil:conceptType/@name])]">
 			<xsl:call-template name="GetColumnForInformationType">
 				<xsl:with-param name="DataTypes" select="$DataTypes"/>
 				<xsl:with-param name="TargetInformationType" select="."/>

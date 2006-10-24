@@ -24,16 +24,14 @@
 	extension-element-prefixes="exsl">
 
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	
-	<xsl:param name="OIAL"/>
-	<xsl:param name="SprocParam"/>
-	
+	<!--<xsl:import href="../../DIL/Transforms/DILSupportFunctions.xslt"/>-->
+	<xsl:param name="OIAL" />
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
 	<xsl:variable name="ConceptTypes" select="$OIAL//oil:conceptType"/>
-	<xsl:variable name="SprocFree" select="boolean($SprocParam/dataLayerImplementation/@sprocFree)"/>
-	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties"/>
+	<xsl:variable name="SprocFree" select="$debugMode"/>
+	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties" />
 	<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$OIAL//oil:roleSequenceUniquenessConstraint"/>
 
 	<xsl:template match="/">
@@ -78,6 +76,7 @@
 			<plx:class visibility="public" modifier="sealed" name="{$ModelContextName}">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="{$ModelContextName}"/>
+					
 				</plx:leadingInfo>
 				<plx:trailingInfo>
 					<plx:pragma type="closeRegion" data="{$ModelContextName}"/>
@@ -87,13 +86,10 @@
 				<plx:implementsInterface dataTypeName="{concat('I', $ModelName,'Context')}"/>
 
 				<!-- CreateCallback Delegate -->
-				<xsl:if test="$debugMode">
-					<plx:comment>OIALtoPLiX_Implementation.xslt Marker002</plx:comment>
-				</xsl:if>
 				<plx:delegate visibility="private" name="CreateCallback">
 					<plx:typeParam name="T" requireReferenceType="true"/>
 					<plx:param name="reader" dataTypeName="IDataReader"/>
-					<plx:returns dataTypeName="T"/>
+					<plx:returns dataTypeName="T" />
 				</plx:delegate>
 
 				<plx:delegate visibility="public" name="ConnectionDelegate">
@@ -101,11 +97,7 @@
 				</plx:delegate>
 
 				<plx:field visibility="private" readOnly="true" name="GetConnection" dataTypeName="ConnectionDelegate"/>
-
-				<!-- Context Constructor -->
-				<xsl:if test="$debugMode">
-					<plx:comment>OIALtoPLiX_Implementation.xslt Marker003</plx:comment>
-				</xsl:if>
+				
 				<plx:function name=".construct"  visibility="public">
 					<plx:param dataTypeName="ConnectionDelegate" name="connection"/>
 					<plx:branch>
@@ -183,7 +175,7 @@
 				
 				
 				<xsl:call-template name="GenerateModelContextLookupAndExternalConstraintEnforcementMembers">
-					<xsl:with-param name="Model" select="."/>
+					<xsl:with-param name="Model" select="$Model"/>
 					<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 					<xsl:with-param name="AllProperties" select="$AllProperties"/>
 					<xsl:with-param name="AllRoleSequenceUniquenessConstraints" select="$AllRoleSequenceUniquenessConstraints"/>
@@ -201,9 +193,6 @@
 				</xsl:for-each>
 
 				<!-- DataReaderEnumerator struct -->
-				<xsl:if test="$debugMode">
-					<plx:comment>OIALtoPLiX_Implementation.xslt Marker004</plx:comment>
-				</xsl:if>
 				<plx:structure name="DataReaderEnumerator" visibility="private">
 					<plx:typeParam name="T">
 						<plx:typeConstraint dataTypeName="class"/>
@@ -212,7 +201,7 @@
 						<plx:passTypeParam dataTypeName="T"/>
 					</plx:implementsInterface>
 					<plx:implementsInterface dataTypeName="IEnumerator">
-						<plx:passTypeParam dataTypeName="T"/>
+						<plx:passTypeParam dataTypeName="T" />
 					</plx:implementsInterface>
 					<plx:field readOnly="true" name="{$PrivateMemberPrefix}reader" dataTypeName="IDataReader" visibility="private"/>
 					<plx:field readOnly="true" name="{$PrivateMemberPrefix}creator" dataTypeName="CreateCallback" visibility="private">
@@ -330,7 +319,7 @@
 						</plx:branch>
 						<plx:fallbackBranch>
 							<plx:return>
-								<plx:falseKeyword/>
+								<plx:falseKeyword />
 							</plx:return>
 						</plx:fallbackBranch>
 					</plx:function>
@@ -363,7 +352,7 @@
 					<plx:function name="Reset" visibility="privateInterfaceMember">
 						<plx:interfaceMember memberName="Reset" dataTypeName="IEnumerator" dataTypeQualifier="System.Collections"/>
 						<plx:throw>
-							<plx:callNew type="new" dataTypeName="NotSupportedException"/>
+							<plx:callNew type="new" dataTypeName="NotSupportedException" />
 						</plx:throw>
 					</plx:function>
 				</plx:structure>
@@ -423,14 +412,11 @@
 						<xsl:otherwise>
 							<xsl:copy-of select="."/>
 						</xsl:otherwise>
-					</xsl:choose>'
+					</xsl:choose>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="ParametersWithPreferredIdentifiers" select="exsl:node-set($ParametersWithPreferredIdentifiersFragment)/child::*"/>
 
-			<xsl:if test="$debugMode">
-				<plx:comment>OIALtoPLiX_Implementation.xslt Marker005</plx:comment>
-			</xsl:if>
 			<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="Get{$uniqueConceptTypeName}By{@name}">
 				<plx:interfaceMember memberName="Get{$uniqueConceptTypeName}By{@name}" dataTypeName="I{$ModelContextName}"/>
 				<xsl:copy-of select="$parameters"/>
@@ -463,7 +449,7 @@
 					<plx:initialize>
 						<plx:callInstance type="methodCall" name="CreateCommand">
 							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection"/>
+								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:initialize>
@@ -588,9 +574,6 @@
 				</plx:try>
 			</plx:function>
 
-			<xsl:if test="$debugMode">
-				<plx:comment>OIALtoPLiX_Implementation.xslt Marker006</plx:comment>
-			</xsl:if>
 			<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="TryGet{$uniqueConceptTypeName}By{@name}">
 				<plx:interfaceMember memberName="TryGet{$uniqueConceptTypeName}By{@name}" dataTypeName="I{$ModelContextName}"/>
 				<xsl:copy-of select="$parameters"/>
@@ -650,9 +633,6 @@
 
 			<xsl:variable name="properties" select="$AllProperties[@conceptTypeName=$uniqueConceptTypeName]/prop:Property"/>
 
-			<xsl:if test="$debugMode">
-				<plx:comment>OIALtoPLiX_Implementation.xslt Marker007</plx:comment>
-			</xsl:if>
 			<!-- TODO: In Get{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
 			<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="Get{$uniqueConceptTypeName}By{@name}">
 				<plx:interfaceMember memberName="Get{$uniqueConceptTypeName}By{@name}" dataTypeName="I{$ModelContextName}"/>
@@ -686,7 +666,7 @@
 					<plx:initialize>
 						<plx:callInstance type="methodCall" name="CreateCommand">
 							<plx:callObject>
-								<plx:callThis type="methodCall" accessor="this" name="GetConnection"/>
+								<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:initialize>
@@ -722,7 +702,7 @@
 						</plx:callInstance>
 					</plx:branch>
 
-					<xsl:call-template name="GenerateIDBCommandType"/>
+					<xsl:call-template name="GenerateIDBCommandType" />
 					
 					<plx:assign>
 						<plx:left>
@@ -781,9 +761,6 @@
 					</plx:finally>
 				</plx:try>
 			</plx:function>
-			<xsl:if test="$debugMode">
-				<plx:comment>OIALtoPLiX_Implementation.xslt Marker008</plx:comment>
-			</xsl:if>
 			<!-- TODO: In TryGet{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
 			<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="TryGet{$uniqueConceptTypeName}By{@name}">
 				<plx:interfaceMember memberName="TryGet{$uniqueConceptTypeName}By{@name}" dataTypeName="I{$ModelContextName}"/>
@@ -830,6 +807,7 @@
 		<xsl:param name="Properties"/>
 		<xsl:param name="AllProperties"/>
 		<xsl:variable name="ClassName" select="@name"/>
+		<xsl:variable name="Ancestor" select="self::node()/ancestor::oil:conceptType[position() = last() and @name!=current()/@name]"/>
 		<xsl:variable name="ImplementationClassName" select="concat($ClassName,$ImplementationClassSuffix)"/>
 		<xsl:variable name="mandatoryProperties" select="$Properties[@mandatory='alethic']"/>
 		<xsl:variable name="mandatoryPropertiesWithPreferredIdentifiersFragment">
@@ -851,9 +829,6 @@
 		</xsl:variable>
 		<xsl:variable name="mandatoryPropertiesWithPreferredIdentifiers" select="exsl:node-set($mandatoryPropertiesWithPreferredIdentifiersFragment)/child::*"/>
 
-		<xsl:if test="$debugMode">
-			<plx:comment>OIALtoPLiX_Implementation.xslt Marker009</plx:comment>
-		</xsl:if>
 		<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="Create{$ClassName}">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$ClassName}"/>
@@ -899,13 +874,13 @@
 				<plx:initialize>
 					<plx:callInstance type="methodCall" name="CreateCommand">
 						<plx:callObject>
-							<plx:callThis type="methodCall" accessor="this" name="GetConnection"/>
+							<plx:callThis type="methodCall" accessor="this" name="GetConnection" />
 						</plx:callObject>
 					</plx:callInstance>
 				</plx:initialize>
 			</plx:local>
 
-			<xsl:call-template name="GenerateIDBCommandType"/>
+			<xsl:call-template name="GenerateIDBCommandType" />
 
 			<plx:assign>
 				<plx:left>
@@ -920,8 +895,41 @@
 						<xsl:when test="$SprocFree">
 							<plx:string>
 								<plx:string>
-									<xsl:value-of select="concat('INSERT INTO ', $ModelName, '.', $ClassName, ' (')"/>
-									<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
+									<xsl:choose>
+										<xsl:when test="$Ancestor">
+											<xsl:value-of select="concat('INSERT INTO ', $ModelName, '.', $Ancestor/@name, ' (')"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="concat('INSERT INTO ', $ModelName, '.', $ClassName, ' (')"/>
+										</xsl:otherwise>
+									</xsl:choose>
+									<xsl:choose>
+										<xsl:when test="$mandatoryPropertiesWithPreferredIdentifiers/@parentName">
+											<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
+												<xsl:if test="position() != 1">
+													<xsl:text>, </xsl:text>
+												</xsl:if>
+												<xsl:choose>
+													<xsl:when test="@parentName">
+														<xsl:value-of select="concat(@parentName, '_', @name)"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="@name"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:for-each>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers[not(@isIdentity = 'true')]">
+												<xsl:if test="position() != 1">
+													<xsl:text>, </xsl:text>
+												</xsl:if>
+												<xsl:value-of select="@name"/>
+											</xsl:for-each>
+										</xsl:otherwise>
+									</xsl:choose>
+
+									<!--<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
 										<xsl:choose>
 											<xsl:when test="@parentName">
 												<xsl:if test="position() != 1">
@@ -938,9 +946,27 @@
 												</xsl:if>
 											</xsl:otherwise>
 										</xsl:choose>
-									</xsl:for-each>
+									</xsl:for-each>-->
 									<xsl:text>) VALUES (</xsl:text>
-									<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
+									<xsl:choose>
+										<xsl:when test="$mandatoryPropertiesWithPreferredIdentifiers/@parentName">
+											<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
+												<xsl:if test="position() != 1">
+													<xsl:text>, </xsl:text>
+												</xsl:if>
+												<xsl:value-of select="concat('@',@parentName, @name)"/>
+											</xsl:for-each>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers[not(@isIdentity = 'true')]">
+												<xsl:if test="position() != 1">
+													<xsl:text>, </xsl:text>
+												</xsl:if>
+												<xsl:value-of select="concat('@',@name)"/>
+											</xsl:for-each>
+										</xsl:otherwise>
+									</xsl:choose>
+									<!--<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
 										<xsl:choose>
 											<xsl:when test="@parentName">
 												<xsl:if test="position() != 1">
@@ -957,14 +983,14 @@
 												</xsl:if>
 											</xsl:otherwise>
 										</xsl:choose>
-									</xsl:for-each>
+									</xsl:for-each>-->
 									<xsl:text>)</xsl:text>
 									<xsl:if test="$mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true' and not(@parentName)]">
 										<xsl:text>; SELECT @@IDENTITY;</xsl:text>
 										<!-- Instead of using a parameter to get the identity, use ExecuteScalar method of the command object and just return the identity -->
 										<!--<xsl:choose>
 											<xsl:when test="$mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName">
-												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName, $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')"/>
+												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName, $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')" />
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')"/>
@@ -1021,7 +1047,7 @@
 					<xsl:with-param name="parameterName" select="concat(@parentName, @name)"/>
 					<xsl:with-param name="parameterValue" select="*"/>
 					<xsl:with-param name="isIdentity" select="@isIdentity"/>
-					<xsl:with-param name="parentName" select="@parentName"/>
+					<xsl:with-param name="parentName" select="@parentName" />
 				</xsl:call-template>
 			</xsl:for-each>
 
@@ -1101,7 +1127,7 @@
 											<xsl:otherwise>
 												<plx:callInstance name="Value" type="property">
 													<plx:callObject>
-														<plx:nameRef name="parameter{@name}"/>
+														<plx:nameRef name="parameter{@name}" />
 													</plx:callObject>
 												</plx:callInstance>
 											</xsl:otherwise>
@@ -1130,9 +1156,6 @@
 		</xsl:apply-templates>
 
 		<!-- Retrieve Collection Property -->
-		<xsl:if test="$debugMode">
-			<plx:comment>OIALtoPLiX_Implementation.xslt Marker010</plx:comment>
-		</xsl:if>
 		<plx:property visibility="{$ModelContextInterfaceImplementationVisibility}" name="{$ClassName}Collection">
 			<plx:interfaceMember memberName="{$ClassName}Collection" dataTypeName="I{$ModelContextName}"/>
 			<plx:returns dataTypeName="IEnumerable">
@@ -1148,7 +1171,7 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
-				<xsl:call-template name="GenerateIDBCommandType"/>
+				<xsl:call-template name="GenerateIDBCommandType" />
 				<plx:assign>
 					<plx:left>
 						<plx:callInstance name="CommandText" type="property">
@@ -1204,7 +1227,7 @@
 
 				<plx:return>
 					<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
-						<plx:passTypeParam dataTypeName="{@name}"/>
+						<plx:passTypeParam dataTypeName="{@name}" />
 						<plx:passParam>
 							<plx:callInstance name="ExecuteReader" type="methodCall">
 								<plx:callObject>
@@ -1213,7 +1236,7 @@
 								<plx:passParam>
 									<plx:binaryOperator type ="bitwiseOr">
 										<plx:left>
-											<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field"/>
+											<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field" />
 										</plx:left>
 										<plx:right>
 											<plx:callStatic name="CloseConnection" dataTypeName="CommandBehavior" type="field"/>
@@ -1224,7 +1247,7 @@
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callNew dataTypeName="CreateCallback" type="new">
-								<plx:passTypeParam dataTypeName="{@name}"/>
+								<plx:passTypeParam dataTypeName="{@name}" />
 								<plx:passParam>
 									<plx:callThis name="Create{@name}" accessor="this" type="methodReference"/>
 								</plx:passParam>
@@ -1236,9 +1259,6 @@
 		</plx:property>
 
 		<!-- Create{@name} -->
-		<xsl:if test="$debugMode">
-			<plx:comment>OIALtoPLiX_Implementation.xslt Marker011</plx:comment>
-		</xsl:if>
 		<xsl:variable name="uniqueConceptTypeName" select="@name"/>
 		<xsl:variable name="properties" select="$AllProperties[@conceptTypeName=$uniqueConceptTypeName]/prop:Property"/>
 		<plx:function name="Create{$uniqueConceptTypeName}" visibility="private">
@@ -1283,9 +1303,6 @@
 				</plx:callNew>
 			</plx:return>
 		</plx:function>
-		<xsl:if test="$debugMode">
-			<plx:comment>OIALtoPLiX_Implementation.xslt Marker012</plx:comment>
-		</xsl:if>
 		<plx:class visibility="private" modifier="sealed" name="{$ImplementationClassName}">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$ImplementationClassName}"/>
@@ -1390,9 +1407,6 @@
 		</xsl:variable>
 		<xsl:variable name="ConceptTypePreferredIdentifiers" select="exsl:node-set($ConceptTypePreferredIdentifiersFragment)/child::*"/>
 		
-		<xsl:if test="$debugMode">
-			<plx:comment>OIALtoPLiX_Implementation.xslt Marker013</plx:comment>
-		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="@isCollection='true'"/>
 			<xsl:when test="@isCustomType='true'">
@@ -1424,9 +1438,6 @@
 				<xsl:copy-of select="prop:DataType/@*"/>
 				<xsl:copy-of select="prop:DataType/child::*"/>
 			</plx:returns>
-			<xsl:if test="$debugMode">
-				<plx:comment>OIALtoPLiX_Implementation.xslt Marker014</plx:comment>
-			</xsl:if>
 			<plx:get>
 				<xsl:choose>
 					<xsl:when test="@isCollection='true'">
@@ -1455,7 +1466,7 @@
 							</plx:initialize>
 						</plx:local>
 						
-						<xsl:call-template name="GenerateIDBCommandType"/>
+						<xsl:call-template name="GenerateIDBCommandType" />
 						
 						<plx:assign>
 							<plx:left>
@@ -1544,7 +1555,7 @@
 						</plx:branch>
 						<plx:return>
 							<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
-								<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}"/>
+								<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}" />
 								<plx:passParam>
 									<plx:callInstance name="ExecuteReader" type="methodCall">
 										<plx:callObject>
@@ -1553,7 +1564,7 @@
 										<plx:passParam>
 											<plx:binaryOperator type ="bitwiseOr">
 												<plx:left>
-													<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field"/>
+													<plx:callStatic name="SingleResult" dataTypeName="CommandBehavior" type="field" />
 												</plx:left>
 												<plx:right>
 													<plx:callStatic name="CloseConnection" dataTypeName="CommandBehavior" type="field"/>
@@ -1564,7 +1575,7 @@
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callNew dataTypeName="CreateCallback" type="new">
-										<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}"/>
+										<plx:passTypeParam dataTypeName="{prop:DataType/plx:passTypeParam/@dataTypeName}" />
 										<plx:passParam>
 											<plx:callInstance name="Create{prop:DataType/plx:passTypeParam/@dataTypeName}" type="methodReference">
 												<plx:callObject>
@@ -1613,9 +1624,6 @@
 				</xsl:choose>
 			</plx:get>
 			<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
-				<xsl:if test="$debugMode">
-					<plx:comment>OIALtoPLiX_Implementation.xslt Marker015</plx:comment>
-				</xsl:if>
 				<plx:set>
 					<xsl:if test="@mandatory='alethic' and @canBeNull='true'">
 						<!-- We don't need to worry about Nullable here, since a property that is alethicly mandatory will never be made Nullable. -->
@@ -1752,14 +1760,14 @@
 										<plx:callObject>
 											<plx:callInstance type="methodCall" name="GetConnection">
 												<plx:callObject>
-													<plx:callThis type="property" accessor="this" name="Context"/>
+													<plx:callThis type="property" accessor="this" name="Context" />
 												</plx:callObject>
 											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:initialize>
 							</plx:local>
-							<xsl:call-template name="GenerateIDBCommandType"/>
+							<xsl:call-template name="GenerateIDBCommandType" />
 							<plx:assign>
 								<plx:left>
 									<plx:callInstance type="property" name="CommandText">
@@ -1931,7 +1939,7 @@
 										object is that it would require a trip to the DB to build it, in essence each
 										set method will require at least 2 transactions against the DB (get the old info
 										and update with the new info).-->
-								<!--<plx:callThis accessor="base" type="methodCall" name="On{@name}Changed">
+								<!--<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangedEvent">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue"/>
 									</plx:passParam>
@@ -2045,6 +2053,9 @@
 						<xsl:when test="$dataType='.i8' or $dataType='.u8'">
 							<xsl:value-of select="GetInt64"/>
 						</xsl:when>
+						<xsl:when test="$dataType='.decimal'">
+							<xsl:value-of select="'GetDecimal'"/>
+						</xsl:when>
 					</xsl:choose>
 				</xsl:attribute>
 				<xsl:if test="$dataType='.i1' or $dataType='.u2' or $dataType='.u4' or $dataType='.u8'">
@@ -2100,7 +2111,7 @@
 
 	<xsl:template name="GenerateCreateObjectReaderBlock">
 		<xsl:param name="ObjectToCreateName"/>
-		<xsl:param name="CommandName"/>
+		<xsl:param name="CommandName" />
 		<plx:branch>
 			<plx:condition>
 				<plx:binaryOperator type="inequality">
@@ -2116,7 +2127,7 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property"/>
+						<plx:callStatic name="Open" dataTypeName="ConnectionState" type="property" />
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
@@ -2190,7 +2201,7 @@
 		<xsl:param name="parameterName"/>
 		<xsl:param name="parameterValue"/>
 		<xsl:param name="isIdentity" select="'false'"/>
-		<xsl:param name="parentName"/>
+		<xsl:param name="parentName" />
 		<xsl:if test="(($parentName or ($isIdentity != 'true')) and $SprocFree) or not($SprocFree)">
 			<!-- Declare and initialize parameter -->
 			<plx:local name="parameter{$parameterName}" dataTypeName="IDataParameter">
@@ -2229,7 +2240,7 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:callStatic name="Output" type="property" dataTypeName="ParameterDirection"/>
+							<plx:callStatic name="Output" type="property" dataTypeName="ParameterDirection" />
 						</plx:right>
 					</plx:assign>
 				</xsl:when>
@@ -2370,10 +2381,10 @@
 			<plx:right>
 				<xsl:choose>
 					<xsl:when test="$SprocFree">
-						<plx:callStatic type="field" name="Text" dataTypeName="CommandType"/>
+						<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
 					</xsl:when>
 					<xsl:otherwise>
-						<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType"/>
+						<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:right>

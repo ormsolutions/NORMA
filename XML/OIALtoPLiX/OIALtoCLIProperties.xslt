@@ -19,6 +19,7 @@
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
 
@@ -147,7 +148,13 @@
 			as well as nested oil:conceptType elements and oil:conceptType elements that we are nested within.
 			Also process all oil:conceptTypeRef elements that are targetted at us.-->
 
-		<xsl:for-each select="oil:informationType">
+		<!-- 
+		All informationTypes of the current conceptType that does not have a singleRoleUniquenessConstraint
+		or have a singleRoleUniquenessConstraint/@isPreferred='false'
+		or singleRoleUniquenessConstraint/@isPreferred='true' but has a parent conceptType that is not a child of another conceptType
+		[not(child::oil:singleRoleUniquenessConstraint) or (child::oil:singleRoleUniquenessConstraint/@isPreferred='false') or (child::oil:singleRoleUniquenessConstraint/@isPreferred='true' and not(ancestor::oil:conceptType[@name!=parent::oil:conceptType/@name]))]
+		-->
+		<xsl:for-each select="oil:informationType[not(child::oil:singleRoleUniquenessConstraint/@isPreferred='true' and ancestor::oil:conceptType[@name!=parent::oil:conceptType/@name])]" >
 			<xsl:variable name="informationTypeFormatMapping" select="$InformationTypeFormatMappings[@name=current()/@formatRef]"/>
 			<xsl:choose>
 				<xsl:when test="@formatRef=$identityFormatRefNames">
@@ -172,6 +179,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
+		
 		<xsl:for-each select="oil:conceptTypeRef">
 			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{@oppositeName}">
 				<prop:DataType dataTypeName="{@target}"/>
