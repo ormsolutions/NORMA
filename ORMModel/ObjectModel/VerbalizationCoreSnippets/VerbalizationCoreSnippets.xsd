@@ -369,6 +369,7 @@
 				<xs:enumeration value="ObjectTypeInstanceListFinalSeparator"/>
 				<xs:enumeration value="ObjectTypeInstanceListClose"/>
 				<xs:enumeration value="Conditional"/>
+				<xs:enumeration value="Equality"/>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

@@ -207,12 +207,8 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListClose"><![CDATA[.]]></Snippet>
-			<Snippet type="SubsetListOpen"><![CDATA[<br /><br /><span class="quantifier">For each {0}:</span> ]]></Snippet>
-			<Snippet type="SubsetListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="SubsetListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="SubsetListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="SubsetListClose"><![CDATA[.]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
+			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
 		</Snippets>
 	</Language>
 </Languages>

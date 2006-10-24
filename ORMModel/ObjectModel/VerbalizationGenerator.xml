@@ -732,7 +732,7 @@
 								<SnippetReplacements>
 									<MinValue/>
 									<MaxValue/>
-								</SnippetReplacements>	
+								</SnippetReplacements>
 							</ConditionalSnippet>
 						</IterateValueRanges>
 					</SnippetReplacements>
@@ -760,38 +760,8 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllPrimaryLeadReading">
 							<Snippet ref="Conditional">
-								<IterateRoles match="setConstraintRoles" listStyle="null" pass="first">
-									<Fact>
-										<PredicateReplacement match="included" pass="first">
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-										<PredicateReplacement match="included">
-											<Snippet ref="DefiniteArticle"/>
-										</PredicateReplacement>
-										<PredicateReplacement>
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-									</Fact>
-								</IterateRoles>
-								<IterateRoles match="setConstraintRoles" listStyle="null" pass="notFirst">
-									<Fact>
-										<PredicateReplacement match="included">
-											<Snippet ref="DefiniteArticle"/>
-										</PredicateReplacement>
-										<PredicateReplacement pass="notFirst">
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-									</Fact>
-								</IterateRoles>
-							</Snippet>
-						</ReadingChoice>
-						<ReadingChoice match="RequireAllNonPrimaryLeadReading">
-							<Snippet ref="ForEachIndentedQuantifier">
-								<IterateRoles match="setConstraintRoles" pass="notFirst" listStyle="null">
-									<RolePlayer/>
-								</IterateRoles>
-								<Snippet ref="Conditional">
-									<IterateRoles match="setConstraintRoles" listStyle="null" pass="first">
+								<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+									<IterateSequenceFacts listStyle="null">
 										<Fact>
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
@@ -800,8 +770,20 @@
 												<Snippet ref="ExistentialQuantifier"/>
 											</PredicateReplacement>
 										</Fact>
-									</IterateRoles>
-									<IterateRoles match="setConstraintRoles" listStyle="null" pass="notFirst">
+									</IterateSequenceFacts>
+									<IterateSequenceFacts listStyle="null">
+										<Fact>
+											<PredicateReplacement match="included">
+												<Snippet ref="DefiniteArticle"/>
+											</PredicateReplacement>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateSequenceFacts>
+								</IterateSequences>
+								<IterateSequences match="setConstraintRoles" listStyle="null" pass="notFirst">
+									<IterateSequenceFacts match="setConstraintRoles" listStyle="null">
 										<Fact>
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
@@ -810,8 +792,97 @@
 												<Snippet ref="ExistentialQuantifier"/>
 											</PredicateReplacement>
 										</Fact>
-									</IterateRoles>
+									</IterateSequenceFacts>
+								</IterateSequences>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice match="RequireAllNonPrimaryLeadReading">
+							<Snippet ref="ForEachIndentedQuantifier">
+								<IterateSequences listStyle="null" pass="first">
+									<IterateSequenceFacts match="included" listStyle="null">
+										<RolePlayer/>
+									</IterateSequenceFacts>
+								</IterateSequences>
+								<Snippet ref="Conditional">
+									<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+										<IterateSequenceFacts match="setConstraintRoles" listStyle="null" pass="first">
+											<Fact>
+												<PredicateReplacement match="included">
+													<Snippet ref="DefiniteArticle"/>
+												</PredicateReplacement>
+												<PredicateReplacement>
+													<Snippet ref="ExistentialQuantifier"/>
+												</PredicateReplacement>
+											</Fact>
+										</IterateSequenceFacts>
+									</IterateSequences>
+									<IterateSequences match="setConstraintRoles" listStyle="null" pass="notFirst">
+										<IterateSequenceFacts match="setConstraintRoles" listStyle="null">
+											<Fact>
+												<PredicateReplacement match="included">
+													<Snippet ref="DefiniteArticle"/>
+												</PredicateReplacement>
+												<PredicateReplacement pass="notFirst">
+													<Snippet ref="ExistentialQuantifier"/>
+												</PredicateReplacement>
+											</Fact>
+										</IterateSequenceFacts>
+									</IterateSequences>
 								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+				<ConstrainedRoles>
+					<ConditionalReading>
+						<ReadingChoice match="RequireAllPrimaryLeadReading">
+							<Snippet ref="Conditional">
+								<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+									<IterateSequenceFacts listStyle="CompoundList">
+										<Fact>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateSequenceFacts>
+								</IterateSequences>
+								<IterateSequences match="setConstraintRoles" listStyle="null">
+									<IterateSequenceFacts listStyle="CompoundList">
+										<Fact>
+											<PredicateReplacement match="included">
+												<Snippet ref="DefiniteArticle"/>
+											</PredicateReplacement>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateSequenceFacts>
+								</IterateSequences>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice match="RequireAllNonPrimaryLeadReading">
+							<Snippet ref="Conditional">
+								<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+									<IterateSequenceFacts listStyle="CompoundList">
+										<Fact>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateSequenceFacts>
+								</IterateSequences>
+								<IterateSequences match="setConstraintRoles" listStyle="null">
+									<IterateSequenceFacts listStyle="CompoundList">
+										<Fact>
+											<PredicateReplacement match="included">
+												<Snippet ref="DefiniteArticle"/>
+											</PredicateReplacement>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateSequenceFacts>
+								</IterateSequences>
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>

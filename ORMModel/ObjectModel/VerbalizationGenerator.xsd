@@ -398,6 +398,7 @@
 			<xs:element name="PortableDataType" type="PortableDataTypeType"/>
 			<xs:element name="Notes" type="NotesType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
+			<xs:element name="IterateSequences" type="IterateSequencesType"/>
 			<xs:element name="CompositeList" type="CompositeListType"/>
 			<xs:element name="Fact" type="FactType"/>
 			<xs:element name="IterateFacts" type="IterateFactsType"/>
@@ -758,6 +759,17 @@
 				<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IterateSequencesType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="IterateSequenceFacts" type="IterateRolesType"/>
+		</xs:choice>
+		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
+		<xs:attributeGroup ref="FactArityAttributes"/>
+		<xs:attribute name="pass" use="optional" type="PassEnum"/>
+		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
+		<xs:attribute name="hyphenBind" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="IterateInstancesType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
