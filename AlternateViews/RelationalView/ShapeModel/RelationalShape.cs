@@ -462,7 +462,20 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					LinkedElementCollection<ConceptTypeChild> conceptTypeChildCollection = uConstraint.ChildSequence.ConceptTypeChildCollection;
 					foreach (ConceptTypeChild conceptTypeChild in conceptTypeChildCollection)
 					{
-						if (conceptTypeChild.Parent == conceptType)
+						ConceptType topLevelConceptType = conceptTypeChild.Parent;
+						while (true)
+						{
+							ConceptType topLevelType = topLevelConceptType.AbsorbingConceptType;
+							if (topLevelType != null)
+							{
+								topLevelConceptType = topLevelType;
+							}
+							else
+							{
+								break;
+							}
+						}
+						if (topLevelConceptType == conceptType)
 						{
 							addConstraint = true;
 						}
@@ -481,7 +494,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						if (!uConstraint.ShouldIgnore)
 						{
 							bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
-							string constraintName = isPrimary ? "PK" : string.Concat("U", ++uniquenessConstraintCount);
+							string constraintName = isPrimary ? PrimaryKeyString : string.Concat(AlternateKeyString, ++uniquenessConstraintCount);
 							UniquenessConstraint uniquenessConstraint = new UniquenessConstraint(theStore,
 								new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, constraintName),
 								new PropertyAssignment(UniquenessConstraint.IsPreferredDomainPropertyId, isPrimary));

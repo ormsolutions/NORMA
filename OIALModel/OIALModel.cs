@@ -1657,21 +1657,69 @@ namespace Neumont.Tools.ORM.OIALModel
 					if (uConstraint != null)
 					{
 						bool isPreferred = uConstraint.IsPreferred;
-						bool ignoreIfPrimary = true;
-						if (isPreferred)
+						bool ignoreIfPrimary = !uConstraint.IsInternal;
+						bool shouldBeUnique = false;
+						if (ignoreIfPrimary)
 						{
-							for (int i = 0; i < collectionCount; ++i)
+							for (int i = 0; i < conceptTypeHasChildCollection.Count; ++i)
 							{
-								RoleBase oppositeRole = roleCollection[i].OppositeRole;
-								if (oppositeRole != null)
+								ConceptTypeChild conceptTypeChild = conceptTypeHasChildCollection[i];
+								LinkedElementCollection<RoleBase> pathRoles = conceptTypeChild.PathRoleCollection;
+								int pathRoleCount = pathRoles.Count;
+								if (pathRoleCount > 1)
 								{
-									if (myTopLevelTypes.Contains(oppositeRole.Role.RolePlayer.Id))
+									Role secondPathRole = pathRoles[pathRoleCount - 2].Role;
+									LinkedElementCollection<ConstraintRoleSequence> constraints = secondPathRole.ConstraintRoleSequenceCollection;
+									for (int j = 0; j < constraints.Count; ++j)
 									{
-										ignoreIfPrimary = false;
-										break;
+										UniquenessConstraint uniquenessConstraint = constraints[j].Constraint as UniquenessConstraint;
+										if (uniquenessConstraint != null && uniquenessConstraint.IsPreferred && uConstraint != uniquenessConstraint)
+										{
+											int uConstraintRoleCount = uniquenessConstraint.RoleCollection.Count;
+											if (uConstraintRoleCount > 1)
+											{
+												ignoreIfPrimary = true;
+												shouldBeUnique = false;
+												break;
+											}
+											else
+											{
+												ignoreIfPrimary = false;
+												shouldBeUnique = false;
+												break;
+											}
+										}
+										else
+										{
+											ignoreIfPrimary = false;
+											shouldBeUnique = true;
+										}
 									}
 								}
+								//else if (conceptTypeChild.Parent.AbsorbingConceptType != null)
+								//{
+								//    shouldBeUnique = true;
+								//}
 							}
+						}
+						//if (isPreferred && ignoreIfPrimary && !shouldBeUnique)
+						//{
+						//    for (int i = 0; i < collectionCount; ++i)
+						//    {
+						//        RoleBase oppositeRole = roleCollection[i].OppositeRole;
+						//        if (oppositeRole != null)
+						//        {
+						//            if (myTopLevelTypes.Contains(oppositeRole.Role.RolePlayer.Id))
+						//            {
+						//                ignoreIfPrimary = false;
+						//                break;
+						//            }
+						//        }
+						//    }
+						//}
+						if (shouldBeUnique && isPreferred)
+						{
+							isPreferred = false;
 						}
 						childSequenceConstraint = new ChildSequenceUniquenessConstraint(store,
 							new PropertyAssignment(ChildSequenceUniquenessConstraint.NameDomainPropertyId, constraintName),

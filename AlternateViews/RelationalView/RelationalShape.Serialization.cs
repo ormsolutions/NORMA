@@ -29,9 +29,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		private const string IdAttributeName = "id";
 		/// <summary>
-		/// The local name of a SubjectTypeRef element
+		/// The local name of a SubjectRef element
 		/// </summary>
-		private const string SubjectTypeRefElementName = "SubjectTypeRef";
+		private const string SubjectRefElementName = "SubjectRef";
 		/// <summary>
 		/// The local name of a RelationalDiagram element.
 		/// </summary>
@@ -107,7 +107,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			// </RelationalDiagram>
 			writer.WriteStartElement(RelationalDiagramElementName, rvNamespace);
 			writer.WriteAttributeString(IdAttributeName, ToXml(Id));
-			writer.WriteAttributeString(SubjectTypeRefElementName, ToXml(this.ModelElement.Id));
+			writer.WriteAttributeString(SubjectRefElementName, ToXml(this.ModelElement.Id));
 			TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(PointD));
 			foreach (ShapeElement shapeElement in this.NestedChildShapes)
 			{
