@@ -790,7 +790,7 @@
 												<xsl:with-param name="OilConstraints" select="$oilConstraints"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:for-each select="exsl:node-set($informationTypesFragment)/child::*">
+										<xsl:for-each select="exsl:node-set($informationTypesFragment)/oil:informationType">
 											<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{@name}"/>
 										</xsl:for-each>
 									</xsl:when>
