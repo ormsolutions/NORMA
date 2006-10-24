@@ -25,7 +25,7 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.OIALModel
 {
 	#region OIALDomainModel model serialization
-	public partial class OIALDomainModel : IORMCustomSerializedDomainModel
+	partial class OIALDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'OIALDomainModel' extension model
@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // OIALDomainModel model serialization
 	#region OIALModel serialization
-	public partial class OIALModel : IORMCustomSerializedElement
+	partial class OIALModel : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -356,7 +356,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // OIALModel serialization
 	#region ChildSequenceConstraint serialization
-	public partial class ChildSequenceConstraint : IORMCustomSerializedElement
+	partial class ChildSequenceConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -503,7 +503,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // ChildSequenceConstraint serialization
 	#region ChildSequence serialization
-	public partial class ChildSequence : IORMCustomSerializedElement
+	partial class ChildSequence : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -642,7 +642,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // ChildSequence serialization
 	#region ExclusionConstraint serialization
-	public partial class ExclusionConstraint : IORMCustomSerializedElement
+	partial class ExclusionConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -723,7 +723,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // ExclusionConstraint serialization
 	#region SubsetConstraint serialization
-	public partial class SubsetConstraint : IORMCustomSerializedElement
+	partial class SubsetConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -807,7 +807,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // SubsetConstraint serialization
 	#region EqualityConstraint serialization
-	public partial class EqualityConstraint : IORMCustomSerializedElement
+	partial class EqualityConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -888,7 +888,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // EqualityConstraint serialization
 	#region InformationTypeFormat serialization
-	public partial class InformationTypeFormat : IORMCustomSerializedElement
+	partial class InformationTypeFormat : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1035,7 +1035,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // InformationTypeFormat serialization
 	#region ConceptType serialization
-	public partial class ConceptType : IORMCustomSerializedElement
+	partial class ConceptType : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1262,7 +1262,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // ConceptType serialization
 	#region ConceptTypeChild serialization
-	public partial class ConceptTypeChild : IORMCustomSerializedElement
+	partial class ConceptTypeChild : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations

@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region Attach rules to ORMShapeDomainModel model
-	public partial class ORMShapeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
+	partial class ORMShapeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes

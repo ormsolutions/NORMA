@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	#region Attach rules to RelationalShapeDomainModel model
-	internal partial class RelationalShapeDomainModel
+	partial class RelationalShapeDomainModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes

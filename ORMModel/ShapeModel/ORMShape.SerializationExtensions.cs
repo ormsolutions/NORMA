@@ -25,7 +25,7 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ORMShapeDomainModel model serialization
-	public partial class ORMShapeDomainModel : IORMCustomSerializedDomainModel
+	partial class ORMShapeDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'ORMShapeDomainModel' extension model
@@ -163,7 +163,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ORMShapeDomainModel model serialization
 	#region ORMDiagram serialization
-	public partial class ORMDiagram : IORMCustomSerializedElement
+	partial class ORMDiagram : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -376,7 +376,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ORMDiagram serialization
 	#region ORMBaseShape serialization
-	public partial class ORMBaseShape : IORMCustomSerializedElement
+	partial class ORMBaseShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -590,7 +590,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ORMBaseShape serialization
 	#region ObjectTypeShape serialization
-	public partial class ObjectTypeShape : IORMCustomSerializedElement
+	partial class ObjectTypeShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -664,7 +664,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ObjectTypeShape serialization
 	#region ObjectifiedFactTypeNameShape serialization
-	public partial class ObjectifiedFactTypeNameShape : IORMCustomSerializedElement
+	partial class ObjectifiedFactTypeNameShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -738,7 +738,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ObjectifiedFactTypeNameShape serialization
 	#region ReadingShape serialization
-	public partial class ReadingShape : IORMCustomSerializedElement
+	partial class ReadingShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -760,7 +760,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ReadingShape serialization
 	#region ValueConstraintShape serialization
-	public partial class ValueConstraintShape : IORMCustomSerializedElement
+	partial class ValueConstraintShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -782,7 +782,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ValueConstraintShape serialization
 	#region RoleNameShape serialization
-	public partial class RoleNameShape : IORMCustomSerializedElement
+	partial class RoleNameShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -804,7 +804,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // RoleNameShape serialization
 	#region FactTypeShape serialization
-	public partial class FactTypeShape : IORMCustomSerializedElement
+	partial class FactTypeShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations

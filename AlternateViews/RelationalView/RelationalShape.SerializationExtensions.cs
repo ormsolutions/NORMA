@@ -25,7 +25,7 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	#region RelationalShapeDomainModel model serialization
-	internal partial class RelationalShapeDomainModel : IORMCustomSerializedDomainModel
+	partial class RelationalShapeDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model
@@ -158,7 +158,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	}
 	#endregion // RelationalShapeDomainModel model serialization
 	#region RelationalDiagram serialization
-	internal partial class RelationalDiagram : IORMCustomSerializedElement
+	partial class RelationalDiagram : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -320,7 +320,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	}
 	#endregion // RelationalDiagram serialization
 	#region RelationalModel serialization
-	internal partial class RelationalModel : IORMCustomSerializedElement
+	partial class RelationalModel : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations

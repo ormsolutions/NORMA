@@ -25,7 +25,7 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.ExtensionExample
 {
 	#region ExtensionDomainModel model serialization
-	public partial class ExtensionDomainModel : IORMCustomSerializedDomainModel
+	partial class ExtensionDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'ExtensionDomainModel' extension model
@@ -131,7 +131,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	}
 	#endregion // ExtensionDomainModel model serialization
 	#region MyCustomExtensionElement serialization
-	public partial class MyCustomExtensionElement : IORMCustomSerializedElement
+	partial class MyCustomExtensionElement : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -253,7 +253,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	}
 	#endregion // MyCustomExtensionElement serialization
 	#region ObjectTypeRequiresMeaningfulNameError serialization
-	public partial class ObjectTypeRequiresMeaningfulNameError : IORMCustomSerializedElement
+	partial class ObjectTypeRequiresMeaningfulNameError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations

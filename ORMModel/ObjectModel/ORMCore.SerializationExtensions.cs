@@ -25,7 +25,7 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ORMCoreDomainModel model serialization
-	public partial class ORMCoreDomainModel : IORMCustomSerializedDomainModel
+	partial class ORMCoreDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'ORMCoreDomainModel' extension model
@@ -227,7 +227,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ORMCoreDomainModel model serialization
 	#region ORMModelElement serialization
-	public partial class ORMModelElement : IORMCustomSerializedElement
+	partial class ORMModelElement : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -369,7 +369,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ORMModelElement serialization
 	#region ORMNamedElement serialization
-	public partial class ORMNamedElement : IORMCustomSerializedElement
+	partial class ORMNamedElement : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -391,7 +391,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ORMNamedElement serialization
 	#region ORMModel serialization
-	public partial class ORMModel : IORMCustomSerializedElement
+	partial class ORMModel : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -592,7 +592,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ORMModel serialization
 	#region Note serialization
-	public partial class Note : IORMCustomSerializedElement
+	partial class Note : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -659,7 +659,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Note serialization
 	#region ModelNote serialization
-	public partial class ModelNote : IORMCustomSerializedElement
+	partial class ModelNote : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -766,7 +766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ModelNote serialization
 	#region ObjectType serialization
-	public partial class ObjectType : IORMCustomSerializedElement
+	partial class ObjectType : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1124,7 +1124,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ObjectType serialization
 	#region ValueTypeInstance serialization
-	public partial class ValueTypeInstance : IORMCustomSerializedElement
+	partial class ValueTypeInstance : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1240,7 +1240,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueTypeInstance serialization
 	#region EntityTypeInstance serialization
-	public partial class EntityTypeInstance : IORMCustomSerializedElement
+	partial class EntityTypeInstance : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1374,7 +1374,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeInstance serialization
 	#region EntityTypeRoleInstance serialization
-	public partial class EntityTypeRoleInstance : IORMCustomSerializedElement
+	partial class EntityTypeRoleInstance : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1501,7 +1501,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeRoleInstance serialization
 	#region CustomReferenceMode serialization
-	public partial class CustomReferenceMode : IORMCustomSerializedElement
+	partial class CustomReferenceMode : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1656,7 +1656,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // CustomReferenceMode serialization
 	#region ValueTypeHasDataType serialization
-	public partial class ValueTypeHasDataType : IORMCustomSerializedElement
+	partial class ValueTypeHasDataType : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1806,7 +1806,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueTypeHasDataType serialization
 	#region DataType serialization
-	public partial class DataType : IORMCustomSerializedElement
+	partial class DataType : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1859,7 +1859,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // DataType serialization
 	#region ReferenceModeKind serialization
-	public partial class ReferenceModeKind : IORMCustomSerializedElement
+	partial class ReferenceModeKind : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1937,7 +1937,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ReferenceModeKind serialization
 	#region ValueConstraint serialization
-	public partial class ValueConstraint : IORMCustomSerializedElement
+	partial class ValueConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2059,7 +2059,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueConstraint serialization
 	#region ValueTypeValueConstraint serialization
-	public partial class ValueTypeValueConstraint : IORMCustomSerializedElement
+	partial class ValueTypeValueConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2098,7 +2098,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueTypeValueConstraint serialization
 	#region RoleValueConstraint serialization
-	public partial class RoleValueConstraint : IORMCustomSerializedElement
+	partial class RoleValueConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2137,7 +2137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // RoleValueConstraint serialization
 	#region ValueRange serialization
-	public partial class ValueRange : IORMCustomSerializedElement
+	partial class ValueRange : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2183,7 +2183,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueRange serialization
 	#region FactType serialization
-	public partial class FactType : IORMCustomSerializedElement
+	partial class FactType : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2505,7 +2505,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FactType serialization
 	#region FactTypeInstance serialization
-	public partial class FactTypeInstance : IORMCustomSerializedElement
+	partial class FactTypeInstance : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2635,7 +2635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FactTypeInstance serialization
 	#region FactTypeRoleInstance serialization
-	public partial class FactTypeRoleInstance : IORMCustomSerializedElement
+	partial class FactTypeRoleInstance : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2762,7 +2762,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FactTypeRoleInstance serialization
 	#region Expression serialization
-	public partial class Expression : IORMCustomSerializedElement
+	partial class Expression : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2833,7 +2833,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Expression serialization
 	#region FactTypeDerivationExpression serialization
-	public partial class FactTypeDerivationExpression : IORMCustomSerializedElement
+	partial class FactTypeDerivationExpression : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2872,7 +2872,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FactTypeDerivationExpression serialization
 	#region SubtypeFact serialization
-	public partial class SubtypeFact : IORMCustomSerializedElement
+	partial class SubtypeFact : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2963,7 +2963,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // SubtypeFact serialization
 	#region Objectification serialization
-	public partial class Objectification : IORMCustomSerializedElement
+	partial class Objectification : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -3113,7 +3113,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Objectification serialization
 	#region ReadingOrder serialization
-	public partial class ReadingOrder : IORMCustomSerializedElement
+	partial class ReadingOrder : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -3285,7 +3285,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ReadingOrder serialization
 	#region Reading serialization
-	public partial class Reading : IORMCustomSerializedElement
+	partial class Reading : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -3380,7 +3380,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Reading serialization
 	#region Role serialization
-	public partial class Role : IORMCustomSerializedElement
+	partial class Role : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -3645,7 +3645,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Role serialization
 	#region RoleProxy serialization
-	public partial class RoleProxy : IORMCustomSerializedElement
+	partial class RoleProxy : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -3717,7 +3717,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // RoleProxy serialization
 	#region SetComparisonConstraint serialization
-	public partial class SetComparisonConstraint : IORMCustomSerializedElement
+	partial class SetComparisonConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -3968,7 +3968,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // SetComparisonConstraint serialization
 	#region SetComparisonConstraintRoleSequence serialization
-	public partial class SetComparisonConstraintRoleSequence : IORMCustomSerializedElement
+	partial class SetComparisonConstraintRoleSequence : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4138,7 +4138,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // SetComparisonConstraintRoleSequence serialization
 	#region SetConstraint serialization
-	public partial class SetConstraint : IORMCustomSerializedElement
+	partial class SetConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4387,7 +4387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // SetConstraint serialization
 	#region MandatoryConstraint serialization
-	public partial class MandatoryConstraint : IORMCustomSerializedElement
+	partial class MandatoryConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4481,7 +4481,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // MandatoryConstraint serialization
 	#region FrequencyConstraint serialization
-	public partial class FrequencyConstraint : IORMCustomSerializedElement
+	partial class FrequencyConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4527,7 +4527,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FrequencyConstraint serialization
 	#region UniquenessConstraint serialization
-	public partial class UniquenessConstraint : IORMCustomSerializedElement
+	partial class UniquenessConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4719,7 +4719,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // UniquenessConstraint serialization
 	#region EqualityConstraint serialization
-	public partial class EqualityConstraint : IORMCustomSerializedElement
+	partial class EqualityConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4833,7 +4833,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EqualityConstraint serialization
 	#region ExclusionConstraint serialization
-	public partial class ExclusionConstraint : IORMCustomSerializedElement
+	partial class ExclusionConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4941,7 +4941,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ExclusionConstraint serialization
 	#region RingConstraint serialization
-	public partial class RingConstraint : IORMCustomSerializedElement
+	partial class RingConstraint : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5031,7 +5031,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // RingConstraint serialization
 	#region ConstraintDuplicateNameError serialization
-	public partial class ConstraintDuplicateNameError : IORMCustomSerializedElement
+	partial class ConstraintDuplicateNameError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5144,7 +5144,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ConstraintDuplicateNameError serialization
 	#region ObjectTypeDuplicateNameError serialization
-	public partial class ObjectTypeDuplicateNameError : IORMCustomSerializedElement
+	partial class ObjectTypeDuplicateNameError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5245,7 +5245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ObjectTypeDuplicateNameError serialization
 	#region EntityTypeRequiresReferenceSchemeError serialization
-	public partial class EntityTypeRequiresReferenceSchemeError : IORMCustomSerializedElement
+	partial class EntityTypeRequiresReferenceSchemeError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5313,7 +5313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeRequiresReferenceSchemeError serialization
 	#region ExternalConstraintRoleSequenceArityMismatchError serialization
-	public partial class ExternalConstraintRoleSequenceArityMismatchError : IORMCustomSerializedElement
+	partial class ExternalConstraintRoleSequenceArityMismatchError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5381,7 +5381,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ExternalConstraintRoleSequenceArityMismatchError serialization
 	#region ImpliedInternalUniquenessConstraintError serialization
-	public partial class ImpliedInternalUniquenessConstraintError : IORMCustomSerializedElement
+	partial class ImpliedInternalUniquenessConstraintError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5449,7 +5449,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ImpliedInternalUniquenessConstraintError serialization
 	#region FactTypeRequiresInternalUniquenessConstraintError serialization
-	public partial class FactTypeRequiresInternalUniquenessConstraintError : IORMCustomSerializedElement
+	partial class FactTypeRequiresInternalUniquenessConstraintError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5517,7 +5517,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FactTypeRequiresInternalUniquenessConstraintError serialization
 	#region FactTypeRequiresReadingError serialization
-	public partial class FactTypeRequiresReadingError : IORMCustomSerializedElement
+	partial class FactTypeRequiresReadingError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5585,7 +5585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FactTypeRequiresReadingError serialization
 	#region FrequencyConstraintMinMaxError serialization
-	public partial class FrequencyConstraintMinMaxError : IORMCustomSerializedElement
+	partial class FrequencyConstraintMinMaxError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5653,7 +5653,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FrequencyConstraintMinMaxError serialization
 	#region MinValueMismatchError serialization
-	public partial class MinValueMismatchError : IORMCustomSerializedElement
+	partial class MinValueMismatchError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5721,7 +5721,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // MinValueMismatchError serialization
 	#region MaxValueMismatchError serialization
-	public partial class MaxValueMismatchError : IORMCustomSerializedElement
+	partial class MaxValueMismatchError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5789,7 +5789,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // MaxValueMismatchError serialization
 	#region ValueRangeOverlapError serialization
-	public partial class ValueRangeOverlapError : IORMCustomSerializedElement
+	partial class ValueRangeOverlapError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5857,7 +5857,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueRangeOverlapError serialization
 	#region RingConstraintTypeNotSpecifiedError serialization
-	public partial class RingConstraintTypeNotSpecifiedError : IORMCustomSerializedElement
+	partial class RingConstraintTypeNotSpecifiedError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5925,7 +5925,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // RingConstraintTypeNotSpecifiedError serialization
 	#region CompatibleValueTypeInstanceValueError serialization
-	public partial class CompatibleValueTypeInstanceValueError : IORMCustomSerializedElement
+	partial class CompatibleValueTypeInstanceValueError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5993,7 +5993,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // CompatibleValueTypeInstanceValueError serialization
 	#region TooFewEntityTypeRoleInstancesError serialization
-	public partial class TooFewEntityTypeRoleInstancesError : IORMCustomSerializedElement
+	partial class TooFewEntityTypeRoleInstancesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6061,7 +6061,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooFewEntityTypeRoleInstancesError serialization
 	#region TooFewFactTypeRoleInstancesError serialization
-	public partial class TooFewFactTypeRoleInstancesError : IORMCustomSerializedElement
+	partial class TooFewFactTypeRoleInstancesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6129,7 +6129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooFewFactTypeRoleInstancesError serialization
 	#region PopulationMandatoryError serialization
-	public partial class PopulationMandatoryError : IORMCustomSerializedElement
+	partial class PopulationMandatoryError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6203,7 +6203,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // PopulationMandatoryError serialization
 	#region PopulationUniquenessError serialization
-	public partial class PopulationUniquenessError : IORMCustomSerializedElement
+	partial class PopulationUniquenessError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6284,7 +6284,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // PopulationUniquenessError serialization
 	#region TooFewReadingRolesError serialization
-	public partial class TooFewReadingRolesError : IORMCustomSerializedElement
+	partial class TooFewReadingRolesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6352,7 +6352,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooFewReadingRolesError serialization
 	#region TooFewRoleSequencesError serialization
-	public partial class TooFewRoleSequencesError : IORMCustomSerializedElement
+	partial class TooFewRoleSequencesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6426,7 +6426,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooFewRoleSequencesError serialization
 	#region TooManyReadingRolesError serialization
-	public partial class TooManyReadingRolesError : IORMCustomSerializedElement
+	partial class TooManyReadingRolesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6494,7 +6494,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooManyReadingRolesError serialization
 	#region TooManyRoleSequencesError serialization
-	public partial class TooManyRoleSequencesError : IORMCustomSerializedElement
+	partial class TooManyRoleSequencesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6568,7 +6568,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooManyRoleSequencesError serialization
 	#region DataTypeNotSpecifiedError serialization
-	public partial class DataTypeNotSpecifiedError : IORMCustomSerializedElement
+	partial class DataTypeNotSpecifiedError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6636,7 +6636,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // DataTypeNotSpecifiedError serialization
 	#region EqualityImpliedByMandatoryError serialization
-	public partial class EqualityImpliedByMandatoryError : IORMCustomSerializedElement
+	partial class EqualityImpliedByMandatoryError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6704,7 +6704,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EqualityImpliedByMandatoryError serialization
 	#region NMinusOneError serialization
-	public partial class NMinusOneError : IORMCustomSerializedElement
+	partial class NMinusOneError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6772,7 +6772,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // NMinusOneError serialization
 	#region ImplicationError serialization
-	public partial class ImplicationError : IORMCustomSerializedElement
+	partial class ImplicationError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6846,7 +6846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ImplicationError serialization
 	#region ContradictionError serialization
-	public partial class ContradictionError : IORMCustomSerializedElement
+	partial class ContradictionError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6888,7 +6888,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ContradictionError serialization
 	#region ExclusionContradictsEqualityError serialization
-	public partial class ExclusionContradictsEqualityError : IORMCustomSerializedElement
+	partial class ExclusionContradictsEqualityError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6989,7 +6989,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ExclusionContradictsEqualityError serialization
 	#region ObjectTypeRequiresPrimarySupertypeError serialization
-	public partial class ObjectTypeRequiresPrimarySupertypeError : IORMCustomSerializedElement
+	partial class ObjectTypeRequiresPrimarySupertypeError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -7057,7 +7057,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ObjectTypeRequiresPrimarySupertypeError serialization
 	#region PreferredIdentifierRequiresMandatoryError serialization
-	public partial class PreferredIdentifierRequiresMandatoryError : IORMCustomSerializedElement
+	partial class PreferredIdentifierRequiresMandatoryError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -7125,7 +7125,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // PreferredIdentifierRequiresMandatoryError serialization
 	#region CompatibleSupertypesError serialization
-	public partial class CompatibleSupertypesError : IORMCustomSerializedElement
+	partial class CompatibleSupertypesError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -7193,7 +7193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // CompatibleSupertypesError serialization
 	#region CompatibleRolePlayerTypeError serialization
-	public partial class CompatibleRolePlayerTypeError : IORMCustomSerializedElement
+	partial class CompatibleRolePlayerTypeError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -7319,7 +7319,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // CompatibleRolePlayerTypeError serialization
 	#region RolePlayerRequiredError serialization
-	public partial class RolePlayerRequiredError : IORMCustomSerializedElement
+	partial class RolePlayerRequiredError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -7387,7 +7387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // RolePlayerRequiredError serialization
 	#region FrequencyConstraintContradictsInternalUniquenessConstraintError serialization
-	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IORMCustomSerializedElement
+	partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations

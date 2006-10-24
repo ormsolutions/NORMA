@@ -319,6 +319,11 @@
 									<xs:documentation>The class to add the namespaces to.</xs:documentation>
 								</xs:annotation>
 							</xs:attribute>
+							<xs:attribute name="Sealed" type="xs:boolean" default="false">
+								<xs:annotation>
+									<xs:documentation>Set to true if this DomainModel class is sealed (cannot be inherited from).</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="Element">
@@ -443,6 +448,11 @@
 							<xs:attribute name="Override" type="xs:boolean" default="false">
 								<xs:annotation>
 									<xs:documentation>Set to true if this element class is derived from another custom serialized element. The assumption is made that the base class' custom serialization implementation is compatible with the current standard generated code.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="Sealed" type="xs:boolean" default="false">
+								<xs:annotation>
+									<xs:documentation>Set to true if this element class is sealed (cannot be inherited from).</xs:documentation>
 								</xs:annotation>
 							</xs:attribute>
 						</xs:complexType>

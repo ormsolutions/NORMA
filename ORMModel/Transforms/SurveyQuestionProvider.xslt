@@ -27,7 +27,7 @@
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
-				<plx:class name="{@class}" partial="true" visibility="public">
+				<plx:class name="{@class}" partial="true" visibility="deferToPartial">
 					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider"/>
 					<plx:field name="SurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
 						<plx:initialize>

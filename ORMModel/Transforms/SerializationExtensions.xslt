@@ -55,7 +55,24 @@
 	<xsl:template match="se:Element">
 		<xsl:variable name="ClassName" select="@Class"/>
 		<xsl:variable name="ClassOverride" select="@Override='true'"/>
-		<plx:class name="{$ClassName}" visibility="public" partial="true">
+		<xsl:variable name="ClassSealed" select="@Sealed='true'"/>
+		<xsl:variable name="InterfaceImplementationVisibility">
+			<xsl:choose>
+				<xsl:when test="$ClassSealed">
+					<xsl:value-of select="'privateInterfaceMember'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'protected'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<plx:class name="{$ClassName}" visibility="deferToPartial" partial="true">
+			<xsl:if test="$ClassSealed">
+				<!-- Make sure it is really sealed by also rendering the modifier here. -->
+				<xsl:attribute name="modifier">
+					<xsl:value-of select="'sealed'"/>
+				</xsl:attribute>
+			</xsl:if>
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$ClassName} serialization"/>
 			</plx:leadingInfo>
@@ -63,7 +80,7 @@
 				<plx:pragma type="closeRegion" data="{$ClassName} serialization"/>
 			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="IORMCustomSerializedElement"/>
-			<plx:property visibility="protected" name="SupportedCustomSerializedOperations" replacesName="{$ClassOverride}">
+			<plx:property visibility="{$InterfaceImplementationVisibility}" name="SupportedCustomSerializedOperations" replacesName="{$ClassOverride}">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
@@ -108,7 +125,7 @@
 				<plx:field visibility="private" static="true" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="myCustomSerializedChildElementInfo"/>
 			</xsl:if>
 			<xsl:if test="$haveCustomChildInfo or not($ClassOverride)">
-				<plx:function visibility="protected" name="GetCustomSerializedChildElementInfo" replacesName="{$ClassOverride}">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedChildElementInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
@@ -301,7 +318,7 @@
 			</xsl:if>
 			<xsl:variable name="haveCustomElementInfo" select="0!=(string-length(@Prefix)+string-length(@Name)+string-length(@Namespace)+string-length(@WriteStyle)+string-length(@DoubleTagName)+count(se:ConditionalName))"/>
 			<xsl:if test="$haveCustomElementInfo or not($ClassOverride)">
-				<plx:property visibility="protected" name="CustomSerializedElementInfo" replacesName="{$ClassOverride}">
+				<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedElementInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
@@ -325,7 +342,7 @@
 			</xsl:if>
 			<xsl:variable name="haveCustomPropertyInfo" select="0!=count(se:Attribute)"/>
 			<xsl:if test="$haveCustomPropertyInfo or not($ClassOverride)">
-				<plx:function visibility="protected" name="GetCustomSerializedPropertyInfo" replacesName="{$ClassOverride}">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedPropertyInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
@@ -420,7 +437,7 @@
 			</xsl:if>
 			<xsl:variable name="customLinkInfo" select="se:Link"/>
 			<xsl:if test="$customLinkInfo or not($ClassOverride)">
-				<plx:function visibility="protected" name="GetCustomSerializedLinkInfo" replacesName="{$ClassOverride}">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedLinkInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
@@ -839,7 +856,7 @@
 							</plx:return>
 						</plx:function>
 					</plx:class>
-					<plx:property visibility="protected" name="CustomSerializedChildRoleComparer" replacesName="{$ClassOverride}">
+					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildRoleComparer" replacesName="{$ClassOverride}">
 						<plx:leadingInfo>
 							<plx:docComment>
 								<summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
@@ -935,7 +952,7 @@
 					</plx:property>
 				</xsl:when>
 				<xsl:when test="not($ClassOverride)">
-					<plx:property visibility="protected" name="CustomSerializedChildRoleComparer">
+					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildRoleComparer">
 						<plx:leadingInfo>
 							<plx:docComment>
 								<summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
@@ -1279,7 +1296,7 @@
 				</plx:field>
 			</xsl:if>
 			<xsl:if test="$hasMappedChildElements or not($ClassOverride)">
-				<plx:function visibility="protected" name="MapChildElement" replacesName="{$ClassOverride}">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapChildElement" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
@@ -1442,7 +1459,7 @@
 				</plx:field>
 			</xsl:if>
 			<xsl:if test="$attributes or not($ClassOverride)">
-				<plx:function visibility="protected" name="MapAttribute" replacesName="{$ClassOverride}">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapAttribute" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
@@ -1635,7 +1652,7 @@
 			</xsl:if>
 			<xsl:variable name="serializeBody" select="se:ConditionalSerialization/child::plx:*"/>
 			<xsl:if test="$serializeBody or not($ClassOverride)">
-				<plx:function visibility="protected" name="ShouldSerialize" replacesName="{$ClassOverride}">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="ShouldSerialize" replacesName="{$ClassOverride}">
 					<xsl:if test="not($serializeBody and count($serializeBody/descendant::plx:thisKeyword | $serializeBody/descendant::plx:callThis[not(@accessor!='static')]))">
 						<xsl:attribute name="modifier">
 							<xsl:text>static</xsl:text>
@@ -1706,7 +1723,24 @@
 	</xsl:template>
 	<xsl:template match="se:DomainModel">
 		<xsl:variable name="ModelName" select="@Class"/>
-		<plx:class name="{$ModelName}" visibility="public" partial="true">
+		<xsl:variable name="ClassSealed" select="@Sealed='true'"/>
+		<xsl:variable name="InterfaceImplementationVisibility">
+			<xsl:choose>
+				<xsl:when test="$ClassSealed">
+					<xsl:value-of select="'privateInterfaceMember'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'protected'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<plx:class name="{$ModelName}" visibility="deferToPartial" partial="true">
+			<xsl:if test="$ClassSealed">
+				<!-- Make sure it is really sealed by also rendering the modifier here. -->
+				<xsl:attribute name="modifier">
+					<xsl:value-of select="'sealed'"/>
+				</xsl:attribute>
+			</xsl:if>
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$ModelName} model serialization"/>
 			</plx:leadingInfo>
@@ -1737,7 +1771,7 @@
 				</plx:initialize>
 			</plx:field>
 			<xsl:for-each select="se:Namespaces">
-				<plx:property visibility="protected" name="DefaultElementPrefix" modifier="static">
+				<plx:property visibility="{$InterfaceImplementationVisibility}" name="DefaultElementPrefix" modifier="static">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
@@ -1761,7 +1795,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:function visibility="protected" name="GetCustomElementNamespaces" modifier="static">
+				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomElementNamespaces" modifier="static">
 					<plx:leadingInfo>
 						<plx:docComment>
 							<summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
@@ -1929,7 +1963,7 @@
 			<plx:field name="myValidNamespaces" dataTypeName="Collection" visibility="private" static="true">
 				<plx:passTypeParam dataTypeName=".string"/>
 			</plx:field>
-			<plx:function visibility="protected" name="ShouldSerializeDomainClass">
+			<plx:function visibility="{$InterfaceImplementationVisibility}" name="ShouldSerializeDomainClass">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
@@ -2000,7 +2034,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:function>
-			<plx:function visibility="protected" name="GetRootElementClasses" modifier="static">
+			<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetRootElementClasses" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
@@ -2030,7 +2064,7 @@
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="protected" name="MapRootElement" modifier="static">
+			<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapRootElement" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
@@ -2097,7 +2131,7 @@
 					<plx:defaultValueOf dataTypeName="Guid"/>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="protected" name="MapClassName" modifier="static">
+			<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapClassName" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>

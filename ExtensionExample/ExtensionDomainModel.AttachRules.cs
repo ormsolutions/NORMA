@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.ExtensionExample
 {
 	#region Attach rules to ExtensionDomainModel model
-	public partial class ExtensionDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
+	partial class ExtensionDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes

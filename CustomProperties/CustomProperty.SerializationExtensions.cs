@@ -25,7 +25,7 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.CustomProperties
 {
 	#region CustomPropertiesDomainModel model serialization
-	partial class CustomPropertiesDomainModel : IORMCustomSerializedDomainModel
+	sealed partial class CustomPropertiesDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'CustomPropertiesDomainModel' extension model
@@ -68,13 +68,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass
 		/// </summary>
-		private bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
-		{
-			return true;
-		}
 		bool IORMCustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			return this.ShouldSerializeDomainClass(store, classInfo);
+			return true;
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedDomainModel.GetRootElementClasses
@@ -137,30 +133,23 @@ namespace Neumont.Tools.ORM.CustomProperties
 	}
 	#endregion // CustomPropertiesDomainModel model serialization
 	#region CustomPropertyGroup serialization
-	partial class CustomPropertyGroup : IORMCustomSerializedElement
+	sealed partial class CustomPropertyGroup : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		/// </summary>
-		private ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		{
 			get
 			{
 				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.PropertyInfo;
 			}
 		}
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return this.SupportedCustomSerializedOperations;
-			}
-		}
 		private static ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
 		/// </summary>
-		private ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
 			ORMCustomSerializedChildElementInfo[] ret = CustomPropertyGroup.myCustomSerializedChildElementInfo;
 			if (ret == null)
@@ -171,31 +160,20 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			return ret;
 		}
-		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			return this.GetCustomSerializedChildElementInfo();
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
 		/// </summary>
-		private ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
 		{
 			get
 			{
 				throw new NotSupportedException();
 			}
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
-			}
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		private ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == CustomPropertyGroup.NameDomainPropertyId)
 			{
@@ -215,43 +193,28 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		private ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
 		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			throw new NotSupportedException();
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		private IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return this.CustomSerializedChildRoleComparer;
-			}
-		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		private ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = CustomPropertyGroup.myChildElementMappings;
 			if (childElementMappings == null)
@@ -266,15 +229,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 			childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
 			return rVal;
 		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute
 		/// </summary>
-		private Guid MapAttribute(string xmlNamespace, string attributeName)
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = CustomPropertyGroup.myCustomSerializedAttributes;
 			if (customSerializedAttributes == null)
@@ -294,10 +253,6 @@ namespace Neumont.Tools.ORM.CustomProperties
 			customSerializedAttributes.TryGetValue(key, out rVal);
 			return rVal;
 		}
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return this.MapAttribute(xmlNamespace, attributeName);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.ShouldSerialize
 		/// </summary>
@@ -312,57 +267,39 @@ namespace Neumont.Tools.ORM.CustomProperties
 	}
 	#endregion // CustomPropertyGroup serialization
 	#region CustomPropertyDefinition serialization
-	partial class CustomPropertyDefinition : IORMCustomSerializedElement
+	sealed partial class CustomPropertyDefinition : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		/// </summary>
-		private ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		{
 			get
 			{
 				return ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return this.SupportedCustomSerializedOperations;
-			}
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
 		/// </summary>
-		private ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
 		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
-			return this.GetCustomSerializedChildElementInfo();
+			throw new NotSupportedException();
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
 		/// </summary>
-		private ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
 		{
 			get
 			{
 				throw new NotSupportedException();
 			}
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
-			}
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		private ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == CustomPropertyDefinition.NameDomainPropertyId)
 			{
@@ -410,14 +347,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		private ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId)
@@ -426,43 +359,28 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		private IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return this.CustomSerializedChildRoleComparer;
-			}
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		private ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-		{
-			return default(ORMCustomSerializedElementMatch);
-		}
 		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
 		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			return default(ORMCustomSerializedElementMatch);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute
 		/// </summary>
-		private Guid MapAttribute(string xmlNamespace, string attributeName)
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = CustomPropertyDefinition.myCustomSerializedAttributes;
 			if (customSerializedAttributes == null)
@@ -486,10 +404,6 @@ namespace Neumont.Tools.ORM.CustomProperties
 			customSerializedAttributes.TryGetValue(key, out rVal);
 			return rVal;
 		}
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return this.MapAttribute(xmlNamespace, attributeName);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.ShouldSerialize
 		/// </summary>
@@ -504,57 +418,39 @@ namespace Neumont.Tools.ORM.CustomProperties
 	}
 	#endregion // CustomPropertyDefinition serialization
 	#region CustomProperty serialization
-	partial class CustomProperty : IORMCustomSerializedElement
+	sealed partial class CustomProperty : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		/// </summary>
-		private ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		{
 			get
 			{
 				return ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return this.SupportedCustomSerializedOperations;
-			}
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
 		/// </summary>
-		private ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
 		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
-			return this.GetCustomSerializedChildElementInfo();
+			throw new NotSupportedException();
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
 		/// </summary>
-		private ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
 		{
 			get
 			{
 				throw new NotSupportedException();
 			}
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
-			}
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		private ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == CustomProperty.ValueDomainPropertyId)
 			{
@@ -562,14 +458,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		private ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId)
@@ -578,32 +470,21 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
-		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		private IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return this.CustomSerializedChildRoleComparer;
-			}
-		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		private ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = CustomProperty.myChildElementMappings;
 			if (childElementMappings == null)
@@ -618,15 +499,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 			childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
 			return rVal;
 		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute
 		/// </summary>
-		private Guid MapAttribute(string xmlNamespace, string attributeName)
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = CustomProperty.myCustomSerializedAttributes;
 			if (customSerializedAttributes == null)
@@ -643,10 +520,6 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			customSerializedAttributes.TryGetValue(key, out rVal);
 			return rVal;
-		}
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return this.MapAttribute(xmlNamespace, attributeName);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.ShouldSerialize

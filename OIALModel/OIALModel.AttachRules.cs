@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.OIALModel
 {
 	#region Attach rules to OIALDomainModel model
-	public partial class OIALDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
+	partial class OIALDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes

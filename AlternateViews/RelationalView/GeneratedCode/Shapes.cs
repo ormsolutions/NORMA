@@ -155,7 +155,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			// Custom font styles
 			DslDiagrams::FontSettings fontSettings;
 			fontSettings = new DslDiagrams::FontSettings();
-			fontSettings.Style = global::System.Drawing.FontStyle.Bold;
+			fontSettings.Style =  global::System.Drawing.FontStyle.Bold ;
 			fontSettings.Size = 10/72.0F;
 			classStyleSet.AddFont(new DslDiagrams::StyleSetResourceId(string.Empty, "ShapeTextBold10"), DslDiagrams::DiagramFonts.ShapeText, fontSettings);
 		}

@@ -60,7 +60,7 @@
 					<plx:comment blankLine="true"/>
 				</plx:leadingInfo>
 			</xsl:if>
-			<plx:class name="{@class}" visibility="public" partial="true">
+			<plx:class name="{@class}" visibility="deferToPartial" partial="true">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="Attach rules to {@class} model"/>
 				</plx:leadingInfo>
