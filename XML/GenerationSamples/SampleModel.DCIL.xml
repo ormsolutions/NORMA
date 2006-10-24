@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP">
+<dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dcl:domainDataType name="OptnlUnqStrng">
 		<dcl:predefinedDataType name="CHARACTER" precision="11" />
 		<dcl:checkConstraint name="OptnlUnqStrng_Chk">
@@ -92,22 +92,47 @@
 			<dcl:columnRef name="DrivesCar_vin" />
 			<dcl:columnRef name="DrvnByPrsn_Prsn_d" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsrtPrsnDrvsCr" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="DrivesCar_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DrvnByPrsn_Prsn_d">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="PersonDrivesCar">
+			<dml:fromConstructor>
+				<ddl:column name="DrivesCar_vin" />
+				<ddl:column name="DrvnByPrsn_Prsn_d" />
+				<dep:sqlParameterReference name="DrivesCar_vin" />
+				<dep:sqlParameterReference name="DrvnByPrsn_Prsn_d" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DltPrsnDrvsCr" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="DrivesCar_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DrvnByPrsn_Prsn_d">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="PersonDrivesCar">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="DrivesCar_vin" />
+							<dep:sqlParameterReference name="DrivesCar_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="DrvnByPrsn_Prsn_d" />
+							<dep:sqlParameterReference name="DrvnByPrsn_Prsn_d" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="PBCFPOD">
 		<dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -142,22 +167,64 @@
 			<dcl:columnRef name="SaleDate_YMD" />
 			<dcl:columnRef name="Buyer_Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="IPBCFPOD" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="SaleDate_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="PBCFPOD">
+			<dml:fromConstructor>
+				<ddl:column name="CarSold_vin" />
+				<ddl:column name="SaleDate_YMD" />
+				<ddl:column name="Buyer_Person_id" />
+				<ddl:column name="Seller_Person_id" />
+				<dep:sqlParameterReference name="CarSold_vin" />
+				<dep:sqlParameterReference name="SaleDate_YMD" />
+				<dep:sqlParameterReference name="Buyer_Person_id" />
+				<dep:sqlParameterReference name="Seller_Person_id" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DPBCFPOD" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="PBCFPOD">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="Buyer_Person_id" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="CarSold_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="Seller_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="Review">
 		<dcl:column name="Car_vin" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -172,22 +239,52 @@
 			<dcl:columnRef name="Car_vin" />
 			<dcl:columnRef name="Criterion_Name" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsertReview" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Rating_Nr_Integer">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="Review">
+			<dml:fromConstructor>
+				<ddl:column name="Car_vin" />
+				<ddl:column name="Rating_Nr_Integer" />
+				<ddl:column name="Criterion_Name" />
+				<dep:sqlParameterReference name="Car_vin" />
+				<dep:sqlParameterReference name="Rating_Nr_Integer" />
+				<dep:sqlParameterReference name="Criterion_Name" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeleteReview" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="Review">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Car_vin" />
+							<dep:sqlParameterReference name="Car_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="Criterion_Name" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="PersonHasNickName">
 		<dcl:column name="NickName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
@@ -202,22 +299,47 @@
 			<dcl:columnRef name="NickName" />
 			<dcl:columnRef name="Person_Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsrtPrsnHsNckNm" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="NickName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Person_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="PersonHasNickName">
+			<dml:fromConstructor>
+				<ddl:column name="NickName" />
+				<ddl:column name="Person_Person_id" />
+				<dep:sqlParameterReference name="NickName" />
+				<dep:sqlParameterReference name="Person_Person_id" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DltPrsnHsNckNm" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="NickName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Person_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="PersonHasNickName">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="NickName" />
+							<dep:sqlParameterReference name="NickName" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_Person_id" />
+							<dep:sqlParameterReference name="Person_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="Person">
 		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
@@ -331,22 +453,143 @@
 			<dcl:columnRef name="LastName" />
 			<dcl:columnRef name="Date_YMD" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="FirstName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Date_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="LastName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="OptnlUnqStrng">
+			<dcl:predefinedDataType name="CHARACTER" precision="11" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="HatType_ColorARGB">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="HTHTSHTSD">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="256" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="OwnsCar_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Gender_Gender_Code">
+			<dcl:predefinedDataType name="CHARACTER" precision="1" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="hasParents">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="OptnlUnqDcml">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="MndtryUnqDcml">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="MndtryUnqStrng">
+			<dcl:predefinedDataType name="CHARACTER" precision="11" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Husband_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="VT1DSEWVT1V">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="CPBOBON">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Father_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Mother_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Death_Date_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DDCDCT">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="14" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DNDFPC">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DUDV">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DUDB">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="Person">
+			<dml:fromConstructor>
+				<ddl:column name="FirstName" />
+				<ddl:column name="Person_id" />
+				<ddl:column name="Date_YMD" />
+				<ddl:column name="LastName" />
+				<ddl:column name="OptnlUnqStrng" />
+				<ddl:column name="HatType_ColorARGB" />
+				<ddl:column name="HTHTSHTSD" />
+				<ddl:column name="OwnsCar_vin" />
+				<ddl:column name="Gender_Gender_Code" />
+				<ddl:column name="hasParents" />
+				<ddl:column name="OptnlUnqDcml" />
+				<ddl:column name="MndtryUnqDcml" />
+				<ddl:column name="MndtryUnqStrng" />
+				<ddl:column name="Husband_Person_id" />
+				<ddl:column name="VT1DSEWVT1V" />
+				<ddl:column name="CPBOBON" />
+				<ddl:column name="Father_Person_id" />
+				<ddl:column name="Mother_Person_id" />
+				<ddl:column name="Death_Date_YMD" />
+				<ddl:column name="DDCDCT" />
+				<ddl:column name="DNDFPC" />
+				<ddl:column name="DUDV" />
+				<ddl:column name="DUDB" />
+				<dep:sqlParameterReference name="FirstName" />
+				<dep:sqlParameterReference name="Person_id" />
+				<dep:sqlParameterReference name="Date_YMD" />
+				<dep:sqlParameterReference name="LastName" />
+				<dep:sqlParameterReference name="OptnlUnqStrng" />
+				<dep:sqlParameterReference name="HatType_ColorARGB" />
+				<dep:sqlParameterReference name="HTHTSHTSD" />
+				<dep:sqlParameterReference name="OwnsCar_vin" />
+				<dep:sqlParameterReference name="Gender_Gender_Code" />
+				<dep:sqlParameterReference name="hasParents" />
+				<dep:sqlParameterReference name="OptnlUnqDcml" />
+				<dep:sqlParameterReference name="MndtryUnqDcml" />
+				<dep:sqlParameterReference name="MndtryUnqStrng" />
+				<dep:sqlParameterReference name="Husband_Person_id" />
+				<dep:sqlParameterReference name="VT1DSEWVT1V" />
+				<dep:sqlParameterReference name="CPBOBON" />
+				<dep:sqlParameterReference name="Father_Person_id" />
+				<dep:sqlParameterReference name="Mother_Person_id" />
+				<dep:sqlParameterReference name="Death_Date_YMD" />
+				<dep:sqlParameterReference name="DDCDCT" />
+				<dep:sqlParameterReference name="DNDFPC" />
+				<dep:sqlParameterReference name="DUDV" />
+				<dep:sqlParameterReference name="DUDB" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeletePerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="Person">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="Task">
 		<dcl:column name="Task_id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -360,22 +603,38 @@
 		<dcl:referenceConstraint name="Person_FK" targetTable="Person">
 			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsertTask" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Task_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Person_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="Task">
+			<dml:fromConstructor>
+				<ddl:column name="Task_id" />
+				<ddl:column name="Person_Person_id" />
+				<dep:sqlParameterReference name="Task_id" />
+				<dep:sqlParameterReference name="Person_Person_id" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeleteTask" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Task_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="Task">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Task_id" />
+						<dep:sqlParameterReference name="Task_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="ValueType1">
 		<dcl:column name="ValueType1Value" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -389,20 +648,36 @@
 		<dcl:referenceConstraint name="DsSmthngWthPrsn_FK" targetTable="Person">
 			<dcl:columnRef sourceName="DSWPP" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsertValueType1" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="ValueType1Value">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="DSWPP">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="ValueType1">
+			<dml:fromConstructor>
+				<ddl:column name="ValueType1Value" />
+				<ddl:column name="DSWPP" />
+				<dep:sqlParameterReference name="ValueType1Value" />
+				<dep:sqlParameterReference name="DSWPP" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeleteValueType1" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="ValueType1Value">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="ValueType1">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="ValueType1Value" />
+						<dep:sqlParameterReference name="ValueType1Value" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 </dcl:schema>

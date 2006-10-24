@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -12,14 +12,13 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
 
@@ -34,7 +33,7 @@
 		<xsl:apply-templates select="oil:model/oil:informationTypeFormats/child::*" mode="GenerateInformationTypeFormatMapping"/>
 	</xsl:variable>
 	<xsl:variable name="InformationTypeFormatMappings" select="exsl:node-set($InformationTypeFormatMappingsFragment)/child::*"/>
-	
+
 	<xsl:template match="/">
 		<xsl:variable name="ConceptTypeRefs" select="oil:model//oil:conceptTypeRef"/>
 		<prop:AllProperties>
@@ -148,7 +147,7 @@
 			as well as nested oil:conceptType elements and oil:conceptType elements that we are nested within.
 			Also process all oil:conceptTypeRef elements that are targetted at us.-->
 
-		<!-- 
+		<!--
 		All informationTypes of the current conceptType that does not have a singleRoleUniquenessConstraint
 		or have a singleRoleUniquenessConstraint/@isPreferred='false'
 		or singleRoleUniquenessConstraint/@isPreferred='true' but has a parent conceptType that is not a child of another conceptType
@@ -179,7 +178,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="oil:conceptTypeRef">
 			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{@oppositeName}">
 				<prop:DataType dataTypeName="{@target}"/>

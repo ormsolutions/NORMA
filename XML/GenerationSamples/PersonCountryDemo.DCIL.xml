@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<dcl:schema name="PersonCountryDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP">
+<dcl:schema name="PersonCountryDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dcl:domainDataType name="Title">
 		<dcl:predefinedDataType name="CHARACTER VARYING" precision="4" />
 		<dcl:checkConstraint name="Title_Chk">
@@ -53,22 +53,53 @@
 		<dcl:referenceConstraint name="Country_FK" targetTable="Country">
 			<dcl:columnRef sourceName="Cntry_Cntry_nm" targetName="Country_name" />
 		</dcl:referenceConstraint>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="LastName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="FirstName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Title">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="4" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Cntry_Cntry_nm">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+		</dcl:parameter>
+		<dml:insertStatement schema="PersonCountryDemo" name="Person">
+			<dml:fromConstructor>
+				<ddl:column name="Person_id" />
+				<ddl:column name="LastName" />
+				<ddl:column name="FirstName" />
+				<ddl:column name="Title" />
+				<ddl:column name="Cntry_Cntry_nm" />
+				<dep:sqlParameterReference name="Person_id" />
+				<dep:sqlParameterReference name="LastName" />
+				<dep:sqlParameterReference name="FirstName" />
+				<dep:sqlParameterReference name="Title" />
+				<dep:sqlParameterReference name="Cntry_Cntry_nm" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeletePerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="PersonCountryDemo" name="Person">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 	<dcl:table name="Country">
 		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
@@ -79,20 +110,36 @@
 		<dcl:column name="Region_Region_code" isNullable="true" isIdentity="false">
 			<dcl:domainDataTypeRef name="Region_code" />
 		</dcl:column>
-		<dcl:column name="INSERT_DATE" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="UPDATE_DATE" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="DATE" />
-		</dcl:column>
-		<dcl:column name="ERROR_FLAG_IND" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="FLOAT" />
-		</dcl:column>
-		<dcl:column name="SOURCE_SYSTEM_CD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="10" />
-		</dcl:column>
-		<dcl:column name="STUDY_SHORT_NAME" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
-		</dcl:column>
 	</dcl:table>
+	<dcl:procedure name="InsertCountry" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Country_name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Region_Region_code">
+			<dcl:predefinedDataType name="CHARACTER" precision="8" />
+		</dcl:parameter>
+		<dml:insertStatement schema="PersonCountryDemo" name="Country">
+			<dml:fromConstructor>
+				<ddl:column name="Country_name" />
+				<ddl:column name="Region_Region_code" />
+				<dep:sqlParameterReference name="Country_name" />
+				<dep:sqlParameterReference name="Region_Region_code" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeleteCountry" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:parameter mode="IN" name="Country_name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="PersonCountryDemo" name="Country">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Country_name" />
+						<dep:sqlParameterReference name="Country_name" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
 </dcl:schema>
