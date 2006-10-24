@@ -119,7 +119,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -224,7 +224,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -328,7 +328,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -338,7 +338,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -369,7 +369,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint49");
 			// 
 			// lblCurrentObject
@@ -398,7 +398,7 @@
 			this.dgvCurrentObject.Columns.Add("Person", "Person");
 			this.dgvCurrentObject.Columns["Person"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -429,7 +429,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -600,7 +600,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -706,7 +706,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -811,7 +811,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -821,7 +821,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -852,7 +852,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			// 
 			// lblCurrentObject
 			// 
@@ -882,7 +882,7 @@
 			this.dgvCurrentObject.Columns.Add("Person", "Person");
 			this.dgvCurrentObject.Columns["Person"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -913,7 +913,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -1085,7 +1085,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -1187,7 +1187,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -1288,7 +1288,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -1298,7 +1298,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -1329,7 +1329,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			// 
 			// lblCurrentObject
 			// 
@@ -1351,7 +1351,7 @@
 			this.dgvCurrentObject.Columns.Add("Person", "Person");
 			this.dgvCurrentObject.Columns["Person"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -1382,7 +1382,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -1550,7 +1550,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -1652,7 +1652,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -1753,7 +1753,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -1763,7 +1763,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -1794,7 +1794,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			// 
 			// lblCurrentObject
 			// 
@@ -1816,7 +1816,7 @@
 			this.dgvCurrentObject.Columns.Add("Person", "Person");
 			this.dgvCurrentObject.Columns["Person"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -1847,7 +1847,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -2015,7 +2015,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -2118,7 +2118,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -2220,7 +2220,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -2230,7 +2230,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -2261,7 +2261,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			// 
 			// lblCurrentObject
 			// 
@@ -2285,7 +2285,7 @@
 			this.dgvCurrentObject.Columns.Add("Death", "Death");
 			this.dgvCurrentObject.Columns["Death"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -2316,7 +2316,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -2485,7 +2485,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -2590,7 +2590,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -2694,7 +2694,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -2704,7 +2704,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -2735,7 +2735,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint23");
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint24");
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint25");
@@ -2766,7 +2766,7 @@
 			this.dgvCurrentObject.Columns.Add("Seller(Person_id)", "Seller(Person_id)");
 			this.dgvCurrentObject.Columns["Seller(Person_id)"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -2797,7 +2797,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -2968,7 +2968,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -2995,6 +2995,7 @@
 			this.dgvCreate.Columns.Add("FemalePerson", "FemalePerson");
 			this.dgvCreate.Columns.Add("ChildPerson", "ChildPerson");
 			this.dgvCreate.Columns.Add("Death", "Death");
+			this.dgvCreate.Columns.Add("Wife", "Wife");
 			this.dgvCreate.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCreate.Height = 75;
 			// 
@@ -3087,7 +3088,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -3097,7 +3098,6 @@
 			this.dgvCollection.Name = "dgvCollection";
 			this.dgvCollection.TabIndex = 0;
 			this.dgvCollection.Columns.Add("FirstName", "FirstName");
-			this.dgvCollection.Columns.Add("Person_id", "Person_id");
 			this.dgvCollection.Columns.Add("Date_YMD", "Date_YMD");
 			this.dgvCollection.Columns.Add("LastName", "LastName");
 			this.dgvCollection.Columns.Add("OptionalUniqueString", "OptionalUniqueString");
@@ -3115,6 +3115,7 @@
 			this.dgvCollection.Columns.Add("FemalePerson", "FemalePerson");
 			this.dgvCollection.Columns.Add("ChildPerson", "ChildPerson");
 			this.dgvCollection.Columns.Add("Death", "Death");
+			this.dgvCollection.Columns.Add("Wife", "Wife");
 			this.dgvCollection.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCollection.Height = 300;
 			// 
@@ -3206,7 +3207,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -3216,7 +3217,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -3247,7 +3248,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("ExternalUniquenessConstraint1");
 			this.cbxSelectionMode.Items.Add("ExternalUniquenessConstraint2");
 			this.cbxSelectionMode.Items.Add("MandatoryUniqueDecimal");
@@ -3255,7 +3256,6 @@
 			this.cbxSelectionMode.Items.Add("OptionalUniqueDecimal");
 			this.cbxSelectionMode.Items.Add("OptionalUniqueString");
 			this.cbxSelectionMode.Items.Add("OwnsCar_vin");
-			this.cbxSelectionMode.Items.Add("Person_id");
 			// 
 			// lblCurrentObject
 			// 
@@ -3276,8 +3276,6 @@
 			this.dgvCurrentObject.TabIndex = 4;
 			this.dgvCurrentObject.Columns.Add("FirstName", "FirstName");
 			this.dgvCurrentObject.Columns["FirstName"].Visible = false;
-			this.dgvCurrentObject.Columns.Add("Person_id", "Person_id");
-			this.dgvCurrentObject.Columns["Person_id"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("Date_YMD", "Date_YMD");
 			this.dgvCurrentObject.Columns["Date_YMD"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("LastName", "LastName");
@@ -3312,9 +3310,10 @@
 			this.dgvCurrentObject.Columns["ChildPerson"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("Death", "Death");
 			this.dgvCurrentObject.Columns["Death"].Visible = false;
+			this.dgvCurrentObject.Columns.Add("Wife", "Wife");
+			this.dgvCurrentObject.Columns["Wife"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.Columns["Person_id"].ReadOnly = true;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -3345,7 +3344,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -3355,7 +3354,6 @@
 			this.dgvSelect.Name = "dgvSelect";
 			this.dgvSelect.TabIndex = 0;
 			this.dgvSelect.Columns.Add("FirstName", "FirstName");
-			this.dgvSelect.Columns.Add("Person_id", "Person_id");
 			this.dgvSelect.Columns.Add("Date_YMD", "Date_YMD");
 			this.dgvSelect.Columns.Add("LastName", "LastName");
 			this.dgvSelect.Columns.Add("OptionalUniqueString", "OptionalUniqueString");
@@ -3373,6 +3371,7 @@
 			this.dgvSelect.Columns.Add("FemalePerson", "FemalePerson");
 			this.dgvSelect.Columns.Add("ChildPerson", "ChildPerson");
 			this.dgvSelect.Columns.Add("Death", "Death");
+			this.dgvSelect.Columns.Add("Wife", "Wife");
 			this.dgvSelect.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvSelect.Height = 75;
 			// 
@@ -3531,7 +3530,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -3634,7 +3633,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -3736,7 +3735,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -3746,7 +3745,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -3777,7 +3776,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint18");
 			// 
 			// lblCurrentObject
@@ -3802,7 +3801,7 @@
 			this.dgvCurrentObject.Columns.Add("DrivenByPerson(Person_id)", "DrivenByPerson(Person_id)");
 			this.dgvCurrentObject.Columns["DrivenByPerson(Person_id)"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -3833,7 +3832,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -4002,7 +4001,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -4105,7 +4104,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -4207,7 +4206,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -4217,7 +4216,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -4248,7 +4247,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint33");
 			// 
 			// lblCurrentObject
@@ -4273,7 +4272,7 @@
 			this.dgvCurrentObject.Columns.Add("Person(Person_id)", "Person(Person_id)");
 			this.dgvCurrentObject.Columns["Person(Person_id)"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -4304,7 +4303,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -4473,7 +4472,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -4577,7 +4576,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -4680,7 +4679,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -4690,7 +4689,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -4721,7 +4720,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("InternalUniquenessConstraint26");
 			// 
 			// lblCurrentObject
@@ -4748,7 +4747,7 @@
 			this.dgvCurrentObject.Columns.Add("Criterion_Name", "Criterion_Name");
 			this.dgvCurrentObject.Columns["Criterion_Name"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -4779,7 +4778,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -4949,7 +4948,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -5051,7 +5050,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -5060,7 +5059,6 @@
 			this.dgvCollection.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvCollection.Name = "dgvCollection";
 			this.dgvCollection.TabIndex = 0;
-			this.dgvCollection.Columns.Add("Task_id", "Task_id");
 			this.dgvCollection.Columns.Add("Person", "Person");
 			this.dgvCollection.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvCollection.Height = 300;
@@ -5153,7 +5151,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -5163,7 +5161,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -5194,8 +5192,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
-			this.cbxSelectionMode.Items.Add("Task_id");
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			// 
 			// lblCurrentObject
 			// 
@@ -5214,13 +5211,10 @@
 			this.dgvCurrentObject.Name = "dgvCurrentObject";
 			this.dgvCurrentObject.Size = new System.Drawing.Size(500, 150);
 			this.dgvCurrentObject.TabIndex = 4;
-			this.dgvCurrentObject.Columns.Add("Task_id", "Task_id");
-			this.dgvCurrentObject.Columns["Task_id"].Visible = false;
 			this.dgvCurrentObject.Columns.Add("Person", "Person");
 			this.dgvCurrentObject.Columns["Person"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.Columns["Task_id"].ReadOnly = true;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -5251,7 +5245,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -5260,7 +5254,6 @@
 			this.dgvSelect.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvSelect.Name = "dgvSelect";
 			this.dgvSelect.TabIndex = 0;
-			this.dgvSelect.Columns.Add("Task_id", "Task_id");
 			this.dgvSelect.Columns.Add("Person", "Person");
 			this.dgvSelect.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.dgvSelect.Height = 75;
@@ -5420,7 +5413,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -5524,7 +5517,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -5627,7 +5620,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -5637,7 +5630,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -5668,7 +5661,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			// 
 			// lblCurrentObject
 			// 
@@ -5694,7 +5687,7 @@
 			this.dgvCurrentObject.Columns.Add("Death", "Death");
 			this.dgvCurrentObject.Columns["Death"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -5725,7 +5718,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 
@@ -5895,7 +5888,7 @@
 			this.btnCreate.TabIndex = 3;
 			this.btnCreate.Text = "Create";
 			this.btnCreate.UseVisualStyleBackColor = true;
-			this.btnCreate.Click += new System.EventHandler(btnCreate_Click);
+			this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
 			// 
 			// dgv
 			// 
@@ -5998,7 +5991,7 @@
 			this.btnCollection.TabIndex = 3;
 			this.btnCollection.Text = "Collection";
 			this.btnCollection.UseVisualStyleBackColor = true;
-			this.btnCollection.Click += new System.EventHandler(btnCollection_Click);
+			this.btnCollection.Click += new System.EventHandler(this.btnCollection_Click);
 			// 
 			// dgv
 			// 
@@ -6100,7 +6093,7 @@
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(btnCancel_Click);
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSave
 			// 
@@ -6110,7 +6103,7 @@
 			this.btnSave.TabIndex = 7;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
-			this.btnSave.Click += new System.EventHandler(btnSave_Click);
+			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// pnlSave
 			// 
@@ -6141,7 +6134,7 @@
 			this.cbxSelectionMode.Size = new System.Drawing.Size(200, 15);
 			this.cbxSelectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxSelectionMode.TabIndex = 2;
-			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(cbxSelectionMode_SelectedIndexChanged);
+			this.cbxSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbxSelectionMode_SelectedIndexChanged);
 			this.cbxSelectionMode.Items.Add("ValueType1Value");
 			// 
 			// lblCurrentObject
@@ -6166,7 +6159,7 @@
 			this.dgvCurrentObject.Columns.Add("DoesSomethingWithPerson", "DoesSomethingWithPerson");
 			this.dgvCurrentObject.Columns["DoesSomethingWithPerson"].Visible = false;
 			this.dgvCurrentObject.Visible = false;
-			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(dgvCurrentObject_CellBeginEdit);
+			this.dgvCurrentObject.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCurrentObject_CellBeginEdit);
 			this.Controls.Add(this.pnlSave);
 			this.Controls.Add(this.dgvCurrentObject);
 			// 
@@ -6197,7 +6190,7 @@
 			this.btnSelect.TabIndex = 3;
 			this.btnSelect.Text = "Select";
 			this.btnSelect.UseVisualStyleBackColor = true;
-			this.btnSelect.Click += new System.EventHandler(btnSelect_Click);
+			this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
 			// 
 			// dgv
 			// 

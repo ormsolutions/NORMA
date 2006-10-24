@@ -31,7 +31,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -384,7 +384,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -588,7 +588,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnCreate" type="field" accessor="this" />
 							</plx:callObject>
@@ -597,7 +597,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnCreate_Click" />
+								<plx:callThis name="btnCreate_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -959,7 +959,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -1163,7 +1163,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnCollection" type="field" accessor="this" />
 							</plx:callObject>
@@ -1172,7 +1172,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnCollection_Click" />
+								<plx:callThis name="btnCollection_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1543,7 +1543,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -1740,7 +1740,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnCancel" type="field" accessor="this" />
 							</plx:callObject>
@@ -1749,7 +1749,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnCancel_Click" />
+								<plx:callThis name="btnCancel_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -1834,7 +1834,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnSave" type="field" accessor="this" />
 							</plx:callObject>
@@ -1843,7 +1843,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnSave_Click" />
+								<plx:callThis name="btnSave_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2127,7 +2127,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="SelectedIndexChanged" type="property">
+						<plx:callInstance name="SelectedIndexChanged" type="event">
 							<plx:callObject>
 								<plx:callThis name="cbxSelectionMode" type="field" accessor="this" />
 							</plx:callObject>
@@ -2136,7 +2136,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="cbxSelectionMode_SelectedIndexChanged" />
+								<plx:callThis name="cbxSelectionMode_SelectedIndexChanged" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2414,7 +2414,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="CellBeginEdit" type="property">
+						<plx:callInstance name="CellBeginEdit" type="event">
 							<plx:callObject>
 								<plx:callThis name="dgvCurrentObject" type="field" accessor="this" />
 							</plx:callObject>
@@ -2423,7 +2423,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="DataGridViewCellCancelEventHandler" dataTypeQualifier="System.Windows.Forms" type="new">
 							<plx:passParam>
-								<plx:nameRef name="dgvCurrentObject_CellBeginEdit" />
+								<plx:callThis name="dgvCurrentObject_CellBeginEdit" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -2612,7 +2612,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnSelect" type="field" accessor="this" />
 							</plx:callObject>
@@ -2621,7 +2621,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnSelect_Click" />
+								<plx:callThis name="btnSelect_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -3059,7 +3059,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -3412,7 +3412,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -3616,7 +3616,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnCreate" type="field" accessor="this" />
 							</plx:callObject>
@@ -3625,7 +3625,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnCreate_Click" />
+								<plx:callThis name="btnCreate_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4025,7 +4025,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -4229,7 +4229,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnCollection" type="field" accessor="this" />
 							</plx:callObject>
@@ -4238,7 +4238,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnCollection_Click" />
+								<plx:callThis name="btnCollection_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4302,25 +4302,6 @@
 						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCollection" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
 					<plx:callObject>
 						<plx:callInstance name="Columns" type="property">
@@ -4666,7 +4647,7 @@
 								<plx:nameRef name="disposing" />
 							</plx:left>
 							<plx:right>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:nameRef name="components" />
 									</plx:left>
@@ -4863,7 +4844,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnCancel" type="field" accessor="this" />
 							</plx:callObject>
@@ -4872,7 +4853,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnCancel_Click" />
+								<plx:callThis name="btnCancel_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -4957,7 +4938,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnSave" type="field" accessor="this" />
 							</plx:callObject>
@@ -4966,7 +4947,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnSave_Click" />
+								<plx:callThis name="btnSave_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5250,7 +5231,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="SelectedIndexChanged" type="property">
+						<plx:callInstance name="SelectedIndexChanged" type="event">
 							<plx:callObject>
 								<plx:callThis name="cbxSelectionMode" type="field" accessor="this" />
 							</plx:callObject>
@@ -5259,23 +5240,11 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="cbxSelectionMode_SelectedIndexChanged" />
+								<plx:callThis name="cbxSelectionMode_SelectedIndexChanged" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
 				</plx:attachEvent>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Items" type="property">
-							<plx:callObject>
-								<plx:callThis name="cbxSelectionMode" type="field" accessor="this" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:comment />
 				<plx:comment>lblCurrentObject</plx:comment>
 				<plx:comment />
@@ -5437,48 +5406,6 @@
 					</plx:left>
 					<plx:right>
 						<plx:value data="4" type="i4" />
-					</plx:right>
-				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvCurrentObject" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Visible" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Columns" type="property">
-									<plx:callObject>
-										<plx:callInstance name="dgvCurrentObject" type="field">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string data="Person_id" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:falseKeyword />
 					</plx:right>
 				</plx:assign>
 				<plx:callInstance name="Add" type="methodCall">
@@ -5661,32 +5588,9 @@
 						<plx:falseKeyword />
 					</plx:right>
 				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="ReadOnly" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Columns" type="property">
-									<plx:callObject>
-										<plx:callInstance name="dgvCurrentObject" type="field">
-											<plx:callObject>
-												<plx:thisKeyword />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string data="Person_id" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:trueKeyword />
-					</plx:right>
-				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="CellBeginEdit" type="property">
+						<plx:callInstance name="CellBeginEdit" type="event">
 							<plx:callObject>
 								<plx:callThis name="dgvCurrentObject" type="field" accessor="this" />
 							</plx:callObject>
@@ -5695,7 +5599,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="DataGridViewCellCancelEventHandler" dataTypeQualifier="System.Windows.Forms" type="new">
 							<plx:passParam>
-								<plx:nameRef name="dgvCurrentObject_CellBeginEdit" />
+								<plx:callThis name="dgvCurrentObject_CellBeginEdit" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5884,7 +5788,7 @@
 				</plx:assign>
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btnSelect" type="field" accessor="this" />
 							</plx:callObject>
@@ -5893,7 +5797,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btnSelect_Click" />
+								<plx:callThis name="btnSelect_Click" type="methodReference" />
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>
@@ -5957,25 +5861,6 @@
 						<plx:value data="0" type="i4" />
 					</plx:right>
 				</plx:assign>
-				<plx:callInstance name="Add" type="methodCall">
-					<plx:callObject>
-						<plx:callInstance name="Columns" type="property">
-							<plx:callObject>
-								<plx:callInstance name="dgvSelect" type="field">
-									<plx:callObject>
-										<plx:thisKeyword />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string data="Person_id" />
-					</plx:passParam>
-				</plx:callInstance>
 				<plx:callInstance name="Add" type="methodCall">
 					<plx:callObject>
 						<plx:callInstance name="Columns" type="property">

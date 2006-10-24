@@ -30,9 +30,10 @@
 			<xs:documentation>A collection of Property elements for an oil:conceptType.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="prop:Property" minOccurs="0" maxOccurs="unbounded"/>
-			</xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="prop:IdentityField"/>
+				<xs:element ref="prop:Property"/>
+			</xs:choice>
 			<xs:attribute name="conceptTypeName" use="required" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>The name of the oil:conceptType that this Properties element is for.</xs:documentation>
@@ -44,9 +45,23 @@
 			<xs:field xpath="@conceptTypeName"/>
 		</xs:key>
 		<xs:key name="PropertyKey">
-			<xs:selector xpath="prop:Property"/>
+			<xs:selector xpath="prop:Property|prop:IdentityField"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
+	</xs:element>
+	<xs:element name="IdentityField">
+		<xs:annotation>
+			<xs:documentation>Represents a CLI field for an identity property.</xs:documentation>
+			<xs:documentation>This is used for data access layer implementations, and never effects the abstract classes and/or interfaces.</xs:documentation>
+			<xs:documentation>It can be ignored for other implementations where it is not relevant (e.g. in-memory).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="xs:token">
+				<xs:annotation>
+					<xs:documentation>The name of this IdentityField.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
 	</xs:element>
 	<xs:element name="Property">
 		<xs:annotation>
@@ -80,11 +95,6 @@
 				<xs:annotation>
 					<xs:documentation>If true, the data type of this Property is a custom-generated type which should be notified when this property changes.</xs:documentation>
 					<xs:documentation>Note that a Property can have both @isCollection and @isCutomType be true, meaning that it is a collection of custom types.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="isIdentity" use="optional" type="oil:canonicalBoolean">
-				<xs:annotation>
-					<xs:documentation>If true, the value of this Property is auto-generated; therefore, any property generated must be read-only.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="canBeNull" use="required" type="oil:canonicalBoolean">

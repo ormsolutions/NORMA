@@ -143,10 +143,363 @@
 				<plx:pragma type="closeRegion" data="Global Support Classes"/>
 			</plx:trailingInfo>
 			<xsl:call-template name="GenerateCommonTuples"/>
-			<plx:interface visibility="public" name="IPropertyChangeEventArgs">
+			<plx:class visibility="public" modifier="static" name="EventHandlerUtility">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="Property Change Event Support"/>
 				</plx:leadingInfo>
+
+				<plx:function visibility="public" name="InvokeCancelableEventHandler" modifier="static">
+					<plx:typeParam name="TEventArgs">
+						<plx:typeConstraint dataTypeName="CancelEventArgs"/>
+					</plx:typeParam>
+					<plx:param name="cancelableEventHandler" dataTypeName="EventHandler">
+						<plx:passTypeParam dataTypeName="TEventArgs"/>
+					</plx:param>
+					<plx:param name="sender" dataTypeName=".object"/>
+					<plx:param name="e" dataTypeName="TEventArgs"/>
+					<plx:returns dataTypeName=".boolean"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef name="cancelableEventHandler" type="parameter"/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="cancelableEventHandler"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef name="e" type="parameter"/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="e"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+					<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="GetInvocationList">
+								<plx:callObject>
+									<plx:nameRef name="cancelableEventHandler" type="parameter"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop checkCondition="before">
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value data="0" type="i4"/>
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:nameRef name="i"/>
+										</plx:left>
+										<plx:right>
+											<plx:callInstance name="Length" type="property">
+												<plx:callObject>
+													<plx:nameRef name="invocationList" type="local"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:unaryOperator type="booleanNot">
+										<plx:callInstance name="Cancel" type="property">
+											<plx:callObject>
+												<plx:nameRef name="e" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:unaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment type="post">
+								<plx:nameRef name="i" type="local"/>
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:callInstance name="Invoke" type="methodCall">
+							<plx:callObject>
+								<plx:cast dataTypeName="EventHandler">
+									<plx:passTypeParam dataTypeName="TEventArgs"/>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="invocationList" type="local"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="i" type="local"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="sender" type="parameter"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="e" type="parameter"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:loop>
+					<plx:return>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance name="Cancel" type="property">
+								<plx:callObject>
+									<plx:nameRef name="e" type="parameter"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:return>
+				</plx:function>
+
+				<plx:function visibility="public" name="InvokeEventHandlerAsync" modifier="static">
+					<plx:typeParam name="TEventArgs">
+						<plx:typeConstraint dataTypeName="EventArgs"/>
+					</plx:typeParam>
+					<plx:param name="eventHandler" dataTypeName="EventHandler">
+						<plx:passTypeParam dataTypeName="TEventArgs"/>
+					</plx:param>
+					<plx:param name="sender" dataTypeName=".object"/>
+					<plx:param name="e" dataTypeName="TEventArgs"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef name="eventHandler" type="parameter"/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="eventHandler"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+					<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="GetInvocationList" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="eventHandler" type="parameter"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop checkCondition="before">
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value data="0" type="i4"/>
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef name="i" type="local"/>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="Length" type="property">
+										<plx:callObject>
+											<plx:nameRef name="invocationList" type="local"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment type="post">
+								<plx:nameRef name="i" type="local"/>
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local name="currentEventHandler" dataTypeName="EventHandler">
+							<plx:passTypeParam dataTypeName="TEventArgs"/>
+							<plx:initialize>
+								<plx:cast type="exceptionCast" dataTypeName="EventHandler">
+									<plx:passTypeParam dataTypeName="TEventArgs"/>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="invocationList" type="local"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="i" type="local"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:initialize>
+						</plx:local>
+						<plx:callInstance name="BeginInvoke">
+							<plx:callObject>
+								<plx:nameRef name="currentEventHandler" type="local"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="sender" type="parameter"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="e" type="parameter"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew dataTypeName="AsyncCallback">
+									<plx:passParam>
+										<plx:callInstance name="EndInvoke" type="methodReference">
+											<plx:callObject>
+												<plx:nameRef name="currentEventHandler" type="local"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:loop>
+				</plx:function>
+
+				<plx:function visibility="public" name="InvokeEventHandlerAsync" modifier="static">
+					<plx:param name="eventHandler" dataTypeName="PropertyChangedEventHandler"/>
+					<plx:param name="sender" dataTypeName=".object"/>
+					<plx:param name="e" dataTypeName="PropertyChangedEventArgs"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef name="eventHandler" type="parameter"/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="eventHandler"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+					<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="GetInvocationList" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="eventHandler" type="parameter"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop checkCondition="before">
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value data="0" type="i4"/>
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef name="i" type="local"/>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="Length" type="property">
+										<plx:callObject>
+											<plx:nameRef name="invocationList" type="local"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment type="post">
+								<plx:nameRef name="i" type="local"/>
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local name="currentEventHandler" dataTypeName="PropertyChangedEventHandler">
+							<plx:initialize>
+								<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="invocationList" type="local"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="i" type="local"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:initialize>
+						</plx:local>
+						<plx:callInstance name="BeginInvoke">
+							<plx:callObject>
+								<plx:nameRef name="currentEventHandler" type="local"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="sender" type="parameter"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="e" type="parameter"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew dataTypeName="AsyncCallback">
+									<plx:passParam>
+										<plx:callInstance name="EndInvoke" type="methodReference">
+											<plx:callObject>
+												<plx:nameRef name="currentEventHandler" type="local"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:loop>
+				</plx:function>
+
+			</plx:class>
+			<plx:interface visibility="public" name="IPropertyChangeEventArgs">
 				<plx:attribute dataTypeName="SuppressMessageAttribute">
 					<plx:passParam>
 						<plx:string data="Microsoft.Naming"/>

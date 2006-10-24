@@ -371,15 +371,6 @@ namespace SampleModel
 				this._ExternalUniquenessConstraint2Dictionary.Add(newValue, instance);
 			}
 		}
-		private readonly Dictionary<object, Person> _PersonPerson_idDictionary = new Dictionary<object, Person>();
-		public Person GetPersonByPerson_id(object Person_id)
-		{
-			return this._PersonPerson_idDictionary[Person_id];
-		}
-		public bool TryGetPersonByPerson_id(object Person_id, out Person Person)
-		{
-			return this._PersonPerson_idDictionary.TryGetValue(Person_id, out Person);
-		}
 		private readonly Dictionary<string, Person> _PersonOptionalUniqueStringDictionary = new Dictionary<string, Person>();
 		public Person GetPersonByOptionalUniqueString(string OptionalUniqueString)
 		{
@@ -424,15 +415,6 @@ namespace SampleModel
 		public bool TryGetPersonByMandatoryUniqueString(string MandatoryUniqueString, out Person Person)
 		{
 			return this._PersonMandatoryUniqueStringDictionary.TryGetValue(MandatoryUniqueString, out Person);
-		}
-		private readonly Dictionary<object, Task> _TaskTask_idDictionary = new Dictionary<object, Task>();
-		public Task GetTaskByTask_id(object Task_id)
-		{
-			return this._TaskTask_idDictionary[Task_id];
-		}
-		public bool TryGetTaskByTask_id(object Task_id, out Task Task)
-		{
-			return this._TaskTask_idDictionary.TryGetValue(Task_id, out Task);
 		}
 		private readonly Dictionary<int, ValueType1> _ValueType1ValueType1ValueDictionary = new Dictionary<int, ValueType1>();
 		public ValueType1 GetValueType1ByValueType1Value(int ValueType1Value)
@@ -584,9 +566,13 @@ namespace SampleModel
 			{
 				this._instance = instance;
 			}
-			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			private System.Collections.IEnumerator GetNonGenericEnumerator()
 			{
 				return this.GetEnumerator();
+			}
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return this.GetNonGenericEnumerator();
 			}
 			public IEnumerator<TProperty> GetEnumerator()
 			{
@@ -662,9 +648,13 @@ namespace SampleModel
 				this._instance = instance;
 				this._PropertyName = propertyName;
 			}
-			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			private System.Collections.IEnumerator GetNonGenericEnumerator()
 			{
 				return this.GetEnumerator();
+			}
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return this.GetNonGenericEnumerator();
 			}
 			public IEnumerator<TProperty> GetEnumerator()
 			{
@@ -1998,7 +1988,7 @@ namespace SampleModel
 				value.Person = null;
 			}
 		}
-		private bool OnPersonWifeViaHusbandCollectionChanging(Person instance, Person newValue)
+		private bool OnPersonWifeChanging(Person instance, Person newValue)
 		{
 			if ((object)newValue != null)
 			{
@@ -2009,11 +1999,11 @@ namespace SampleModel
 			}
 			return true;
 		}
-		private void OnPersonWifeViaHusbandCollectionChanged(Person instance, Person oldValue)
+		private void OnPersonWifeChanged(Person instance, Person oldValue)
 		{
-			if ((object)instance.WifeViaHusbandCollection != null)
+			if ((object)instance.Wife != null)
 			{
-				instance.WifeViaHusbandCollection.Husband = instance;
+				instance.Wife.Husband = instance;
 			}
 			if ((object)oldValue != null)
 			{
@@ -2126,15 +2116,6 @@ namespace SampleModel
 							base.OnFirstNameChanged(oldValue);
 						}
 					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("Person_id")]
-			private object _Person_id;
-			public override object Person_id
-			{
-				get
-				{
-					return this;
 				}
 			}
 			[AccessedThroughPropertyAttribute("Date_YMD")]
@@ -2555,24 +2536,24 @@ namespace SampleModel
 					return this._PersonHasNickNameViaPersonCollection;
 				}
 			}
-			[AccessedThroughPropertyAttribute("WifeViaHusbandCollection")]
-			private Person _WifeViaHusbandCollection;
-			public override Person WifeViaHusbandCollection
+			[AccessedThroughPropertyAttribute("Wife")]
+			private Person _Wife;
+			public override Person Wife
 			{
 				get
 				{
-					return this._WifeViaHusbandCollection;
+					return this._Wife;
 				}
 				set
 				{
-					Person oldValue = this._WifeViaHusbandCollection;
+					Person oldValue = this._Wife;
 					if ((object)oldValue != value)
 					{
-						if (this._Context.OnPersonWifeViaHusbandCollectionChanging(this, value) && base.OnWifeViaHusbandCollectionChanging(value))
+						if (this._Context.OnPersonWifeChanging(this, value) && base.OnWifeChanging(value))
 						{
-							this._WifeViaHusbandCollection = value;
-							this._Context.OnPersonWifeViaHusbandCollectionChanged(this, oldValue);
-							base.OnWifeViaHusbandCollectionChanged(oldValue);
+							this._Wife = value;
+							this._Context.OnPersonWifeChanged(this, oldValue);
+							base.OnWifeChanged(oldValue);
 						}
 					}
 				}
@@ -3648,15 +3629,6 @@ namespace SampleModel
 				get
 				{
 					return this._Context;
-				}
-			}
-			[AccessedThroughPropertyAttribute("Task_id")]
-			private object _Task_id;
-			public override object Task_id
-			{
-				get
-				{
-					return this;
 				}
 			}
 			[AccessedThroughPropertyAttribute("Person")]

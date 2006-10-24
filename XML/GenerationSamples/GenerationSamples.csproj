@@ -161,6 +161,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.Implementation.PLiX.xml</DependentUpon>
     </Compile>
+    <Compile Include="SampleModel.Support.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.Support.PLiX.xml</DependentUpon>
+    </Compile>
     <Compile Include="SampleModel._ORMCustomToolReport.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
@@ -256,6 +260,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Support.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PLiXSupport</ORMGenerator>
+      <LastGenOutput>SampleModel.Support.PLiX.cs</LastGenOutput>
     </None>
     <None Include="SampleModel.xsd">
       <AutoGen>True</AutoGen>

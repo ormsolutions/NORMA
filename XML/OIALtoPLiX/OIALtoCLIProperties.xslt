@@ -11,7 +11,6 @@
 	the terms of this license.
 
 	You must not remove this notice, or any other, from this software.
-
 -->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -50,9 +49,7 @@
 	</xsl:template>
 
 	<xsl:template match="odt:identity" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true">
-			<prop:DataType dataTypeName=".object"/>
-		</prop:FormatMapping>
+		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true"/>
 	</xsl:template>
 	<xsl:template match="odt:boolean" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
@@ -150,29 +147,30 @@
 			as well as nested oil:conceptType elements and oil:conceptType elements that we are nested within.
 			Also process all oil:conceptTypeRef elements that are targetted at us.-->
 
-		<!--<xsl:for-each select="oil:informationType[not(@formatRef=$identityFormatRefNames)]">-->
 		<xsl:for-each select="oil:informationType">
 			<xsl:variable name="informationTypeFormatMapping" select="$InformationTypeFormatMappings[@name=current()/@formatRef]"/>
-			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" canBeNull="{not(@mandatory='alethic') or $informationTypeFormatMapping/@canBeNull='true'}" isCollection="false" isCustomType="false">
-				<xsl:if test="$InformationTypeFormatMappings[@name=current()/@formatRef]/@isIdentity">
-					<xsl:attribute name="isIdentity">
-						<xsl:value-of select="$InformationTypeFormatMappings[@name=current()/@formatRef]/@isIdentity"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="not(@mandatory='alethic') and $informationTypeFormatMapping/@canBeNull='false'">
-						<prop:DataType dataTypeName="Nullable">
-							<plx:passTypeParam>
-								<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType/@*"/>
-								<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType/child::*"/>
-							</plx:passTypeParam>
-						</prop:DataType>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</prop:Property>
+			<xsl:choose>
+				<xsl:when test="@formatRef=$identityFormatRefNames">
+					<prop:IdentityField name="{@name}"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" canBeNull="{not(@mandatory='alethic') or $informationTypeFormatMapping/@canBeNull='true'}" isCollection="false" isCustomType="false">
+						<xsl:choose>
+							<xsl:when test="not(@mandatory='alethic') and $informationTypeFormatMapping/@canBeNull='false'">
+								<prop:DataType dataTypeName="Nullable">
+									<plx:passTypeParam>
+										<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType/@*"/>
+										<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType/child::*"/>
+									</plx:passTypeParam>
+								</prop:DataType>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</prop:Property>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 		<xsl:for-each select="oil:conceptTypeRef">
 			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{@oppositeName}">
@@ -189,9 +187,22 @@
 				<prop:DataType dataTypeName="{@name}"/>
 			</prop:Property>
 		</xsl:for-each>
-		<xsl:for-each select="$ConceptTypeRefs[@target=current()/@name]">
+		<xsl:for-each select="$ConceptTypeRefs[@target=$thisClassName]">
 			<xsl:variable name="isCollection" select="not(boolean(oil:singleRoleUniquenessConstraint))"/>
-			<prop:Property name="{@oppositeName}Via{@name}Collection" mandatory="false" isUnique="true" isCollection="{$isCollection}" isCustomType="true" canBeNull="true" oppositeName="{@name}">
+			<xsl:variable name="propertyName">
+				<xsl:choose>
+					<xsl:when test="parent::oil:conceptType/@name = $thisClassName">
+						<xsl:value-of select="@oppositeName"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat(@oppositeName,'Via',@name)"/>
+						<xsl:if test="$isCollection">
+							<xsl:value-of select="'Collection'"/>
+						</xsl:if>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<prop:Property name="{$propertyName}" mandatory="false" isUnique="true" isCollection="{$isCollection}" isCustomType="true" canBeNull="true" oppositeName="{@name}">
 				<xsl:variable name="parentConceptTypeName" select="parent::oil:conceptType/@name"/>
 				<xsl:choose>
 					<xsl:when test="$isCollection">

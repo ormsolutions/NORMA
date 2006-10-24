@@ -42,15 +42,6 @@ namespace PersonCountryDemo
 		}
 		#endregion // Exception Helpers
 		#region Lookup and External Constraint Enforcement
-		private readonly Dictionary<object, Person> _PersonPerson_idDictionary = new Dictionary<object, Person>();
-		public Person GetPersonByPerson_id(object Person_id)
-		{
-			return this._PersonPerson_idDictionary[Person_id];
-		}
-		public bool TryGetPersonByPerson_id(object Person_id, out Person Person)
-		{
-			return this._PersonPerson_idDictionary.TryGetValue(Person_id, out Person);
-		}
 		private readonly Dictionary<string, Country> _CountryCountry_nameDictionary = new Dictionary<string, Country>();
 		public Country GetCountryByCountry_name(string Country_name)
 		{
@@ -201,9 +192,13 @@ namespace PersonCountryDemo
 			{
 				this._instance = instance;
 			}
-			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			private System.Collections.IEnumerator GetNonGenericEnumerator()
 			{
 				return this.GetEnumerator();
+			}
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return this.GetNonGenericEnumerator();
 			}
 			public IEnumerator<TProperty> GetEnumerator()
 			{
@@ -279,9 +274,13 @@ namespace PersonCountryDemo
 				this._instance = instance;
 				this._PropertyName = propertyName;
 			}
-			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			private System.Collections.IEnumerator GetNonGenericEnumerator()
 			{
 				return this.GetEnumerator();
+			}
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return this.GetNonGenericEnumerator();
 			}
 			public IEnumerator<TProperty> GetEnumerator()
 			{
@@ -427,15 +426,6 @@ namespace PersonCountryDemo
 				get
 				{
 					return this._Context;
-				}
-			}
-			[AccessedThroughPropertyAttribute("Person_id")]
-			private object _Person_id;
-			public override object Person_id
-			{
-				get
-				{
-					return this;
 				}
 			}
 			[AccessedThroughPropertyAttribute("LastName")]

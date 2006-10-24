@@ -234,50 +234,6 @@
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
-			<plx:field visibility="private" readOnly="true" name="_PersonPerson_idDictionary" dataTypeName="Dictionary">
-				<plx:passTypeParam dataTypeName=".object" />
-				<plx:passTypeParam dataTypeName="Person" />
-				<plx:initialize>
-					<plx:callNew dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName=".object" />
-						<plx:passTypeParam dataTypeName="Person" />
-					</plx:callNew>
-				</plx:initialize>
-			</plx:field>
-			<plx:function visibility="public" name="GetPersonByPerson_id">
-				<plx:interfaceMember memberName="GetPersonByPerson_id" dataTypeName="IPersonCountryDemoContext" />
-				<plx:param name="Person_id" dataTypeName=".object" />
-				<plx:returns dataTypeName="Person" />
-				<plx:return>
-					<plx:callInstance type="indexerCall" name=".implied">
-						<plx:callObject>
-							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="Person_id" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function visibility="public" name="TryGetPersonByPerson_id">
-				<plx:interfaceMember memberName="TryGetPersonByPerson_id" dataTypeName="IPersonCountryDemoContext" />
-				<plx:param name="Person_id" dataTypeName=".object" />
-				<plx:param type="out" name="Person" dataTypeName="Person" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:return>
-					<plx:callInstance type="methodCall" name="TryGetValue">
-						<plx:callObject>
-							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="Person_id" />
-						</plx:passParam>
-						<plx:passParam type="out">
-							<plx:nameRef type="parameter" name="Person" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
 			<plx:field visibility="private" readOnly="true" name="_CountryCountry_nameDictionary" dataTypeName="Dictionary">
 				<plx:passTypeParam dataTypeName=".string" />
 				<plx:passTypeParam dataTypeName="Country" />
@@ -1146,7 +1102,7 @@
 						</plx:right>
 					</plx:assign>
 				</plx:function>
-				<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+				<plx:function visibility="privateInterfaceMember" name="GetNonGenericEnumerator">
 					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
 					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
 					<plx:return>
@@ -1476,7 +1432,7 @@
 						</plx:right>
 					</plx:assign>
 				</plx:function>
-				<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+				<plx:function visibility="privateInterfaceMember" name="GetNonGenericEnumerator">
 					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
 					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
 					<plx:return>
@@ -2093,21 +2049,6 @@
 					<plx:get>
 						<plx:return>
 							<plx:callThis accessor="this" type="field" name="_Context" />
-						</plx:return>
-					</plx:get>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Person_id" dataTypeName=".object">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>Person_id</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
-				<plx:property visibility="public" modifier="override" name="Person_id">
-					<plx:returns dataTypeName=".object" />
-					<plx:get>
-						<plx:return>
-							<plx:thisKeyword />
 						</plx:return>
 					</plx:get>
 				</plx:property>

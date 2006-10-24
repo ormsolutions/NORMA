@@ -2632,50 +2632,6 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:field visibility="private" readOnly="true" name="_PersonPerson_idDictionary" dataTypeName="Dictionary">
-				<plx:passTypeParam dataTypeName=".object" />
-				<plx:passTypeParam dataTypeName="Person" />
-				<plx:initialize>
-					<plx:callNew dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName=".object" />
-						<plx:passTypeParam dataTypeName="Person" />
-					</plx:callNew>
-				</plx:initialize>
-			</plx:field>
-			<plx:function visibility="public" name="GetPersonByPerson_id">
-				<plx:interfaceMember memberName="GetPersonByPerson_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Person_id" dataTypeName=".object" />
-				<plx:returns dataTypeName="Person" />
-				<plx:return>
-					<plx:callInstance type="indexerCall" name=".implied">
-						<plx:callObject>
-							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="Person_id" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function visibility="public" name="TryGetPersonByPerson_id">
-				<plx:interfaceMember memberName="TryGetPersonByPerson_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Person_id" dataTypeName=".object" />
-				<plx:param type="out" name="Person" dataTypeName="Person" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:return>
-					<plx:callInstance type="methodCall" name="TryGetValue">
-						<plx:callObject>
-							<plx:callThis type="field" name="_PersonPerson_idDictionary" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="Person_id" />
-						</plx:passParam>
-						<plx:passParam type="out">
-							<plx:nameRef type="parameter" name="Person" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
 			<plx:field visibility="private" readOnly="true" name="_PersonOptionalUniqueStringDictionary" dataTypeName="Dictionary">
 				<plx:passTypeParam dataTypeName=".string" />
 				<plx:passTypeParam dataTypeName="Person" />
@@ -2892,50 +2848,6 @@
 						</plx:passParam>
 						<plx:passParam type="out">
 							<plx:nameRef type="parameter" name="Person" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:field visibility="private" readOnly="true" name="_TaskTask_idDictionary" dataTypeName="Dictionary">
-				<plx:passTypeParam dataTypeName=".object" />
-				<plx:passTypeParam dataTypeName="Task" />
-				<plx:initialize>
-					<plx:callNew dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName=".object" />
-						<plx:passTypeParam dataTypeName="Task" />
-					</plx:callNew>
-				</plx:initialize>
-			</plx:field>
-			<plx:function visibility="public" name="GetTaskByTask_id">
-				<plx:interfaceMember memberName="GetTaskByTask_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Task_id" dataTypeName=".object" />
-				<plx:returns dataTypeName="Task" />
-				<plx:return>
-					<plx:callInstance type="indexerCall" name=".implied">
-						<plx:callObject>
-							<plx:callThis type="field" name="_TaskTask_idDictionary" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="Task_id" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:return>
-			</plx:function>
-			<plx:function visibility="public" name="TryGetTaskByTask_id">
-				<plx:interfaceMember memberName="TryGetTaskByTask_id" dataTypeName="ISampleModelContext" />
-				<plx:param name="Task_id" dataTypeName=".object" />
-				<plx:param type="out" name="Task" dataTypeName="Task" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:return>
-					<plx:callInstance type="methodCall" name="TryGetValue">
-						<plx:callObject>
-							<plx:callThis type="field" name="_TaskTask_idDictionary" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="Task_id" />
-						</plx:passParam>
-						<plx:passParam type="out">
-							<plx:nameRef type="parameter" name="Task" />
 						</plx:passParam>
 					</plx:callInstance>
 				</plx:return>
@@ -3808,7 +3720,7 @@
 						</plx:right>
 					</plx:assign>
 				</plx:function>
-				<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+				<plx:function visibility="privateInterfaceMember" name="GetNonGenericEnumerator">
 					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
 					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
 					<plx:return>
@@ -4138,7 +4050,7 @@
 						</plx:right>
 					</plx:assign>
 				</plx:function>
-				<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+				<plx:function visibility="privateInterfaceMember" name="GetNonGenericEnumerator">
 					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
 					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
 					<plx:return>
@@ -10966,7 +10878,7 @@
 					</plx:assign>
 				</plx:branch>
 			</plx:function>
-			<plx:function visibility="private" name="OnPersonWifeViaHusbandCollectionChanging">
+			<plx:function visibility="private" name="OnPersonWifeChanging">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="newValue" dataTypeName="Person" />
 				<plx:returns dataTypeName=".boolean" />
@@ -11009,7 +10921,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" overload="true" name="OnPersonWifeViaHusbandCollectionChanged">
+			<plx:function visibility="private" overload="true" name="OnPersonWifeChanged">
 				<plx:param name="instance" dataTypeName="Person" />
 				<plx:param name="oldValue" dataTypeName="Person" />
 				<plx:branch>
@@ -11017,7 +10929,7 @@
 						<plx:binaryOperator type="identityInequality">
 							<plx:left>
 								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:callInstance type="property" name="WifeViaHusbandCollection">
+									<plx:callInstance type="property" name="Wife">
 										<plx:callObject>
 											<plx:nameRef type="parameter" name="instance" />
 										</plx:callObject>
@@ -11033,7 +10945,7 @@
 						<plx:left>
 							<plx:callInstance type="property" name="Husband">
 								<plx:callObject>
-									<plx:callInstance type="property" name="WifeViaHusbandCollection">
+									<plx:callInstance type="property" name="Wife">
 										<plx:callObject>
 											<plx:nameRef type="parameter" name="instance" />
 										</plx:callObject>
@@ -11618,21 +11530,6 @@
 							</plx:branch>
 						</plx:branch>
 					</plx:set>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Person_id" dataTypeName=".object">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>Person_id</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
-				<plx:property visibility="public" modifier="override" name="Person_id">
-					<plx:returns dataTypeName=".object" />
-					<plx:get>
-						<plx:return>
-							<plx:thisKeyword />
-						</plx:return>
-					</plx:get>
 				</plx:property>
 				<plx:field visibility="private" readOnly="false" name="_Date_YMD" dataTypeName=".i4">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
@@ -13277,24 +13174,24 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_WifeViaHusbandCollection" dataTypeName="Person">
+				<plx:field visibility="private" readOnly="false" name="_Wife" dataTypeName="Person">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
-							<plx:string>WifeViaHusbandCollection</plx:string>
+							<plx:string>Wife</plx:string>
 						</plx:passParam>
 					</plx:attribute>
 				</plx:field>
-				<plx:property visibility="public" modifier="override" name="WifeViaHusbandCollection">
+				<plx:property visibility="public" modifier="override" name="Wife">
 					<plx:returns dataTypeName="Person" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_WifeViaHusbandCollection" />
+							<plx:callThis accessor="this" type="field" name="_Wife" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName="Person">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_WifeViaHusbandCollection" />
+								<plx:callThis accessor="this" type="field" name="_Wife" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -13314,7 +13211,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnPersonWifeViaHusbandCollectionChanging">
+											<plx:callInstance type="methodCall" name="OnPersonWifeChanging">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_Context" />
 												</plx:callObject>
@@ -13327,7 +13224,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnWifeViaHusbandCollectionChanging">
+											<plx:callThis accessor="base" type="methodCall" name="OnWifeChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -13337,13 +13234,13 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_WifeViaHusbandCollection" />
+										<plx:callThis accessor="this" type="field" name="_Wife" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callInstance name="OnPersonWifeViaHusbandCollectionChanged">
+								<plx:callInstance name="OnPersonWifeChanged">
 									<plx:callObject>
 										<plx:callThis accessor="this" type="field" name="_Context" />
 									</plx:callObject>
@@ -13354,7 +13251,7 @@
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="OnWifeViaHusbandCollectionChanged">
+								<plx:callThis accessor="base" type="methodCall" name="OnWifeChanged">
 									<plx:passParam>
 										<plx:nameRef type="local" name="oldValue" />
 									</plx:passParam>
@@ -17902,21 +17799,6 @@
 					<plx:get>
 						<plx:return>
 							<plx:callThis accessor="this" type="field" name="_Context" />
-						</plx:return>
-					</plx:get>
-				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Task_id" dataTypeName=".object">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>Task_id</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
-				<plx:property visibility="public" modifier="override" name="Task_id">
-					<plx:returns dataTypeName=".object" />
-					<plx:get>
-						<plx:return>
-							<plx:thisKeyword />
 						</plx:return>
 					</plx:get>
 				</plx:property>
