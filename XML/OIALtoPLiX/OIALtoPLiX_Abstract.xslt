@@ -22,7 +22,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
-
+	
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
 	<xsl:param name="OIAL"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
@@ -587,13 +587,21 @@
 			<xsl:with-param name="EventIndex" select="$EventIndex"/>
 		</xsl:call-template>
 	</xsl:template>
-
+	
 	<xsl:template name="GeneratePropertyChangeEvent">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="ChangeType"/>
 		<xsl:param name="EventIndex"/>
 		<plx:event visibility="public" name="{@name}{$ChangeType}">
 			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
+			<plx:param name="sender" dataTypeName=".object"/>
+			<plx:param name="e" dataTypeName="Property{$ChangeType}EventArgs">
+				<plx:passTypeParam dataTypeName="{$ClassName}"/>
+				<plx:passTypeParam>
+					<xsl:copy-of select="prop:DataType/@*"/>
+					<xsl:copy-of select="prop:DataType/child::*"/>
+				</plx:passTypeParam>
+			</plx:param>
 			<plx:explicitDelegateType dataTypeName="EventHandler"/>
 			<plx:passTypeParam  dataTypeName="Property{$ChangeType}EventArgs">
 				<plx:passTypeParam dataTypeName="{$ClassName}"/>
@@ -846,6 +854,8 @@
 				<xsl:with-param name="checkId" select="'CA1033:InterfaceMethodsShouldBeCallableByChildTypes'"/>
 			</xsl:call-template>
 			<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged"/>
+			<plx:param name="sender" dataTypeName=".object"/>
+			<plx:param name="e" dataTypeName="PropertyChangedEventArgs"/>
 			<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler"/>
 			<plx:onAdd>
 				<plx:assign>

@@ -88,6 +88,8 @@
 					</plx:passParam>
 				</plx:attribute>
 				<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged" />
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs" />
 				<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler" />
 				<plx:onAdd>
 					<plx:assign>
@@ -185,6 +187,11 @@
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="LastNameChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -336,6 +343,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:event visibility="public" name="LastNameChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -486,6 +498,11 @@
 				</plx:branch>
 			</plx:function>
 			<plx:event visibility="public" name="FirstNameChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -637,6 +654,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:event visibility="public" name="FirstNameChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -787,6 +809,11 @@
 				</plx:branch>
 			</plx:function>
 			<plx:event visibility="public" name="TitleChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -938,6 +965,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:event visibility="public" name="TitleChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -1088,6 +1120,11 @@
 				</plx:branch>
 			</plx:function>
 			<plx:event visibility="public" name="CountryChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName="Country" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -1239,6 +1276,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:event visibility="public" name="CountryChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Person" />
+					<plx:passTypeParam dataTypeName="Country" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
@@ -1589,6 +1631,8 @@
 					</plx:passParam>
 				</plx:attribute>
 				<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged" />
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs" />
 				<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler" />
 				<plx:onAdd>
 					<plx:assign>
@@ -1686,6 +1730,11 @@
 				<plx:get />
 			</plx:property>
 			<plx:event visibility="public" name="Country_nameChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Country" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -1837,6 +1886,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:event visibility="public" name="Country_nameChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Country" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -1987,6 +2041,11 @@
 				</plx:branch>
 			</plx:function>
 			<plx:event visibility="public" name="Region_Region_codeChanging">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
+					<plx:passTypeParam dataTypeName="Country" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -2138,6 +2197,11 @@
 				</plx:return>
 			</plx:function>
 			<plx:event visibility="public" name="Region_Region_codeChanged">
+				<plx:param name="sender" dataTypeName=".object" />
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
+					<plx:passTypeParam dataTypeName="Country" />
+					<plx:passTypeParam dataTypeName=".string" />
+				</plx:param>
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
