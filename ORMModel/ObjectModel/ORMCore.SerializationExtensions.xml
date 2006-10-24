@@ -268,6 +268,7 @@
 				</plx:right>
 			</plx:binaryOperator>
 		</se:ConditionalName>
+		<se:Attribute ID="Name" Name="_Name" WriteCustomStorage="true"/>
 		<se:Attribute ID="IsExternal">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">

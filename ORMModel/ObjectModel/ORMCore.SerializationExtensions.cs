@@ -2267,6 +2267,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
+			if (domainPropertyInfo.Id == FactType.NameDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, "_Name", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (domainPropertyInfo.Id == FactType.IsExternalDomainPropertyId)
 			{
 				if (!(this.IsExternal))
@@ -2483,6 +2487,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("_Name", FactType.NameDomainPropertyId);
 				customSerializedAttributes.Add("IsExternal", FactType.IsExternalDomainPropertyId);
 				FactType.myCustomSerializedAttributes = customSerializedAttributes;
 			}

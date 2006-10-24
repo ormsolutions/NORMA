@@ -497,6 +497,7 @@
 			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
+		<xs:attribute name="_Name" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
@@ -511,6 +512,7 @@
 			<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
+		<xs:attribute name="_Name" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
@@ -524,6 +526,7 @@
 			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
+		<xs:attribute name="_Name" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 		<xs:attribute name="IsPrimary" type="xs:boolean" default="false"/>
