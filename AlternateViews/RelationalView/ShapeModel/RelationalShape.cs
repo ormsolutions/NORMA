@@ -463,18 +463,18 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					foreach (ConceptTypeChild conceptTypeChild in conceptTypeChildCollection)
 					{
 						ConceptType topLevelConceptType = conceptTypeChild.Parent;
-						while (true)
-						{
-							ConceptType topLevelType = topLevelConceptType.AbsorbingConceptType;
-							if (topLevelType != null)
-							{
-								topLevelConceptType = topLevelType;
-							}
-							else
-							{
-								break;
-							}
-						}
+						//while (true)
+						//{
+						//    ConceptType topLevelType = topLevelConceptType.AbsorbingConceptType;
+						//    if (topLevelType != null)
+						//    {
+						//        topLevelConceptType = topLevelType;
+						//    }
+						//    else
+						//    {
+						//        break;
+						//    }
+						//}
 						if (topLevelConceptType == conceptType)
 						{
 							addConstraint = true;
