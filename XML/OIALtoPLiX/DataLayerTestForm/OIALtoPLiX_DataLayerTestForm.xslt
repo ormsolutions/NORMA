@@ -116,7 +116,7 @@
 											<plx:nameRef name="disposing"/>
 										</plx:left>
 										<plx:right>
-											<plx:binaryOperator type="inequality">
+											<plx:binaryOperator type="identityInequality">
 												<plx:left>
 													<plx:nameRef name="components"/>
 												</plx:left>
@@ -133,14 +133,11 @@
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:branch>
-							<plx:callInstance name="Dispose" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="base"/>
-								</plx:callObject>
+							<plx:callThis name="Dispose" accessor="base">
 								<plx:passParam>
 									<plx:nameRef name="disposing"/>
 								</plx:passParam>
-							</plx:callInstance>
+							</plx:callThis>
 						</plx:function>
 
 						<!-- InitializeComponent Method -->

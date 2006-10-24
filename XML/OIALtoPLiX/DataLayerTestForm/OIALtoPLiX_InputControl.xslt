@@ -447,7 +447,7 @@
 
 									<plx:branch>
 										<plx:condition>
-											<plx:binaryOperator type="inequality">
+											<plx:binaryOperator type="identityInequality">
 												<plx:left>
 													<plx:callThis name="abstractTypeVar" type="field" accessor="this"/>
 												</plx:left>
@@ -462,7 +462,7 @@
 												<plx:condition>
 													<plx:binaryOperator type="booleanAnd">
 														<plx:left>
-															<plx:binaryOperator type="inequality">
+															<plx:binaryOperator type="identityInequality">
 																<plx:left>
 																	<plx:callInstance name="Value" type="property">
 																		<plx:callObject>
@@ -875,7 +875,7 @@
 								<plx:try>
 									<plx:branch>
 										<plx:condition>
-											<plx:binaryOperator type="equality">
+											<plx:binaryOperator type="identityEquality">
 												<plx:left>
 													<plx:callThis name="abstractTypeVar" type="field" accessor="this"/>
 												</plx:left>

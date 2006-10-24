@@ -384,7 +384,7 @@
 												<plx:nameRef name="disposing"/>
 											</plx:left>
 											<plx:right>
-												<plx:binaryOperator type="inequality">
+												<plx:binaryOperator type="identityInequality">
 													<plx:left>
 														<plx:nameRef name="components"/>
 													</plx:left>
@@ -614,7 +614,7 @@
 												<plx:nameRef name="disposing"/>
 											</plx:left>
 											<plx:right>
-												<plx:binaryOperator type="inequality">
+												<plx:binaryOperator type="identityInequality">
 													<plx:left>
 														<plx:nameRef name="components"/>
 													</plx:left>
@@ -714,7 +714,7 @@
 												<plx:nameRef name="disposing"/>
 											</plx:left>
 											<plx:right>
-												<plx:binaryOperator type="inequality">
+												<plx:binaryOperator type="identityInequality">
 													<plx:left>
 														<plx:nameRef name="components"/>
 													</plx:left>
@@ -825,7 +825,7 @@
 												<plx:nameRef name="disposing"/>
 											</plx:left>
 											<plx:right>
-												<plx:binaryOperator type="inequality">
+												<plx:binaryOperator type="identityInequality">
 													<plx:left>
 														<plx:nameRef name="components"/>
 													</plx:left>
@@ -1053,7 +1053,7 @@
 
 								<plx:attachEvent>
 									<plx:left>
-										<plx:callInstance name="Click" type="property">
+										<plx:callInstance name="Click" type="event">
 											<plx:callObject>
 												<plx:callThis name="btnCancel" type="field" accessor="this"/>
 											</plx:callObject>
@@ -1062,7 +1062,7 @@
 									<plx:right>
 										<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 											<plx:passParam>
-												<plx:nameRef name="btnCancel_Click"/>
+												<plx:callThis name="btnCancel_Click" type="methodReference"/>
 											</plx:passParam>
 										</plx:callNew>
 									</plx:right>
@@ -1159,7 +1159,7 @@
 
 								<plx:attachEvent>
 									<plx:left>
-										<plx:callInstance name="Click" type="property">
+										<plx:callInstance name="Click" type="event">
 											<plx:callObject>
 												<plx:callThis name="btnSave" type="field" accessor="this"/>
 											</plx:callObject>
@@ -1168,7 +1168,7 @@
 									<plx:right>
 										<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 											<plx:passParam>
-												<plx:nameRef name="btnSave_Click"/>
+												<plx:callThis name="btnSave_Click" type="methodReference"/>
 											</plx:passParam>
 										</plx:callNew>
 									</plx:right>
@@ -1490,7 +1490,7 @@
 
 								<plx:attachEvent>
 									<plx:left>
-										<plx:callInstance name="SelectedIndexChanged" type="property">
+										<plx:callInstance name="SelectedIndexChanged" type="event">
 											<plx:callObject>
 												<plx:callThis name="cbxSelectionMode" type="field" accessor="this"/>
 											</plx:callObject>
@@ -1499,7 +1499,7 @@
 									<plx:right>
 										<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 											<plx:passParam>
-												<plx:nameRef name="cbxSelectionMode_SelectedIndexChanged"/>
+												<plx:callThis name="cbxSelectionMode_SelectedIndexChanged" type="methodReference"/>
 											</plx:passParam>
 										</plx:callNew>
 									</plx:right>
@@ -1823,7 +1823,7 @@
 
 								<plx:attachEvent>
 									<plx:left>
-										<plx:callInstance name="CellBeginEdit" type="property">
+										<plx:callInstance name="CellBeginEdit" type="event">
 											<plx:callObject>
 												<plx:callThis name="dgvCurrentObject" type="field" accessor="this"/>
 											</plx:callObject>
@@ -1832,7 +1832,7 @@
 									<plx:right>
 										<plx:callNew dataTypeName="DataGridViewCellCancelEventHandler" dataTypeQualifier="System.Windows.Forms" type="new">
 											<plx:passParam>
-												<plx:nameRef name="dgvCurrentObject_CellBeginEdit"/>
+												<plx:callThis name="dgvCurrentObject_CellBeginEdit" type="methodReference"/>
 											</plx:passParam>
 										</plx:callNew>
 									</plx:right>
@@ -2235,7 +2235,7 @@
 
 				<plx:attachEvent>
 					<plx:left>
-						<plx:callInstance name="Click" type="property">
+						<plx:callInstance name="Click" type="event">
 							<plx:callObject>
 								<plx:callThis name="btn{$ActionType}" type="field" accessor="this"/>
 							</plx:callObject>
@@ -2244,7 +2244,7 @@
 					<plx:right>
 						<plx:callNew dataTypeName="EventHandler" dataTypeQualifier="System" type="new">
 							<plx:passParam>
-								<plx:nameRef name="btn{$ActionType}_Click"/>
+								<plx:callThis name="btn{$ActionType}_Click" type="methodReference"/>
 							</plx:passParam>
 						</plx:callNew>
 					</plx:right>

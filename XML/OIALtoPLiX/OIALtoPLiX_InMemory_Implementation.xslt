@@ -1075,7 +1075,7 @@
 				</xsl:if>
 			</plx:function>
 
-			<plx:function visibility="privateInterfaceMember" name="GetEnumerator">
+			<plx:function visibility="privateInterfaceMember" name="GetNonGenericEnumerator">
 				<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections"/>
 				<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections"/>
 				<plx:return>
