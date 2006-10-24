@@ -8,7 +8,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<!-- Contributors: Kevin M. Owen, Corey Kaylor, Cle' Diggins -->
+<!-- Contributors: Kevin M. Owen, Corey Kaylor, Clé Diggins -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
@@ -61,6 +61,7 @@
 						</xsl:apply-templates>
 					</dcl:table>
 				</xsl:variable>
+				
 				<xsl:variable name="table" select="exsl:node-set($tableFragment)/child::*"/>
 				<xsl:copy-of select="$table"/>
 
@@ -381,8 +382,8 @@
 			</xsl:variable>
 			<xsl:variable name="foreignKeyColumnsWithOriginalNames" select="exsl:node-set($foreignKeyColumnsWithOriginalNamesFragment)/child::*"/>
 			<xsl:variable name="foreignKeyColumnsFragment">
-				<xsl:call-template name="AddPrefixToNames">
-					<xsl:with-param name="Prefix" select="concat($conceptTypeRefName,'_')"/>
+				<xsl:call-template name="AddPrefixToNamesForConceptTypeRef">
+					<xsl:with-param name="ConceptTypeRef" select="."/>
 					<xsl:with-param name="Targets" select="$foreignKeyColumnsWithOriginalNames"/>
 				</xsl:call-template>
 			</xsl:variable>
@@ -480,10 +481,13 @@
 					<xsl:with-param name="OilModel" select="$OilModel"/>
 					<xsl:with-param name="DataTypes" select="$DataTypes"/>
 					<xsl:with-param name="TargetConceptType" select="."/>
+					<xsl:with-param name="AddPrefixForConceptTypeRef" select="true()"/>
 				</xsl:call-template>
 			</xsl:variable>
 
-			<xsl:for-each select="exsl:node-set($preferredIdentifierColumnsFragment)/child::*">
+			<xsl:variable name="preferredIdentifierColumns" select="exsl:node-set($preferredIdentifierColumnsFragment)" />
+			
+			<xsl:for-each select="$preferredIdentifierColumns/child::*">
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
 					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
@@ -493,14 +497,30 @@
 			<dml:deleteStatement schema="{dsf:makeValidIdentifier(../@name)}" name="{dsf:makeValidIdentifier(@name)}">
 				<dml:whereClause>
 					<dml:searchCondition>
-							<dep:and>
-								<xsl:for-each select="oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef">
+						<xsl:choose>
+							<!-- If there is more than one child of the identifier columns it is a role sequence uniqueness contraint.-->
+							<xsl:when test="count($preferredIdentifierColumns/child::*) > 1">
+								<dep:and>
+								<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
 									<dep:comparisonPredicate operator="equals">
-										<dep:columnReference name="{@targetChild}"/>
-										<dep:sqlParameterReference name="{@targetChild}"/>
+										<dep:columnReference name="{@name}"/>
+										<dep:sqlParameterReference name="{@name}"/>
 									</dep:comparisonPredicate>
 								</xsl:for-each>
 							</dep:and>
+							</xsl:when>
+							<xsl:when test="count($preferredIdentifierColumns/child::*) = 1">
+								<dep:comparisonPredicate operator="equals">
+									<dep:columnReference name="{$preferredIdentifierColumns/dcl:column/@name}"/>
+									<dep:sqlParameterReference name="{$preferredIdentifierColumns/dcl:column/@name}"/>
+								</dep:comparisonPredicate>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:message terminate="yes">Error creating Delete statement.  Unable to locate a 
+								oil:roleSequenceUniquenessConstraint that is prefferred or an 
+								oil:singleRoleUniquenessConstraint that is preferred.</xsl:message>
+							</xsl:otherwise>
+						</xsl:choose>
 					</dml:searchCondition>
 				</dml:whereClause>
 			</dml:deleteStatement>
@@ -528,20 +548,21 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template name="AddPrefixToNames">
-		<xsl:param name="Prefix"/>
+	<xsl:template name="AddPrefixToNamesForConceptTypeRef">
+		<xsl:param name="ConceptTypeRef"/>
 		<xsl:param name="Targets"/>
+		<xsl:variable name="prefix" select="concat($ConceptTypeRef/@name,'_')"/>
 		<xsl:for-each select="$Targets">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:attribute name="name">
-					<xsl:value-of select="dsf:makeValidIdentifier(concat($Prefix,@name))"/>
+					<xsl:value-of select="dsf:makeValidIdentifier(concat($prefix,@name))"/>
 				</xsl:attribute>
 				<xsl:copy-of select="child::node()"/>
 			</xsl:copy>
 		</xsl:for-each>
 	</xsl:template>
-
+	
 	<xsl:template name="GetColumnRef">
 		<xsl:param name="OilModel"/>
 		<xsl:param name="DataTypes"/>
@@ -607,18 +628,34 @@
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="TargetConceptTypeRef"/>
 		<xsl:param name="AlwaysNullable" select="false()"/>
-		<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
-			<xsl:with-param name="OilModel" select="$OilModel"/>
-			<xsl:with-param name="DataTypes" select="$DataTypes"/>
-			<xsl:with-param name="TargetConceptType" select="$OilModel//oil:conceptType[@name=$TargetConceptTypeRef/@target]"/>
-			<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
-		</xsl:call-template>
+		<xsl:param name="AddPrefixForConceptTypeRef" select="false()"/>
+		<xsl:variable name="preferredIdentifierColumnsFragment">
+			<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
+				<xsl:with-param name="OilModel" select="$OilModel"/>
+				<xsl:with-param name="DataTypes" select="$DataTypes"/>
+				<xsl:with-param name="TargetConceptType" select="$OilModel//oil:conceptType[@name=$TargetConceptTypeRef/@target]"/>
+				<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="preferredIdentifierColumns" select="exsl:node-set($preferredIdentifierColumnsFragment)/child::*"/>
+		<xsl:choose>
+			<xsl:when test="$AddPrefixForConceptTypeRef">
+				<xsl:call-template name="AddPrefixToNamesForConceptTypeRef">
+					<xsl:with-param name="ConceptTypeRef" select="$TargetConceptTypeRef"/>
+					<xsl:with-param name="Targets" select="$preferredIdentifierColumns"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:copy-of select="$preferredIdentifierColumns"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="GetPreferredIdentifierColumnsForConceptType">
 		<xsl:param name="OilModel"/>
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="TargetConceptType"/>
 		<xsl:param name="AlwaysNullable" select="false()"/>
+		<xsl:param name="AddPrefixForConceptTypeRef" select="false()"/>
 		<xsl:variable name="preferredIdentifierInformationType" select="$TargetConceptType/oil:informationType[oil:singleRoleUniquenessConstraint[@isPreferred='true']]"/>
 		<xsl:variable name="preferredIdentifierRoleSequenceUniquenessConstraint" select="$TargetConceptType/oil:roleSequenceUniquenessConstraint[@isPreferred='true']"/>
 		<xsl:choose>
@@ -651,6 +688,7 @@
 										<xsl:with-param name="DataTypes" select="$DataTypes"/>
 										<xsl:with-param name="TargetConceptTypeRef" select="$targetChild"/>
 										<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+										<xsl:with-param name="AddPrefixForConceptTypeRef" select="$AddPrefixForConceptTypeRef"/>
 									</xsl:call-template>
 								</xsl:when>
 								<xsl:otherwise>

@@ -8,7 +8,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<!-- Contributors: Corey Kaylor, Kevin M. Owen -->
+<!-- Contributors: Corey Kaylor, Kevin M. Owen, Clé Diggins -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
@@ -27,6 +27,16 @@
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:param name="StatementDelimeter">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>GO</xsl:text>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:param>
+	<xsl:param name="StatementBlockDelimeter">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>GO</xsl:text>
+	</xsl:param>
+
 	<xsl:template match="/">
 		<xsl:variable name="domainInlinedDilFragment">
 			<xsl:apply-templates mode="DomainInliner" select="."/>
@@ -36,7 +46,17 @@
 
 	<xsl:template match="ddl:schemaDefinition">
 		<xsl:param name="indent"/>
-		<xsl:value-of select="$indent"/>
+		<!--<xsl:text>DROP SCHEMA </xsl:text>
+		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>GO</xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>-->
 		<xsl:text>CREATE SCHEMA </xsl:text>
 		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
@@ -47,6 +67,7 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>GO</xsl:text>
 		<xsl:value-of select="$NewLine"/>
+		<xsl:call-template name="writeOutStartTrans" />
 		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates>
 			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
@@ -54,12 +75,14 @@
 	</xsl:template>
 
 	<xsl:template match="dms:startTransactionStatement">
-		<xsl:text>BEGIN TRANSACTION</xsl:text>
-		<xsl:value-of select="$StatementDelimeter"/>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:text>GO</xsl:text>
-		<xsl:value-of select="$NewLine"/>
-		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+	
+	<xsl:template match="dms:startTransactionStatement" mode="writeOut" name="writeOutStartTrans">
+		<!-- Atomicity has been removed becuase multiple sprocs can't be in transaction in t-sql.-->
+	</xsl:template>
+	
+	<xsl:template match="dms:commitStatement">
+		<xsl:value-of select="$StatementBlockDelimeter"/>
 	</xsl:template>
 
 	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
@@ -120,6 +143,26 @@
 
 	<xsl:template match="@lengthUnits"/>
 
+	<xsl:template match="ddl:sqlParameterDeclaration">
+		<xsl:value-of select="$IndentChar" />
+		<xsl:value-of select="'@'"/>
+		<xsl:value-of select="@name"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates select="child::*" />
+		<xsl:if test="not(position()=last())">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="dep:sqlParameterReference">
+		<xsl:value-of select="'@'"/>
+		<xsl:value-of select="@name"/>
+		<xsl:if test="not(position()=last())">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="dep:trimFunction">
 		<xsl:choose>
 			<xsl:when test="@specification='BOTH'">
@@ -169,6 +212,25 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<!--<xsl:template match="ddl:sqlInvokedProcedure">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>CREATE PROCEDURE </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="ddl:sqlParameterDeclaration" />
+		<xsl:value-of select="$RightParen"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="ddl:sqlRoutineSpec" />
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>-->
 
 	<xsl:template match="dep:constraintNameDefinition">
 		<xsl:param name="tableName"/>

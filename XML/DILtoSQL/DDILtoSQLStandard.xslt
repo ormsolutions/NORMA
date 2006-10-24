@@ -34,12 +34,21 @@
 	<xsl:param name="ConcatenationOperator" select="'||'"/>
 	<xsl:param name="StatementDelimeter" select="';'"/>
 	<xsl:param name="setClauseEqualsOperator" select="'='" />
+	<xsl:param name="StatementBlockDelimeter" select="''" />
 
 	<!-- Schema Definition pg.519 -->
 
 	<xsl:template match="ddl:schemaDefinition">
 		<xsl:param name="indent"/>
-		<xsl:value-of select="$indent"/>
+		<!--<xsl:text>DROP SCHEMA </xsl:text>
+		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>-->
 		<xsl:text>CREATE SCHEMA </xsl:text>
 		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
@@ -730,14 +739,24 @@
 	<xsl:template match="ddl:sqlInvokedProcedure">
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>CREATE PROCEDURE </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="@name"/>
 		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates select="ddl:sqlParameterDeclaration" />
+		<xsl:value-of select="$RightParen"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates select="ddl:sqlRoutineSpec" />
+		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:sqlParameterDeclaration">
+		<xsl:value-of select="$IndentChar" />
 		<xsl:value-of select="@name"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="child::*" />
@@ -750,18 +769,27 @@
 	<xsl:template match="ddl:sqlRoutineSpec">
 		<xsl:text>AS</xsl:text>
 		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$IndentChar" />
 		<xsl:apply-templates select="child::*" />
 	</xsl:template>
 
 	<xsl:template match="dml:insertStatement">
 		<xsl:text>INSERT INTO </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="@name"/>
 		<xsl:apply-templates select="child::*" />
 	</xsl:template>
-	
+
 
 	<xsl:template match="dml:updateStatement">
 		<xsl:text>UPDATE </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="@name"/>
 		<xsl:apply-templates select="child::*" />
 	</xsl:template>
@@ -770,13 +798,13 @@
 		<xsl:value-of select="$NewLine" />
 		<xsl:choose>
 			<xsl:when test="not(position()> 1)">
-			<xsl:text>SET </xsl:text>
-		</xsl:when>
+				<xsl:text>SET </xsl:text>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>, </xsl:text>
-		</xsl:otherwise>
+			</xsl:otherwise>
 		</xsl:choose>
-		
+
 		<xsl:value-of  select="@name"/>
 		<xsl:value-of select="$setClauseEqualsOperator" />
 		<xsl:apply-templates select="child::*" />
@@ -788,20 +816,27 @@
 		<xsl:apply-templates select="ddl:column"/>
 		<xsl:value-of select="$RightParen" />
 		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$IndentChar" />
 		<xsl:text>VALUES </xsl:text>
+		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates select="dep:sqlParameterReference"/>
+		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
 	<xsl:template match="dml:deleteStatement">
 		<xsl:text>DELETE FROM </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="@name" />
 		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates select="child::*"/>
 	</xsl:template>
 
 	<xsl:template match="dml:whereClause">
+		<xsl:value-of select="$IndentChar" />
 		<xsl:text>WHERE </xsl:text>
-		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates select="child::*" />
 	</xsl:template>
 
@@ -809,15 +844,91 @@
 		<xsl:apply-templates select="child::*" />
 	</xsl:template>
 
-
-	<!--<xsl:template name="comparisonPredicateFormatter">
-		<xsl:param name="predicate" />
-		<xsl:apply-templates select="$predicate/child::*[1]"/>
-		<xsl:apply-templates select="@operator"/>
-		<xsl:apply-templates select="$predicate/child::*[2]"/>
-	</xsl:template>-->
-
 	<!-- End of Stored Procedure Definitions -->
+
+	<!-- Trigger Definitions-->
+	
+	<xsl:template match="ddl:triggerDefinition">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>CREATE TRIGGER </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
+		<xsl:value-of  select="@name"/>
+		<xsl:text> </xsl:text>
+		<xsl:value-of  select="@actionTime"/>
+		<xsl:text> </xsl:text>
+		<xsl:call-template name="triggerEvent">
+			<xsl:with-param name="event" select="ddl:event" />
+		</xsl:call-template>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>ON </xsl:text>
+		<xsl:value-of select="ddl:table/@name"/>
+		<xsl:apply-templates select="child::*"/>
+	</xsl:template>
+
+	<xsl:template name="triggerEvent">
+		<xsl:param name="event" select="." />
+		<xsl:choose>
+			<xsl:when test="$event/@type='UPDATE'">
+				<xsl:text>UPDATE </xsl:text>
+				<xsl:if test="count($event/ddl:column)>0">
+					<xsl:text>OF </xsl:text>
+					<xsl:apply-templates select="$event/ddl:column" />
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$event/@type"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="ddl:when">
+		<xsl:text>WHEN </xsl:text>
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+
+	<xsl:template match="ddl:referencing">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>REFERENCING </xsl:text>
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+
+	<xsl:template match="ddl:newRow">
+		<xsl:text>NEW ROW AS </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+	<xsl:template match="ddl:oldRow">
+		<xsl:text>OLD ROW AS </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+	<xsl:template match="ddl:newTable">
+		<xsl:text>NEW TABLE AS </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+	<xsl:template match="ddl:oldTable">
+		<xsl:text>OLD TABLE AS </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="ddl:atomicBlock">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>BEGIN ATOMIC </xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="child::*" />
+		<xsl:text>; </xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>END </xsl:text>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+	
+	<!-- End of Trigger Definitions-->
 
 	<!-- Domain Definition -->
 

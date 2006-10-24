@@ -153,6 +153,7 @@
 
 	<xsl:template match="dcl:procedure">
 		<ddl:sqlInvokedProcedure name="{@name}">
+			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<xsl:apply-templates select="child::*" />
 		</ddl:sqlInvokedProcedure>
 	</xsl:template>
