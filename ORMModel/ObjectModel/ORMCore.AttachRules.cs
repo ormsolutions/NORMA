@@ -50,6 +50,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasEntityTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("RoleInstanceHasPopulationUniquenessErrorDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -339,7 +340,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[93],
 						customDomainModelTypes[94],
 						customDomainModelTypes[95],
-						customDomainModelTypes[98],
+						customDomainModelTypes[96],
 						customDomainModelTypes[99],
 						customDomainModelTypes[100],
 						customDomainModelTypes[101],
@@ -433,7 +434,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[189],
 						customDomainModelTypes[190],
 						customDomainModelTypes[191],
-						customDomainModelTypes[192]};
+						customDomainModelTypes[192],
+						customDomainModelTypes[193]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -639,6 +641,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class EntityTypeInstanceHasRoleInstanceDeleted
 		{
 			public EntityTypeInstanceHasRoleInstanceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class RoleInstanceHasPopulationUniquenessErrorDeleted
+		{
+			public RoleInstanceHasPopulationUniquenessErrorDeleted()
 			{
 				base.IsEnabled = false;
 			}

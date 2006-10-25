@@ -2245,6 +2245,70 @@
     <value>Role Instance Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;RoleInstanceHasPopulationUniquenessError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError</value>
+    <comment>Description for DomainClass &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.DisplayName" xml:space="preserve">
+    <value>Entity Type Role Instance Has Population Uniqueness Error</value>
+    <comment>DisplayName for DomainClass &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstance</value>
+    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName" xml:space="preserve">
+    <value>RoleInstance</value>
+    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Population Uniqueness Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError</value>
+    <comment>Description for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName" xml:space="preserve">
+    <value>PopulationUniquenessError</value>
+    <comment>DisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Type Role Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError</value>
+    <comment>Description for DomainClass &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.DisplayName" xml:space="preserve">
+    <value>Fact Type Role Instance Has Population Uniqueness Error</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstance</value>
+    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName" xml:space="preserve">
+    <value>RoleInstance</value>
+    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Population Uniqueness Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError</value>
+    <comment>Description for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName" xml:space="preserve">
+    <value>PopulationUniquenessError</value>
+    <comment>DisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type Role Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError</value>
     <comment>Description for DomainClass &apos;SetComparisonConstraintHasContradictionError&apos;</comment>

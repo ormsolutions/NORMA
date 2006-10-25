@@ -1792,7 +1792,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
+		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
 			<Source>
 				<DomainRole Name="RoleInstance" PropertyName="PopulationUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="527FFAEB-8F4A-4DFF-B02F-49822FCE2F3D">
 					<RolePlayer>
@@ -1808,7 +1808,47 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		
+
+		<DomainRelationship Name="EntityTypeRoleInstanceHasPopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="04312BEF-EA3E-4525-9A1A-903497EFDAF7">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="RoleInstanceHasPopulationUniquenessError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="RoleInstance" PropertyName="PopulationUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="F3EF0D4D-5F76-4DAB-BB6E-B475E7DDA70D">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="EntityTypeRoleInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PopulationUniquenessError" PropertyName="EntityTypeRoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PopulationUniquenessError" Id="0F8036BA-33AA-48BC-B058-1BD990A6E264">
+					<RolePlayer>
+						<DomainClassMoniker Name="PopulationUniquenessError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="FactTypeRoleInstanceHasPopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A483FDFE-53EF-4352-8D97-986BF2C0E8E7">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="RoleInstanceHasPopulationUniquenessError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="RoleInstance" PropertyName="PopulationUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="14BF8CDB-9685-49AC-A7B9-696A72D6D97C">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="FactTypeRoleInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PopulationUniquenessError" PropertyName="FactTypeRoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PopulationUniquenessError" Id="F00366B7-A23F-48D7-8977-0078EB2CD7B6">
+					<RolePlayer>
+						<DomainClassMoniker Name="PopulationUniquenessError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="SetComparisonConstraintHasContradictionError" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A1D4A389-9D19-4921-BD0D-D965B53897E3">
 			<Source>
 				<DomainRole Name="SetComparisonConstraint" PropertyName="ContradictionErrorCollection" Multiplicity="ZeroMany"  PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="61F38936-0F1D-4D08-BF95-75429D108D6E">

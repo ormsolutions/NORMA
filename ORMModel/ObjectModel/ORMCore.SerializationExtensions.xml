@@ -201,6 +201,8 @@
 	</se:Element>
 	<se:Element Class="EntityTypeRoleInstance">
 		<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="EntityTypeInstance" WriteStyle="NotWritten" />
+		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
@@ -361,6 +363,8 @@
 	</se:Element>
 	<se:Element Class="FactTypeRoleInstance">
 		<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="FactTypeInstance" WriteStyle="NotWritten" />
+		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="Expression" Override="true" HasMixedTypedAttributes="true">
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
@@ -576,8 +580,11 @@
 	</se:Element>
 	<se:Element Class="PopulationUniquenessError" Override="true">
 		<se:ChildElement Name="RoleInstances">
-			<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
+			<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
+			<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
 		</se:ChildElement>
+		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="FactTypeRoleInstance"/>
+		<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="EntityTypeRoleInstance"/>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

@@ -1442,6 +1442,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
 		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
@@ -2705,6 +2713,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -6217,7 +6233,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.ChildElementInfo;
+				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -6251,7 +6267,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "RoleInstances", null, ORMCustomSerializedElementWriteStyle.Element, null, RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "RoleInstances", null, ORMCustomSerializedElementWriteStyle.Element, null, FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
 				PopulationUniquenessError.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -6259,6 +6275,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
 			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "FactTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "EntityTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>
@@ -6271,8 +6311,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances||", match);
+				match.InitializeRoles(FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances|http://schemas.neumont.edu/ORM/2006-04/ORMCore|FactTypeRoleInstance", match);
+				match.InitializeRoles(EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances|http://schemas.neumont.edu/ORM/2006-04/ORMCore|EntityTypeRoleInstance", match);
 				PopulationUniquenessError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;

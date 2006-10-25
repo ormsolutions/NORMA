@@ -124,7 +124,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 	}
-	public partial class PopulationUniquenessError
+	public partial class PopulationUniquenessError : IHasIndirectModelErrorOwner
 	{
 		/// <summary>
 		/// Return the duplicated ObjectTypeInstance
@@ -169,8 +169,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeName = commonRole.FactType.Name;
 			}
 			string modelName = Model.Name;
+			string objectTypeName = commonRole.RolePlayer.Name;
 			string currentText = Name;
-			string newText = String.Format(formatString, instanceDisplayString, modelName, typeName);
+			string newText = String.Format(formatString, objectTypeName, instanceDisplayString, modelName, typeName);
 			if (currentText != newText)
 			{
 				Name = newText;
@@ -183,10 +184,82 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return RegenerateErrorTextEvents.ModelNameChange;
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}
 		}
 		#endregion // Base overrides
+
+		#region IModelErrorOwner Implementation
+		/*
+		#region IModelErrorOwner Members
+
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements IModelErrorOwner.GetErrorCollection
+		/// </summary>
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
+		{
+			yield return new ModelErrorUsage(this);
+			foreach (ModelErrorUsage modelErrorUsage in base.GetErrorCollection(filter))
+			{
+				yield return modelErrorUsage;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			// No validation here
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			// No Validation Here
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner Implementation
+		*/
+		#endregion
+		#region IHasIndirectModelErrorOwner Members
+
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+
+				#endregion
+
 	}
 
 	public partial class PopulationMandatoryError : IRepresentModelElements
@@ -287,6 +360,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (tooFew != null)
 				{
 					yield return tooFew;
+				}
+
+				LinkedElementCollection<FactTypeRoleInstance> roleInstances = this.RoleInstanceCollection;
+				int roleInstanceCount = roleInstances.Count;
+				for (int i = 0; i < roleInstanceCount; ++i)
+				{
+					PopulationUniquenessError uniquenessError = roleInstances[i].PopulationUniquenessError;
+					if (uniquenessError != null)
+					{
+						yield return uniquenessError;
+					}
 				}
 			}
 
@@ -1025,6 +1109,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+
+		[RuleOn(typeof(RoleInstanceHasPopulationUniquenessError))] // DeleteRule
+		private sealed partial class RoleInstanceHasPopulationUniquenessErrorDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				RoleInstanceHasPopulationUniquenessError link = e.ModelElement as RoleInstanceHasPopulationUniquenessError;
+				PopulationUniquenessError error = link.PopulationUniquenessError;
+				if (!error.IsDeleted && error.RoleInstanceCollection.Count <= 1)
+				{
+					error.Delete();
+				}
+			}
+		}
 		#endregion
 	}
 
@@ -1249,7 +1347,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 	public partial class Role : IModelErrorOwner
 	{
-		private ICollection<RoleInstance> myPopulation;
+		private HashSet<ObjectTypeInstance, RoleInstance> myPopulation;
+
 		#region PopulationUniquenessError Validation
 		/// <summary>
 		/// Validator callback for PopulationUniquenessError
@@ -1257,6 +1356,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void DelayValidatePopulationUniquenessError(ModelElement element)
 		{
 			(element as Role).ValidatePopulationUniquenessError(null);
+		}
+
+		private sealed class RoleInstanceKeyProvider : IKeyProvider<ObjectTypeInstance, RoleInstance>
+		{
+			private static RoleInstanceKeyProvider provider;
+
+			public static RoleInstanceKeyProvider ProviderInstance
+			{
+				get
+				{
+					return provider ?? (provider = new RoleInstanceKeyProvider());
+				}
+			}
+
+			#region IKeyProvider<ObjectTypeInstance, RoleInstance> Members
+			ObjectTypeInstance IKeyProvider<ObjectTypeInstance, RoleInstance>.GetKey(RoleInstance value)
+			{
+				return value.ObjectTypeInstance;
+			}
+			#endregion
 		}
 
 		/// <summary>
@@ -1268,48 +1387,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleted)
 			{
-				bool hasError = false;
-				ICollection<RoleInstance> population = myPopulation;
+				HashSet<ObjectTypeInstance, RoleInstance> population = myPopulation;
 				ConstraintRoleSequence singleRoleConstraint = this.SingleRoleUniquenessConstraint;
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
+				int roleInstanceCount = roleInstances.Count;
 				if (singleRoleConstraint != null)
 				{
-					if (population == null)
-					{
-						myPopulation = population = new List<RoleInstance>(roleInstances);
-					}
-					// UNDONE: Collection class is currently unimplemented so there can never be an error
-					//hasError = !population.IsSet;
+					//if (population == null)
+					//{
+						myPopulation = population = new HashSet<ObjectTypeInstance, RoleInstance>(RoleInstanceKeyProvider.ProviderInstance);
+						for (int i = 0; i < roleInstanceCount; ++i)
+						{
+							AddRoleInstance(roleInstances[i], notifyAdded);
+						}
+					//}
 				}
 				else
 				{
 					if (population != null)
 					{
+						for (int i = 0; i < roleInstanceCount; ++i)
+						{
+							PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
+							if (error != null)
+							{
+								error.Delete();
+							}
+						}
 						myPopulation = null;
 					}
 				}
-				int roleInstanceCount = roleInstances.Count;
-				for (int i = 0; i < roleInstanceCount; ++i)
+			}
+		}
+
+		private void AddRoleInstance(RoleInstance roleInstance, INotifyElementAdded notifyAdded)
+		{
+			HashSet<ObjectTypeInstance, RoleInstance> population = myPopulation;
+			bool duplicate = !population.Add(roleInstance);
+			IList<RoleInstance> knownInstances = population.GetValues(roleInstance.ObjectTypeInstance);
+			int knownInstanceCount = knownInstances.Count;
+			PopulationUniquenessError error = null;
+			FactTypeRoleInstance factTypeRoleInstance;
+			EntityTypeRoleInstance entityTypeRoleInstance;
+			for (int j = 0; error == null && j < knownInstanceCount; ++j)
+			{
+				error = knownInstances[j].PopulationUniquenessError;
+			}
+			if (error != null)
+			{
+				if (duplicate)
 				{
-					PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
-					if (hasError)
+					RoleInstanceHasPopulationUniquenessError newLink = null;
+					if (null != (factTypeRoleInstance = roleInstance as FactTypeRoleInstance))
 					{
-						if (error == null)
-						{
-							error = new PopulationUniquenessError(this.Store);
-							//error.RoleInstanceCollection = population.GetDuplicates(roleInstances[i].ObjectTypeInstance);
-							error.Model = this.FactType.Model;
-							error.GenerateErrorText();
-							if (notifyAdded != null)
-							{
-								notifyAdded.ElementAdded(error);
-							}
-						}
+						newLink = new FactTypeRoleInstanceHasPopulationUniquenessError(factTypeRoleInstance, error);
 					}
-					else if (error != null)
+					else if (null != (entityTypeRoleInstance = roleInstance as EntityTypeRoleInstance))
 					{
-						error.Delete();
+						newLink = new EntityTypeRoleInstanceHasPopulationUniquenessError(entityTypeRoleInstance, error);
 					}
+					if (notifyAdded != null && newLink != null)
+					{
+						notifyAdded.ElementAdded(newLink);
+					}
+				}
+				else
+				{
+					error.Delete();
+				}
+			}
+			else if (duplicate)
+			{
+				error = new PopulationUniquenessError(this.Store);
+				for (int i = 0; i < knownInstanceCount; ++i)
+				{
+					RoleInstance knownInstance = knownInstances[i];
+					if (null != (factTypeRoleInstance = knownInstance as FactTypeRoleInstance))
+					{
+						new FactTypeRoleInstanceHasPopulationUniquenessError(factTypeRoleInstance, error);
+					}
+					else if (null != (entityTypeRoleInstance = knownInstance as EntityTypeRoleInstance))
+					{
+						new EntityTypeRoleInstanceHasPopulationUniquenessError(entityTypeRoleInstance, error);
+					}
+				}
+				//error.RoleInstanceCollection.AddRange(knownInstances);
+				error.Model = this.FactType.Model;
+				error.GenerateErrorText();
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(error, true);
 				}
 			}
 		}
@@ -1518,13 +1685,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				RoleInstance roleInstance = e.ModelElement as RoleInstance;
 				Role role = roleInstance.Role;
-				if (roleInstance.IsDeleted)
+				if (!roleInstance.IsDeleted)
 				{
-					ICollection<RoleInstance> population = role.myPopulation;
-					if (population != null)
-					{
-						population.Add(roleInstance);
-					}
 					ORMCoreDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
 				}
 			}
@@ -1537,13 +1699,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				RoleInstance roleInstance = e.ModelElement as RoleInstance;
 				Role role = roleInstance.Role;
-				if (roleInstance.IsDeleted)
+				if (!roleInstance.IsDeleted)
 				{
-					ICollection<RoleInstance> population = role.myPopulation;
-					if (population != null)
-					{
-						population.Remove(roleInstance);
-					}
 					ORMCoreDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
 				}
 			}
@@ -1561,11 +1718,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					newRole = e.NewRolePlayer as Role;
 					Role oldRole = e.OldRolePlayer as Role;
-					ICollection<RoleInstance> oldPopulation = oldRole.myPopulation;
-					if (oldPopulation != null)
-					{
-						oldPopulation.Remove(roleInstance);
-					}
 					ORMCoreDomainModel.DelayValidateElement(oldRole, DelayValidatePopulationUniquenessError);
 				}
 				else if (changedRole == ObjectTypeInstance.DomainClassId)
@@ -1574,11 +1726,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!roleInstance.IsDeleted && newRole != null)
 				{
-					ICollection<RoleInstance> newPopulation = newRole.myPopulation;
-					if (newPopulation != null)
-					{
-						newPopulation.Add(roleInstance);
-					}
 					ORMCoreDomainModel.DelayValidateElement(newRole, DelayValidatePopulationUniquenessError);
 				}
 			}
@@ -1607,6 +1754,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int i = 0; i < errorCount; ++i)
 					{
 						yield return mandatoryErrorCollection[i];
+					}
+				}
+
+				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToRoleCollection(this);
+				int roleInstanceCount = roleInstances.Count;
+				for (int i = 0; i < roleInstanceCount; ++i)
+				{
+					PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
+					if (error != null)
+					{
+						yield return error;
 					}
 				}
 			}

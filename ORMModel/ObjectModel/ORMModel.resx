@@ -272,12 +272,12 @@
     <comment>Text displayed when the data type of the sample data doesn't match it's set data type. Replace value, valuetype, model.</comment>
   </data>
 	<data name="ModelError.Model.PopulationUniquenessError.Role.Text" xml:space="preserve">
-    <value>Instance '{0}' in model '{1}' violates its uniqueness constraint for Role '{2}'.</value>
-    <comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the string representation of the instance, field 1 is the model name, field 2 is the role name.</comment>
+    <value>'{0}' instance '{1}' in model '{2}' violates a uniqueness constraint for Role '{3}'.</value>
+    <comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</comment>
   </data>
 	<data name="ModelError.Model.PopulationUniquenessError.FactType.Text" xml:space="preserve">
-    <value>Instance '{0}' in model '{1}' violates its uniqueness constraint on FactType '{2}'.</value>
-    <comment>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
+    <value>'{0}'  instance '{1}' in model '{2}' violates a uniqueness constraint on FactType '{3}'.</value>
+    <comment>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the facttype name.</comment>
   </data>
 	<data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
     <value>Instance '{0}' in model '{1}' does not participate in required fact type '{2}'.</value>

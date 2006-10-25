@@ -6210,12 +6210,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Description for
 		/// Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<RoleInstance> RoleInstanceCollection
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<RoleInstance> RoleInstanceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<RoleInstance>(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+				return new DslModeling::ReadOnlyLinkedElementCollection<RoleInstance>(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+			}
+		}
+		#endregion
+		#region EntityTypeRoleInstanceCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of EntityTypeRoleInstanceCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<EntityTypeRoleInstance> EntityTypeRoleInstanceCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<EntityTypeRoleInstance>(this, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+			}
+		}
+		#endregion
+		#region FactTypeRoleInstanceCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of FactTypeRoleInstanceCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<FactTypeRoleInstance> FactTypeRoleInstanceCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<FactTypeRoleInstance>(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
 			}
 		}
 		#endregion

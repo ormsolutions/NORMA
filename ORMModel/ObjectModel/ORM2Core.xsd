@@ -1125,9 +1125,10 @@
 				<xs:sequence>
 					<xs:element name="RoleInstances">
 						<xs:complexType>
-							<xs:sequence minOccurs="2" maxOccurs="unbounded">
-								<xs:element name="RoleInstance" type="ObjectTypeRoleInstanceRef"/>
-							</xs:sequence>
+							<xs:choice minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="FactTypeRoleInstance" type="ObjectTypeRoleInstanceRef"/>
+								<xs:element name="EntityTypeRoleInstance" type="ObjectTypeRoleInstanceRef"/>
+							</xs:choice>
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>

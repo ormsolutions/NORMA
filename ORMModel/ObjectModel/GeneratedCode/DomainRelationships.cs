@@ -5578,7 +5578,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("5dbe50cd-a939-484d-9b96-700cb6cc7813")]
-	public partial class RoleInstanceHasPopulationUniquenessError : DslModeling::ElementLink
+	public abstract partial class RoleInstanceHasPopulationUniquenessError : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
@@ -5587,56 +5587,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5dbe50cd, 0xa939, 0x484d, 0x9b, 0x96, 0x70, 0x0c, 0xb6, 0xcc, 0x78, 0x13);
 	
-				
 		/// <summary>
-		/// Constructor
-		/// Creates a RoleInstanceHasPopulationUniquenessError link in the same Partition as the given RoleInstance
+		/// Constructor.
 		/// </summary>
-		/// <param name="source">RoleInstance to use as the source of the relationship.</param>
-		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
-		public RoleInstanceHasPopulationUniquenessError(RoleInstance source, PopulationUniquenessError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -5657,18 +5614,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("527ffaeb-8f4a-4dff-b02f-49822fce2f3d")]
-		public virtual RoleInstance RoleInstance
+		public abstract RoleInstance RoleInstance
 		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
-			}
+			get;
+			set;
 		}
 				
 		#endregion
@@ -5678,9 +5627,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RoleInstance> GetRoleInstanceCollection(PopulationUniquenessError element)
+		public static DslModeling::ReadOnlyLinkedElementCollection<RoleInstance> GetRoleInstanceCollection(PopulationUniquenessError element)
 		{
-			return new DslModeling::LinkedElementCollection<RoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
+			return new DslModeling::ReadOnlyLinkedElementCollection<RoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
 		}
 		#endregion
 		#region PopulationUniquenessError domain role code
@@ -5699,18 +5648,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("3ae1d857-c7e7-4053-a461-3eb965666f2c")]
-		public virtual PopulationUniquenessError PopulationUniquenessError
+		public abstract PopulationUniquenessError PopulationUniquenessError
 		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
-			}
+			get;
+			set;
 		}
 				
 		#endregion
@@ -5795,6 +5736,488 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError link in links )
+			{
+				if ( target.Equals(link.PopulationUniquenessError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship EntityTypeRoleInstanceHasPopulationUniquenessError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("04312bef-ea3e-4525-9a1a-903497efdaf7")]
+	public partial class EntityTypeRoleInstanceHasPopulationUniquenessError : RoleInstanceHasPopulationUniquenessError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// EntityTypeRoleInstanceHasPopulationUniquenessError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x04312bef, 0xea3e, 0x4525, 0x9a, 0x1a, 0x90, 0x34, 0x97, 0xef, 0xda, 0xf7);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a EntityTypeRoleInstanceHasPopulationUniquenessError link in the same Partition as the given EntityTypeRoleInstance
+		/// </summary>
+		/// <param name="source">EntityTypeRoleInstance to use as the source of the relationship.</param>
+		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
+		public EntityTypeRoleInstanceHasPopulationUniquenessError(EntityTypeRoleInstance source, PopulationUniquenessError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RoleInstance domain role code
+		
+		/// <summary>
+		/// RoleInstance domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid RoleInstanceDomainRoleId = new global::System.Guid(0xf3ef0d4d, 0x5f76, 0x4dab, 0xbb, 0x6e, 0xb4, 0x75, 0xe7, 0xdd, 0xa7, 0x0d);
+		
+		/// <summary>
+		/// DomainRole RoleInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, RolePlayer = typeof(EntityTypeRoleInstance), PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("f3ef0d4d-5f76-4dab-bb6e-b475e7dda70d")]
+		public override RoleInstance RoleInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access EntityTypeRoleInstanceCollection of a PopulationUniquenessError
+		/// <summary>
+		/// Gets a list of EntityTypeRoleInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<EntityTypeRoleInstance> GetEntityTypeRoleInstanceCollection(PopulationUniquenessError element)
+		{
+			return new DslModeling::LinkedElementCollection<EntityTypeRoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
+		}
+		#endregion
+		#region PopulationUniquenessError domain role code
+		
+		/// <summary>
+		/// PopulationUniquenessError domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid PopulationUniquenessErrorDomainRoleId = new global::System.Guid(0x0f8036ba, 0x33aa, 0x48bc, 0xb0, 0x58, 0x1b, 0xd9, 0x90, 0xa6, 0xe2, 0x64);
+		
+		/// <summary>
+		/// DomainRole PopulationUniquenessError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeRoleInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("0f8036ba-33aa-48bc-b058-1bd990a6e264")]
+		public override PopulationUniquenessError PopulationUniquenessError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PopulationUniquenessError of a EntityTypeRoleInstance
+		/// <summary>
+		/// Gets PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PopulationUniquenessError GetPopulationUniquenessError(EntityTypeRoleInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as PopulationUniquenessError;
+		}
+		
+		/// <summary>
+		/// Sets PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPopulationUniquenessError(EntityTypeRoleInstance element, PopulationUniquenessError newPopulationUniquenessError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newPopulationUniquenessError);
+		}
+		#endregion
+		#region RoleInstance link accessor
+		/// <summary>
+		/// Get the EntityTypeRoleInstanceHasPopulationUniquenessError link to a EntityTypeRoleInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError GetLinkToPopulationUniquenessError (global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance roleInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(roleInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PopulationUniquenessError link accessor
+		/// <summary>
+		/// Get the list of EntityTypeRoleInstanceHasPopulationUniquenessError links to a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> GetLinksToEntityTypeRoleInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError populationUniquenessErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(populationUniquenessErrorInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+		}
+		#endregion
+		#region EntityTypeRoleInstanceHasPopulationUniquenessError instance accessors
+		
+		/// <summary>
+		/// Get any EntityTypeRoleInstanceHasPopulationUniquenessError links between a given EntityTypeRoleInstance and a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError link in links )
+			{
+				if ( target.Equals(link.PopulationUniquenessError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one EntityTypeRoleInstanceHasPopulationUniquenessError link between a given EntityTypeRoleInstanceand a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError GetLink( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError link in links )
+			{
+				if ( target.Equals(link.PopulationUniquenessError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship FactTypeRoleInstanceHasPopulationUniquenessError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("a483fdfe-53ef-4352-8d97-986bf2c0e8e7")]
+	public partial class FactTypeRoleInstanceHasPopulationUniquenessError : RoleInstanceHasPopulationUniquenessError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FactTypeRoleInstanceHasPopulationUniquenessError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa483fdfe, 0x53ef, 0x4352, 0x8d, 0x97, 0x98, 0x6b, 0xf2, 0xc0, 0xe8, 0xe7);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FactTypeRoleInstanceHasPopulationUniquenessError link in the same Partition as the given FactTypeRoleInstance
+		/// </summary>
+		/// <param name="source">FactTypeRoleInstance to use as the source of the relationship.</param>
+		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
+		public FactTypeRoleInstanceHasPopulationUniquenessError(FactTypeRoleInstance source, PopulationUniquenessError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RoleInstance domain role code
+		
+		/// <summary>
+		/// RoleInstance domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid RoleInstanceDomainRoleId = new global::System.Guid(0x14bf8cdb, 0x9685, 0x49ac, 0xa7, 0xb9, 0x69, 0x6a, 0x72, 0xd6, 0xd9, 0x7c);
+		
+		/// <summary>
+		/// DomainRole RoleInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, RolePlayer = typeof(FactTypeRoleInstance), PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("14bf8cdb-9685-49ac-a7b9-696a72d6d97c")]
+		public override RoleInstance RoleInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeRoleInstanceCollection of a PopulationUniquenessError
+		/// <summary>
+		/// Gets a list of FactTypeRoleInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<FactTypeRoleInstance> GetFactTypeRoleInstanceCollection(PopulationUniquenessError element)
+		{
+			return new DslModeling::LinkedElementCollection<FactTypeRoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
+		}
+		#endregion
+		#region PopulationUniquenessError domain role code
+		
+		/// <summary>
+		/// PopulationUniquenessError domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid PopulationUniquenessErrorDomainRoleId = new global::System.Guid(0xf00366b7, 0xa23f, 0x48d7, 0x89, 0x77, 0x00, 0x78, 0xeb, 0x2c, 0xd7, 0xb6);
+		
+		/// <summary>
+		/// DomainRole PopulationUniquenessError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeRoleInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("f00366b7-a23f-48d7-8977-0078eb2cd7b6")]
+		public override PopulationUniquenessError PopulationUniquenessError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PopulationUniquenessError of a FactTypeRoleInstance
+		/// <summary>
+		/// Gets PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PopulationUniquenessError GetPopulationUniquenessError(FactTypeRoleInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as PopulationUniquenessError;
+		}
+		
+		/// <summary>
+		/// Sets PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPopulationUniquenessError(FactTypeRoleInstance element, PopulationUniquenessError newPopulationUniquenessError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newPopulationUniquenessError);
+		}
+		#endregion
+		#region RoleInstance link accessor
+		/// <summary>
+		/// Get the FactTypeRoleInstanceHasPopulationUniquenessError link to a FactTypeRoleInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError GetLinkToPopulationUniquenessError (global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance roleInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(roleInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PopulationUniquenessError link accessor
+		/// <summary>
+		/// Get the list of FactTypeRoleInstanceHasPopulationUniquenessError links to a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> GetLinksToFactTypeRoleInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError populationUniquenessErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(populationUniquenessErrorInstance, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+		}
+		#endregion
+		#region FactTypeRoleInstanceHasPopulationUniquenessError instance accessors
+		
+		/// <summary>
+		/// Get any FactTypeRoleInstanceHasPopulationUniquenessError links between a given FactTypeRoleInstance and a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError link in links )
+			{
+				if ( target.Equals(link.PopulationUniquenessError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FactTypeRoleInstanceHasPopulationUniquenessError link between a given FactTypeRoleInstanceand a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError GetLink( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError link in links )
 			{
 				if ( target.Equals(link.PopulationUniquenessError) )
 				{
@@ -19548,11 +19971,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
 			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
-			}
 		}
 		#endregion
 		#endregion
@@ -19759,6 +20177,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region PopulationUniquenessError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PopulationUniquenessError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
+		/// </summary>
+		public virtual new PopulationUniquenessError PopulationUniquenessError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
+			}
+		}
+		#endregion
 		#region EntityTypeInstance opposite domain role accessor
 		/// <summary>
 		/// Gets or sets EntityTypeInstance.
@@ -19983,6 +20421,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region PopulationUniquenessError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PopulationUniquenessError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
+		/// </summary>
+		public virtual new PopulationUniquenessError PopulationUniquenessError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
+			}
+		}
+		#endregion
 		#region FactTypeInstance opposite domain role accessor
 		/// <summary>
 		/// Gets or sets FactTypeInstance.

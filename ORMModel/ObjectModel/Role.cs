@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -828,6 +829,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (null != (requiredError = RolePlayerRequiredError))
 				{
 					yield return requiredError;
+				}
+			}
+			if (filter == (ModelErrorUses)(-1))
+			{
+				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
+				int roleInstanceCount = roleInstances.Count;
+				for (int i = 0; i < roleInstanceCount; ++i)
+				{
+					PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
+					if (error != null)
+					{
+						yield return error;
+					}
 				}
 			}
 			// Get errors off the base

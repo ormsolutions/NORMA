@@ -2306,6 +2306,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 						yield return valueError;
 					}
 				}
+
+				if (!this.IsValueType)
+				{
+					LinkedElementCollection<EntityTypeInstance> entityTypeInstances = this.EntityTypeInstanceCollection;
+					int entityTypeInstanceCount = entityTypeInstances.Count;
+					for (int i = 0; i < entityTypeInstanceCount; ++i)
+					{
+						foreach (ModelErrorUsage usage in (entityTypeInstances[i] as IModelErrorOwner).GetErrorCollection(filter))
+						{
+							yield return usage;
+						}
+					}
+				}
 			}
 
 			// Get errors off the base

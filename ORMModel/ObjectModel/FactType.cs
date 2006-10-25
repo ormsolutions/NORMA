@@ -741,6 +741,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
+			if (filter == (ModelErrorUses)(- 1))
+			{
+				LinkedElementCollection<FactTypeInstance> factTypeInstances = this.FactTypeInstanceCollection;
+				int factTypeInstanceCount = factTypeInstances.Count;
+				for(int i = 0; i < factTypeInstanceCount; ++i)
+				{
+					FactTypeInstance factTypeInstance = factTypeInstances[i];
+					foreach (ModelErrorUsage usage in (factTypeInstance as IModelErrorOwner).GetErrorCollection(filter))
+					{
+						yield return usage;
+					}
+					LinkedElementCollection<FactTypeRoleInstance> roleInstances = factTypeInstance.RoleInstanceCollection;
+					int roleInstanceCount = roleInstances.Count;
+					for (int j = 0; j < roleInstanceCount; ++j)
+					{
+						yield return roleInstances[j].PopulationUniquenessError;
+					}
+				}
+			}
+
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
