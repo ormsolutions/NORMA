@@ -129,9 +129,15 @@
 
 	<xs:complexType name="predefinedDataType">
 		<xs:attribute name="name" use="required" type="ddt:predefinedTypes"/>
+		<xs:attribute name="length" use="optional" type="ddt:stringOrLargeObjectLength">
+			<xs:annotation>
+				<xs:documentation>The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</xs:documentation>
+				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="precision" use="optional" type="ddt:numericPrecision">
 			<xs:annotation>
-				<xs:documentation>The maximum number of decimal digits in a NUMERIC or DECIMAL, the maximum number of binary digits in the significand (mantissa) of a FLOAT, the number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</xs:documentation>
+				<xs:documentation>The maximum number of decimal digits in a NUMERIC or DECIMAL, or the maximum number of binary digits in the significand (mantissa) of a FLOAT.</xs:documentation>
 				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>

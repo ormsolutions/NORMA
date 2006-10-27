@@ -139,7 +139,7 @@
 			<xsl:otherwise>
 				<dcl:predefinedDataType name="CHARACTER VARYING">
 					<xsl:if test="@maxLength">
-						<xsl:attribute name="precision">
+						<xsl:attribute name="length">
 							<xsl:value-of select="@maxLength"/>
 						</xsl:attribute>
 					</xsl:if>
@@ -150,7 +150,7 @@
 	<xsl:template match="odt:binary" mode="GenerateDataTypeReference">
 		<dcl:predefinedDataType name="BINARY LARGE OBJECT">
 			<xsl:if test="@maxLength">
-				<xsl:attribute name="precision">
+				<xsl:attribute name="length">
 					<xsl:value-of select="@maxLength"/>
 				</xsl:attribute>
 			</xsl:if>
@@ -280,7 +280,7 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:if test="@maxLength">
-				<xsl:attribute name="precision">
+				<xsl:attribute name="length">
 					<xsl:value-of select="@maxLength"/>
 				</xsl:attribute>
 			</xsl:if>

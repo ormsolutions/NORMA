@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dcl:domainDataType name="OptnlUnqStrng">
-		<dcl:predefinedDataType name="CHARACTER" precision="11" />
+		<dcl:predefinedDataType name="CHARACTER" length="11" />
 		<dcl:checkConstraint name="OptnlUnqStrng_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
 				<dep:parenthesizedValueExpression>
@@ -28,7 +28,7 @@
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
 	<dcl:domainDataType name="DeathCause_Type">
-		<dcl:predefinedDataType name="CHARACTER VARYING" precision="14" />
+		<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
 		<dcl:checkConstraint name="DthCs_Typ_Chk">
 			<dep:inPredicate type="IN">
 				<dep:valueKeyword />
@@ -38,7 +38,7 @@
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
 	<dcl:domainDataType name="Gender_Code">
-		<dcl:predefinedDataType name="CHARACTER" precision="1" />
+		<dcl:predefinedDataType name="CHARACTER" length="1" />
 		<dcl:checkConstraint name="Gender_Code_Chk">
 			<dep:and>
 				<dep:comparisonPredicate operator="greaterThanOrEquals">
@@ -62,7 +62,7 @@
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
 	<dcl:domainDataType name="MndtryUnqStrng">
-		<dcl:predefinedDataType name="CHARACTER" precision="11" />
+		<dcl:predefinedDataType name="CHARACTER" length="11" />
 		<dcl:checkConstraint name="MndtryUnqStrng_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
 				<dep:parenthesizedValueExpression>
@@ -233,7 +233,7 @@
 			<dcl:domainDataTypeRef name="&quot;Integer&quot;" />
 		</dcl:column>
 		<dcl:column name="Criterion_Name" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="IUC26" isPrimary="true">
 			<dcl:columnRef name="Car_vin" />
@@ -248,7 +248,7 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Criterion_Name">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
 		<dml:insertStatement schema="SampleModel" name="Review">
 			<dml:fromConstructor>
@@ -266,7 +266,7 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Criterion_Name">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
 		<dml:deleteStatement schema="SampleModel" name="Review">
 			<dml:whereClause>
@@ -287,7 +287,7 @@
 	</dcl:procedure>
 	<dcl:table name="PersonHasNickName">
 		<dcl:column name="NickName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
 		<dcl:column isNullable="false" isIdentity="false" name="Person_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -302,7 +302,7 @@
 	</dcl:table>
 	<dcl:procedure name="InsrtPrsnHsNckNm" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="NickName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Person_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -318,7 +318,7 @@
 	</dcl:procedure>
 	<dcl:procedure name="DltPrsnHsNckNm" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="NickName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Person_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -342,7 +342,7 @@
 	</dcl:procedure>
 	<dcl:table name="Person">
 		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
 		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -354,7 +354,7 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
 		<dcl:column name="LastName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
 		<dcl:column name="OptnlUnqStrng" isNullable="true" isIdentity="false">
 			<dcl:domainDataTypeRef name="OptnlUnqStrng" />
@@ -366,7 +366,7 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
 		<dcl:column name="HTHTSHTSD" isNullable="true" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="256" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
 		</dcl:column>
 		<dcl:column name="OwnsCar_vin" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -456,7 +456,7 @@
 	</dcl:table>
 	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="FirstName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -465,22 +465,22 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="LastName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="OptnlUnqStrng">
-			<dcl:predefinedDataType name="CHARACTER" precision="11" />
+			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="HatType_ColorARGB">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="HTHTSHTSD">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="256" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="OwnsCar_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Gender_Gender_Code">
-			<dcl:predefinedDataType name="CHARACTER" precision="1" />
+			<dcl:predefinedDataType name="CHARACTER" length="1" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="hasParents">
 			<dcl:predefinedDataType name="BOOLEAN" />
@@ -492,7 +492,7 @@
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="MndtryUnqStrng">
-			<dcl:predefinedDataType name="CHARACTER" precision="11" />
+			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Husband_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -513,7 +513,7 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="DDCDCT">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="14" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="DNDFPC">
 			<dcl:predefinedDataType name="BOOLEAN" />

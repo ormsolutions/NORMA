@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="PersonCountryDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
 	<dcl:domainDataType name="Title">
-		<dcl:predefinedDataType name="CHARACTER VARYING" precision="4" />
+		<dcl:predefinedDataType name="CHARACTER VARYING" length="4" />
 		<dcl:checkConstraint name="Title_Chk">
 			<dep:inPredicate type="IN">
 				<dep:valueKeyword />
@@ -15,7 +15,7 @@
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
 	<dcl:domainDataType name="Region_code">
-		<dcl:predefinedDataType name="CHARACTER" precision="8" />
+		<dcl:predefinedDataType name="CHARACTER" length="8" />
 		<dcl:checkConstraint name="Region_code_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
 				<dep:parenthesizedValueExpression>
@@ -39,16 +39,16 @@
 			<dcl:columnRef name="Person_id" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="LastName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="Title" isNullable="true" isIdentity="false">
 			<dcl:domainDataTypeRef name="Title" />
 		</dcl:column>
 		<dcl:column isNullable="true" isIdentity="false" name="Cntry_Cntry_nm">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
 		<dcl:referenceConstraint name="Country_FK" targetTable="Country">
 			<dcl:columnRef sourceName="Cntry_Cntry_nm" targetName="Country_name" />
@@ -59,16 +59,16 @@
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="LastName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="FirstName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Title">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="4" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="4" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Cntry_Cntry_nm">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
 		<dml:insertStatement schema="PersonCountryDemo" name="Person">
 			<dml:fromConstructor>
@@ -102,7 +102,7 @@
 	</dcl:procedure>
 	<dcl:table name="Country">
 		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="IUC3" isPrimary="true">
 			<dcl:columnRef name="Country_name" />
@@ -113,10 +113,10 @@
 	</dcl:table>
 	<dcl:procedure name="InsertCountry" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="Country_name">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Region_Region_code">
-			<dcl:predefinedDataType name="CHARACTER" precision="8" />
+			<dcl:predefinedDataType name="CHARACTER" length="8" />
 		</dcl:parameter>
 		<dml:insertStatement schema="PersonCountryDemo" name="Country">
 			<dml:fromConstructor>
@@ -129,7 +129,7 @@
 	</dcl:procedure>
 	<dcl:procedure name="DeleteCountry" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="Country_name">
-			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
 		<dml:deleteStatement schema="PersonCountryDemo" name="Country">
 			<dml:whereClause>

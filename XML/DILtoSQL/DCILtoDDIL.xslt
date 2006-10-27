@@ -253,13 +253,13 @@
 		</ddt:approximateNumeric>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='BINARY LARGE OBJECT']">
-		<ddt:binaryString type="{@name}" length="{@precision}"/>
+		<ddt:binaryString type="{@name}" length="{@length}"/>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='BOOLEAN']">
 		<ddt:boolean type="{@name}"/>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='CHARACTER' or @name='CHARACTER VARYING' or @name='CHARACTER LARGE OBJECT']">
-		<ddt:characterString type="{@name}" length="{@precision}"/>
+		<ddt:characterString type="{@name}" length="{@length}"/>
 	</xsl:template>
 	<xsl:template match="dcl:predefinedDataType[@name='NUMERIC' or @name='DECIMAL' or @name='SMALLINT' or @name='INTEGER' or @name='BIGINT']">
 		<ddt:exactNumeric type="{@name}">

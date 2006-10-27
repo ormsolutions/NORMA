@@ -100,38 +100,11 @@
 		</CopyWithPreprocessing>
 
 	</Target>
-	
-	
-	
-	
-	<!-- PreprocessManifestNonResxOnDisk -->
-	<!--<PropertyGroup>
-		<PrepareResourcesDependsOn>
-			$(PrepareResourcesDependsOn);
-			PreprocessManifestNonResxOnDisk
-		</PrepareResourcesDependsOn>
-		<PreprocessManifestNonResxOnDiskDependsOn>
-			PreprocessManifestNonResxOnDiskForXml
-		</PreprocessManifestNonResxOnDiskDependsOn>
-		<PreprocessManifestNonResxOnDiskForXmlDependsOn>
-		</PreprocessManifestNonResxOnDiskForXmlDependsOn>
-	</PropertyGroup>
 
-	<Target
-		Name="PreprocessManifestNonResxOnDisk"
-		DependsOnTargets="$(PreprocessManifestNonResxOnDiskDependsOn)"
-		Condition="'@(ManifestNonResxWithNoCulture)'!='' or '@(ManifetNonResxWithCulture)'!=''"
-	/>
 
-	<Target
-		Name="PreprocessManifestNonResxOnDiskForXml"
-		DependsOnTargets="$(PreprocessManifestNonResxOnDiskForXmlDependsOn)"
-		Condition="'@(ManifestNonResxWithNoCulture)'!='' or '@(ManifetNonResxWithCulture)'!=''">
-		
-		
-	</Target>-->
-		<!-- '%(Extension)'=='.resx' or '%(Extension)'=='.restext' -->
 
-	
+
+
+
 
 </Project>
