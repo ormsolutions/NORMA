@@ -234,10 +234,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 					SubsetConstraint sConstraint;
 					if (null != (sConstraint = efc.LinkedElements[1] as SubsetConstraint))
 					{
-						LinkConnectsToNode fromNode = FromLinkConnectsToNode;
-						Debug.Assert(fromNode.Nodes is FactTypeShape); // expect connection to a FactTypeShape only
-						FactTypeShape factTypeShape = fromNode.Nodes as FactTypeShape;
-						FactType factType = factTypeShape.AssociatedFactType;
+						NodeShape connectedShape = FromLinkConnectsToNode.Nodes;
+						FactTypeShape factTypeShape;
+						LinkConnectorShape connectorShape;
+						FactType factType = null;
+						if (null != (factTypeShape = connectedShape as FactTypeShape))
+						{
+							factType = factTypeShape.AssociatedFactType;
+						}
+						else if (null != (connectorShape = connectedShape as LinkConnectorShape))
+						{
+							SubtypeLink subtypeLink = connectorShape.ParentShape as SubtypeLink;
+							if (null != subtypeLink)
+							{
+								factType = subtypeLink.AssociatedSubtypeFact;
+							}
+						}
+						if (factType == null)
+						{
+							return base.DecoratorFrom;
+						}
 						LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
 						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequenceCollection = sConstraint.RoleSequenceCollection;
 						if (sequenceCollection.Count > 1)
