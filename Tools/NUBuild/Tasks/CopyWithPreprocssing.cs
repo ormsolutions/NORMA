@@ -1,6 +1,6 @@
 #region zlib/libpng Copyright Notice
 /**************************************************************************\
-* Neumont Build Framework                                                  *
+* Neumont Build System                                                     *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *

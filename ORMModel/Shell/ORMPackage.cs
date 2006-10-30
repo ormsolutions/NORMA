@@ -289,7 +289,7 @@ namespace Neumont.Tools.ORM.Shell
 				myFontAndColorService = new ORMDesignerFontsAndColors(this);
 				service.AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService, true);
 				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
-				
+
 				// setup commands
 				CommandSet commandSet = myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 				commandSet.Initialize();
@@ -306,11 +306,29 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMNotesToolWindow));
 				AddToolWindow(typeof(ORMContextWindow));
 				EnsureFactEditorToolWindow();
-				
+
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
 
-				base.SetupDynamicToolbox();
+				IVsAppCommandLine vsAppCommandLine = (IVsAppCommandLine)base.GetService(typeof(IVsAppCommandLine));
+				int present;
+				string optionValue;
+				if (vsAppCommandLine == null || ErrorHandler.Failed(vsAppCommandLine.GetOption("RootSuffix", out present, out optionValue)) || !Convert.ToBoolean(present))
+				{
+					// If we can't obtain the IVsAppCommandLine service, or our call to it fails, or no root suffix was specified, try looking at our registry root.
+					IVsShell vsShell = (IVsShell)base.GetService(typeof(SVsShell));
+					object registryRootObject;
+					if (vsShell == null || ErrorHandler.Failed(vsShell.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out registryRootObject)) || ((string)registryRootObject).EndsWith("EXP", StringComparison.OrdinalIgnoreCase))
+					{
+						// If we can't get the registry root, or if it says we are running in the experimental hive, call SetupDynamicToolbox.
+						base.SetupDynamicToolbox();
+					}
+				}
+				else if (string.Equals(optionValue, "EXP", StringComparison.OrdinalIgnoreCase))
+				{
+					// If a root suffix was specified as a command line parameter and that root suffix is "Exp", call SetupDynamicToolbox.
+					base.SetupDynamicToolbox();
+				}
 			}
 
 		}
