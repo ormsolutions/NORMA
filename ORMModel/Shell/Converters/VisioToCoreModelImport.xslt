@@ -27,23 +27,39 @@
 	<xsl:template match="/">
 		<xsl:apply-templates select="VisioModels/ORMSourceModels/ORMSourceModel" />
 	</xsl:template>
+	<xsl:key name="KeyedRoles" match="ORMSourceModels/ORMSourceModel/Roles/Role" use="@RoleID"/>
+	<xsl:key name="KeyedConstraints" match="ORMSourceModels/ORMSourceModel/Constraints/Constraint" use="@ConstraintID"/>
 	<xsl:template match="VisioModels/ORMSourceModels/ORMSourceModel">
 		<orm:ORMModel id="Model_id" Name="importedModel">
-			<xsl:apply-templates select="Objects" />
-			<xsl:apply-templates select="Facts" />
-			<xsl:apply-templates select="Constraints"/>
-			<xsl:call-template name="DataTypes" />
+			<xsl:variable name="externalConstraints" select="Constraints/child::*[not(@IsInternal='true')]"/>
+			<xsl:variable name="facts" select="Facts/child::*"/>
+			<xsl:variable name="objects" select="Objects/child::*"/>
+			<xsl:if test="$objects">
+				<orm:Objects>
+					<xsl:apply-templates select="$objects"/>
+				</orm:Objects>
+			</xsl:if>
+			<xsl:variable name="supertypeObjects" select="$objects[Supertypes]"/>
+			<xsl:if test="$facts or $supertypeObjects">
+				<orm:Facts>
+					<xsl:apply-templates select="$facts"/>
+					<xsl:apply-templates select="$supertypeObjects" mode="subtyping" />
+				</orm:Facts>
+			</xsl:if>
+			<xsl:if test="$externalConstraints">
+				<orm:ExternalConstraints>
+					<xsl:apply-templates select="$externalConstraints" mode="ExternalConstraints">
+						<xsl:with-param name="Facts" select="$facts"/>
+					</xsl:apply-templates>
+				</orm:ExternalConstraints>
+			</xsl:if>
+			<xsl:call-template name="DataTypes">
+				<xsl:with-param name="Objects" select="$objects"/>
+			</xsl:call-template>
 			<xsl:call-template name="ReferenceModeKinds" />
 		</orm:ORMModel>
 	</xsl:template>
 	<!--Begin Object Templates-->
-	<xsl:template match="Objects">
-		<orm:Objects>
-			<xsl:apply-templates select="Object[@ObjectKind='Entity Type' and not(@NestedPredicateFactID)]" />
-			<xsl:apply-templates select="Object[@ObjectKind='Entity Type' and @NestedPredicateFactID]" />
-			<xsl:apply-templates select="Object[@ObjectKind='Value Type']" />
-		</orm:Objects>
-	</xsl:template>
 	<xsl:template match="Object[@ObjectKind='Entity Type' and not(@NestedPredicateFactID)]">
 		<orm:EntityType>
 			<xsl:apply-templates select="@ObjectID" />
@@ -266,23 +282,30 @@
 	</xsl:template>
 	<!--End Object Templates-->
 	<!--Being Fact Templates-->
-	<xsl:template match="Facts">
-		<orm:Facts>
-			<xsl:apply-templates select="Fact" />
-			<xsl:call-template name="SubtypeFacts">
-				<xsl:with-param name="superTypeObjects" select="../Objects/Object[Supertypes]" />
-			</xsl:call-template>
-		</orm:Facts>
-	</xsl:template>
 	<xsl:template match="Fact">
+		<xsl:variable name="factRoles" select="FactRoles/FactRole"/>
+		<xsl:variable name="resolvedFactRoles" select="key('KeyedRoles',$factRoles/@FactRoleID)"/>
+		<!-- Not sure why, but we need to access the set returned from the key function before passing it through. -->
+		<xsl:variable name="roleCount" select="count($resolvedFactRoles)"/>
 		<orm:Fact>
 			<xsl:apply-templates select="@FactID" />
 			<xsl:apply-templates select="@IsExternal" />
 			<xsl:apply-templates select="FactNotes" />
-			<xsl:apply-templates select="FactRoles" />
-			<xsl:apply-templates select="FactReadings"/>
+			<xsl:apply-templates select="FactRoles">
+				<xsl:with-param name="FactRoles" select="$factRoles"/>
+				<xsl:with-param name="ResolvedFactRoles" select="$resolvedFactRoles"/>
+				<xsl:with-param name="RoleCount" select="$roleCount"/>
+			</xsl:apply-templates>
+			<xsl:apply-templates select="FactReadings">
+				<xsl:with-param name="FactRoles" select="$factRoles"/>
+				<xsl:with-param name="ResolvedFactRoles" select="$resolvedFactRoles"/>
+				<xsl:with-param name="RoleCount" select="$roleCount"/>
+			</xsl:apply-templates>
 			<xsl:apply-templates select="FactConstraints">
-				<xsl:with-param name="NestedObject" select="@NestedAsObjectID" />
+				<xsl:with-param name="FactRoles" select="$factRoles"/>
+				<xsl:with-param name="ResolvedFactRoles" select="$resolvedFactRoles"/>
+				<xsl:with-param name="RoleCount" select="$roleCount"/>
+				<xsl:with-param name="NestedObjectID" select="string(@NestedAsObjectID)" />
 			</xsl:apply-templates>
 		</orm:Fact>
 	</xsl:template>
@@ -306,12 +329,16 @@
 		</orm:Notes>
 	</xsl:template>
 	<xsl:template match="FactRoles">
+		<xsl:param name="ResolvedFactRoles"/>
 		<orm:FactRoles>
-			<xsl:apply-templates select="FactRole"/>
+			<xsl:apply-templates select="FactRole">
+				<xsl:with-param name="ResolvedFactRoles" select="$ResolvedFactRoles"/>
+			</xsl:apply-templates>
 		</orm:FactRoles>
 	</xsl:template>
 	<xsl:template match="FactRole">
-		<xsl:variable name="ValueRole" select="../../../../Roles/Role[@RoleID=current()/@FactRoleID]" />
+		<xsl:param name="ResolvedFactRoles"/>
+		<xsl:variable name="ValueRole" select="$ResolvedFactRoles[@RoleID=current()/@FactRoleID]"/>
 		<orm:Role>
 			<xsl:attribute name="id">
 				<xsl:text>GUID_RoleID</xsl:text>
@@ -335,15 +362,24 @@
 		</orm:Role>
 	</xsl:template>
 	<xsl:template match="FactReadings">
+		<xsl:param name="FactRoles"/>
+		<xsl:param name="ResolvedFactRoles"/>
+		<xsl:param name="RoleCount"/>
 		<orm:ReadingOrders>
-			<xsl:apply-templates select="FactReading"/>
+			<xsl:apply-templates select="FactReading">
+				<xsl:with-param name="RoleCount" select="$RoleCount"/>
+				<xsl:with-param name="FactRoles" select="$FactRoles"/>
+				<xsl:with-param name="ResolvedFactRoles" select="$ResolvedFactRoles"/>
+			</xsl:apply-templates>
 		</orm:ReadingOrders>
 	</xsl:template>
 	<xsl:template match="FactReading">
+		<xsl:param name="FactRoles"/>
+		<xsl:param name="RoleCount" select="count($FactRoles)"/>
+		<xsl:param name="ResolvedFactRoles"/>
 		<xsl:variable name="location" select="position()"/>
-		<xsl:variable name="factRoleID" select="../../FactRoles/FactRole[$location]/@FactRoleID"/>
-		<xsl:variable name="role" select="../../../../Roles/Role[@RoleID=$factRoleID]"/>
-		<xsl:variable name="factRole" select="../../FactRoles/FactRole" />
+		<xsl:variable name="factRoleID" select="$FactRoles[$location]/@FactRoleID"/>
+		<xsl:variable name="role" select="$ResolvedFactRoles[@RoleID=$factRoleID]"/>
 		<orm:ReadingOrder>
 			<xsl:attribute name="id">
 				<xsl:text>GUID_ReadingOrderID</xsl:text>
@@ -361,11 +397,11 @@
 					<orm:Data>
 						<xsl:variable name="currentReading" select="$role/@RoleReading" />
 						<xsl:choose>
-							<xsl:when test="count($factRole) = 1">
+							<xsl:when test="$RoleCount = 1">
 								<xsl:text>{0} </xsl:text>
 								<xsl:value-of select="$currentReading"/>
 							</xsl:when>
-							<xsl:when test="count($factRole) = 2">
+							<xsl:when test="$RoleCount = 2">
 								<xsl:choose>
 									<xsl:when test="contains($currentReading, '...')">
 										<xsl:call-template name="readingParse">
@@ -379,7 +415,7 @@
 									</xsl:when>
 								</xsl:choose>
 							</xsl:when>
-							<xsl:when test="count($factRole) &gt;= 3">
+							<xsl:when test="$RoleCount &gt;= 3">
 								<xsl:call-template name="readingParse">
 									<xsl:with-param name="readingString" select="$currentReading" />
 								</xsl:call-template>
@@ -389,16 +425,14 @@
 				</orm:Reading>
 			</orm:Readings>
 			<orm:RoleSequence>
-				<xsl:variable name="factRoleIDs" select="../../FactRoles/FactRole/@FactRoleID"/>
-				<xsl:variable name="matchingRoles" select="../../../../Roles/Role[@RoleID=$factRoleIDs]" />
 				<xsl:variable name="factRoleIDsAscendingFrag">
-					<xsl:for-each select="$matchingRoles">
+					<xsl:for-each select="$ResolvedFactRoles">
 						<xsl:sort select="@PredicatePosition" data-type="number" order="ascending"/>
 						<xsl:copy-of select="."/>
 					</xsl:for-each>
 				</xsl:variable>
 				<xsl:variable name="factRoleIDsDescendingFrag">
-					<xsl:for-each select="$matchingRoles">
+					<xsl:for-each select="$ResolvedFactRoles">
 						<xsl:sort select="@PredicatePosition" data-type="number" order="descending"/>
 						<xsl:copy-of select="."/>
 					</xsl:for-each>
@@ -452,33 +486,33 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="FactConstraints">
-		<xsl:param  name="NestedObject" />
+		<xsl:param name="FactRoles"/>
+		<xsl:param name="ResolvedFactRoles"/>
+		<xsl:param name="RoleCount"/>
+		<xsl:param  name="NestedObjectID" />
 		<orm:InternalConstraints>
 			<xsl:apply-templates select="FactConstraint">
-				<xsl:with-param name="NestedObject" select="$NestedObject" />
+				<xsl:with-param name="RoleCount" select="$RoleCount"/>
+				<xsl:with-param name="FactRoles" select="$FactRoles"/>
+				<xsl:with-param name="ResolvedFactRoles" select="$ResolvedFactRoles"/>
+				<xsl:with-param name="NestedObjectID" select="$NestedObjectID" />
 			</xsl:apply-templates>
 		</orm:InternalConstraints>
 	</xsl:template>
 	<xsl:template match="FactConstraint">
-		<xsl:param name="NestedObject" />
-		<xsl:variable name="tempConstraint" select="../../../../Constraints/Constraint[@ConstraintID=current()/@FactConstraintID]"/>
-		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']" />
-		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Mandatory']" />
-		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
-			<xsl:with-param name="NestedObject" select="$NestedObject" />
+		<xsl:param name="FactRoles"/>
+		<xsl:param name="ResolvedFactRoles"/>
+		<xsl:param name="RoleCount"/>
+		<xsl:param name="NestedObjectID" />
+		<xsl:apply-templates select="key('KeyedConstraints', string(@FactConstraintID))[@IsInternal='true']" mode="InternalConstraints">
+			<xsl:with-param name="FactRoleCount" select="$RoleCount"/>
+			<xsl:with-param name="FactRoles" select="$FactRoles"/>
+			<xsl:with-param name="ResolvedFactRoles" select="$ResolvedFactRoles"/>
+			<xsl:with-param name="NestedObjectID" select="$NestedObjectID" />
 		</xsl:apply-templates>
 	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']">
-		<xsl:variable name="tempID" select="@ConstraintID" />
-		<orm:InternalUniquenessConstraint id="GUID_ConstraintID{$tempID}" Name="InternalUniquenessConstraint{$tempID}">
-			<orm:RoleSequence>
-				<xsl:for-each select="RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID">
-					<orm:Role ref="GUID_RoleID{.}" />
-				</xsl:for-each>
-			</orm:RoleSequence>
-		</orm:InternalUniquenessConstraint>
-	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Mandatory']">
+	<xsl:template match="*" mode="InternalConstraints"/>
+	<xsl:template match="Constraint[@ConstraintType='Mandatory']" mode="InternalConstraints">
 		<xsl:variable name="tempID" select="@ConstraintID" />
 		<orm:SimpleMandatoryConstraint id="GUID_ConstraintID{$tempID}" Name="SimpleMandatoryConstraint{$tempID}">
 			<orm:RoleSequence>
@@ -488,8 +522,11 @@
 			</orm:RoleSequence>
 		</orm:SimpleMandatoryConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
-		<xsl:param name="NestedObject" />
+	<xsl:template match="Constraint[@ConstraintType='Uniqueness']" mode="InternalConstraints">
+		<xsl:param name="FactRoles"/>
+		<xsl:param name="ResolvedFactRoles"/>
+		<xsl:param name="FactRoleCount" select="0"/>
+		<xsl:param name="NestedObjectID" />
 		<xsl:variable name="tempID" select="@ConstraintID" />
 		<orm:InternalUniquenessConstraint id="GUID_ConstraintID{$tempID}" Name="InternalUniquenessConstraint{$tempID}">
 			<orm:RoleSequence>
@@ -497,24 +534,30 @@
 					<orm:Role ref="GUID_RoleID{.}" />
 				</xsl:for-each>
 			</orm:RoleSequence>
-			<xsl:choose>
-				<xsl:when test="string-length($NestedObject) &gt; 0">
-					<orm:PreferredIdentifierFor ref="GUID_ObjectID{$NestedObject}" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="tempFact" select="../../Facts/Fact[FactConstraints/FactConstraint/@FactConstraintID=current()/@ConstraintID]/FactRoles/FactRole[1]/@FactRoleID" />
-					<xsl:variable name="tempRole" select="../../Roles/Role[@RoleID = $tempFact]/@RolePlayerObjectID" />
-					<orm:PreferredIdentifierFor ref="GUID_ObjectID{$tempRole}" />
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:if test="@IsPrimaryReference='true'">
+				<xsl:choose>
+					<xsl:when test="$NestedObjectID">
+						<orm:PreferredIdentifierFor ref="GUID_ObjectID{$NestedObjectID}" />
+					</xsl:when>
+					<xsl:when test="$FactRoleCount=2">
+						<xsl:variable name="roles" select="RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem"/>
+						<xsl:if test="count($roles)=1">
+						<!-- If there is more than one, then this is a preferred identifier on a constraint that will force
+						     an implied objectification to be created on load. If there is exactly one candidate internal uniqueness
+						     constraint then it will automatically become the preferred identifier. If there is more than one then
+						     a validation error will be added forcing the user to pick one. This is suboptimal (we lose data in some cases),
+						     but is better than guessing or trying to generate implied facts in this format.
+						     UNDONE: Generating the 2006-04 (or higher) format directly would allow us to preserve this information. -->
+							<!-- Grab the role player for the opposite role -->
+							<orm:PreferredIdentifierFor ref="GUID_ObjectID{$ResolvedFactRoles[not(@RoleID=$roles/@RoleSequenceItemRoleID)]/@RolePlayerObjectID}"/>
+						</xsl:if>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:if>
 		</orm:InternalUniquenessConstraint>
 	</xsl:template>
 	<!--End Fact Templates-->
 	<!--Begin SubtypeFactTemplates-->
-	<xsl:template name="SubtypeFacts">
-		<xsl:param name="superTypeObjects" />
-		<xsl:apply-templates select="$superTypeObjects" mode="subtyping" />
-	</xsl:template>
 	<xsl:template match="Object" mode="subtyping">
 		<orm:SubtypeFact id="GUID_SubtypeFactID{@ObjectID}" Name="SubtypeFactID{@ObjectID}" IsExternal="false">
 			<xsl:call-template name="superTypeFactRoles" />
@@ -591,19 +634,7 @@
 	</xsl:template>
 	<!--End SubtypeFactTemplates-->
 	<!--Begin External Constraints Template-->
-	<xsl:template match="Constraints">
-		<orm:ExternalConstraints>
-			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']" />
-			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']" />
-			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Mandatory']" />
-			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Exclusion']" />
-			<xsl:apply-templates select="Constraint[@ConstraintType='Ring']" />
-			<xsl:apply-templates select="Constraint[@ConstraintType='Equality']" />
-			<xsl:apply-templates select="Constraint[@ConstraintType='Subset']" />
-			<xsl:apply-templates select="Constraint[@ConstraintType='Frequency']" />
-		</orm:ExternalConstraints>
-	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']">
+	<xsl:template match="Constraint[@ConstraintType='Uniqueness' and @IsPrimaryReference='false']" mode="ExternalConstraints">
 		<orm:ExternalUniquenessConstraint id="GUID_ExternalConstraintID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
 			<xsl:for-each select="RoleSequences/RoleSequence">
 				<orm:RoleSequence>
@@ -615,7 +646,8 @@
 			</xsl:for-each>
 		</orm:ExternalUniquenessConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
+	<xsl:template match="Constraint[@ConstraintType='Uniqueness' and @IsPrimaryReference='true']" mode="ExternalConstraints">
+		<xsl:param name="Facts"/>
 		<orm:ExternalUniquenessConstraint id="GUID_ExternalConstraintID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
 			<xsl:for-each select="RoleSequences/RoleSequence">
 				<orm:RoleSequence>
@@ -625,12 +657,14 @@
 					</xsl:for-each>
 				</orm:RoleSequence>
 			</xsl:for-each>
-			<xsl:variable name="tempFact" select="../../Facts/Fact[FactConstraints/FactConstraint/@FactConstraintID=current()/@ConstraintID][1]/FactRoles/FactRole[1]/@FactRoleID" />
-			<xsl:variable name="tempRole" select="../../Roles/Role[@RoleID = $tempFact]/@RolePlayerObjectID" />
-			<orm:PreferredIdentifierFor ref="GUID_ObjectID{$tempRole}" />
+			<!-- If this is an external preferred identifier, then any role will be on a binary where the opposite
+			     role is attached to the role player that is being identified. -->
+			<xsl:variable name="keyOffRoleID" select="string(RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem[1]/@RoleSequenceItemRoleID)"/>
+			<!-- Grab the role player for the opposite role -->
+			<orm:PreferredIdentifierFor ref="GUID_ObjectID{key('KeyedRoles',$Facts[FactRoles/FactRole/@FactRoleID=$keyOffRoleID]/FactRoles/FactRole[not(@FactRoleID=$keyOffRoleID)]/@FactRoleID)/@RolePlayerObjectID}"/>
 		</orm:ExternalUniquenessConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Mandatory']">
+	<xsl:template match="Constraint[@ConstraintType='Mandatory']" mode="ExternalConstraints">
 		<orm:DisjunctiveMandatoryConstraint id="GUID_ExternalConstraintID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
 			<xsl:for-each select="RoleSequences/RoleSequence">
 				<orm:RoleSequence>
@@ -642,7 +676,7 @@
 			</xsl:for-each>
 		</orm:DisjunctiveMandatoryConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Exclusion']">
+	<xsl:template match="Constraint[@ConstraintType='Exclusion']" mode="ExternalConstraints">
 		<orm:ExclusionConstraint id="GUID_ExternalConstraingID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
 			<orm:RoleSequences>
 				<xsl:for-each select="RoleSequences/RoleSequence">
@@ -656,7 +690,7 @@
 			</orm:RoleSequences>
 		</orm:ExclusionConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@ConstraintType='Ring']">
+	<xsl:template match="Constraint[@ConstraintType='Ring']" mode="ExternalConstraints">
 		<orm:RingConstraint id="GUID_RingConstraintID{@ConstraintID}" Name="RingConstraintID{@ConstraintID}" Type="{@RingConstraintType}">
 			<xsl:for-each select="RoleSequences/RoleSequence">
 				<orm:RoleSequence>
@@ -668,7 +702,7 @@
 			</xsl:for-each>
 		</orm:RingConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@ConstraintType='Equality']">
+	<xsl:template match="Constraint[@ConstraintType='Equality']" mode="ExternalConstraints">
 		<orm:EqualityConstraint id="GUID_EqualityConstraintID{@ConstraintID}" Name="EqualityConstraintID{@ConstraintID}">
 			<orm:RoleSequences>
 				<xsl:for-each select="RoleSequences/RoleSequence">
@@ -688,7 +722,7 @@
 			</orm:RoleSequences>
 		</orm:EqualityConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@ConstraintType='Subset']">
+	<xsl:template match="Constraint[@ConstraintType='Subset']" mode="ExternalConstraints">
 		<orm:SubsetConstraint id="GUID_SubsetConstraintID{@ConstraintID}" Name="SubsetConstraintID{@ConstraintID}">
 			<orm:RoleSequences>
 				<xsl:for-each select="RoleSequences/RoleSequence">
@@ -701,7 +735,7 @@
 			</orm:RoleSequences>
 		</orm:SubsetConstraint>
 	</xsl:template>
-	<xsl:template match="Constraint[@ConstraintType='Frequency']">
+	<xsl:template match="Constraint[@ConstraintType='Frequency']" mode="ExternalConstraints">
 		<orm:FrequencyConstraint id="GUID_FrequencyConstraintID{@ConstraintID}" Name="" MinFrequency="{@MinimumFrequency}" MaxFrequency="{@MaximumFrequency}">
 			<xsl:for-each select="RoleSequences/RoleSequence">
 				<orm:RoleSequence>
@@ -715,83 +749,77 @@
 	<!--End External Constraints Template-->
 	<!--Begin DataType Templates-->
 	<xsl:template name="DataTypes">
+		<xsl:param name="Objects"/>
 		<orm:DataTypes>
-			<xsl:variable name="uniqueConceptualDatatypesFragment">
-				<xsl:variable name="allValueTypes">
-					<xsl:for-each select="Objects/Object[@ObjectKind='Value Type']">
-						<xsl:sort select="@ConceptualDatatype"/>
-						<xsl:copy-of select="."/>
+			<xsl:variable name="sortedValueTypesFragment">
+				<xsl:variable name="normalizedValueTypesFragment">
+					<xsl:for-each select="$Objects[@ObjectKind='Value Type']">
+						<xsl:variable name="dataType" select="string(@ConceptualDatatype)"/>
+						<orm:dummy ConceptualDatatype="{$dataType}">
+							<xsl:variable name="coreType" select="substring-before($dataType,'(')"/>
+							<xsl:choose>
+								<xsl:when test="$coreType">
+									<xsl:attribute name="ConceptualDatatype">
+										<xsl:value-of select="$coreType"/>
+									</xsl:attribute>
+								</xsl:when>
+								<xsl:when test="$dataType='C-Variable Length Max'">
+									<xsl:attribute name="ConceptualDatatype">
+										<xsl:text>C-Variable Length</xsl:text>
+									</xsl:attribute>
+								</xsl:when>
+							</xsl:choose>
+						</orm:dummy>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:copy-of select="exsl:node-set($allValueTypes)/child::*[position()=last() or following-sibling::*[1]/@ConceptualDatatype!=@ConceptualDatatype]"/>
-			</xsl:variable>
-			<xsl:variable name="uniqueConceptualDatatypes" select="exsl:node-set($uniqueConceptualDatatypesFragment)/child::*"/>
-			<xsl:variable name="uniqueConceptualDatatypes2Fragment">
-				<xsl:for-each select="$uniqueConceptualDatatypes">
-					<xsl:choose>
-						<xsl:when test="position()=1 and contains(@ConceptualDatatype, '(')">
-							<xsl:copy>
-								<xsl:copy-of select="substring-before(@ConceptualDatatype, '(')"/>
-							</xsl:copy>
-						</xsl:when>
-						<xsl:when test="position()!=1 and contains(@ConceptualDatatype, '(')">
-							<xsl:if test="substring-before(@ConceptualDatatype, '(')!=substring-before(preceding-sibling::*[1]/@ConceptualDatatype, '(')">
-								<xsl:copy>
-									<xsl:copy-of select="substring-before(@ConceptualDatatype, '(')"/>
-								</xsl:copy>
-							</xsl:if>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:copy>
-								<xsl:value-of select="@ConceptualDatatype"/>
-							</xsl:copy>
-						</xsl:otherwise>
-					</xsl:choose>
+				<xsl:for-each select="exsl:node-set($normalizedValueTypesFragment)/child::*">
+					<xsl:sort select="@ConceptualDatatype"/>
+					<xsl:copy-of select="."/>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="uniqueConceptualDatatypes2" select="exsl:node-set($uniqueConceptualDatatypes2Fragment)/child::*"/>
-			<xsl:for-each select="$uniqueConceptualDatatypes2">
+			<xsl:for-each select="exsl:node-set($sortedValueTypesFragment)/child::*[position()=last() or following-sibling::*[1]/@ConceptualDatatype!=@ConceptualDatatype]">
+				<xsl:variable name="dataType" select="string(@ConceptualDatatype)"/>
 				<xsl:choose>
-					<xsl:when test="contains(., 'R-Fixed Length')">
+					<xsl:when test="$dataType='R-Fixed Length'">
 						<orm:FixedLengthRawDataDataType id="GUID_FixedLengthRawDataDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'N-Floating Point')">
+					<xsl:when test="$dataType='N-Floating Point'">
 						<orm:FloatingPointNumericDataType id="GUID_FloatingPointNumericDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'N-Decimal')">
+					<xsl:when test="$dataType='N-Decimal'">
 						<orm:DecimalNumericDataType id="GUID_DecimalNumericDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'C-Large Length')">
+					<xsl:when test="$dataType='C-Large Length'">
 						<orm:LargeLengthTextDataType id="GUID_LargeLengthTextDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'R-OLE Object')">
+					<xsl:when test="$dataType='R-OLE Object'">
 						<orm:OleObjectRawDataDataType id="GUID_OleObjectRawDataDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'N-Signed Integer')">
+					<xsl:when test="$dataType='N-Signed Integer'">
 						<orm:SignedIntegerNumericDataType id="GUID_SignedIntegerNumericDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'N-Unsigned Integer')">
+					<xsl:when test="$dataType='N-Unsigned Integer'">
 						<orm:UnsignedIntegerNumericDataType id="GUID_UnsignedIntegerNumericDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'T-Date &amp; Time')">
+					<xsl:when test="$dataType='T-Date &amp; Time'">
 						<orm:DateAndTimeTemporalDataType id="GUID_DateAndTimeTemporalDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'N-Money')">
+					<xsl:when test="$dataType='N-Money'">
 						<orm:MoneyNumericDataType id="GUID_MoneyNumericDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'N-Auto Counter')">
+					<xsl:when test="$dataType='N-Auto Counter'">
 						<orm:AutoCounterNumericDataType id="GUID_AutoCounterNumericDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'C-Fixed Length')">
+					<xsl:when test="$dataType='C-Fixed Length'">
 						<orm:FixedLengthTextDataType id="GUID_FixedLengthTextDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'L-True or False')">
+					<xsl:when test="$dataType='L-True or False'">
 						<orm:TrueOrFalseLogicalDataType id="GUID_TrueOrFalseLogicalDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'C-Variable Length')">
+					<xsl:when test="$dataType='C-Variable Length'">
 						<orm:VariableLengthTextDataType id="GUID_VariableLengthTextDataType"/>
 					</xsl:when>
-					<xsl:when test="contains(., 'R-Variable Length')">
+					<xsl:when test="$dataType='R-Variable Length'">
 						<orm:VariableLengthRawDataDataType id="GUID_VariableLengthRawDataDataType"/>
 					</xsl:when>
 					<xsl:otherwise>

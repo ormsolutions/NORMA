@@ -804,6 +804,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Auto shape placement performance when AutoPopulateShapes is turned on (such
+		/// as when importing a model with no shape information) is dreadful. Don't auto-place
+		/// in this condition.
+		/// </summary>
+		public override bool ShouldAutoPlaceChildShapes
+		{
+			get
+			{
+				return !AutoPopulateShapes;
+			}
+		}
+		/// <summary>
 		/// Locate an existing shape on this diagram corresponding to this element
 		/// </summary>
 		/// <param name="element">The element to search</param>
