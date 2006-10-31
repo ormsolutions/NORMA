@@ -350,4 +350,9 @@
 			<xsl:copy-of select="child::*"/>
 		</xsl:copy>
 	</xsl:template>
+	<xsl:template match="orm:ModelNotes" mode="CoRefORM">
+		<!-- Kill these in the coref orm file. We're not using them anywhere, and we end
+		up turning some facts into object types, so the ModelNote/ReferencedByFactType links
+		may fail to load. -->
+	</xsl:template>
 </xsl:stylesheet>
