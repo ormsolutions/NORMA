@@ -70,19 +70,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// this reference type.
 		/// </summary>
 		/// <param name="entityName">The name of the associated entity type</param>
-		/// <param name="formatString"></param>
-		/// <returns>Formatted string</returns>
-		public string GenerateValueTypeName(string entityName, string formatString)
-		{
-			return GenerateValueTypeName(entityName, formatString, this.Name);
-		}
-
-		/// <summary>
-		/// Given an entity name, generate the value type
-		/// name that would correspond to the entity name for
-		/// this reference type.
-		/// </summary>
-		/// <param name="entityName">The name of the associated entity type</param>
 		/// <param name="formatString">The format string to use to generate the name.</param>
 		/// <param name="referenceModeName">The reference Mode Name to use to generate the name.</param>
 		/// <returns>Formatted string</returns>
@@ -99,57 +86,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.Name;
 		}
-
-
-		#endregion // ReferenceMode specific
-		#region Kind's Generated Accessor Code
-		/// <summary>
-		/// Property to change the reference mode kind. Modification of
-		/// standard code spit to generate a role player change instead of
-		/// a delete/add when the property is changed.
-		/// </summary>
-		public ReferenceModeKind Kind
-		{
-			// UNDONE: 2006-06 DSL Tools port: Does this property even need to exist?
-			get
-			{
-				ReferenceModeHasReferenceModeKind goodLink = null;
-				ReadOnlyCollection<ReferenceModeHasReferenceModeKind> links = DomainRoleInfo.GetElementLinks<ReferenceModeHasReferenceModeKind>(this, ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId);
-				foreach (ReferenceModeHasReferenceModeKind link in links)
-				{
-					if (!link.IsDeleted)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				return (goodLink != null) ? goodLink.Kind : null;
-			}
-			set
-			{
-				ReadOnlyCollection<ReferenceModeHasReferenceModeKind> links = DomainRoleInfo.GetElementLinks<ReferenceModeHasReferenceModeKind>(this, ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId);
-				foreach (ReferenceModeHasReferenceModeKind link in links)
-				{
-					if (!link.IsDeleted)
-					{
-						if (value == null)
-						{
-							link.Delete();
-						}
-						else if (value != link.Kind)
-						{
-							// Trigger a role player change instead of an add/remove
-							link.Kind = value;
-						}
-						return;
-					}
-				}
-				if (value != null)
-				{
-					new ReferenceModeHasReferenceModeKind(this, value);
-				}
-			}
-		}
 		/// <summary/>
 		public PortableDataType Type
 		{
@@ -162,7 +98,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				dataType = value;
 			}
 		}
-		#endregion
+		#endregion // ReferenceMode specific
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -321,115 +257,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			return retVal;
 		}
-
 		/// <summary>
-		/// Given the Entity and the the value type created the ref mode name
+		/// Finds all entity types using this reference mode
 		/// </summary>
-		/// <param name="valueTypeName">The name of the valuetype attached
-		/// to the preferred identifier role.</param>
-		/// <param name="entityTypeName">The name of the entity type.</param>
-		/// <param name="formatString">Use this format string when finding the name.</param>
-		/// <param name="model">The model that owns the reference modes</param>
-		/// <returns>A ReferenceMode instance, or null</returns>
-		public static ReferenceMode FindReferenceModeFromEntityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, ORMModel model)
+		/// <param name="alternateFormatString">A format string to use that is not the current format string. Defaults to the current FormatString if null.</param>
+		/// <param name="alternateReferenceModeName">A reference mode name to use that is not the current reference mode name. Defaults to the Name if null.</param>
+		/// <returns>IEnumerable&lt;ObjectType&gt;</returns>
+		public IEnumerable<ObjectType> AssociatedEntityTypeCollection(string alternateFormatString, string alternateReferenceModeName)
 		{
-			ReferenceMode retVal = null;
-			foreach (ReferenceMode mode in model.ReferenceModeCollection)
+			ORMModel model = Model;
+			if (model == null)
 			{
-				if (valueTypeName == mode.GenerateValueTypeName(entityTypeName, formatString))
-				{
-					retVal = mode;
-					break;
-				}
+				yield break;
 			}
-
-			return retVal;
-		}
-
-		/// <summary>
-		/// Given the Entity and the the value type created the ref mode name
-		/// </summary>
-		/// <param name="valueTypeName">The name of the valuetype attached
-		/// to the preferred identifier role.</param>
-		/// <param name="entityTypeName">The name of the entity type.</param>
-		/// <param name="formatString">Use this format string when finding the name.</param>
-		/// <param name="referenceModeName">Use this name when finding the name.</param>
-		/// <param name="oldReferenceModeName">Use this name when the name of the object
-		/// has changed, but you need to locate other elements with the old name</param>
-		/// <param name="model">The model that owns the reference modes</param>
-		/// <returns>A ReferenceMode instance, or null</returns>
-		public static ReferenceMode FindReferenceModeFromEntityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, string referenceModeName, string oldReferenceModeName, ORMModel model)
-		{
-			ReferenceMode retVal = null;
-			foreach (ReferenceMode mode in model.ReferenceModeCollection)
+			if (string.IsNullOrEmpty(alternateFormatString))
 			{
-				if (mode.Name == referenceModeName && valueTypeName == mode.GenerateValueTypeName(entityTypeName, formatString, oldReferenceModeName))
-				{
-					retVal = mode;
-					break;
-				}
+				alternateFormatString = FormatString;
 			}
-
-			return retVal;
-		}
-
-		/// <summary>
-		/// Looks at all Reference modes in the model and returns the one with the gien format string
-		/// </summary>
-		/// <param name="formatString"></param>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		public static ReferenceMode FindReferenceModesByFormatString(string formatString, ORMModel model)
-		{
-			foreach (ReferenceMode mode in model.ReferenceModeCollection)
+			if (string.IsNullOrEmpty(alternateReferenceModeName))
 			{
-				if (mode.FormatString.Equals(formatString))
-				{
-					return mode;
-				}
+				alternateReferenceModeName = Name;
 			}
-			return null;
-		}
-
-
-		/// <summary>
-		/// Finds all enity types using a given reference Mode
-		/// </summary>
-		/// <param name="mode"></param>
-		/// <param name="formatString"></param>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, ORMModel model)
-		{
 			foreach (EntityTypeHasPreferredIdentifier link in model.Store.ElementDirectory.FindElements<EntityTypeHasPreferredIdentifier>())
 			{
 				ObjectType entity = link.PreferredIdentifierFor;
 				if (model == entity.Model)
 				{
-					if (entity.GetReferenceMode(formatString) == mode)
-					{
-						yield return entity;
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Finds all enity types using a given reference Mode
-		/// </summary>
-		/// <param name="mode"></param>
-		/// <param name="formatString"></param>
-		/// <param name="oldReferenceModeName"></param>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, string oldReferenceModeName, ORMModel model)
-		{
-			foreach (EntityTypeHasPreferredIdentifier link in model.Store.ElementDirectory.FindElements<EntityTypeHasPreferredIdentifier>())
-			{
-				ObjectType entity = link.PreferredIdentifierFor;
-				if (model == entity.Model)
-				{
-					if (entity.GetReferenceMode(formatString, mode.Name, oldReferenceModeName) == mode)
+					UniquenessConstraint constraint = link.PreferredIdentifier;
+					LinkedElementCollection<Role> roles;
+					ObjectType oppositeValueType;
+					if (constraint.IsInternal &&
+						1 == (roles = constraint.RoleCollection).Count &&
+						null != (oppositeValueType = roles[0].RolePlayer) &&
+						oppositeValueType.IsValueType &&
+						oppositeValueType.Name == GenerateValueTypeName(entity.Name, alternateFormatString, alternateReferenceModeName))
 					{
 						yield return entity;
 					}
@@ -578,8 +439,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string newFormatString = newMode.GenerateValueTypeName(entityName);
 				foreach (ReferenceMode mode in model.ReferenceModeCollection)
 				{
-					string formatString = mode.GenerateValueTypeName(entityName);
-					if (newMode != mode && newFormatString == formatString)
+					if (newMode != mode && newFormatString == mode.GenerateValueTypeName(entityName))
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeEnforceUniqueFormatString);
 					}
@@ -628,7 +488,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				CustomReferenceMode mode = e.ModelElement as CustomReferenceMode;
 				ORMModel model = mode.Model;
-				EnsureUnique(mode,model);
+				EnsureUnique(mode, model);
 
 				Guid attributeId = e.DomainProperty.Id;
 				if (attributeId == CustomFormatStringDomainPropertyId)
@@ -642,8 +502,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							oldFormatString = mode.Kind.FormatString;
 						}
 
-						IEnumerable<ObjectType> objects = FindObjectUsingReferenceModes(mode, oldFormatString, model);
-						foreach (ObjectType entity in objects)
+						foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
 						{
 							string newName = mode.GenerateValueTypeName(entity.Name);
 							entity.RenameReferenceMode(newName);
@@ -662,10 +521,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						string oldRefModeName = (string)e.OldValue;
 
-						IEnumerable<ObjectType> objects = FindObjectUsingReferenceModes(mode, mode.FormatString, oldRefModeName, model);
-						foreach (ObjectType entity in objects)
+						foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, oldRefModeName))
 						{
-							string newName = mode.GenerateValueTypeName(entity.Name, mode.FormatString);
+							string newName = mode.GenerateValueTypeName(entity.Name);
 							entity.RenameReferenceMode(newName);
 						}
 					}
@@ -736,23 +594,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					string oldFormatString = (string)e.OldValue;
 					ReferenceModeKind kind = e.ModelElement as ReferenceModeKind;
+					string newFormatString = kind.FormatString;
 					ORMModel model = kind.Model;
-					EnsureUnique(kind,model);
+					EnsureUnique(kind, model);
 
 					foreach (ReferenceMode mode in kind.ReferenceModeCollection)
 					{
-						IEnumerable<ObjectType> objects = ReferenceMode.FindObjectUsingReferenceModes(mode, oldFormatString, mode.Name, model);
-						foreach (ObjectType entity in objects)
+						CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
+						if (customReferenceMode != null)
+						{
+							string customFormatString = customReferenceMode.CustomFormatString;
+							if (customFormatString.Length != 0)
+							{
+								if (customFormatString == newFormatString)
+								{
+									customReferenceMode.CustomFormatString = "";
+								}
+								continue;
+							}
+						}
+						foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
 						{
 							string newName = mode.GenerateValueTypeName(entity.Name);
 							entity.RenameReferenceMode(newName);
-						}
-
-						CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
-
-						if (customReferenceMode != null && customReferenceMode.CustomFormatString.Equals(customReferenceMode.Kind.FormatString))
-						{
-							customReferenceMode.CustomFormatString = "";
 						}
 					}
 				}
@@ -768,8 +632,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string newFormatString = newKind.FormatString;
 				foreach (ReferenceModeKind kind in model.ReferenceModeKindCollection)
 				{
-					string formatString = kind.FormatString;
-					if (newKind != kind && newFormatString == formatString)
+					if (newKind != kind && newFormatString == kind.FormatString)
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeKindEnforceUniqueFormatString); 
 					}
@@ -807,8 +670,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
 					if (customReferenceMode != null)
 					{
-						ORMModel model = customReferenceMode.Model;
-
 						string oldFormatString = customReferenceMode.CustomFormatString;
 						if (oldFormatString == null || oldFormatString.Length == 0)
 						{
@@ -816,8 +677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						customReferenceMode.CustomFormatString = "";
 
-						IEnumerable<ObjectType> objects = ReferenceMode.FindObjectUsingReferenceModes(customReferenceMode, oldFormatString, customReferenceMode.Name, model);
-						foreach (ObjectType entity in objects)
+						foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
 						{
 							string newName = customReferenceMode.GenerateValueTypeName(entity.Name);
 							entity.RenameReferenceMode(newName);

@@ -8013,6 +8013,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region Kind opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Kind.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceMode
+		/// </summary>
+		public virtual ReferenceModeKind Kind
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId) as ReferenceModeKind;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId, value);
+			}
+		}
+		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel

@@ -1985,7 +1985,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ReferenceMode" PropertyName="Kind" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ReferenceMode" Id="67F35299-D67F-4AE2-9159-E5EFF1FF8544">
+				<DomainRole Name="ReferenceMode" PropertyName="Kind" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ReferenceMode" Id="67F35299-D67F-4AE2-9159-E5EFF1FF8544">
 					<RolePlayer>
 						<DomainClassMoniker Name="ReferenceMode"/>
 					</RolePlayer>

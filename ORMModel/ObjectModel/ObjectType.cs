@@ -490,48 +490,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return null;
 		}
 		/// <summary>
-		/// Returns the Reference Mode for the given object if one exists
-		/// </summary>
-		/// <returns></returns>
-		public ReferenceMode GetReferenceMode()
-		{
-			ObjectType objectType;
-			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
-			{
-				Neumont.Tools.ORM.ObjectModel.ReferenceMode refMode = Neumont.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, this.Model);
-				return refMode;
-			}
-			return null;
-		}
-		/// <summary>
-		/// Returns the Reference Mode for the given object if one exists
-		/// </summary>
-		/// <returns></returns>
-		public ReferenceMode GetReferenceMode(string formatString)
-		{
-			ObjectType objectType;
-			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
-			{
-				Neumont.Tools.ORM.ObjectModel.ReferenceMode refMode = Neumont.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, this.Model);
-				return refMode;
-			}
-			return null;
-		}
-		/// <summary>
-		/// Returns the Reference Mode for the given object if one exists
-		/// </summary>
-		/// <returns></returns>
-		public ReferenceMode GetReferenceMode(string formatString, string referenceModeName, string oldReferenceModeName)
-		{
-			ObjectType objectType;
-			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
-			{
-				Neumont.Tools.ORM.ObjectModel.ReferenceMode refMode = Neumont.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
-				return refMode;
-			}
-			return null;
-		}
-		/// <summary>
 		/// Determines whether to return the valuetype name as the reference mode or, if there
 		/// is a reference mode, it returns the reference mode name
 		/// </summary>
