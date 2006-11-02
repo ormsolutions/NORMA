@@ -557,6 +557,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return displayRoles;
 		}
 		/// <summary>
+		/// Retrieve an editable version of the <see cref="DisplayedRoleOrder"/> property. Editing
+		/// DisplayedRoleOrder directly can change the role order in the associated FactType. Using
+		/// this method to retrieve the collection ensures it will only be modified on the shape.
+		/// Do not call this until you are sure you need to modify the collection.
+		/// </summary>
+		public LinkedElementCollection<RoleBase> GetEditableDisplayRoleOrder()
+		{
+			return EnsureDisplayOrderCollection();
+		}
+		/// <summary>
 		/// Gets the currently displayed order of the roles in the fact type.
 		/// If there is not a custom display order then it will return the default
 		/// role collection.
