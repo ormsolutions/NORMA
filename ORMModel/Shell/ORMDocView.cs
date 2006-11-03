@@ -1703,15 +1703,44 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuAutoLayout()
 		{
-			Diagram diagram;
-
-			if (null != (diagram = CurrentDiagram))
+			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements);
+		}
+		/// <summary>
+		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
+		/// the <see cref="Diagram"/> specified by <paramref name="diagram"/>.
+		/// </summary>
+		/// <remarks>
+		/// <see cref="Diagram.AutoLayoutShapeElements(ICollection,VGRoutingStyle,PlacementValueStyle,Boolean)"/> is used to perform the
+		/// actual layout. The value returned by <see cref="Diagram.RoutingStyle"/> is passed for the <c>routingStyle</c> parameter.
+		/// <see langword="true"/> is passed for the <c>route</c> parameter if and only if <see cref="Diagram.RoutingStyle"/> is any
+		/// value other than <see cref="VGRoutingStyle.VGRouteNone"/>.
+		/// </remarks>
+		public static void AutoLayoutDiagram(Diagram diagram, ICollection shapeElementCollection)
+		{
+			ORMDesignerDocView.AutoLayoutDiagram(diagram, shapeElementCollection, PlacementValueStyle.VGPlaceWideSSW);
+		}
+		/// <summary>
+		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
+		/// the <see cref="Diagram"/> specified by <paramref name="diagram"/>.
+		/// </summary>
+		/// <remarks>
+		/// <see cref="Diagram.AutoLayoutShapeElements(ICollection,VGRoutingStyle,PlacementValueStyle,Boolean)"/> is used to perform the
+		/// actual layout. The value returned by <see cref="Diagram.RoutingStyle"/> is passed for the <c>routingStyle</c> parameter.
+		/// <see langword="true"/> is passed for the <c>route</c> parameter if and only if <see cref="Diagram.RoutingStyle"/> is any
+		/// value other than <see cref="VGRoutingStyle.VGRouteNone"/>.
+		/// </remarks>
+		public static void AutoLayoutDiagram(Diagram diagram, ICollection shapeElementCollection, PlacementValueStyle placementStyle)
+		{
+			if (diagram != null)
 			{
 				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.AutoLayoutTransactionName))
 				{
-					// ORM diagrams don't do line routing, so there is no reason to attempt routing here
-					diagram.AutoLayoutShapeElements(GetSelectedComponents(), VGRoutingStyle.VGRouteNone, PlacementValueStyle.VGPlaceWideSSW, false);
-					t.Commit();
+					VGRoutingStyle routingStyle = diagram.RoutingStyle;
+					diagram.AutoLayoutShapeElements(shapeElementCollection, routingStyle, placementStyle, routingStyle != VGRoutingStyle.VGRouteNone);
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
 				}
 			}
 		}

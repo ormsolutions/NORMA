@@ -257,6 +257,18 @@ namespace Neumont.Tools.ORM.Shell
 					stream.Position = 0;
 
 					retVal = base.LoadDocData(fileName, isReload);
+
+					// HACK: After the file is loaded and the load transaction has committed, commit a new transaction.
+					// For some reason this seems to fix various line routing issues (including the lines not showing up).
+					TransactionManager transactionManager = this.Store.TransactionManager;
+					if (!transactionManager.InTransaction)
+					{
+						using (Transaction t = transactionManager.BeginTransaction())
+						{
+							t.Commit();
+						}
+						this.FlushUndoManager();
+					}
 				}
 				finally
 				{
@@ -329,7 +341,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (diagram.AutoPopulateShapes)
 				{
 					diagram.AutoPopulateShapes = false;
-					// TODO: We could perform an auto-layout here as well...
+					ORMDesignerDocView.AutoLayoutDiagram(diagram, diagram.NestedChildShapes);
 				}
 			}
 		}

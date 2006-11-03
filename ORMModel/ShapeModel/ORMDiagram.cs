@@ -812,7 +812,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return !AutoPopulateShapes;
+				return !AutoPopulateShapes || (Partition != Store.DefaultPartition);
 			}
 		}
 		/// <summary>
@@ -841,6 +841,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return null;
+		}
+		/// <summary>
+		/// Setup our routing style.
+		/// </summary>
+		public override void OnInitialize()
+		{
+			base.OnInitialize();
+			this.RoutingStyle = VGRoutingStyle.VGRouteNone;
 		}
 		#endregion // View Fixup Methods
 		#region Customize appearance
