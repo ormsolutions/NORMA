@@ -409,9 +409,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					Column column = GetColumnForInformationType(informationType, isTopLevel, prefix, false);
 					tableColumns.Add(column);
-					foreach (SingleChildUniquenessConstraint uConstraint in informationType.SingleChildConstraintCollection)
+					foreach (SingleChildConstraint constraint in informationType.SingleChildConstraintCollection)
 					{
-						if (uConstraint.Modality == ConstraintModality.Alethic)
+						SingleChildUniquenessConstraint uConstraint = constraint as SingleChildUniquenessConstraint;
+						if (uConstraint != null && uConstraint.Modality == ConstraintModality.Alethic)
 						{
 							bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
 							string constraintName = isPrimary ? PrimaryKeyString : string.Concat(AlternateKeyString, ++uniquenessConstraintCount);
@@ -888,9 +889,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				InformationType informationType = ctc as InformationType;
 				if (informationType != null)
 				{
-					foreach (SingleChildUniquenessConstraint uConstraint in informationType.SingleChildConstraintCollection)
+					foreach (SingleChildConstraint constraint in informationType.SingleChildConstraintCollection)
 					{
-						if (uConstraint.IsPreferred && uConstraint.Modality == ConstraintModality.Alethic)
+						SingleChildUniquenessConstraint uConstraint = constraint as SingleChildUniquenessConstraint;
+						if (uConstraint != null && uConstraint.IsPreferred && uConstraint.Modality == ConstraintModality.Alethic)
 						{
 							preferredIdentifierInformationTypes.Add(informationType);
 						}
