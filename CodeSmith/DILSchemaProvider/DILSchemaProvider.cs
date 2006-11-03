@@ -114,28 +114,10 @@ namespace SchemaExplorer.DILSchemaProvider
 					XmlAttribute nativeDataTypeNode = predefinedDataTypeNode.Attributes["name"];
 					if (nativeDataTypeNode != null)
 					{
-						nativeDataType = nativeDataTypeNode.Value;
+						nativeDataType = nativeDataTypeNode.Value.ToLower();
 					}
 
-					XmlAttribute precisionNode = currentColumn.Attributes["precision"];
-					if (precisionNode != null)
-					{
-						precision = Byte.Parse(precisionNode.Value);
-					}
-
-					XmlAttribute lengthNode = currentColumn.Attributes["length"];
-					if (lengthNode != null)
-					{
-						size = int.Parse(lengthNode.Value);
-					}
-
-					XmlAttribute scaleNode = currentColumn.Attributes["scale"];
-					if (scaleNode != null)
-					{
-						scale = int.Parse(scaleNode.Value);
-					}
-
-					switch (nativeDataType)
+					switch (nativeDataType.ToUpper())
 					{
 						case "CHARACTER LARGE OBJECT":
 						case "BINARY LARGE OBJECT":
@@ -144,9 +126,11 @@ namespace SchemaExplorer.DILSchemaProvider
 							break;
 						case "CHARACTER":
 							dbType = DbType.StringFixedLength;
+							size = 100;
 							break;
 						case "CHARACTER VARYING":
 							dbType = DbType.String;
+							size = 100;
 							break;
 						case "NUMERIC":
 						case "DECIMAL":
@@ -164,6 +148,7 @@ namespace SchemaExplorer.DILSchemaProvider
 						case "BIGINT":
 							dbType = DbType.Int64;
 							size = 8;
+							precision = 19;
 							break;
 						case "DOUBLE PRECISION":
 						case "FLOAT":
@@ -196,6 +181,24 @@ namespace SchemaExplorer.DILSchemaProvider
 							size = -1;
 							break;
 					}
+
+					XmlAttribute precisionNode = currentColumn.Attributes["precision"];
+					if (precisionNode != null)
+					{
+						precision = Byte.Parse(precisionNode.Value);
+					}
+
+					XmlAttribute lengthNode = currentColumn.Attributes["length"];
+					if (lengthNode != null)
+					{
+						size = int.Parse(lengthNode.Value);
+					}
+
+					XmlAttribute scaleNode = currentColumn.Attributes["scale"];
+					if (scaleNode != null)
+					{
+						scale = int.Parse(scaleNode.Value);
+					}
 				}
 				ret[i] = new ColumnSchema(table, columnName, dbType, nativeDataType, size, precision, scale, isNullable);
 			}
@@ -209,7 +212,7 @@ namespace SchemaExplorer.DILSchemaProvider
 				_cachedConnectionString = connectionString;
 				_doc.Load(connectionString);
 			}
-			XmlNodeList foreignKeys = _doc.SelectNodes("dcl:schema/dcl:table[@name='" + table.Name + "']/dcl:referenceConstraint|dcl:schema/table/dcl:referenceConstraint[@targetTable='" + table.Name + "']", _manager);
+			XmlNodeList foreignKeys = _doc.SelectNodes("dcl:schema/dcl:table[@name='" + table.Name + "']/dcl:referenceConstraint|dcl:schema/dcl:table/dcl:referenceConstraint[@targetTable='" + table.Name + "']", _manager);
 			int foreignKeyCount = foreignKeys.Count;
 			TableKeySchema[] ret = new TableKeySchema[foreignKeyCount];
 			for (int i = 0; i < foreignKeyCount; ++i)
@@ -364,7 +367,7 @@ namespace SchemaExplorer.DILSchemaProvider
 						sourceColumns[j] = sourceNameAttribute.Value;
 					}
 				}
-				ret[i] = new IndexSchema(table, indexName, isPrimary, true, false, sourceColumns);
+				ret[i] = new IndexSchema(table, indexName, isPrimary, true, true, sourceColumns);
 			}
 			return ret;
 		}
