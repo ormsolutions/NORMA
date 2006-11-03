@@ -106,6 +106,9 @@
 				<xsl:variable name="rolePlayerIds" select="orm:FactRoles/child::*/orm:RolePlayer/@ref"/>
 				<xsl:variable name="rolePlayers" select="$ObjectTypeInformation[@id=$rolePlayerIds]"/>
 				<AbsorbFactType ref="{@id}">
+					<!-- In the next two comments, the "winning" role player is the one indicated by @towards. The "losing" role player is the other role player in the fact type. -->
+					<!-- 'factOnly' means that only this fact type will be pulled towards the "winning" role player. -->
+					<!-- 'fully' means that both this fact type AND the "losing" role player will be pulled towards the "winning" role player. -->
 					<xsl:choose>
 						<!-- If only one role is mandatory... -->
 						<xsl:when test="$countMandatories = 1">
@@ -227,7 +230,7 @@
 		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypesFragment">
 			<xsl:for-each select="$ObjectTypeInformation[functionalDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id) and not(@id=$ObjectTypeAbsorptions/@ref)]">
 				<xsl:variable name="factTypeAbsorptionsAwayFromThisObjectType" select="$FactTypeAbsorptions[not(@towards=current()/@id)]"/>
-				<xsl:if test="$NonIndependentSubtypeSupertypeObjectTypes[@id=current()/@id] or functionalNonPreferredIdentifierDirectFacts/child::*[not(@id=$factTypeAbsorptionsAwayFromThisObjectType/@ref)]">
+				<xsl:if test="$NonIndependentSubtypeSupertypeObjectTypes[@id=current()/@id] or nonDependentFunctionalNonPreferredIdentifierDirectFacts/child::* or dependentFunctionalNonPreferredIdentifierDirectFacts/child::*[not(@id=$factTypeAbsorptionsAwayFromThisObjectType/@ref)]">
 					<xsl:copy-of select="."/>
 				</xsl:if>
 			</xsl:for-each>
@@ -374,6 +377,9 @@
 		<!-- $functionalNonPreferredIdentifierDirectFacts that are not also $dependentDirectFacts -->
 		<xsl:variable name="nonDependentFunctionalNonPreferredIdentifierDirectFacts" select="$functionalNonPreferredIdentifierDirectFacts[not(@id=$dependentDirectFacts/@id)]"/>
 
+		<!-- $functionalNonPreferredIdentifierDirectFacts that are also $dependentDirectFacts -->
+		<xsl:variable name="dependentFunctionalNonPreferredIdentifierDirectFacts" select="$functionalNonPreferredIdentifierDirectFacts[@id=$dependentDirectFacts/@id]"/>
+
 		<!-- The intersection of $mandatoryNonPreferredIdentifierDirectFacts, $dependentDirectFacts, and $functionalNonPreferredIdentifierDirectFacts. -->
 		<xsl:variable name="mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts" select="$mandatoryNonPreferredIdentifierDirectFacts[@id=$dependentDirectFacts/@id and @id=$functionalNonPreferredIdentifierDirectFacts/@id]"/>
 
@@ -446,6 +452,9 @@
 		<nonDependentFunctionalNonPreferredIdentifierDirectFacts>
 			<xsl:copy-of select="$nonDependentFunctionalNonPreferredIdentifierDirectFacts"/>
 		</nonDependentFunctionalNonPreferredIdentifierDirectFacts>
+		<dependentFunctionalNonPreferredIdentifierDirectFacts>
+			<xsl:copy-of select="$dependentFunctionalNonPreferredIdentifierDirectFacts"/>
+		</dependentFunctionalNonPreferredIdentifierDirectFacts>
 		<mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts>
 			<xsl:copy-of select="$mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts"/>
 		</mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts>
@@ -700,7 +709,7 @@
 				<xsl:variable name="oilConstraints" select="exsl:node-set($oilConstraintsFragment)/child::*"/>
 				<xsl:choose>
 					<xsl:when test="not(string-length($oppositeRolePlayerDesiredParentOrTopLevelTypeId))">
-						<xsl:call-template name="GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayer">
+						<xsl:call-template name="GetOilInformationTypes">
 							<xsl:with-param name="Model" select="$Model"/>
 							<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 							<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
@@ -782,7 +791,7 @@
 								<xsl:choose>
 									<xsl:when test="not(string-length($oppositeRolePlayerDesiredParentOrTopLevelTypeId))">
 										<xsl:variable name="informationTypesFragment">
-											<xsl:call-template name="GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayerInternal">
+											<xsl:call-template name="GetOilInformationTypes">
 												<xsl:with-param name="Model" select="$Model"/>
 												<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 												<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
@@ -796,7 +805,7 @@
 												<xsl:with-param name="OilConstraints" select="$oilConstraints"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:for-each select="exsl:node-set($informationTypesFragment)/child::*[self::oil:informationType | self::oil:conceptTypeRef]">
+										<xsl:for-each select="exsl:node-set($informationTypesFragment)/oil:informationType">
 											<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{@name}"/>
 										</xsl:for-each>
 									</xsl:when>
@@ -996,11 +1005,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!--
-	This template gets the children for the non-top level opposite role player of an object type that has
-	a Concept Type associated with it. This can generate both oil:informationType and oil:conceptTypeRef elements.
-	-->
-	<xsl:template name="GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayer">
+	<xsl:template name="GetOilInformationTypes">
 		<xsl:param name="Model"/>
 		<xsl:param name="ObjectTypeInformation"/>
 		<xsl:param name="ObjectTypeAbsorptions"/>
@@ -1013,7 +1018,7 @@
 		<xsl:param name="BaseName"/>
 		<xsl:param name="OilConstraints"/>
 		<xsl:variable name="oilInformationTypesFragment">
-			<xsl:call-template name="GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayerInternal">
+			<xsl:call-template name="GetOilInformationTypesInternal">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 				<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
@@ -1039,7 +1044,7 @@
 			</oil:equalityConstraint>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template name="GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayerInternal">
+	<xsl:template name="GetOilInformationTypesInternal">
 		<xsl:param name="Model"/>
 		<xsl:param name="ObjectTypeInformation"/>
 		<xsl:param name="ObjectTypeAbsorptions"/>
@@ -1113,15 +1118,13 @@
 										<xsl:value-of select="$OppositeName"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:message terminate="yes">
-											<xsl:text>SANITY CHECK: A ConceptTypeRef should not be generated on the first run through the GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayerInternal template.</xsl:text>
-										</xsl:message>
+										<xsl:value-of select="concat($RolePlayer/@Name,'_',$OppositeName)"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
 							<xsl:variable name="oppositeRolePlayerId" select="orm:FactRoles/child::*[not(orm:RolePlayer/@ref=$RolePlayer/@id)]/orm:RolePlayer/@ref"/>
 							<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
-							<xsl:call-template name="GetChildrenForAbsorbedFactTypeNonTopLevelOppositeRolePlayerInternal">
+							<xsl:call-template name="GetOilInformationTypesInternal">
 								<xsl:with-param name="Model" select="$Model"/>
 								<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 								<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
