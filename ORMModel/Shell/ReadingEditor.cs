@@ -26,7 +26,6 @@ using System.Drawing.Design;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
@@ -38,10 +37,7 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
-
-#if Buffered_TextView_Control_Test
-using Neumont.Tools.ORM.Shell.FactEditor;
-#endif //Buffered_TextView_Control_Test
+using System.Security.Permissions;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -271,6 +267,284 @@ namespace Neumont.Tools.ORM.Shell
 
 	public partial class ReadingEditor : UserControl
 	{
+		#region InplaceReadingEditor control
+		private sealed class InplaceReadingEditor : ReadingRichTextBox, IVirtualTreeInPlaceControl
+		{
+			#region NativeMethods class
+			[System.Security.SuppressUnmanagedCodeSecurity]
+			private sealed class NativeMethods
+			{
+				[StructLayout(LayoutKind.Sequential)]
+				public struct RECT
+				{
+					public int left;
+					public int top;
+					public int right;
+					public int bottom;
+					public int width
+					{
+						get
+						{
+							return right - left;
+						}
+					}
+
+					public int height
+					{
+						get
+						{
+							return bottom - top;
+						}
+					}
+				}
+				[DllImport("user32.dll", CharSet = CharSet.Auto)]
+				public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, out RECT rect);
+				public const int EM_GETRECT = 0xB2;
+				public const int WM_MOUSEWHEEL = 0x20A;
+				public const int ES_AUTOVSCROLL = 0x0040;
+				public const int ES_AUTOHSCROLL = 0x0080;
+			}
+			#endregion // NativeMethods class
+			#region Member variables
+			private readonly VirtualTreeInPlaceControlHelper myInPlaceHelper;
+			private bool myIgnoreNextSetText;
+			private bool myEscapePressed;
+			#endregion // Member variables
+			#region Constructors
+			/// <summary>
+			/// Create a new InplaceReadingEditor
+			/// </summary>
+			public InplaceReadingEditor()
+			{
+				BorderStyle = BorderStyle.FixedSingle;
+				myInPlaceHelper = VirtualTreeControl.CreateInPlaceControlHelper(this);
+			}
+			#endregion // Constructors
+			#region InplaceReadingEditor Specific
+			/// <summary>
+			/// Provide additional functionality when the Initialize method is complete.
+			/// Used to ignore the Text = labelText call coming from VirtualTreeControl.CreateEditInplaceWindow
+			/// </summary>
+			protected override void InitializeCompleted()
+			{
+				myIgnoreNextSetText = true;
+			}
+			/// <summary>
+			/// Override text property to enable control to ignore Text = labelText call
+			/// coming from VirtualTreeControl.CreateEditInplaceWindow
+			/// </summary>
+			public override string Text
+			{
+				get
+				{
+					return base.Text;
+				}
+				set
+				{
+					if (myIgnoreNextSetText)
+					{
+						myIgnoreNextSetText = false;
+						return;
+					}
+					base.Text = value;
+				}
+			}
+			/// <summary>
+			/// Was the escape key pressed?
+			/// </summary>
+			public bool EscapePressed
+			{
+				get
+				{
+					return myEscapePressed;
+				}
+			}
+			#endregion // InplaceReadingEditor Specific
+			#region Event Forwarding, etc (Copied from VirtualTreeGrid.VirtualTreeInPlaceEditControl)
+			protected override bool IsInputKey(Keys keyData)
+			{
+				if ((keyData & Keys.KeyCode) == Keys.Escape)
+				{
+					myEscapePressed = true;
+				}
+				return base.IsInputKey(keyData);
+			}
+			protected override void OnKeyDown(KeyEventArgs e)
+			{
+				base.OnKeyDown(e);
+				if (!e.Handled)
+				{
+					e.Handled = this.myInPlaceHelper.OnKeyDown(e);
+				}
+			}
+			protected override void OnKeyPress(KeyPressEventArgs e)
+			{
+				base.OnKeyPress(e);
+				if (!e.Handled)
+				{
+					e.Handled = this.myInPlaceHelper.OnKeyPress(e);
+				}
+			}
+			protected override void OnLostFocus(EventArgs e)
+			{
+				this.myInPlaceHelper.OnLostFocus();
+				base.OnLostFocus(e);
+			}
+			protected override void OnTextChanged(EventArgs e)
+			{
+				this.myInPlaceHelper.OnTextChanged();
+				base.OnTextChanged(e);
+			}
+			protected override CreateParams CreateParams
+			{
+				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode), SecurityPermission(SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+				get
+				{
+					CreateParams retVal = base.CreateParams;
+					retVal.Style |= NativeMethods.ES_AUTOHSCROLL;
+					retVal.Style &= ~NativeMethods.ES_AUTOVSCROLL;
+					return retVal;
+				}
+			}
+			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode), SecurityPermission(SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			protected override void WndProc(ref Message m)
+			{
+				try
+				{
+					if (m.Msg == NativeMethods.WM_MOUSEWHEEL)
+					{
+						this.DefWndProc(ref m);
+					}
+					else
+					{
+						base.WndProc(ref m);
+					}
+				}
+				catch (Exception ex)
+				{
+					if (IsCriticalException(ex))
+					{
+						throw;
+					}
+					myInPlaceHelper.DisplayException(ex);
+				}
+			}
+			private bool IsCriticalException(Exception ex)
+			{
+				if (((ex is NullReferenceException) || (ex is StackOverflowException)) || ((ex is OutOfMemoryException) || (ex is System.Threading.ThreadAbortException)))
+				{
+					return true;
+				}
+				Exception inner = ex.InnerException;
+				if (inner != null)
+				{
+					return IsCriticalException(inner);
+				}
+				return false;
+			}
+			#endregion // Event Forwarding, etc (Copied from VirtualTreeGrid.VirtualTreeInPlaceEditControl)
+			#region IVirtualTreeInPlaceControlDefer Implementation
+			bool IVirtualTreeInPlaceControlDefer.Dirty
+			{
+				get
+				{
+					return myInPlaceHelper.Dirty;
+				}
+				set
+				{
+					myInPlaceHelper.Dirty = value;
+				}
+			}
+			VirtualTreeInPlaceControlFlags IVirtualTreeInPlaceControlDefer.Flags
+			{
+				get
+				{
+					return myInPlaceHelper.Flags;
+				}
+				set
+				{
+					myInPlaceHelper.Flags = value;
+				}
+			}
+			Control IVirtualTreeInPlaceControlDefer.InPlaceControl
+			{
+				get
+				{
+					return myInPlaceHelper.InPlaceControl;
+				}
+			}
+			int IVirtualTreeInPlaceControlDefer.LaunchedByMessage
+			{
+				get
+				{
+					return myInPlaceHelper.LaunchedByMessage;
+				}
+				set
+				{
+					myInPlaceHelper.LaunchedByMessage = value;
+				}
+			}
+			VirtualTreeControl IVirtualTreeInPlaceControlDefer.Parent
+			{
+				get
+				{
+					return myInPlaceHelper.Parent;
+				}
+				set
+				{
+					myInPlaceHelper.Parent = value;
+				}
+			}
+			#endregion // IVirtualTreeInPlaceControlDefer Implementation
+			#region IVirtualTreeInPlaceControl Implementation
+			int IVirtualTreeInPlaceControl.ExtraEditWidth
+			{
+				get
+				{
+					return VirtualTreeInPlaceControlHelper.DefaultExtraEditWidth;
+				}
+			}
+			Rectangle IVirtualTreeInPlaceControl.FormattingRectangle
+			{
+				get
+				{
+					NativeMethods.RECT rect;
+					NativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.EM_GETRECT, 0, out rect);
+					return new Rectangle(rect.left, rect.top, rect.width, rect.height);
+				}
+			}
+			int IVirtualTreeInPlaceControl.MaxTextLength
+			{
+				get
+				{
+					return MaxLength;
+				}
+				set
+				{
+					MaxLength = value;
+				}
+			}
+			void IVirtualTreeInPlaceControl.SelectAllText()
+			{
+				// Don't acknowledge this request. This is used for initial selection, but
+				// we already provide an initial selection during the Initialize method.
+			}
+
+			int IVirtualTreeInPlaceControl.SelectionStart
+			{
+				get
+				{
+					return SelectionStart;
+				}
+				set
+				{
+					// Don't acknowledge this request. This is used for initial selection, but
+					// we already provide an initial selection during the Initialize method.
+				}
+			}
+			#endregion // IVirtualTreeInPlaceControl Implementation
+		}
+		#endregion // Inplace reading editor control
 		#region OrderBranch Interface
 		private interface IReadingEditorBranch : IBranch, IMultiColumnBranch
 		{
@@ -302,7 +576,7 @@ namespace Neumont.Tools.ORM.Shell
 		private enum RowType
 		{
 			Committed = 0,
-			UnCommitted = 1,
+			Uncommitted = 1,
 			TypeEditorHost = 3,
 			None = 4
 		}
@@ -316,7 +590,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return ReadingEditor.instance;
+				return ReadingEditor.myInstance;
 			}
 		}
 		#endregion // Static Methods
@@ -325,16 +599,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Provides a ref to the ReadingOrderBranch from nested objects
 		/// </summary>
-		private static IReadingEditorBranch myMainBranch;
-		/// <summary>
-		/// Provides a ref to the tree control from nested objects
-		/// </summary>
-		private static CustomVirtualTreeControl TreeControl;
+		private IReadingEditorBranch myMainBranch;
 		/// <summary>
 		/// Provides a ref to the Reading Editorl from nested objects
 		/// </summary>
-		private static ReadingEditor instance;
+		private static ReadingEditor myInstance;
 		#endregion // Static Variables
+		#region Member Variables
+		private ORMReadingEditorToolWindow myToolWindow;
+		#endregion // Member Variables
 
 		#region Member Variables
 		private FactType myFact;
@@ -349,16 +622,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public ReadingEditor()
+		[CLSCompliant(false)]
+		public ReadingEditor(ORMReadingEditorToolWindow toolWindow)
 		{
+			myToolWindow = toolWindow;
+			Debug.Assert(myInstance == null, "ORMReadingEditorToolWindow should be a singleton");
+			myInstance = this;
 			InitializeComponent();
 		}
 
 		private void SetHeaders(bool wideHeader)
 		{
-			ReadingEditor.instance = this;
 			CustomVirtualTreeControl treeControl = this.vtrReadings;
-			ReadingEditor.TreeControl = treeControl;
 			int indent = treeControl.IndentWidth + 3;
 
 			if (wideHeader)
@@ -511,6 +786,16 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 		}
+		/// <summary>
+		/// Provides a ref to the tree control from nested objects
+		/// </summary>
+		private CustomVirtualTreeControl TreeControl
+		{
+			get
+			{
+				return vtrReadings;
+			}
+		}
 		#endregion //PopulateControl and helpers
 
 		#region Reading activation helper
@@ -527,9 +812,9 @@ namespace Neumont.Tools.ORM.Shell
 				&& null != (factType = order.FactType) 
 				&& (factType == myFact || factType == mySecondaryFact))
 			{
-				if (ReadingEditor.TreeControl.SelectObject(myMainBranch, reading, (int)ObjectStyle.TrackingObject, 0))
+				if (TreeControl.SelectObject(myMainBranch, reading, (int)ObjectStyle.TrackingObject, 0))
 				{
-					ReadingEditor.TreeControl.BeginLabelEdit();
+					TreeControl.BeginLabelEdit();
 				}
 			}
 		}
@@ -564,7 +849,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region Tree Context Menu Methods
 		private void OnMenuInvoked(object sender, ContextMenuEventArgs e)
 		{
-			ORMReadingEditorToolWindow.TheMenuService.ShowContextMenu(ORMDesignerDocView.ORMDesignerCommandIds.ReadingEditorContextMenu, e.X, e.Y);
+			myToolWindow.MenuService.ShowContextMenu(ORMDesignerDocView.ORMDesignerCommandIds.ReadingEditorContextMenu, e.X, e.Y);
 		}
 		private void UpdateMenuItems()
 		{
@@ -599,7 +884,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			MenuCommand command = sender as MenuCommand;
 			Debug.Assert(command != null);
-			command.Enabled = command.Visible = 0 != (commandFlag & ReadingEditor.instance.myVisibleCommands);
+			command.Enabled = command.Visible = 0 != (commandFlag & ReadingEditor.myInstance.myVisibleCommands);
 		}
 		/// <summary>
 		/// Call the Drop Down list of Reading Orders to Select a new reading entry
@@ -629,7 +914,7 @@ namespace Neumont.Tools.ORM.Shell
 		public void OnMenuPromoteReading()
 		{
 			//Get the ReadingItemRow (must use directly as class is nested within the ReadingOrderBranch
-			VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingBranch, true);
+			VirtualTreeItemInfo itemInfo = TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingBranch, true);
 			int readingItemRow = itemInfo.Row;
 			if (readingItemRow != -1 && this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder)) //Get the ReadingOrder and pass it the Reading to Promote
 			{
@@ -642,7 +927,7 @@ namespace Neumont.Tools.ORM.Shell
 		public void OnMenuDemoteReading()
 		{
 			//Get the ReadingItemRow (must use directly as class is nested within the ReadingOrderBranch
-			VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingBranch, true);
+			VirtualTreeItemInfo itemInfo = TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingBranch, true);
 			int readingItemRow = itemInfo.Row;
 			if (readingItemRow != -1 && this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder)) //Get the ReadingOrder and pass it the Reading to Promote
 			{
@@ -691,7 +976,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>true if the itemInfo.branch is a top level branch</returns>
 		private bool GetItemInfo(out VirtualTreeItemInfo itemInfo, ColumnIndex column )
 		{
-			itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)column, true);
+			itemInfo = TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)column, true);
 			if (itemInfo.Branch.GetType() == typeof(ReadingOrderBranch) || itemInfo.Branch.GetType() == typeof(FactTypeBranch))
 			{
 				return true;
@@ -1096,7 +1381,7 @@ namespace Neumont.Tools.ORM.Shell
 					ReadingOrderBranch retVal = myReadingOrderBranch;
 					if (retVal == null)
 					{
-						return myReadingOrderBranch = new ReadingOrderBranch(myFact, ReadingEditor.instance.myDisplayRoleOrder);
+						return myReadingOrderBranch = new ReadingOrderBranch(myFact, ReadingEditor.myInstance.myDisplayRoleOrder);
 					}
 					return retVal;
 				}
@@ -1261,7 +1546,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="order">The ReadingOrder affected</param>
 			public void ReadingOrderLocationUpdate(ReadingOrder order)
 			{
-				((IReadingEditorBranch)ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, 0, true).Branch).ReadingOrderLocationUpdate(order);
+				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+				((IReadingEditorBranch)control.Tree.GetItemInfo(control.CurrentIndex, 0, true).Branch).ReadingOrderLocationUpdate(order);
 			}
 			/// <summary>
 			/// CallBack notification that a ReadingOrder has been removed from the branch.
@@ -1372,7 +1658,7 @@ namespace Neumont.Tools.ORM.Shell
 						myReadingOrderPermutations = new ReadingOrderKeyedCollection();
 						for (int i = 0; i < arity; ++i)
 						{
-							tempRoleList.Add(myRoleDisplayOrder[i]); //CHECK KEVIN
+							tempRoleList.Add(myRoleDisplayOrder[i]);
 						}
 						List<List<RoleBase>> myPerms; myPerms = this.BuildPermutations(tempRoleList);
 						int numPerms = myPerms.Count;
@@ -1385,33 +1671,58 @@ namespace Neumont.Tools.ORM.Shell
 					TypeEditorHost host = TypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this,  ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
 					host.Flags = VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents | VirtualTreeInPlaceControlFlags.SizeToText;
 
-					return new VirtualTreeLabelEditData(host, delegate(VirtualTreeItemInfo itemInfo, Control editControl)
-																								{
-																									return LabelEditResult.AcceptEdit;
-																								});
+					return new VirtualTreeLabelEditData(
+						host,
+						delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+						{
+							return LabelEditResult.AcceptEdit;
+						});
 				}
-				else if (column == (int)ColumnIndex.ReadingBranch && rowType == RowType.UnCommitted)
+				else if (column == (int)ColumnIndex.ReadingBranch && rowType == RowType.Uncommitted)
 				{
-					VirtualTreeLabelEditData retval = VirtualTreeLabelEditData.Default;
-#if Buffered_TextView_Control_Test
-					TextViewHostControl hostControl = new TextViewHostControl((myFact.Store as IORMToolServices).ServiceProvider);
-					retval.CustomInPlaceEdit = hostControl;
-#endif //Buffered_TextView_Control_Test
-
 					StringBuilder sb = new StringBuilder();
-					if (myRoleNames == null)
+					string[] replacements = myRoleNames;
+					if (replacements == null)
 					{
-						myRoleNames = this.GetRoleNames();
+						myRoleNames = replacements = this.GetRoleNames();
 					}
-					int numRoles = myRoleNames.Length;
-					for (int i = 0; i < numRoles; ++i)
-					{
-						sb.Append("{");
-						sb.Append(i);
-						sb.Append("}");
-					}
-					retval.AlternateText = sb.ToString();
-					return retval;
+					InplaceReadingEditor editor = new InplaceReadingEditor();
+					editor.Initialize(replacements, SystemColors.WindowText, SystemColors.GrayText);
+					return new VirtualTreeLabelEditData(
+						editor,
+						delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+						{
+							Store store = myFact.Store;
+							if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
+							{
+								return LabelEditResult.CancelEdit;
+							}
+							string newReadingText = editor.BuildReadingText();
+							if (newReadingText.Length != 0)
+							{
+								Reading theNewReading;
+								try
+								{
+									myInsertedRow = row;
+									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
+									{
+										ReadingOrder theOrder = FactType.GetReadingOrder(myFact, myReadingOrderKeyedCollection[row].RoleOrder as IList<RoleBase>);
+										Debug.Assert(theOrder != null, "A ReadingOrder should have been found or created.");
+										theNewReading = new Reading(store);
+										LinkedElementCollection<Reading> readings = theOrder.ReadingCollection;
+										readings.Add(theNewReading);
+										theNewReading.Text = newReadingText;
+										t.Commit();
+									}
+								}
+								finally
+								{
+									myInsertedRow = -1;
+								}
+								return LabelEditResult.AcceptEdit;
+							}
+							return LabelEditResult.CancelEdit;
+						});
 				}
 				else
 				{
@@ -1420,29 +1731,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			public LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
-				if (myReadingOrderKeyedCollection.GetRowType(row) == RowType.UnCommitted)
-				{
-					Reading theNewReading;
-					try
-					{
-						myInsertedRow = row;
-						using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
-						{
-							ReadingOrder theOrder = FactType.GetReadingOrder(myFact, myReadingOrderKeyedCollection[row].RoleOrder as IList<RoleBase>);
-							Debug.Assert(theOrder != null, "A ReadingOrder should have been found or created.");
-							theNewReading = new Reading(theOrder.Store);
-							LinkedElementCollection<Reading> readings = theOrder.ReadingCollection;
-							readings.Add(theNewReading);
-							theNewReading.Text = newText;
-							t.Commit();
-						}
-					}
-					finally
-					{
-						myInsertedRow = -1;
-					}
-				}
-				return LabelEditResult.AcceptEdit;
+				return LabelEditResult.CancelEdit;
 			}
 			public BranchFeatures Features
 			{
@@ -1461,7 +1750,7 @@ namespace Neumont.Tools.ORM.Shell
 				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
 				if (column == (int)ColumnIndex.ReadingBranch)
 				{
-					retval.ForeColor = (rowType == RowType.UnCommitted) ? Color.Gray : retval.ForeColor;
+					retval.ForeColor = (rowType == RowType.Uncommitted) ? Color.Gray : retval.ForeColor;
 				}
 				else
 				{
@@ -1502,7 +1791,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						case RowType.TypeEditorHost:
 							return ResourceStrings.ModelReadingEditorNewItemText;
-						case RowType.UnCommitted:
+						case RowType.Uncommitted:
 							return myReadingOrderKeyedCollection[row].Text;
 					}
 				}
@@ -1516,7 +1805,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						case RowType.Committed:
 							return myReadingOrderKeyedCollection[row].ToString();
-						case RowType.UnCommitted:
+						case RowType.Uncommitted:
 							return myReadingOrderKeyedCollection[row].Text;
 						//does not get displayed as no icon or text is displayed on this column/row
 						//case RowType.TypeEditorHost: 
@@ -1561,7 +1850,7 @@ namespace Neumont.Tools.ORM.Shell
 						return new LocateObjectData(this.VisibleItemCount - 1, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
 					}
 
-					if (-1 != location && myReadingOrderKeyedCollection.GetRowType(location) == RowType.UnCommitted)
+					if (-1 != location && myReadingOrderKeyedCollection.GetRowType(location) == RowType.Uncommitted)
 					{
 						return new LocateObjectData(location, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
 					}
@@ -1638,8 +1927,9 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ReadingOrderInformation orderInfo = myReadingOrderKeyedCollection[itemLocation];
 				orderInfo.Branch.ShowNewRow(true);
-				ReadingEditor.TreeControl.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0);
-				ReadingEditor.TreeControl.BeginLabelEdit();
+				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+				control.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0);
+				control.BeginLabelEdit();
 			}
 			/// <summary>
 			/// Instruct the readingbranch that a reading has been added to the collection
@@ -1763,8 +2053,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public void AddNewReadingOrder()
 			{
-				TreeControl.SelectObject(this, RowType.TypeEditorHost, (int)ObjectStyle.TrackingObject, 0);
-				TreeControl.BeginLabelEdit();
+				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+				control.SelectObject(this, RowType.TypeEditorHost, (int)ObjectStyle.TrackingObject, 0);
+				control.BeginLabelEdit();
 			}
 			/// <summary>
 			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
@@ -1782,9 +2073,10 @@ namespace Neumont.Tools.ORM.Shell
 					int newOrder = this.ShowNewOrder(roles);
 				}
 
-				if (ReadingEditor.TreeControl.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0))
+				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+				if (control.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0))
 				{
-					ReadingEditor.TreeControl.BeginLabelEdit();
+					control.BeginLabelEdit();
 				}
 			}
 			/// <summary>
@@ -1816,7 +2108,7 @@ namespace Neumont.Tools.ORM.Shell
 					VirtualTreeItemInfo readingItem = this.CurrentSelectionInfoReadingBranch();
 					myReadingOrderKeyedCollection[orderItem.Row].Branch.RemoveItem(readingItem.Row);  //Remove selected Row in the ReadingBranch
 				}
-				else if (rowType == RowType.UnCommitted) //remove the row from the readingOrderBranch
+				else if (rowType == RowType.Uncommitted) //remove the row from the readingOrderBranch
 				{
 					OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, orderItem.Row, 1));
 					myReadingOrderKeyedCollection.RemoveAt(orderItem.Row);
@@ -2072,7 +2364,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// <returns>VirtualTreeItemInfo</returns>
 			private VirtualTreeItemInfo CurrentSelectionInfoReadingOrderBranch()
 			{
-				return TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
+				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+				return control.Tree.GetItemInfo(control.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
 			}
 			/// <summary>
 			/// Information about the current selected cell in a tree for the ReadingBranch
@@ -2080,7 +2373,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// <returns>VirtualTreeItemInfo</returns>
 			private VirtualTreeItemInfo CurrentSelectionInfoReadingBranch()
 			{
-				return TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, TreeControl.CurrentColumn, true);
+				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+				return control.Tree.GetItemInfo(control.CurrentIndex, control.CurrentColumn, true);
 			}
 
 			private List<List<RoleBase>> BuildPermutations(List<RoleBase> roleList)
@@ -2140,7 +2434,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						return RowType.TypeEditorHost;
 					}
-					return (this[row].ReadingOrder != null) ? RowType.Committed : RowType.UnCommitted;
+					return (this[row].ReadingOrder != null) ? RowType.Committed : RowType.Uncommitted;
 				}
 
 				#region Nested Class to implement IEqualityComparer for an IList
@@ -2423,9 +2717,9 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						branchLocation = myBranch.ShowNewOrder(info.RoleOrder);
 					}
-
-					TreeControl.SelectObject(myBranch, info, (int)ObjectStyle.TrackingObject, 0);
-					ReadingEditor.TreeControl.BeginLabelEdit();
+					VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
+					control.SelectObject(myBranch, info, (int)ObjectStyle.TrackingObject, 0);
+					control.BeginLabelEdit();
 				}
 			}
 			#endregion
@@ -2439,8 +2733,8 @@ namespace Neumont.Tools.ORM.Shell
 				private readonly List<ReadingData> myReadings = new List<ReadingData>();
 				private readonly ReadingOrder myReadingOrder;
 				private readonly ReadingOrderInformation myReadingInformation;
-				private bool showNewRow = false;
-				int myInsertedRow = -1;
+				private bool myShowNewRow;
+				private int myInsertedRow = -1;
 
 				#region Construction
 				public ReadingBranch(FactType fact, ReadingOrder order, ReadingOrderInformation orderInformation)
@@ -2465,13 +2759,13 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 				/// <summary>
-				/// Returns true of branch has a new uncomiitted reading, false otherwise
+				/// Returns true of branch has a new uncommitted reading, false otherwise
 				/// </summary>
 				public bool HasNewRow
 				{
 					get
 					{
-						return showNewRow;
+						return myShowNewRow;
 					}
 				}
 				#endregion //Branch Properties
@@ -2480,60 +2774,78 @@ namespace Neumont.Tools.ORM.Shell
 
 				public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 				{
-					VirtualTreeLabelEditData retval = VirtualTreeLabelEditData.Default;
-					if (row == myReadings.Count - 1 && this.showNewRow)
+					if (row == myReadings.Count - 1 && myShowNewRow)
 					{
-						StringBuilder sb = new StringBuilder();
-						int numRoles = myReadingInformation.OrderedReplacementFields.Length;
-						for (int i = 0; i < numRoles; ++i)
-						{
-							sb.Append("{");
-							sb.Append(i);
-							sb.Append("}");
-						}
-						retval.AlternateText = sb.ToString();
+						InplaceReadingEditor editor = new InplaceReadingEditor();
+						editor.Initialize(myReadingInformation.OrderedReplacementFields, SystemColors.WindowText, SystemColors.GrayText);
+						return new VirtualTreeLabelEditData(
+							editor,
+							delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+							{
+								Store store = myFact.Store;
+								if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
+								{
+									return LabelEditResult.CancelEdit;
+								}
+								string newReadingText = editor.BuildReadingText();
+								if (newReadingText.Length != 0)
+								{
+									try
+									{
+										myInsertedRow = row;
+										using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
+										{
+											Debug.Assert(myReadingOrder != null, "A ReadingOrder should have been found or created.");
+											this.ShowNewRow(false);
+											Reading theNewReading = new Reading(store);
+											LinkedElementCollection<Reading> readings = myReadingOrder.ReadingCollection;
+											readings.Add(theNewReading);
+											theNewReading.Text = newReadingText;
+											t.Commit();
+										}
+									}
+									finally
+									{
+										myInsertedRow = -1;
+									}
+									return LabelEditResult.AcceptEdit;
+								}
+								return LabelEditResult.CancelEdit;
+							});
 					}
 					else
 					{
-						retval.AlternateText = myReadings[row].Reading.Text;
+						Reading currentReading = myReadings[row].Reading;
+						string startReadingText = currentReading.Text;
+						InplaceReadingEditor editor = new InplaceReadingEditor();
+						editor.Initialize(startReadingText, myReadingInformation.OrderedReplacementFields, SystemColors.WindowText, SystemColors.GrayText);
+						return new VirtualTreeLabelEditData(
+							editor,
+							delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+							{
+								Store store = currentReading.Store;
+								if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
+								{
+									return LabelEditResult.CancelEdit;
+								}
+								string newReadingText = editor.BuildReadingText();
+								if (newReadingText != startReadingText)
+								{
+									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorChangePrimaryReadingText))
+									{
+										currentReading.Text = newReadingText;
+										t.Commit();
+									}
+									return LabelEditResult.AcceptEdit;
+								}
+								return LabelEditResult.CancelEdit;
+							});
 					}
-					return retval;
 				}
 
 				public LabelEditResult CommitLabelEdit(int row, int column, string newText)
 				{
-					Reading theReading;
-					if (this.showNewRow && row == myReadings.Count - 1)
-					{
-						try
-						{
-							myInsertedRow = row;
-							using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
-							{
-								Debug.Assert(myReadingOrder != null, "A ReadingOrder should have been found or created.");
-								this.ShowNewRow(false);
-								Reading theNewReading = new Reading(myReadingOrder.Store);
-								LinkedElementCollection<Reading> readings = myReadingOrder.ReadingCollection;
-								readings.Add(theNewReading);
-								theNewReading.Text = newText;
-								t.Commit();
-							}
-						}
-						finally
-						{
-							myInsertedRow = -1;
-						}
-					}
-					else
-					{
-						theReading = myReadings[row].Reading;
-						using (Transaction t = theReading.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorChangePrimaryReadingText))
-						{
-							theReading.Text = newText;
-							t.Commit();
-						}
-					}
-					return LabelEditResult.AcceptEdit;
+					return LabelEditResult.CancelEdit;
 				}
 
 				public BranchFeatures Features
@@ -2552,7 +2864,7 @@ namespace Neumont.Tools.ORM.Shell
 				public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
 					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
-					if (row == this.VisibleItemCount - 1 && this.showNewRow)
+					if (row == this.VisibleItemCount - 1 && myShowNewRow)
 					{
 						retVal.ForeColor = Color.Gray;
 					}
@@ -2595,7 +2907,7 @@ namespace Neumont.Tools.ORM.Shell
 					Reading reading;
 					if (style == ObjectStyle.TrackingObject)
 					{
-						if (obj == myReadingInformation.RoleOrder || showNewRow)
+						if (obj == myReadingInformation.RoleOrder || myShowNewRow)
 						{
 							return new LocateObjectData(this.VisibleItemCount - 1, 0, (int)TrackingObjectAction.ThisLevel);
 						}
@@ -2709,18 +3021,18 @@ namespace Neumont.Tools.ORM.Shell
 				/// </summary>
 				public void ShowNewRow(bool show)
 				{
-					if (!this.showNewRow && show == true)
+					if (!myShowNewRow && show)
 					{
-						this.showNewRow = true;
+						myShowNewRow = true;
 						myReadings.Add(new ReadingData(myReadingInformation.Text, null));
 						if (OnBranchModification != null)
 						{
 							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
 						}
 					}
-					else if (this.showNewRow && show == false)
+					else if (myShowNewRow && !show)
 					{
-						this.showNewRow = false;
+						myShowNewRow = false;
 						if (OnBranchModification != null)
 						{
 							OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, this.VisibleItemCount - 1, 1));
@@ -2769,7 +3081,7 @@ namespace Neumont.Tools.ORM.Shell
 				/// <param name="row">Row to remove</param>
 				public void RemoveItem(int row)
 				{
-					if (this.showNewRow == true && row == this.VisibleItemCount - 1)
+					if (myShowNewRow && row == this.VisibleItemCount - 1)
 					{
 						this.ShowNewRow(false);
 					}
@@ -2903,232 +3215,6 @@ namespace Neumont.Tools.ORM.Shell
 				#endregion //Branch Helper Methods
 			}
 			#endregion
-
-#if Buffered_TextView_Control_Test
-			private sealed class TextViewHostControl : ContainerControl, IVirtualTreeInPlaceControl, IVirtualTreeInPlaceControlDefer
-			{
-				private readonly IVirtualTreeInPlaceControlDefer myInPlaceHelper;
-				private IVsTextView myTextView;
-				private readonly IServiceProvider myServiceProvider;
-
-				public TextViewHostControl(IServiceProvider serviceProvider)
-				{
-					myInPlaceHelper = VirtualTreeControl.CreateInPlaceControlHelper(this);
-					myServiceProvider = serviceProvider;
-					BackColor = Color.Blue;
-				}
-
-				protected override void OnHandleCreated(EventArgs e)
-				{
-					GC.KeepAlive(TextView); // Force creation
-				}
-
-				public IVsTextView TextView
-				{
-					get
-					{
-						IVsTextView view = myTextView;
-						if (view == null)
-						{
-							return myTextView = TextViewHostControl.CreateTextView(myServiceProvider, Handle);
-						}
-						return view;
-					}
-				}
-
-				private static IVsTextView CreateTextView(IServiceProvider serviceProvider, IntPtr hwndParent)
-				{
-					ILocalRegistry3 locReg = (ILocalRegistry3)serviceProvider.GetService(typeof(ILocalRegistry));
-					IntPtr pBuf = IntPtr.Zero;
-					Guid iid = typeof(IVsTextLines).GUID;
-					ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
-						typeof(VsTextBufferClass).GUID,
-						null,
-						ref iid,
-						(uint)OleInterop.CLSCTX.CLSCTX_INPROC_SERVER,
-						out pBuf));
-
-					IVsTextLines lines = null;
-					OleInterop.IObjectWithSite objectWithSite = null;
-					try
-					{
-						// Get an object to tie to the IDE
-						lines = (IVsTextLines)Marshal.GetObjectForIUnknown(pBuf);
-						objectWithSite = lines as OleInterop.IObjectWithSite;
-						objectWithSite.SetSite(serviceProvider);
-					}
-					finally
-					{
-						if (pBuf != IntPtr.Zero)
-						{
-							Marshal.Release(pBuf);
-						}
-					}
-
-					//assign our language service to the buffer
-					//Guid langService = typeof(ReadingEditorLanguageService).GUID;
-					//ErrorHandler.ThrowOnFailure(lines.SetLanguageServiceID(ref langService));
-
-					// Create a std code view (text)
-					IntPtr srpTextView = IntPtr.Zero;
-					iid = typeof(IVsTextView).GUID;
-
-					IVsTextView retVal = null;
-
-					// create code view (does CoCreateInstance if not in shell's registry)
-					ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
-						typeof(VsTextViewClass).GUID,
-						null,
-						ref iid,
-						(uint)OleInterop.CLSCTX.CLSCTX_INPROC_SERVER,
-						out srpTextView));
-					try
-					{
-						// Get an object to tie to the IDE
-						retVal = (IVsTextView)Marshal.GetObjectForIUnknown(srpTextView);
-						INITVIEW[] initView = new INITVIEW[1];
-
-						ErrorHandler.ThrowOnFailure(retVal.Initialize(lines, hwndParent, (uint)TextViewInitFlags.VIF_DEFAULT, initView));
-						//#region Initialize optoins and descriptions
-						// note that these can exist in combinations and so are generally bitwise disjoint
-						//VIF_DEFAULT             = 0x00000000,   // no view-owned scrollbars, and no forced settings
-
-						//// For the scrolling flags we simply use the WS_ values for efficiency.
-						//// Note that this setting is different from the MDI child scrollbars used by the text editor.
-						//VIF_HSCROLL             = 0x00100000,    // WS_HSCROLL; indicates that the view should have a horizontal scrollbar
-						//VIF_VSCROLL             = 0x00200000,   // WS_VSCROLL; indicates that the view should have a vertical scrollbar
-
-						//VIF_UPDATE_STATUS_BAR	= 0x00400000,	// tells view to update status bar
-
-						//// If you wish to force a certain setting upon a view, regardless of the user's editor preference settings,
-						//// use these flags along with a VIEWPREFERENCES* into IVsTextView::Initialize() to force a given setting.
-						//VIF_SET_WIDGET_MARGIN       = 0x00000001,   // use the widget margin setting from the VIEWPREFERENCES struct
-						//VIF_SET_SELECTION_MARGIN    = 0x00000002,   // use the selection margin setting from the VIEWPREFERENCES struct
-						//VIF_SET_VIRTUAL_SPACE       = 0x00000004,   // use the virtual space setting from the VIEWPREFERENCES struct
-						//VIF_SET_INDENT_MODE         = 0x00000008,   // use the autoindent suppression setting from the VIEWPREFERENCES struct
-						//VIF_SET_STREAM_SEL_MODE		= 0x00000010,   // OBSOLETE
-						//VIF_SET_VISIBLE_WHITESPACE  = 0x00000020,   // use visible whitespace setting
-						//VIF_SET_OVERTYPE            = 0x00000040,   // use overtype mode setting
-						//VIF_SET_DRAGDROPMOVE        = 0x00000080,   // use dd move setting
-						//VIF_SET_HOTURLS		        = 0x00000100	// use the Hot URLs setting
-						//#endregion //Initialize optoins and descriptions
-
-					}
-					finally
-					{
-						if (srpTextView != IntPtr.Zero)
-						{
-							Marshal.Release(srpTextView);
-						}
-					}
-					return retVal;
-				}
-
-			#region IVirtualTreeInPlaceControlDefer Members
-				bool IVirtualTreeInPlaceControlDefer.Dirty
-				{
-					get
-					{
-						return myInPlaceHelper.Dirty;
-					}
-					set
-					{
-						myInPlaceHelper.Dirty = value;
-					}
-				}
-
-				VirtualTreeInPlaceControlFlags IVirtualTreeInPlaceControlDefer.Flags
-				{
-					get
-					{
-						return myInPlaceHelper.Flags;
-					}
-					set
-					{
-						myInPlaceHelper.Flags = value;
-					}
-				}
-
-				Control IVirtualTreeInPlaceControlDefer.InPlaceControl
-				{
-					get
-					{
-						return myInPlaceHelper.InPlaceControl;
-					}
-				}
-
-				int IVirtualTreeInPlaceControlDefer.LaunchedByMessage
-				{
-					get
-					{
-						return myInPlaceHelper.LaunchedByMessage;
-					}
-					set
-					{
-						myInPlaceHelper.LaunchedByMessage = value;
-					}
-				}
-
-				VirtualTreeControl IVirtualTreeInPlaceControlDefer.Parent
-				{
-					get
-					{
-						return myInPlaceHelper.Parent;
-					}
-					set
-					{
-						myInPlaceHelper.Parent = value;
-					}
-				}
-			#endregion
-
-			#region IVirtualTreeInPlaceControl Members
-				int IVirtualTreeInPlaceControl.ExtraEditWidth
-				{
-					get
-					{
-						return VirtualTreeInPlaceControlHelper.DefaultExtraEditWidth;
-					}
-				}
-
-				Rectangle IVirtualTreeInPlaceControl.FormattingRectangle
-				{
-					get
-					{
-						return Rectangle.Empty;
-					}
-				}
-
-				int IVirtualTreeInPlaceControl.MaxTextLength
-				{
-					get
-					{
-						return 0;
-					}
-					set
-					{
-					}
-				}
-
-				void IVirtualTreeInPlaceControl.SelectAllText()
-				{
-					// UNDONE: Select All Text
-				}
-
-				int IVirtualTreeInPlaceControl.SelectionStart
-				{
-					get
-					{
-						return 0;
-					}
-					set
-					{
-						//UNDONE: SelectionStart
-					}
-				}
-			#endregion
-			}
-#endif  //Buffered_TextView_Control_Test
 		}
 		#endregion Nested ReadingOrderBranch class
 

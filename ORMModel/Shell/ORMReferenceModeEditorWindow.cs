@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -147,20 +148,14 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			ORMModel model = null;
 			ORMDesignerDocData docData = CurrentDocument;
-			if (docData != null)
+			Store store;
+			ReadOnlyCollection<ORMModel> models;
+			if (docData != null &&
+				null != (store = docData.Store) &&
+				0 != (models = store.ElementDirectory.FindElements<ORMModel>()).Count)
 			{
-				ORMDesignerDocView docView = docData.DocViews[0] as ORMDesignerDocView;
-				if (docView != null)
-				{
-					Diagram diagram = docView.CurrentDiagram;
-					if (diagram != null)
-					{
-						model = diagram.ModelElement as ORMModel;
-					}
-				}
-				form.SetModel(model);
+				form.SetModel(models[0]);
 			}
 		}
 		#endregion // LoadWindow Method

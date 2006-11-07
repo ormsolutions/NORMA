@@ -163,6 +163,9 @@
     <Compile Include="ObjectModel\SurveyImplementations\FactTypeAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ORMNamedElement.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ObjectTypeAnswers.cs" />
+    <Compile Include="Shell\ReadingRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shell\SamplePopulationEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

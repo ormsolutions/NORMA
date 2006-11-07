@@ -248,6 +248,7 @@ namespace Neumont.Tools.ORM.Shell
 			foreach (object obj in selectedElements)
 			{
 				if (null != (element = EditorUtility.ResolveContextInstance(obj, false) as ModelElement) &&
+					element.Store != null &&
 					!element.IsDeleted &&
 					null != (hierarchyElement = element as IHierarchyContextEnabled))
 				{
@@ -257,7 +258,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (hierarchyElement == null && myDiagram == null)
 			{
 				element = myCurrentlySelectedObject as ModelElement;
-				if (element != null && element.IsDeleted)
+				if (element != null && (element.IsDeleted || element.Store == null))
 				{
 					myCurrentlySelectedObject = null;
 					RemoveDiagram();

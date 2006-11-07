@@ -46,10 +46,6 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		#region Member variables
 		private ReadingsViewForm myForm;
-		/// <summary>
-		/// The Menu Service assigned to this Tool Window
-		/// </summary>
-		public static IMenuCommandService TheMenuService;
 		private IServiceProvider myCtorServiceProvider;
 		#endregion // Member variables
 		#region construction
@@ -60,8 +56,6 @@ namespace Neumont.Tools.ORM.Shell
 			: base(serviceProvider)
 		{
 			this.myCtorServiceProvider = serviceProvider;
-			ORMReadingEditorToolWindow.TheMenuService = this.MenuService;
-
 		}
 
 		#endregion
@@ -128,7 +122,7 @@ namespace Neumont.Tools.ORM.Shell
 				ReadingsViewForm form = myForm;
 				if (form == null)
 				{
-					myForm = form = new ReadingsViewForm();
+					myForm = form = new ReadingsViewForm(this);
 					ORMDesignerDocData currentDoc = CurrentDocument;
 					if (currentDoc != null)
 					{
@@ -289,9 +283,9 @@ namespace Neumont.Tools.ORM.Shell
 			private readonly Label myNoSelectionLabel;
 
 			#region construction
-			public ReadingsViewForm()
+			public ReadingsViewForm(ORMReadingEditorToolWindow toolWindow)
 			{
-				myReadingEditor = new ReadingEditor();
+				myReadingEditor = new ReadingEditor(toolWindow);
 				this.Controls.Add(myReadingEditor);
 				System.Drawing.Point location = this.Controls[this.Controls.Count - 1].Location;
 				myReadingEditor.Dock = DockStyle.Fill;
