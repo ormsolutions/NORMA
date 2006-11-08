@@ -171,6 +171,7 @@
 			<xs:enumeration value="IndentedLogicalAndList"/>
 			<xs:enumeration value="IndentedLogicalOrList"/>
 			<xs:enumeration value="ObjectTypeInstanceList"/>
+			<xs:enumeration value="SemiColonList"/>
 			<xs:enumeration value="SimpleList"/>
 			<xs:enumeration value="SimpleLogicalAndList"/>
 			<xs:enumeration value="SimpleLogicalOrList"/>
@@ -208,6 +209,7 @@
 		<xs:attribute name="factCount" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="factArity" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="constraintArity" type="xs:unsignedByte" use="optional"/>
+		<xs:attribute name="minConstraintArity" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="minFactArity" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="maxFactArity" type="xs:unsignedByte" use="optional"/>
 	</xs:attributeGroup>
@@ -314,6 +316,13 @@
 					<xs:documentation>
 						True if the value range collection has only one value range whose
 						min value is equal to the max value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsBinaryLeadReading">
+				<xs:annotation>
+					<xs:documentation>
+						True if the directions of both readings in a set comparison constraint spanning both roles of binary predicates.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
@@ -459,6 +468,15 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="IterateFactsType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IterateSequences">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IterateSequencesType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
@@ -746,7 +764,15 @@
 			<xs:element name="Fact" type="FactType"/>
 			<xs:element name="Snippet" type="SnippetType"/>			
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
-			<xs:element name="RolePlayer" type="RolePlayerType"/>
+			<xs:element name="RolePlayer">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RolePlayerType">
+							<xs:attribute name="pass" use="optional" type="PassEnum"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>

@@ -207,8 +207,19 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 			<Snippet type="ObjectTypeInstanceListClose"><![CDATA[.]]></Snippet>
+			<Snippet type="EqualityForEachIndentedQuantifier" modality="alethic"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">all or none of the following hold:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="EqualityForEachIndentedQuantifier" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that for each</span> {0}, <span class="quantifier">all or none of the following hold:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="SemiColonListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="SemiColonListPairSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="SemiColonListSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="SemiColonListFinalSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="SemiColonListClose"><![CDATA[.]]></Snippet>
+			<Snippet type="ExclusionForEachIndentedQuantifier" modality="alethic"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ExclusionForEachIndentedQuantifier" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
 			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
+			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[No {0}<span class="quantifier"> the same </span><span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="ExclusionCombined"><![CDATA[<span class="objectType">{0} </span>{1}]]></Snippet>
 		</Snippets>
 	</Language>
 </Languages>

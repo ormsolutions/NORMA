@@ -124,6 +124,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		Equality,
 		/// <summary>
+		/// The 'EqualityForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		EqualityForEachIndentedQuantifier,
+		/// <summary>
 		/// The 'ErrorClosePrimaryReport' simple snippet value.
 		/// </summary>
 		ErrorClosePrimaryReport,
@@ -151,6 +155,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'ExactlyOneQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		ExactlyOneQuantifier,
+		/// <summary>
+		/// The 'ExclusionBinaryLeadReading' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		ExclusionBinaryLeadReading,
+		/// <summary>
+		/// The 'ExclusionCombined' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		ExclusionCombined,
+		/// <summary>
+		/// The 'ExclusionForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		ExclusionForEachIndentedQuantifier,
 		/// <summary>
 		/// The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
@@ -427,6 +443,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'SelfReference' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		SelfReference,
+		/// <summary>
+		/// The 'SemiColonListClose' simple snippet value.
+		/// </summary>
+		SemiColonListClose,
+		/// <summary>
+		/// The 'SemiColonListFinalSeparator' simple snippet value.
+		/// </summary>
+		SemiColonListFinalSeparator,
+		/// <summary>
+		/// The 'SemiColonListOpen' simple snippet value.
+		/// </summary>
+		SemiColonListOpen,
+		/// <summary>
+		/// The 'SemiColonListPairSeparator' simple snippet value.
+		/// </summary>
+		SemiColonListPairSeparator,
+		/// <summary>
+		/// The 'SemiColonListSeparator' simple snippet value.
+		/// </summary>
+		SemiColonListSeparator,
 		/// <summary>
 		/// The 'SimpleListClose' simple snippet value.
 		/// </summary>
@@ -916,6 +952,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">all or none of the following hold:</span><br/><span class=""smallIndent"">{1}</span>",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -923,6 +960,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
+				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
+				@"<span class=""objectType"">{0} </span>{1}",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -992,6 +1032,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
 				"{0}",
+				".",
+				@"<span class=""listSeparator"">; </span><br/>",
+				"",
+				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">; </span><br/>",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
 				"",
@@ -1078,6 +1123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
+				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">all or none of the following hold:</span><br/><span class=""smallIndent"">{1}</span>",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -1085,6 +1131,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
+				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
+				@"<span class=""objectType"">{0} </span>{1}",
+				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -1154,6 +1203,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
 				"{0}",
+				".",
+				@"<span class=""listSeparator"">; </span><br/>",
+				"",
+				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">; </span><br/>",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
 				"",
@@ -1240,6 +1294,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">all or none of the following hold:</span><br/><span class=""smallIndent"">{1}</span>",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -1247,6 +1302,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
+				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
+				@"<span class=""objectType"">{0} </span>{1}",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -1316,6 +1374,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
 				"{0}",
+				".",
+				@"<span class=""listSeparator"">; </span><br/>",
+				"",
+				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">; </span><br/>",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
 				"",
@@ -1402,6 +1465,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
+				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">all or none of the following hold:</span><br/><span class=""smallIndent"">{1}</span>",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -1409,6 +1473,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
+				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
+				@"<span class=""objectType"">{0} </span>{1}",
+				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -1478,6 +1545,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
 				"{0}",
+				".",
+				@"<span class=""listSeparator"">; </span><br/>",
+				"",
+				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">; </span><br/>",
 				"",
 				@"<span class=""listSeparator"">, and </span>",
 				"",
@@ -4912,49 +4984,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						snippet2Replace1Replace1Replace1Replace2Replace1 = null;
 						RoleBase contextPrimaryRole = primaryRole;
 						int contextTempStringBuildLength = sbTemp.Length;
-						int snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1;
-						int snippet2Replace1Replace1Replace1Replace2ReplaceFilteredCount1 = 0;
-						for (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 = 0; snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 < factArity; ++snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1)
-						{
-							primaryRole = factRoles[snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1];
-							if (primaryRole != contextPrimaryRole)
-							{
-								++snippet2Replace1Replace1Replace1Replace2ReplaceFilteredCount1;
-							}
-						}
-						snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 = 0;
 						for (int ContextRoleIter1 = 0; ContextRoleIter1 < factArity; ++ContextRoleIter1)
 						{
 							primaryRole = factRoles[ContextRoleIter1];
 							if (primaryRole != contextPrimaryRole)
 							{
-								CoreVerbalizationSnippetType listSnippet;
-								if (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 == 0)
-								{
-									listSnippet = CoreVerbalizationSnippetType.SimpleListOpen;
-								}
-								else if (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 == (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredCount1 - 1))
-								{
-									if (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 == 1)
-									{
-										listSnippet = CoreVerbalizationSnippetType.SimpleListPairSeparator;
-									}
-									else
-									{
-										listSnippet = CoreVerbalizationSnippetType.SimpleListFinalSeparator;
-									}
-								}
-								else
-								{
-									listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
-								}
-								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								sbTemp.Append(basicRoleReplacements[ContextRoleIter1]);
-								if (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1 == (snippet2Replace1Replace1Replace1Replace2ReplaceFilteredCount1 - 1))
-								{
-									sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleListClose, isDeontic, isNegative));
-								}
-								++snippet2Replace1Replace1Replace1Replace2ReplaceFilteredIter1;
 							}
 						}
 						snippet2Replace1Replace1Replace1Replace2Replace1 = sbTemp.ToString(contextTempStringBuildLength, sbTemp.Length - contextTempStringBuildLength);
@@ -5199,49 +5234,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						snippet2Replace1Replace1Replace2Replace1 = null;
 						RoleBase contextPrimaryRole = primaryRole;
 						int contextTempStringBuildLength = sbTemp.Length;
-						int snippet2Replace1Replace1Replace2ReplaceFilteredIter1;
-						int snippet2Replace1Replace1Replace2ReplaceFilteredCount1 = 0;
-						for (snippet2Replace1Replace1Replace2ReplaceFilteredIter1 = 0; snippet2Replace1Replace1Replace2ReplaceFilteredIter1 < factArity; ++snippet2Replace1Replace1Replace2ReplaceFilteredIter1)
-						{
-							primaryRole = factRoles[snippet2Replace1Replace1Replace2ReplaceFilteredIter1];
-							if (primaryRole != contextPrimaryRole)
-							{
-								++snippet2Replace1Replace1Replace2ReplaceFilteredCount1;
-							}
-						}
-						snippet2Replace1Replace1Replace2ReplaceFilteredIter1 = 0;
 						for (int ContextRoleIter1 = 0; ContextRoleIter1 < factArity; ++ContextRoleIter1)
 						{
 							primaryRole = factRoles[ContextRoleIter1];
 							if (primaryRole != contextPrimaryRole)
 							{
-								CoreVerbalizationSnippetType listSnippet;
-								if (snippet2Replace1Replace1Replace2ReplaceFilteredIter1 == 0)
-								{
-									listSnippet = CoreVerbalizationSnippetType.SimpleListOpen;
-								}
-								else if (snippet2Replace1Replace1Replace2ReplaceFilteredIter1 == (snippet2Replace1Replace1Replace2ReplaceFilteredCount1 - 1))
-								{
-									if (snippet2Replace1Replace1Replace2ReplaceFilteredIter1 == 1)
-									{
-										listSnippet = CoreVerbalizationSnippetType.SimpleListPairSeparator;
-									}
-									else
-									{
-										listSnippet = CoreVerbalizationSnippetType.SimpleListFinalSeparator;
-									}
-								}
-								else
-								{
-									listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
-								}
-								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								sbTemp.Append(basicRoleReplacements[ContextRoleIter1]);
-								if (snippet2Replace1Replace1Replace2ReplaceFilteredIter1 == (snippet2Replace1Replace1Replace2ReplaceFilteredCount1 - 1))
-								{
-									sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleListClose, isDeontic, isNegative));
-								}
-								++snippet2Replace1Replace1Replace2ReplaceFilteredIter1;
 							}
 						}
 						snippet2Replace1Replace1Replace2Replace1 = sbTemp.ToString(contextTempStringBuildLength, sbTemp.Length - contextTempStringBuildLength);
@@ -6281,7 +6279,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp = new StringBuilder();
 						}
-						else
+						else if (SequenceIter1 == 0)
 						{
 							sbTemp.Length = 0;
 						}
@@ -6299,14 +6297,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 								string roleReplacement = null;
 								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1ReplaceFactRoleIter1], snippet1ReplaceFactRoleIter1);
-								if (includedFactRoles.Contains(currentRole.Role))
-								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
-								}
-								else
-								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
-								}
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
 									roleReplacement = basicReplacement;
@@ -6320,7 +6311,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp = new StringBuilder();
 						}
-						else
+						else if (SequenceIter1 == 0)
 						{
 							sbTemp.Length = 0;
 						}
@@ -6338,14 +6329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 								string roleReplacement = null;
 								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1ReplaceFactRoleIter1], snippet1ReplaceFactRoleIter1);
-								if (includedFactRoles.Contains(currentRole.Role))
-								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
-								}
-								else
-								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
-								}
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
 									roleReplacement = basicReplacement;
@@ -6408,11 +6392,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp = new StringBuilder();
 						}
-						else
+						else if (SequenceIter2 == 0)
 						{
 							sbTemp.Length = 0;
 						}
-						for (int FactIter2 = 0; FactIter2 < roleArity; ++FactIter2)
+						for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
 						{
 							FactType currentFact = currentSequenceFacts[FactIter2];
 							factRoles = currentFact.RoleCollection;
@@ -6421,7 +6405,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 							RoleBase primaryRole = includedFactRoles[FactIter2];
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
-							factArity = factRoles.Count;
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
 							snippet1Replace2 = null;
@@ -6454,288 +6437,297 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					bool missingReading2 = false;
-					for (int readingMatchIndex2 = 0; !(missingReading2) && (readingMatchIndex2 < constraintRoleArity); ++readingMatchIndex2)
+					beginVerbalization(VerbalizationContent.Normal);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
+					string snippet1Replace1 = null;
+					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						RoleBase primaryRole = allConstraintSequences[readingMatchIndex2][0];
-						parentFact = primaryRole.FactType;
-						factRoles = parentFact.RoleCollection;
-						allReadingOrders = parentFact.ReadingOrderCollection;
-						reading = FactType.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, false, factRoles, false);
-						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-						if (reading == null)
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedFactRoles.Count;
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
 						{
-							missingReading2 = true;
-						}
-						else
-						{
-							allConstraintRoleReadings[readingMatchIndex2] = reading;
-						}
-					}
-					if (!(missingReading2))
-					{
-						beginVerbalization(VerbalizationContent.Normal);
-						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
-						string snippet1Replace1 = null;
-						for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
-						{
-							IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-							int roleArity = includedFactRoles.Count;
-							// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
-							int currentSequenceFactCount = 0;
-							currentSequenceFactCount = 0;
-							for (int i = 0; i < roleArity; i++)
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
 							{
-								FactType currentFact = includedFactRoles[i].FactType;
-								int j = 0;
-								while (j < i)
+								if (currentFact == includedFactRoles[i].FactType)
 								{
-									if (currentFact == includedFactRoles[i].FactType)
-									{
-										break;
-									}
-									j++;
+									break;
 								}
-								if (j == i)
-								{
-									currentSequenceFactCount++;
-								}
+								j++;
 							}
-							FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
-							currentSequenceFacts = new FactType[currentSequenceFactCount];
-							currentSequenceFactCount = 0;
-							// Building the unique fact list.
-							for (int i = 0; i < roleArity; i++)
+							if (j == i)
 							{
-								FactType currentFact = includedFactRoles[i].FactType;
-								int j = 0;
-								while (j < i)
-								{
-									if (currentFact == includedFactRoles[i].FactType)
-									{
-										break;
-									}
-									j++;
-								}
-								if (j == i)
-								{
-									currentSequenceFacts[currentSequenceFactCount] = currentFact;
-									currentSequenceFactCount++;
-								}
-							}
-							factArity = currentSequenceFacts.Length;
-							if (sbTemp == null)
-							{
-								sbTemp = new StringBuilder();
-							}
-							else
-							{
-								sbTemp.Length = 0;
-							}
-							for (int FactIter1 = 0; FactIter1 < roleArity; ++FactIter1)
-							{
-								FactType currentFact = currentSequenceFacts[FactIter1];
-								factRoles = currentFact.RoleCollection;
-								int currentRoleCount = factRoles.Count;
-								allReadingOrders = currentFact.ReadingOrderCollection;
-								snippet1Replace1 = null;
-								snippet1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(includedFactRoles[FactIter1])];
-								sbTemp.Append(snippet1Replace1);
+								currentSequenceFactCount++;
 							}
 						}
-						string snippet1Replace2 = null;
-						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.Conditional, isDeontic, isNegative);
-						string snippet1Replace2Replace1 = null;
-						for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
 						{
-							IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-							int roleArity = includedFactRoles.Count;
-							// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
-							int currentSequenceFactCount = 0;
-							currentSequenceFactCount = 0;
-							for (int i = 0; i < roleArity; i++)
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
 							{
-								FactType currentFact = includedFactRoles[i].FactType;
-								int j = 0;
-								while (j < i)
+								if (currentFact == includedFactRoles[i].FactType)
 								{
-									if (currentFact == includedFactRoles[i].FactType)
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter1 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter1];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							CoreVerbalizationSnippetType listSnippet;
+							snippet1Replace1 = null;
+							bool isFirstAppend = true;
+							for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+							{
+								if (snippet1ReplaceFactRoleIter1 == 0)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+								}
+								else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+								{
+									if (snippet1ReplaceFactRoleIter1 == 1)
 									{
-										break;
-									}
-									j++;
-								}
-								if (j == i)
-								{
-									currentSequenceFactCount++;
-								}
-							}
-							FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
-							currentSequenceFacts = new FactType[currentSequenceFactCount];
-							currentSequenceFactCount = 0;
-							// Building the unique fact list.
-							for (int i = 0; i < roleArity; i++)
-							{
-								FactType currentFact = includedFactRoles[i].FactType;
-								int j = 0;
-								while (j < i)
-								{
-									if (currentFact == includedFactRoles[i].FactType)
-									{
-										break;
-									}
-									j++;
-								}
-								if (j == i)
-								{
-									currentSequenceFacts[currentSequenceFactCount] = currentFact;
-									currentSequenceFactCount++;
-								}
-							}
-							factArity = currentSequenceFacts.Length;
-							if (sbTemp == null)
-							{
-								sbTemp = new StringBuilder();
-							}
-							else
-							{
-								sbTemp.Length = 0;
-							}
-							for (int FactIter1 = 0; FactIter1 < 1; ++FactIter1)
-							{
-								FactType currentFact = currentSequenceFacts[FactIter1];
-								factRoles = currentFact.RoleCollection;
-								int currentRoleCount = factRoles.Count;
-								allReadingOrders = currentFact.ReadingOrderCollection;
-								RoleBase primaryRole = includedFactRoles[FactIter1];
-								parentFact = primaryRole.FactType;
-								factRoles = parentFact.RoleCollection;
-								factArity = factRoles.Count;
-								allReadingOrders = parentFact.ReadingOrderCollection;
-								string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-								snippet1Replace2Replace1 = null;
-								reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-								for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter1)
-								{
-									RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
-									string roleReplacement = null;
-									string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace2ReplaceFactRoleIter1], snippet1Replace2ReplaceFactRoleIter1);
-									if (currentRole == primaryRole)
-									{
-										roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+										listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
 									}
 									else
 									{
-										roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+										listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
 									}
-									if (roleReplacement == null)
-									{
-										roleReplacement = basicReplacement;
-									}
-									roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 								}
-								snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
-								sbTemp.Append(snippet1Replace2Replace1);
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+								}
+								if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+								{
+									if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+									{
+										sbTemp.Append(snippets.GetSnippet(listSnippet));
+										isFirstAppend = false;
+									}
+									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+								}
 							}
 						}
-						string snippet1Replace2Replace2 = null;
-						for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
-						{
-							IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-							int roleArity = includedFactRoles.Count;
-							// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
-							int currentSequenceFactCount = 0;
-							currentSequenceFactCount = 0;
-							for (int i = 0; i < roleArity; i++)
-							{
-								FactType currentFact = includedFactRoles[i].FactType;
-								int j = 0;
-								while (j < i)
-								{
-									if (currentFact == includedFactRoles[i].FactType)
-									{
-										break;
-									}
-									j++;
-								}
-								if (j == i)
-								{
-									currentSequenceFactCount++;
-								}
-							}
-							FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
-							currentSequenceFacts = new FactType[currentSequenceFactCount];
-							currentSequenceFactCount = 0;
-							// Building the unique fact list.
-							for (int i = 0; i < roleArity; i++)
-							{
-								FactType currentFact = includedFactRoles[i].FactType;
-								int j = 0;
-								while (j < i)
-								{
-									if (currentFact == includedFactRoles[i].FactType)
-									{
-										break;
-									}
-									j++;
-								}
-								if (j == i)
-								{
-									currentSequenceFacts[currentSequenceFactCount] = currentFact;
-									currentSequenceFactCount++;
-								}
-							}
-							factArity = currentSequenceFacts.Length;
-							if (sbTemp == null)
-							{
-								sbTemp = new StringBuilder();
-							}
-							else
-							{
-								sbTemp.Length = 0;
-							}
-							for (int FactIter2 = 0; FactIter2 < roleArity; ++FactIter2)
-							{
-								FactType currentFact = currentSequenceFacts[FactIter2];
-								factRoles = currentFact.RoleCollection;
-								int currentRoleCount = factRoles.Count;
-								allReadingOrders = currentFact.ReadingOrderCollection;
-								RoleBase primaryRole = includedFactRoles[FactIter2];
-								parentFact = primaryRole.FactType;
-								factRoles = parentFact.RoleCollection;
-								factArity = factRoles.Count;
-								allReadingOrders = parentFact.ReadingOrderCollection;
-								string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
-								snippet1Replace2Replace2 = null;
-								reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-								for (int snippet1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace2ReplaceFactRoleIter2 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter2)
-								{
-									RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter2];
-									string roleReplacement = null;
-									string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace2ReplaceFactRoleIter2], snippet1Replace2ReplaceFactRoleIter2);
-									if (currentRole == primaryRole)
-									{
-										roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
-									}
-									else
-									{
-										roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
-									}
-									if (roleReplacement == null)
-									{
-										roleReplacement = basicReplacement;
-									}
-									roleReplacements[snippet1Replace2ReplaceFactRoleIter2] = roleReplacement;
-								}
-								snippet1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
-								sbTemp.Append(snippet1Replace2Replace2);
-							}
-						}
-						snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
-						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
+					snippet1Replace1 = sbTemp.ToString();
+					string snippet1Replace2 = null;
+					string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.Conditional, isDeontic, isNegative);
+					string snippet1Replace2Replace1 = null;
+					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedFactRoles.Count;
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter1 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter1 = 0; FactIter1 < 1; ++FactIter1)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter1];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							RoleBase primaryRole = includedFactRoles[FactIter1];
+							parentFact = primaryRole.FactType;
+							factRoles = parentFact.RoleCollection;
+							allReadingOrders = parentFact.ReadingOrderCollection;
+							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+							snippet1Replace2Replace1 = null;
+							reading = FactType.GetMatchingReading(allReadingOrders, null, null, factRoles, false, false, factRoles, true);
+							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter1)
+							{
+								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+								string roleReplacement = null;
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace2ReplaceFactRoleIter1], snippet1Replace2ReplaceFactRoleIter1);
+								if (currentRole == primaryRole)
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								}
+								if (roleReplacement == null)
+								{
+									roleReplacement = basicReplacement;
+								}
+								roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
+							}
+							snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							sbTemp.Append(snippet1Replace2Replace1);
+						}
+					}
+					string snippet1Replace2Replace2 = null;
+					for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedFactRoles.Count;
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter2 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter2];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							RoleBase primaryRole = includedFactRoles[FactIter2];
+							parentFact = primaryRole.FactType;
+							factRoles = parentFact.RoleCollection;
+							allReadingOrders = parentFact.ReadingOrderCollection;
+							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+							snippet1Replace2Replace2 = null;
+							reading = FactType.GetMatchingReading(allReadingOrders, null, null, factRoles, false, false, factRoles, true);
+							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							for (int snippet1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace2ReplaceFactRoleIter2 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter2)
+							{
+								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter2];
+								string roleReplacement = null;
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace2ReplaceFactRoleIter2], snippet1Replace2ReplaceFactRoleIter2);
+								if (currentRole == primaryRole)
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								}
+								if (roleReplacement == null)
+								{
+									roleReplacement = basicReplacement;
+								}
+								roleReplacements[snippet1Replace2ReplaceFactRoleIter2] = roleReplacement;
+							}
+							snippet1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							sbTemp.Append(snippet1Replace2Replace2);
+						}
+					}
+					snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else
@@ -6814,7 +6806,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp = new StringBuilder();
 						}
-						else
+						else if (SequenceIter1 == 0)
 						{
 							sbTemp.Length = 0;
 						}
@@ -6824,6 +6816,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 							factRoles = currentFact.RoleCollection;
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
+							CoreVerbalizationSnippetType listSnippet;
+							if (FactIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompoundListOpen;
+							}
+							else if (FactIter1 == (factArity - 1))
+							{
+								if (FactIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
+							}
+							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace1 = null;
 							reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -6841,6 +6854,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace1);
+							if (FactIter1 == (factArity - 1))
+							{
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompoundListClose, isDeontic, isNegative));
+							}
 						}
 					}
 					string snippet1Replace2 = null;
@@ -6895,7 +6912,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp = new StringBuilder();
 						}
-						else
+						else if (SequenceIter2 == 0)
 						{
 							sbTemp.Length = 0;
 						}
@@ -6905,6 +6922,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 							factRoles = currentFact.RoleCollection;
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
+							CoreVerbalizationSnippetType listSnippet;
+							if (FactIter2 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompoundListOpen;
+							}
+							else if (FactIter2 == (factArity - 1))
+							{
+								if (FactIter2 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
+							}
+							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2 = null;
 							reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -6929,6 +6967,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
 							sbTemp.Append(snippet1Replace2);
+							if (FactIter2 == (factArity - 1))
+							{
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompoundListClose, isDeontic, isNegative));
+							}
 						}
 					}
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
@@ -7009,7 +7051,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								sbTemp = new StringBuilder();
 							}
-							else
+							else if (SequenceIter1 == 0)
 							{
 								sbTemp.Length = 0;
 							}
@@ -7019,6 +7061,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 								factRoles = currentFact.RoleCollection;
 								int currentRoleCount = factRoles.Count;
 								allReadingOrders = currentFact.ReadingOrderCollection;
+								CoreVerbalizationSnippetType listSnippet;
+								if (FactIter1 == 0)
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListOpen;
+								}
+								else if (FactIter1 == (factArity - 1))
+								{
+									if (FactIter1 == 1)
+									{
+										listSnippet = CoreVerbalizationSnippetType.CompoundListPairSeparator;
+									}
+									else
+									{
+										listSnippet = CoreVerbalizationSnippetType.CompoundListFinalSeparator;
+									}
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
+								}
+								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								snippet1Replace1 = null;
 								reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -7036,6 +7099,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace1);
+								if (FactIter1 == (factArity - 1))
+								{
+									sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompoundListClose, isDeontic, isNegative));
+								}
 							}
 						}
 						string snippet1Replace2 = null;
@@ -7090,7 +7157,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								sbTemp = new StringBuilder();
 							}
-							else
+							else if (SequenceIter2 == 0)
 							{
 								sbTemp.Length = 0;
 							}
@@ -7100,6 +7167,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 								factRoles = currentFact.RoleCollection;
 								int currentRoleCount = factRoles.Count;
 								allReadingOrders = currentFact.ReadingOrderCollection;
+								CoreVerbalizationSnippetType listSnippet;
+								if (FactIter2 == 0)
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListOpen;
+								}
+								else if (FactIter2 == (factArity - 1))
+								{
+									if (FactIter2 == 1)
+									{
+										listSnippet = CoreVerbalizationSnippetType.CompoundListPairSeparator;
+									}
+									else
+									{
+										listSnippet = CoreVerbalizationSnippetType.CompoundListFinalSeparator;
+									}
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
+								}
+								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 								snippet1Replace2 = null;
 								reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
@@ -7124,6 +7212,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
 								sbTemp.Append(snippet1Replace2);
+								if (FactIter2 == (factArity - 1))
+								{
+									sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompoundListClose, isDeontic, isNegative));
+								}
 							}
 						}
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
@@ -7160,6 +7252,2101 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // SubsetConstraint verbalization
+	#region EqualityConstraint verbalization
+	public partial class EqualityConstraint : IVerbalize
+	{
+		/// <summary>
+		/// IVerbalize.GetVerbalization implementation
+		/// </summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			bool isDeontic = false;
+			StringBuilder sbTemp = null;
+			FactType parentFact;
+			LinkedElementCollection<RoleBase> factRoles = null;
+			int factArity = 0;
+			LinkedElementCollection<ReadingOrder> allReadingOrders;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
+			int constraintRoleArity = constraintSequences.Count;
+			IList<Role>[] allConstraintSequences = new IList<Role>[constraintRoleArity];
+			for (int i = 0; i < constraintRoleArity; ++i)
+			{
+				allConstraintSequences[i] = constraintSequences[i].RoleCollection;
+			}
+			int columnArity = allConstraintSequences[0].Count;
+			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
+			int allFactsCount = allFacts.Count;
+			if (allFactsCount == 0)
+			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
+				return false;
+			}
+			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			int minFactArity = int.MaxValue;
+			int maxFactArity = int.MinValue;
+			for (int iFact = 0; iFact < allFactsCount; ++iFact)
+			{
+				FactType currentFact = allFacts[iFact];
+				if (currentFact.ReadingOrderCollection.Count == 0)
+				{
+					if (errorOwner != null)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								beginVerbalization(VerbalizationContent.ErrorReport);
+								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						}
+						if (!(firstErrorPending))
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+					}
+					return false;
+				}
+				factRoles = currentFact.RoleCollection;
+				factArity = factRoles.Count;
+				if (factArity < minFactArity)
+				{
+					minFactArity = factArity;
+				}
+				if (factArity > maxFactArity)
+				{
+					maxFactArity = factArity;
+				}
+				string[] basicRoleReplacements = new string[factArity];
+				for (int i = 0; i < factArity; ++i)
+				{
+					Role factRole = factRoles[i].Role;
+					ObjectType rolePlayer = factRole.RolePlayer;
+					string basicReplacement;
+					if (rolePlayer != null)
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+					}
+					else
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					}
+					basicRoleReplacements[i] = basicReplacement;
+				}
+				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+			}
+			Reading[] allConstraintRoleReadings = new Reading[constraintRoleArity];
+			string[] roleReplacements = new string[maxFactArity];
+			Reading reading;
+			VerbalizationHyphenBinder hyphenBinder;
+			if ((columnArity == 1) && (constraintRoleArity == 2))
+			{
+				beginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						CoreVerbalizationSnippetType listSnippet;
+						snippet1Replace1 = null;
+						bool isFirstAppend = true;
+						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+						{
+							if (snippet1ReplaceFactRoleIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+							}
+							else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+							{
+								if (snippet1ReplaceFactRoleIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+							}
+							if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+							{
+								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+								{
+									sbTemp.Append(snippets.GetSnippet(listSnippet));
+									isFirstAppend = false;
+								}
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+							}
+						}
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				string snippet1Replace2 = null;
+				string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.Equality, isDeontic, isNegative);
+				string snippet1Replace2Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < 1; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						RoleBase primaryRole = includedFactRoles[FactIter1];
+						parentFact = primaryRole.FactType;
+						factRoles = parentFact.RoleCollection;
+						allReadingOrders = parentFact.ReadingOrderCollection;
+						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						snippet1Replace2Replace1 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter1)
+						{
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace2ReplaceFactRoleIter1], snippet1Replace2ReplaceFactRoleIter1);
+							if (currentRole == primaryRole)
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
+						}
+						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippet1Replace2Replace1);
+					}
+				}
+				string snippet1Replace2Replace2 = null;
+				for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter2 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter2];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						RoleBase primaryRole = includedFactRoles[FactIter2];
+						parentFact = primaryRole.FactType;
+						factRoles = parentFact.RoleCollection;
+						allReadingOrders = parentFact.ReadingOrderCollection;
+						string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+						snippet1Replace2Replace2 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace2ReplaceFactRoleIter2 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter2)
+						{
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter2];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace2ReplaceFactRoleIter2], snippet1Replace2ReplaceFactRoleIter2);
+							if (currentRole == primaryRole)
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1Replace2ReplaceFactRoleIter2] = roleReplacement;
+						}
+						snippet1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippet1Replace2Replace2);
+					}
+				}
+				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			else if (constraintRoleArity == 2)
+			{
+				beginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						CoreVerbalizationSnippetType listSnippet;
+						snippet1Replace1 = null;
+						bool isFirstAppend = true;
+						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+						{
+							if (snippet1ReplaceFactRoleIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+							}
+							else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+							{
+								if (snippet1ReplaceFactRoleIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+							}
+							if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+							{
+								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+								{
+									sbTemp.Append(snippets.GetSnippet(listSnippet));
+									isFirstAppend = false;
+								}
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+							}
+						}
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				string snippet1Replace2 = null;
+				string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.Equality, isDeontic, isNegative);
+				string snippet1Replace2Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < 1; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						snippet1Replace2Replace1 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter1)
+						{
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace2ReplaceFactRoleIter1], snippet1Replace2ReplaceFactRoleIter1);
+							if (includedFactRoles.Contains(currentRole.Role))
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
+						}
+						snippet1Replace2Replace1 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippet1Replace2Replace1);
+					}
+				}
+				string snippet1Replace2Replace2 = null;
+				for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter2 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter2];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						snippet1Replace2Replace2 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace2ReplaceFactRoleIter2 < currentRoleCount; ++snippet1Replace2ReplaceFactRoleIter2)
+						{
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter2];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace2ReplaceFactRoleIter2], snippet1Replace2ReplaceFactRoleIter2);
+							if (includedFactRoles.Contains(currentRole.Role))
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1Replace2ReplaceFactRoleIter2] = roleReplacement;
+						}
+						snippet1Replace2Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippet1Replace2Replace2);
+					}
+				}
+				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			else if (constraintRoleArity >= 3)
+			{
+				beginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.EqualityForEachIndentedQuantifier, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						CoreVerbalizationSnippetType listSnippet;
+						snippet1Replace1 = null;
+						bool isFirstAppend = true;
+						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+						{
+							if (snippet1ReplaceFactRoleIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+							}
+							else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+							{
+								if (snippet1ReplaceFactRoleIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+							}
+							if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+							{
+								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+								{
+									sbTemp.Append(snippets.GetSnippet(listSnippet));
+									isFirstAppend = false;
+								}
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+							}
+						}
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				string snippet1Replace2 = null;
+				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedFactRoles.Count;
+					CoreVerbalizationSnippetType listSnippet;
+					if (SequenceIter2 == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.SemiColonListOpen;
+					}
+					else if (SequenceIter2 == (constraintRoleArity - 1))
+					{
+						if (SequenceIter2 == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.SemiColonListSeparator;
+					}
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter2 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter2];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						snippet1Replace2 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1ReplaceFactRoleIter2 = 0; snippet1ReplaceFactRoleIter2 < currentRoleCount; ++snippet1ReplaceFactRoleIter2)
+						{
+							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter2];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1ReplaceFactRoleIter2], snippet1ReplaceFactRoleIter2);
+							if (includedFactRoles.Contains(currentRole.Role))
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1ReplaceFactRoleIter2] = roleReplacement;
+						}
+						snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						sbTemp.Append(snippet1Replace2);
+					}
+				}
+				snippet1Replace2 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+		}
+	}
+	#endregion // EqualityConstraint verbalization
+	#region ExclusionConstraint verbalization
+	public partial class ExclusionConstraint : IVerbalize
+	{
+		/// <summary>
+		/// IVerbalize.GetVerbalization implementation
+		/// </summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			bool isDeontic = false;
+			StringBuilder sbTemp = null;
+			FactType parentFact;
+			LinkedElementCollection<RoleBase> factRoles = null;
+			int factArity = 0;
+			LinkedElementCollection<ReadingOrder> allReadingOrders;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences = this.RoleSequenceCollection;
+			int constraintRoleArity = constraintSequences.Count;
+			IList<Role>[] allConstraintSequences = new IList<Role>[constraintRoleArity];
+			for (int i = 0; i < constraintRoleArity; ++i)
+			{
+				allConstraintSequences[i] = constraintSequences[i].RoleCollection;
+			}
+			int columnArity = allConstraintSequences[0].Count;
+			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
+			int allFactsCount = allFacts.Count;
+			if (allFactsCount == 0)
+			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
+				return false;
+			}
+			string[][] allBasicRoleReplacements = new string[allFactsCount][];
+			int minFactArity = int.MaxValue;
+			int maxFactArity = int.MinValue;
+			for (int iFact = 0; iFact < allFactsCount; ++iFact)
+			{
+				FactType currentFact = allFacts[iFact];
+				if (currentFact.ReadingOrderCollection.Count == 0)
+				{
+					if (errorOwner != null)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								beginVerbalization(VerbalizationContent.ErrorReport);
+								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						}
+						if (!(firstErrorPending))
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+					}
+					return false;
+				}
+				factRoles = currentFact.RoleCollection;
+				factArity = factRoles.Count;
+				if (factArity < minFactArity)
+				{
+					minFactArity = factArity;
+				}
+				if (factArity > maxFactArity)
+				{
+					maxFactArity = factArity;
+				}
+				string[] basicRoleReplacements = new string[factArity];
+				for (int i = 0; i < factArity; ++i)
+				{
+					Role factRole = factRoles[i].Role;
+					ObjectType rolePlayer = factRole.RolePlayer;
+					string basicReplacement;
+					if (rolePlayer != null)
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+					}
+					else
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					}
+					basicRoleReplacements[i] = basicReplacement;
+				}
+				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+			}
+			Reading[] allConstraintRoleReadings = new Reading[constraintRoleArity];
+			string[] roleReplacements = new string[maxFactArity];
+			Reading reading;
+			VerbalizationHyphenBinder hyphenBinder;
+			if ((columnArity == 1) && (constraintRoleArity >= 2))
+			{
+				beginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ExclusionForEachIndentedQuantifier, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						CoreVerbalizationSnippetType listSnippet;
+						snippet1Replace1 = null;
+						bool isFirstAppend = true;
+						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+						{
+							if (snippet1ReplaceFactRoleIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+							}
+							else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+							{
+								if (snippet1ReplaceFactRoleIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+							}
+							if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+							{
+								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+								{
+									sbTemp.Append(snippets.GetSnippet(listSnippet));
+									isFirstAppend = false;
+								}
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+							}
+						}
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				string snippet1Replace2 = null;
+				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedFactRoles.Count;
+					CoreVerbalizationSnippetType listSnippet;
+					if (SequenceIter2 == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.SemiColonListOpen;
+					}
+					else if (SequenceIter2 == (constraintRoleArity - 1))
+					{
+						if (SequenceIter2 == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.SemiColonListSeparator;
+					}
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter2 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter2];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						snippet1Replace2 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1ReplaceFactRoleIter2 = 0; snippet1ReplaceFactRoleIter2 < currentRoleCount; ++snippet1ReplaceFactRoleIter2)
+						{
+							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter2];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1ReplaceFactRoleIter2], snippet1ReplaceFactRoleIter2);
+							if (includedFactRoles.Contains(currentRole.Role))
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1ReplaceFactRoleIter2] = roleReplacement;
+						}
+						snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						sbTemp.Append(snippet1Replace2);
+					}
+				}
+				snippet1Replace2 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			else if ((columnArity == 2) && (constraintRoleArity == 2))
+			{
+				bool isBinaryLeadReading = false;
+				int columnIndex = -1;
+				for (int ConstraintIter1 = 0; ConstraintIter1 < constraintRoleArity; ++ConstraintIter1)
+				{
+					int roleArity = allConstraintSequences[ConstraintIter1].Count;
+					for (int RoleIter1 = 0; RoleIter1 < roleArity; ++RoleIter1)
+					{
+						RoleBase primaryRole1 = allConstraintSequences[ConstraintIter1][RoleIter1];
+						parentFact = primaryRole1.FactType;
+						LinkedElementCollection<RoleBase> factRoles1 = parentFact.RoleCollection;
+						LinkedElementCollection<ReadingOrder> readingOrders1 = parentFact.ReadingOrderCollection;
+						Reading reading1 = FactType.GetMatchingReading(readingOrders1, null, primaryRole1, null, false, false, factRoles1, false);
+						if ((reading1 != null) && (ConstraintIter1 == 0))
+						{
+							columnIndex = RoleIter1;
+						}
+						else if ((reading1 != null) && (ConstraintIter1 == 1))
+						{
+							isBinaryLeadReading = columnIndex == RoleIter1;
+						}
+					}
+				}
+				CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
+				if (isBinaryLeadReading)
+				{
+					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.ExclusionBinaryLeadReading;
+				}
+				else
+				{
+					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.ExclusionForEachIndentedQuantifier;
+				}
+				beginVerbalization(VerbalizationContent.Normal);
+				string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
+				string variableSnippet1Replace1 = null;
+				if (isBinaryLeadReading)
+				{
+					string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ExclusionCombined, isDeontic, isNegative);
+					string variableSnippet1Replace1Replace1 = null;
+					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedFactRoles.Count;
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter1 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter1];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							variableSnippet1Replace1Replace1 = null;
+							variableSnippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(includedFactRoles[0])];
+						}
+					}
+					string variableSnippet1Replace1Replace2 = null;
+					for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedFactRoles.Count;
+						CoreVerbalizationSnippetType listSnippet;
+						if (SequenceIter2 == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+						}
+						else if (SequenceIter2 == (constraintRoleArity - 1))
+						{
+							if (SequenceIter2 == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+						}
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter2 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter2];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							variableSnippet1Replace1Replace2 = null;
+							reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							for (int variableSnippet1Replace1ReplaceFactRoleIter2 = 0; variableSnippet1Replace1ReplaceFactRoleIter2 < currentRoleCount; ++variableSnippet1Replace1ReplaceFactRoleIter2)
+							{
+								RoleBase currentRole = factRoles[variableSnippet1Replace1ReplaceFactRoleIter2];
+								string roleReplacement = null;
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][variableSnippet1Replace1ReplaceFactRoleIter2], variableSnippet1Replace1ReplaceFactRoleIter2);
+								roleReplacement = "";
+								if (roleReplacement == null)
+								{
+									roleReplacement = basicReplacement;
+								}
+								roleReplacements[variableSnippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
+							}
+							variableSnippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+							sbTemp.Append(variableSnippet1Replace1Replace2);
+						}
+					}
+					variableSnippet1Replace1Replace2 = sbTemp.ToString();
+					variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
+				}
+				else
+				{
+					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedFactRoles.Count;
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter1 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter1];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							CoreVerbalizationSnippetType listSnippet;
+							variableSnippet1Replace1 = null;
+							bool isFirstAppend = true;
+							for (int variableSnippet1ReplaceFactRoleIter1 = 0; variableSnippet1ReplaceFactRoleIter1 < currentRoleCount; ++variableSnippet1ReplaceFactRoleIter1)
+							{
+								if (variableSnippet1ReplaceFactRoleIter1 == 0)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+								}
+								else if (variableSnippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+								{
+									if (variableSnippet1ReplaceFactRoleIter1 == 1)
+									{
+										listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+									}
+									else
+									{
+										listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+									}
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+								}
+								if (includedFactRoles.Contains(factRoles[variableSnippet1ReplaceFactRoleIter1].Role))
+								{
+									if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+									{
+										sbTemp.Append(snippets.GetSnippet(listSnippet));
+										isFirstAppend = false;
+									}
+									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[variableSnippet1ReplaceFactRoleIter1].Role)]);
+								}
+							}
+						}
+					}
+					variableSnippet1Replace1 = sbTemp.ToString();
+				}
+				string variableSnippet1Replace2 = null;
+				if (isBinaryLeadReading)
+				{
+					for (int SequenceIter2 = 0; SequenceIter2 < 1; ++SequenceIter2)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedFactRoles.Count;
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter2 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter2];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							variableSnippet1Replace2 = null;
+							variableSnippet1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(includedFactRoles[1])];
+						}
+					}
+				}
+				else
+				{
+					for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+					{
+						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedFactRoles.Count;
+						CoreVerbalizationSnippetType listSnippet;
+						if (SequenceIter2 == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListOpen;
+						}
+						else if (SequenceIter2 == (constraintRoleArity - 1))
+						{
+							if (SequenceIter2 == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SemiColonListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SemiColonListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListSeparator;
+						}
+						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+						int currentSequenceFactCount = 0;
+						currentSequenceFactCount = 0;
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFactCount++;
+							}
+						}
+						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFacts = new FactType[currentSequenceFactCount];
+						currentSequenceFactCount = 0;
+						// Building the unique fact list.
+						for (int i = 0; i < roleArity; i++)
+						{
+							FactType currentFact = includedFactRoles[i].FactType;
+							int j = 0;
+							while (j < i)
+							{
+								if (currentFact == includedFactRoles[i].FactType)
+								{
+									break;
+								}
+								j++;
+							}
+							if (j == i)
+							{
+								currentSequenceFacts[currentSequenceFactCount] = currentFact;
+								currentSequenceFactCount++;
+							}
+						}
+						factArity = currentSequenceFacts.Length;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else if (SequenceIter2 == 0)
+						{
+							sbTemp.Length = 0;
+						}
+						for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+						{
+							FactType currentFact = currentSequenceFacts[FactIter2];
+							factRoles = currentFact.RoleCollection;
+							int currentRoleCount = factRoles.Count;
+							allReadingOrders = currentFact.ReadingOrderCollection;
+							variableSnippet1Replace2 = null;
+							reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+							hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+							for (int variableSnippet1ReplaceFactRoleIter2 = 0; variableSnippet1ReplaceFactRoleIter2 < currentRoleCount; ++variableSnippet1ReplaceFactRoleIter2)
+							{
+								RoleBase currentRole = factRoles[variableSnippet1ReplaceFactRoleIter2];
+								string roleReplacement = null;
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][variableSnippet1ReplaceFactRoleIter2], variableSnippet1ReplaceFactRoleIter2);
+								if (includedFactRoles.Contains(currentRole.Role))
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								}
+								if (roleReplacement == null)
+								{
+									roleReplacement = basicReplacement;
+								}
+								roleReplacements[variableSnippet1ReplaceFactRoleIter2] = roleReplacement;
+							}
+							variableSnippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+							sbTemp.Append(variableSnippet1Replace2);
+						}
+					}
+					variableSnippet1Replace2 = sbTemp.ToString();
+				}
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			else if (constraintRoleArity >= 2)
+			{
+				beginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ExclusionForEachIndentedQuantifier, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedFactRoles.Count;
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter1 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter1 = 0; FactIter1 < factArity; ++FactIter1)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter1];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						CoreVerbalizationSnippetType listSnippet;
+						snippet1Replace1 = null;
+						bool isFirstAppend = true;
+						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+						{
+							if (snippet1ReplaceFactRoleIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+							}
+							else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+							{
+								if (snippet1ReplaceFactRoleIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+							}
+							if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+							{
+								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
+								{
+									sbTemp.Append(snippets.GetSnippet(listSnippet));
+									isFirstAppend = false;
+								}
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+							}
+						}
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				string snippet1Replace2 = null;
+				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
+				{
+					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedFactRoles.Count;
+					CoreVerbalizationSnippetType listSnippet;
+					if (SequenceIter2 == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.SemiColonListOpen;
+					}
+					else if (SequenceIter2 == (constraintRoleArity - 1))
+					{
+						if (SequenceIter2 == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SemiColonListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.SemiColonListSeparator;
+					}
+					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
+					int currentSequenceFactCount = 0;
+					currentSequenceFactCount = 0;
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFactCount++;
+						}
+					}
+					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFacts = new FactType[currentSequenceFactCount];
+					currentSequenceFactCount = 0;
+					// Building the unique fact list.
+					for (int i = 0; i < roleArity; i++)
+					{
+						FactType currentFact = includedFactRoles[i].FactType;
+						int j = 0;
+						while (j < i)
+						{
+							if (currentFact == includedFactRoles[i].FactType)
+							{
+								break;
+							}
+							j++;
+						}
+						if (j == i)
+						{
+							currentSequenceFacts[currentSequenceFactCount] = currentFact;
+							currentSequenceFactCount++;
+						}
+					}
+					factArity = currentSequenceFacts.Length;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else if (SequenceIter2 == 0)
+					{
+						sbTemp.Length = 0;
+					}
+					for (int FactIter2 = 0; FactIter2 < factArity; ++FactIter2)
+					{
+						FactType currentFact = currentSequenceFacts[FactIter2];
+						factRoles = currentFact.RoleCollection;
+						int currentRoleCount = factRoles.Count;
+						allReadingOrders = currentFact.ReadingOrderCollection;
+						snippet1Replace2 = null;
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
+						for (int snippet1ReplaceFactRoleIter2 = 0; snippet1ReplaceFactRoleIter2 < currentRoleCount; ++snippet1ReplaceFactRoleIter2)
+						{
+							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter2];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1ReplaceFactRoleIter2], snippet1ReplaceFactRoleIter2);
+							if (includedFactRoles.Contains(currentRole.Role))
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1ReplaceFactRoleIter2] = roleReplacement;
+						}
+						snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						sbTemp.Append(snippet1Replace2);
+					}
+				}
+				snippet1Replace2 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+		}
+	}
+	#endregion // ExclusionConstraint verbalization
 	#region FactType.FactTypeInstanceBlockStart verbalization
 	public partial class FactType
 	{

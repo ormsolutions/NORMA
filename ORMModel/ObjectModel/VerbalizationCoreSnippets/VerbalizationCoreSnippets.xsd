@@ -170,6 +170,13 @@
 				<xs:enumeration value="CompactSimpleListSeparator"/>
 				<xs:enumeration value="CompactSimpleListFinalSeparator"/>
 				<xs:enumeration value="CompactSimpleListClose"/>
+				<xs:enumeration value="EqualityForEachIndentedQuantifier"/>
+				<xs:enumeration value="ExclusionForEachIndentedQuantifier"/>
+				<xs:enumeration value="SemiColonListOpen"/>
+				<xs:enumeration value="SemiColonListPairSeparator"/>
+				<xs:enumeration value="SemiColonListSeparator"/>
+				<xs:enumeration value="SemiColonListFinalSeparator"/>
+				<xs:enumeration value="SemiColonListClose"/>
 				<xs:enumeration value="CloseVerbalizationSentence"/>
 				<xs:enumeration value="CombinationIdentifier"/>
 				<xs:enumeration value="OccursInPopulation"/>
@@ -370,6 +377,12 @@
 				<xs:enumeration value="ObjectTypeInstanceListClose"/>
 				<xs:enumeration value="Conditional"/>
 				<xs:enumeration value="Equality"/>
+				<xs:enumeration value="ExclusionBinaryLeadReading">
+					<xs:annotation>
+						<xs:documentation>No {0} the same {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExclusionCombined"/>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>
