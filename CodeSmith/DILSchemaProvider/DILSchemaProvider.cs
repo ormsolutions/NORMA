@@ -90,7 +90,7 @@ namespace SchemaExplorer.DILSchemaProvider
 				XmlAttribute columnNameNode = currentColumn.Attributes["name"];
 				if (columnNameNode != null)
 				{
-					columnName = columnNameNode.Value;
+					columnName = columnNameNode.Value.Trim('\"').Replace("\"\"", "\"");
 				}
 
 				XmlAttribute isNullableNode = currentColumn.Attributes["isNullable"];
