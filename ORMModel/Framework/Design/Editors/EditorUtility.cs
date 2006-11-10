@@ -29,6 +29,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Microsoft.VisualStudio.Shell;
+using System.ComponentModel.Design;
 
 namespace Neumont.Tools.Modeling.Design
 {
@@ -70,8 +72,29 @@ namespace Neumont.Tools.Modeling.Design
 			}
 			return instance;
 		}
-		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-		private static extern IntPtr GetFocus();
+		/// <summary>
+		/// Helper method to recursively find a control of a given type
+		/// </summary>
+		/// <typeparam name="ControlType">The type of the to find</typeparam>
+		/// <param name="control">The starting control</param>
+		/// <returns>A control instance of the given type, or null</returns>
+		private static ControlType FindContainedControl<ControlType>(Control control) where ControlType : Control
+		{
+			ControlType retVal = control as ControlType;
+			if (retVal != null)
+			{
+				return retVal;
+			}
+			foreach (Control childControl in control.Controls)
+			{
+				retVal = FindContainedControl<ControlType>(childControl);
+				if (retVal != null)
+				{
+					return retVal;
+				}
+			}
+			return null;
+		}
 		/// <summary>
 		/// Open the Properties Window, select the target property
 		/// descriptor, and activate the edit field.
@@ -89,24 +112,21 @@ namespace Neumont.Tools.Modeling.Design
 			if (null != serviceProvider &&
 				null != (shell = (IVsUIShell)serviceProvider.GetService(typeof(IVsUIShell))))
 			{
-				Guid windowGuid = new Guid(ToolWindowGuids.PropertyBrowser);
+				Guid windowGuid = StandardToolWindows.PropertyBrowser;
 				IVsWindowFrame frame;
 				ErrorHandler.ThrowOnFailure(shell.FindToolWindow((uint)(__VSFINDTOOLWIN.FTW_fForceCreate), ref windowGuid, out frame));
 				ErrorHandler.ThrowOnFailure(frame.Show());
-				SendKeys.Flush();
-				Control ctl = Control.FromHandle(GetFocus());
-				PropertyGrid propertyGrid = null;
-				while (ctl != null)
+
+				WindowPane propertiesPane;
+				IWin32Window propertiesWindow;
+				Control ctl;
+				PropertyGrid propertyGrid;
+				if (null != (propertiesPane = serviceProvider.GetService(typeof(SVSMDPropertyBrowser)) as WindowPane) &&
+					null != (propertiesWindow = propertiesPane.Window) &&
+					null != (ctl = Control.FromHandle(propertiesWindow.Handle)) &&
+					null != (propertyGrid = FindContainedControl<PropertyGrid>(ctl)))
 				{
-					propertyGrid = ctl as PropertyGrid;
-					if (propertyGrid != null)
-					{
-						break;
-					}
-					ctl = ctl.Parent;
-				}
-				if (propertyGrid != null)
-				{
+					propertyGrid.Focus();
 					// Make sure any selection change has posted
 					shell.RefreshPropertyBrowser(-1); // DISPID_UNKNOWN
 					string targetCategory = targetDescriptor.Category;
@@ -214,11 +234,7 @@ namespace Neumont.Tools.Modeling.Design
 					if (activateItem != null && activateItem.Select())
 					{
 						SendKeys.Flush();
-						SendKeys.SendWait("{TAB}");
-						if (openDropDown)
-						{
-							SendKeys.SendWait("%{DOWN}");
-						}
+						SendKeys.Send(openDropDown ? "%{DOWN}" : "{TAB}");
 					}
 				}
 			}
