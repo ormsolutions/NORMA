@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<UsingTask TaskName="Gacutil" AssemblyName="Neumont.Tools.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
-	<UsingTask TaskName="Ngen" AssemblyName="Neumont.Tools.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
-	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="Neumont.Tools.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<UsingTask TaskName="Gacutil" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<UsingTask TaskName="Ngen" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<UsingTask TaskName="RegexCompiler" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
 
 
 	<!-- InstallInGac and GenerateNativeImage -->
@@ -14,8 +15,10 @@
 			GenerateNativeImage
 		</PostBuildDependsOn>
 		<InstallInGacDependsOn>
+			$(InstallInGacDependsOn)
 		</InstallInGacDependsOn>
 		<GenerateNativeImageDependsOn>
+			$(GenerateNativeImageDependsOn);
 			InstallInGac
 		</GenerateNativeImageDependsOn>
 
@@ -62,6 +65,7 @@
 
 
 
+	<!-- CopyWithPreprocessing -->
 	<PropertyGroup>
 		<DisableAllPreprocessing Condition="'$(DisableAllPreprocessing)'==''">false</DisableAllPreprocessing>
 		<XmlFileExtensionsToPreprocess>
@@ -102,6 +106,58 @@
 	</Target>
 
 
+
+	<!-- RegexCompiler -->
+	<PropertyGroup>
+		<!-- Regex compilation is set to default to being disabled for now, until we have finished developing it. -->
+		<DisableRegexCompilation Condition="'$(DisableRegexCompilation)'==''">true</DisableRegexCompilation>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(DisableRegexCompilation)'!='true'">
+		<!-- Compile regular expressions just before ResolveReferences, so that references to the regular expression assembly can be resolved. -->
+		<ResolveReferencesDependsOn>
+			RegexCompile;
+			$(ResolveReferencesDependsOn)
+		</ResolveReferencesDependsOn>
+		<RegexCompileDependsOn>
+			$(RegexCompileDependsOn);
+			ResolveKeySource
+		</RegexCompileDependsOn>
+		<!-- Default to true if we are compiling within Visual Studio -->
+		<AlwaysCompileRegexInSeparateDomain Condition="'$(AlwaysCompileRegexInSeparateDomain)'==''">$(BuildingInsideVisualStudio)</AlwaysCompileRegexInSeparateDomain>
+		<RegexAssemblyName Condition="'$(RegexAssemblyName)'==''">$(AssemblyName).RegularExpressions</RegexAssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true' and '$(DisableRegexCompilation)'!='true'">
+		<!-- Add the CompileRegex Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio. -->
+		<AvailableItemName Include="CompileRegex"/>
+	</ItemGroup>
+
+	<Target
+		Name="RegexCompile"
+		Condition="'@(CompileRegex)'!='' and '$(DisableRegexCompilation)'!='true'"
+		DependsOnTargets="$(RegexCompileDependsOn)">
+
+		<RegexCompiler
+			AlwaysCompileRegexInSeparateDomain="$(AlwaysCompileRegexInSeparateDomain)"
+			AssemblyName="$(RegexAssemblyName)"
+			IntermediateOutputPath="$(IntermediateOutputPath)"
+			RegexCompilationInfoFiles="@(CompileRegex)"
+			KeyContainer="$(KeyContainerName)"
+			KeyFile="$(KeyOriginatorFile)">
+			<Output TaskParameter="OutputAssembly" ItemName="FileWrites"/>
+			<Output TaskParameter="OutputAssembly" ItemName="IntermediateRegexAssembly"/>
+		</RegexCompiler>
+		
+	</Target>
+
+
+
+	<!-- XslCompiler (UNDONE) -->
+	<PropertyGroup>
+		<DisableXslCompilation Condition="'$(DisableXslCompilation)'==''">false</DisableXslCompilation>
+		<!-- Default to true if we are compiling within Visual Studio -->
+		<AlwaysCompileXslInSeparateDomain Condition="'$(AlwaysCompileXslInSeparateDomain)'==''">$(BuildingInsideVisualStudio)</AlwaysCompileXslInSeparateDomain>
+	</PropertyGroup>
 
 
 

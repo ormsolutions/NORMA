@@ -31,7 +31,7 @@ using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Neumont.Tools.Build.Tasks
+namespace Neumont.Build.Tasks
 {
 	/// <summary>
 	/// Wrapper <see cref="ToolTask"/> for <c>ngen.exe</c>.

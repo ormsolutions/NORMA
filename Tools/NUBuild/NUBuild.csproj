@@ -7,8 +7,8 @@
     <ProjectGuid>{95ED2F1C-32E5-4E2E-90AC-E4D928A6DF0F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.Build</RootNamespace>
-    <AssemblyName>Neumont.Tools.Build</AssemblyName>
+    <RootNamespace>Neumont.Build</RootNamespace>
+    <AssemblyName>Neumont.Build</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <BaseAddress>1413349376</BaseAddress>
@@ -27,7 +27,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
-    <DocumentationFile>bin\Neumont.Tools.Build.xml</DocumentationFile>
+    <DocumentationFile>bin\Neumont.Build.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
@@ -50,17 +50,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Install.bat" />
-    <None Include="Neumont.Tools.Build.targets" />
+    <None Include="Neumont.Build.targets" />
+    <None Include="Tasks\RegexCompilationInfo.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Tasks\CopyWithPreprocssing.cs" />
     <Compile Include="Tasks\Ngen.cs" />
     <Compile Include="Tasks\Gacutil.cs" />
+    <Compile Include="Tasks\RegexCompiler.cs" />
     <Compile Include="XmlSchemaCatalog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!--<Import Project="Neumont.Tools.Build.targets" />-->
+  <!--<Import Project="Neumont.Build.targets" />-->
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)..\..\VersionGenerator.exe"</PreBuildEvent>
     <PostBuildEvent>"$(SolutionDir)Install.bat"</PostBuildEvent>

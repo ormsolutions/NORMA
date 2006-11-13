@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/RegexCompilationInfo"
+	xmlns:regex="http://schemas.neumont.edu/RegexCompilationInfo" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="1.0">
+	<xs:annotation>
+		<xs:appinfo source="zlib/libpng License Copyright Notice">
+			Copyright © Neumont University. All rights reserved.
+
+			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+			3. This notice may not be removed or altered from any source distribution.
+		</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen</xs:appinfo>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+
+	<xs:element name="RegexCompilationInfo">
+		<xs:annotation>
+			<xs:documentation>Provides information that the compiler uses to compile a regular expression to a stand-alone assembly.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RegexOptions" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Used to specifiy regular expression options.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="CultureInvariant" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Specifies that cultural differences in language is ignored.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="ECMAScript" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Enables ECMAScript-compliant behavior for the expression. This value can be used only in conjunction with the IgnoreCase, Multiline, and Compiled values. The use of this value with any other values results in an exception.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="ExplicitCapture" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Specifies that the only valid captures are explicitly named or numbered groups of the form (?&lt;name>…). This allows unnamed parentheses to act as noncapturing groups without the syntactic clumsiness of the expression (?:…).</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="IgnoreCase" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Specifies case-insensitive matching.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="IgnorePatternWhitespace" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Eliminates unescaped white space from the pattern and enables comments marked with #. However, the IgnorePatternWhitespace value does not affect or eliminate white space in character classes.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Multiline" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Multiline mode. Changes the meaning of ^ and $ so they match at the beginning and end, respectively, of any line, and not just the beginning and end of the entire string.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="RightToLeft" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Specifies that the search will be from right to left instead of from left to right.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Singleline" type="regex:trueOnlyBoolean">
+							<xs:annotation>
+								<xs:documentation>Specifies single-line mode. Changes the meaning of the dot (.) so it matches every character (instead of every character except \n).</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Pattern">
+					<xs:annotation>
+						<xs:documentation>The regular expression to compile.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="regex:patternString">
+								<xs:attribute ref="xml:space" use="required" fixed="preserve"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="IsPublic" use="required" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates whether the compiled regular expression has public visibility.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Name" use="required" type="regex:NCNameMinLengthOne">
+				<xs:annotation>
+					<xs:documentation>The name of the type to use for the compiled regular expression.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Namespace" use="required" type="regex:NCNameMinLengthOne">
+				<xs:annotation>
+					<xs:documentation>The namespace to add the new type to.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="trueOnlyBoolean">
+		<xs:restriction base="xs:boolean">
+			<xs:pattern value="true|1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="patternString">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="preserve"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="NCNameMinLengthOne">
+		<xs:restriction base="xs:NCName">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

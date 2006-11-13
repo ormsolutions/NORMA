@@ -35,9 +35,9 @@ using System.Xml.XPath;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
-using Neumont.Tools.Xml;
+using Neumont.Xml;
 
-namespace Neumont.Tools.Build.Tasks
+namespace Neumont.Build.Tasks
 {
 	/// <summary>
 	/// Preprocesses certain file types after copying them.

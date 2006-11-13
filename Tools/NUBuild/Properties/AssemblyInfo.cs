@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyTitle("Neumont.Tools.Build.dll")]
+[assembly: AssemblyTitle("Neumont.Build.dll")]
 [assembly: AssemblyProduct("Neumont Build System")]
 [assembly: AssemblyDescription("Neumont Build System - Main DLL")]
 

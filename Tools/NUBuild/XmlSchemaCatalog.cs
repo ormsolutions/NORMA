@@ -14,9 +14,9 @@ using System.Xml;
 using System.Xml.Schema;
 using Microsoft.Win32;
 
-namespace Neumont.Tools.Xml
+namespace Neumont.Xml
 {
-	// UNDONE: Until this is moved to a separate Neumont.Tools.Xml assembly, it is internal.
+	// UNDONE: Until this is moved to a separate Neumont.Xml assembly, it is internal.
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 	internal static class XmlSchemaCatalog
 	{
