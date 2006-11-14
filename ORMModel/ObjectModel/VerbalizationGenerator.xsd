@@ -760,19 +760,31 @@
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesNoListType">
-		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Fact" type="FactType"/>
-			<xs:element name="Snippet" type="SnippetType"/>			
-			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
-			<xs:element name="RolePlayer">
-				<xs:complexType>
-					<xs:complexContent>
-						<xs:extension base="RolePlayerType">
-							<xs:attribute name="pass" use="optional" type="PassEnum"/>
-						</xs:extension>
-					</xs:complexContent>
-				</xs:complexType>
-			</xs:element>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="ReadingContext">
+					<xs:annotation>
+						<xs:documentation>If hyphenBind="true" on the parent and the pattern group contains multiple facts, then an additional ReadingContext needs to be set to support binding a reading of the current fact.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="match" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Fact" type="FactType"/>
+				<xs:element name="Snippet" type="SnippetType"/>
+				<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
+				<xs:element name="RolePlayer">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="RolePlayerType">
+								<xs:attribute name="pass" use="optional" type="PassEnum"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
 		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>

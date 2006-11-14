@@ -453,6 +453,7 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="ArityMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="ContradictionError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
@@ -480,6 +481,7 @@
 		<se:Link RelationshipName="SetConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactSetConstraint" RoleName="FactType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" Override="true">
 		<se:Attribute ID="IsSimple">

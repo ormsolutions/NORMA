@@ -574,7 +574,9 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="setConstraintRoles" listStyle="SimpleList" />
+								<IterateRoles match="setConstraintRoles" listStyle="SimpleList" hyphenBind="true">
+									<ReadingContext match="PreferNonPrimaryLeadReadingNoFrontText"/>
+								</IterateRoles>
 								<IterateRoles match="setConstraintRoles" listStyle="IndentedList">
 									<Fact readingChoice="Context">
 										<PredicateReplacement match="excluded" pass="first">

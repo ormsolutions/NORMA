@@ -6516,7 +6516,7 @@
 
 			<!-- Process the child contents for this role -->
 			<xsl:variable name="children" select="child::*"/>
-			<xsl:if test="$children">
+			<xsl:if test="$children[not(self::cvg:ReadingContext)]">
 				<xsl:if test="$hyphenBind">
 					<xsl:message terminate="yes">IterateInstances/@hyphenBind only supported if IterateInstances has no children</xsl:message>
 				</xsl:if>
@@ -6818,7 +6818,7 @@
 						</plx:passParam>
 					</plx:callInstance>
 			</xsl:when>
-			<xsl:when test="$children">
+			<xsl:when test="$children[not(self::cvg:ReadingContext)]">
 				<xsl:if test="$hyphenBind">
 					<xsl:message terminate="yes">IterateRoles/@hyphenBind only supported if IterateRoles has no children</xsl:message>
 				</xsl:if>
@@ -6883,10 +6883,10 @@
 					<xsl:choose>
 						<xsl:when test="@match='included' or @match='setConstraintRoles'">
 							<!-- The role index needs to be retrieved from the all roles list -->
-							<plx:callInstance name="IndexOf">
-								<plx:callObject>
+							<plx:callStatic name="IndexOfRole" dataTypeName="FactType">
+								<plx:passParam>
 									<plx:nameRef name="factRoles"/>
-								</plx:callObject>
+								</plx:passParam>
 								<plx:passParam>
 									<plx:callInstance name=".implied" type="arrayIndexer">
 										<plx:callObject>
@@ -6903,7 +6903,7 @@
 										</plx:passParam>
 									</plx:callInstance>
 								</plx:passParam>
-							</plx:callInstance>
+							</plx:callStatic>
 						</xsl:when>
 						<!-- UNDONE: Support excluded match -->
 						<xsl:otherwise>
@@ -6921,6 +6921,12 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="readingContext" select="$children[self::cvg:ReadingContext]"/>
+				<xsl:if test="$readingContext">
+					<xsl:call-template name="PopulateReading">
+						<xsl:with-param name="ReadingChoice" select="readingContext/@match"/>
+					</xsl:call-template>
+				</xsl:if>
 				<xsl:if test="$hyphenBind and (@match='included' or @match='setConstraintRoles')">
 					<plx:local name="{concat($ResolvedRoleVariablePart,$VariableDecorator)}" dataTypeName=".i4">
 						<plx:initialize>
@@ -7747,6 +7753,7 @@
 		<!-- Support readings for {Context, {Prefer|Require}[Non][Primary]LeadReading[NoFrontText], null} ReadingChoice values -->
 		<xsl:param name="ReadingChoice"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ConditionalLoop" select="boolean(self::cvg:ReadingChoice)"/>
 		<xsl:param name="ConditionalReadingOrderIndex"/>
 		<xsl:choose>
 			<xsl:when test="$ReadingChoice='Context' and $PatternGroup='SetConstraint'">
@@ -7894,26 +7901,28 @@
 						</plx:callStatic>
 					</plx:right>
 				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef name="hyphenBinder"/>
-					</plx:left>
-					<plx:right>
-						<plx:callNew dataTypeName="VerbalizationHyphenBinder">
-							<plx:passParam>
-								<plx:nameRef name="reading"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef name="factRoles"/>
-							</plx:passParam>
-							<plx:passParam>
-								<xsl:call-template name="SnippetFor">
-									<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
-								</xsl:call-template>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:right>
-				</plx:assign>
+				<xsl:if test="not($ConditionalLoop) or not($PatternGroup='SetConstraint' or $PatternGroup='SetComparisonConstraint')">
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="hyphenBinder"/>
+						</plx:left>
+						<plx:right>
+							<plx:callNew dataTypeName="VerbalizationHyphenBinder">
+								<plx:passParam>
+									<plx:nameRef name="reading"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="factRoles"/>
+								</plx:passParam>
+								<plx:passParam>
+									<xsl:call-template name="SnippetFor">
+										<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
+									</xsl:call-template>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:right>
+					</plx:assign>
+				</xsl:if>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

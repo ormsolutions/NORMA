@@ -466,6 +466,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return optimalMatch;
 		}
 		/// <summary>
+		/// Helper function to reliably return the index of a role in a fact.
+		/// </summary>
+		/// <param name="factRoles"></param>
+		/// <param name="role"></param>
+		/// <returns></returns>
+		/// <remarks>The role collection of a FactType is a RoleBase collection, but
+		/// all constraint role collections are made up of Role. Without overriding
+		/// the equality operator (Equals method, etc) (undesirable because we often
+		/// do need to know the difference), this means that factRoles.IndexOf(role)
+		/// will return a false negative, so we write our own helper function.</remarks>
+		public static int IndexOfRole(LinkedElementCollection<RoleBase> factRoles, Role role)
+		{
+			int roleCount = factRoles.Count;
+			for (int i = 0; i < roleCount; ++i)
+			{
+				if (factRoles[i].Role == role)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+		/// <summary>
 		/// Populate the predicate text with the supplied replacement fields.
 		/// </summary>
 		/// <param name="reading">The reading to populate.</param>

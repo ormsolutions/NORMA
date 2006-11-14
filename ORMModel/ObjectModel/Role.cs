@@ -400,13 +400,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							nearestValueConstraint = valueType.ValueConstraint;
 						}
-						WalkDescendedValueRoles(
-							(unattachedRole != null) ? new Role[] { unattachedRole } as IList<Role> : anchorType.PlayedRoleCollection,
-							dataTypeLink,
-							nearestValueConstraint,
-							currentRole.OppositeRole.Role,
-							true,
-							visitor);
+						RoleBase nextSkipRole = currentRole.OppositeRoleAlwaysResolveProxy;
+						if (nextSkipRole != null)
+						{
+							WalkDescendedValueRoles(
+								(unattachedRole != null) ? new Role[] { unattachedRole } as IList<Role> : anchorType.PlayedRoleCollection,
+								dataTypeLink,
+								nearestValueConstraint,
+								nextSkipRole.Role,
+								true,
+								visitor);
+						}
 					}
 				}
 			}
@@ -476,7 +480,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 							null != (identifierFor = constraint.PreferredIdentifierFor) &&
 							constraint.RoleCollection.Count == 1)
 						{
-							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, dataTypeLink, previousValueConstraint, role.OppositeRole.Role, true, visitor))
+							RoleBase nextSkipRole = role.OppositeRoleAlwaysResolveProxy;
+							if (nextSkipRole == null)
+							{
+								return false;
+							}
+							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, dataTypeLink, previousValueConstraint, nextSkipRole.Role, true, visitor))
 							{
 								return false;
 							}
@@ -1293,6 +1302,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return null;
 				}
+			}
+		}
+		/// <summary>
+		/// Get the opposite role of any role. All roles are involed either
+		/// in a binary fact or have a proxy role in a binary fact. If a role
+		/// has two opposite roles, then this method will choose the role
+		/// opposite the proxy. Use <see cref="OppositeRoleResolveProxy"/>
+		/// to choose the opposite role on the non-implied binary fact.
+		/// </summary>
+		public RoleBase OppositeRoleAlwaysResolveProxy
+		{
+			get
+			{
+				Role nativeRole = this as Role;
+				if (nativeRole != null)
+				{
+					RoleProxy proxy = nativeRole.Proxy;
+					return (proxy != null) ? proxy.OppositeRole : nativeRole.OppositeRole;
+				}
+				return OppositeRole;
+			}
+		}
+		/// <summary>
+		/// Get the opposite role of any role. All roles are involed either
+		/// in a binary fact or have a proxy role in a binary fact. If a role
+		/// has two opposite roles, then this method will choose the role
+		/// on the non-implied binar fact. Use <see cref="OppositeRoleAlwaysResolveProxy"/>
+		/// to choose the opposite role on the implied binary fact.
+		/// </summary>
+		public RoleBase OppositeRoleResolveProxy
+		{
+			get
+			{
+				RoleBase nativeOpposite = OppositeRole;
+				if (nativeOpposite != null)
+				{
+					return nativeOpposite;
+				}
+				Debug.Assert(!(this is RoleProxy), "A proxy role always has a native opposite role");
+				RoleProxy proxy = ((Role)this).Proxy;
+				return (proxy != null) ? proxy.OppositeRole : null;
+
 			}
 		}
 	}

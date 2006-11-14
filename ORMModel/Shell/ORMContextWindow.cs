@@ -428,23 +428,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void EnsureDiagram(ModelElement model)
 		{
-			ReadOnlyCollection<PresentationViewsSubject> collection1 = DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId);
-			using (IEnumerator<PresentationViewsSubject> enumerator1 = collection1.GetEnumerator())
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(model))
 			{
-				while (enumerator1.MoveNext())
+				ORMDiagram diagram = pel as ORMDiagram;
+				if (diagram != null && diagram.InDragAndDrop)
 				{
-					ORMDiagram element1 = enumerator1.Current.Presentation as ORMDiagram;
-					if (element1 != null)
+					if (myDiagram != null && model != myDiagram.ModelElement)
 					{
-						if (element1.InDragAndDrop == true)
-						{
-							if (myDiagram != null && model != myDiagram.ModelElement)
-							{
-								this.RemoveDiagram();
-							}
-							return;
-						}
+						this.RemoveDiagram();
 					}
+					return;
 				}
 			}
 			if (myDiagram == null || myDiagram.IsDeleted || myDiagram.Store != model.Store)
@@ -545,6 +538,10 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
+			if (!(currentStore as IORMToolServices).CanAddTransaction)
+			{
+				return;
+			}
 			Microsoft.VisualStudio.Modeling.UndoManager undoManager = currentStore.CurrentContext.UndoManager;
 			// UNDONE: MSBUG This rule should not be doing anything if the parent is deleted.
 			// Causes diagram deletion to crash VS
@@ -597,7 +594,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (this.myDiagram != null)
 			{
-				if (myDiagram.Store.ShuttingDown)
+				if (!myDiagram.Store.ShuttingDown)
 				{
 					this.RemoveDiagram();
 				}
