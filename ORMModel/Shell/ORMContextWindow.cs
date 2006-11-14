@@ -594,7 +594,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (this.myDiagram != null)
 			{
-				if (!myDiagram.Store.ShuttingDown)
+				if (myDiagram.Store.ShuttingDown)
 				{
 					this.RemoveDiagram();
 				}
