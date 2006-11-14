@@ -61,4 +61,65 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="ddl:sqlInvokedProcedure">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>CREATE FUNCTION </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="ddl:sqlParameterDeclaration" />
+		<xsl:value-of select="$RightParen"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>RETURNS VOID</xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>LANGUAGE SQL</xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="ddl:sqlRoutineSpec" />
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="ddl:sqlRoutineSpec">
+		<xsl:text>AS</xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$IndentChar" />
+		<xsl:text>'</xsl:text>
+		<xsl:apply-templates select="child::*" />
+		<xsl:text>'</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dml:fromConstructor">
+		<xsl:value-of select="$LeftParen" />
+		<xsl:apply-templates select="ddl:column"/>
+		<xsl:value-of select="$RightParen" />
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$IndentChar" />
+		<xsl:text>VALUES </xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates select="dep:sqlParameterReference" />
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dep:sqlParameterReference">
+		<xsl:text>$</xsl:text>
+		<xsl:variable name="parameterReferenceName" select="@name"/>
+		<xsl:for-each select="ancestor::ddl:sqlInvokedProcedure[1]/ddl:sqlParameterDeclaration">
+			<xsl:if test="@name=$parameterReferenceName">
+				<xsl:value-of select="position()"/>
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:if test="not(position()=last())">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="ddl:atomicBlock">
+
+	</xsl:template>
+
 </xsl:stylesheet>
