@@ -91,11 +91,11 @@
 				<plx:get>
 					<xsl:variable name="currentSupport">
 						<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
-							<xsl:with-param name="childElements" select="count(se:ChildElement)"/>
+							<xsl:with-param name="containerElements" select="boolean(se:Container)"/>
 							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
-							<xsl:with-param name="attributes" select="count(se:Attribute)"/>
-							<xsl:with-param name="links" select="count(se:Link)"/>
-							<xsl:with-param name="aggregatingLinks" select="se:Link[@WriteStyle='EmbeddingLinkElement']"/>
+							<xsl:with-param name="attributes" select="boolean(se:Attribute)"/>
+							<xsl:with-param name="links" select="boolean(se:Link)"/>
+							<xsl:with-param name="aggregatingLinks" select="boolean(se:Link[@WriteStyle='EmbeddingLinkElement'])"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
 							<xsl:with-param name="mixedTypedAttributes" select="@HasMixedTypedAttributes='true'"/>
 						</xsl:call-template>
@@ -119,7 +119,7 @@
 					</plx:return>
 				</plx:get>
 			</plx:property>
-			<xsl:variable name="childElementCount" select="count(se:ChildElement)"/>
+			<xsl:variable name="childElementCount" select="count(se:Container)"/>
 			<xsl:variable name="haveCustomChildInfo" select="0!=$childElementCount"/>
 			<xsl:if test="$haveCustomChildInfo">
 				<plx:field visibility="private" static="true" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="myCustomSerializedChildElementInfo"/>
@@ -265,7 +265,7 @@
 										</plx:callInstance>
 									</plx:branch>
 								</xsl:if>
-								<xsl:for-each select="se:ChildElement">
+								<xsl:for-each select="se:Container">
 									<xsl:variable name="index" select="position()-1"/>
 									<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
 										<xsl:with-param name="modifier" select="$index"/>
@@ -286,7 +286,7 @@
 												<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
 													<xsl:with-param name="modifier" select="$index"/>
 												</xsl:call-template>
-												<xsl:for-each select="se:Link">
+												<xsl:for-each select="se:Link | se:Embed">
 													<plx:passParam>
 														<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
 													</plx:passParam>
@@ -459,7 +459,7 @@
 								</plx:initialize>
 							</plx:local>
 							<xsl:choose>
-								<xsl:when test="not(se:Link[string(@CreateAsRelationshipName)])">
+								<xsl:when test="not(se:Link[normalize-space(@CreateAsRelationshipName)])">
 									<xsl:for-each select="$customLinkInfo">
 										<plx:branch>
 											<plx:condition>
@@ -482,7 +482,7 @@
 											<xsl:sort select="@RelationshipName"/>
 											<xsl:sort select="@RoleName"/>
 											<!-- Put the ones without a CreatedAsRelationshipName last -->
-											<xsl:sort select="@CreateAsRelationshipName" order="descending"/>
+											<xsl:sort select="normalize-space(@CreateAsRelationshipName)" order="descending"/>
 											<xsl:copy-of select="."/>
 										</xsl:for-each>
 									</xsl:variable>
@@ -503,7 +503,7 @@
 												</plx:condition>
 												<xsl:choose>
 													<!-- Note that the CreateAs conditions are sorted first -->
-													<xsl:when test="string(@CreateAsRelationshipName)">
+													<xsl:when test="normalize-space(@CreateAsRelationshipName)">
 														<plx:local name="elementLinkDomainId" dataTypeName="Guid">
 															<plx:initialize>
 																<plx:callInstance name="Id" type="property">
@@ -533,7 +533,7 @@
 														<xsl:if test="position()!=last() and following-sibling::se:Link[1][@RelationshipName=$relationshipName and @RoleName=$roleName]">
 															<xsl:for-each select="following-sibling::se:Link[@RelationshipName=$relationshipName and @RoleName=$roleName]">
 																<xsl:choose>
-																	<xsl:when test="string(@CreateAsRelationshipName)">
+																	<xsl:when test="normalize-space(@CreateAsRelationshipName)">
 																		<plx:alternateBranch>
 																			<plx:condition>
 																				<plx:binaryOperator type="equality">
@@ -645,12 +645,12 @@
 							<xsl:variable name="SortedLevelsFragment">
 								<!-- ChildElement/Link links may have more information in Link. Just use
 								     the ChildElement one. -->
-								<xsl:variable name="childLinks" select="se:ChildElement[not(@NotSorted='true')]/se:Link"/>
+								<xsl:variable name="childLinks" select="se:Container[not(@NotSorted='true')]/se:*[self::se:Link | self::se:Embed]"/>
 								<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
-								<xsl:for-each select="se:Link | se:ChildElement">
+								<xsl:for-each select="se:Link | se:Container">
 									<xsl:if test="not(@NotSorted='true')">
 										<xsl:choose>
-											<xsl:when test="local-name()='Link'">
+											<xsl:when test="self::se:Link">
 												<xsl:variable name="relName" select="@RelationshipName"/>
 												<xsl:variable name="roleName" select="@RoleName"/>
 												<xsl:if test="0=count($childLinks[@RelationshipName=$relName and @RoleName=$roleName])">
@@ -659,11 +659,11 @@
 													</SortLevel>
 												</xsl:if>
 											</xsl:when>
-											<xsl:when test="local-name()='ChildElement'">
+											<xsl:when test="self::se:Container">
 												<xsl:choose>
 													<xsl:when test="@SortChildElements='true'">
 														<!-- Add one sort level for each child -->
-														<xsl:for-each select="se:Link">
+														<xsl:for-each select="se:Link | se:Embed">
 															<SortLevel>
 																<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
 															</SortLevel>
@@ -672,7 +672,7 @@
 													<xsl:otherwise>
 														<!-- Add one sort level for all children -->
 														<SortLevel>
-															<xsl:for-each select="se:Link">
+															<xsl:for-each select="se:Link | se:Embed">
 																<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
 															</xsl:for-each>
 														</SortLevel>
@@ -979,10 +979,10 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="linksInChildElementFragment">
-					<xsl:for-each select="se:ChildElement/se:Link">
+					<xsl:for-each select="se:Container/se:Link">
 						<xsl:copy>
 							<xsl:copy-of select="@*"/>
-							<xsl:for-each select="parent::se:ChildElement">
+							<xsl:for-each select="parent::se:Container">
 								<xsl:attribute name="ContainerName">
 									<xsl:value-of select="@Name"/>
 								</xsl:attribute>
@@ -994,16 +994,21 @@
 					</xsl:for-each>
 				</xsl:variable>
 				<xsl:variable name="linksInChildElement" select="exsl:node-set($linksInChildElementFragment)/child::*"/>
-				<xsl:variable name="childElements" select="se:ChildElement"/>
+				<xsl:variable name="containerElements" select="se:Container"/>
 				<xsl:variable name="allLinksTemp">
-					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten')]">
+					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten') or se:ConditionalName[not(@WriteStyle='NotWritten')]]">
 						<xsl:copy>
 							<xsl:copy-of select="@*"/>
-							<xsl:if test="$linksInChildElement[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and string(@CreateAsRelationshipName)=string(current()/@CreateAsRelationshipName)]">
+							<xsl:if test="$linksInChildElement[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and normalize-space(@CreateAsRelationshipName)=normalize-space(current()/@CreateAsRelationshipName)]">
 								<xsl:attribute name="contained">
 									<xsl:value-of select="true()"/>
 								</xsl:attribute>
 							</xsl:if>
+							<xsl:for-each select="se:ConditionalName">
+								<xsl:copy>
+									<xsl:copy-of select="@*"/>
+								</xsl:copy>
+							</xsl:for-each>
 						</xsl:copy>
 					</xsl:for-each>
 				</xsl:variable>
@@ -1014,7 +1019,7 @@
 						<!-- Walk the $allLinks, then add the ones that are
 						NOT contained in $linksInChildElement -->
 						<xsl:when test="not(@contained)">
-							<xsl:variable name="createAsRelationshipName" select="string(@CreateAsRelationshipName)"/>
+							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
 							<plx:callInstance name="InitializeRoles">
 								<xsl:if test="$createAsRelationshipName">
 									<xsl:attribute name="name">
@@ -1066,39 +1071,45 @@
 				</xsl:for-each>
 				<!-- Walk $linksInChildElements, then add the ones that
 				INTERSECT with the $allLinks list to the dictionary. -->
-				<xsl:for-each select="$childElements">
+				<xsl:for-each select="$containerElements">
 					<xsl:variable name="localLinksFragment">
 						<xsl:for-each select="se:Link">
 							<xsl:variable name="relationshipName" select="@RelationshipName"/>
 							<xsl:variable name="roleName" select="@RoleName"/>
-							<xsl:variable name="namedLinks" select="$allLinks[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and string(@CreateAsRelationshipName)=string(current()/@CreateAsRelationshipName)]"/>
+							<xsl:variable name="namedLinks" select="$allLinks[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and normalize-space(@CreateAsRelationshipName)=normalize-space(current()/@CreateAsRelationshipName)]"/>
 							<xsl:if test="$namedLinks">
 								<xsl:copy>
 									<xsl:copy-of select="@*"/>
 									<xsl:for-each select="$namedLinks[1]">
+										<xsl:variable name="conditionalNames" select="se:ConditionalName[string(@Name) and not(@WriteStyle='NotWritten')]"/>
 										<xsl:choose>
 											<xsl:when test="string-length(@Name)">
 												<xsl:copy-of select="@Name"/>
 											</xsl:when>
-											<xsl:otherwise>
+											<xsl:when test="not($conditionalNames)">
 												<xsl:attribute name="Name">
 													<xsl:value-of select="@RelationshipName"/>
 													<xsl:text>.</xsl:text>
 													<xsl:value-of select="@RoleName"/>
 												</xsl:attribute>
-											</xsl:otherwise>
+											</xsl:when>
 										</xsl:choose>
 										<xsl:copy-of select="@AllowDuplicates"/>
+										<xsl:for-each select="$conditionalNames">
+											<xsl:copy>
+												<xsl:copy-of select="@*"/>
+											</xsl:copy>
+										</xsl:for-each>
 									</xsl:for-each>
 								</xsl:copy>
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
 					<xsl:variable name="localLinks" select="exsl:node-set($localLinksFragment)/child::*"/>
-					<xsl:if test="count($localLinks)">
+					<xsl:if test="$localLinks">
 						<xsl:variable name="containerName" select="@Name"/>
 						<xsl:for-each select="$localLinks">
-							<xsl:variable name="createAsRelationshipName" select="string(@CreateAsRelationshipName)"/>
+							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
 							<plx:callInstance name="InitializeRoles">
 								<xsl:if test="$createAsRelationshipName">
 									<xsl:attribute name="name">
@@ -1122,54 +1133,93 @@
 									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
 								</plx:passParam>
 							</plx:callInstance>
-							<plx:callInstance name="Add">
-								<plx:callObject>
-									<plx:nameRef name="childElementMappings"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:string>
-										<plx:string>
-											<xsl:call-template name="ResolveNamespace">
-												<xsl:with-param name="namespaces" select="$namespaces"/>
-												<!-- Use default for prefix parameter -->
-											</xsl:call-template>
-										</plx:string>
-										<plx:string>|</plx:string>
+							<xsl:if test="string(@Name) and not(@WriteStyle='NotWritten')">
+								<plx:callInstance name="Add">
+									<plx:callObject>
+										<plx:nameRef name="childElementMappings"/>
+									</plx:callObject>
+									<plx:passParam>
 										<plx:string>
 											<plx:string>
-												<xsl:value-of select="$containerName"/>
+												<xsl:call-template name="ResolveNamespace">
+													<xsl:with-param name="namespaces" select="$namespaces"/>
+													<!-- Use default for prefix parameter -->
+												</xsl:call-template>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<plx:string>
+													<xsl:value-of select="$containerName"/>
+												</plx:string>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<xsl:call-template name="ResolveNamespace">
+													<xsl:with-param name="namespaces" select="$namespaces"/>
+													<!-- Use default for prefix parameter -->
+												</xsl:call-template>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<xsl:value-of select="@Name"/>
 											</plx:string>
 										</plx:string>
-										<plx:string>|</plx:string>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="match"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:if>
+							<xsl:for-each select="se:ConditionalName">
+								<plx:callInstance name="Add">
+									<plx:callObject>
+										<plx:nameRef name="childElementMappings"/>
+									</plx:callObject>
+									<plx:passParam>
 										<plx:string>
-											<xsl:call-template name="ResolveNamespace">
-												<xsl:with-param name="namespaces" select="$namespaces"/>
-												<!-- Use default for prefix parameter -->
-											</xsl:call-template>
+											<plx:string>
+												<xsl:call-template name="ResolveNamespace">
+													<xsl:with-param name="namespaces" select="$namespaces"/>
+													<!-- Use default for prefix parameter -->
+												</xsl:call-template>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<plx:string>
+													<xsl:value-of select="$containerName"/>
+												</plx:string>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<xsl:call-template name="ResolveNamespace">
+													<xsl:with-param name="namespaces" select="$namespaces"/>
+													<!-- Use default for prefix parameter -->
+												</xsl:call-template>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<xsl:value-of select="@Name"/>
+											</plx:string>
 										</plx:string>
-										<plx:string>|</plx:string>
-										<plx:string>
-											<xsl:value-of select="@Name"/>
-										</plx:string>
-									</plx:string>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:nameRef name="match"/>
-								</plx:passParam>
-							</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="match"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
 
 				<!-- Walk $linksInChildElements, then add the ones that are
 				NOT in the $allLinks list to the dictionary. -->
-				<xsl:for-each select="$childElements">
+				<xsl:for-each select="$containerElements">
 					<xsl:variable name="linksFragment">
-						<xsl:for-each select="se:Link">
+						<xsl:for-each select="se:Embed">
 							<xsl:variable name="relationshipName" select="string(@RelationshipName)"/>
 							<xsl:variable name="roleName" select="string(@RoleName)"/>
-							<xsl:variable name="createAsRelationshipName" select="string(@CreateAsRelationshipName)"/>
-							<xsl:if test="not($allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName and string(@CreateAsRelationshipName)=$createAsRelationshipName])">
+							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
+							<xsl:if test="not($allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName and normalize-space(@CreateAsRelationshipName)=$createAsRelationshipName])">
 								<xsl:if test="$createAsRelationshipName">
 									<explicitCreateMarker>
 										<plx:passParam>
@@ -1920,7 +1970,7 @@
 					<xsl:for-each select="se:OmittedDomainElements/child::se:*">
 						<xsl:variable name="classOrRelationship">
 							<xsl:choose>
-								<xsl:when test="local-name()='OmitClass'">
+								<xsl:when test="self::se:OmitClass">
 									<xsl:text>Class</xsl:text>
 								</xsl:when>
 								<xsl:otherwise>
@@ -2310,7 +2360,7 @@
 		</plx:class>
 	</xsl:template>
 	<xsl:template name="ReturnORMCustomSerializedElementSupportedOperations">
-		<xsl:param name="childElements"/>
+		<xsl:param name="containerElements"/>
 		<xsl:param name="element"/>
 		<xsl:param name="attributes"/>
 		<xsl:param name="links"/>
@@ -2318,7 +2368,7 @@
 		<xsl:param name="customSort"/>
 		<xsl:param name="mixedTypedAttributes"/>
 		<xsl:variable name="supportedOperationsFragment">
-			<xsl:if test="$childElements">
+			<xsl:if test="$containerElements">
 				<xsl:element name="SupportedOperation">
 					<xsl:text>ChildElementInfo</xsl:text>
 				</xsl:element>

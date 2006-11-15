@@ -59,20 +59,20 @@
 		<se:Attribute ID="DoShapeAnchoring" WriteStyle="NotWritten"/>
 		<se:Attribute ID="DoViewFixup" WriteStyle="NotWritten"/>
 		<se:Attribute ID="PlaceUnplacedShapes" WriteStyle="NotWritten"/>
-		<se:ChildElement Name="Shapes">
-			<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
-		</se:ChildElement>
+		<se:Container Name="Shapes">
+			<se:Embed RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
+		</se:Container>
 		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject"/>
 	</se:Element>
 	<se:Element Class="ORMBaseShape" SortChildElements="true">
 		<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 		<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-		<se:ChildElement Name="RelativeShapes">
-			<se:Link RelationshipName="ParentShapeHasRelativeChildShapes" RoleName="RelativeChildShapes"/>
-		</se:ChildElement>
-		<se:ChildElement Name="NestedShapes">
-			<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
-		</se:ChildElement>
+		<se:Container Name="RelativeShapes">
+			<se:Embed RelationshipName="ParentShapeHasRelativeChildShapes" RoleName="RelativeChildShapes"/>
+		</se:Container>
+		<se:Container Name="NestedShapes">
+			<se:Embed RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
+		</se:Container>
 		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeShape" Override="true">
@@ -122,9 +122,9 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="RolesPosition" WriteStyle="NotWritten"/>
-		<se:ChildElement Name="RoleDisplayOrder">
+		<se:Container Name="RoleDisplayOrder">
 			<se:Link RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrder"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link Name="Role" RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrder"/>
 	</se:Element>
 </se:CustomSerializedElements>

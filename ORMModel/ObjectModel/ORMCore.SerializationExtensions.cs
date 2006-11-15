@@ -1070,6 +1070,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|NestedPredicate", match);
 				match.InitializeRoles(ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|PlayedRoles|http://schemas.neumont.edu/ORM/2006-04/ORMCore|Role", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|PlayedRoles|http://schemas.neumont.edu/ORM/2006-04/ORMCore|SubtypeMetaRole", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|PlayedRoles|http://schemas.neumont.edu/ORM/2006-04/ORMCore|SupertypeMetaRole", match);
 				match.InitializeRoles(ObjectTypeHasNote.NoteDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(ValueTypeHasValueConstraint.ValueConstraintDomainRoleId);
@@ -2460,14 +2462,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(ObjectificationImpliesFactType.ImpliedByObjectificationDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ImpliedByObjectification", match);
+				match.InitializeRoles(FactSetConstraint.SetConstraintDomainRoleId);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|InternalConstraints|http://schemas.neumont.edu/ORM/2006-04/ORMCore|UniquenessConstraint", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|InternalConstraints|http://schemas.neumont.edu/ORM/2006-04/ORMCore|MandatoryConstraint", match);
 				match.InitializeRoles(FactTypeHasNote.NoteDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(FactTypeHasRole.RoleDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|FactRoles||", match);
 				match.InitializeRoles(FactTypeHasReadingOrder.ReadingOrderDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|ReadingOrders||", match);
-				match.InitializeRoles(FactSetConstraint.SetConstraintDomainRoleId);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|InternalConstraints||", match);
 				match.InitializeRoles(FactTypeHasDerivationExpression.DerivationRuleDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|DerivationRule||", match);
 				match.InitializeRoles(FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId);

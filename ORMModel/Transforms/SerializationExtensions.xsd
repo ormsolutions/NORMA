@@ -6,6 +6,7 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
@@ -134,7 +135,7 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:attributeGroup>
-	<xs:attributeGroup name="LinkAttributes">
+	<xs:attributeGroup name="ChildAttributes">
 		<xs:attribute name="RelationshipName" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The relationship name.</xs:documentation>
@@ -145,7 +146,11 @@
 				<xs:documentation>The role name.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="CreateAsRelationshipName" type="xs:string" use="optional">
+	</xs:attributeGroup>
+	<xs:attributeGroup name="LinkAttributes">
+		<xs:attributeGroup ref="ChildAttributes"/>
+		<!-- The default here has positive length default instead of an optional use so that it can participate in a key-->
+		<xs:attribute name="CreateAsRelationshipName" type="xs:string" default=" ">
 			<xs:annotation>
 				<xs:documentation>The name a relationship derived from the one defining the roles.</xs:documentation>
 			</xs:annotation>
@@ -200,265 +205,287 @@
 					</xs:complexType>
 				</xs:element>
 				<xs:choice maxOccurs="unbounded">
-					<xs:element name="DomainModel">
+					<xs:element name="DomainModel" type="DomainModelType">
 						<xs:annotation>
 							<xs:documentation>Add model-level custom serialization settings.</xs:documentation>
 						</xs:annotation>
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Namespaces">
-									<xs:annotation>
-										<xs:documentation>Add namespaces to the XML document.</xs:documentation>
-									</xs:annotation>
-									<xs:complexType>
-										<xs:sequence>
-											<xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
-												<xs:annotation>
-													<xs:documentation>Defines a namespace.</xs:documentation>
-												</xs:annotation>
-												<xs:complexType>
-													<xs:attribute name="Prefix" type="xs:string" use="required">
-														<xs:annotation>
-															<xs:documentation>The namespace prefix.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="URI" type="xs:string" use="required">
-														<xs:annotation>
-															<xs:documentation>The URI of the schema.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="SchemaFile" type="xs:string">
-														<xs:annotation>
-															<xs:documentation>A schema file name with no path. The file must be built into the model's assembly as an embedded resource with the same namespace as the DomainModel. This is most easily done by placing the schema file in the same directory as the model file, and making the namespace for the model file correspond to the default namespace for the directory (the project default namespace with the directory path appended)</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
-														<xs:annotation>
-															<xs:documentation>The default prefix for all elements in this DomainModel</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-												</xs:complexType>
-											</xs:element>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="RootElements" minOccurs="0">
-									<xs:annotation>
-										<xs:documentation>Elements that appear as top-level xml nodes inside the ORM2 tag.</xs:documentation>
-									</xs:annotation>
-									<xs:complexType>
-										<xs:sequence minOccurs="0" maxOccurs="unbounded">
-											<xs:element name="RootElement">
-												<xs:complexType>
-													<xs:attribute name="Class" type="xs:string" use="required">
-														<xs:annotation>
-															<xs:documentation>The name of a class that corresponds to an xml root element for this DomainModel</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="Name" type="xs:string" use="optional">
-														<xs:annotation>
-															<xs:documentation>The tag name representing the class. The value of the Class attribute is assumed if Name is not specified.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="Prefix" type="xs:string" use="optional">
-														<xs:annotation>
-															<xs:documentation>A prefix chosen from the list of supported Namespace prefixes. The default prefix is used if Prefix is not specified.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-												</xs:complexType>
-											</xs:element>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="OmittedDomainElements" minOccurs="0">
-									<xs:annotation>
-										<xs:documentation>Block elements and links from serializating at the domain level.</xs:documentation>
-									</xs:annotation>
-									<xs:complexType>
-										<xs:choice minOccurs="0" maxOccurs="unbounded">
-											<xs:element name="OmitClass">
-												<xs:annotation>
-													<xs:documentation>Stop all classes of this type from being serialized in the model.</xs:documentation>
-												</xs:annotation>
-												<xs:complexType>
-													<xs:attribute name="Class" type="xs:string" use="required">
-														<xs:annotation>
-															<xs:documentation>The class name to block.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="Namespace" type="xs:string" use="optional">
-														<xs:annotation>
-															<xs:documentation>An alternate namespace for the class. If this is not specified, the class is assumed to be in the namespace specified by the containing Using element.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-												</xs:complexType>
-											</xs:element>
-											<xs:element name="OmitRelationship">
-												<xs:annotation>
-													<xs:documentation>Stop all relationships of this type from being serialized in the model.</xs:documentation>
-												</xs:annotation>
-												<xs:complexType>
-													<xs:attribute name="Class" type="xs:string" use="required">
-														<xs:annotation>
-															<xs:documentation>The relationship name to block.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-													<xs:attribute name="Namespace" type="xs:string" use="optional">
-														<xs:annotation>
-															<xs:documentation>An alternate namespace for the relationship. If this is not specified, the relationship is assumed to be in the namespace specified by the containing Using element.</xs:documentation>
-														</xs:annotation>
-													</xs:attribute>
-												</xs:complexType>
-											</xs:element>
-										</xs:choice>
-									</xs:complexType>
-								</xs:element>
-							</xs:sequence>
-							<xs:attribute name="Class" type="xs:string" use="required">
-								<xs:annotation>
-									<xs:documentation>The class to add the namespaces to.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="Sealed" type="xs:boolean" default="false">
-								<xs:annotation>
-									<xs:documentation>Set to true if this DomainModel class is sealed (cannot be inherited from).</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-						</xs:complexType>
 					</xs:element>
-					<xs:element name="Element">
+					<xs:element name="Element" type="ElementType">
 						<xs:annotation>
 							<xs:documentation>Customizes an element.</xs:documentation>
 						</xs:annotation>
-						<xs:complexType>
-							<xs:sequence>
-								<xs:sequence>
-									<xs:element ref="ConditionalSerialization" minOccurs="0"/>
-									<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-									<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
-										<xs:annotation>
-											<xs:documentation>Customizes an attribute on the current element.</xs:documentation>
-										</xs:annotation>
-										<xs:complexType>
-											<xs:sequence>
-												<xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
-													<xs:annotation>
-														<xs:documentation>Use different attribute properties based on a PLIX condition.</xs:documentation>
-													</xs:annotation>
-													<xs:complexType>
-														<xs:sequence>
-															<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="1"/>
-														</xs:sequence>
-														<xs:attributeGroup ref="AttributeAttributes"/>
-													</xs:complexType>
-												</xs:element>
-												<xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
-													<xs:annotation>
-														<xs:documentation>Matches the role played.</xs:documentation>
-													</xs:annotation>
-													<xs:complexType>
-														<xs:attribute name="ID" type="xs:string" use="required">
-															<xs:annotation>
-																<xs:documentation>The ID to match.</xs:documentation>
-															</xs:annotation>
-														</xs:attribute>
-														<xs:attributeGroup ref="AttributeAttributes"/>
-													</xs:complexType>
-												</xs:element>
-											</xs:sequence>
-											<xs:attribute name="ID" type="xs:string" use="required">
-												<xs:annotation>
-													<xs:documentation>The ID to match.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-											<xs:attributeGroup ref="AttributeAttributes"/>
-										</xs:complexType>
-									</xs:element>
-								</xs:sequence>
-								<xs:choice minOccurs="0" maxOccurs="unbounded">
-									<xs:element name="ChildElement">
-										<xs:annotation>
-											<xs:documentation>Creates a child element.</xs:documentation>
-										</xs:annotation>
-										<xs:complexType>
-											<xs:sequence>
-												<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-												<xs:element name="Link" minOccurs="1" maxOccurs="unbounded">
-													<xs:annotation>
-														<xs:documentation>An element of the child element.</xs:documentation>
-													</xs:annotation>
-													<xs:complexType>
-														<xs:attributeGroup ref="LinkAttributes"/>
-													</xs:complexType>
-												</xs:element>
-											</xs:sequence>
-											<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
-												<xs:annotation>
-													<xs:documentation>If this is set, order the roles within the child element along with the position of the child element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-											<xs:attribute name="NotSorted" type="xs:boolean" default="false">
-												<xs:annotation>
-													<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-											<xs:attributeGroup ref="ElementAttributes"/>
-										</xs:complexType>
-									</xs:element>
-									<xs:element name="Link">
-										<xs:annotation>
-											<xs:documentation>Customizes a link.</xs:documentation>
-										</xs:annotation>
-										<xs:complexType>
-											<xs:sequence>
-												<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-											</xs:sequence>
-											<xs:attribute name="NotSorted" type="xs:boolean" default="false">
-												<xs:annotation>
-													<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-											<xs:attributeGroup ref="LinkAttributes"/>
-											<xs:attributeGroup ref="ElementAttributes"/>
-											<xs:attribute name="AllowDuplicates" type="xs:boolean">
-												<xs:annotation>
-													<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-										</xs:complexType>
-									</xs:element>
-								</xs:choice>
-							</xs:sequence>
-							<xs:attribute name="Class" type="xs:string" use="required">
-								<xs:annotation>
-									<xs:documentation>The class to add the element extensions to.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="HasMixedTypedAttributes" type="xs:boolean">
-								<xs:annotation>
-									<xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
-								<xs:annotation>
-									<xs:documentation>All link and child elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attributeGroup ref="ElementAttributes"/>
-							<xs:attribute name="Override" type="xs:boolean" default="false">
-								<xs:annotation>
-									<xs:documentation>Set to true if this element class is derived from another custom serialized element. The assumption is made that the base class' custom serialization implementation is compatible with the current standard generated code.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="Sealed" type="xs:boolean" default="false">
-								<xs:annotation>
-									<xs:documentation>Set to true if this element class is sealed (cannot be inherited from).</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-						</xs:complexType>
+						<xs:key name="ElementLinkKey">
+							<xs:selector xpath="se:Link"/>
+							<xs:field xpath="@RelationshipName"/>
+							<xs:field xpath="@RoleName"/>
+							<xs:field xpath="@CreateAsRelationshipName"/>
+						</xs:key>
+						<xs:keyref refer="ElementLinkKey" name="ContainedElementLinkKeyRef">
+							<xs:selector xpath="se:Container/se:Link" />
+							<xs:field xpath="@RelationshipName" />
+							<xs:field xpath="@RoleName" />
+							<xs:field xpath="@CreateAsRelationshipName" />
+						</xs:keyref>
 					</xs:element>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:complexType name="DomainModelType">
+		<xs:sequence>
+			<xs:element name="Namespaces">
+				<xs:annotation>
+					<xs:documentation>Add namespaces to the XML document.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Defines a namespace.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Prefix" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>The namespace prefix.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="URI" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>The URI of the schema.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="SchemaFile" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>A schema file name with no path. The file must be built into the model's assembly as an embedded resource with the same namespace as the DomainModel. This is most easily done by placing the schema file in the same directory as the model file, and making the namespace for the model file correspond to the default namespace for the directory (the project default namespace with the directory path appended)</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
+									<xs:annotation>
+										<xs:documentation>The default prefix for all elements in this DomainModel</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RootElements" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Elements that appear as top-level xml nodes inside the ORM2 tag.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="RootElement">
+							<xs:complexType>
+								<xs:attribute name="Class" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>The name of a class that corresponds to an xml root element for this DomainModel</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Name" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>The tag name representing the class. The value of the Class attribute is assumed if Name is not specified.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Prefix" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>A prefix chosen from the list of supported Namespace prefixes. The default prefix is used if Prefix is not specified.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OmittedDomainElements" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Block elements and links from serializating at the domain level.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="OmitClass">
+							<xs:annotation>
+								<xs:documentation>Stop all classes of this type from being serialized in the model.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Class" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>The class name to block.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Namespace" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>An alternate namespace for the class. If this is not specified, the class is assumed to be in the namespace specified by the containing Using element.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="OmitRelationship">
+							<xs:annotation>
+								<xs:documentation>Stop all relationships of this type from being serialized in the model.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Class" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>The relationship name to block.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Namespace" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>An alternate namespace for the relationship. If this is not specified, the relationship is assumed to be in the namespace specified by the containing Using element.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Class" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The class to add the namespaces to.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Sealed" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if this DomainModel class is sealed (cannot be inherited from).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ElementType">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element ref="ConditionalSerialization" minOccurs="0"/>
+				<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Customizes an attribute on the current element.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Use different attribute properties based on a PLIX condition.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="1"/>
+									</xs:sequence>
+									<xs:attributeGroup ref="AttributeAttributes"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Matches the role played.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="ID" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>The ID to match.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attributeGroup ref="AttributeAttributes"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ID" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>The ID to match.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attributeGroup ref="AttributeAttributes"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Container" type="ContainerType">
+					<xs:annotation>
+						<xs:documentation>Creates a container. Containers are required for all embedded relationships.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Link">
+					<xs:annotation>
+						<xs:documentation>Customizes a link.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+							<xs:annotation>
+								<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attributeGroup ref="LinkAttributes"/>
+						<xs:attributeGroup ref="ElementAttributes"/>
+						<xs:attribute name="AllowDuplicates" type="xs:boolean">
+							<xs:annotation>
+								<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="Class" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The class to add the element extensions to.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="HasMixedTypedAttributes" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>All link and container elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="ElementAttributes"/>
+		<xs:attribute name="Override" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if this element class is derived from another custom serialized element. The assumption is made that the base class' custom serialization implementation is compatible with the current standard generated code.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Sealed" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if this element class is sealed (cannot be inherited from).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ContainerType">
+		<xs:sequence>
+			<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="Embed">
+					<xs:annotation>
+						<xs:documentation>An embedded child element. Embedded elements get all custom xml information from their corresponding Element definitions.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attributeGroup ref="LinkAttributes"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Link">
+					<xs:annotation>
+						<xs:documentation>A link element grouped inside a container element. The attributes specified here must match a corresponding Link element directly inside an Element node.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attributeGroup ref="LinkAttributes"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>If this is set, order the roles within the container element along with the position of the container element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="ElementAttributes"/>
+	</xs:complexType>
 </xs:schema>

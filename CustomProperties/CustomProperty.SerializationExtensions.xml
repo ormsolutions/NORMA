@@ -37,9 +37,9 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="IsDefault" Name="isDefault"/>
-		<se:ChildElement Name="CustomPropertyDefinitions">
-			<se:Link RelationshipName="CustomPropertyGroupContainsCustomPropertyDefinition" RoleName="CustomPropertyDefinition"/>
-		</se:ChildElement>
+		<se:Container Name="CustomPropertyDefinitions">
+			<se:Embed RelationshipName="CustomPropertyGroupContainsCustomPropertyDefinition" RoleName="CustomPropertyDefinition"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="CustomPropertyDefinition" Sealed="true">
 		<se:Attribute ID="Name" Name="name"/>

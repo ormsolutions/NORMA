@@ -39,46 +39,46 @@
 	</se:DomainModel>
 	<!--Model-->
 	<se:Element Class="ORMModelElement">
-		<se:ChildElement Name="Extensions">
-			<se:Link RelationshipName="ORMModelElementHasExtensionElement" RoleName="Extension"/>
-		</se:ChildElement>
+		<se:Container Name="Extensions">
+			<se:Embed RelationshipName="ORMModelElementHasExtensionElement" RoleName="Extension"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="ORMNamedElement" Override="true"/>
 	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true" Override="true">
-		<se:ChildElement Name="Objects">
-			<se:Link RelationshipName="ModelHasObjectType" RoleName="ObjectType"/>
-		</se:ChildElement>
-		<se:ChildElement Name="Facts">
-			<se:Link RelationshipName="ModelHasFactType" RoleName="FactType"/>
-		</se:ChildElement>
-		<se:ChildElement Name="Constraints">
-			<se:Link RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraint"/>
-			<se:Link RelationshipName="ModelHasSetConstraint" RoleName="SetConstraint"/>
-		</se:ChildElement>
-		<se:ChildElement Name="DataTypes">
-			<se:Link RelationshipName="ModelHasDataType" RoleName="DataType"/>
-		</se:ChildElement>
-		<se:ChildElement Name="CustomReferenceModes">
-			<se:Link RelationshipName="ModelHasReferenceMode" RoleName="ReferenceMode"/>
-		</se:ChildElement>
-		<se:ChildElement Name="ModelNotes">
-			<se:Link RelationshipName="ModelHasModelNote" RoleName="Note"/>
-		</se:ChildElement>
-		<se:ChildElement Name="ModelErrors">
-			<se:Link RelationshipName="ModelHasError" RoleName="Error"/>
-		</se:ChildElement>
-		<se:ChildElement Name="ReferenceModeKinds">
-			<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKind" />
-		</se:ChildElement>
+		<se:Container Name="Objects">
+			<se:Embed RelationshipName="ModelHasObjectType" RoleName="ObjectType"/>
+		</se:Container>
+		<se:Container Name="Facts">
+			<se:Embed RelationshipName="ModelHasFactType" RoleName="FactType"/>
+		</se:Container>
+		<se:Container Name="Constraints">
+			<se:Embed RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraint"/>
+			<se:Embed RelationshipName="ModelHasSetConstraint" RoleName="SetConstraint"/>
+		</se:Container>
+		<se:Container Name="DataTypes">
+			<se:Embed RelationshipName="ModelHasDataType" RoleName="DataType"/>
+		</se:Container>
+		<se:Container Name="CustomReferenceModes">
+			<se:Embed RelationshipName="ModelHasReferenceMode" RoleName="ReferenceMode"/>
+		</se:Container>
+		<se:Container Name="ModelNotes">
+			<se:Embed RelationshipName="ModelHasModelNote" RoleName="Note"/>
+		</se:Container>
+		<se:Container Name="ModelErrors">
+			<se:Embed RelationshipName="ModelHasError" RoleName="Error"/>
+		</se:Container>
+		<se:Container Name="ReferenceModeKinds">
+			<se:Embed RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKind" />
+		</se:Container>
 	</se:Element>
 	<se:Element Class="Note" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
 	</se:Element>
 	<se:Element Class="ModelNote" Override="true">
-		<se:ChildElement Name="ReferencedBy">
+		<se:Container Name="ReferencedBy">
 			<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Element"/>
 			<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link Name="FactType" RelationshipName="ModelNoteReferencesFactType" RoleName="Element"/>
 		<se:Link Name="ObjectType" RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
 	</se:Element>
@@ -123,16 +123,16 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:ChildElement Name="Notes">
-			<se:Link RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
-		</se:ChildElement>
-		<se:ChildElement Name="PlayedRoles">
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
+		</se:Container>
+		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement" />
-		<se:ChildElement Name="ValueRestriction">
-			<se:Link RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
-		</se:ChildElement>
+		<se:Container Name="ValueRestriction">
+			<se:Embed RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
+		</se:Container>
 		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole">
 			<se:ConditionalName Name="SubtypeMetaRole">
 				<plx:binaryOperator type="typeEquality">
@@ -171,10 +171,10 @@
 		</se:Link>
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
-		<se:ChildElement Name="Instances">
-			<se:Link RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
-			<se:Link RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>
-		</se:ChildElement>
+		<se:Container Name="Instances">
+			<se:Embed RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
+			<se:Embed RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>
+		</se:Container>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>
@@ -190,9 +190,9 @@
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
-		<se:ChildElement Name="RoleInstances">
+		<se:Container Name="RoleInstances">
 			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
@@ -246,9 +246,9 @@
 		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceMode" WriteStyle="NotWritten" />
 	</se:Element>
 	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" Override="true">
-		<se:ChildElement Name="ValueRanges">
-			<se:Link RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRange"/>
-		</se:ChildElement>
+		<se:Container Name="ValueRanges">
+			<se:Embed RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRange"/>
+		</se:Container>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueConstraintHasValueRangeOverlapError" RoleName="ValueRangeOverlapError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -278,24 +278,24 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:ChildElement Name="Notes">
-			<se:Link RelationshipName="FactTypeHasNote" RoleName="Note"/>
-		</se:ChildElement>
-		<se:ChildElement Name="FactRoles">
-			<se:Link RelationshipName="FactTypeHasRole" RoleName="Role"/>
-		</se:ChildElement>
-		<se:ChildElement Name="ReadingOrders">
-			<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrder"/>
-		</se:ChildElement>
-		<se:ChildElement Name="InternalConstraints">
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="FactTypeHasNote" RoleName="Note"/>
+		</se:Container>
+		<se:Container Name="FactRoles">
+			<se:Embed RelationshipName="FactTypeHasRole" RoleName="Role"/>
+		</se:Container>
+		<se:Container Name="ReadingOrders">
+			<se:Embed RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrder"/>
+		</se:Container>
+		<se:Container Name="InternalConstraints">
 			<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint"/>
-		</se:ChildElement>
-		<se:ChildElement Name="DerivationRule">
-			<se:Link RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
-		</se:ChildElement>
-		<se:ChildElement Name="Instances">
-			<se:Link RelationshipName="FactTypeHasFactTypeInstance" RoleName="FactTypeInstance"/>
-		</se:ChildElement>
+		</se:Container>
+		<se:Container Name="DerivationRule">
+			<se:Embed RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
+		</se:Container>
+		<se:Container Name="Instances">
+			<se:Embed RelationshipName="FactTypeHasFactTypeInstance" RoleName="FactTypeInstance"/>
+		</se:Container>
 		<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint" WriteStyle="NotWritten">
 			<se:ConditionalName Name="UniquenessConstraint" WriteStyle="Element">
 				<plx:binaryOperator type="equality">
@@ -353,9 +353,9 @@
 		<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeInstance" Name="FactTypeInstance" Override="true">
-		<se:ChildElement Name="RoleInstances">
+		<se:Container Name="RoleInstances">
 			<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
@@ -392,12 +392,12 @@
 	</se:Element>
 	<!--Readings-->
 	<se:Element Class="ReadingOrder" SortChildElements="true" Override="true">
-		<se:ChildElement Name="Readings">
-			<se:Link RelationshipName="ReadingOrderHasReading" RoleName="Reading"/>
-		</se:ChildElement>
-		<se:ChildElement Name="RoleSequence">
+		<se:Container Name="Readings">
+			<se:Embed RelationshipName="ReadingOrderHasReading" RoleName="Reading"/>
+		</se:Container>
+		<se:Container Name="RoleSequence">
 			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="Role"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="Role" Name="Role"/>
 	</se:Element>
 	<se:Element Class="Reading" HasMixedTypedAttributes="true" Override="true">
@@ -411,13 +411,13 @@
 		<se:Attribute ID="IsMandatory" Name ="_IsMandatory" WriteCustomStorage="true"/>
 		<se:Attribute ID="Multiplicity" Name ="_Multiplicity" WriteCustomStorage="true"/>
 		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
-		<se:ChildElement Name="ValueRestriction">
-			<se:Link RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
-		</se:ChildElement>
-		<se:ChildElement Name="RoleInstances">
+		<se:Container Name="ValueRestriction">
+			<se:Embed RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
+		</se:Container>
+		<se:Container Name="RoleInstances">
 			<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance"/>
 			<se:Link RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
@@ -444,9 +444,9 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:ChildElement Name="RoleSequences">
-			<se:Link RelationshipName="SetComparisonConstraintHasRoleSequence" RoleName="RoleSequence"/>
-		</se:ChildElement>
+		<se:Container Name="RoleSequences">
+			<se:Embed RelationshipName="SetComparisonConstraintHasRoleSequence" RoleName="RoleSequence"/>
+		</se:Container>
 		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
@@ -472,9 +472,9 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:ChildElement Name="RoleSequence">
+		<se:Container Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role"/>
 		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
@@ -522,19 +522,19 @@
 	</se:Element>
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
-		<se:ChildElement Name="Constraints">
+		<se:Container Name="Constraints">
 			<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraint"/>
 			<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraint"/>
 			<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraint"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
 		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraint" Name="SetConstraint"/>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraint" Name="ValueConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeDuplicateNameError" Override="true">
-		<se:ChildElement Name="Objects">
+		<se:Container Name="Objects">
 			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectType"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectType" Name="Object"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
@@ -581,10 +581,10 @@
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
 	</se:Element>
 	<se:Element Class="PopulationUniquenessError" Override="true">
-		<se:ChildElement Name="RoleInstances">
+		<se:Container Name="RoleInstances">
 			<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
 			<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="FactTypeRoleInstance"/>
 		<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="EntityTypeRoleInstance"/>
 	</se:Element>
@@ -619,9 +619,9 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ExclusionContradictsEqualityError" Override="true">
-		<se:ChildElement Name="Constraints">
+		<se:Container Name="Constraints">
 			<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint"/>
-		</se:ChildElement>
+		</se:Container>
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
