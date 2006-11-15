@@ -65,7 +65,7 @@
 		<xsl:variable name="SingleRoleUniquenessConstraints" select="$Model/orm:Constraints/orm:UniquenessConstraint[count(orm:RoleSequence/child::*)=1]"/>
 		<xsl:variable name="AlethicSingleRoleMandatoryConstraints" select="$SingleRoleMandatoryConstraints[not(@Modality) or @Modality='Alethic']"/>
 		<xsl:variable name="AlethicSingleRoleUniquenessConstraints" select="$SingleRoleUniquenessConstraints[not(@Modality) or @Modality='Alethic']"/>
-
+		
 		<xsl:variable name="ObjectTypeInformationFragment">
 			<xsl:for-each select="$Model/orm:Objects/child::*">
 				<xsl:copy>
@@ -97,7 +97,7 @@
 				</xsl:message>
 			</xsl:if>
 		</xsl:if>
-
+		
 		<xsl:variable name="FactTypeAbsorptionsFragment">
 			<!-- For each binary, one-to-one fact type... -->
 			<xsl:for-each select="$Model/orm:Facts/orm:Fact[count(orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref])=2]">
@@ -108,7 +108,7 @@
 				<AbsorbFactType ref="{@id}">
 					<!-- In the next two comments, the "winning" role player is the one indicated by @towards. The "losing" role player is the other role player in the fact type. -->
 					<!-- 'factOnly' means that only this fact type will be pulled towards the "winning" role player. -->
-					<!-- 'fully' means that both this fact type AND the "losing" role player will be pulled towards the "winning" role player. -->
+					<!-- 'fully' means that both this fact type AND the "losing" role player will be pulled towards the "winning" role player. For each 'fully' AbsorbFactType, that AbsorbFactType must be the only 'fully' AbsorbFactType for the "losing" role player. Every 'fully' AbsorbFactType will also generate an AbsorbObjectType, and both role players will be ConceptTypes; the "winning" role player will absorb the "losing" role player. -->
 					<xsl:choose>
 						<!-- If only one role is mandatory... -->
 						<xsl:when test="$countMandatories = 1">
@@ -148,11 +148,13 @@
 						<xsl:otherwise>
 							<xsl:variable name="firstRolePlayer" select="$rolePlayers[@id=$rolePlayerIds[1]]"/>
 							<xsl:variable name="secondRolePlayer" select="$rolePlayers[@id=$rolePlayerIds[2]]"/>
+							<xsl:variable name="isFirstRolePlayerPreferredIdentifierFact" select="boolean($firstRolePlayer/preferredIdentifierFacts/child::*/@id=current()/@id)" />
+							<xsl:variable name="isSecondRolePlayerPreferredIdentifierFact" select="boolean($secondRolePlayer/preferredIdentifierFacts/child::*/@id=current()/@id)" />
 							<xsl:variable name="firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts" select="count($firstRolePlayer/nonDependentFunctionalNonPreferredIdentifierDirectFacts/child::*)"/>
 							<xsl:variable name="secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts" select="count($secondRolePlayer/nonDependentFunctionalNonPreferredIdentifierDirectFacts/child::*)"/>
 							<xsl:variable name="towardsId">
 								<xsl:choose>
-									<xsl:when test="$firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts >= $secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts">
+									<xsl:when test="($firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts >= $secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts or $isSecondRolePlayerPreferredIdentifierFact) and not($isFirstRolePlayerPreferredIdentifierFact)">
 										<xsl:value-of select="$firstRolePlayer/@id"/>
 									</xsl:when>
 									<xsl:otherwise>
@@ -312,11 +314,11 @@
 		<!-- All direct and inherited roles that are played by the supertype(s) of this object type. -->
 		<xsl:variable name="inheritedPlayedRolesFragment">
 			<xsl:for-each select="$Model/orm:Objects/child::*[@id=$subtypeMetaFacts/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref]">
-				<xsl:call-template name="GetObjectTypeInformation">
-					<xsl:with-param name="Model" select="$Model"/>
-					<xsl:with-param name="AlethicSingleRoleMandatoryConstraints" select="$AlethicSingleRoleMandatoryConstraints"/>
-					<xsl:with-param name="AlethicSingleRoleUniquenessConstraints" select="$AlethicSingleRoleUniquenessConstraints"/>
-				</xsl:call-template>
+					<xsl:call-template name="GetObjectTypeInformation">
+						<xsl:with-param name="Model" select="$Model"/>
+						<xsl:with-param name="AlethicSingleRoleMandatoryConstraints" select="$AlethicSingleRoleMandatoryConstraints"/>
+						<xsl:with-param name="AlethicSingleRoleUniquenessConstraints" select="$AlethicSingleRoleUniquenessConstraints"/>
+					</xsl:call-template>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="inheritedPlayedRoles" select="exsl:node-set($inheritedPlayedRolesFragment)/child::directAndInheritedPlayedRoles/child::*"/>
@@ -352,19 +354,19 @@
 
 		<!-- $directPlayedRoles that are alethicly mandatory -->
 		<xsl:variable name="mandatoryDirectPlayedRoles" select="$directPlayedRoles[@ref=$AlethicSingleRoleMandatoryConstraints/orm:RoleSequence/child::*/@ref]"/>
-
+		
 		<!-- $directFacts that are alethicly mandatory -->
 		<xsl:variable name="mandatoryDirectFacts" select="$directFacts[orm:FactRoles/child::*/@id=$mandatoryDirectPlayedRoles/@ref]"/>
 
 		<!-- $nonPreferredIdentifierDirectFacts that are alethicly mandatory -->
 		<xsl:variable name="mandatoryNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[@id=$mandatoryDirectFacts/@id]"/>
-
+		
 		<!-- $directFacts on which this object type is functionally dependent (i.e. $directFacts containing an alethicly unique role that is also in in $directFactsOppositeRoles) -->
 		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and @id=$directFactsOppositeRoles/@id]]"/>
 
 		<!-- $directPlayedRoles that are functional for this object type -->
 		<xsl:variable name="functionalDirectPlayedRoles" select="$directPlayedRoles[@ref=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref]"/>
-
+		
 		<!-- $directFacts in which this object type plays a functional role -->
 		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:FactRoles/child::*/@id=$functionalDirectPlayedRoles/@ref]"/>
 
@@ -1145,4 +1147,5 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
 </xsl:stylesheet>

@@ -785,6 +785,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Raised when this <see cref="OIALModel"/> is about to regenerate itself.
 		/// </summary>
 		public event EventHandler<OIALRegenerationEventArgs> OIALRegenerating;
+
 		/// <summary>
 		/// Processes the current ORM Model by determining which facts and objects
 		/// should be noted by this <see cref="PrimaryElementTracker"/>
@@ -946,6 +947,32 @@ namespace Neumont.Tools.ORM.OIALModel
 						{
 							ObjectType firstObject = firstRole.RolePlayer;
 							ObjectType secondObject = secondRole.RolePlayer;
+
+							UniquenessConstraint firstUniquenessConstraint = firstObject.PreferredIdentifier;
+							bool isFirstRolePlayerPreferredIdentifierFact = false;
+							if (firstUniquenessConstraint != null)
+							{
+								LinkedElementCollection<FactType> firstUniquenessConstraintFactTypeCollection =
+	firstObject.PreferredIdentifier.FactTypeCollection;
+								Debug.Assert(firstUniquenessConstraintFactTypeCollection.Count > 0);
+								isFirstRolePlayerPreferredIdentifierFact = firstUniquenessConstraintFactTypeCollection[0] == factType;
+							}
+
+							bool isSecondRolePlayerPreferredIdentifierFact = false;
+
+							if (!isFirstRolePlayerPreferredIdentifierFact)
+							{
+								UniquenessConstraint secondUniquenessConstraint =
+									secondObject.PreferredIdentifier;
+								if (secondUniquenessConstraint != null)
+								{
+									LinkedElementCollection<FactType> secondUniquenessConstraintFactTypeCollection =
+										secondUniquenessConstraint.FactTypeCollection;
+									Debug.Assert(secondUniquenessConstraintFactTypeCollection.Count > 0);
+									isSecondRolePlayerPreferredIdentifierFact = secondUniquenessConstraintFactTypeCollection[0] == factType;
+								}
+							}
+
 							int firstFunctionalRoleCount = GetFunctionalRoleCount(firstObject.PlayedRoleCollection, firstRole);
 							int secondFunctionalRoleCount = GetFunctionalRoleCount(secondObject.PlayedRoleCollection, secondRole);
 
@@ -953,7 +980,8 @@ namespace Neumont.Tools.ORM.OIALModel
 							// object type to the number of functional roles played by the second
 							// object type. If the first is greater than or equal to the second,
 							// absorb into the first.
-							if (firstFunctionalRoleCount >= secondFunctionalRoleCount)
+							if ((firstFunctionalRoleCount >= secondFunctionalRoleCount || isSecondRolePlayerPreferredIdentifierFact) &&
+								!isFirstRolePlayerPreferredIdentifierFact)
 							{
 								absorberGuid = firstObject.Id;
 							}
@@ -1499,78 +1527,115 @@ namespace Neumont.Tools.ORM.OIALModel
 				informationType.Name = newBaseName.TrimEnd(' ');
 				informationType.SingleChildConstraintCollection.AddRange(constraints);
 			}
-			// TODO: Figure out a way to account for ConceptTypeRefs across multiple path role links.
-			//else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
-			//{
-			//    ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
-			//    conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
-			//    ReadOnlyCollection<ConceptTypeRef> conceptTypeRefs = ConceptTypeRef.GetLinksToReferencingConceptType(conceptType);
-			//    int count = conceptTypeRefs.Count;
-			//    ConceptTypeRef conceptTypeRef = conceptTypeRefs[count - 1] as ConceptTypeRef;
-			//    conceptTypeRef.PathRoleCollection.Add(oppositeRole);
-			//    conceptTypeRef.OppositeName = referencedConceptType.ObjectType.Name;
-			//    conceptTypeRef.Mandatory = mandatory;
-			//    //if (thisRole.IsMandatory)
-			//    //{
-			//    //    switch (thisRole.MandatoryConstraintModality)
-			//    //    {
-			//    //        case ConstraintModality.Alethic:
-			//    //            conceptTypeRef.Mandatory = MandatoryConstraintModality.Alethic;
-			//    //            break;
-			//    //        case ConstraintModality.Deontic:
-			//    //            conceptTypeRef.Mandatory = MandatoryConstraintModality.Deontic;
-			//    //            break;
-			//    //    }
-			//    //}
-			//    conceptTypeRef.SingleChildConstraintCollection.AddRange(constraints);
-			//}
+			else if (GetTopLevelId(oppositeRolePlayerId, conceptType.ObjectType.Id) != Guid.Empty)
+			{
+				if (!isFirst && isPartOfCompositeIdentifier)
+				{
+					string concatName = oppositeRole.Name;
+
+					// If the opposite role has a name, then we use it as the name of the information type.
+					// Otherwise, we concatenate the previous name with the role player name.
+					if (!string.IsNullOrEmpty(concatName))
+					{
+						if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
+						{
+							newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
+						}
+					}
+					else
+					{
+						newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
+					}
+				}
+				ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
+				conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
+				ReadOnlyCollection<ConceptTypeRef> conceptTypeRefs = ConceptTypeRef.GetLinksToReferencedConceptTypeCollection(conceptType);
+				int count = conceptTypeRefs.Count;
+				ConceptTypeRef conceptTypeRef = conceptTypeRefs[count - 1] as ConceptTypeRef;
+				conceptTypeRef.PathRoleCollection.AddRange(pathNodes);
+				conceptTypeRef.PathRoleCollection.Add(oppositeRole);
+
+				string[] nameComponents = newBaseName.Split('_');
+				Array.Reverse(nameComponents);
+				string oppositeName = string.Join("_", nameComponents);
+				conceptTypeRef.OppositeName = oppositeName;
+				conceptTypeRef.Mandatory = mandatory;
+				conceptTypeRef.SingleChildConstraintCollection.AddRange(constraints);
+			}
 			else
 			{
 				pathNodes.AddLast(oppositeRole);
-				LinkedElementCollection<Role> playedRoles = oppositeRolePlayer.PlayedRoleCollection;
-				int count = playedRoles.Count;
+				UniquenessConstraint preferredIdentifier = oppositeRolePlayer.PreferredIdentifier;
+				LinkedElementCollection<Role> preferredIdentifierRoles = preferredIdentifier.RoleCollection;
+				int count = preferredIdentifierRoles.Count;
+				bool hasCompositeIdentifier = count > 1;
 				for (int i = 0; i < count; ++i)
 				{
-					Role playedRole = playedRoles[i];
-					if (playedRole.FactType.RoleCollection.Count != 2)
+					Role playedRole = preferredIdentifierRoles[i];
+					//If it is part of a composite identifier, then we try to use the role name. If there is no role name,
+					// then we concatenate the previous name with the current object type name.
+					if (!isFirst && isPartOfCompositeIdentifier)
 					{
-						continue;
-					}
-					Role oppRole = playedRole.OppositeRole.Role;
-					LinkedElementCollection<ConstraintRoleSequence> roleSequenceConstraints = oppRole.ConstraintRoleSequenceCollection;
-					int constraintsCount = roleSequenceConstraints.Count;
-					for (int j = 0; j < constraintsCount; ++j)
-					{
-						ConstraintRoleSequence constraintRoleSequence = roleSequenceConstraints[j];
-						UniquenessConstraint uConstraint = constraintRoleSequence as UniquenessConstraint;
-
-						// We cannot be sure that constraints that we receive span only one role,
-						// so we must check for this.
-						bool hasCompositeIdentifier = constraintRoleSequence.RoleCollection.Count != 1;
-						if (uConstraint != null && uConstraint.Modality == ConstraintModality.Alethic && uConstraint.IsPreferred && ((!hasCompositeIdentifier && uConstraint.IsInternal) || !uConstraint.IsInternal))
+						string concatName = oppositeRole.Name;
+						if (!string.IsNullOrEmpty(concatName))
 						{
-							// If it is part of a composite identifier, then we try to use the role name. If there is no role name,
-							// then we concatenate the previous name with the current object type name.
-							if (!isFirst && isPartOfCompositeIdentifier)
+							if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
 							{
-								string concatName = oppositeRole.Name;
-								if (!string.IsNullOrEmpty(concatName))
-								{
-									if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
-									{
-										newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
-										forceRoleNames = true;
-									}
-								}
-								else
-								{
-									newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
-								}
+								newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
+								forceRoleNames = true;
 							}
-							GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
+						}
+						else
+						{
+							newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
 						}
 					}
+					GetInformationTypesInternal(store, conceptType, playedRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
 				}
+				//LinkedElementCollection<Role> playedRoles = oppositeRolePlayer.PlayedRoleCollection;
+				//int count = playedRoles.Count;
+				//for (int i = 0; i < count; ++i)
+				//{
+				//    Role playedRole = playedRoles[i];
+				//    if (playedRole.FactType.RoleCollection.Count != 2)
+				//    {
+				//        continue;
+				//    }
+				//    Role oppRole = playedRole.OppositeRole.Role;
+				//    LinkedElementCollection<ConstraintRoleSequence> roleSequenceConstraints = oppRole.ConstraintRoleSequenceCollection;
+				//    int constraintsCount = roleSequenceConstraints.Count;
+				//    for (int j = 0; j < constraintsCount; ++j)
+				//    {
+				//        ConstraintRoleSequence constraintRoleSequence = roleSequenceConstraints[j];
+				//        UniquenessConstraint uConstraint = constraintRoleSequence as UniquenessConstraint;
+
+				//        // We cannot be sure that constraints that we receive span only one role,
+				//        // so we must check for this.
+				//        bool hasCompositeIdentifier = constraintRoleSequence.RoleCollection.Count != 1;
+				//        if (uConstraint != null && uConstraint.Modality == ConstraintModality.Alethic && uConstraint.IsPreferred && ((!hasCompositeIdentifier && uConstraint.IsInternal) || !uConstraint.IsInternal) )
+				//        {
+				//            // If it is part of a composite identifier, then we try to use the role name. If there is no role name,
+				//            // then we concatenate the previous name with the current object type name.
+				//            if (!isFirst && isPartOfCompositeIdentifier)
+				//            {
+				//                string concatName = oppositeRole.Name;
+				//                if (!string.IsNullOrEmpty(concatName))
+				//                {
+				//                    if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
+				//                    {
+				//                        newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
+				//                        forceRoleNames = true;
+				//                    }
+				//                }
+				//                else
+				//                {
+				//                    newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
+				//                }
+				//            }
+				            //GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
+				//        }
+				//    }
+				//}
 				pathNodes.RemoveLast();
 			}
 		}
@@ -1644,7 +1709,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				List<ConceptTypeChild> conceptTypeHasChildCollection = GetConceptTypeChildRelationshipsForSetConstraints(roleCollection, isDisjunctiveMandatoryConstraint);
 				if (conceptTypeHasChildCollection == null)
 				{
-					return;
+					continue;
 				}
 				int collectionCount = roleCollection.Count;
 				if (conceptTypeHasChildCollection.Count != 0)
@@ -2021,7 +2086,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="conceptTypes">The <see cref="ConceptTypeMoveableCollection"/> of <see cref="ConceptType"/> objects
 		/// to look through.</param>
-		/// <param name="objectType">The <see cref="ObjectType"/> of <see cref="ConceptType"/> which will be referenced.</param>
+		/// <param name="objectType">The <see cref="T:ObjectType"/> of <see cref="ConceptType"/> which will be referenced.</param>
 		/// <param name="store">The store this current <see cref="OIALModel"/> is using.</param>
 		/// <returns>The <see cref="ConceptType"/> which is referenced.</returns>
 		private ConceptType GetConceptType(LinkedElementCollection<ConceptType> conceptTypes, ObjectType objectType, Store store)
