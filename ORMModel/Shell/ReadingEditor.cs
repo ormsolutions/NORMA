@@ -1680,14 +1680,8 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else if (column == (int)ColumnIndex.ReadingBranch && rowType == RowType.Uncommitted)
 				{
-					StringBuilder sb = new StringBuilder();
-					string[] replacements = myRoleNames;
-					if (replacements == null)
-					{
-						myRoleNames = replacements = this.GetRoleNames();
-					}
 					InplaceReadingEditor editor = new InplaceReadingEditor();
-					editor.Initialize(replacements, SystemColors.WindowText, SystemColors.GrayText);
+					editor.Initialize(myReadingOrderKeyedCollection[row].OrderedReplacementFields, SystemColors.WindowText, SystemColors.GrayText);
 					return new VirtualTreeLabelEditData(
 						editor,
 						delegate(VirtualTreeItemInfo itemInfo, Control editControl)
