@@ -1388,7 +1388,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!IsDeleted)
 			{
 				HashSet<ObjectTypeInstance, RoleInstance> population = myPopulation;
-				ConstraintRoleSequence singleRoleConstraint = this.SingleRoleUniquenessConstraint;
+				ConstraintRoleSequence singleRoleConstraint = this.SingleRoleAlethicUniquenessConstraint;
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
 				int roleInstanceCount = roleInstances.Count;
 				if (singleRoleConstraint != null)

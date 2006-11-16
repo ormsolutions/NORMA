@@ -43,6 +43,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // ValueRoleVisitor delegate definition
 	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
+		#region Helper methods
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
 		/// <summary>
 		/// Determines the index of a specific Role in the list, resolving
@@ -64,6 +65,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return -1;
 		}
 		#endregion // IndexOf helper method for LinkedElementCollection<RoleBase>
+		#region ReplaceRole method
+		/// <summary>
+		/// Replaces <paramref name="existingRole"/> with <paramref name="replacementRole"/>, including altering all relationships
+		/// in which <paramref name="exisitngRole"/> participates.
+		/// </summary>
+		public static void ReplaceRole(Role existingRole, Role replacementRole)
+		{
+			// Synchronize the names
+			replacementRole.Name = existingRole.Name;
+
+			// Alter the relationships that refer to existingRole to instead refer to replacementRole
+			ReadOnlyCollection<ElementLink> elementLinks = DomainRoleInfo.GetAllElementLinks(existingRole);
+			int elementLinksCount = elementLinks.Count;
+			for (int i = 0; i < elementLinksCount; i++)
+			{
+				ElementLink elementLink = elementLinks[i];
+				ReadOnlyCollection<DomainRoleInfo> domainRoles = elementLink.GetDomainRelationship().DomainRoles;
+				DomainRoleInfo domainRoleInfo;
+				if (DomainRoleInfo.GetSourceRolePlayer(elementLink) == existingRole)
+				{
+					Debug.Assert(DomainRoleInfo.GetTargetRolePlayer(elementLink) != existingRole, "We shouldn't have a relationship from ourselves to ourselves.");
+					domainRoleInfo = domainRoles[0];
+					Debug.Assert(domainRoleInfo.IsSource);
+				}
+				else
+				{
+					domainRoleInfo = domainRoles[1];
+					Debug.Assert(!domainRoleInfo.IsSource);
+				}
+				DomainRoleInfo.SetRolePlayer(elementLink, domainRoleInfo.Id, replacementRole);
+			}
+		}
+		#endregion // ReplaceRole method
+		#endregion // Helper methods
 		#region CustomStorage handlers
 		#region CustomStorage setters
 		private void SetRolePlayerDisplayValue(ObjectType newValue)
@@ -191,9 +226,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Gets the single role <see cref="ConstraintRoleSequence"/> associated with this <see cref="Role"/>, if any.
+		/// Gets the <see cref="ConstraintModality.Alethic"/> single role <see cref="ConstraintRoleSequence"/> for the constraint of type <see cref="ConstraintType.InternalUniqueness"/>
+		/// associated with this <see cref="Role"/>, if any.
 		/// </summary>
-		public ConstraintRoleSequence SingleRoleUniquenessConstraint
+		public ConstraintRoleSequence SingleRoleAlethicUniquenessConstraint
 		{
 			get
 			{
@@ -202,7 +238,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int i = 0; i < roleSequenceCount; ++i)
 				{
 					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
-					if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+					IConstraint constraint = roleSequence.Constraint;
+					if (constraint.ConstraintType == ConstraintType.InternalUniqueness && constraint.Modality == ConstraintModality.Alethic && roleSequence.RoleCollection.Count == 1)
 					{
 						return roleSequence;
 					}
@@ -512,6 +549,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					(e.ModelElement as Role).RolePlayer = e.NewValue as ObjectType;
 				}
+				//else if (attributeGuid == Role.UnaryBinarizationStatusDomainPropertyId)
+				//{
+				//    FactType factType = ((Role)e.ModelElement).FactType;
+				//    if (factType != null)
+				//    {
+				//        ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarizationStatus);
+				//    }
+				//}
 				else if (attributeGuid == Role.ValueRangeTextDomainPropertyId)
 				{
 					Role role = e.ModelElement as Role;
@@ -820,6 +865,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion // Handle ObjectificationOppositeRoleName property changes
 			}
+
+			//private static void DelayValidateUnaryBinarizationStatus(ModelElement element)
+			//{
+			//    FactType factType = (FactType)element;
+			//    if (!factType.IsBinarizedUnary)
+			//    {
+			//        foreach (Role role in factType.RoleCollection)
+			//        {
+			//            if (role.UnaryBinarizationStatus != UnaryBinarizationStatus.NotApplicable)
+			//            {
+			//                // UNDONE: Localize this
+			//                throw new InvalidOperationException("The UnaryBinarizationStatus cannot be changed for a Role that is not part of a binarized unary Fact Type.");
+			//            }
+			//        }
+			//    }
+			//}
 		}
 		#endregion // RoleChangeRule class
 		#region IModelErrorOwner Implementation

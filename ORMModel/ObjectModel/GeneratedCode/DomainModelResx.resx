@@ -445,6 +445,14 @@
     <value>ImpliedRoleName</value>
     <comment>DisplayName for DomainProperty &apos;ObjectificationOppositeRoleName&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ImplicitBooleanRole.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ImplicitBooleanRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ImplicitBooleanRole.DisplayName" xml:space="preserve">
+    <value>ImplicitBooleanRole</value>
+    <comment>DisplayName for DomainClass &apos;ImplicitBooleanRole&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraint.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;EqualityConstraint&apos;</comment>

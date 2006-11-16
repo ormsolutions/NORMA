@@ -535,7 +535,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetNamedElementDictionaryLinkRoles();
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
-		#region RoleChangeRule class
+		#region FactTypeChangeRule class
 		[RuleOn(typeof(FactType))] // ChangeRule
 		private sealed partial class FactTypeChangeRule : ChangeRule
 		{
@@ -615,7 +615,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RoleChangeRule class
+		#endregion // FactTypeChangeRule class
 		#region IModelErrorOwner Members
 		/// <summary>
 		/// Returns the error associated with the fact.
