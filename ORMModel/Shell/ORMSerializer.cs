@@ -1683,6 +1683,7 @@ namespace Neumont.Tools.ORM.Shell
 
 									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
 									{
+										written[index1] = PROCESSED;
 										writeOuter = outerIndex != -1 && written[outerIndex] < CONTAINERWRITTEN;
 										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen && (writeEndElementCount == writeEndElementCount0)))
 										{
