@@ -629,6 +629,22 @@
     <value>ConstraintRoleSequence</value>
     <comment>DisplayName for DomainClass &apos;ConstraintRoleSequence&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Join.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;Join&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Join.DisplayName" xml:space="preserve">
+    <value>Join</value>
+    <comment>DisplayName for DomainClass &apos;Join&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Join/JoinType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.Join.JoinType</value>
+    <comment>Description for DomainProperty &apos;JoinType&apos; on DomainClass &apos;Join&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Join/JoinType.DisplayName" xml:space="preserve">
+    <value>JoinType</value>
+    <comment>DisplayName for DomainProperty &apos;JoinType&apos; on DomainClass &apos;Join&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;TooFewRoleSequencesError&apos;</comment>
@@ -4365,6 +4381,198 @@
     <value>Value Type Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;CompatibleValueTypeInstanceValueError&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole</value>
+    <comment>Description for DomainClass &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole.DisplayName" xml:space="preserve">
+    <value>Join Has Role</value>
+    <comment>DisplayName for DomainClass &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Join.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole.Join</value>
+    <comment>Description for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Join.DisplayName" xml:space="preserve">
+    <value>Join</value>
+    <comment>DisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Join.PropertyDisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Role.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Join Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole</value>
+    <comment>Description for DomainClass &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.DisplayName" xml:space="preserve">
+    <value>Join Has Input Role</value>
+    <comment>DisplayName for DomainClass &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Join.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Join</value>
+    <comment>Description for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Join.DisplayName" xml:space="preserve">
+    <value>Join</value>
+    <comment>DisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Join.PropertyDisplayName" xml:space="preserve">
+    <value>Input Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Role.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Role.DisplayName" xml:space="preserve">
+    <value>InputRole</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Join Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasInputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole</value>
+    <comment>Description for DomainClass &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.DisplayName" xml:space="preserve">
+    <value>Join Has Output Role</value>
+    <comment>DisplayName for DomainClass &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Join.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Join</value>
+    <comment>Description for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Join.DisplayName" xml:space="preserve">
+    <value>Join</value>
+    <comment>DisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Join.PropertyDisplayName" xml:space="preserve">
+    <value>Output Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Role.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Role.DisplayName" xml:space="preserve">
+    <value>OutputRole</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Join Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;JoinHasOutputRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath</value>
+    <comment>Description for DomainClass &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.DisplayName" xml:space="preserve">
+    <value>ORMModel Element Has Join Path</value>
+    <comment>DisplayName for DomainClass &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/JoinPathOwner.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinPathOwner</value>
+    <comment>Description for DomainRole &apos;JoinPathOwner&apos; on DomainRelationship &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/JoinPathOwner.DisplayName" xml:space="preserve">
+    <value>JoinPathOwner</value>
+    <comment>DisplayName for DomainRole &apos;JoinPathOwner&apos; on DomainRelationship &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/JoinPathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Join Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;JoinPathOwner&apos; on DomainRelationship &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/Join.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.Join</value>
+    <comment>Description for DomainRole &apos;Join&apos; on DomainRelationship &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/Join.DisplayName" xml:space="preserve">
+    <value>Join</value>
+    <comment>DisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/Join.PropertyDisplayName" xml:space="preserve">
+    <value>Join Path Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;ORMModelElementHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.DisplayName" xml:space="preserve">
+    <value>Constraint Role Sequence Has Join Path</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/JoinPathOwner.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwner</value>
+    <comment>Description for DomainRole &apos;JoinPathOwner&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/JoinPathOwner.DisplayName" xml:space="preserve">
+    <value>JoinPathOwner</value>
+    <comment>DisplayName for DomainRole &apos;JoinPathOwner&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/JoinPathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Join Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;JoinPathOwner&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/Join.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.Join</value>
+    <comment>Description for DomainRole &apos;Join&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/Join.DisplayName" xml:space="preserve">
+    <value>Join</value>
+    <comment>DisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/Join.PropertyDisplayName" xml:space="preserve">
+    <value>Join Path Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Join&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasJoinPath&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.DisplayName" xml:space="preserve">
+    <value>Constraint Role Sequence Has Role Has Projection Join</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ConstraintRoleSequenceHasRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRole</value>
+    <comment>Description for DomainRole &apos;ConstraintRoleSequenceHasRole&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ConstraintRoleSequenceHasRole.DisplayName" xml:space="preserve">
+    <value>ConstraintRoleSequenceHasRole</value>
+    <comment>DisplayName for DomainRole &apos;ConstraintRoleSequenceHasRole&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ConstraintRoleSequenceHasRole.PropertyDisplayName" xml:space="preserve">
+    <value>Projection Join</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConstraintRoleSequenceHasRole&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ProjectionJoin</value>
+    <comment>Description for DomainRole &apos;ProjectionJoin&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.DisplayName" xml:space="preserve">
+    <value>ProjectionJoin</value>
+    <comment>DisplayName for DomainRole &apos;ProjectionJoin&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.PropertyDisplayName" xml:space="preserve">
+    <value>Constraint Role Sequence Has Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ProjectionJoin&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>
     <comment>Display name for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
@@ -4588,6 +4796,22 @@
   <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/Closed.Description" xml:space="preserve">
     <value>Indicates the specific value is included in the range.</value>
     <comment>Description for EnumerationLiteral &apos;Closed&apos; on DomainEnumeration &apos;RangeInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinType/Inner.DisplayName" xml:space="preserve">
+    <value>Inner</value>
+    <comment>Display name for EnumerationLiteral &apos;Inner&apos; on DomainEnumeration &apos;JoinType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinType/Inner.Description" xml:space="preserve">
+    <value>Inner join.</value>
+    <comment>Description for EnumerationLiteral &apos;Inner&apos; on DomainEnumeration &apos;JoinType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinType/Outer.DisplayName" xml:space="preserve">
+    <value>Outer</value>
+    <comment>Display name for EnumerationLiteral &apos;Outer&apos; on DomainEnumeration &apos;JoinType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.JoinType/Outer.Description" xml:space="preserve">
+    <value>Outer join.</value>
+    <comment>Description for EnumerationLiteral &apos;Outer&apos; on DomainEnumeration &apos;JoinType&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

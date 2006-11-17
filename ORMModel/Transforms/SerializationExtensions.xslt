@@ -2410,7 +2410,7 @@
 						</plx:right>
 					</plx:assign>
 					<xsl:variable name="LocalNamespace" select="$CustomToolNamespace"/>
-					<xsl:for-each select="../se:Element">
+					<xsl:for-each select="../se:Element[not(@LinkOnly='true' or @LinkOnly=1)]">
 						<plx:callInstance name="Add">
 							<plx:callObject>
 								<plx:nameRef name="classNameMap"/>

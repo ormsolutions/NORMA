@@ -102,6 +102,7 @@
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptionProvider.cs" />
     <Compile Include="Framework\HashSet.cs" />
     <Compile Include="ObjectModel\Design\FactTypeTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\JoinTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\RoleTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\DataTypeTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ObjectTypeTypeDescriptor.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="ObjectModel\Design\Editors\ReferenceModePickers.cs" />
     <Compile Include="ObjectModel\Design\Editors\ObjectificationPickers.cs" />
     <Compile Include="ObjectModel\HierarchyContext.cs" />
+    <Compile Include="ObjectModel\UnaryBinarization.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseBinaryLinkShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMPresentationElementTypeDescriptor.cs" />

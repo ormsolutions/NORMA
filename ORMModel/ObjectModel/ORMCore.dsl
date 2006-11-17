@@ -456,12 +456,14 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
+		
 		<DomainClass Name="ImplicitBooleanRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B97EE72A-4030-4508-AFE3-C595B8DCA0AB" DisplayName="ImplicitBooleanRole" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Role"/>
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="EqualityConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4F8E935-C07C-4269-81E3-978110F6DC68" DisplayName="EqualityConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="SetComparisonConstraint"/>
 			</BaseClass>
@@ -615,6 +617,26 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="Join" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EFDE476D-C440-4524-97DA-42697FA92CE9" DisplayName="Join" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Join, Design.JoinTypeDescriptor&lt;Join&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="JoinType" DefaultValue="Inner" DisplayName="JoinType" Id="59049038-A13E-4AD1-A86B-8EC3493DFDC9">
+					<Type>
+						<DomainEnumerationMoniker Name="JoinType"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		
 		<DomainClass Name="TooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="TooFewRoleSequencesError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -1224,6 +1246,7 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
+
 		<DomainClass Name="PreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="129CCE68-7CE9-4A97-BAD3-C36B4D372A77" DisplayName="PreferredIdentifierRequiresMandatoryError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -1317,6 +1340,7 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
+
 	</Classes>
 
 	<Relationships>
@@ -3006,7 +3030,6 @@
 			</Target>
 		</DomainRelationship>
 
-		
 		<!-- UNDONE: 2006-06 DSL Tools port: @IsEmbedding was true on this relationship, but that is no longer allowed when the target role player is itself a DomainRelationship. -->
 		<DomainRelationship Name="EntityTypeInstanceHasRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="05C64570-96FE-42C4-B9A6-F88D3BDC7C1F">
 			<!--<BaseRelationship>
@@ -3128,7 +3151,127 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		
+		<DomainRelationship Name="JoinHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="100DCE21-D23A-4ED5-8919-A6FA9DAA4F8B">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Join" PropertyName="Role" Multiplicity="OneMany" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Join" Id="0D213B9C-DC79-4AE9-8E50-69AB7BB0095F">
+					<RolePlayer>
+						<DomainClassMoniker Name="Join"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Role" PropertyName="JoinCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="2B0EEA3A-5901-48D8-A327-AE3DE2E0E42F">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 
+		<DomainRelationship Name="JoinHasInputRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7F393586-4D6C-43F6-97D0-53E23B0A569C">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="JoinHasRole"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Join" PropertyName="InputRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Join" Id="38D76A89-DDE7-4F93-9D0B-00E862DAE9C6">
+					<RolePlayer>
+						<DomainClassMoniker Name="Join"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Role" PropertyName="JoinCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InputRole" Id="170F3E22-5670-4D4F-80B7-77F2532F9289">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="JoinHasOutputRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78519CFE-11F8-45B2-89A0-7B1DCD4ABA30">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="JoinHasRole"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Join" PropertyName="OutputRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Join" Id="E39A57EC-8F97-4D1A-A6E2-4AE613FECC41">
+					<RolePlayer>
+						<DomainClassMoniker Name="Join"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Role" PropertyName="JoinCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="OutputRole" Id="2E0CC7EF-2937-4236-B5D5-CC61167F4AE7">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ORMModelElementHasJoinPath" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" IsEmbedding="true" Id="744C121F-CB6C-4B1F-9AC0-867EBC2F3AD7">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="JoinPathOwner" PropertyName="JoinPath" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="JoinPathOwner" Id="E8BED1B1-F17A-471E-811D-E6A9D5916CDA">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Join" PropertyName="JoinPathOwner" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Join" Id="B5F5B7C2-C5A1-46BB-8969-264F8DC50BB7">
+					<RolePlayer>
+						<DomainClassMoniker Name="Join"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		
+		<DomainRelationship Name="ConstraintRoleSequenceHasJoinPath" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="62FC7AC1-EB51-4887-81D4-15007D5FACBD">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMModelElementHasJoinPath"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="JoinPathOwner" PropertyName="JoinPath" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPathOwner" Id="D204614A-A424-426B-9216-FAB21CD3BA9C">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleSequence"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Join" PropertyName="JoinPathOwner" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Join" Id="B8D5101B-7904-41B6-B14C-5BE667B2A6BA">
+					<RolePlayer>
+						<DomainClassMoniker Name="Join"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ConstraintRoleSequenceHasRoleHasProjectionJoin" Namespace="Neumont.Tools.ORM.ObjectModel" Id="314434D1-1E15-4E2F-A2A7-2D1D72343B06">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="ConstraintRoleSequenceHasRole" PropertyName="ProjectionJoin" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConstraintRoleSequenceHasRole" Id="20E93902-F83A-4273-BFFF-945E44D172AE">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ProjectionJoin" PropertyName="ConstraintRoleSequenceHasRole" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ProjectionJoin" Id="98D276DB-7213-46F9-BBEE-2DC6D326C5CA">
+					<RolePlayer>
+						<DomainClassMoniker Name="Join"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		
 	</Relationships>
 
 	<Types>
@@ -3273,6 +3416,19 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="JoinType">
+			<Literals>
+				<EnumerationLiteral Name="Inner" Value="0" Description="Inner join."/>
+				<EnumerationLiteral Name="Outer" Value="1" Description="Outer join."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;JoinType, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

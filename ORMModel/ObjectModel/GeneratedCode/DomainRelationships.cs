@@ -4742,6 +4742,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ProjectionJoin opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ProjectionJoin.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRole
+		/// </summary>
+		public virtual Join ProjectionJoin
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRoleDomainRoleId) as Join;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRoleDomainRoleId, value);
+			}
+		}
+		#endregion
 		#endregion
 		#region Role link accessor
 		/// <summary>
@@ -21997,6 +22017,1303 @@ namespace Neumont.Tools.ORM.ObjectModel
 			foreach ( global::Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link in links )
 			{
 				if ( target.Equals(link.CompatibleValueTypeInstanceValueError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship JoinHasRole
+	/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("100dce21-d23a-4ed5-8919-a6fa9daa4f8b")]
+	public abstract partial class JoinHasRole : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// JoinHasRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x100dce21, 0xd23a, 0x4ed5, 0x89, 0x19, 0xa6, 0xfa, 0x9d, 0xaa, 0x4f, 0x8b);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected JoinHasRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Join domain role code
+		
+		/// <summary>
+		/// Join domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid JoinDomainRoleId = new global::System.Guid(0x0d213b9c, 0xdc79, 0x4ae9, 0x8e, 0x50, 0x69, 0xab, 0x7b, 0xb0, 0x09, 0x5f);
+		
+		/// <summary>
+		/// DomainRole Join
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole.Join
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasRole/Join.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasRole/Join.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Role", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Join.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("0d213b9c-dc79-4ae9-8e50-69ab7bb0095f")]
+		public abstract Join Join
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access JoinCollection of a Role
+		/// <summary>
+		/// Gets a list of JoinCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<Join> GetJoinCollection(Role element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<Join>(element, RoleDomainRoleId);
+		}
+		#endregion
+		#region Role domain role code
+		
+		/// <summary>
+		/// Role domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RoleDomainRoleId = new global::System.Guid(0x2b0eea3a, 0x5901, 0x48d8, 0xa3, 0x27, 0xae, 0x3d, 0xe2, 0xe0, 0xe4, 0x2f);
+		
+		/// <summary>
+		/// DomainRole Role
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole.Role
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasRole/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasRole/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "JoinCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.JoinHasRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("2b0eea3a-5901-48d8-a327-ae3de2e0e42f")]
+		public abstract Role Role
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access Role of a Join
+		/// <summary>
+		/// Gets a list of Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<Role> GetRole(Join element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<Role>(element, JoinDomainRoleId);
+		}
+		#endregion
+		#region Join link accessor
+		/// <summary>
+		/// Get the list of JoinHasRole links to a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole> GetLinksToRole ( global::Neumont.Tools.ORM.ObjectModel.Join joinInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole>(joinInstance, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.JoinDomainRoleId);
+		}
+		#endregion
+		#region Role link accessor
+		/// <summary>
+		/// Get the list of JoinHasRole links to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole> GetLinksToJoinCollection ( global::Neumont.Tools.ORM.ObjectModel.Role roleInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole>(roleInstance, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.RoleDomainRoleId);
+		}
+		#endregion
+		#region JoinHasRole instance accessors
+		
+		/// <summary>
+		/// Get any JoinHasRole links between a given Join and a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole> GetLinks( global::Neumont.Tools.ORM.ObjectModel.Join source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole>(source, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.JoinDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.JoinHasRole link in links )
+			{
+				if ( target.Equals(link.Role) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one JoinHasRole link between a given Joinand a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.JoinHasRole GetLink( global::Neumont.Tools.ORM.ObjectModel.Join source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasRole>(source, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.JoinDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.JoinHasRole link in links )
+			{
+				if ( target.Equals(link.Role) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship JoinHasInputRole
+	/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("7f393586-4d6c-43f6-97d0-53e23b0a569c")]
+	public partial class JoinHasInputRole : JoinHasRole
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// JoinHasInputRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7f393586, 0x4d6c, 0x43f6, 0x97, 0xd0, 0x53, 0xe2, 0x3b, 0x0a, 0x56, 0x9c);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a JoinHasInputRole link in the same Partition as the given Join
+		/// </summary>
+		/// <param name="source">Join to use as the source of the relationship.</param>
+		/// <param name="target">Role to use as the target of the relationship.</param>
+		public JoinHasInputRole(Join source, Role target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(JoinHasInputRole.JoinDomainRoleId, source), new DslModeling::RoleAssignment(JoinHasInputRole.RoleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public JoinHasInputRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public JoinHasInputRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public JoinHasInputRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public JoinHasInputRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Join domain role code
+		
+		/// <summary>
+		/// Join domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid JoinDomainRoleId = new global::System.Guid(0x38d76a89, 0xdde7, 0x4f93, 0x9d, 0x0b, 0x00, 0xe8, 0x62, 0xda, 0xe9, 0xc6);
+		
+		/// <summary>
+		/// DomainRole Join
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Join
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Join.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Join.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InputRole", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Join.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("38d76a89-dde7-4f93-9d0b-00e862dae9c6")]
+		public override Join Join
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Join)DslModeling::DomainRoleInfo.GetRolePlayer(this, JoinDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, JoinDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access JoinCollection of a Role
+		/// <summary>
+		/// Gets a list of JoinCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<Join> GetJoinCollection(Role element)
+		{
+			return new DslModeling::LinkedElementCollection<Join>(element, RoleDomainRoleId);
+		}
+		#endregion
+		#region Role domain role code
+		
+		/// <summary>
+		/// Role domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid RoleDomainRoleId = new global::System.Guid(0x170f3e22, 0x5670, 0x4d4f, 0x80, 0xb7, 0x77, 0xf2, 0x53, 0x2f, 0x92, 0x89);
+		
+		/// <summary>
+		/// DomainRole Role
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Role
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "JoinCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.JoinHasInputRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("170f3e22-5670-4d4f-80b7-77f2532f9289")]
+		public override Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access InputRole of a Join
+		/// <summary>
+		/// Gets InputRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Role GetInputRole(Join element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, JoinDomainRoleId) as Role;
+		}
+		
+		/// <summary>
+		/// Sets InputRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetInputRole(Join element, Role newRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, JoinDomainRoleId, newRole);
+		}
+		#endregion
+		#region Join link accessor
+		/// <summary>
+		/// Get the JoinHasInputRole link to a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole GetLinkToInputRole (global::Neumont.Tools.ORM.ObjectModel.Join joinInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole>(joinInstance, global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.JoinDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Join not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Role link accessor
+		/// <summary>
+		/// Get the list of JoinHasInputRole links to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole> GetLinksToJoinCollection ( global::Neumont.Tools.ORM.ObjectModel.Role roleInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole>(roleInstance, global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.RoleDomainRoleId);
+		}
+		#endregion
+		#region JoinHasInputRole instance accessors
+		
+		/// <summary>
+		/// Get any JoinHasInputRole links between a given Join and a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole> GetLinks( global::Neumont.Tools.ORM.ObjectModel.Join source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole>(source, global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.JoinDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole link in links )
+			{
+				if ( target.Equals(link.Role) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one JoinHasInputRole link between a given Joinand a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole GetLink( global::Neumont.Tools.ORM.ObjectModel.Join source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole>(source, global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.JoinDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole link in links )
+			{
+				if ( target.Equals(link.Role) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship JoinHasOutputRole
+	/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("78519cfe-11f8-45b2-89a0-7b1dcd4aba30")]
+	public partial class JoinHasOutputRole : JoinHasRole
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// JoinHasOutputRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x78519cfe, 0x11f8, 0x45b2, 0x89, 0xa0, 0x7b, 0x1d, 0xcd, 0x4a, 0xba, 0x30);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a JoinHasOutputRole link in the same Partition as the given Join
+		/// </summary>
+		/// <param name="source">Join to use as the source of the relationship.</param>
+		/// <param name="target">Role to use as the target of the relationship.</param>
+		public JoinHasOutputRole(Join source, Role target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(JoinHasOutputRole.JoinDomainRoleId, source), new DslModeling::RoleAssignment(JoinHasOutputRole.RoleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public JoinHasOutputRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public JoinHasOutputRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public JoinHasOutputRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public JoinHasOutputRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Join domain role code
+		
+		/// <summary>
+		/// Join domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid JoinDomainRoleId = new global::System.Guid(0xe39a57ec, 0x8f97, 0x4d1a, 0xa6, 0xe2, 0x4a, 0xe6, 0x13, 0xfe, 0xcc, 0x41);
+		
+		/// <summary>
+		/// DomainRole Join
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Join
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Join.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Join.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OutputRole", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Join.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("e39a57ec-8f97-4d1a-a6e2-4ae613fecc41")]
+		public override Join Join
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Join)DslModeling::DomainRoleInfo.GetRolePlayer(this, JoinDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, JoinDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access JoinCollection of a Role
+		/// <summary>
+		/// Gets a list of JoinCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<Join> GetJoinCollection(Role element)
+		{
+			return new DslModeling::LinkedElementCollection<Join>(element, RoleDomainRoleId);
+		}
+		#endregion
+		#region Role domain role code
+		
+		/// <summary>
+		/// Role domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid RoleDomainRoleId = new global::System.Guid(0x2e0cc7ef, 0x2937, 0x4236, 0xb5, 0xd5, 0xcc, 0x61, 0x16, 0x7f, 0x4a, 0xe7);
+		
+		/// <summary>
+		/// DomainRole Role
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Role
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "JoinCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("2e0cc7ef-2937-4236-b5d5-cc61167f4ae7")]
+		public override Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access OutputRole of a Join
+		/// <summary>
+		/// Gets OutputRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Role GetOutputRole(Join element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, JoinDomainRoleId) as Role;
+		}
+		
+		/// <summary>
+		/// Sets OutputRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetOutputRole(Join element, Role newRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, JoinDomainRoleId, newRole);
+		}
+		#endregion
+		#region Join link accessor
+		/// <summary>
+		/// Get the JoinHasOutputRole link to a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole GetLinkToOutputRole (global::Neumont.Tools.ORM.ObjectModel.Join joinInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole>(joinInstance, global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.JoinDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Join not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Role link accessor
+		/// <summary>
+		/// Get the list of JoinHasOutputRole links to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole> GetLinksToJoinCollection ( global::Neumont.Tools.ORM.ObjectModel.Role roleInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole>(roleInstance, global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.RoleDomainRoleId);
+		}
+		#endregion
+		#region JoinHasOutputRole instance accessors
+		
+		/// <summary>
+		/// Get any JoinHasOutputRole links between a given Join and a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole> GetLinks( global::Neumont.Tools.ORM.ObjectModel.Join source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole>(source, global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.JoinDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole link in links )
+			{
+				if ( target.Equals(link.Role) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one JoinHasOutputRole link between a given Joinand a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole GetLink( global::Neumont.Tools.ORM.ObjectModel.Join source, global::Neumont.Tools.ORM.ObjectModel.Role target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole>(source, global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.JoinDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole link in links )
+			{
+				if ( target.Equals(link.Role) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ORMModelElementHasJoinPath
+	/// Description for Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("744c121f-cb6c-4b1f-9ac0-867ebc2f3ad7")]
+	public abstract partial class ORMModelElementHasJoinPath : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ORMModelElementHasJoinPath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x744c121f, 0xcb6c, 0x4b1f, 0x9a, 0xc0, 0x86, 0x7e, 0xbc, 0x2f, 0x3a, 0xd7);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected ORMModelElementHasJoinPath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region JoinPathOwner domain role code
+		
+		/// <summary>
+		/// JoinPathOwner domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid JoinPathOwnerDomainRoleId = new global::System.Guid(0xe8bed1b1, 0xf17a, 0x471e, 0x81, 0x1d, 0xe6, 0xa9, 0xd5, 0x91, 0x6c, 0xda);
+		
+		/// <summary>
+		/// DomainRole JoinPathOwner
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinPathOwner
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/JoinPathOwner.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/JoinPathOwner.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "JoinPath", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/JoinPathOwner.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("e8bed1b1-f17a-471e-811d-e6a9d5916cda")]
+		public abstract ORMModelElement JoinPathOwner
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access JoinPathOwner of a Join
+		/// <summary>
+		/// Gets JoinPathOwner.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModelElement GetJoinPathOwner(Join element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, JoinDomainRoleId) as ORMModelElement;
+		}
+		
+		/// <summary>
+		/// Sets JoinPathOwner.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetJoinPathOwner(Join element, ORMModelElement newJoinPathOwner)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, JoinDomainRoleId, newJoinPathOwner);
+		}
+		#endregion
+		#region Join domain role code
+		
+		/// <summary>
+		/// Join domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid JoinDomainRoleId = new global::System.Guid(0xb5f5b7c2, 0xc5a1, 0x46bb, 0x89, 0x69, 0x26, 0x4f, 0x8d, 0xc5, 0x0b, 0xb7);
+		
+		/// <summary>
+		/// DomainRole Join
+		/// Description for Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.Join
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/Join.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/Join.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "JoinPathOwner", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath/Join.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("b5f5b7c2-c5a1-46bb-8969-264f8dc50bb7")]
+		public abstract Join Join
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access JoinPath of a ORMModelElement
+		/// <summary>
+		/// Gets a list of JoinPath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<Join> GetJoinPath(ORMModelElement element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<Join>(element, JoinPathOwnerDomainRoleId);
+		}
+		#endregion
+		#region JoinPathOwner link accessor
+		/// <summary>
+		/// Get the list of ORMModelElementHasJoinPath links to a ORMModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath> GetLinksToJoinPath ( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement joinPathOwnerInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath>(joinPathOwnerInstance, global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinPathOwnerDomainRoleId);
+		}
+		#endregion
+		#region Join link accessor
+		/// <summary>
+		/// Get the ORMModelElementHasJoinPath link to a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath GetLinkToJoinPathOwner (global::Neumont.Tools.ORM.ObjectModel.Join joinInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath>(joinInstance, global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Join not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ORMModelElementHasJoinPath instance accessors
+		
+		/// <summary>
+		/// Get any ORMModelElementHasJoinPath links between a given ORMModelElement and a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORM.ObjectModel.Join target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath>(source, global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinPathOwnerDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath link in links )
+			{
+				if ( target.Equals(link.Join) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ORMModelElementHasJoinPath link between a given ORMModelElementand a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORM.ObjectModel.Join target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath>(source, global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinPathOwnerDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath link in links )
+			{
+				if ( target.Equals(link.Join) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ConstraintRoleSequenceHasJoinPath
+	/// Description for Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("62fc7ac1-eb51-4887-81d4-15007d5facbd")]
+	public partial class ConstraintRoleSequenceHasJoinPath : ORMModelElementHasJoinPath
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ConstraintRoleSequenceHasJoinPath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x62fc7ac1, 0xeb51, 0x4887, 0x81, 0xd4, 0x15, 0x00, 0x7d, 0x5f, 0xac, 0xbd);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ConstraintRoleSequenceHasJoinPath link in the same Partition as the given ConstraintRoleSequence
+		/// </summary>
+		/// <param name="source">ConstraintRoleSequence to use as the source of the relationship.</param>
+		/// <param name="target">Join to use as the target of the relationship.</param>
+		public ConstraintRoleSequenceHasJoinPath(ConstraintRoleSequence source, Join target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleSequenceHasJoinPath.JoinPathOwnerDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleSequenceHasJoinPath(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleSequenceHasJoinPath(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleSequenceHasJoinPath(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleSequenceHasJoinPath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region JoinPathOwner domain role code
+		
+		/// <summary>
+		/// JoinPathOwner domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid JoinPathOwnerDomainRoleId = new global::System.Guid(0xd204614a, 0xa424, 0x426b, 0x92, 0x16, 0xfa, 0xb2, 0x1c, 0xd3, 0xba, 0x9c);
+		
+		/// <summary>
+		/// DomainRole JoinPathOwner
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwner
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/JoinPathOwner.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/JoinPathOwner.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, RolePlayer = typeof(ConstraintRoleSequence), PropertyName = "JoinPath", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/JoinPathOwner.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("d204614a-a424-426b-9216-fab21cd3ba9c")]
+		public override ORMModelElement JoinPathOwner
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, JoinPathOwnerDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, JoinPathOwnerDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access JoinPathOwner of a Join
+		/// <summary>
+		/// Gets JoinPathOwner.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new ConstraintRoleSequence GetJoinPathOwner(Join element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, JoinDomainRoleId) as ConstraintRoleSequence;
+		}
+		
+		/// <summary>
+		/// Sets JoinPathOwner.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetJoinPathOwner(Join element, ConstraintRoleSequence newJoinPathOwner)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, JoinDomainRoleId, newJoinPathOwner);
+		}
+		#endregion
+		#region Join domain role code
+		
+		/// <summary>
+		/// Join domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid JoinDomainRoleId = new global::System.Guid(0xb8d5101b, 0x7904, 0x41b6, 0xb1, 0x4c, 0x5b, 0xe6, 0x67, 0xb2, 0xa6, 0xba);
+		
+		/// <summary>
+		/// DomainRole Join
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.Join
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/Join.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/Join.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "JoinPathOwner", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath/Join.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("b8d5101b-7904-41b6-b14c-5be667b2a6ba")]
+		public override Join Join
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Join)DslModeling::DomainRoleInfo.GetRolePlayer(this, JoinDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, JoinDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access JoinPath of a ConstraintRoleSequence
+		/// <summary>
+		/// Gets a list of JoinPath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<Join> GetJoinPath(ConstraintRoleSequence element)
+		{
+			return new DslModeling::LinkedElementCollection<Join>(element, JoinPathOwnerDomainRoleId);
+		}
+		#endregion
+		#region JoinPathOwner link accessor
+		/// <summary>
+		/// Get the list of ConstraintRoleSequenceHasJoinPath links to a ConstraintRoleSequence.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath> GetLinksToJoinPath ( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence joinPathOwnerInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath>(joinPathOwnerInstance, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwnerDomainRoleId);
+		}
+		#endregion
+		#region Join link accessor
+		/// <summary>
+		/// Get the ConstraintRoleSequenceHasJoinPath link to a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath GetLinkToJoinPathOwner (global::Neumont.Tools.ORM.ObjectModel.Join joinInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath>(joinInstance, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Join not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ConstraintRoleSequenceHasJoinPath instance accessors
+		
+		/// <summary>
+		/// Get any ConstraintRoleSequenceHasJoinPath links between a given ConstraintRoleSequence and a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence source, global::Neumont.Tools.ORM.ObjectModel.Join target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath>(source, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwnerDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath link in links )
+			{
+				if ( target.Equals(link.Join) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ConstraintRoleSequenceHasJoinPath link between a given ConstraintRoleSequenceand a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath GetLink( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence source, global::Neumont.Tools.ORM.ObjectModel.Join target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath>(source, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwnerDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath link in links )
+			{
+				if ( target.Equals(link.Join) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ConstraintRoleSequenceHasRoleHasProjectionJoin
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("314434d1-1e15-4e2f-a2a7-2d1d72343b06")]
+	public partial class ConstraintRoleSequenceHasRoleHasProjectionJoin : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ConstraintRoleSequenceHasRoleHasProjectionJoin domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x314434d1, 0x1e15, 0x4e2f, 0xa2, 0xa7, 0x2d, 0x1d, 0x72, 0x34, 0x3b, 0x06);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ConstraintRoleSequenceHasRoleHasProjectionJoin link in the same Partition as the given ConstraintRoleSequenceHasRole
+		/// </summary>
+		/// <param name="source">ConstraintRoleSequenceHasRole to use as the source of the relationship.</param>
+		/// <param name="target">Join to use as the target of the relationship.</param>
+		public ConstraintRoleSequenceHasRoleHasProjectionJoin(ConstraintRoleSequenceHasRole source, Join target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRoleDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleSequenceHasRoleHasProjectionJoin.ProjectionJoinDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleSequenceHasRoleHasProjectionJoin(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleSequenceHasRoleHasProjectionJoin(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleSequenceHasRoleHasProjectionJoin(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleSequenceHasRoleHasProjectionJoin(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ConstraintRoleSequenceHasRole domain role code
+		
+		/// <summary>
+		/// ConstraintRoleSequenceHasRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ConstraintRoleSequenceHasRoleDomainRoleId = new global::System.Guid(0x20e93902, 0xf83a, 0x4273, 0xbf, 0xff, 0x94, 0x5e, 0x44, 0xd1, 0x72, 0xae);
+		
+		/// <summary>
+		/// DomainRole ConstraintRoleSequenceHasRole
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ConstraintRoleSequenceHasRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ConstraintRoleSequenceHasRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ProjectionJoin", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ConstraintRoleSequenceHasRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("20e93902-f83a-4273-bfff-945e44d172ae")]
+		public virtual ConstraintRoleSequenceHasRole ConstraintRoleSequenceHasRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConstraintRoleSequenceHasRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConstraintRoleSequenceHasRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConstraintRoleSequenceHasRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ConstraintRoleSequenceHasRole of a Join
+		/// <summary>
+		/// Gets a list of ConstraintRoleSequenceHasRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ConstraintRoleSequenceHasRole> GetConstraintRoleSequenceHasRole(Join element)
+		{
+			return new DslModeling::LinkedElementCollection<ConstraintRoleSequenceHasRole>(element, ProjectionJoinDomainRoleId);
+		}
+		#endregion
+		#region ProjectionJoin domain role code
+		
+		/// <summary>
+		/// ProjectionJoin domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ProjectionJoinDomainRoleId = new global::System.Guid(0x98d276db, 0x7213, 0x46f9, 0xbb, 0xee, 0x2d, 0xc6, 0xd3, 0x26, 0xc5, 0xca);
+		
+		/// <summary>
+		/// DomainRole ProjectionJoin
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ProjectionJoin
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConstraintRoleSequenceHasRole", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("98d276db-7213-46f9-bbee-2dc6d326c5ca")]
+		public virtual Join ProjectionJoin
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Join)DslModeling::DomainRoleInfo.GetRolePlayer(this, ProjectionJoinDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ProjectionJoinDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ProjectionJoin of a ConstraintRoleSequenceHasRole
+		/// <summary>
+		/// Gets ProjectionJoin.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Join GetProjectionJoin(ConstraintRoleSequenceHasRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConstraintRoleSequenceHasRoleDomainRoleId) as Join;
+		}
+		
+		/// <summary>
+		/// Sets ProjectionJoin.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetProjectionJoin(ConstraintRoleSequenceHasRole element, Join newProjectionJoin)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConstraintRoleSequenceHasRoleDomainRoleId, newProjectionJoin);
+		}
+		#endregion
+		#region ConstraintRoleSequenceHasRole link accessor
+		/// <summary>
+		/// Get the ConstraintRoleSequenceHasRoleHasProjectionJoin link to a ConstraintRoleSequenceHasRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin GetLinkToProjectionJoin (global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole constraintRoleSequenceHasRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin>(constraintRoleSequenceHasRoleInstance, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ConstraintRoleSequenceHasRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ProjectionJoin link accessor
+		/// <summary>
+		/// Get the list of ConstraintRoleSequenceHasRoleHasProjectionJoin links to a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin> GetLinksToConstraintRoleSequenceHasRole ( global::Neumont.Tools.ORM.ObjectModel.Join projectionJoinInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin>(projectionJoinInstance, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ProjectionJoinDomainRoleId);
+		}
+		#endregion
+		#region ConstraintRoleSequenceHasRoleHasProjectionJoin instance accessors
+		
+		/// <summary>
+		/// Get any ConstraintRoleSequenceHasRoleHasProjectionJoin links between a given ConstraintRoleSequenceHasRole and a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole source, global::Neumont.Tools.ORM.ObjectModel.Join target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin>(source, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin link in links )
+			{
+				if ( target.Equals(link.ProjectionJoin) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ConstraintRoleSequenceHasRoleHasProjectionJoin link between a given ConstraintRoleSequenceHasRoleand a Join.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin GetLink( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole source, global::Neumont.Tools.ORM.ObjectModel.Join target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin>(source, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin.ConstraintRoleSequenceHasRoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin link in links )
+			{
+				if ( target.Equals(link.ProjectionJoin) )
 				{
 					return link;
 				}

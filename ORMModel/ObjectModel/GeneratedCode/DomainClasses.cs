@@ -4143,6 +4143,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region JoinCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of JoinCollection.
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasRole.Role
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<Join> JoinCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<Join>(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.RoleDomainRoleId);
+			}
+		}
+		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel
@@ -5989,6 +6003,201 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+			}
+		}
+		#endregion
+		#region JoinPath opposite domain role accessor
+		/// <summary>
+		/// Gets a list of JoinPath.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwner
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Join> JoinPath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<Join>(this, global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwnerDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass Join
+	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<Join, Design.JoinTypeDescriptor<Join>>))]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Join.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Join.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("efde476d-c440-4524-97da-42697fa92ce9")]
+	public partial class Join : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// Join domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xefde476d, 0xc440, 0x4524, 0x97, 0xda, 0x42, 0x69, 0x7f, 0xa9, 0x2c, 0xe9);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public Join(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public Join(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region JoinType domain property code
+		
+		/// <summary>
+		/// JoinType domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid JoinTypeDomainPropertyId = new global::System.Guid(0x59049038, 0xa13e, 0x4ad1, 0xa8, 0x6b, 0x8e, 0xc3, 0x49, 0x3d, 0xfd, 0xc9);
+		
+		/// <summary>
+		/// Storage for JoinType
+		/// </summary>
+		private JoinType joinTypePropertyStorage = Neumont.Tools.ORM.ObjectModel.JoinType.Inner;
+		
+		/// <summary>
+		/// Gets or sets the value of JoinType domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.Join.JoinType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Join/JoinType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Join/JoinType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.JoinType.Inner)]
+		[DslModeling::DomainObjectId("59049038-a13e-4ad1-a86b-8ec3493dfdc9")]
+		public JoinType JoinType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return joinTypePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				JoinTypePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Join.JoinType domain property.
+		/// </summary>
+		internal sealed partial class JoinTypePropertyHandler : DslModeling::DomainPropertyValueHandler<Join, JoinType>
+		{
+			private JoinTypePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Join.JoinType domain property value handler.
+			/// </summary>
+			public static readonly JoinTypePropertyHandler Instance = new JoinTypePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Join.JoinType domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return JoinTypeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed JoinType GetValue(Join element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.joinTypePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Join element, JoinType newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				JoinType oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.joinTypePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region InputRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InputRole.
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.Join
+		/// </summary>
+		public virtual Role InputRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.JoinDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.JoinDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region OutputRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets OutputRole.
+		/// Description for Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.Join
+		/// </summary>
+		public virtual Role OutputRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.JoinDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.JoinDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region JoinPathOwner opposite domain role accessor
+		/// <summary>
+		/// Gets or sets JoinPathOwner.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.Join
+		/// </summary>
+		public virtual ORMModelElement JoinPathOwner
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinDomainRoleId) as ORMModelElement;
 			}
 		}
 		#endregion

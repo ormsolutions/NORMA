@@ -30,6 +30,8 @@
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
 			<se:OmitRelationship Class="RoleInstance"/>
 			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
+			<se:OmitRelationship Class="JoinHasRole"/>
+			<se:OmitRelationship Class="ORMModelElementHasJoinPath"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<!-- Omitting links to the presentation layers is not strictly required because all
 				 links to external models do not serialize by default, but this one is very common,
@@ -208,7 +210,7 @@
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
 		<se:Link Name="Kind" RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
 	</se:Element>
-	<se:Element Class="ValueTypeHasDataType">
+	<se:Element Class="ValueTypeHasDataType" LinkOnly="true">
 		<se:Attribute ID="Scale">
 			<se:RolePlayed ID="ValueType" Name="Scale"/>
 		</se:Attribute>
@@ -380,7 +382,7 @@
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
-	<se:Element Class="Objectification">
+	<se:Element Class="Objectification" LinkOnly="true">
 		<se:Attribute ID="IsImplied">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -424,6 +426,8 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="JoinHasInputRole" RoleName="Join" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="JoinHasOutputRole" RoleName="Join" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--RoleProxy-->
 	<se:Element Class="RoleProxy" Override="true">
@@ -457,7 +461,10 @@
 	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role" WriteStyle="PrimaryLinkElement"/>
+		<se:Container Name="JoinPath">
+			<se:Embed RelationshipName="ConstraintRoleSequenceHasJoinPath" RoleName="Join"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="SetConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Modality">
@@ -474,14 +481,20 @@
 		</se:Attribute>
 		<se:Container Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role"/>
+			<se:Container Name="JoinPath">
+				<se:Embed RelationshipName="ConstraintRoleSequenceHasJoinPath" RoleName="Join"/>
+			</se:Container>
 		</se:Container>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role" WriteStyle="PrimaryLinkElement"/>
 		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactSetConstraint" RoleName="FactType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ConstraintRoleSequenceHasRole" Name="Role" LinkOnly="true">
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ProjectionJoin" Name="ProjectionJoin"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" Override="true">
 		<se:Attribute ID="IsSimple">
@@ -509,7 +522,7 @@
 		<se:Link RelationshipName="UniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
 	</se:Element>
 
-	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
+	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="EqualityConstraintHasEqualityImpliedByMandatoryError" RoleName="EqualityImpliedByMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -520,6 +533,25 @@
 		<se:Attribute ID="RingType" Name="Type"/>
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraintTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
+
+	<se:Element Class="Join" SortChildElements="true" Override="true">
+		<se:Attribute ID="JoinType" Name="Type">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="JoinType" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Inner" dataTypeName="JoinType" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="JoinHasInputRole" RoleName="Role" Name="InputRole"/>
+		<se:Link RelationshipName="JoinHasOutputRole" RoleName="Role" Name="OutputRole"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ConstraintRoleSequenceHasRole" WriteStyle="NotWritten"/>
+	</se:Element>
+
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
 		<se:Container Name="Constraints">

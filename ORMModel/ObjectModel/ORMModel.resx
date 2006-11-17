@@ -155,6 +155,12 @@
     <value>{0} is involved in {1}</value>
     <comment>The reading for the predicate created implicitly via objectification.There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
   </data>
+	<data name="JoinType.Inner" xml:space="preserve">
+    <value>Inner</value>
+  </data>
+	<data name="JoinType.Outer" xml:space="preserve">
+    <value>Outer</value>
+  </data>
 	<data name="Model.Reading.RoleDeletedText" xml:space="preserve">
     <value>{{deleted}}</value>
     <comment>Text used to replace a role place holder when the role is deleted</comment>

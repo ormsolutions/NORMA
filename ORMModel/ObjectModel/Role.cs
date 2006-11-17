@@ -549,14 +549,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					(e.ModelElement as Role).RolePlayer = e.NewValue as ObjectType;
 				}
-				//else if (attributeGuid == Role.UnaryBinarizationStatusDomainPropertyId)
-				//{
-				//    FactType factType = ((Role)e.ModelElement).FactType;
-				//    if (factType != null)
-				//    {
-				//        ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarizationStatus);
-				//    }
-				//}
 				else if (attributeGuid == Role.ValueRangeTextDomainPropertyId)
 				{
 					Role role = e.ModelElement as Role;
@@ -865,22 +857,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion // Handle ObjectificationOppositeRoleName property changes
 			}
-
-			//private static void DelayValidateUnaryBinarizationStatus(ModelElement element)
-			//{
-			//    FactType factType = (FactType)element;
-			//    if (!factType.IsBinarizedUnary)
-			//    {
-			//        foreach (Role role in factType.RoleCollection)
-			//        {
-			//            if (role.UnaryBinarizationStatus != UnaryBinarizationStatus.NotApplicable)
-			//            {
-			//                // UNDONE: Localize this
-			//                throw new InvalidOperationException("The UnaryBinarizationStatus cannot be changed for a Role that is not part of a binarized unary Fact Type.");
-			//            }
-			//        }
-			//    }
-			//}
 		}
 		#endregion // RoleChangeRule class
 		#region IModelErrorOwner Implementation

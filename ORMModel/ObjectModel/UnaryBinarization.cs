@@ -27,9 +27,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	partial class ImplicitBooleanRole
 	{
 		/// <summary>
-		/// Replaces this <see cref="ImplicitBooleanRole"/> with a real <see cref="Role"/>
+		/// Replaces this <see cref="ImplicitBooleanRole"/> with a real <see cref="Role"/>.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The real <see cref="Role"/>.</returns>
 		public Role ConvertToRealRole()
 		{
 			// Create the replacement role
@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to using closed-world assumption. The caller is responsible for making sure <paramref name="unaryFactType"/>
 		/// is in fact a unary fact type.
 		/// </summary>
-		internal static void BinarizeUnary(FactType unaryFactType)
+		private static void BinarizeUnary(FactType unaryFactType)
 		{
 			Store store = unaryFactType.Store;
 			LinkedElementCollection<RoleBase> roleCollection = unaryFactType.RoleCollection;

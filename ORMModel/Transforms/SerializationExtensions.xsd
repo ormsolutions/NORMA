@@ -97,6 +97,11 @@
 				<xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="LinkOnly" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The class is never used as an element name in a situation where the containing relationship information cannot uniquely identify the type of the opposite role player. Should be true for most relationship classes, unless those relationships are referenced in a ChildElement that contains more than one relationship type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:attributeGroup>
 	<xs:attributeGroup name="AttributeAttributes">
 		<xs:attribute name="Prefix" type="xs:string">

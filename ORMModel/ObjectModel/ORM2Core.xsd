@@ -381,8 +381,8 @@
 	<!--Roles-->
 	<!-- RoleRef, RoleSequence and  RoleSequences define references to roles and collections of roles and collections of collections of roles-->
 	<xs:complexType name="RoleSequences">
-		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="RoleSequence" type="RoleSequence"/>
+		<xs:sequence>
+			<xs:element name="RoleSequence" type="RoleSequenceWithId" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PlayedRoles">
@@ -398,10 +398,27 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RoleSequence">
-		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Role" type="RoleRef"/>
+		<xs:sequence>
+			<xs:element name="Role" type="RoleSequenceRoleRef" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="JoinPath" type="JoinPath" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="RoleSequenceWithId">
+		<xs:complexContent>
+			<xs:extension base="RoleSequence">
+				<xs:attribute name="id" type="xs:ID" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RoleSequenceRoleRef">
+		<xs:complexContent>
+			<xs:extension base="RoleRef">
+				<xs:sequence>
+					<xs:element name="ProjectionJoin" type="JoinRef" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:ID"/>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RoleRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
@@ -413,6 +430,28 @@
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
+	<xs:complexType name="JoinPath">
+		<xs:sequence>
+			<xs:element name="Join" type="Join" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Join">
+		<xs:sequence>
+			<xs:element name="InputRole" type="RoleRef" minOccurs="0"/>
+			<xs:element name="OutputRole" type="RoleRef" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="JoinType" type="JoinType" default="Inner"/>
+	</xs:complexType>
+	<xs:simpleType name="JoinType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Inner"/>
+			<xs:enumeration value="Outer"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="JoinRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
 	<xs:complexType name="Roles">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Role" type="Role"/>
@@ -654,7 +693,7 @@
 		<xs:complexContent>
 			<xs:extension base="Constraint">
 				<xs:sequence>
-					<xs:element name="RoleSequence" type="RoleContainer" minOccurs="0"/>
+					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
