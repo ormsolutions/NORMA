@@ -404,27 +404,27 @@ namespace Neumont.Tools.ORM.Shell
 		}
 	}
 	#endregion // ORMCustomSerializedPropertyInfo class
-	#region ORMCustomSerializedChildElementInfo class
+	#region ORMCustomSerializedContainerElementInfo class
 	/// <summary>
-	/// Custom serialization information for child elements.
+	/// Custom serialization information for container elements.
 	/// </summary>
-	public class ORMCustomSerializedChildElementInfo : ORMCustomSerializedElementInfo
+	public class ORMCustomSerializedContainerElementInfo : ORMCustomSerializedElementInfo
 	{
 		/// <summary>
 		/// Default Constructor
 		/// </summary>
-		protected ORMCustomSerializedChildElementInfo()
+		protected ORMCustomSerializedContainerElementInfo()
 		{
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="customName">The custom name to use.</param>
-		/// <param name="childGuids">The child element guids.</param>
-		public ORMCustomSerializedChildElementInfo(string customName, params Guid[] childGuids)
+		/// <param name="childRoleIds">The domain role ideas of opposite child elements.</param>
+		public ORMCustomSerializedContainerElementInfo(string customName, params Guid[] childRoleIds)
 			: base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null)
 		{
-			myGuidList = childGuids;
+			myGuidList = childRoleIds;
 		}
 		/// <summary>
 		/// Main Constructor
@@ -434,19 +434,19 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="customNamespace">The custom namespace to use.</param>
 		/// <param name="writeStyle">The style to use when writting.</param>
 		/// <param name="doubleTagName">The name of the double tag.</param>
-		/// <param name="childGuids">The child element guids.</param>
-		public ORMCustomSerializedChildElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, params Guid[] childGuids)
+		/// <param name="childRoleIds">The domain role ideas of opposite child elements.</param>
+		public ORMCustomSerializedContainerElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, params Guid[] childRoleIds)
 			: base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
 		{
-			myGuidList = childGuids;
+			myGuidList = childRoleIds;
 		}
 
 		private IList<Guid> myGuidList;
 
 		/// <summary>
-		/// Default ORMCustomSerializedChildElementInfo
+		/// Default ORMCustomSerializedContainerElementInfo
 		/// </summary>
-		public new static readonly ORMCustomSerializedChildElementInfo Default = new ORMCustomSerializedChildElementInfo();
+		public new static readonly ORMCustomSerializedContainerElementInfo Default = new ORMCustomSerializedContainerElementInfo();
 
 		/// <summary>
 		/// Test if the list of child elements contains the specified guid
@@ -455,8 +455,70 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			return myGuidList != null && myGuidList.Contains(guid);
 		}
+		/// <summary>
+		/// Get the outer container of this element. Will be null unless this
+		/// is a ORMCustomSerializedInnerContainerElementInfo instance
+		/// </summary>
+		public virtual ORMCustomSerializedContainerElementInfo OuterContainer
+		{
+			get
+			{
+				return null;
+			}
+		}
 	}
-	#endregion // ORMCustomSerializedChildElementInfo class
+	#endregion // ORMCustomSerializedContainerElementInfo class
+	#region ORMCustomSerializedInnerContainerElementInfo class
+	/// <summary>
+	/// Custom serialization information for nested container elements.
+	/// </summary>
+	public class ORMCustomSerializedInnerContainerElementInfo : ORMCustomSerializedContainerElementInfo
+	{
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		protected ORMCustomSerializedInnerContainerElementInfo()
+		{
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="customName">The custom name to use.</param>
+		/// <param name="outerContainer">The outer container</param>
+		/// <param name="childRoleIds">The domain role ideas of opposite child elements.</param>
+		public ORMCustomSerializedInnerContainerElementInfo(string customName, ORMCustomSerializedContainerElementInfo outerContainer, params Guid[] childRoleIds)
+			: base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null, childRoleIds)
+		{
+			myOuterContainer = outerContainer;
+		}
+		/// <summary>
+		/// Main Constructor
+		/// </summary>
+		/// <param name="customPrefix">The custom prefix to use.</param>
+		/// <param name="customName">The custom name to use.</param>
+		/// <param name="customNamespace">The custom namespace to use.</param>
+		/// <param name="writeStyle">The style to use when writting.</param>
+		/// <param name="doubleTagName">The name of the double tag.</param>
+		/// <param name="outerContainer">The outer container</param>
+		/// <param name="childRoleIds">The domain role ideas of opposite child elements.</param>
+		public ORMCustomSerializedInnerContainerElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, ORMCustomSerializedContainerElementInfo outerContainer, params Guid[] childRoleIds)
+			: base(customPrefix, customName, customNamespace, writeStyle, doubleTagName, childRoleIds)
+		{
+			myOuterContainer = outerContainer;
+		}
+		private ORMCustomSerializedContainerElementInfo myOuterContainer;
+		/// <summary>
+		/// Get the container element for this item
+		/// </summary>
+		public override ORMCustomSerializedContainerElementInfo OuterContainer
+		{
+			get
+			{
+				return myOuterContainer;
+			}
+		}
+	}
+	#endregion // ORMCustomSerializedInnerContainerElementInfo class
 	#region ORMCustomSerializedElementMatch struct
 	/// <summary>
 	/// Data returned by IORMCustomSerializedElement.MapElementName.
@@ -781,7 +843,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// Returns custom serialization information for child elements.
 		/// </summary>
 		/// <returns>Custom serialization information for child elements.</returns>
-		ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo();
+		ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo();
 		/// <summary>
 		/// Returns custom serialization information for elements.
 		/// </summary>
@@ -816,8 +878,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="containerNamespace">The full xml namespace of the container to match. A
 		/// container element is an element with no id or ref parameter.</param>
 		/// <param name="containerName">The local name of the container</param>
+		/// <param name="outerContainerNamespace">The full xml namespace of the outer container to match. An
+		/// outer container element is an element with no id or ref parameter that contains the container.</param>
+		/// <param name="outerContainerName">The local name of the outer container</param>
 		/// <returns>ORMCustomSerializedElementMatch. Use the MatchStyle property to determine levels of success.</returns>
-		ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName);
+		ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName);
 		/// <summary>
 		/// Attempt to map an property name to a custom serialized property
 		/// for this element.
@@ -872,11 +937,10 @@ namespace Neumont.Tools.ORM.Shell
 				case ORMCustomSerializedAttributeWriteStyle.Attribute:
 					return 0;
 				case ORMCustomSerializedAttributeWriteStyle.Element:
-					return 1;
 				case ORMCustomSerializedAttributeWriteStyle.DoubleTaggedElement:
-					return 2;
+					return 1;
 			}
-			return 3;
+			return 2;
 		}
 		/// <summary>
 		/// Used for serializing properties.
@@ -957,7 +1021,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="childElementInfo">The child element info to search.</param>
 		/// <param name="guid">The GUID to find.</param>
 		/// <returns>An index or -1.</returns>
-		private static int FindGuid(ORMCustomSerializedChildElementInfo[] childElementInfo, Guid guid)
+		private static int FindGuid(ORMCustomSerializedContainerElementInfo[] childElementInfo, Guid guid)
 		{
 			int count = childElementInfo.Length;
 
@@ -980,7 +1044,7 @@ namespace Neumont.Tools.ORM.Shell
 		private static void SortProperties(IORMCustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, ref IList<DomainPropertyInfo> properties)
 		{
 			int propertyCount = properties.Count;
-			if (propertyCount > 0)
+			if (propertyCount > 1)
 			{
 				ORMCustomSerializedPropertyInfo[] customInfo = new ORMCustomSerializedPropertyInfo[propertyCount];
 				int[] indices = new int[propertyCount];
@@ -1028,10 +1092,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="customInfo">The customized tag info.</param>
+		/// <param name="containerInfo">The customized tag info for a container element.</param>
 		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="defaultName">The default tag name.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private static bool WriteCustomizedStartElement(XmlWriter file, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, string defaultName)
+		private static bool WriteCustomizedStartElement(XmlWriter file, ORMCustomSerializedElementInfo customInfo, ORMCustomSerializedElementInfo containerInfo, string defaultPrefix, string defaultName)
 		{
 			if (customInfo != null)
 			{
@@ -1046,6 +1111,10 @@ namespace Neumont.Tools.ORM.Shell
 							string prefix = (customInfo.CustomPrefix != null ? customInfo.CustomPrefix : defaultPrefix);
 							string name = (customInfo.CustomName != null ? customInfo.CustomName : defaultName);
 
+							if (containerInfo != null)
+							{
+								WriteCustomizedStartElement(file, containerInfo, null, defaultPrefix, "");
+							}
 							file.WriteStartElement
 							(
 								prefix,
@@ -1063,6 +1132,10 @@ namespace Neumont.Tools.ORM.Shell
 						}
 				}
 
+				if (containerInfo != null)
+				{
+					WriteCustomizedStartElement(file, containerInfo, null, defaultPrefix, "");
+				}
 				file.WriteStartElement
 				(
 					customInfo.CustomPrefix != null ? customInfo.CustomPrefix : defaultPrefix,
@@ -1072,6 +1145,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else
 			{
+				Debug.Assert(containerInfo == null, "Should not have an outer container if an inner container is not supplied");
 				file.WriteStartElement(defaultPrefix, defaultName, null);
 			}
 			return true;
@@ -1340,7 +1414,7 @@ namespace Neumont.Tools.ORM.Shell
 #endif // WRITE_ALL_DEFAULT_LINKS
 			}
 
-			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
+			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
 			{
 				return;
 			}
@@ -1366,7 +1440,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				if (writeChildren)
 				{
-					ORMCustomSerializedChildElementInfo[] childElementInfo;
+					ORMCustomSerializedContainerElementInfo[] childElementInfo;
 					bool groupRoles;
 
 					childElementInfo = ((groupRoles = (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.ChildElementInfo))) ? customElement.GetCustomSerializedChildElementInfo() : null);
@@ -1392,10 +1466,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		/// <param name="oppositeRoleInfo">The opposite role being played.</param>
 		/// <param name="customInfo">The custom element info.</param>
+		/// <param name="containerInfo">The container information to write when customInfo is written.</param>
 		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="writeBeginElement">true to write the begin element tag.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private bool SerializeChildElement(XmlWriter file, ModelElement childElement, DomainRoleInfo rolePlayedInfo, DomainRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, bool writeBeginElement)
+		private bool SerializeChildElement(XmlWriter file, ModelElement childElement, DomainRoleInfo rolePlayedInfo, DomainRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, ORMCustomSerializedContainerElementInfo containerInfo, string defaultPrefix, bool writeBeginElement)
 		{
 			bool ret = false;
 			DomainClassInfo lastChildClass = null;
@@ -1459,7 +1534,7 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (writeBeginElement && !ret && customInfo != null)
 						{
-							if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
+							if (!WriteCustomizedStartElement(file, customInfo, containerInfo, defaultPrefix, customInfo.CustomName))
 							{
 								return false;
 							}
@@ -1519,7 +1594,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return ret;
 		}
-		private void SerializeChildElements(XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedChildElementInfo[] childElementInfo, IList<DomainRoleInfo> rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
+		private void SerializeChildElements(XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedContainerElementInfo[] childElementInfo, IList<DomainRoleInfo> rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
 		{
 			int rolesPlayedCount = rolesPlayed.Count;
 			IORMCustomSerializedDomainModel parentModel = GetParentModel(element);
@@ -1537,63 +1612,101 @@ namespace Neumont.Tools.ORM.Shell
 			//write children
 			if (groupRoles)
 			{
-				bool[] written = new bool[rolesPlayedCount];
+				const byte PENDING = 0;
+				const byte PROCESSED = 1;
+				const byte CONTAINERWRITTEN = 2;
+				byte[] written = new byte[rolesPlayedCount];
+				int writeEndElementCount = 0;
+				ORMCustomSerializedContainerElementInfo lastCustomChildInfo = null;
 
 				for (int index0 = 0; index0 < rolesPlayedCount; ++index0)
 				{
-					if (!written[index0])
+					if (written[index0] == PENDING)
 					{
 						DomainRoleInfo rolePlayedInfo = rolesPlayed[index0];
 						if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 						{
-							written[index0] = true;
+							written[index0] = PROCESSED;
 							continue;
 						}
 						DomainRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
-						ORMCustomSerializedChildElementInfo customChildInfo;
-						bool writeEndElement = false;
-
 						int childIndex = FindGuid(childElementInfo, oppositeRoleInfo.Id);
-						customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
+						ORMCustomSerializedContainerElementInfo customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
 						string defaultChildPrefix = (customChildInfo != null) ? defaultPrefix : null;
+						ORMCustomSerializedContainerElementInfo outerCustomChildInfo = (customChildInfo != null) ? customChildInfo.OuterContainer : null;
+						int outerIndex = (outerCustomChildInfo == null) ? -1 : ((IList<ORMCustomSerializedContainerElementInfo>)childElementInfo).IndexOf(outerCustomChildInfo);
 
-						written[index0] = true;
-						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, true))
+						bool containerAlreadyOpen = false;
+						if (writeEndElementCount != 0 && outerCustomChildInfo == null)
 						{
-							writeEndElement = true;
+							while (writeEndElementCount != 0)
+							{
+								if (customChildInfo != null && lastCustomChildInfo == customChildInfo)
+								{
+									containerAlreadyOpen = true;
+									break;
+								}
+								WriteCustomizedEndElement(file, lastCustomChildInfo);
+								lastCustomChildInfo = (lastCustomChildInfo != null) ? lastCustomChildInfo.OuterContainer : null;
+								--writeEndElementCount;
+							}
+						}
+						lastCustomChildInfo = customChildInfo;
+						int writeEndElementCount0 = writeEndElementCount;
+
+						written[index0] = PROCESSED;
+						bool writeOuter = outerIndex != -1 && written[outerIndex] < CONTAINERWRITTEN;
+						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen))
+						{
+							if (writeOuter)
+							{
+								written[outerIndex] = CONTAINERWRITTEN;
+								++writeEndElementCount;
+							}
+							written[index0] = CONTAINERWRITTEN;
+							++writeEndElementCount;
 						}
 
 						if (customChildInfo != null)
 						{
 							for (int index1 = index0 + 1; index1 < rolesPlayedCount; ++index1)
 							{
-								if (!written[index1])
+								if (written[index1] == PENDING)
 								{
 									rolePlayedInfo = rolesPlayed[index1];
 									if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 									{
-										written[index1] = true;
+										written[index1] = PROCESSED;
 										continue;
 									}
 									oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
 
 									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
 									{
-										written[index1] = true;
-										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, !writeEndElement))
+										writeOuter = outerIndex != -1 && written[outerIndex] < CONTAINERWRITTEN;
+										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen && (writeEndElementCount == writeEndElementCount0)))
 										{
-											writeEndElement = true;
+											if (writeOuter)
+											{
+												written[outerIndex] = CONTAINERWRITTEN;
+												++writeEndElementCount;
+											}
+											written[index1] = CONTAINERWRITTEN;
+											++writeEndElementCount;
 										}
 									}
 								}
 							}
 						}
-
-						if (writeEndElement)
-						{
-							WriteCustomizedEndElement(file, customChildInfo);
-						}
 					}
+				}
+
+				// Close out remaining blocks
+				while (writeEndElementCount != 0)
+				{
+					WriteCustomizedEndElement(file, lastCustomChildInfo);
+					lastCustomChildInfo = (lastCustomChildInfo != null) ? lastCustomChildInfo.OuterContainer : null;
+					--writeEndElementCount;
 				}
 			}
 			else
@@ -1605,7 +1718,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						continue;
 					}
-					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeDomainRole, null, null, true))
+					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeDomainRole, null, null, null, true))
 					{
 						WriteCustomizedEndElement(file, null);
 					}
@@ -1625,9 +1738,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>false if the container element was not written.</returns>
 		private bool SerializeElement(XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, ref string containerName)
 		{
-			if (!ShouldSerializeElement(element)) return true;
+			if (!ShouldSerializeElement(element))
+			{
+				return true;
+			}
 			ORMCustomSerializedElementSupportedOperations supportedOperations;
-			ORMCustomSerializedChildElementInfo[] childElementInfo = null;
+			ORMCustomSerializedContainerElementInfo[] childElementInfo = null;
 			DomainClassInfo classInfo = element.GetDomainClass();
 			ORMCustomSerializedElementInfo customInfo;
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
@@ -1653,7 +1769,10 @@ namespace Neumont.Tools.ORM.Shell
 				if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.ElementInfo) != 0)
 				{
 					customInfo = customElement.CustomSerializedElementInfo;
-					if (customInfo.WriteStyle == ORMCustomSerializedElementWriteStyle.NotWritten) return true;
+					if (customInfo.WriteStyle == ORMCustomSerializedElementWriteStyle.NotWritten)
+					{
+						return true;
+					}
 				}
 				else
 				{
@@ -1669,7 +1788,7 @@ namespace Neumont.Tools.ORM.Shell
 			//write container begin element
 			if (containerName != null)
 			{
-				if (!WriteCustomizedStartElement(file, containerCustomInfo, containerPrefix, containerName))
+				if (!WriteCustomizedStartElement(file, containerCustomInfo, null, containerPrefix, containerName))
 				{
 					return false;
 				}
@@ -1677,7 +1796,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			//write begin element tag
-			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return true;
+			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, classInfo.Name))
+			{
+				return true;
+			}
 			file.WriteAttributeString("id", ToXml(element.Id));
 
 			//write properties
@@ -2268,9 +2390,13 @@ namespace Neumont.Tools.ORM.Shell
 			string namespaceName;
 			string containerName = null;
 			string containerNamespace = null;
+			string outerContainerName = null;
+			string outerContainerNamespace = null;
 			bool testForAggregatingLink = createAggregatingLinkCallback != null && customElement != null && 0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.EmbeddingLinkInfo);
 			IORMCustomSerializedDomainModel containerRestoreCustomModel = null;
 			DomainRoleInfo containerOppositeDomainRole = null;
+			IORMCustomSerializedDomainModel outerContainerRestoreCustomModel = null;
+			DomainRoleInfo outerContainerOppositeDomainRole = null;
 			while (reader.Read())
 			{
 				XmlNodeType outerNodeType = reader.NodeType;
@@ -2294,7 +2420,7 @@ namespace Neumont.Tools.ORM.Shell
 					DomainRoleInfo testAggregatingRole;
 					if (aggregatedClass &&
 						testForAggregatingLink &&
-						(aggregatingLinkMatch = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName)).MatchStyle == ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole &&
+						(aggregatingLinkMatch = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName)).MatchStyle == ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole &&
 						null != (testAggregatingRole = dataDir.FindDomainRole(aggregatingLinkMatch.SingleOppositeDomainRoleId)) &&
 						testAggregatingRole.IsEmbedding)
 					{
@@ -2352,11 +2478,11 @@ namespace Neumont.Tools.ORM.Shell
 							if (aggregatedClass)
 							{
 								// The meta role information should be available from the container name only
-								match = customElement.MapChildElement(null, null, containerNamespace, containerName);
+								match = customElement.MapChildElement(null, null, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 							}
 							else
 							{
-								match = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName);
+								match = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 							}
 							allowDuplicates = match.AllowDuplicates;
 							switch (match.MatchStyle)
@@ -2485,12 +2611,31 @@ namespace Neumont.Tools.ORM.Shell
 									}
 								}
 								// If this is an unrecognized node without an id or ref then push
-								// the container node (we only allow container depth of 1)
-								// and continue to loop.
+								// the container node (we only allow container depth of 2, handled by
+								// outerContainerName blocks) and continue to loop.
 								if (!reader.IsEmptyElement)
 								{
 									containerName = elementName;
 									containerNamespace = namespaceName;
+								}
+								nodeProcessed = true;
+							}
+							else if (outerContainerName == null)
+							{
+								// Push a container level. We handle up to two levels.
+								// Note that nested containers will not happen without explicit
+								// custom serialization, so we don't need to look for the rel.role
+								// element pattern here.
+								if (!reader.IsEmptyElement)
+								{
+									outerContainerName = containerName;
+									outerContainerNamespace = containerNamespace;
+									outerContainerOppositeDomainRole = containerOppositeDomainRole;
+									outerContainerRestoreCustomModel = containerRestoreCustomModel;
+									containerName = elementName;
+									containerNamespace = namespaceName;
+									containerOppositeDomainRole = null;
+									containerRestoreCustomModel = null;
 								}
 								nodeProcessed = true;
 							}
@@ -2640,13 +2785,27 @@ namespace Neumont.Tools.ORM.Shell
 					if (containerName != null)
 					{
 						// Pop the container node
-						containerName = null;
-						containerNamespace = null;
-						containerOppositeDomainRole = null;
-						if (containerRestoreCustomModel != null)
+						if (outerContainerName != null)
 						{
-							customModel = containerRestoreCustomModel;
-							containerRestoreCustomModel = null;
+							containerName = outerContainerName;
+							outerContainerName = null;
+							containerNamespace = outerContainerNamespace;
+							outerContainerNamespace = null;
+							containerOppositeDomainRole = outerContainerOppositeDomainRole;
+							outerContainerOppositeDomainRole = null;
+							containerRestoreCustomModel = outerContainerRestoreCustomModel;
+							outerContainerRestoreCustomModel = null;
+						}
+						else
+						{
+							containerName = null;
+							containerNamespace = null;
+							containerOppositeDomainRole = null;
+							if (containerRestoreCustomModel != null)
+							{
+								customModel = containerRestoreCustomModel;
+								containerRestoreCustomModel = null;
+							}
 						}
 					}
 					else

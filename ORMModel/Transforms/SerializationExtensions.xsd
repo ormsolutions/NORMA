@@ -83,17 +83,12 @@
 	<xs:attributeGroup name="ElementAttributes">
 		<xs:attribute name="Prefix" type="xs:string">
 			<xs:annotation>
-				<xs:documentation>The new prefix.</xs:documentation>
+				<xs:documentation>A prefix chosen from the list of supported Namespace prefixes. The default prefix is used if Prefix is not specified, except for attributes, where unqualified attributes are the default.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="Name" type="xs:string">
 			<xs:annotation>
-				<xs:documentation>The new name.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="Namespace" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>The new namespace.</xs:documentation>
+				<xs:documentation>The name of the element or attribute</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="WriteStyle" type="ElementWriteStyle"/>
@@ -114,12 +109,7 @@
 				<xs:documentation>The new name.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Namespace" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>The new namespace.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="WriteCustomStorage" type="xs:boolean">
+		<xs:attribute name="WriteCustomStorage" type="canonicalBoolean">
 			<xs:annotation>
 				<xs:documentation>true to write attributes that are custom storage.</xs:documentation>
 			</xs:annotation>
@@ -135,7 +125,7 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:attributeGroup>
-	<xs:attributeGroup name="ChildAttributes">
+	<xs:attributeGroup name="EmbedAttributes">
 		<xs:attribute name="RelationshipName" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The relationship name.</xs:documentation>
@@ -148,7 +138,7 @@
 		</xs:attribute>
 	</xs:attributeGroup>
 	<xs:attributeGroup name="LinkAttributes">
-		<xs:attributeGroup ref="ChildAttributes"/>
+		<xs:attributeGroup ref="EmbedAttributes"/>
 		<!-- The default here has positive length default instead of an optional use so that it can participate in a key-->
 		<xs:attribute name="CreateAsRelationshipName" type="xs:string" default=" ">
 			<xs:annotation>
@@ -226,6 +216,17 @@
 							<xs:field xpath="@RoleName" />
 							<xs:field xpath="@CreateAsRelationshipName" />
 						</xs:keyref>
+						<xs:keyref refer="ElementLinkKey" name="DoubleContainedElementLinkKeyRef">
+							<xs:selector xpath="se:Container/se:Container/se:Link" />
+							<xs:field xpath="@RelationshipName" />
+							<xs:field xpath="@RoleName" />
+							<xs:field xpath="@CreateAsRelationshipName" />
+						</xs:keyref>
+						<xs:unique name="UniqueLinkEmbed">
+							<xs:selector xpath="se:Link | se:Container/se:Embed | se:Container/se:Container/se:Embed"/>
+							<xs:field xpath="@RelationshipName"/>
+							<xs:field xpath="@RoleName"/>
+						</xs:unique>
 					</xs:element>
 				</xs:choice>
 			</xs:sequence>
@@ -259,7 +260,7 @@
 										<xs:documentation>A schema file name with no path. The file must be built into the model's assembly as an embedded resource with the same namespace as the DomainModel. This is most easily done by placing the schema file in the same directory as the model file, and making the namespace for the model file correspond to the default namespace for the directory (the project default namespace with the directory path appended)</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
-								<xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
+								<xs:attribute name="DefaultPrefix" type="canonicalBoolean" default="false">
 									<xs:annotation>
 										<xs:documentation>The default prefix for all elements in this DomainModel</xs:documentation>
 									</xs:annotation>
@@ -346,7 +347,7 @@
 				<xs:documentation>The class to add the namespaces to.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Sealed" type="xs:boolean" default="false">
+		<xs:attribute name="Sealed" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Set to true if this DomainModel class is sealed (cannot be inherited from).</xs:documentation>
 			</xs:annotation>
@@ -411,14 +412,14 @@
 						<xs:sequence>
 							<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:sequence>
-						<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+						<xs:attribute name="NotSorted" type="canonicalBoolean" default="false">
 							<xs:annotation>
 								<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
 						<xs:attributeGroup ref="LinkAttributes"/>
 						<xs:attributeGroup ref="ElementAttributes"/>
-						<xs:attribute name="AllowDuplicates" type="xs:boolean">
+						<xs:attribute name="AllowDuplicates" type="canonicalBoolean">
 							<xs:annotation>
 								<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>
 							</xs:annotation>
@@ -432,23 +433,18 @@
 				<xs:documentation>The class to add the element extensions to.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="HasMixedTypedAttributes" type="xs:boolean">
-			<xs:annotation>
-				<xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+		<xs:attribute name="SortChildElements" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>All link and container elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attributeGroup ref="ElementAttributes"/>
-		<xs:attribute name="Override" type="xs:boolean" default="false">
+		<xs:attribute name="Override" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Set to true if this element class is derived from another custom serialized element. The assumption is made that the base class' custom serialization implementation is compatible with the current standard generated code.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Sealed" type="xs:boolean" default="false">
+		<xs:attribute name="Sealed" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Set to true if this element class is sealed (cannot be inherited from).</xs:documentation>
 			</xs:annotation>
@@ -458,34 +454,60 @@
 		<xs:sequence>
 			<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:choice minOccurs="1" maxOccurs="unbounded">
-				<xs:element name="Embed">
+				<xs:group ref="containerElements"/>
+				<xs:element name="Container">
 					<xs:annotation>
-						<xs:documentation>An embedded child element. Embedded elements get all custom xml information from their corresponding Element definitions.</xs:documentation>
+						<xs:documentation>A nested container. Nested containers must be sorted, so a NotSorted attribute is not provided.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:attributeGroup ref="LinkAttributes"/>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Link">
-					<xs:annotation>
-						<xs:documentation>A link element grouped inside a container element. The attributes specified here must match a corresponding Link element directly inside an Element node.</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:attributeGroup ref="LinkAttributes"/>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:group ref="containerElements"/>
+						</xs:choice>
+						<xs:attributeGroup ref="ElementAttributes"/>
+						<xs:attribute name="SortChildElements" type="canonicalBoolean" default="false">
+							<xs:annotation>
+								<xs:documentation>If this is set, order the roles within the container element along with the position of the container element itself.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 		</xs:sequence>
-		<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+		<xs:attribute name="SortChildElements" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>If this is set, order the roles within the container element along with the position of the container element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+		<xs:attribute name="NotSorted" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attributeGroup ref="ElementAttributes"/>
 	</xs:complexType>
+	<xs:group name="containerElements">
+		<xs:choice>
+			<xs:element name="Embed">
+				<xs:annotation>
+					<xs:documentation>An embedded child element. Embedded elements get all custom xml information from their corresponding Element definitions.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attributeGroup ref="EmbedAttributes"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Link">
+				<xs:annotation>
+					<xs:documentation>A link element grouped inside a container element. The attributes specified here must match a corresponding Link element directly inside an Element node.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attributeGroup ref="LinkAttributes"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:simpleType name="canonicalBoolean">
+		<xs:restriction base="xs:boolean">
+			<xs:pattern value="true|false"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

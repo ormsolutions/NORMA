@@ -204,7 +204,7 @@
 		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true" SortChildElements="true" Override="true">
+	<se:Element Class="CustomReferenceMode" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
 		<se:Link Name="Kind" RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
 	</se:Element>
@@ -366,7 +366,7 @@
 		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="Expression" Override="true" HasMixedTypedAttributes="true">
+	<se:Element Class="Expression" Override="true">
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Attribute ID="Body" WriteStyle="Element"/>
 	</se:Element>
@@ -400,7 +400,7 @@
 		</se:Container>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="Role" Name="Role"/>
 	</se:Element>
-	<se:Element Class="Reading" HasMixedTypedAttributes="true" Override="true">
+	<se:Element Class="Reading" Override="true">
 		<se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="TooManyRolesError" WriteStyle="NotWritten"/>

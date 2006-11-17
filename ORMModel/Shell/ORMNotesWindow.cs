@@ -140,9 +140,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		void myTextBox_LostFocus(object sender, EventArgs e)
 		{
-			if (mySelectedNoteOwners.Count == 1 && myTextBox.Enabled)	// If we only have one selected note and the textbox is enabled,
+			List<INoteOwner> owners = mySelectedNoteOwners;
+			if (owners != null && owners.Count == 1 && myTextBox.Enabled)	// If we only have one selected note and the textbox is enabled,
 			{
-				SetNote(mySelectedNoteOwners[0], myTextBox.Text);	// try to set the note.
+				SetNote(owners[0], myTextBox.Text);	// try to set the note.
 			}
 		}
 		#endregion // Event handlers

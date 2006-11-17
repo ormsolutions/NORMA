@@ -153,11 +153,11 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
 		/// </summary>
-		protected ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
@@ -220,13 +220,13 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			return default(ORMCustomSerializedElementMatch);
 		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute
@@ -296,7 +296,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ObjectTypeRequiresMeaningfulNameError.myChildElementMappings;
 			if (childElementMappings == null)
@@ -304,19 +304,19 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ExtensionExample|ObjectType", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/ExtensionExample|ObjectType", match);
 				ObjectTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
-			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
+			if (!(childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal)))
 			{
-				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 			}
 			return rVal;
 		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 	}
 	#endregion // ObjectTypeRequiresMeaningfulNameError serialization

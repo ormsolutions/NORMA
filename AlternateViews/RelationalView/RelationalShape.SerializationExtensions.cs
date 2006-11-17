@@ -180,11 +180,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
 		/// </summary>
-		protected ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
@@ -287,13 +287,13 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			return default(ORMCustomSerializedElementMatch);
 		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute
@@ -342,11 +342,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
 		/// </summary>
-		protected ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
@@ -427,7 +427,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapChildElement
 		/// </summary>
-		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = RelationalModel.myChildElementMappings;
 			if (childElementMappings == null)
@@ -435,16 +435,16 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(RelationalModelHasOIALModel.OIALModelDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Views/RelationalView|OIALModel", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Views/RelationalView|OIALModel", match);
 				RelationalModel.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
-			childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
+			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
 			return rVal;
 		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute

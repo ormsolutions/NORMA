@@ -97,7 +97,7 @@
 							<xsl:with-param name="links" select="boolean(se:Link)"/>
 							<xsl:with-param name="aggregatingLinks" select="boolean(se:Link[@WriteStyle='EmbeddingLinkElement'])"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
-							<xsl:with-param name="mixedTypedAttributes" select="@HasMixedTypedAttributes='true'"/>
+							<xsl:with-param name="mixedTypedAttributes" select="boolean(se:Attribute[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement'])"/>
 						</xsl:call-template>
 					</xsl:variable>
 					<plx:return>
@@ -119,10 +119,11 @@
 					</plx:return>
 				</plx:get>
 			</plx:property>
-			<xsl:variable name="childElementCount" select="count(se:Container)"/>
-			<xsl:variable name="haveCustomChildInfo" select="0!=$childElementCount"/>
+			<xsl:variable name="allContainers" select=".//se:Container"/>
+			<xsl:variable name="containerElementCount" select="count($allContainers)"/>
+			<xsl:variable name="haveCustomChildInfo" select="boolean($containerElementCount)"/>
 			<xsl:if test="$haveCustomChildInfo">
-				<plx:field visibility="private" static="true" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="myCustomSerializedChildElementInfo"/>
+				<plx:field visibility="private" static="true" dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true" name="myCustomSerializedChildElementInfo"/>
 			</xsl:if>
 			<xsl:if test="$haveCustomChildInfo or not($ClassOverride)">
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedChildElementInfo" replacesName="{$ClassOverride}">
@@ -132,10 +133,10 @@
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedChildElementInfo"/>
-					<plx:returns dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true"/>
+					<plx:returns dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true"/>
 					<xsl:choose>
 						<xsl:when test="$haveCustomChildInfo">
-							<plx:local dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="ret">
+							<plx:local dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true" name="ret">
 								<plx:initialize>
 									<plx:callStatic dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" type="field"/>
 								</plx:initialize>
@@ -152,7 +153,7 @@
 									</plx:binaryOperator>
 								</plx:condition>
 								<xsl:if test="$ClassOverride">
-									<plx:local name="baseInfo" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true">
+									<plx:local name="baseInfo" dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
 										<plx:initialize>
 											<plx:nullKeyword/>
 										</plx:initialize>
@@ -219,7 +220,7 @@
 										<plx:nameRef name="ret"/>
 									</plx:left>
 									<plx:right>
-										<plx:callNew dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true">
+										<plx:callNew dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
 											<plx:passParam>
 												<xsl:choose>
 													<xsl:when test="$ClassOverride">
@@ -228,12 +229,12 @@
 																<plx:nameRef name="baseInfoCount"/>
 															</plx:left>
 															<plx:right>
-																<plx:value type="i4" data="{$childElementCount}"/>
+																<plx:value type="i4" data="{$containerElementCount}"/>
 															</plx:right>
 														</plx:binaryOperator>
 													</xsl:when>
 													<xsl:otherwise>
-														<plx:value type="i4" data="{$childElementCount}"/>
+														<plx:value type="i4" data="{$containerElementCount}"/>
 													</xsl:otherwise>
 												</xsl:choose>
 											</plx:passParam>
@@ -260,40 +261,92 @@
 												<plx:nameRef name="ret"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:value type="i4" data="{$childElementCount}"/>
+												<plx:value type="i4" data="{$containerElementCount}"/>
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:branch>
 								</xsl:if>
-								<xsl:for-each select="se:Container">
-									<xsl:variable name="index" select="position()-1"/>
-									<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
-										<xsl:with-param name="modifier" select="$index"/>
-									</xsl:call-template>
-									<plx:assign>
-										<plx:left>
-											<plx:callInstance name=".implied" type="arrayIndexer">
-												<plx:callObject>
-													<plx:nameRef name="ret"/>
-												</plx:callObject>
-												<plx:passParam>
-													<plx:value type="i4" data="{$index}"/>
-												</plx:passParam>
-											</plx:callInstance>
-										</plx:left>
-										<plx:right>
-											<plx:callNew dataTypeName="ORMCustomSerializedChildElementInfo">
-												<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
-													<xsl:with-param name="modifier" select="$index"/>
-												</xsl:call-template>
-												<xsl:for-each select="se:Link | se:Embed">
+								<xsl:for-each select="$allContainers">
+									<!-- Handle nested containers in line, but put them in the outer set to get an accurate index -->
+									<xsl:if test="not(parent::se:Container)">
+										<xsl:if test="@NotSorted='true' and se:Container">
+											<xsl:message terminate="yes">
+												<xsl:text>Nested Container elements are not compatible with the @NotSorted="true" value for the '</xsl:text>
+												<xsl:value-of select="@Name"/>
+												<xsl:text>' container in the Element with @Class '</xsl:text>
+												<xsl:value-of select="../@Class"/>
+												<xsl:text>'.</xsl:text>
+											</xsl:message>
+										</xsl:if>
+										<xsl:variable name="outerIndex" select="position()-1"/>
+										<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+											<xsl:with-param name="modifier" select="$outerIndex"/>
+										</xsl:call-template>
+										<plx:assign>
+											<plx:left>
+												<plx:callInstance name=".implied" type="arrayIndexer">
+													<plx:callObject>
+														<plx:nameRef name="ret"/>
+													</plx:callObject>
 													<plx:passParam>
-														<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
+														<plx:value type="i4" data="{$outerIndex}"/>
 													</plx:passParam>
-												</xsl:for-each>
-											</plx:callNew>
-										</plx:right>
-									</plx:assign>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:callNew dataTypeName="ORMCustomSerializedContainerElementInfo">
+													<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+														<xsl:with-param name="modifier" select="$outerIndex"/>
+													</xsl:call-template>
+													<xsl:for-each select="se:Link | se:Embed">
+														<plx:passParam>
+															<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
+														</plx:passParam>
+													</xsl:for-each>
+												</plx:callNew>
+											</plx:right>
+										</plx:assign>
+										<xsl:for-each select="se:Container">
+											<xsl:variable name="innerIndex" select="$outerIndex + position()"/>
+											<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+												<xsl:with-param name="modifier" select="$innerIndex"/>
+											</xsl:call-template>
+											<plx:assign>
+												<plx:left>
+													<plx:callInstance name=".implied" type="arrayIndexer">
+														<plx:callObject>
+															<plx:nameRef name="ret"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:value type="i4" data="{$innerIndex}"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:left>
+												<plx:right>
+													<plx:callNew dataTypeName="ORMCustomSerializedInnerContainerElementInfo">
+														<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+															<xsl:with-param name="modifier" select="$innerIndex"/>
+														</xsl:call-template>
+														<plx:passParam>
+															<plx:callInstance name=".implied" type="arrayIndexer">
+																<plx:callObject>
+																	<plx:nameRef name="ret"/>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:value type="i4" data="{$outerIndex}"/>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:passParam>
+														<xsl:for-each select="se:Link | se:Embed">
+															<plx:passParam>
+																<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
+															</plx:passParam>
+														</xsl:for-each>
+													</plx:callNew>
+												</plx:right>
+											</plx:assign>
+										</xsl:for-each>
+									</xsl:if>
 								</xsl:for-each>
 								<plx:assign>
 									<plx:left>
@@ -361,7 +414,7 @@
 											<plx:left>
 												<plx:callInstance type="property" name="Id">
 													<plx:callObject>
-														<plx:nameRef type="parameter" name="domainPropertyInfo"/>
+														<plx:nameRef name="domainPropertyInfo" type="parameter"/>
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:left>
@@ -377,7 +430,7 @@
 													<plx:left>
 														<plx:callInstance type="property" name="Id">
 															<plx:callObject>
-																<plx:nameRef type="parameter" name="rolePlayedInfo"/>
+																<plx:nameRef name="rolePlayedInfo" type="parameter"/>
 															</plx:callObject>
 														</plx:callInstance>
 													</plx:left>
@@ -414,10 +467,10 @@
 									<plx:return>
 										<plx:callThis accessor="base" name="GetCustomSerializedPropertyInfo">
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="domainPropertyInfo"/>
+												<plx:nameRef name="domainPropertyInfo" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="rolePlayedInfo"/>
+												<plx:nameRef name="rolePlayedInfo" type="parameter"/>
 											</plx:passParam>
 										</plx:callThis>
 									</plx:return>
@@ -453,7 +506,7 @@
 								<plx:initialize>
 									<plx:callInstance type="property" name="Id">
 										<plx:callObject>
-											<plx:nameRef type="parameter" name="rolePlayedInfo"/>
+											<plx:nameRef name="rolePlayedInfo" type="parameter"/>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:initialize>
@@ -588,10 +641,10 @@
 									<plx:return>
 										<plx:callThis accessor="base" name="GetCustomSerializedLinkInfo">
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="rolePlayedInfo"/>
+												<plx:nameRef name="rolePlayedInfo" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="elementLink"/>
+												<plx:nameRef name="elementLink" type="parameter"/>
 											</plx:passParam>
 										</plx:callThis>
 									</plx:return>
@@ -608,6 +661,13 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</plx:function>
+			</xsl:if>
+			<xsl:if test="not(@SortChildElements='true') and se:Container/se:Container">
+				<xsl:message terminate="yes">
+					<xsl:text>Nested Container elements require Element/@SortChildElements to be true for the Element with @Class '</xsl:text>
+					<xsl:value-of select="@Class"/>
+					<xsl:text>'.</xsl:text>
+				</xsl:message>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@SortChildElements='true'">
@@ -638,14 +698,14 @@
 										<plx:callThis name="myBaseComparer" type="field"/>
 									</plx:left>
 									<plx:right>
-										<plx:nameRef type="parameter" name="baseComparer"/>
+										<plx:nameRef name="baseComparer" type="parameter"/>
 									</plx:right>
 								</plx:assign>
 							</xsl:if>
 							<xsl:variable name="SortedLevelsFragment">
 								<!-- ChildElement/Link links may have more information in Link. Just use
 								     the ChildElement one. -->
-								<xsl:variable name="childLinks" select="se:Container[not(@NotSorted='true')]/se:*[self::se:Link | self::se:Embed]"/>
+								<xsl:variable name="childLinks" select="se:Container[not(@NotSorted='true')]/descendant::se:*[self::se:Link | self::se:Embed]"/>
 								<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
 								<xsl:for-each select="se:Link | se:Container">
 									<xsl:if test="not(@NotSorted='true')">
@@ -661,12 +721,36 @@
 											</xsl:when>
 											<xsl:when test="self::se:Container">
 												<xsl:choose>
-													<xsl:when test="@SortChildElements='true'">
+													<xsl:when test="@SortChildElements='true' or se:Container">
 														<!-- Add one sort level for each child -->
-														<xsl:for-each select="se:Link | se:Embed">
-															<SortLevel>
-																<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-															</SortLevel>
+														<xsl:for-each select="se:Link | se:Embed | se:Container">
+															<xsl:choose>
+																<xsl:when test="self::se:Container">
+																	<xsl:choose>
+																		<xsl:when test="@SortChildElements='true'">
+																			<!-- Add one sort level for each nested child -->
+																			<xsl:for-each select="se:Link | se:Embed">
+																				<SortLevel>
+																					<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+																				</SortLevel>
+																			</xsl:for-each>
+																		</xsl:when>
+																		<xsl:otherwise>
+																			<!-- Add one sort level for all nested children -->
+																			<SortLevel>
+																				<xsl:for-each select="se:Link | se:Embed">
+																					<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+																				</xsl:for-each>
+																			</SortLevel>
+																		</xsl:otherwise>
+																	</xsl:choose>
+																</xsl:when>
+																<xsl:otherwise>
+																	<SortLevel>
+																		<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+																	</SortLevel>
+																</xsl:otherwise>
+															</xsl:choose>
 														</xsl:for-each>
 													</xsl:when>
 													<xsl:otherwise>
@@ -688,7 +772,7 @@
 								<plx:initialize>
 									<plx:callInstance name="DomainDataDirectory" type="property">
 										<plx:callObject>
-											<plx:nameRef type="parameter" name="store"/>
+											<plx:nameRef name="store" type="parameter"/>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:initialize>
@@ -783,10 +867,10 @@
 													<plx:callThis name="myBaseComparer" type="field"/>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:nameRef type="parameter" name="x"/>
+													<plx:nameRef name="x" type="parameter"/>
 												</plx:passParam>
 												<plx:passParam>
-													<plx:nameRef type="parameter" name="y"/>
+													<plx:nameRef name="y" type="parameter"/>
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:initialize>
@@ -824,7 +908,7 @@
 												<plx:passParam type="in">
 													<xsl:call-template name="DomainRoleInfoFullName">
 														<xsl:with-param name="DomainRoleInfoExpression">
-															<plx:nameRef type="parameter" name="{.}"/>
+															<plx:nameRef name="{.}" type="parameter"/>
 														</xsl:with-param>
 													</xsl:call-template>
 												</plx:passParam>
@@ -978,28 +1062,13 @@
 						<!-- Use default for prefix parameter -->
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:variable name="linksInChildElementFragment">
-					<xsl:for-each select="se:Container/se:Link">
-						<xsl:copy>
-							<xsl:copy-of select="@*"/>
-							<xsl:for-each select="parent::se:Container">
-								<xsl:attribute name="ContainerName">
-									<xsl:value-of select="@Name"/>
-								</xsl:attribute>
-								<xsl:attribute name="ContainerPrefix">
-									<xsl:value-of select="@Prefix"/>
-								</xsl:attribute>
-							</xsl:for-each>
-						</xsl:copy>
-					</xsl:for-each>
-				</xsl:variable>
-				<xsl:variable name="linksInChildElement" select="exsl:node-set($linksInChildElementFragment)/child::*"/>
-				<xsl:variable name="containerElements" select="se:Container"/>
+				<xsl:variable name="linksInContainerElement" select="se:Container//se:Link"/>
+				<xsl:variable name="containerElements" select="$allContainers"/>
 				<xsl:variable name="allLinksTemp">
 					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten') or se:ConditionalName[not(@WriteStyle='NotWritten')]]">
 						<xsl:copy>
 							<xsl:copy-of select="@*"/>
-							<xsl:if test="$linksInChildElement[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and normalize-space(@CreateAsRelationshipName)=normalize-space(current()/@CreateAsRelationshipName)]">
+							<xsl:if test="$linksInContainerElement[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and normalize-space(@CreateAsRelationshipName)=normalize-space(current()/@CreateAsRelationshipName)]">
 								<xsl:attribute name="contained">
 									<xsl:value-of select="true()"/>
 								</xsl:attribute>
@@ -1017,7 +1086,7 @@
 				<xsl:for-each select="$allLinks">
 					<xsl:choose>
 						<!-- Walk the $allLinks, then add the ones that are
-						NOT contained in $linksInChildElement -->
+						NOT contained in $linksInContainerElement -->
 						<xsl:when test="not(@contained)">
 							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
 							<plx:callInstance name="InitializeRoles">
@@ -1029,7 +1098,7 @@
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
-								<xsl:if test="@AllowDuplicates='true' or @AllowDuplicates=1">
+								<xsl:if test="@AllowDuplicates='true'">
 									<plx:passParam>
 										<plx:trueKeyword/>
 									</plx:passParam>
@@ -1049,7 +1118,7 @@
 								</plx:callObject>
 								<plx:passParam>
 									<plx:string>
-										<plx:string>||</plx:string>
+										<plx:string>||||</plx:string>
 										<plx:string>
 											<xsl:call-template name="ResolveNamespace">
 												<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1069,9 +1138,10 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:for-each>
-				<!-- Walk $linksInChildElements, then add the ones that
+				<!-- Walk $linksInContainerElements, then add the ones that
 				INTERSECT with the $allLinks list to the dictionary. -->
 				<xsl:for-each select="$containerElements">
+					<xsl:variable name="outerContainer" select="parent::se:Container"/>
 					<xsl:variable name="localLinksFragment">
 						<xsl:for-each select="se:Link">
 							<xsl:variable name="relationshipName" select="@RelationshipName"/>
@@ -1107,9 +1177,33 @@
 					</xsl:variable>
 					<xsl:variable name="localLinks" select="exsl:node-set($localLinksFragment)/child::*"/>
 					<xsl:if test="$localLinks">
-						<xsl:variable name="containerName" select="@Name"/>
+						<xsl:variable name="outerContainerName" select="string($outerContainer/@Name)"/>
+						<xsl:variable name="outerContainerNamespaceFragment">
+							<xsl:for-each select="$outerContainer">
+								<xsl:call-template name="ResolveNamespace">
+									<xsl:with-param name="namespaces" select="$namespaces"/>
+									<!-- Use default for prefix parameter -->
+								</xsl:call-template>
+							</xsl:for-each>
+						</xsl:variable>
+						<xsl:variable name="outerContainerNamespace" select="string($outerContainerNamespaceFragment)"/>
+						<xsl:variable name="containerName" select="string(@Name)"/>
+						<xsl:variable name="containerNamespaceFragment">
+							<xsl:call-template name="ResolveNamespace">
+								<xsl:with-param name="namespaces" select="$namespaces"/>
+								<!-- Use default for prefix parameter -->
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:variable name="containerNamespace" select="string($containerNamespaceFragment)"/>
 						<xsl:for-each select="$localLinks">
 							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
+							<xsl:variable name="elementNamespaceFragment">
+								<xsl:call-template name="ResolveNamespace">
+									<xsl:with-param name="namespaces" select="$namespaces"/>
+									<!-- Use default for prefix parameter -->
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:variable name="elementNamespace" select="string($elementNamespaceFragment)"/>
 							<plx:callInstance name="InitializeRoles">
 								<xsl:if test="$createAsRelationshipName">
 									<xsl:attribute name="name">
@@ -1119,7 +1213,7 @@
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
-								<xsl:if test="@AllowDuplicates='true' or @AllowDuplicates=1">
+								<xsl:if test="@AllowDuplicates='true'">
 									<plx:passParam>
 										<plx:trueKeyword/>
 									</plx:passParam>
@@ -1140,29 +1234,15 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:string>
-											<plx:string>
-												<xsl:call-template name="ResolveNamespace">
-													<xsl:with-param name="namespaces" select="$namespaces"/>
-													<!-- Use default for prefix parameter -->
-												</xsl:call-template>
-											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<plx:string>
-													<xsl:value-of select="$containerName"/>
-												</plx:string>
-											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<xsl:call-template name="ResolveNamespace">
-													<xsl:with-param name="namespaces" select="$namespaces"/>
-													<!-- Use default for prefix parameter -->
-												</xsl:call-template>
-											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<xsl:value-of select="@Name"/>
-											</plx:string>
+											<plx:string data="{$outerContainerNamespace}|{$outerContainerName}|"/>
+											<xsl:if test="$outerContainerNamespace!=$containerNamespace">
+												<plx:string data="{$containerNamespace}"/>
+											</xsl:if>
+											<plx:string data="|{$containerName}|"/>
+											<xsl:if test="$elementNamespace!=$containerNamespace">
+												<plx:string data="{$elementNamespace}"/>
+											</xsl:if>
+											<plx:string data="|{@Name}"/>
 										</plx:string>
 									</plx:passParam>
 									<plx:passParam>
@@ -1178,27 +1258,15 @@
 									<plx:passParam>
 										<plx:string>
 											<plx:string>
-												<xsl:call-template name="ResolveNamespace">
-													<xsl:with-param name="namespaces" select="$namespaces"/>
-													<!-- Use default for prefix parameter -->
-												</xsl:call-template>
-											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<plx:string>
-													<xsl:value-of select="$containerName"/>
-												</plx:string>
-											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<xsl:call-template name="ResolveNamespace">
-													<xsl:with-param name="namespaces" select="$namespaces"/>
-													<!-- Use default for prefix parameter -->
-												</xsl:call-template>
-											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<xsl:value-of select="@Name"/>
+												<plx:string data="{$outerContainerNamespace}|{$outerContainerName}|"/>
+												<xsl:if test="$outerContainerNamespace!=$containerNamespace">
+													<plx:string data="{$containerNamespace}"/>
+												</xsl:if>
+												<plx:string data="|{$containerName}|"/>
+												<xsl:if test="$elementNamespace!=$containerNamespace">
+													<plx:string data="{$elementNamespace}"/>
+												</xsl:if>
+												<plx:string data="|{@Name}"/>
 											</plx:string>
 										</plx:string>
 									</plx:passParam>
@@ -1211,10 +1279,10 @@
 					</xsl:if>
 				</xsl:for-each>
 
-				<!-- Walk $linksInChildElements, then add the ones that are
+				<!-- Walk $linksInContainerElements, then add the ones that are
 				NOT in the $allLinks list to the dictionary. -->
 				<xsl:for-each select="$containerElements">
-					<xsl:variable name="linksFragment">
+					<xsl:variable name="embedsFragment">
 						<xsl:for-each select="se:Embed">
 							<xsl:variable name="relationshipName" select="string(@RelationshipName)"/>
 							<xsl:variable name="roleName" select="string(@RoleName)"/>
@@ -1233,9 +1301,9 @@
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:variable name="links" select="exsl:node-set($linksFragment)/child::*"/>
-					<xsl:if test="$links">
-						<xsl:variable name="explicitCreateParam" select="$links/self::explicitCreateMarker/plx:passParam"/>
+					<xsl:variable name="embeds" select="exsl:node-set($embedsFragment)/child::*"/>
+					<xsl:if test="$embeds">
+						<xsl:variable name="explicitCreateParam" select="$embeds/self::explicitCreateMarker/plx:passParam"/>
 						<xsl:choose>
 							<xsl:when test="$explicitCreateParam">
 								<plx:callInstance name="InitializeRolesWithExplicitRelationship">
@@ -1243,7 +1311,7 @@
 										<plx:nameRef name="match"/>
 									</plx:callObject>
 									<xsl:copy-of select="$explicitCreateParam"/>
-									<xsl:copy-of select="$links/self::plx:passParam"/>
+									<xsl:copy-of select="$embeds/self::plx:passParam"/>
 								</plx:callInstance>
 							</xsl:when>
 							<xsl:otherwise>
@@ -1251,29 +1319,38 @@
 									<plx:callObject>
 										<plx:nameRef name="match"/>
 									</plx:callObject>
-									<xsl:copy-of select="$links/self::plx:passParam"/>
+									<xsl:copy-of select="$embeds/self::plx:passParam"/>
 								</plx:callInstance>
 							</xsl:otherwise>
 						</xsl:choose>
+						<xsl:variable name="outerContainer" select="parent::se:Container"/>
+						<xsl:variable name="outerContainerNamespaceFragment">
+							<xsl:for-each select="$outerContainer">
+								<xsl:call-template name="ResolveNamespace">
+									<xsl:with-param name="namespaces" select="$namespaces"/>
+									<!-- Use default for prefix parameter -->
+								</xsl:call-template>
+							</xsl:for-each>
+						</xsl:variable>
+						<xsl:variable name="outerContainerNamespace" select="string($outerContainerNamespaceFragment)"/>
+						<xsl:variable name="containerNamespaceFragment">
+							<xsl:call-template name="ResolveNamespace">
+								<xsl:with-param name="namespaces" select="$namespaces"/>
+								<!-- Use default for prefix parameter -->
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:variable name="containerNamespace" select="string($containerNamespaceFragment)"/>
 						<plx:callInstance name="Add">
 							<plx:callObject>
 								<plx:nameRef name="childElementMappings"/>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:string>
-									<plx:string>
-										<xsl:call-template name="ResolveNamespace">
-											<xsl:with-param name="namespaces" select="$namespaces"/>
-											<!-- Use default for prefix parameter -->
-										</xsl:call-template>
-									</plx:string>
-									<plx:string>|</plx:string>
-									<plx:string>
-										<plx:string>
-											<xsl:value-of select="@Name"/>
-										</plx:string>
-									</plx:string>
-									<plx:string>||</plx:string>
+									<plx:string data="{$outerContainerNamespace}|{$outerContainer/@Name}|"/>
+									<xsl:if test="$outerContainerNamespace!=$containerNamespace">
+										<plx:string data="{$containerNamespace}"/>
+									</xsl:if>
+									<plx:string data="|{@Name}||"/>
 								</plx:string>
 							</plx:passParam>
 							<plx:passParam>
@@ -1311,7 +1388,7 @@
 						</plx:callObject>
 						<plx:passParam>
 							<plx:string>
-								<plx:string>||</plx:string>
+								<plx:string>||||</plx:string>
 								<plx:string>
 									<xsl:call-template name="ResolveNamespace">
 										<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1357,21 +1434,29 @@
 					<plx:param dataTypeName=".string" name="elementName"/>
 					<plx:param dataTypeName=".string" name="containerNamespace"/>
 					<plx:param dataTypeName=".string" name="containerName"/>
+					<plx:param dataTypeName=".string" name="outerContainerNamespace"/>
+					<plx:param dataTypeName=".string" name="outerContainerName"/>
 					<plx:returns dataTypeName="ORMCustomSerializedElementMatch"/>
 					<xsl:variable name="forwardToBase">
 						<xsl:if test="$ClassOverride">
 							<plx:callThis accessor="base" name="MapChildElement">
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="elementNamespace"/>
+									<plx:nameRef name="elementNamespace" type="parameter"/>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="elementName"/>
+									<plx:nameRef name="elementName" type="parameter"/>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="containerNamespace"/>
+									<plx:nameRef name="containerNamespace" type="parameter"/>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="containerName"/>
+									<plx:nameRef name="containerName" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="outerContainerNamespace" type="parameter"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="outerContainerName" type="parameter"/>
 								</plx:passParam>
 							</plx:callThis>
 						</xsl:if>
@@ -1422,8 +1507,6 @@
 									</plx:right>
 								</plx:assign>
 							</plx:branch>
-							<xsl:if test="se:Link | se:Attribute[@WriteStyle='Element']">
-							</xsl:if>
 							<plx:local name="rVal" dataTypeName="ORMCustomSerializedElementMatch"/>
 							<xsl:variable name="lookupCall">
 								<plx:callInstance name="TryGetValue">
@@ -1433,25 +1516,83 @@
 									<plx:passParam>
 										<plx:callStatic name="Concat" dataTypeName=".string" type="methodCall">
 											<plx:passParam>
-												<plx:nameRef name="containerNamespace"/>
+												<plx:nameRef name="outerContainerNamespace" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:string>|</plx:string>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:nameRef name="containerName"/>
+												<plx:nameRef name="outerContainerName" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:string>|</plx:string>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:nameRef name="elementNamespace"/>
+												<plx:inlineStatement dataTypeName=".string">
+													<plx:conditionalOperator>
+														<plx:condition>
+															<plx:binaryOperator type="identityInequality">
+																<plx:left>
+																	<plx:cast dataTypeName=".object">
+																		<plx:nameRef name="containerNamespace" type="parameter"/>
+																	</plx:cast>
+																</plx:left>
+																<plx:right>
+																	<plx:cast dataTypeName=".object">
+																		<plx:nameRef name="outerContainerNamespace" type="parameter"/>
+																	</plx:cast>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:condition>
+														<plx:left>
+															<plx:nameRef name="containerNamespace" type="parameter"/>
+														</plx:left>
+														<plx:right>
+															<plx:nullKeyword/>
+														</plx:right>
+													</plx:conditionalOperator>
+												</plx:inlineStatement>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:string>|</plx:string>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:nameRef name="elementName"/>
+												<plx:nameRef name="containerName" type="parameter"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:string>|</plx:string>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:inlineStatement dataTypeName=".string">
+													<plx:conditionalOperator>
+														<plx:condition>
+															<plx:binaryOperator type="identityInequality">
+																<plx:left>
+																	<plx:cast dataTypeName=".object">
+																		<plx:nameRef name="elementNamespace" type="parameter"/>
+																	</plx:cast>
+																</plx:left>
+																<plx:right>
+																	<plx:cast dataTypeName=".object">
+																		<plx:nameRef name="containerNamespace" type="parameter"/>
+																	</plx:cast>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:condition>
+														<plx:left>
+															<plx:nameRef name="elementNamespace" type="parameter"/>
+														</plx:left>
+														<plx:right>
+															<plx:nullKeyword/>
+														</plx:right>
+													</plx:conditionalOperator>
+												</plx:inlineStatement>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:string>|</plx:string>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="elementName" type="parameter"/>
 											</plx:passParam>
 										</plx:callStatic>
 									</plx:passParam>
@@ -1523,10 +1664,10 @@
 						<xsl:if test="$ClassOverride">
 							<plx:callThis accessor="base" name="MapAttribute">
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="xmlNamespace"/>
+									<plx:nameRef name="xmlNamespace" type="parameter"/>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="attributeName"/>
+									<plx:nameRef name="attributeName" type="parameter"/>
 								</plx:passParam>
 							</plx:callThis>
 						</xsl:if>
@@ -1609,7 +1750,7 @@
 							<plx:local name="rVal" dataTypeName="Guid"/>
 							<plx:local name="key" dataTypeName=".string">
 								<plx:initialize>
-									<plx:nameRef type="parameter" name="attributeName"/>
+									<plx:nameRef name="attributeName" type="parameter"/>
 								</plx:initialize>
 							</plx:local>
 							<plx:branch>
@@ -1618,7 +1759,7 @@
 										<plx:left>
 											<plx:callInstance name="Length" type="property">
 												<plx:callObject>
-													<plx:nameRef type="parameter" name="xmlNamespace"/>
+													<plx:nameRef name="xmlNamespace" type="parameter"/>
 												</plx:callObject>
 											</plx:callInstance>
 										</plx:left>
@@ -1634,13 +1775,13 @@
 									<plx:right>
 										<plx:callStatic name="Concat" dataTypeName=".string">
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="xmlNamespace"/>
+												<plx:nameRef name="xmlNamespace" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:string>|</plx:string>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="attributeName"/>
+												<plx:nameRef name="attributeName" type="parameter"/>
 											</plx:passParam>
 										</plx:callStatic>
 									</plx:right>
@@ -1962,7 +2103,7 @@
 						<plx:initialize>
 							<plx:callInstance name="DomainDataDirectory" type="property">
 								<plx:callObject>
-									<plx:nameRef type="parameter" name="store"/>
+									<plx:nameRef name="store" type="parameter"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:initialize>
@@ -2050,7 +2191,7 @@
 								<plx:right>
 									<plx:callStatic name="BuildCustomSerializationOmissions" dataTypeName="{$ModelName}">
 										<plx:passParam>
-											<plx:nameRef type="parameter" name="store"/>
+											<plx:nameRef name="store" type="parameter"/>
 										</plx:passParam>
 									</plx:callStatic>
 								</plx:right>
@@ -2071,7 +2212,7 @@
 										<plx:nameRef name="omissions"/>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:nameRef type="parameter" name="classInfo"/>
+										<plx:nameRef name="classInfo" type="parameter"/>
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:unaryOperator>
@@ -2149,7 +2290,7 @@
 								<plx:left>
 									<plx:binaryOperator type="equality">
 										<plx:left>
-											<plx:nameRef type="parameter" name="elementName"/>
+											<plx:nameRef name="elementName" type="parameter"/>
 										</plx:left>
 										<plx:right>
 											<plx:string>
@@ -2161,7 +2302,7 @@
 								<plx:right>
 									<plx:binaryOperator type="equality">
 										<plx:left>
-											<plx:nameRef type="parameter" name="xmlNamespace"/>
+											<plx:nameRef name="xmlNamespace" type="parameter"/>
 										</plx:left>
 										<plx:right>
 											<plx:string>
@@ -2336,7 +2477,7 @@
 										<plx:nameRef name="classNameMap"/>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:nameRef name="elementName"/>
+										<plx:nameRef name="elementName" type="parameter"/>
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:right>
@@ -2348,7 +2489,7 @@
 								<plx:nameRef name="classNameMap"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:nameRef name="elementName"/>
+								<plx:nameRef name="elementName" type="parameter"/>
 							</plx:passParam>
 						</plx:callInstance>
 					</plx:return>
