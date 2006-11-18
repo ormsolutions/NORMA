@@ -43,11 +43,21 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// Always returns <see langword="true"/>.
+		/// Ensure that the <see cref="Join.JoinType"/> property is read-only when
+		/// <see cref="Join.OutputRole"/> is alethicly mandatory.
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			return true;
+			Join join = ModelElement;
+			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(Join.JoinTypeDomainPropertyId))
+			{
+				Role outputRole = join.OutputRole;
+				return (outputRole != null) && outputRole.IsMandatory;
+			}
+			else
+			{
+				return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+			}
 		}
 	}
 }
