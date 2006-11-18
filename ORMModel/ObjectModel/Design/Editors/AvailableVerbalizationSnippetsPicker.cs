@@ -80,6 +80,23 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			return VerbalizationSnippetsIdentifier.SaveIdentifiers(((ProviderBranch)tree.Root).CurrentIdentifiers);
 		}
+		/// <summary>
+		/// Leave the initial selection empty
+		/// </summary>
+		protected override void SelectInitialValue(object value, VirtualTreeControl control)
+		{
+			// Nothing to do, leave it blank
+		}
+		/// <summary>
+		/// Selection does not affect the current value of the tree, ignore it
+		/// </summary>
+		protected override bool AlwaysTranslateToValue
+		{
+			get
+			{
+				return true;
+			}
+		}
 		private static Size myLastControlSize = new Size(272, 128);
 		/// <summary>
 		/// Manage control size independently

@@ -177,7 +177,7 @@ namespace Neumont.Tools.Modeling.Design
 						{
 							int lastRow = treeControl.LastSelectedRow;
 							int lastColumn = treeControl.LastSelectedColumn;
-							if (lastRow != -1)
+							if (lastRow != -1 || AlwaysTranslateToValue)
 							{
 								newObject = TranslateToValue(context, value, tree, lastRow, lastColumn);
 							}
@@ -198,12 +198,13 @@ namespace Neumont.Tools.Modeling.Design
 				listBox.BindingContextChanged -= new EventHandler(HandleBindingContextChanged);
 				object value = myInitialSelectionValue;
 				myInitialSelectionValue = null;
+				SelectInitialValue(value, (VirtualTreeControl)sender);
 			}
 		}
 
 		/// <summary>
 		/// Generate the tree to display in the tree control. If the
-		/// control also implements IMultiColumnTree then it will be
+		/// return tree also implements IMultiColumnTree then it will be
 		/// shown as a multi-column tree.
 		/// </summary>
 		/// <param name="context">ITypeDescriptorContext passed in by the system</param>
@@ -222,6 +223,45 @@ namespace Neumont.Tools.Modeling.Design
 		protected virtual object TranslateToValue(ITypeDescriptorContext context, object oldValue, ITree tree, int selectedRow, int selectedColumn)
 		{
 			return oldValue;
+		}
+		/// <summary>
+		/// By default, TranslateToValue is not called if no item is
+		/// selected in the tree. However, if the value of the tree
+		/// is based on checkbox state and not selection, then it is
+		/// possible to change the value displayed in the tree without
+		/// selecting an item. If TranslateToValue is not dependent
+		/// on the currently selected item, or if 'no selected item'
+		/// has a semantic meaning, then return true from this property
+		/// to force TranslateToValue to be called for an empty
+		/// selection state. You can combine override this property
+		/// and the <see cref="SelectInitialValue"/> method to
+		/// have no initial selection in the tree.
+		/// </summary>
+		protected virtual bool AlwaysTranslateToValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Select a value in the provided tree control. If overriden,
+		/// this method should expand the control.Tree to the appropriate
+		/// state and set the CurrentColumn and CurrentIndex properties on the control.
+		/// The default behavior defers to VirtualTreeControl.SelectObject.
+		/// Failing to initialize the selection can result in modifications
+		/// made to the check state of a control to be ignored. See <see cref="AlwaysTranslateToValue"/>
+		/// for additional information.
+		/// </summary>
+		/// <param name="value">The initial value</param>
+		/// <param name="control">The dropped down tree control</param>
+		protected virtual void SelectInitialValue(object value, VirtualTreeControl control)
+		{
+			IBranch branch = control.Tree.Root;
+			if (0 != (branch.Features & BranchFeatures.PositionTracking))
+			{
+				control.SelectObject(branch, value, (int)ObjectStyle.TrackingObject, 0);
+			}
 		}
 		/// <summary>
 		/// Should standard checkboxes be enabled on the parent tree control. Defaults to true.
