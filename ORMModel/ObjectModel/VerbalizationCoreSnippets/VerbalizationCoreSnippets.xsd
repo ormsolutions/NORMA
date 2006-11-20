@@ -26,54 +26,62 @@
 			<xs:restriction base="SnippetTypeEnum">
 				<xs:enumeration value="NotesVerbalization">
 					<xs:annotation>
-						<xs:documentation>Notes: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes the text specified for a model note.  Format: Notes: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ObjectifiesFactTypeVerbalization">
 					<xs:annotation>
-						<xs:documentation>{0} objectifies "{1}"</xs:documentation>
+						<xs:documentation>Description: Verbalizes the objectification made for a FactType.  Format: {0} objectifies "{1}"</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ReferenceModeVerbalization">
 					<xs:annotation>
-						<xs:documentation>Reference Mode: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes the mode in which an object is referenced.  Format: Reference Mode: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="PortableDataTypeVerbalization">
 					<xs:annotation>
-						<xs:documentation>Portable data type: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object's portable data type.  Format: Portable data type: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="IndependentVerbalization">
 					<xs:annotation>
-						<xs:documentation>{0} is independent (it may have instances that play no other roles)</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object as being independent.  Format: {0} is independent (it may have instances that play no other roles)</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ReferenceSchemeVerbalization">
 					<xs:annotation>
-						<xs:documentation>Reference Scheme: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes the way in which an object is referenced.  Format: Reference Scheme: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ObjectType">
 					<xs:annotation>
-						<xs:documentation>{0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object.  Format: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="EntityTypeVerbalization">
 					<xs:annotation>
-						<xs:documentation>{0} is an entity type</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object as being an entity type.  Format: {0} is an entity type</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ValueTypeVerbalization">
 					<xs:annotation>
-						<xs:documentation>{0} is a value type</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object as being a value type.  Format: {0} is a value type</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeWithSubscript"/>
-				<xs:enumeration value="ObjectTypeMissing"/>
+				<xs:enumeration value="ObjectTypeWithSubscript">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes an object type with a subscript.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeMissing">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes an object type as being missing.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="HyphenBoundPredicatePart">
 					<xs:annotation>
-						<xs:documentation>{0}{{0}}{1}</xs:documentation>
+						<xs:documentation>Description: .  Format: {0}{{0}}{1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ImpersonalPronoun"/>
@@ -81,235 +89,839 @@
 				<xs:enumeration value="DefiniteArticle">
 					<xs:annotation>
 						<xs:documentation>
-							Used for 'that' before an object name. Different than ImpersonalPronoun
-							which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.
+							Description: Used for 'that' before an object name to signify the context in which the object is being referred to. 
+							Different than ImpersonalPronoun which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.  Format: that
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="UniversalQuantifier"/>
-				<xs:enumeration value="AtMostOneQuantifier"/>
-				<xs:enumeration value="ExactlyOneQuantifier"/>
-				<xs:enumeration value="EachInstanceQuantifier"/>
-				<xs:enumeration value="ForEachCompactQuantifier"/>
-				<xs:enumeration value="ForEachIndentedQuantifier"/>
-				<xs:enumeration value="ExistentialQuantifier"/>
-				<xs:enumeration value="IdentityReferenceQuantifier"/>
-				<xs:enumeration value="ImpliedModalNecessityOperator">
+				<xs:enumeration value="UniversalQuantifier">
 					<xs:annotation>
-						<xs:documentation>No text for alethic, same as ModalNecessityOperator otherwise.</xs:documentation>
+						<xs:documentation>
+							Description: Used for 'each' before an object name to signify the quantity associated with the object.  Format: each {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ContextScope"/>
-				<xs:enumeration value="ContextScopeReference"/>
-				<xs:enumeration value="CombinationAssociation"/>
-				<xs:enumeration value="MoreThanOneQuantifier"/>
-				<xs:enumeration value="ModalPossibilityOperator"/>
-				<xs:enumeration value="ModalNecessityOperator"/>
-				<xs:enumeration value="NegativeReadingForUnaryOnlyDisjunctiveMandatory"/>
+				<xs:enumeration value="AtMostOneQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for 'at most one' before an object name to signify the quantity may only be zero or one.  Format: at most one {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExactlyOneQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for 'exactly one' before an object name to signify the quantity may only be one.  Format: exactly one {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EachInstanceQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ForEachCompactQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ForEachIndentedQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.  Format: for each {0}, \n{1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExistentialQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityReferenceQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for 'the same' before an object name to signify exactly which object is being reference.  Format: the same {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ImpliedModalNecessityOperator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to define the strength of the constraint.  Alethic, positive adds nothing before an object name.  Deontic, positive adds 'it is obligatory that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
+							Format for alethic and positive: {0}  Format for deontic and positive: it is obligatory that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ContextScope">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to define the context in which the object is used.  Format: context: {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ContextScopeReference">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to define the context in which the following object will be in.  Format: in this context, {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CombinationAssociation">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes an association of combinations.  Format: {0} combination is associated with {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MoreThanOneQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for 'more than one' before an object name to define quantity as more than one.  Format: more than one {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ModalPossibilityOperator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to define the strength of the constraint.  Alethic, positive adds 'it is possible that' before an object name.  Deontic, positive adds 'it is permitted that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
+							Format for alethic and positive: it is possible that {0}  Format for deontic and positive: it is permitted that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ModalNecessityOperator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to define the strength of the constraint.  Alethic adds 'it is necessary that' before  an object name.  Deontic adds 'it is obligatory that' before an object name.
+							Format for alethic: it is necessary that {0}  Format for deontic: it is obligatory that {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to verbalize that an object is not included in a set.  Format: some {0} participates in none of the following:{1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 
-				<xs:enumeration value="CompoundListOpen"/>
-				<xs:enumeration value="CompoundListPairSeparator"/>
-				<xs:enumeration value="CompoundListSeparator"/>
-				<xs:enumeration value="CompoundListFinalSeparator"/>
-				<xs:enumeration value="CompoundListClose"/>
+				<xs:enumeration value="CompoundListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the beginning of a compound list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompoundListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompoundListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompoundListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used after the last item listed in a compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompoundListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the end of a compound list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 
-				<xs:enumeration value="IdentityEqualityListOpen"/>
-				<xs:enumeration value="IdentityEqualityListPairSeparator"/>
-				<xs:enumeration value="IdentityEqualityListSeparator"/>
-				<xs:enumeration value="IdentityEqualityListFinalSeparator"/>
-				<xs:enumeration value="IdentityEqualityListClose"/>
+				<xs:enumeration value="IdentityEqualityListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the beginning of an identity equality list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityEqualityListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an identity equality list.  Format: that is a
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityEqualityListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an identity equality list.  Format: that is a
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityEqualityListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used between the last two items in an identity equality list.  Format: that is a
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityEqualityListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the end of an identity equality list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 
-				<xs:enumeration value="IndentedCompoundListOpen"/>
-				<xs:enumeration value="IndentedCompoundListPairSeparator"/>
-				<xs:enumeration value="IndentedCompoundListSeparator"/>
-				<xs:enumeration value="IndentedCompoundListFinalSeparator"/>
-				<xs:enumeration value="IndentedCompoundListClose"/>
-				<xs:enumeration value="IndentedListOpen"/>
-				<xs:enumeration value="IndentedListPairSeparator"/>
-				<xs:enumeration value="IndentedListSeparator"/>
-				<xs:enumeration value="IndentedListFinalSeparator"/>
-				<xs:enumeration value="IndentedListClose"/>
-				<xs:enumeration value="IndentedLogicalAndListOpen"/>
-				<xs:enumeration value="IndentedLogicalAndListPairSeparator"/>
-				<xs:enumeration value="IndentedLogicalAndListSeparator"/>
-				<xs:enumeration value="IndentedLogicalAndListFinalSeparator"/>
-				<xs:enumeration value="IndentedLogicalAndListClose"/>
-				<xs:enumeration value="IndentedLogicalOrListOpen"/>
-				<xs:enumeration value="IndentedLogicalOrListPairSeparator"/>
-				<xs:enumeration value="IndentedLogicalOrListSeparator"/>
-				<xs:enumeration value="IndentedLogicalOrListFinalSeparator"/>
-				<xs:enumeration value="IndentedLogicalOrListClose"/>
-				<xs:enumeration value="ConstraintProvidesPreferredIdentifier"/>
-				<xs:enumeration value="SimpleLogicalAndListOpen"/>
-				<xs:enumeration value="SimpleLogicalAndListPairSeparator"/>
-				<xs:enumeration value="SimpleLogicalAndListSeparator"/>
-				<xs:enumeration value="SimpleLogicalAndListFinalSeparator"/>
-				<xs:enumeration value="SimpleLogicalAndListClose"/>
-				<xs:enumeration value="TopLevelIndentedLogicalAndListOpen"/>
-				<xs:enumeration value="TopLevelIndentedLogicalAndListPairSeparator"/>
-				<xs:enumeration value="TopLevelIndentedLogicalAndListSeparator"/>
-				<xs:enumeration value="TopLevelIndentedLogicalAndListFinalSeparator"/>
-				<xs:enumeration value="TopLevelIndentedLogicalAndListClose"/>
-				<xs:enumeration value="SimpleLogicalOrListOpen"/>
-				<xs:enumeration value="SimpleLogicalOrListPairSeparator"/>
-				<xs:enumeration value="SimpleLogicalOrListSeparator"/>
-				<xs:enumeration value="SimpleLogicalOrListFinalSeparator"/>
-				<xs:enumeration value="SimpleLogicalOrListClose"/>
-				<xs:enumeration value="TopLevelIndentedLogicalOrListOpen"/>
-				<xs:enumeration value="TopLevelIndentedLogicalOrListPairSeparator"/>
-				<xs:enumeration value="TopLevelIndentedLogicalOrListSeparator"/>
-				<xs:enumeration value="TopLevelIndentedLogicalOrListFinalSeparator"/>
-				<xs:enumeration value="TopLevelIndentedLogicalOrListClose"/>
-				<xs:enumeration value="SimpleListOpen"/>
-				<xs:enumeration value="SimpleListPairSeparator"/>
-				<xs:enumeration value="SimpleListSeparator"/>
-				<xs:enumeration value="SimpleListFinalSeparator"/>
-				<xs:enumeration value="SimpleListClose"/>
-				<xs:enumeration value="CompactSimpleListOpen"/>
-				<xs:enumeration value="CompactSimpleListPairSeparator"/>
-				<xs:enumeration value="CompactSimpleListSeparator"/>
-				<xs:enumeration value="CompactSimpleListFinalSeparator"/>
-				<xs:enumeration value="CompactSimpleListClose"/>
-				<xs:enumeration value="EqualityForEachIndentedQuantifier"/>
-				<xs:enumeration value="ExclusionForEachIndentedQuantifier"/>
-				<xs:enumeration value="SemiColonListOpen"/>
-				<xs:enumeration value="SemiColonListPairSeparator"/>
-				<xs:enumeration value="SemiColonListSeparator"/>
-				<xs:enumeration value="SemiColonListFinalSeparator"/>
-				<xs:enumeration value="SemiColonListClose"/>
-				<xs:enumeration value="CloseVerbalizationSentence"/>
-				<xs:enumeration value="CombinationIdentifier"/>
-				<xs:enumeration value="OccursInPopulation"/>
-				<xs:enumeration value="OneQuantifier"/>
+				<xs:enumeration value="IndentedCompoundListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the beginning of an indented compound list.  Format: \n
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedCompoundListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedCompoundListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedCompoundListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in an indented compound list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedCompoundListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the end of an indented compound list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of an indented list.  Format: \n
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented list.  Format: and
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented list.  Format: and
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in an indented list.  Format: and
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of an indented list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalAndListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of an indented logical and list.  Format: \n
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalAndListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented logical and list.  Format: and that
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalAndListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented logical and list.  Format: and that
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalAndListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in an indented logical and list.  Format: and that
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalAndListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of an indented logical and list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalOrListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of an indented logical or list.  Format: \n
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalOrListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented logical or list.  Format: or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalOrListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an indented logical or list.  Format: or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalOrListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in an indented logical or list.  Format: or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndentedLogicalOrListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of an indented logical or list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ConstraintProvidesPreferredIdentifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes the preferred identifier for an object.
+							Format: this association with {0}provides the preferred identification scheme for {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalAndListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of a simple logical and list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalAndListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a simple logical and list.  Format: and
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalAndListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a simple logical and list.  Format: and
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalAndListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in a simple logical and list.  Format: and
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalAndListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of a simple logical and list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of a top level indented logical and list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a top level indented logical and list.  Format: \n and that
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a top level indented logical and list.  Format: \n and that
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in a top level indented logical and list.  Format: \n and that
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of a top level indented logical and list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalOrListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of a simple logical or list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalOrListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a simple logical or list.  Format: or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalOrListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a simple logical or list.  Format: or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalOrListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description:  Used to separate the last two items in a simple logical or list.  Format: or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleLogicalOrListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description:  Text used at the end of a simple logical or list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of a top level indented logical or list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a top level indented logical or list.  Format: \n or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a top level indented logical or list.  Format: \n or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in a top level indented logical or list.  Format: \n or
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of a top level indented logical or list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SimpleListClose">
+					<xs:annotation>
+						<xs:documentation>
+
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of a compact simple list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a compact simple list.  Format: ,
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a compact simple list.  Format: ,
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in a compact simple list.  Format: ,
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of a compact simple list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EqualityForEachIndentedQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes an equality constraint.
+							Format alethic: for each {0}, all or none of the following hold:\n {1}  
+							Format deontic: it is obligatory that for each {0}, all or none of the following hold:\n {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExclusionForEachIndentedQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes an exclusion constraint.
+							Format alethic: for each {0}, at most one of the following holds:\n {1}
+							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
+							</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SemiColonListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the beginning of a semi colon list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SemiColonListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a semi colon list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SemiColonListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in a semi colon list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SemiColonListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate the last two items in a semi colon list.  Format: ;
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SemiColonListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used at the end of a semi colon list.  Format: .
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CloseVerbalizationSentence">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to close a verbalized sentence.  Format: .
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CombinationIdentifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes a combination.  Format: {0} combination
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="OccursInPopulation">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes that an object occurs at most once or more than once in a given population.
+							Format positive: {0} occurs at most once in the population of {1}
+							Format negative: {0} occurs more than once in the population of {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="OneQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used for 'at most one' or 'more than one' before an object.
+							Format positive: at most one {0}
+							Format negative: more than one {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="PeriodSeparator">
 					<xs:annotation>
-						<xs:documentation>{0}.{1} :: Used to delimit two snippet replacements by a snippet.</xs:documentation>
+						<xs:documentation>
+							Description: Used to delimit two snippet replacements by a snippet.
+							Format:	{0}.{1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ReferenceScheme">
 					<xs:annotation>
-						<xs:documentation>{0}({1}) :: Used to enclose and format a reference scheme replacement in brackets.</xs:documentation>
+						<xs:documentation>
+							Description: Used to enclose and format a reference scheme replacement in brackets.
+							Format:	{0}({1})
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="SingleValueValueConstraint">
 					<xs:annotation>
-						<xs:documentation>the possible value of {0} is {1} :: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.
+							Format: the possible value of {0} is {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MultiValueValueConstraint">
 					<xs:annotation>
-						<xs:documentation>the possible values of {0} are {1} :: Used to verbalize a value range constraint with multiple values.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a value range constraint with multiple values.
+							Format: the possible values of {0} are {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="SelfReference">
 					<xs:annotation>
-						<xs:documentation>{0} :: Allows the snippet replacement to verbalize itself.</xs:documentation>
+						<xs:documentation>
+							Description: Allows the snippet replacement to verbalize itself.
+							Format: {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinClosedMaxClosed">
 					<xs:annotation>
-						<xs:documentation>at least {0} to at most {1} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.
+							Format: at least {0} to at most {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinClosedMaxOpen">
 					<xs:annotation>
-						<xs:documentation>at least {0} to below {1} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.
+							Format: at least {0} to below {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinClosedMaxUnbounded">
 					<xs:annotation>
-						<xs:documentation>at least {0} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.
+							Format: at least {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinOpenMaxClosed">
 					<xs:annotation>
-						<xs:documentation>above {0} to at most {1} :: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.
+							Format: above {0} to at most {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinOpenMaxOpen">
 					<xs:annotation>
-						<xs:documentation>above {0} to below {1} :: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.
+							Format: above {0} to below {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinOpenMaxUnbounded">
 					<xs:annotation>
-						<xs:documentation>above {0} :: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.
+							Format: above {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinUnboundedMaxClosed">
 					<xs:annotation>
-						<xs:documentation>at most {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.
+							Format: at most {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MinUnboundedMaxOpen">
 					<xs:annotation>
-						<xs:documentation>below {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.
+							Format: below {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="InQuantifier">
 					<xs:annotation>
-						<xs:documentation>{0} in {1} :: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.
+							Format: {0} in {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorOpenPrimaryReport">
 					<xs:annotation>
-						<xs:documentation>Used to open a primary error report. Primary error reports block further verbalization.</xs:documentation>
+						<xs:documentation>
+							Description: Used to open a primary error report. Primary error reports block further verbalization.
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorClosePrimaryReport">
 					<xs:annotation>
-						<xs:documentation>Close a primary error report opened with ErrorOpenPrimaryReport</xs:documentation>
+						<xs:documentation>
+							Description: Close a primary error report opened with ErrorOpenPrimaryReport
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorPrimary">
 					<xs:annotation>
-						<xs:documentation>Used to verbalize a single primary error. 1 replacement field.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a single primary error.
+							Format: Model Error: {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorOpenSecondaryReport">
 					<xs:annotation>
-						<xs:documentation>Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.</xs:documentation>
+						<xs:documentation>
+							Description: Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
+							Format: Model Error: {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorCloseSecondaryReport">
 					<xs:annotation>
-						<xs:documentation>Close a secondary error report opened with ErrorOpenSecondaryReport.</xs:documentation>
+						<xs:documentation>
+							Description: Close a secondary error report opened with ErrorOpenSecondaryReport.
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorSecondary">
 					<xs:annotation>
-						<xs:documentation>Used to verbalize a single secondary error. 1 replacement field.</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize a single secondary error.
+							Format: Model Error: {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerNewLine">
 					<xs:annotation>
-						<xs:documentation>Used by the verbalizer to enter a new line</xs:documentation>
+						<xs:documentation>
+							Description: Used by the verbalizer to enter a new line.
+							Format: \n
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerIncreaseIndent">
 					<xs:annotation>
-						<xs:documentation>Used by the verbalizer to indent a child verbalization</xs:documentation>
+						<xs:documentation>
+							Description: Used by the verbalizer to indent a child verbalization
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerDecreaseIndent">
 					<xs:annotation>
-						<xs:documentation>Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent</xs:documentation>
+						<xs:documentation>
+							Description: Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerOpenVerbalization">
 					<xs:annotation>
-						<xs:documentation>Used by the verbalizer around a single verbalization</xs:documentation>
+						<xs:documentation>
+							Description: Used by the verbalizer around a single verbalization
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerCloseVerbalization">
 					<xs:annotation>
-						<xs:documentation>Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization</xs:documentation>
+						<xs:documentation>
+							Description: Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerDocumentHeader">
 					<xs:annotation>
 						<xs:documentation>
-							Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
+							Description: Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
 							{0} font-family
 							{1} font-size
 							{2} predicate text color
@@ -327,62 +939,143 @@
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerDocumentFooter">
 					<xs:annotation>
-						<xs:documentation>Used by the verbalizer to close a document</xs:documentation>
+						<xs:documentation>
+							Description: Used by the verbalizer to close a document
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerFontWeightBold">
 					<xs:annotation>
-						<xs:documentation>The text to insert to indicate a bold font.</xs:documentation>
+						<xs:documentation>
+							Description: The text to insert to indicate a bold font.
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="VerbalizerFontWeightNormal">
 					<xs:annotation>
-						<xs:documentation>The text to insert to indicate a normal font weight.</xs:documentation>
+						<xs:documentation>
+							Description: The text to insert to indicate a normal font weight.
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="CombinedObjectAndInstance">
 					<xs:annotation>
-						<xs:documentation>{0} {1}.</xs:documentation>
+						<xs:documentation>
+							Description: Used to combine an object and an instance.
+							Format: {0} {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="CombinedObjectAndInstanceTypeMissing">
 					<xs:annotation>
-						<xs:documentation>Missing {0}.</xs:documentation>
+						<xs:documentation>
+							Description: Used to say an object and instance combination is missing.
+							Format: Missing {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="TextInstanceValue">
 					<xs:annotation>
-						<xs:documentation>'{0}'</xs:documentation>
+						<xs:documentation>
+							Description: Used to output a text instance value.
+							Format: '{0}'
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="NonTextInstanceValue">
 					<xs:annotation>
-						<xs:documentation>{0}</xs:documentation>
+						<xs:documentation>
+							Description: Used to output a non-text instance value.
+							Format: {0}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeInstanceBlockStart">
 					<xs:annotation>
-						<xs:documentation>Examples: </xs:documentation>
+						<xs:documentation>
+							Description: Text and formatting to begin a sample population verbalization of fact types block.
+							Format: Examples:
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeInstanceBlockEnd">
 					<xs:annotation>
-						<xs:documentation></xs:documentation>
+						<xs:documentation>
+							Description: Formatted used to end a sample population verbalization of fact types block.
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeInstanceListOpen"/>
-				<xs:enumeration value="ObjectTypeInstanceListPairSeparator"/>
-				<xs:enumeration value="ObjectTypeInstanceListSeparator"/>
-				<xs:enumeration value="ObjectTypeInstanceListFinalSeparator"/>
-				<xs:enumeration value="ObjectTypeInstanceListClose"/>
-				<xs:enumeration value="Conditional"/>
-				<xs:enumeration value="Equality"/>
+				<xs:enumeration value="ObjectTypeInstanceListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description:  Text and formatting to begin a sample population verbalization of object types block.
+							Format: Examples:
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeInstanceListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to separate items in a sample population verbalization list.
+							Format: , </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeInstanceListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to separate items in a sample population verbalization list.
+							Format: ,
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeInstanceListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to separate the last two items in a sample population verbalization list, or object types.
+							Format: ,
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeInstanceListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text used to close the sample population verbalization list.
+							Format: .
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="Conditional">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes a simple conditional statement.
+							Format: if {0} then {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="Equality">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to verbalize a simple equality constraint.
+							Format: {0} if and only if {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ExclusionBinaryLeadReading">
 					<xs:annotation>
-						<xs:documentation>No {0} the same {1}</xs:documentation>
+						<xs:documentation>
+							Description: Used to verbalize an exclusion constraint, on a binary lead reading.
+							Format: No {0} the same {1}
+						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ExclusionCombined"/>
+				<xs:enumeration value="ExclusionCombined">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to combine the first role player and the roles played for an Exclusion constraint (i.e: No Person authored and reviewed). 
+							Format: {0} {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

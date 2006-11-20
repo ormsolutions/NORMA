@@ -8706,7 +8706,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
 							variableSnippet1Replace1Replace1 = null;
-							variableSnippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(includedFactRoles[0])];
+							RoleBase rolePlayer = null;
+							for (int RoleIter = 0; RoleIter < currentRoleCount; ++RoleIter)
+							{
+								RoleBase currentRole = factRoles[RoleIter];
+								reading = FactType.GetMatchingReading(allReadingOrders, null, currentRole, null, false, false, factRoles, false);
+								if (reading != null)
+								{
+									rolePlayer = currentRole;
+									break;
+								}
+							}
+							variableSnippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 					string variableSnippet1Replace1Replace2 = null;
@@ -8980,7 +8991,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
 							variableSnippet1Replace2 = null;
-							variableSnippet1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(includedFactRoles[1])];
+							RoleBase rolePlayer = null;
+							for (int RoleIter = 0; RoleIter < currentRoleCount; ++RoleIter)
+							{
+								RoleBase currentRole = factRoles[RoleIter];
+								reading = FactType.GetMatchingReading(allReadingOrders, null, currentRole, null, false, false, factRoles, false);
+								if (reading == null)
+								{
+									rolePlayer = currentRole;
+									break;
+								}
+							}
+							variableSnippet1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 				}

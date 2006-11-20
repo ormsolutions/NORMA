@@ -3663,7 +3663,7 @@
 		<xsl:param name="ConditionalMatch" select="'null'"/>
 		<xsl:param name="ContextMatch"/>
 		<xsl:choose>
-			<xsl:when test="not($ListStyle='null')">
+			<xsl:when test="not($ListStyle='null') and not(@pass)">
 				<xsl:variable name="iterVarName" select="concat($VariablePrefix,$FactRoleIterVariablePart,$VariableDecorator)"/>
 				<plx:loop>
 					<plx:initializeLoop>
@@ -3858,6 +3858,175 @@
 						</xsl:when>
 					</xsl:choose>
 				</plx:loop>
+			</xsl:when>
+			<xsl:when test="$PatternGroup='SetComparisonConstraint' and (@pass='first' or @pass='notFirst')">
+				<plx:local name="rolePlayer" dataTypeName="RoleBase">
+					<plx:initialize>
+						<plx:nullKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:loop>
+					<plx:initializeLoop>
+						<plx:local name="RoleIter" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value type="i4" data="0"/>
+							</plx:initialize>
+						</plx:local>
+					</plx:initializeLoop>
+					<plx:condition>
+						<plx:binaryOperator type="lessThan">
+							<plx:left>
+								<plx:nameRef name="RoleIter"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="currentRoleCount"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="RoleIter"/>
+						</plx:increment>
+					</plx:beforeLoop>
+					<plx:local name="currentRole" dataTypeName="RoleBase">
+						<plx:initialize>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="factRoles" type="local"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="RoleIter"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="reading" type="local"/>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic dataTypeName="FactType" name="GetMatchingReading">
+								<plx:passParam>
+									<plx:nameRef name="allReadingOrders"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="currentRole"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:falseKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:falseKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="factRoles"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:falseKeyword/>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:right>
+					</plx:assign>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator>
+								<xsl:attribute name="type">
+									<xsl:choose>
+										<xsl:when test="@pass='first'">
+											<xsl:text>identityInequality</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>identityEquality</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<plx:left>
+									<plx:nameRef name="reading"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="rolePlayer"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="currentRole"/>
+							</plx:right>
+						</plx:assign>
+						<plx:break/>
+					</plx:branch>
+				</plx:loop>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name=".implied" type="indexerCall">
+							<plx:callObject>
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="allBasicRoleReplacements"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callInstance name="IndexOf" type="methodCall">
+											<plx:callObject>
+												<plx:nameRef name="allFacts" type="local"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:callInstance name="FactType" type="property">
+													<plx:callObject>
+														<plx:callInstance name=".implied" type="arrayIndexer">
+															<plx:callObject>
+																<plx:nameRef name="includedFactRoles"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:nameRef name="{$IteratorVariableName}" type="local"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callInstance name="IndexOf" type="methodCall">
+									<plx:callObject>
+										<plx:callInstance name="RoleCollection" type="property">
+											<plx:callObject>
+												<plx:callInstance name="FactType" type="property">
+													<plx:callObject>
+														<plx:callInstance name=".implied" type="indexerCall">
+															<plx:callObject>
+																<plx:nameRef name="includedFactRoles"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:value data="0" type="i4"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="rolePlayer"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:right>
+				</plx:assign>
 			</xsl:when>
 			<xsl:otherwise>
 				<plx:assign>
