@@ -1071,7 +1071,7 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				Store store = Store;
-				return !store.Disposed && !store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
+				return !store.Disposed && !store.ShuttingDown && !store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
 			}
 			set
 			{

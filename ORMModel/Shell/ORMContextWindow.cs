@@ -51,15 +51,11 @@ namespace Neumont.Tools.ORM.Shell
 
 		#region Private data members
 		private DiagramView myDiagramView;
-		private Partition myPartition;
 		private ORMDiagram myDiagram;
-		private Guid myContextGuid;
-		private Guid myPartitionGuid;
-		private Context myContext;
 		private IHierarchyContextEnabled myCurrentlySelectedObject;
 		private int myGenerations = 1;
-		Control myPanel;
-		NumericUpDown myUpDownGenerations;
+		private Control myPanel;
+		private NumericUpDown myUpDownGenerations;
 
 		#endregion // Private data members
 		#region Construction
@@ -463,35 +459,45 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			Partition partition = this.myPartition;
-			Context context = this.myContext;
+			Partition partition = Partition.FindByAlternateId(store, this);
+			ORMDiagram diagram = null;
 			if (partition == null)
 			{
-				Context previousContext = store.CurrentContext;
-				this.myPartition = partition = new Partition(store);
-				this.myContext = context = new Context(store);
-				partition.AddContext(context);
-				// UNDONE: See if we really need a different context
-				//partition.RemoveContext(previousContext);
-				//store.CurrentContext.RemovePartition(partition);
+				partition = new Partition(store);
+				partition.AlternateId = this;
+				store.StoreDisposing += new EventHandler(Store_StoreDisposing);
 			}
-
-			Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
-			using (Transaction t = store.TransactionManager.BeginTransaction("Create Context Diagram"))
+			else
 			{
-				this.myContextGuid = context.Id;
-				this.myPartitionGuid = partition.Id;
-				ORMDiagram diagram = new ORMDiagram(partition);
-				this.myDiagram = diagram;
-				diagram.Associate(myDiagramView);
-				diagram.ModelElement = model;
-				diagram.AutoPopulateShapes = false;
-				if (t.HasPendingChanges)
+				ReadOnlyCollection<ORMDiagram> diagrams = partition.ElementDirectory.FindElements<ORMDiagram>();
+				if (diagrams.Count != 0)
 				{
-					t.Commit();
+					diagram = diagrams[0];
 				}
 			}
-			myDiagram.Store.StoreDisposing += new EventHandler(Store_StoreDisposing);
+			if (diagram == null)
+			{
+				// We can get a partition with no diagram with an undo operation. The
+				// diagram will be removed, but the partition will remain.
+				Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
+				using (Transaction t = store.TransactionManager.BeginTransaction("Create Context Diagram"))
+				{
+					diagram = new ORMDiagram(partition);
+					diagram.Associate(myDiagramView);
+					diagram.ModelElement = model;
+					diagram.AutoPopulateShapes = false;
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+			}
+			myDiagram = diagram;
+			DiagramClientView clientView = myDiagramView.DiagramClientView;
+			if (clientView.Diagram != diagram)
+			{
+				clientView.Diagram = diagram;
+			}
 		}
 		/// <summary>
 		/// Handles the StoreDisposing event of the Store control.
@@ -500,7 +506,23 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		void Store_StoreDisposing(object sender, EventArgs e)
 		{
-			this.RemoveDiagram();
+			Store store = (Store)sender;
+			Partition partition = Partition.FindByAlternateId(store, this);
+			if (partition != null)
+			{
+				ReadOnlyCollection<ORMDiagram> diagrams = partition.ElementDirectory.FindElements<ORMDiagram>();
+				if (diagrams.Count != 0)
+				{
+					DiagramClientView clientView = myDiagramView.DiagramClientView;
+					if (clientView.Diagram == diagrams[0])
+					{
+						// This needs to be cleared before the store is gone to
+						// avoid a crash when the next diagram is associated
+						clientView.Diagram = null;
+					}
+				}
+				store.Partitions.Remove(partition.Id);
+			}
 		}
 		/// <summary>
 		/// Handles the ValueChanged event of the upDownGenerations control.
@@ -525,64 +547,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void RemoveDiagram()
 		{
-			if (myDiagram == null)
-			{
-				return;
-			}
-			Store currentStore = myDiagram.Store;
-			if (currentStore == null)
-			{
-				return;
-			}
-			if (!currentStore.Partitions.ContainsKey(myPartitionGuid))
-			{
-				return;
-			}
-			if (!(currentStore as IORMToolServices).CanAddTransaction)
-			{
-				return;
-			}
-			Microsoft.VisualStudio.Modeling.UndoManager undoManager = currentStore.CurrentContext.UndoManager;
-			// UNDONE: MSBUG This rule should not be doing anything if the parent is deleted.
-			// Causes diagram deletion to crash VS
-			bool turnedOffResizeRule = false;
-			Type ruleType = typeof(Diagram).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ResizeParentRule");
-			try
-			{
-				using (Transaction t = currentStore.TransactionManager.BeginTransaction("Transaction"))
-				{
-					if (ruleType != null)
-					{
-						currentStore.RuleManager.DisableRule(ruleType);
-						turnedOffResizeRule = true;
-					}
-					t.Commit();
-					if (myPartition != null)
-					{
-						myPartition.Contexts.Clear();
-					}
-					if (myContext != null)
-					{
-						myContext.Delete();
-					}
-					currentStore.Partitions.Remove(myPartitionGuid);
-				}
-			}
-			finally
-			{
-				if (turnedOffResizeRule)
-				{
-					currentStore.RuleManager.EnableRule(ruleType);
-				}
-				myContext = null;
-				myPartition = null;
-				myDiagram = null;
-				myContext = null;
-				myContextGuid = Guid.Empty;
-				myPartitionGuid = Guid.Empty;
-				myDiagramView.Diagram = null;
-				myCurrentlySelectedObject = null;
-			}
+			myDiagram = null;
+			myDiagramView.Diagram = null;
+			myCurrentlySelectedObject = null;
 		}
 		#endregion
 		#region ORMToolWindow Implementation
