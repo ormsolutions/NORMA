@@ -468,9 +468,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						int roleCount = roleCollection.Count;
 						if (roleCount <= 2 || (numReadingOrders > 1 && i == 0))
 						{
-							bool invertOrder = factShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft;
 							aReading = regCountPlaces.Replace(aReading, ellipsis).Trim();
-							if (i == 0 && (invertOrder ? roleCollection[0] == factShape.DisplayedRoleOrder[0] : roleCollection[0] != factShape.DisplayedRoleOrder[0]))
+							if (i == 0 && ((factShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft) ? roleCollection[0] == factShape.DisplayedRoleOrder[0] : roleCollection[0] != factShape.DisplayedRoleOrder[0]))
 							{
 								//Terry's preffered character to append is \u25C4 which can
 								//be found in the "Arial Unicode MS" font
@@ -478,7 +477,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							if (numReadingOrders <= 2 && roleCount <= 2 &&
 								aReading.IndexOf(c_ellipsis) == 0 &&
-								(roleCount == 1 || aReading.LastIndexOf(c_ellipsis) == (invertOrder ? 0 : (aReading.Length - 1))))
+								(roleCount == 1 || aReading.LastIndexOf(c_ellipsis) == aReading.Length - 1))
 							{
 								aReading = aReading.Replace(ellipsis, String.Empty).Trim();
 							}
