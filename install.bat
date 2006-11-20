@@ -6,9 +6,9 @@ SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMDir=%CommonProgramFiles%\Neumont\ORM
 SET DILDir=%CommonProgramFiles%\Neumont\DIL
 
-FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "EnvironmentPath"`) DO SET VSEnvironmentPath=%%~fB
-FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
-FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0" /v "InstallDir"`) DO SET VSIPDir=%%~fB
+FOR /F "usebackq skip=2 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "EnvironmentPath"`) DO SET VSEnvironmentPath=%%~fB
+FOR /F "usebackq skip=2 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
+FOR /F "usebackq skip=2 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0" /v "InstallDir"`) DO SET VSIPDir=%%~fB
 SET RegPkg="%VSIPDir%\VisualStudioIntegration\Tools\Bin\regpkg.exe"
 
 IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
