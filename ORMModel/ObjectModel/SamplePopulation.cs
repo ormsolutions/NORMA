@@ -276,7 +276,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string instanceDisplayString = objectInstance.Name;
 			string modelName = Model.Name;
 			string currentText = Name;
-			string newText = String.Format(ResourceStrings.ModelErrorModelHasPopulationMandatoryError, instanceDisplayString, modelName, role.FactType.Name);
+			string newText = String.Format(ResourceStrings.ModelErrorModelHasPopulationMandatoryError, role.RolePlayer.Name, instanceDisplayString, modelName, role.FactType.Name);
 			if (currentText != newText)
 			{
 				Name = newText;
@@ -1576,7 +1576,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						for (int i = 0; i < errorCount; ++i)
+						for (int i = errorCount - 1; i >= 0; --i)
 						{
 							errors[i].Delete();
 						}
