@@ -79,6 +79,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(SetComparisonConstraintAdded),
 						typeof(SetConstraintAdded),
 						typeof(ValueTypeValueConstraintAdded),
+						typeof(ReadingShape).GetNestedType("DisplayOrientationChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingOrderDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
@@ -582,6 +583,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class ValueTypeValueConstraintAdded
 		{
 			public ValueTypeValueConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingShape
+	{
+		private partial class DisplayOrientationChanged
+		{
+			public DisplayOrientationChanged()
 			{
 				base.IsEnabled = false;
 			}

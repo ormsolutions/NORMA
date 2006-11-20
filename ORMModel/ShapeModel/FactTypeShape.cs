@@ -589,6 +589,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			LinkedElementCollection<RoleBase> factRoles = theFact.DisplayedRoleOrder;
 			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
 			factRoles.CopyTo(roleOrder, 0);
+			if (theFact.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft)
+			{
+				Array.Reverse(roleOrder);
+			}
 			return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
 		}
 		#region RoleDisplayOrderChanged class
