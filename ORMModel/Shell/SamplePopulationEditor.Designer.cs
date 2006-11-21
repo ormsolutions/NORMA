@@ -52,6 +52,7 @@ namespace Neumont.Tools.ORM.Shell
 			this.vtrSamplePopulation.TabIndex = 0;
 			this.vtrSamplePopulation.Text = "virtualTreeControl1";
 			this.vtrSamplePopulation.Visible = false;
+			this.vtrSamplePopulation.LabelEditControlChanged += new System.EventHandler(this.vtrSamplePopulation_LabelEditControlChanged);
 			this.vtrSamplePopulation.SelectionChanged += new System.EventHandler(this.vtrSamplePopulation_SelectionChanged);
 			// 
 			// myImageList

@@ -329,6 +329,37 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
+		/// Begins an edit on the given cell, triggered by F2
+		/// </summary>
+		public void BeginEditSamplePopulationInstance()
+		{
+			Store store = null;
+			string instanceTypeName = "";
+			if(mySelectedEntityType != null)
+			{
+				store = mySelectedEntityType.Store;
+				instanceTypeName = mySelectedEntityType.Name;
+			}
+			else if (mySelectedFactType != null)
+			{
+				store = mySelectedFactType.Store;
+				instanceTypeName = mySelectedFactType.Name;
+			}
+			else if (mySelectedValueType != null)
+			{
+				store = mySelectedValueType.Store;
+				instanceTypeName = mySelectedValueType.Name;
+			}
+			if (store != null)
+			{
+				using(Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, instanceTypeName)))
+				{
+					vtrSamplePopulation.BeginLabelEdit();
+				}
+			}
+		}
+
+		/// <summary>
 		/// Returns a bool representing if the control is currently performing a full row select
 		/// </summary>
 		public bool FullRowSelect
@@ -1550,6 +1581,28 @@ namespace Neumont.Tools.ORM.Shell
 				EntityTypeInstance removeInstance = parentEntityType.EntityTypeInstanceCollection[row];
 				Debug.Assert(removeInstance != null);
 				removeInstance.Delete();
+			}
+
+			/// <summary>
+			/// Calculates and returns the new selection point in terms of the branch
+			/// </summary>
+			/// <param name="currentCol"></param>
+			/// <param name="currentRow"></param>
+			/// <returns></returns>
+			public virtual Point MoveSelectionForward(int currentCol, int currentRow)
+			{
+				int numCol = this.ColumnCount;
+				int numRow = this.VisibleItemCount;
+				if(currentCol < numCol - 1)
+				{
+					++currentCol;
+				}
+				else if(currentRow < numRow - 1)
+				{
+					++currentRow;
+					currentCol = 0;
+				}
+				return new Point(currentCol, currentRow);
 			}
 
 			// Remove the instance at the given row
@@ -3472,5 +3525,128 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion
+
+		private void vtrSamplePopulation_LabelEditControlChanged(object sender, EventArgs e)
+		{
+			if (LabelEditControl == null)
+			{
+				//NextSibling
+				//Parent
+				//Repeat Above Two until Parent is Invalid
+				//RightColumn
+				int row = vtrSamplePopulation.CurrentIndex;
+				int col = vtrSamplePopulation.CurrentColumn;
+				ColumnPermutation permutation = vtrSamplePopulation.ColumnPermutation;
+				VirtualTreeCoordinate parentCoord = new VirtualTreeCoordinate(row, col);
+				VirtualTreeCoordinate coord;
+				do
+				{
+					VirtualTreeCoordinate siblingCoord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.NextSibling, parentCoord.Row, parentCoord.Column, permutation);
+					if (siblingCoord.IsValid)
+					{
+						coord = siblingCoord;
+						break;
+					}
+					coord = parentCoord;
+					parentCoord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Parent, parentCoord.Row, parentCoord.Column, permutation);
+				}
+				while(parentCoord.IsValid);
+
+				if (!parentCoord.IsValid)
+				{
+					VirtualTreeCoordinate rightColumnCoord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.RightColumn, coord.Row, coord.Column, permutation);
+					if (!rightColumnCoord.IsValid)
+					{
+						VirtualTreeCoordinate lastChildCoord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.LastChild, coord.Row, coord.Column, permutation);
+						if (lastChildCoord.IsValid)
+						{
+							coord = lastChildCoord;
+						}
+						coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Down, coord.Row, coord.Column, permutation);
+						while (coord.IsValid && coord.Column != 1)
+						{
+							coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.LeftColumn, coord.Row, coord.Column, permutation);
+						}
+					}
+					else
+					{
+						coord = rightColumnCoord;
+					}
+				}
+
+				if (coord.IsValid)
+				{
+					vtrSamplePopulation.CurrentColumn = coord.Column;
+					vtrSamplePopulation.CurrentIndex = coord.Row;
+				}
+				//StringBuilder navigationTest = new StringBuilder();
+				//VirtualTreeCoordinate coord;
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.ComplexParent, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("ComplexParent:\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Down, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("Down:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.FirstChild, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("FirstChild:\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.LastChild, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("LastChild:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Left, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("Left:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.LeftColumn, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("LeftColumn:\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.NextSibling, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("NextSibling:\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.None, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("None:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Parent, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("Parent:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.PreviousSibling, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("PreviousSibling:\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Right, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("Right:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.RightColumn, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("RightColumn:\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//coord = vtrSamplePopulation.Tree.GetNavigationTarget(TreeNavigation.Up, vtrSamplePopulation.CurrentIndex, vtrSamplePopulation.CurrentColumn, vtrSamplePopulation.ColumnPermutation);
+				//navigationTest.AppendLine("Up:\t\tValid: " + coord.IsValid + "\tCol: " + coord.Column + "\tRow: " + coord.Row);
+				//MessageBox.Show(navigationTest.ToString(), "Navigation Targets");
+				//if (nextCoordinate.IsValid)
+				//{
+				//    vtrSamplePopulation.CurrentColumn = nextCoordinate.Column;
+				//    vtrSamplePopulation.CurrentIndex = nextCoordinate.Row;
+				//}
+				//int col = vtrSamplePopulation.CurrentColumn;
+				//int row = vtrSamplePopulation.CurrentIndex;
+				//bool lastCol = (col == vtrSamplePopulation.MultiColumnTree.ColumnCount - 1);
+				//bool lastRow = (row == vtrSamplePopulation.Tree.VisibleItemCount - vtrSamplePopulation.Tree.GetSubItemCount(row, col) - 1);
+				//VirtualTreeItemInfo info = vtrSamplePopulation.Tree.GetItemInfo(row, col, true);
+				//while (info.Level > 0)
+				//{
+				//    if (info.LastBranchItem)
+				//    {
+				//        row = vtrSamplePopulation.Tree.GetParentIndex(row, col);
+				//        info = vtrSamplePopulation.Tree.GetItemInfo(row, col, true);
+				//    }
+				//    else
+				//    {
+				//        vtrSamplePopulation.CurrentIndex = vtrSamplePopulation.Tree.GetDescendantItemCount(row, col, true, false) + row + 1;
+				//        return;
+				//    }
+				//}
+				//if (!lastCol || !lastRow)
+				//{
+				//    if (lastCol)
+				//    {
+				//        col = 1;
+				//        row += vtrSamplePopulation.Tree.GetSubItemCount(row, col) + 1;
+				//    }
+				//    else
+				//    {
+				//        ++col;
+				//    }
+				//}
+				//vtrSamplePopulation.CurrentColumn = col;
+				//vtrSamplePopulation.CurrentIndex = row;
+			}
+		}
 	}
 }
+ 

@@ -317,6 +317,18 @@ namespace Neumont.Tools.ORM.Shell
 							goto default;
 						}
 						break;
+					case VSConstants.VSStd97CmdID.EditLabel:
+						// Inform the shell that we should have a chance to handle the edit command
+						if (!this.myEditor.FullRowSelect && !this.myEditor.InLabelEdit)
+						{
+							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+							prgCmds[0] = cmd;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
 					default:
 						// Inform the shell that we don't support any other commands.
 						handled = false;
@@ -387,6 +399,35 @@ namespace Neumont.Tools.ORM.Shell
 									SendMessage(editHandle, 0x100, (int)Keys.Delete, 1);
 									// WM_KEYUP == 0x101
 									SendMessage(editHandle, 0x101, (int)Keys.Delete, 0x40000001);
+								}
+							}
+							// We enabled the command, so we say we handled it regardless of the further conditions
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					case VSConstants.VSStd97CmdID.EditLabel:
+						if (samplePopulationEditor.SelectedEntityType != null
+							|| samplePopulationEditor.SelectedFactType != null
+							|| samplePopulationEditor.SelectedValueType != null)
+						{
+							if (!samplePopulationEditor.FullRowSelect && !samplePopulationEditor.InLabelEdit)
+							{
+								samplePopulationEditor.BeginEditSamplePopulationInstance();
+							}
+							else
+							{
+								Control editControl = samplePopulationEditor.LabelEditControl;
+								if (editControl != null)
+								{
+									IntPtr editHandle = editControl.Handle;
+									// WM_KEYDOWN == 0x100
+									SendMessage(editHandle, 0x100, (int)Keys.F2, 1);
+									// WM_KEYUP == 0x101
+									SendMessage(editHandle, 0x101, (int)Keys.F2, 0x40000001);
 								}
 							}
 							// We enabled the command, so we say we handled it regardless of the further conditions
