@@ -440,12 +440,13 @@ namespace Neumont.Tools.ORM.Shell
 			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
 			bool addedSurveyQuestion = GetFlag(PrivateFlags.AddedSurveyQuestionEvents);
 			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents, false);
+			SafeEventManager eventManager = SafeEventManager;
+			mySafeEventManager = null;
 			if (!addedPreLoad && !addedPostLoad && !addedSurveyQuestion)
 			{
 				return;
 			}
 			Store store = Store;
-			SafeEventManager eventManager = SafeEventManager;
 			foreach (DomainModel domainModel in Store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
