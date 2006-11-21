@@ -1908,20 +1908,24 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ReadingOrder unaryReadingOrder = readingOrderCollection[0];
 				string reading = unaryReadingOrder.ReadingText;
-				string[] splitReading = reading.Split(' ');
+				reading = reading.Remove(reading.IndexOf("{0}"), 3);
+				string[] splitReading = reading.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 				int splitReadingCount = splitReading.Length;
-				int index = 0;
 				for (int i = 0; i < splitReadingCount; ++i)
 				{
 					string currentReadingWord = splitReading[i];
-					if (currentReadingWord.StartsWith("{"))
+					string firstChar;
+					if (i == 0)
 					{
-						index = i;
+						firstChar = currentReadingWord[0].ToString().ToLower();
 					}
-					string firstChar = currentReadingWord[0].ToString().ToUpper();
+					else
+					{
+						firstChar = currentReadingWord[0].ToString().ToUpper();
+
+					}
 					splitReading[i] = string.Concat(firstChar, currentReadingWord.Remove(0, 1));
 				}
-				splitReading[index] = string.Empty;
 				return string.Concat(splitReading);
 			}
 			return "thisUnaryFactTypeNeedsAName";

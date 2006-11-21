@@ -244,8 +244,13 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 							}
 							if (tableShapesCount > 0)
 							{
-								positionDictionary.Add(conceptType.ObjectType, ((NodeShape)tableShapes[0]).Location);
-								Debug.Assert(tableShapesCount == 1);
+								// If the object type has been deleted we may not have deleted the concept type yet.
+								ObjectType objectType = conceptType.ObjectType;
+								if (objectType != null)
+								{
+									positionDictionary.Add(objectType, ((NodeShape)tableShapes[0]).Location);
+									Debug.Assert(tableShapesCount == 1);
+								}
 							}
 						}
 
