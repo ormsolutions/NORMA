@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -386,26 +387,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Nothing to do, we're just trying to create a transaction log
 		}
 		/// <summary>
-		/// Attach base shape event handlers
+		/// Manage base shape event handlers
 		/// </summary>
-		public static void AttachEventHandlers(Store store)
+		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeChangedEvent));
-		}
-		/// <summary>
-		/// Detach base shape event handlers
-		/// </summary>
-		public static void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeChangedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeChangedEvent), addHandlers);
 		}
 		private static void AttributeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{

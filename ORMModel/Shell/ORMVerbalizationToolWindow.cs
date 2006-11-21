@@ -32,6 +32,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -551,23 +552,13 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Wires event handlers to the store.
+		/// Manages event handlers in the store.
 		/// </summary>
-		protected override void AttachEventHandlers(Store store)
+		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			if (store != null && !store.Disposed)
 			{
-				store.EventManagerDirectory.ElementEventsEnded.Add(new EventHandler<ElementEventsEndedEventArgs>(ModelStateChangedEvent));
-			}
-		}
-		/// <summary>
-		/// Unwires event handlers from the store.
-		/// </summary>
-		protected override void DetachEventHandlers(Store store)
-		{
-			if (store != null && !store.Disposed)
-			{
-				store.EventManagerDirectory.ElementEventsEnded.Remove(new EventHandler<ElementEventsEndedEventArgs>(ModelStateChangedEvent));
+				eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ModelStateChangedEvent), addHandlers);
 			}
 		}
 		#endregion // ORMToolWindow Implementation

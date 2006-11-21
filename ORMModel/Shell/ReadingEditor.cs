@@ -38,6 +38,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using System.Security.Permissions;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -988,90 +989,49 @@ namespace Neumont.Tools.ORM.Shell
 		#region model events and handlers
 		#region Nested event handler attach/detach methods
 		/// <summary>
-		/// Attaches the event handlers to the store so that the tool window
+		/// Manages event handlers in the store so that the tool window
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		public void AttachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
-
-			// Track Reading changes
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingLinkAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingLinkRemovedEvent));
-
-			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent));
-
-			// Track ReadingOrder changes
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingOrderLinkRemovedEvent));
-
-			//Track FactType RoleOrder changes
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent));
-
-			// Track fact type removal
-			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent));
-
-			//Track Order Change
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
-			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingOrderPositionChangedHandler));
-			classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
-			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingPositionChangedHandler));
-
-			//Track Currently Executing Events
-			eventDirectory.ElementEventsBegun.Add(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent));
-			eventDirectory.ElementEventsEnded.Add(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
-		}
-
-		/// <summary>
-		/// removes the event handlers from the store that were placed to allow
-		/// the tool window to keep in sync with the mdoel
-		/// </summary>
-		public void DetachEventHandlers(Store store)
+		public void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			if (store == null || store.Disposed)
 			{
 				return; // Bail out
 			}
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
 			// Track Reading changes
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingLinkAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingLinkRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingLinkAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingLinkRemovedEvent), addHandlers);
 
 			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), addHandlers);
 
 			// Track ReadingOrder changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingOrderLinkRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingOrderLinkRemovedEvent), addHandlers);
 
 			//Track FactType RoleOrder changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), addHandlers);
 
 			// Track fact type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent), addHandlers);
 
-			// Track Order Change	
+			//Track Order Change
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
-			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingOrderPositionChangedHandler));
+			eventManager.AddOrRemove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingOrderPositionChangedHandler), addHandlers);
 			classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
-			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingPositionChangedHandler));
+			eventManager.AddOrRemove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingPositionChangedHandler), addHandlers);
 
 			//Track Currently Executing Events
-			eventDirectory.ElementEventsBegun.Remove(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent));
-			eventDirectory.ElementEventsEnded.Remove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
+			eventManager.AddOrRemove(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), addHandlers);
+			eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), addHandlers);
 		}
+
 		#endregion //Nested event handler attach/detach methods
 
 		#region Pre/Post Event routines

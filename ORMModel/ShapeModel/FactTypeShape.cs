@@ -35,6 +35,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -4947,34 +4948,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Attach event handlers to the store
+		/// Manage event handlers in the store
 		/// </summary>
-		public static new void AttachEventHandlers(Store store)
+		public static new void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(UniquenessConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
+			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), addHandlers);
 
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
-		}
-		/// <summary>
-		/// Detach event handlers from the store
-		/// </summary>
-		public static new void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(UniquenessConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
-
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), addHandlers);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of an internal uniqueness constraint changes

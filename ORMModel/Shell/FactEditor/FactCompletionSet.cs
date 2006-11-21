@@ -32,6 +32,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell.FactEditor
 {
@@ -342,14 +343,14 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					ModelingDocData docData = oldView.DocData;
 					if (docData != null)
 					{
-						DetachEventHandlers(docData.Store);
+						ManageEventHandlers(docData.Store, false);
 					}
 				}
 				myCurrentDocView = value;
 				ReloadModelElements();
 				if (value != null)
 				{
-					AttachEventHandlers(value.DocData.Store);
+					ManageEventHandlers(value.DocData.Store, true);
 				}
 			}
 		}
@@ -379,38 +380,23 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
 		}
 
-		private void AttachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
-
-			// Track ObjectType changes
-			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent));
-			
-			classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent));
-		}
-
-		private void DetachEventHandlers(Store store)
+		private void ManageEventHandlers(Store store, bool addHandlers)
 		{
 			if (store == null || store.Disposed)
 			{
-				return; // Bail out
+				return;
 			}
+			SafeEventManager eventManager = (store as IORMToolServices).SafeEventManager;
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
 			// Track ObjectType changes
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent));
-
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent), addHandlers);
+			
 			classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent), addHandlers);
 		}
 
 		private void ObjectTypeAddedEvent(object sender, ElementAddedEventArgs e)

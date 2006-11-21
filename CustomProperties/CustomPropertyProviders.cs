@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.CustomProperties
 {
@@ -96,30 +97,26 @@ namespace Neumont.Tools.ORM.CustomProperties
 		#endregion // CustomPropertyProviders class
 
 		#region IORMModelEventSubscriber Members
-		void IORMModelEventSubscriber.AddPostLoadModelingEventHandlers()
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 			IORMPropertyProviderService propertyProvisioningService = ((IORMToolServices)this.Store).PropertyProviderService;
-
-			propertyProvisioningService.RegisterPropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true);
-			propertyProvisioningService.RegisterPropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true);
-			propertyProvisioningService.RegisterPropertyProvider<FactType>(CustomPropertyProviders.FactType, false);
-			propertyProvisioningService.RegisterPropertyProvider<Role>(CustomPropertyProviders.Role, true);
-			propertyProvisioningService.RegisterPropertyProvider<FrequencyConstraint>(CustomPropertyProviders.FrequencyConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<MandatoryConstraint>(CustomPropertyProviders.MandatoryConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<RingConstraint>(CustomPropertyProviders.RingConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<UniquenessConstraint>(CustomPropertyProviders.UniquenessConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<EqualityConstraint>(CustomPropertyProviders.EqualityConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<ExclusionConstraint>(CustomPropertyProviders.ExclusionConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<SubsetConstraint>(CustomPropertyProviders.SubsetConstraint, true);
-			propertyProvisioningService.RegisterPropertyProvider<ValueConstraint>(CustomPropertyProviders.ValueConstraint, true);
-		}
-
-		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
-		{
-			if (postLoadAdded)
+			if (addHandlers)
 			{
-				IORMPropertyProviderService propertyProvisioningService = ((IORMToolServices)this.Store).PropertyProviderService;
-
+				propertyProvisioningService.RegisterPropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true);
+				propertyProvisioningService.RegisterPropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true);
+				propertyProvisioningService.RegisterPropertyProvider<FactType>(CustomPropertyProviders.FactType, false);
+				propertyProvisioningService.RegisterPropertyProvider<Role>(CustomPropertyProviders.Role, true);
+				propertyProvisioningService.RegisterPropertyProvider<FrequencyConstraint>(CustomPropertyProviders.FrequencyConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<MandatoryConstraint>(CustomPropertyProviders.MandatoryConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<RingConstraint>(CustomPropertyProviders.RingConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<UniquenessConstraint>(CustomPropertyProviders.UniquenessConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<EqualityConstraint>(CustomPropertyProviders.EqualityConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<ExclusionConstraint>(CustomPropertyProviders.ExclusionConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<SubsetConstraint>(CustomPropertyProviders.SubsetConstraint, true);
+				propertyProvisioningService.RegisterPropertyProvider<ValueConstraint>(CustomPropertyProviders.ValueConstraint, true);
+			}
+			else
+			{
 				propertyProvisioningService.UnregisterPropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true);
 				propertyProvisioningService.UnregisterPropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true);
 				propertyProvisioningService.UnregisterPropertyProvider<FactType>(CustomPropertyProviders.FactType, false);
@@ -134,12 +131,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 				propertyProvisioningService.UnregisterPropertyProvider<ValueConstraint>(CustomPropertyProviders.ValueConstraint, true);
 			}
 		}
-
-		void IORMModelEventSubscriber.AddPreLoadModelingEventHandlers()
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 			// Do nothing
 		}
-		void IORMModelEventSubscriber.SurveyQuestionLoad()
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 			// Do nothing
 		}

@@ -34,6 +34,7 @@ using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -278,23 +279,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Wires event handlers to the store.
 		/// </summary>
-		protected override void AttachEventHandlers(Store store)
+		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			SamplePopulationEditor editor = myEditor;
 			if (editor != null)
 			{
-				editor.AttachEventHandlers(store);
-			}
-		}
-		/// <summary>
-		/// Unwires event handlers from the store.
-		/// </summary>
-		protected override void DetachEventHandlers(Store store)
-		{
-			SamplePopulationEditor editor = myEditor;
-			if (editor != null)
-			{
-				editor.DetachEventHandlers(store);
+				editor.ManageEventHandlers(store, eventManager, addHandlers);
 			}
 		}
 		#endregion // ORMToolWindow Implementation

@@ -21,6 +21,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -51,6 +52,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// such as when the model is being loaded outside the Visual Studio environment.
 		/// </summary>
 		IServiceProvider ServiceProvider { get;}
+		/// <summary>
+		/// Retrieve a safe event manager. Use in place of <see cref="Store.EventManagerDirectory"/>
+		/// to add and remove events.
+		/// </summary>
+		SafeEventManager SafeEventManager { get;} 
 		/// <summary>
 		/// Retrieve the VerbalizationSnippets dictionary for this store
 		/// </summary>

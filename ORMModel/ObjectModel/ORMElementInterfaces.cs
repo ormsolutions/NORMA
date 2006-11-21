@@ -109,24 +109,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public interface IORMModelEventSubscriber
 	{
 		/// <summary>
-		/// This method attaches ModelEvents to the primary Store. Before the Document is Loaded.
+		/// This method attaches ModelEvents to the primary Store. Called before the Document is Loaded
+		/// and when event handlers are removed.
 		/// </summary>
-		void AddPreLoadModelingEventHandlers();
+		/// <param name="eventManager">The <see cref="SafeEventManager"/> used to add or remove events</param>
+		/// <param name="addHandlers">true to add event handlers, false to remove handlers.</param>
+		void ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers);
 		/// <summary>
-		/// This method attaches ModelEvents to the primary Store. After the Document is Loaded.
+		/// This method attaches ModelEvents to the primary Store. Called after the Document is Loaded
+		/// and when event handlers are removed.
 		/// </summary>
-		void AddPostLoadModelingEventHandlers();
+		/// <param name="eventManager">The <see cref="SafeEventManager"/> used to add or remove events</param>
+		/// <param name="addHandlers">true to add event handlers, false to remove handlers.</param>
+		void ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers);
 		/// <summary>
-		/// This method removes ModelEvents from the primary Store.
+		/// This method attaches ModelEvents to the primary Store. Called when survey questions (used to load
+		/// the model browser) are required and when event handlers are removed.
 		/// </summary>
-		/// <param name="preLoadAdded">The AddPreLoadModelingEventHandlers was called</param>
-		/// <param name="postLoadAdded">The AddPostLoadModelingEventHandlers was called</param>
-		/// <param name="surveyHandlerAdded">The SurveyEventHandlers were loaded</param>
-		void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded);
-		/// <summary>
-		/// this method attaches ModelEvents to the MetaModel where they can be passed to the affected store
-		/// </summary>
-		void SurveyQuestionLoad();
+		/// <param name="eventManager">The <see cref="SafeEventManager"/> used to add or remove events</param>
+		/// <param name="addHandlers">true to add event handlers, false to remove handlers.</param>
+		void ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers);
 	}
 	#endregion // IORMModelEventSubscriber
 	#region IDomainModelEnablesRulesAfterDeserialization interface

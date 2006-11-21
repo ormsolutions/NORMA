@@ -17,6 +17,7 @@
 using System;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -24,66 +25,44 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region IORMModelEventSubscriber Implementation
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.AddPreLoadModelingEventHandlers
+		/// Implements IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers
 		/// </summary>
-		protected static void AddPreLoadModelingEventHandlers()
+		protected static void ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 		}
-		void IORMModelEventSubscriber.AddPreLoadModelingEventHandlers()
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			AddPreLoadModelingEventHandlers();
+			ManagePreLoadModelingEventHandlers(eventManager, addHandlers);
 		}
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.AddPostLoadModelingEventHandlers
+		/// Implements IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers
 		/// </summary>
-		protected void AddPostLoadModelingEventHandlers()
+		protected void ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 			Store store = Store;
-			ORMBaseShape.AttachEventHandlers(store);
-			ReadingShape.AttachEventHandlers(store);
-			ExternalConstraintShape.AttachEventHandlers(store);
-			RolePlayerLink.AttachEventHandlers(store);
-			ObjectTypeShape.AttachEventHandlers(store);
-			FactTypeShape.AttachEventHandlers(store);
-			SubtypeLink.AttachEventHandlers(store);
+			ORMBaseShape.ManageEventHandlers(store, eventManager, addHandlers);
+			ReadingShape.ManageEventHandlers(store, eventManager, addHandlers);
+			ExternalConstraintShape.ManageEventHandlers(store, eventManager, addHandlers);
+			RolePlayerLink.ManageEventHandlers(store, eventManager, addHandlers);
+			ObjectTypeShape.ManageEventHandlers(store, eventManager, addHandlers);
+			FactTypeShape.ManageEventHandlers(store, eventManager, addHandlers);
+			SubtypeLink.ManageEventHandlers(store, eventManager, addHandlers);
 		}
-		void IORMModelEventSubscriber.AddPostLoadModelingEventHandlers()
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			AddPostLoadModelingEventHandlers();
+			ManagePostLoadModelingEventHandlers(eventManager, addHandlers);
 		}
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.RemoveModelingEventHandlers
+		/// Implements IORMModelEvenSubscriber.ManageSurveyQuestionModelingEventHandlers
 		/// </summary>
-		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
+		protected static void ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			if (postLoadAdded)
-			{
-				Store store = Store;
-				SubtypeLink.DetachEventHandlers(store);
-				FactTypeShape.DetachEventHandlers(store);
-				ObjectTypeShape.DetachEventHandlers(store);
-				RolePlayerLink.DetachEventHandlers(store);
-				ExternalConstraintShape.DetachEventHandlers(store);
-				ReadingShape.DetachEventHandlers(store);
-				ORMBaseShape.DetachEventHandlers(store);
-			}
+			//currently unimplemented as the survey doesn't care about shape model changes
 		}
-		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded, surveyHandlerAdded);
+			ManageSurveyQuestionModelingEventHandlers(eventManager, addHandlers);
 		}
-		/// <summary>
-		/// Implements IORMModelEvenSubscriber.SurveyQuestionLoad event handlers
-		/// </summary>
-		protected void SurveyQuestionLoad()
-		{
-			//currently unimplimented as the survey doesn't care about shape model changes
-		}
-		void IORMModelEventSubscriber.SurveyQuestionLoad()
-		{
-			SurveyQuestionLoad();
-		}
-
 		#endregion // IORMModelEventSubscriber Implementation
 	}
 }

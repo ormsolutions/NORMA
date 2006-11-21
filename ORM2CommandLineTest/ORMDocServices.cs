@@ -70,6 +70,22 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return this;
 				}
 			}
+			private SafeEventManager mySafeEventManager;
+			private class CreatableSafeEventManager : SafeEventManager
+			{
+				public CreatableSafeEventManager(Store store) : base(store) { }
+				protected override void DisplayException(Exception ex)
+				{
+					// UNDONE: Report any exception coming through here
+				}
+			}
+			SafeEventManager IORMToolServices.SafeEventManager
+			{
+				get
+				{
+					return mySafeEventManager;
+				}
+			}
 			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
 			{
 				get
@@ -219,6 +235,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return null;
 				}
 				ORMStore store = new ORMStore(this);
+				mySafeEventManager = new CreatableSafeEventManager(store);
 				store.UndoManager.UndoState = UndoState.Disabled;
 				Type[] domainModels = new Type[4] { typeof(CoreDomainModel), typeof(CoreDesignSurfaceDomainModel), typeof(ORMCoreDomainModel), typeof(ORMShapeDomainModel) };
 				store.LoadDomainModels(domainModels);

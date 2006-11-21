@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections;
 using System.Runtime.InteropServices;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -192,12 +194,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// Attaches custom event handlers to the store.  This method must be overridden.
 		/// </summary>
 		/// <param name="store">The store to which event handlers should be attached.</param>
-		protected abstract void AttachEventHandlers(Store store);
-		/// <summary>
-		/// Detaches custom event handlers from the store.  This method must be overridden.
-		/// </summary>
-		/// <param name="store">The store from which event handlers should be detached.</param>
-		protected abstract void DetachEventHandlers(Store store);
+		/// <param name="eventManager">The SafeEventManager to attach events to.</param>
+		/// <param name="addHandlers">true to attach event handlers, false to detach handlers</param>
+		protected abstract void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers);
 		/// <summary>
 		/// Gets the string that should be displayed in the title bar of the tool window.
 		/// </summary>
@@ -295,5 +294,21 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // ISelectionContainer overrides
+		#region ORMToolWindow specific
+		/// <summary>
+		/// Attach event handlers to the store. Defers to <see cref="ManageEventHandlers"/>.
+		/// </summary>
+		protected void AttachEventHandlers(Store store)
+		{
+			ManageEventHandlers(store, (store as IORMToolServices).SafeEventManager, true);
+		}
+		/// <summary>
+		/// Detach event handlers from the store. Defers to <see cref="ManageEventHandlers"/>.
+		/// </summary>
+		protected void DetachEventHandlers(Store store)
+		{
+			ManageEventHandlers(store, (store as IORMToolServices).SafeEventManager, false);
+		}
+		#endregion // ORMToolWindow specific
 	}
 }

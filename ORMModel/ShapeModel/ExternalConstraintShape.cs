@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation
@@ -568,42 +569,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Mouse Handling
 		#region Store Event Handlers
 		/// <summary>
-		/// Attach event handlers to the store
+		/// Manage event handlers in the store
 		/// </summary>
-		public static new void AttachEventHandlers(Store store)
+		public static new void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			DomainRoleInfo roleInfo = dataDirectory.FindDomainRole(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
-			eventDirectory.RolePlayerOrderChanged.Add(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedEvent));
+			eventManager.AddOrRemove(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedEvent), addHandlers);
 			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Add(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetComparisonConstraintChangedEvent));
+			eventManager.AddOrRemove(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetComparisonConstraintChangedEvent), addHandlers);
 			propertyInfo = dataDirectory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Add(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetConstraintChangedEvent));
+			eventManager.AddOrRemove(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetConstraintChangedEvent), addHandlers);
 
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
-		}
-		/// <summary>
-		/// Detach event handlers from the store
-		/// </summary>
-		public static new void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			DomainRoleInfo roleInfo = dataDirectory.FindDomainRole(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
-			eventDirectory.RolePlayerOrderChanged.Remove(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedEvent));
-			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Remove(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetComparisonConstraintChangedEvent));
-			propertyInfo = dataDirectory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Remove(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetConstraintChangedEvent));
-
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), addHandlers);
 		}
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{

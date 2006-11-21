@@ -32,6 +32,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -394,59 +395,30 @@ namespace Neumont.Tools.ORM.Shell
 			PopulateSelectedNoteOwners();
 		}
 		/// <summary>
-		/// Attaches event handlers to the store.
+		/// Manages event handlers in the store.
 		/// </summary>
-		protected override void AttachEventHandlers(Store store)
+		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			if (store == null || store.Disposed)
 			{
 				return; // Bail out
 			}
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			// Track Note additions and deletions changes
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler), addHandlers);
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler), addHandlers);
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelNote.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler), addHandlers);
 
 			// Track Note.Text changes
 			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(Note.TextDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler));
-		}
-
-		/// <summary>
-		/// Detaches event handlers from the store.
-		/// </summary>
-		protected override void DetachEventHandlers(Store store)
-		{
-			if (store == null || store.Disposed)
-			{
-				return; // Bail out
-			}
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			// Track Note additions and deletions changes
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler));
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler));
-			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelNote.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler));
-
-			// Track Note.Text changes
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(Note.TextDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler));
+			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), addHandlers);
 		}
 		/// <summary>
 		/// Returns the title of the window.

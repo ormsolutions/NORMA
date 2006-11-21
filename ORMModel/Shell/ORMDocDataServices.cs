@@ -72,7 +72,8 @@ namespace Neumont.Tools.ORM.Shell
 						IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
 						if (eventSubscriber != null)
 						{
-							eventSubscriber.SurveyQuestionLoad();
+							eventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager, true);
+							SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 						}
 					}
 					myRootBranch = new MainList(nodeProviderList, questionProviderList);
@@ -183,6 +184,24 @@ namespace Neumont.Tools.ORM.Shell
 				get
 				{
 					return ServiceProvider;
+				}
+			}
+			/// <summary>
+			/// Defer to SafeEventManager on the document. Implements
+			/// IORMToolServices.SafeEventManager
+			/// </summary>
+			protected SafeEventManager SafeEventManager
+			{
+				get
+				{
+					return myServices.SafeEventManager;
+				}
+			}
+			SafeEventManager IORMToolServices.SafeEventManager
+			{
+				get
+				{
+					return SafeEventManager;
 				}
 			}
 			/// <summary>
@@ -939,6 +958,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
 		private int myCustomBlockCanAddTransactionCount;
 		private IORMPropertyProviderService myPropertyProviderService;
+		private SafeEventManager mySafeEventManager;
 
 		/// <summary>
 		/// Retrieve the <see cref="IORMPropertyProviderService"/> for this document.
@@ -1007,6 +1027,28 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return ServiceProvider;
+			}
+		}
+		/// <summary>
+		/// Implements IORMToolServices.SafeEventManager
+		/// </summary>
+		protected SafeEventManager SafeEventManager
+		{
+			get
+			{
+				SafeEventManager retVal = mySafeEventManager;
+				if (retVal == null)
+				{
+					mySafeEventManager = retVal = new UISafeEventManager(Store);
+				}
+				return retVal;
+			}
+		}
+		SafeEventManager IORMToolServices.SafeEventManager
+		{
+			get
+			{
+				return SafeEventManager;
 			}
 		}
 		/// <summary>
@@ -1542,5 +1584,38 @@ namespace Neumont.Tools.ORM.Shell
 			return new ORMTaskProvider(this);
 		}
 		#endregion // TaskProvider implementation
+		#region UISafeEventManager class
+		/// <summary>
+		/// A class to display an exception message without
+		/// breaking an event loop.
+		/// </summary>
+		public class UISafeEventManager : SafeEventManager
+		{
+			private IServiceProvider myServiceProvider;
+			/// <summary>
+			/// Create a new UISafeEventManager
+			/// </summary>
+			public UISafeEventManager(Store store)
+				: base(store)
+			{
+				myServiceProvider = ((IORMToolServices)store).ServiceProvider;
+			}
+			/// <summary>
+			/// Use the standard <see cref="System.Windows.Forms.Design.IUIService"/> to display
+			/// the exception message.
+			/// </summary>
+			/// <param name="ex">The exception to display.</param>
+			protected override void DisplayException(Exception ex)
+			{
+				IServiceProvider provider;
+				System.Windows.Forms.Design.IUIService uiService;
+				if (null != (provider = myServiceProvider) &&
+					null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
+				{
+					uiService.ShowError(ex);
+				}
+			}
+		}
+		#endregion // UISafeEventManager class
 	}
 }

@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -359,83 +360,44 @@ namespace Neumont.Tools.ORM.Shell
 		#region Model Events and Handler Methods
 		#region Event Handler Attach/Detach Methods
 		/// <summary>
-		/// Attaches the event handlers to the store so that the tool window
+		/// Manages event handlers in the store so that the tool window
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		public void AttachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			DomainClassInfo classInfo;
-
-			//Track Currently Executing Events
-			eventDirectory.ElementEventsBegun.Add(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent));
-			eventDirectory.ElementEventsEnded.Add(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
-
-			// Track FactTypeInstance changes
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleRemovedEvent));
-
-			// Track EntityTypeInstance changes
-			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
-
-			classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
-			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerChangedEvent));
-
-			// Track fact type removal
-			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent));
-
-			// Track object type removal
-			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent));
-		}
-
-		/// <summary>
-		/// Removes the event handlers from the store that were placed to allow
-		/// the tool window to keep in sync with the mdoel
-		/// </summary>
-		public void DetachEventHandlers(Store store)
+		public void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			if (store == null || store.Disposed)
 			{
 				return;
 			}
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			DomainClassInfo classInfo;
 
-			// Track Currently Executing Events
-			eventDirectory.ElementEventsBegun.Remove(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent));
-			eventDirectory.ElementEventsEnded.Remove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
+			//Track Currently Executing Events
+			eventManager.AddOrRemove(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), addHandlers);
+			eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), addHandlers);
 
 			// Track FactTypeInstance changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleRemovedEvent), addHandlers);
 
 			// Track EntityTypeInstance changes
 			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent), addHandlers);
 
 			classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
-			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerChangedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerChangedEvent), addHandlers);
 
 			// Track fact type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent), addHandlers);
 
 			// Track object type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent), addHandlers);
 		}
 		#endregion
 		#region Fact Type Instance Event Handlers

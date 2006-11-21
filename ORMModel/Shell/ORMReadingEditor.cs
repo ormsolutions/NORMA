@@ -34,6 +34,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -543,36 +544,20 @@ namespace Neumont.Tools.ORM.Shell
 
 		#endregion
 		#region event handler attach/detach methods
-
 		/// <summary>
-		/// Attaches the event handlers to the store so that the tool window
+		/// Manages event handlers in the store so that the tool window
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		protected override void AttachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
+		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			ReadingsViewForm form = myForm;
 			ReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
 
 			if (readingEditor != null)
 			{
-				readingEditor.AttachEventHandlers(store);
+				readingEditor.ManageEventHandlers(store, eventManager, addHandlers);
 			}
 		}
-
-		/// <summary>
-		/// removes the event handlers from the store that were placed to allow
-		/// the tool window to keep in sync with the mdoel
-		/// </summary>
-		protected override void DetachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			ReadingsViewForm form = myForm;
-			ReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
-			if (readingEditor != null)
-			{
-				readingEditor.DetachEventHandlers(store);
-			}
-		}
-
 		#endregion
 		#region Nested Tool Window Class
 		private sealed class ReadingEditorCommandSet : MarshalByRefObject, IDisposable

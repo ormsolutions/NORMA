@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
 using System.Collections.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -177,11 +178,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// NOT IMPLEMENTED: There are no event handlers to attach for this class.
 		/// </summary>
-		protected override void AttachEventHandlers(Store store) { }
-		/// <summary>
-		/// NOT IMPLEMENTED: There are no event handlers to detach for this class.
-		/// </summary>
-		protected override void DetachEventHandlers(Store store) { }
+		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers) { }
 		#endregion
 	}
 }

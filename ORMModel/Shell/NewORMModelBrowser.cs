@@ -39,20 +39,10 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion //LoadWindow method
 		#region ORMToolWindow overrides
 		/// <summary>
-		/// currently unimplimented, all events handled by tree directly
-		/// </summary>
-		/// <param name="store"></param>
-		protected override void AttachEventHandlers(Microsoft.VisualStudio.Modeling.Store store) 
-		{
-			
-		}
-		/// <summary>
 		/// currently unimplemented, all events handled by tree directly
 		/// </summary>
-		/// <param name="store"></param>
-		protected override void DetachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
+		protected override void ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store store, Neumont.Tools.Modeling.SafeEventManager eventManager, bool addHandlers)
 		{
-			
 		}
 		/// <summary>
 		/// called when document current selected document changes

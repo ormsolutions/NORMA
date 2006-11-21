@@ -424,26 +424,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SubtypeLink specific
 		#region Store Event Handlers
 		/// <summary>
-		/// Attach event handlers to the store
+		/// Manage event handlers in the store
 		/// </summary>
-		public static void AttachEventHandlers(Store store)
+		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent));
-		}
-		/// <summary>
-		/// Detach event handlers from the store
-		/// </summary>
-		public static void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent));
+			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent), addHandlers);
 		}
 		/// <summary>
 		/// Event handler for IsPrimary property on the associated subtype fact

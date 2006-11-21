@@ -9,6 +9,7 @@ using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using System.Xml;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling;
 
 
 #endregion
@@ -71,6 +72,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return myServices.ServiceProvider;
 				}
 			}
+			SafeEventManager IORMToolServices.SafeEventManager
+			{
+				get
+				{
+					return myServices.SafeEventManager;
+				}
+			}
 			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
 			{
 				get
@@ -78,7 +86,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return myServices.VerbalizationSnippetsDictionary;
 				}
 			}
-			//TODO: anything implmenting IORMToolServices needs this property filled in with correct code
+			//TODO: anything implementing IORMToolServices needs this property filled in with correct code
 			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
 			{
 				get

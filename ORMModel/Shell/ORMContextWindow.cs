@@ -570,16 +570,9 @@ namespace Neumont.Tools.ORM.Shell
 			base.OnORMSelectionContainerChanged();
 		}
 		/// <summary>
-		/// Attaches event handlers to the store.
+		/// Manages event handlers in the store.
 		/// </summary>
-		protected override void AttachEventHandlers(Store store)
-		{
-			// empty
-		}
-		/// <summary>
-		/// Detaches event handlers from the store.
-		/// </summary>
-		protected override void DetachEventHandlers(Store store)
+		protected override void ManageEventHandlers(Store store, Neumont.Tools.Modeling.SafeEventManager eventManager, bool addHandlers)
 		{
 			// empty
 		}

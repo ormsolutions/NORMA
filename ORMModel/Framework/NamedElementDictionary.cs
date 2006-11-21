@@ -1501,56 +1501,31 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		/// <summary>
-		/// Call from ModelingDocData.AddPostLoadModelingEventHandlers to
+		/// Call from IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers implementations to
 		/// attach handlers that correctly deal with undo and redo scenarios.
 		/// </summary>
 		/// <param name="store">The store to attach to</param>
-		public static void AttachEventHandlers(Store store)
+		/// <param name="eventManager">The <see cref="SafeEventManager"/> use to manage events</param>
+		/// <param name="addHandlers">true to add handlers, false to remove them.</param>
+		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ElementLink.DomainClassId);
 
 			// Track ElementLink changes
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ElementLinkAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ElementLinkAddedEvent), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent), addHandlers);
 			// UNDONE: RolePlayerChanged
 
 			// Track ModelElement 
 			classInfo = dataDirectory.FindDomainClass(ModelElement.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent), addHandlers);
 
-			eventDirectory.ElementEventsEnded.Add(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
-
-			// Track commit and rollback events so we can rollback/abandon a change log as needed.
-			eventDirectory.TransactionCommitted.Add(new EventHandler<TransactionCommitEventArgs>(TransactionCommittedEvent));
-			eventDirectory.TransactionRolledBack.Add(new EventHandler<TransactionRollbackEventArgs>(TransactionRolledBackEvent));
-		}
-		/// <summary>
-		/// Call from ModelingDocData.RemoveModelingEventHandlers to detach
-		/// handlers from the store.
-		/// </summary>
-		/// <param name="store">The store to detach from</param>
-		public static void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ElementLink.DomainClassId);
-
-			// Track ElementLink changes
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ElementLinkAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent));
-			// UNDONE: RolePlayerChanged
-
-			// Track ModelElement 
-			classInfo = dataDirectory.FindDomainClass(ModelElement.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent));
-
-			eventDirectory.ElementEventsEnded.Remove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
+			eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), addHandlers);
 
 			// Track commit and rollback events so we can rollback/abandon a change log as needed.
-			eventDirectory.TransactionCommitted.Remove(new EventHandler<TransactionCommitEventArgs>(TransactionCommittedEvent));
-			eventDirectory.TransactionRolledBack.Remove(new EventHandler<TransactionRollbackEventArgs>(TransactionRolledBackEvent));
+			eventManager.AddOrRemove(new EventHandler<TransactionCommitEventArgs>(TransactionCommittedEvent), addHandlers);
+			eventManager.AddOrRemove(new EventHandler<TransactionRollbackEventArgs>(TransactionRolledBackEvent), addHandlers);
 		}
 		#endregion // IMS integration
 	}

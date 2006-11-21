@@ -274,57 +274,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Delayed Model Validation
 		#region IORMModelEventSubscriber Implementation
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.AddPreLoadModelingEventHandlers
+		/// Implements IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers
 		/// </summary>
-		protected static void AddPreLoadModelingEventHandlers()
+		protected static void ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 		}
-		void IORMModelEventSubscriber.AddPreLoadModelingEventHandlers()
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			AddPreLoadModelingEventHandlers();
+			ManagePreLoadModelingEventHandlers(eventManager, addHandlers);
 		}
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.AddPostLoadModelingEventHandlers
+		/// Implements IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers
 		/// </summary>
-		protected void AddPostLoadModelingEventHandlers()
+		protected void ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			NamedElementDictionary.AttachEventHandlers(Store);
+			NamedElementDictionary.ManageEventHandlers(Store, eventManager, addHandlers);
 		}
-		void IORMModelEventSubscriber.AddPostLoadModelingEventHandlers()
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			AddPostLoadModelingEventHandlers();
+			ManagePostLoadModelingEventHandlers(eventManager, addHandlers);
 		}
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.RemoveModelingEventHandlers
+		/// Implementes IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers
 		/// </summary>
-		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
-		{
-			if (postLoadAdded)
-			{
-				NamedElementDictionary.DetachEventHandlers(Store);
-			}
-		}
-		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
-		{
-			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded, surveyHandlerAdded);
-		}
-		/// <summary>
-		/// Implementes IORMModelEventSubscriber.SurveyQuestionLoad
-		/// </summary>
-		protected void SurveyQuestionLoad()
+		protected void ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory directory = this.Store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = this.Store.EventManagerDirectory;
 			DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
 
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved));
-			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged));
-			eventDirectory.ElementPropertyChanged.Add(directory.FindDomainClass(FactType.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged));
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved), addHandlers);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), addHandlers);
+			classInfo = directory.FindDomainClass(FactType.DomainClassId);
+			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), addHandlers);
 		}
-		void IORMModelEventSubscriber.SurveyQuestionLoad()
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
 		{
-			this.SurveyQuestionLoad();
+			this.ManageSurveyQuestionModelingEventHandlers(eventManager, addHandlers);
 		}
 		#endregion // IORMModelEventSubscriber Implementation
 		#region IVerbalizationSnippetsProvider Implementation

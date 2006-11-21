@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
@@ -604,28 +605,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Attach event handlers to the store
+		/// Manage event handlers in the store
 		/// </summary>
-		public static new void AttachEventHandlers(Store store)
+		public static new void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(ValueTypeHasDataType.DomainClassId);
-			eventDirectory.ElementAdded.Add(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent));
-			eventDirectory.ElementDeleted.Add(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent));
-		}
-		/// <summary>
-		/// Detach event handlers from the store
-		/// </summary>
-		public static new void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(ValueTypeHasDataType.DomainClassId);
-			eventDirectory.ElementAdded.Remove(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent));
-			eventDirectory.ElementDeleted.Remove(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent));
+			eventManager.AddOrRemove(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent), addHandlers);
+			eventManager.AddOrRemove(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent), addHandlers);
 		}
 		/// <summary>
 		/// Update the shape when a data type is added from the ObjecType.

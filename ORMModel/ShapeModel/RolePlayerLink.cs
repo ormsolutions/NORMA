@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region (Temporary) CompositeLinkDecorator test class
@@ -491,34 +492,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Attach event handlers to the store
+		/// Manage event handlers in the store
 		/// </summary>
-		public static void AttachEventHandlers(Store store)
+		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
+			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), addHandlers);
 			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId);
-			eventDirectory.ElementAdded.Add(relInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent));
+			eventManager.AddOrRemove(relInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent), addHandlers);
 			relInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
-			eventDirectory.ElementDeleted.Add(relInfo, new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent));
-		}
-		/// <summary>
-		/// Detach event handlers from the store
-		/// </summary>
-		public static void DetachEventHandlers(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId);
-			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
-			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId);
-			eventDirectory.ElementAdded.Remove(relInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent));
-			relInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
-			eventDirectory.ElementDeleted.Remove(relInfo, new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent));
+			eventManager.AddOrRemove(relInfo, new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent), addHandlers);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of a simple mandatory constraint changes
