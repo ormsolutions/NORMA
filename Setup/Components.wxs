@@ -267,6 +267,8 @@
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="VerbalizationCoreSnippets.xsd" Name="VrbCrSnp.xsd" LongName="VerbalizationCoreSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="VerbalizationCoreSnippetsDocumentation.html" Name="VrbCrSnD.htm" LongName="VerbalizationCoreSnippetsDocumentation.html"  src="..\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 									</Component>
 								</Directory>
 							</Directory>
