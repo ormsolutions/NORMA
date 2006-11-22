@@ -22,6 +22,20 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.Modeling
 {
+	#region ISafeEventManagerProvider interface
+	/// <summary>
+	/// An interface to implement on a Store to provide
+	/// a <see cref="SafeEventManager"/> class for the store.
+	/// </summary>
+	public interface ISafeEventManagerProvider
+	{
+		/// <summary>
+		/// Return the <see cref="SafeEventManager"/> corresponding
+		/// to the current store.
+		/// </summary>
+		SafeEventManager SafeEventManager { get;}
+	}
+	#endregion // ISafeEventManagerProvider interface
 	#region SafeEventManager class
 	/// <summary>
 	/// An event manager used to protected the state of

@@ -36,6 +36,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 
 using PropertyChangedEventArgs = Microsoft.VisualStudio.Modeling.Diagrams.PropertyChangedEventArgs;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -419,14 +420,14 @@ namespace Neumont.Tools.ORM.Shell
 				ModelingDocData oldDocData = container.ModelingDocData;
 				if (oldDocData != null)
 				{
-					DetachModelEvents(oldDocData.Store);
+					ManageModelEvents(oldDocData.Store, false);
 				}
 				ModelingDocData newDocData = (newView != null) ? (newView.DocData as ModelingDocData) : null;
 				myFactCollectionNode = null;
 				if (newDocData != null)
 				{
 					container.ObjectModelBrowser.Show();
-					AttachModelEvents(newDocData.Store);
+					ManageModelEvents(newDocData.Store, true);
 				}
 				else
 				{
@@ -435,21 +436,13 @@ namespace Neumont.Tools.ORM.Shell
 				container.ModelingDocData = newDocData;
 			}
 		}
-		private void AttachModelEvents(Store store)
+		private void ManageModelEvents(Store store, bool addHandlers)
 		{
 			if (store == null || store.Disposed)
 			{
 				return;
 			}
-			store.EventManagerDirectory.ElementPropertyChanged.Add(FactType.NameChangedDomainPropertyId, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged));
-		}
-		private void DetachModelEvents(Store store)
-		{
-			if (store == null || store.Disposed)
-			{
-				return;
-			}
-			store.EventManagerDirectory.ElementPropertyChanged.Remove(FactType.NameChangedDomainPropertyId, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged));
+			((ISafeEventManagerProvider)store).SafeEventManager.AddOrRemove(store.DomainDataDirectory.FindDomainProperty(FactType.NameChangedDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), addHandlers);
 		}
 		private RoleGroupTreeNode myFactCollectionNode;
 		/// <summary>

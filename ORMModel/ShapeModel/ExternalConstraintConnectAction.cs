@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -660,30 +661,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 			myAddedConstraintShape = null;
 		}
 		/// <summary>
-		/// Add events to the store during connect action
-		/// activation. The default implementation watches for
+		/// Manage events in the store during connect action
+		/// activation and deactivation. The default implementation watches for
 		/// new external constraints added to the diagram.
 		/// </summary>
 		/// <param name="store">Store</param>
-		protected virtual void AddStoreEvents(Store store)
+		/// <param name="addHandlers">true to add handlers, false to remove them</param>
+		protected virtual void ManageStoreEvents(Store store, bool addHandlers)
 		{
+			if (store == null || store.Disposed)
+			{
+				return; // bail out
+			}
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
 			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ExternalConstraintShape.DomainClassId);
-			eventManager.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent));
-		}
-		/// <summary>
-		/// Removed any events added during the AddStoreEvents methods
-		/// </summary>
-		/// <param name="store">Store</param>
-		protected virtual void RemoveStoreEvents(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventManager = store.EventManagerDirectory;
-
-			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ExternalConstraintShape.DomainClassId);
-			eventManager.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent));
+			((ISafeEventManagerProvider)store).SafeEventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent), addHandlers);
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated
@@ -735,7 +728,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramEventArgs</param>
 		protected override void OnMouseActionActivated(DiagramEventArgs e)
 		{
-			AddStoreEvents(Diagram.Store);
+			ManageStoreEvents(Diagram.Store, true);
 		}
 		/// <summary>
 		/// Deactivate the mouse action by removing the listening events,
@@ -750,7 +743,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myDeactivatedDuringOnClick = true;
 				return;
 			}
-			RemoveStoreEvents(e.DiagramClientView.Diagram.Store);
+			ManageStoreEvents(e.DiagramClientView.Diagram.Store, false);
 			base.OnMouseActionDeactivated(e);
 			MouseActionDeactivatedEventHandler handler = AfterMouseActionDeactivated;
 			if (handler != null)

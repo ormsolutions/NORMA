@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -56,11 +57,11 @@ namespace Neumont.Tools.ORM.Shell
 				Store newStore = (model == null) ? null : model.Store;
 				if (myStore != null && myStore != newStore && !myStore.Disposed)
 				{
-					this.RemoveStoreEvents(myStore);
+					ManageStoreEvents(myStore, false);
 				}
 				if (newStore != null && newStore != myStore)
 				{
-					this.AddStoreEvents(newStore);
+					ManageStoreEvents(newStore, true);
 
 				}
 				this.myModel = model;
@@ -92,16 +93,18 @@ namespace Neumont.Tools.ORM.Shell
 			if (model != null)
 			{
 				this.myModel = model;
-				if (this.myStore != null && this.myStore != model.Store && !myStore.Disposed)
+				Store oldStore = myStore;
+				Store newStore = model.Store;
+				if (oldStore != null && oldStore != newStore && !oldStore.Disposed)
 				{
-					this.RemoveStoreEvents(model.Store);
+					ManageStoreEvents(oldStore, false);
 				}
-				if (this.myStore != model.Store)
+				if (oldStore != newStore)
 				{
-					this.AddStoreEvents(model.Store);
+					ManageStoreEvents(newStore, true);
 
 				}
-				this.myStore = model.Store;
+				myStore = newStore;
 				int count = myIntrinsicReferenceModesList.Count;
 				this.myIntrinsicReferenceModesList.Clear();
 				if (myModify != null && count != 0)
@@ -186,32 +189,22 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
-		/// Add events to the store during connect action
-		/// activation. The default implementation watches for
-		/// new external constraints added to the diagram.
+		/// Manage events in the store during activation
+		/// and deactivation.
 		/// </summary>
 		/// <param name="store">Store</param>
-		protected virtual void AddStoreEvents(Store store)
+		/// <param name="addHandlers">true to add handlers, false to remove them</param>
+		protected virtual void ManageStoreEvents(Store store, bool addHandlers)
 		{
+			if (store == null || store.Disposed)
+			{
+				return; // bail out
+			}
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
 			DomainClassInfo referenceModeKindClassInfo = dataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId);
-			eventManager.ElementPropertyChanged.Add(referenceModeKindClassInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent));
+			((ISafeEventManagerProvider)store).SafeEventManager.AddOrRemove(referenceModeKindClassInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), addHandlers);
 		}
-		/// <summary>
-		/// Removed any events added during the AddStoreEvents methods
-		/// </summary>
-		/// <param name="store">Store</param>
-		protected virtual void RemoveStoreEvents(Store store)
-		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-			EventManagerDirectory eventManager = store.EventManagerDirectory;
-
-			DomainClassInfo referenceModeKindClassInfo = dataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId);
-			eventManager.ElementPropertyChanged.Remove(referenceModeKindClassInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent));
-		}
-
 		#endregion // EventHandling
 		#region IMultiColumnBranch Members
 		int IMultiColumnBranch.ColumnCount

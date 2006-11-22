@@ -54,9 +54,11 @@ namespace Neumont.Tools.ORM.Shell
 				if (mySurveyTree == null)
 				{
 					mySurveyTree = new VirtualTree();
+					Store store = Store;
 					IList<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
 					IList<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
-					ICollection<DomainModel> domainModels = this.Store.DomainModels;
+					ICollection<DomainModel> domainModels = store.DomainModels;
+					SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
 					foreach (DomainModel domainModel in domainModels)
 					{
 						ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
@@ -72,8 +74,8 @@ namespace Neumont.Tools.ORM.Shell
 						IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
 						if (eventSubscriber != null)
 						{
-							eventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager, true);
-							SetFlag(PrivateFlags.AddedPostLoadEvents, true);
+							eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, true);
+							SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 						}
 					}
 					myRootBranch = new MainList(nodeProviderList, questionProviderList);
@@ -97,10 +99,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// A store implementation that defers all services to the
 		/// owning document.
 		/// </summary>
-		protected class ORMStore : Store, IORMToolServices
+		protected class ORMStore : Store, IORMToolServices, ISafeEventManagerProvider
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
+			private readonly SafeEventManager mySafeEventManager;
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -112,6 +115,7 @@ namespace Neumont.Tools.ORM.Shell
 				: base(serviceProvider, null)
 			{
 				myServices = services;
+				mySafeEventManager = new UISafeEventManager(this, serviceProvider);
 			}
 			#endregion // Constructors
 			#region IORMToolServices Implementation
@@ -187,24 +191,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
-			/// Defer to SafeEventManager on the document. Implements
-			/// IORMToolServices.SafeEventManager
-			/// </summary>
-			protected SafeEventManager SafeEventManager
-			{
-				get
-				{
-					return myServices.SafeEventManager;
-				}
-			}
-			SafeEventManager IORMToolServices.SafeEventManager
-			{
-				get
-				{
-					return SafeEventManager;
-				}
-			}
-			/// <summary>
 			/// Defer to VerbalizationSnippetsDictionary on the document. Implements
 			/// IORMToolServices.VerbalizationSnippetsDictionary
 			/// </summary>
@@ -266,6 +252,25 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion // IORMToolServices Implementation
+			#region ISafeEventManagerProvider Implementation
+			/// <summary>
+			/// Implements ISafeEventManagerProvider.SafeEventManager
+			/// </summary>
+			protected SafeEventManager SafeEventManager
+			{
+				get
+				{
+					return mySafeEventManager;
+				}
+			}
+			SafeEventManager ISafeEventManagerProvider.SafeEventManager
+			{
+				get
+				{
+					return SafeEventManager;
+				}
+			}
+			#endregion // ISafeEventManagerProvider Implementation
 		}
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
@@ -958,7 +963,6 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
 		private int myCustomBlockCanAddTransactionCount;
 		private IORMPropertyProviderService myPropertyProviderService;
-		private SafeEventManager mySafeEventManager;
 
 		/// <summary>
 		/// Retrieve the <see cref="IORMPropertyProviderService"/> for this document.
@@ -1027,28 +1031,6 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return ServiceProvider;
-			}
-		}
-		/// <summary>
-		/// Implements IORMToolServices.SafeEventManager
-		/// </summary>
-		protected SafeEventManager SafeEventManager
-		{
-			get
-			{
-				SafeEventManager retVal = mySafeEventManager;
-				if (retVal == null)
-				{
-					mySafeEventManager = retVal = new UISafeEventManager(Store);
-				}
-				return retVal;
-			}
-		}
-		SafeEventManager IORMToolServices.SafeEventManager
-		{
-			get
-			{
-				return SafeEventManager;
 			}
 		}
 		/// <summary>
@@ -1595,10 +1577,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Create a new UISafeEventManager
 			/// </summary>
-			public UISafeEventManager(Store store)
+			public UISafeEventManager(Store store, IServiceProvider serviceProvider)
 				: base(store)
 			{
-				myServiceProvider = ((IORMToolServices)store).ServiceProvider;
+				myServiceProvider = serviceProvider;
 			}
 			/// <summary>
 			/// Use the standard <see cref="System.Windows.Forms.Design.IUIService"/> to display

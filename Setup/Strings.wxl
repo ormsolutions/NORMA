@@ -45,7 +45,7 @@
 	<String Id="AdminOrAdvertised">This installer package does not support Admin or Advertised installations.</String>
 
 	<!-- Custom UI Strings -->
-	<String Id="ProgressTextDevEnvSetupCustomAction">Runing Visual Studio "/Setup" command. This may take several minutes...</String>
+	<String Id="ProgressTextDevEnvSetupCustomAction">Running Visual Studio "/Setup" command. This may take several minutes...</String>
 	
 	<!-- WiX UI & Error Strings - Taken from WixUI_en-us.wxl v2.0.4103.0 -->
 	<String Id="WixUIBack">&amp;Back</String>

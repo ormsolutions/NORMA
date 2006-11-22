@@ -300,14 +300,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected void AttachEventHandlers(Store store)
 		{
-			ManageEventHandlers(store, (store as IORMToolServices).SafeEventManager, true);
+			ManageEventHandlers(store, (store as ISafeEventManagerProvider).SafeEventManager, true);
 		}
 		/// <summary>
 		/// Detach event handlers from the store. Defers to <see cref="ManageEventHandlers"/>.
 		/// </summary>
 		protected void DetachEventHandlers(Store store)
 		{
-			ManageEventHandlers(store, (store as IORMToolServices).SafeEventManager, false);
+			ManageEventHandlers(store, (store as ISafeEventManagerProvider).SafeEventManager, false);
 		}
 		#endregion // ORMToolWindow specific
 	}

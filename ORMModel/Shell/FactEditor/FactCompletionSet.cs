@@ -386,7 +386,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			{
 				return;
 			}
-			SafeEventManager eventManager = (store as IORMToolServices).SafeEventManager;
+			SafeEventManager eventManager = (store as ISafeEventManagerProvider).SafeEventManager;
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 

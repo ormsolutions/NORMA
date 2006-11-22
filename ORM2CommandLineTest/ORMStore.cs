@@ -18,11 +18,22 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 {
 	public partial struct Suite
 	{
-		private class ORMStore : Store, IORMToolServices
+		private class ORMStore : Store, IORMToolServices, ISafeEventManagerProvider
 		{
 			#region Member Variables
-			private IORMToolServices myServices;
+			private readonly IORMToolServices myServices;
+			private readonly SafeEventManager mySafeEventManager;
 			#endregion // Member Variables
+			#region CreateableSafeEventManager class
+			private class CreateableSafeEventManager : SafeEventManager
+			{
+				public CreateableSafeEventManager(Store store) : base(store) { }
+				protected override void DisplayException(Exception ex)
+				{
+					// UNDONE: Report any exception coming through here
+				}
+			}
+			#endregion // CreateableSafeEventManager class
 			#region Constructors
 			/// <summary>
 			/// Create a new store
@@ -31,6 +42,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			public ORMStore(IORMToolServices services)
 			{
 				myServices = services;
+				mySafeEventManager = new CreateableSafeEventManager(this);
 			}
 			#endregion // Constructors
 			#region IORMToolServices Implementation
@@ -72,13 +84,6 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return myServices.ServiceProvider;
 				}
 			}
-			SafeEventManager IORMToolServices.SafeEventManager
-			{
-				get
-				{
-					return myServices.SafeEventManager;
-				}
-			}
 			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
 			{
 				get
@@ -94,9 +99,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return null;
 				}
 			}
-
-
 			#endregion // IORMToolServices Implementation
+			#region ISafeEventManagerProvider Implementation
+			SafeEventManager ISafeEventManagerProvider.SafeEventManager
+			{
+				get
+				{
+					return mySafeEventManager;
+				}
+			}
+			#endregion // ISafeEventManagerProvider Implementation
 		}
 	}
 }

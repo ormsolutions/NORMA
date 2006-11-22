@@ -53,11 +53,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		IServiceProvider ServiceProvider { get;}
 		/// <summary>
-		/// Retrieve a safe event manager. Use in place of <see cref="Store.EventManagerDirectory"/>
-		/// to add and remove events.
-		/// </summary>
-		SafeEventManager SafeEventManager { get;} 
-		/// <summary>
 		/// Retrieve the VerbalizationSnippets dictionary for this store
 		/// </summary>
 		IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary { get;}

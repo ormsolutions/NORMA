@@ -399,7 +399,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void AddPreLoadModelingEventHandlers()
 		{
 			Store store = Store;
-			SafeEventManager eventManager = SafeEventManager;
+			SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
 			foreach (DomainModel domainModel in store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
@@ -417,7 +417,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void AddPostLoadModelingEventHandlers()
 		{
 			Store store = Store;
-			SafeEventManager eventManager = SafeEventManager;
+			SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
 			foreach (DomainModel domainModel in store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
@@ -439,15 +439,14 @@ namespace Neumont.Tools.ORM.Shell
 			bool addedPreLoad = GetFlag(PrivateFlags.AddedPreLoadEvents);
 			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
 			bool addedSurveyQuestion = GetFlag(PrivateFlags.AddedSurveyQuestionEvents);
-			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents, false);
-			SafeEventManager eventManager = SafeEventManager;
-			mySafeEventManager = null;
+			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents | PrivateFlags.AddedSurveyQuestionEvents, false);
 			if (!addedPreLoad && !addedPostLoad && !addedSurveyQuestion)
 			{
 				return;
 			}
 			Store store = Store;
-			foreach (DomainModel domainModel in Store.DomainModels)
+			SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
+			foreach (DomainModel domainModel in store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
 				if (subscriber != null)
