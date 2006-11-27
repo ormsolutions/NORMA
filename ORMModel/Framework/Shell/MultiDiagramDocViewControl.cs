@@ -166,11 +166,18 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 				set
 				{
+					bool disposeOldUnmanagedFont = !base.Font.Equals(value);
+					base.Font = value;
 					Control parent = base.Parent;
 					if (parent != null)
 					{
 						parent.Font = value;
 					}
+					if (disposeOldUnmanagedFont)
+					{
+						this.DisposeUnmanagedFont();
+					}
+					this.UpdateUnmanagedFont();
 				}
 			}
 			#endregion // Font property
@@ -184,11 +191,53 @@ namespace Neumont.Tools.Modeling.Shell
 					Font dialogFont = uiService.Styles["DialogFont"] as Font;
 					if (dialogFont != null)
 					{
-						base.Font = dialogFont;
+						this.Font = dialogFont;
 					}
 				}
 			}
 			#endregion // SetFonts method
+			#region DisposeUnmanagedFont method
+			private void DisposeUnmanagedFont()
+			{
+				IntPtr hFont = this.myHFont;
+				if (hFont != IntPtr.Zero)
+				{
+					try
+					{
+						if (!UnsafeNativeMethods.DeleteObject(hFont))
+						{
+							throw new Win32Exception();
+						}
+					}
+					finally
+					{
+						this.myHFont = IntPtr.Zero;
+					}
+				}
+			}
+			#endregion DisposeUnmanagedFont method
+			#region UpdateUnmanagedFont method
+			private IntPtr myHFont;
+			private void UpdateUnmanagedFont()
+			{
+				const uint WM_SETFONT = 0x30;
+
+				IntPtr hFont = this.myHFont;
+				if (hFont == IntPtr.Zero)
+				{
+					this.myHFont = hFont = base.Font.ToHfont();
+				}
+
+				UnsafeNativeMethods.SendMessage(new HandleRef(this, base.Handle), WM_SETFONT, hFont, IntPtr.Zero);
+			}
+			#endregion // UpdateUnmanagedFont method
+			#region OnHandleCreated method
+			protected sealed override void OnHandleCreated(EventArgs e)
+			{
+				base.OnHandleCreated(e);
+				this.UpdateUnmanagedFont();
+			}
+			#endregion // OnHandleCreated method
 			#region Dispose method
 			protected sealed override void Dispose(bool disposing)
 			{
@@ -216,7 +265,14 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 				finally
 				{
-					base.Dispose(disposing);
+					try
+					{
+						base.Dispose(disposing);
+					}
+					finally
+					{
+						this.DisposeUnmanagedFont();
+					}
 				}
 			}
 			#endregion // Dispose method
@@ -317,11 +373,12 @@ namespace Neumont.Tools.Modeling.Shell
 				return -1;
 			}
 			#endregion // IndexOf methods
-			#region GetTabAtPoint method
+			#region UnsafeNativeMethods
 			[System.Security.SuppressUnmanagedCodeSecurity]
 			private static class UnsafeNativeMethods
 			{
 				#region TCHITTESTINFO struct
+				[Serializable]
 				[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 				public struct TCHITTESTINFO
 				{
@@ -343,7 +400,16 @@ namespace Neumont.Tools.Modeling.Shell
 				// Therefore, lParam is marked as [In] rather than [In, Out] so that it is not marshalled back to us.
 				[DllImport("user32.dll", CharSet = CharSet.Auto)]
 				public static extern IntPtr SendMessage([In] HandleRef hWnd, [In] uint msg, [In] IntPtr wParam, [In] ref TCHITTESTINFO lParam);
+
+				[DllImport("user32.dll", CharSet = CharSet.Auto)]
+				public static extern IntPtr SendMessage([In] HandleRef hWnd, [In] uint msg, [In] IntPtr wParam, [In] IntPtr lParam);
+
+				[DllImport("gdi32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
+				[return: MarshalAs(UnmanagedType.Bool)]
+				public static extern bool DeleteObject([In] IntPtr hObject);
 			}
+			#endregion // UnsafeNativeMethods
+			#region GetTabAtPoint method
 			private DiagramTabPage GetTabAtPoint(Point point)
 			{
 				const uint TCM_HITTEST = 0x130D;

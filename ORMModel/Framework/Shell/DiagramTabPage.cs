@@ -162,15 +162,7 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				get
 				{
-					// HACK: The rectangles returned by Windows for each tab are far too large when ControlStyles.UserPaint
-					// is enabled, so we are only returning about 80% of the text to Windows to force it to give us a more
-					// appropriately sized rectangle.
-					// An investigation into what messages are processed differently when UserPaint is enabled may lead to a
-					// more elegant workaround.
-					string text = base.Text;
-					int textLength = text.Length;
-					int reducedLength = (int)(textLength * 0.8);
-					return (reducedLength < textLength && textLength > 4) ? text.Remove(reducedLength) : text;
+					return base.Text;
 				}
 				set
 				{
