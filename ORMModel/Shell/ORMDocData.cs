@@ -356,10 +356,19 @@ namespace Neumont.Tools.ORM.Shell
 			// sync the model to any artifacts.
 			//Synchronize();
 
-			// Save it out.
-			using (FileStream fileStream = File.Create(fileName))
+			// Save it first to a memory stream, so that the user doesn't lose their original copy
+			// if something goes wrong while serializing.
+			using (MemoryStream memoryStream = new MemoryStream(1024 * 1024))
 			{
-				(new ORMSerializer(Store)).Save(fileStream);
+				new ORMSerializer(this.Store).Save(memoryStream);
+
+				// UNDONE: We don't yet support ORM models greater than 2GB in size
+				int memoryStreamLength = (int)memoryStream.Length;
+				using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read, memoryStreamLength, FileOptions.SequentialScan))
+				{
+					fileStream.SetLength(memoryStreamLength);
+					fileStream.Write(memoryStream.GetBuffer(), 0, memoryStreamLength);
+				}
 			}
 
 			if (GetFlag(PrivateFlags.SaveDisabled))
