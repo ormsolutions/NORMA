@@ -35,7 +35,7 @@
 		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC1" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
 			<dcl:columnRef name="Person_id" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="LastName" isNullable="false" isIdentity="false">
@@ -47,11 +47,11 @@
 		<dcl:column name="Title" isNullable="true" isIdentity="false">
 			<dcl:domainDataTypeRef name="Title" />
 		</dcl:column>
-		<dcl:column isNullable="true" isIdentity="false" name="Cntry_Cntry_nm">
+		<dcl:column isNullable="true" isIdentity="false" name="Country_Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
 		<dcl:referenceConstraint name="Country_FK" targetTable="Country">
-			<dcl:columnRef sourceName="Cntry_Cntry_nm" targetName="Country_name" />
+			<dcl:columnRef sourceName="Country_Country_name" targetName="Country_name" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA">
@@ -67,7 +67,7 @@
 		<dcl:parameter mode="IN" name="Title">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="4" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Cntry_Cntry_nm">
+		<dcl:parameter mode="IN" name="Country_Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
 		<dml:insertStatement schema="PersonCountryDemo" name="Person">
@@ -76,12 +76,12 @@
 				<ddl:column name="LastName" />
 				<ddl:column name="FirstName" />
 				<ddl:column name="Title" />
-				<ddl:column name="Cntry_Cntry_nm" />
+				<ddl:column name="Country_Country_name" />
 				<dep:sqlParameterReference name="Person_id" />
 				<dep:sqlParameterReference name="LastName" />
 				<dep:sqlParameterReference name="FirstName" />
 				<dep:sqlParameterReference name="Title" />
-				<dep:sqlParameterReference name="Cntry_Cntry_nm" />
+				<dep:sqlParameterReference name="Country_Country_name" />
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
@@ -104,7 +104,7 @@
 		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC3" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint3" isPrimary="true">
 			<dcl:columnRef name="Country_name" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="Region_Region_code" isNullable="true" isIdentity="false">

@@ -9,8 +9,8 @@ CREATE TABLE PersonCountryDemo.Person
 	LastName NATIONAL CHARACTER VARYING(30) NOT NULL, 
 	FirstName NATIONAL CHARACTER VARYING(30) NOT NULL, 
 	Title NATIONAL CHARACTER VARYING(4) CONSTRAINT Title_Chk CHECK (Title IN ('Dr', 'Prof', 'Mr', 'Mrs', 'Miss', 'Ms')) , 
-	Cntry_Cntry_nm NATIONAL CHARACTER VARYING(20) , 
-	CONSTRAINT IUC1 PRIMARY KEY(Person_id)
+	Country_Country_name NATIONAL CHARACTER VARYING(20) , 
+	CONSTRAINT InternalUniquenessConstraint1 PRIMARY KEY(Person_id)
 )
 GO
 
@@ -19,12 +19,12 @@ CREATE TABLE PersonCountryDemo.Country
 (
 	Country_name NATIONAL CHARACTER VARYING(20) NOT NULL, 
 	Region_Region_code NATIONAL CHARACTER(8) CONSTRAINT Region_code_Chk CHECK ((LEN(LTRIM(RTRIM(Region_Region_code)))) >= 8) , 
-	CONSTRAINT IUC3 PRIMARY KEY(Country_name)
+	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(Country_name)
 )
 GO
 
 
-ALTER TABLE PersonCountryDemo.Person ADD CONSTRAINT Person_Country_FK FOREIGN KEY (Cntry_Cntry_nm)  REFERENCES PersonCountryDemo.Country (Country_name)  ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE PersonCountryDemo.Person ADD CONSTRAINT Person_Country_FK FOREIGN KEY (Country_Country_name)  REFERENCES PersonCountryDemo.Country (Country_name)  ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 
@@ -35,11 +35,11 @@ CREATE PROCEDURE PersonCountryDemo.InsertPerson
 	@LastName NATIONAL CHARACTER VARYING(30) , 
 	@FirstName NATIONAL CHARACTER VARYING(30) , 
 	@Title NATIONAL CHARACTER VARYING(4) , 
-	@Cntry_Cntry_nm NATIONAL CHARACTER VARYING(20) 
+	@Country_Country_name NATIONAL CHARACTER VARYING(20) 
 )
 AS
-	INSERT INTO PersonCountryDemo.Person(Person_id, LastName, FirstName, Title, Cntry_Cntry_nm)
-	VALUES (@Person_id, @LastName, @FirstName, @Title, @Cntry_Cntry_nm)
+	INSERT INTO PersonCountryDemo.Person(Person_id, LastName, FirstName, Title, Country_Country_name)
+	VALUES (@Person_id, @LastName, @FirstName, @Title, @Country_Country_name)
 GO
 
 

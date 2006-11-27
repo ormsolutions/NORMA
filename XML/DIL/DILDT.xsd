@@ -21,9 +21,12 @@
 		<xs:documentation>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", "6.2 - &lt;field definition&gt;", and "6.6 - &lt;identifier chain&gt;"</xs:documentation>
 	</xs:annotation>
 
+	<!-- NOTE: According to the SQL standard, without optional feature F391 ("Long identifiers"), identifiers should be limited in length to 18. -->
+	<!-- However, this is too short to allow meaningful names for many common concepts, and most actual implementations support identifiers with lengths of at least 30. -->
+	<!-- Hence, we deviate slightly from the standard here by allowing identifiers to have a length up to and including 30. -->
 	<xs:simpleType name="identifierChain">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,17})|(&quot;([^&quot;]|&quot;&quot;){1,18}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,17})|(&quot;([^&quot;]|&quot;&quot;){1,18}&quot;)))*"/>
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29})|(&quot;([^&quot;]|&quot;&quot;){1,30}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29})|(&quot;([^&quot;]|&quot;&quot;){1,30}&quot;)))*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="identifier">
@@ -31,17 +34,17 @@
 			<xs:documentation>A valid identifier, according to the SQL standard.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,17})|(&quot;([^&quot;]|&quot;&quot;){1,18}&quot;))"/>
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29})|(&quot;([^&quot;]|&quot;&quot;){1,30}&quot;))"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="regularIdentifier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,17}"/>
+			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,29}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="delimitedIdentifier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="&quot;([^&quot;]|&quot;&quot;){1,18}&quot;"/>
+			<xs:pattern value="&quot;([^&quot;]|&quot;&quot;){1,30}&quot;"/>
 		</xs:restriction>
 	</xs:simpleType>
 

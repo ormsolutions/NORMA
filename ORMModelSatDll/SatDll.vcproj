@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
@@ -233,7 +233,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="@ECHO OFF&#x0D;&#x0A;SETLOCAL&#x0D;&#x0A;FOR /F &quot;usebackq skip=3 tokens=2*&quot; %%A IN (`REG QUERY &quot;HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0&quot; /v &quot;InstallDir&quot;`) DO SET VSIPDir=%%~dpB&#x0D;&#x0A;&quot;%VSIPDir%\VisualStudioIntegration\Tools\Bin\ctc.exe&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -DDEBUG -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc&quot; -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc\office10&quot;&#x0D;&#x0A;ENDLOCAL&#x0D;&#x0A;"
+					CommandLine="@ECHO OFF&#x0D;&#x0A;SETLOCAL&#x0D;&#x0A;FOR /F &quot;usebackq skip=2 tokens=2*&quot; %%A IN (`REG QUERY &quot;HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0&quot; /v &quot;InstallDir&quot;`) DO SET VSIPDir=%%~dpB&#x0D;&#x0A;&quot;%VSIPDir%\VisualStudioIntegration\Tools\Bin\ctc.exe&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -DDEBUG -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc&quot; -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc\office10&quot;&#x0D;&#x0A;ENDLOCAL&#x0D;&#x0A;"
 					Outputs=".\pkgcmd.cto"
 				/>
 			</FileConfiguration>
@@ -242,7 +242,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="@ECHO OFF&#x0D;&#x0A;SETLOCAL&#x0D;&#x0A;FOR /F &quot;usebackq skip=3 tokens=2*&quot; %%A IN (`REG QUERY &quot;HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0&quot; /v &quot;InstallDir&quot;`) DO SET VSIPDir=%%~dpB&#x0D;&#x0A;&quot;%VSIPDir%\VisualStudioIntegration\Tools\Bin\ctc.exe&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc&quot; -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc\office10&quot;&#x0D;&#x0A;ENDLOCAL&#x0D;&#x0A;"
+					CommandLine="@ECHO OFF&#x0D;&#x0A;SETLOCAL&#x0D;&#x0A;FOR /F &quot;usebackq skip=2 tokens=2*&quot; %%A IN (`REG QUERY &quot;HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0&quot; /v &quot;InstallDir&quot;`) DO SET VSIPDir=%%~dpB&#x0D;&#x0A;&quot;%VSIPDir%\VisualStudioIntegration\Tools\Bin\ctc.exe&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc&quot; -I&quot;%VSIPDir%\VisualStudioIntegration\Common\Inc\office10&quot;&#x0D;&#x0A;ENDLOCAL&#x0D;&#x0A;"
 					Outputs=".\pkgcmd.cto"
 				/>
 			</FileConfiguration>

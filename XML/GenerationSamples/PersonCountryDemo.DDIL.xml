@@ -72,11 +72,11 @@
 		<ddl:columnDefinition name="Title">
 			<ddt:domain name="Title" schema="PersonCountryDemo" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Cntry_Cntry_nm">
+		<ddl:columnDefinition name="Country_Country_name">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC1" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint1" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Person_id" />
 			</ddl:uniqueConstraintDefinition>
@@ -93,7 +93,7 @@
 			<ddt:domain name="Region_code" schema="PersonCountryDemo" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC3" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint3" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Country_name" />
 			</ddl:uniqueConstraintDefinition>
@@ -103,7 +103,7 @@
 		<ddl:addTableConstraintDefinition>
 			<dep:constraintNameDefinition name="Country_FK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="Cntry_Cntry_nm" />
+				<ddl:column name="Country_Country_name" />
 				<ddl:referencesSpecification name="Country" onDelete="RESTRICT" onUpdate="RESTRICT" schema="PersonCountryDemo">
 					<ddl:referenceColumn name="Country_name" />
 				</ddl:referencesSpecification>
@@ -123,7 +123,7 @@
 		<ddl:sqlParameterDeclaration name="Title" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="4" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Cntry_Cntry_nm" mode="IN">
+		<ddl:sqlParameterDeclaration name="Country_Country_name" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
@@ -133,12 +133,12 @@
 					<ddl:column name="LastName" />
 					<ddl:column name="FirstName" />
 					<ddl:column name="Title" />
-					<ddl:column name="Cntry_Cntry_nm" />
+					<ddl:column name="Country_Country_name" />
 					<dep:sqlParameterReference name="Person_id" />
 					<dep:sqlParameterReference name="LastName" />
 					<dep:sqlParameterReference name="FirstName" />
 					<dep:sqlParameterReference name="Title" />
-					<dep:sqlParameterReference name="Cntry_Cntry_nm" />
+					<dep:sqlParameterReference name="Country_Country_name" />
 				</dml:fromConstructor>
 			</dml:insertStatement>
 		</ddl:sqlRoutineSpec>

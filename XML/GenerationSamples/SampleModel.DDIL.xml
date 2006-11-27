@@ -5,10 +5,10 @@
 	<dms:setSchemaStatement>
 		<ddt:characterStringLiteral value="SAMPLEMODEL" />
 	</dms:setSchemaStatement>
-	<ddl:domainDefinition name="OptnlUnqStrng" schema="SampleModel">
+	<ddl:domainDefinition name="OptionalUniqueString" schema="SampleModel">
 		<ddt:characterString type="CHARACTER" length="11" />
 		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="OptnlUnqStrng_Chk" />
+			<dep:constraintNameDefinition name="OptionalUniqueString_Chk" />
 			<ddl:checkConstraintDefinition>
 				<dep:comparisonPredicate operator="greaterThanOrEquals">
 					<dep:parenthesizedValueExpression>
@@ -41,7 +41,7 @@
 	<ddl:domainDefinition name="DeathCause_Type" schema="SampleModel">
 		<ddt:characterString type="CHARACTER VARYING" length="14" />
 		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="DthCs_Typ_Chk" />
+			<dep:constraintNameDefinition name="DeathCause_Type_Chk" />
 			<ddl:checkConstraintDefinition>
 				<dep:inPredicate type="IN">
 					<dep:valueKeyword />
@@ -78,10 +78,10 @@
 			</ddl:checkConstraintDefinition>
 		</ddl:domainConstraint>
 	</ddl:domainDefinition>
-	<ddl:domainDefinition name="MndtryUnqStrng" schema="SampleModel">
+	<ddl:domainDefinition name="MandatoryUniqueString" schema="SampleModel">
 		<ddt:characterString type="CHARACTER" length="11" />
 		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="MndtryUnqStrng_Chk" />
+			<dep:constraintNameDefinition name="MandatoryUniqueString_Chk" />
 			<ddl:checkConstraintDefinition>
 				<dep:comparisonPredicate operator="greaterThanOrEquals">
 					<dep:parenthesizedValueExpression>
@@ -105,21 +105,21 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DrvnByPrsn_Prsn_d">
+		<ddl:columnDefinition name="DrivenByPerson_Person_id">
 			<ddt:exactNumeric type="BIGINT" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC18" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint18" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="DrivesCar_vin" />
-				<ddl:column name="DrvnByPrsn_Prsn_d" />
+				<ddl:column name="DrivenByPerson_Person_id" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
-	<ddl:tableDefinition name="PBCFPOD" schema="SampleModel">
+	<ddl:tableDefinition name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
 		<ddl:columnDefinition name="CarSold_vin">
 			<ddt:exactNumeric type="BIGINT" />
 			<ddl:columnConstraintDefinition>
@@ -145,7 +145,7 @@
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC23" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint23" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Buyer_Person_id" />
 				<ddl:column name="CarSold_vin" />
@@ -153,7 +153,7 @@
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC24" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint24" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="SaleDate_YMD" />
 				<ddl:column name="Seller_Person_id" />
@@ -161,7 +161,7 @@
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC25" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint25" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="CarSold_vin" />
 				<ddl:column name="SaleDate_YMD" />
@@ -189,7 +189,7 @@
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC26" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint26" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Car_vin" />
 				<ddl:column name="Criterion_Name" />
@@ -210,7 +210,7 @@
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC33" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint33" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="NickName" />
 				<ddl:column name="Person_Person_id" />
@@ -250,8 +250,8 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="OptnlUnqStrng">
-			<ddt:domain name="OptnlUnqStrng" schema="SampleModel" />
+		<ddl:columnDefinition name="OptionalUniqueString">
+			<ddt:domain name="OptionalUniqueString" schema="SampleModel" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="HatType_ColorARGB">
 			<ddt:exactNumeric type="BIGINT" />
@@ -274,17 +274,17 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="OptnlUnqDcml">
+		<ddl:columnDefinition name="OptionalUniqueDecimal">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="MndtryUnqDcml">
+		<ddl:columnDefinition name="MandatoryUniqueDecimal">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="MndtryUnqStrng">
-			<ddt:domain name="MndtryUnqStrng" schema="SampleModel" />
+		<ddl:columnDefinition name="MandatoryUniqueString">
+			<ddt:domain name="MandatoryUniqueString" schema="SampleModel" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -292,10 +292,10 @@
 		<ddl:columnDefinition name="Husband_Person_id">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="VT1DSEWVT1V">
+		<ddl:columnDefinition name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="CPBOBON">
+		<ddl:columnDefinition name="ChldPrsn_BrthOrdr_BrthOrdr_Nr">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="Father_Person_id">
@@ -313,71 +313,71 @@
 		<ddl:columnDefinition name="Death_Date_YMD">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DDCDCT">
+		<ddl:columnDefinition name="Dth_DthCs_DthCs_Typ">
 			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DNDFPC">
+		<ddl:columnDefinition name="Dth_NtrlDth_sFrmPrsttCncr">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DUDV">
+		<ddl:columnDefinition name="Death_UnnaturalDeath_isViolent">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DUDB">
+		<ddl:columnDefinition name="Death_UnnaturalDeath_isBloody">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC2" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint2" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Person_id" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC9" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint9" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="OptnlUnqStrng" />
+				<ddl:column name="OptionalUniqueString" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC22" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint22" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="OwnsCar_vin" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC65" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint65" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="OptnlUnqDcml" />
+				<ddl:column name="OptionalUniqueDecimal" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC69" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint69" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="MndtryUnqDcml" />
+				<ddl:column name="MandatoryUniqueDecimal" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC67" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint67" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="MndtryUnqStrng" />
+				<ddl:column name="MandatoryUniqueString" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="CPIUC49" />
+			<dep:constraintNameDefinition name="ChldPrsn_IntrnlUnqnssCnstrnt49" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="Father_Person_id" />
-				<ddl:column name="CPBOBON" />
+				<ddl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
 				<ddl:column name="Mother_Person_id" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="EUC1" />
+			<dep:constraintNameDefinition name="ExternalUniquenessConstraint1" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="FirstName" />
 				<ddl:column name="Date_YMD" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="EUC2" />
+			<dep:constraintNameDefinition name="ExternalUniquenessConstraint2" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="LastName" />
 				<ddl:column name="Date_YMD" />
@@ -403,7 +403,7 @@
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="IUC16" />
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint16" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Task_id" />
 			</ddl:uniqueConstraintDefinition>
@@ -416,11 +416,11 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DSWPP">
+		<ddl:columnDefinition name="DsSmthngWthPrsn_Prsn_d">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="VlTyp1Vl_Unq" />
+			<dep:constraintNameDefinition name="ValueType1Value_Unique" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="ValueType1Value" />
 			</ddl:uniqueConstraintDefinition>
@@ -430,14 +430,14 @@
 		<ddl:addTableConstraintDefinition>
 			<dep:constraintNameDefinition name="DrivenByPerson_FK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="DrvnByPrsn_Prsn_d" />
+				<ddl:column name="DrivenByPerson_Person_id" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<ddl:referenceColumn name="Person_id" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
 	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PBCFPOD" schema="SampleModel">
+	<ddl:alterTableStatement name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
 			<dep:constraintNameDefinition name="Buyer_FK" />
 			<ddl:referentialConstraintDefinition>
@@ -448,7 +448,7 @@
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
 	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PBCFPOD" schema="SampleModel">
+	<ddl:alterTableStatement name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
 			<dep:constraintNameDefinition name="Seller_FK" />
 			<ddl:referentialConstraintDefinition>
@@ -483,9 +483,9 @@
 	</ddl:alterTableStatement>
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="VT1DSEWFK" />
+			<dep:constraintNameDefinition name="VlTyp1DsSmthngElsWth_FK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="VT1DSEWVT1V" />
+				<ddl:column name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
 				<ddl:referencesSpecification name="ValueType1" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<ddl:referenceColumn name="ValueType1Value" />
 				</ddl:referencesSpecification>
@@ -527,38 +527,38 @@
 	</ddl:alterTableStatement>
 	<ddl:alterTableStatement name="ValueType1" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="DsSmthngWthPrsn_FK" />
+			<dep:constraintNameDefinition name="DoesSomethingWithPerson_FK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="DSWPP" />
+				<ddl:column name="DsSmthngWthPrsn_Prsn_d" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<ddl:referenceColumn name="Person_id" />
 				</ddl:referencesSpecification>
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
 	</ddl:alterTableStatement>
-	<ddl:sqlInvokedProcedure name="InsrtPrsnDrvsCr" schema="SampleModel">
+	<ddl:sqlInvokedProcedure name="InsertPersonDrivesCar" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="DrivesCar_vin" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DrvnByPrsn_Prsn_d" mode="IN">
+		<ddl:sqlParameterDeclaration name="DrivenByPerson_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
 			<dml:insertStatement schema="SampleModel" name="PersonDrivesCar">
 				<dml:fromConstructor>
 					<ddl:column name="DrivesCar_vin" />
-					<ddl:column name="DrvnByPrsn_Prsn_d" />
+					<ddl:column name="DrivenByPerson_Person_id" />
 					<dep:sqlParameterReference name="DrivesCar_vin" />
-					<dep:sqlParameterReference name="DrvnByPrsn_Prsn_d" />
+					<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
 				</dml:fromConstructor>
 			</dml:insertStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DltPrsnDrvsCr" schema="SampleModel">
+	<ddl:sqlInvokedProcedure name="DeletePersonDrivesCar" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="DrivesCar_vin" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DrvnByPrsn_Prsn_d" mode="IN">
+		<ddl:sqlParameterDeclaration name="DrivenByPerson_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
@@ -571,8 +571,8 @@
 								<dep:sqlParameterReference name="DrivesCar_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="DrvnByPrsn_Prsn_d" />
-								<dep:sqlParameterReference name="DrvnByPrsn_Prsn_d" />
+								<dep:columnReference name="DrivenByPerson_Person_id" />
+								<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -580,7 +580,7 @@
 			</dml:deleteStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="IPBCFPOD" schema="SampleModel">
+	<ddl:sqlInvokedProcedure name="InsrtPrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -594,7 +594,7 @@
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:insertStatement schema="SampleModel" name="PBCFPOD">
+			<dml:insertStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
 				<dml:fromConstructor>
 					<ddl:column name="CarSold_vin" />
 					<ddl:column name="SaleDate_YMD" />
@@ -608,7 +608,7 @@
 			</dml:insertStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DPBCFPOD" schema="SampleModel">
+	<ddl:sqlInvokedProcedure name="DltPrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -619,7 +619,7 @@
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:deleteStatement schema="SampleModel" name="PBCFPOD">
+			<dml:deleteStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
 				<dml:whereClause>
 					<dml:searchCondition>
 						<dep:and>
@@ -690,7 +690,7 @@
 			</dml:deleteStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="InsrtPrsnHsNckNm" schema="SampleModel">
+	<ddl:sqlInvokedProcedure name="InsertPersonHasNickName" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="NickName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 		</ddl:sqlParameterDeclaration>
@@ -708,7 +708,7 @@
 			</dml:insertStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DltPrsnHsNckNm" schema="SampleModel">
+	<ddl:sqlInvokedProcedure name="DeletePersonHasNickName" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="NickName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 		</ddl:sqlParameterDeclaration>
@@ -747,7 +747,7 @@
 		<ddl:sqlParameterDeclaration name="LastName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="OptnlUnqStrng" mode="IN">
+		<ddl:sqlParameterDeclaration name="OptionalUniqueString" mode="IN">
 			<ddt:characterString type="CHARACTER" length="11" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="HatType_ColorARGB" mode="IN">
@@ -765,22 +765,22 @@
 		<ddl:sqlParameterDeclaration name="hasParents" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="OptnlUnqDcml" mode="IN">
+		<ddl:sqlParameterDeclaration name="OptionalUniqueDecimal" mode="IN">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="MndtryUnqDcml" mode="IN">
+		<ddl:sqlParameterDeclaration name="MandatoryUniqueDecimal" mode="IN">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="MndtryUnqStrng" mode="IN">
+		<ddl:sqlParameterDeclaration name="MandatoryUniqueString" mode="IN">
 			<ddt:characterString type="CHARACTER" length="11" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Husband_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="VT1DSEWVT1V" mode="IN">
+		<ddl:sqlParameterDeclaration name="VlTyp1DsSmthngElsWth_VlTyp1Vl" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="CPBOBON" mode="IN">
+		<ddl:sqlParameterDeclaration name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Father_Person_id" mode="IN">
@@ -792,16 +792,16 @@
 		<ddl:sqlParameterDeclaration name="Death_Date_YMD" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DDCDCT" mode="IN">
+		<ddl:sqlParameterDeclaration name="Dth_DthCs_DthCs_Typ" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="14" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DNDFPC" mode="IN">
+		<ddl:sqlParameterDeclaration name="Dth_NtrlDth_sFrmPrsttCncr" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DUDV" mode="IN">
+		<ddl:sqlParameterDeclaration name="Death_UnnaturalDeath_isViolent" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DUDB" mode="IN">
+		<ddl:sqlParameterDeclaration name="Death_UnnaturalDeath_isBloody" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
@@ -811,48 +811,48 @@
 					<ddl:column name="Person_id" />
 					<ddl:column name="Date_YMD" />
 					<ddl:column name="LastName" />
-					<ddl:column name="OptnlUnqStrng" />
+					<ddl:column name="OptionalUniqueString" />
 					<ddl:column name="HatType_ColorARGB" />
 					<ddl:column name="HTHTSHTSD" />
 					<ddl:column name="OwnsCar_vin" />
 					<ddl:column name="Gender_Gender_Code" />
 					<ddl:column name="hasParents" />
-					<ddl:column name="OptnlUnqDcml" />
-					<ddl:column name="MndtryUnqDcml" />
-					<ddl:column name="MndtryUnqStrng" />
+					<ddl:column name="OptionalUniqueDecimal" />
+					<ddl:column name="MandatoryUniqueDecimal" />
+					<ddl:column name="MandatoryUniqueString" />
 					<ddl:column name="Husband_Person_id" />
-					<ddl:column name="VT1DSEWVT1V" />
-					<ddl:column name="CPBOBON" />
+					<ddl:column name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+					<ddl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
 					<ddl:column name="Father_Person_id" />
 					<ddl:column name="Mother_Person_id" />
 					<ddl:column name="Death_Date_YMD" />
-					<ddl:column name="DDCDCT" />
-					<ddl:column name="DNDFPC" />
-					<ddl:column name="DUDV" />
-					<ddl:column name="DUDB" />
+					<ddl:column name="Dth_DthCs_DthCs_Typ" />
+					<ddl:column name="Dth_NtrlDth_sFrmPrsttCncr" />
+					<ddl:column name="Death_UnnaturalDeath_isViolent" />
+					<ddl:column name="Death_UnnaturalDeath_isBloody" />
 					<dep:sqlParameterReference name="FirstName" />
 					<dep:sqlParameterReference name="Person_id" />
 					<dep:sqlParameterReference name="Date_YMD" />
 					<dep:sqlParameterReference name="LastName" />
-					<dep:sqlParameterReference name="OptnlUnqStrng" />
+					<dep:sqlParameterReference name="OptionalUniqueString" />
 					<dep:sqlParameterReference name="HatType_ColorARGB" />
 					<dep:sqlParameterReference name="HTHTSHTSD" />
 					<dep:sqlParameterReference name="OwnsCar_vin" />
 					<dep:sqlParameterReference name="Gender_Gender_Code" />
 					<dep:sqlParameterReference name="hasParents" />
-					<dep:sqlParameterReference name="OptnlUnqDcml" />
-					<dep:sqlParameterReference name="MndtryUnqDcml" />
-					<dep:sqlParameterReference name="MndtryUnqStrng" />
+					<dep:sqlParameterReference name="OptionalUniqueDecimal" />
+					<dep:sqlParameterReference name="MandatoryUniqueDecimal" />
+					<dep:sqlParameterReference name="MandatoryUniqueString" />
 					<dep:sqlParameterReference name="Husband_Person_id" />
-					<dep:sqlParameterReference name="VT1DSEWVT1V" />
-					<dep:sqlParameterReference name="CPBOBON" />
+					<dep:sqlParameterReference name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+					<dep:sqlParameterReference name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
 					<dep:sqlParameterReference name="Father_Person_id" />
 					<dep:sqlParameterReference name="Mother_Person_id" />
 					<dep:sqlParameterReference name="Death_Date_YMD" />
-					<dep:sqlParameterReference name="DDCDCT" />
-					<dep:sqlParameterReference name="DNDFPC" />
-					<dep:sqlParameterReference name="DUDV" />
-					<dep:sqlParameterReference name="DUDB" />
+					<dep:sqlParameterReference name="Dth_DthCs_DthCs_Typ" />
+					<dep:sqlParameterReference name="Dth_NtrlDth_sFrmPrsttCncr" />
+					<dep:sqlParameterReference name="Death_UnnaturalDeath_isViolent" />
+					<dep:sqlParameterReference name="Death_UnnaturalDeath_isBloody" />
 				</dml:fromConstructor>
 			</dml:insertStatement>
 		</ddl:sqlRoutineSpec>
@@ -913,16 +913,16 @@
 		<ddl:sqlParameterDeclaration name="ValueType1Value" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DSWPP" mode="IN">
+		<ddl:sqlParameterDeclaration name="DsSmthngWthPrsn_Prsn_d" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
 			<dml:insertStatement schema="SampleModel" name="ValueType1">
 				<dml:fromConstructor>
 					<ddl:column name="ValueType1Value" />
-					<ddl:column name="DSWPP" />
+					<ddl:column name="DsSmthngWthPrsn_Prsn_d" />
 					<dep:sqlParameterReference name="ValueType1Value" />
-					<dep:sqlParameterReference name="DSWPP" />
+					<dep:sqlParameterReference name="DsSmthngWthPrsn_Prsn_d" />
 				</dml:fromConstructor>
 			</dml:insertStatement>
 		</ddl:sqlRoutineSpec>

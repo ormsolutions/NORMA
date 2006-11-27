@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
-	<dcl:domainDataType name="OptnlUnqStrng">
+	<dcl:domainDataType name="OptionalUniqueString">
 		<dcl:predefinedDataType name="CHARACTER" length="11" />
-		<dcl:checkConstraint name="OptnlUnqStrng_Chk">
+		<dcl:checkConstraint name="OptionalUniqueString_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
 				<dep:parenthesizedValueExpression>
 					<dep:charLengthExpression>
@@ -29,7 +29,7 @@
 	</dcl:domainDataType>
 	<dcl:domainDataType name="DeathCause_Type">
 		<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
-		<dcl:checkConstraint name="DthCs_Typ_Chk">
+		<dcl:checkConstraint name="DeathCause_Type_Chk">
 			<dep:inPredicate type="IN">
 				<dep:valueKeyword />
 				<ddt:characterStringLiteral value="natural" />
@@ -61,9 +61,9 @@
 			</dep:and>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:domainDataType name="MndtryUnqStrng">
+	<dcl:domainDataType name="MandatoryUniqueString">
 		<dcl:predefinedDataType name="CHARACTER" length="11" />
-		<dcl:checkConstraint name="MndtryUnqStrng_Chk">
+		<dcl:checkConstraint name="MandatoryUniqueString_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
 				<dep:parenthesizedValueExpression>
 					<dep:charLengthExpression>
@@ -82,38 +82,38 @@
 		<dcl:column name="DrivesCar_vin" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" name="DrvnByPrsn_Prsn_d">
+		<dcl:column isNullable="false" isIdentity="false" name="DrivenByPerson_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
 		<dcl:referenceConstraint name="DrivenByPerson_FK" targetTable="Person">
-			<dcl:columnRef sourceName="DrvnByPrsn_Prsn_d" targetName="Person_id" />
+			<dcl:columnRef sourceName="DrivenByPerson_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="IUC18" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
 			<dcl:columnRef name="DrivesCar_vin" />
-			<dcl:columnRef name="DrvnByPrsn_Prsn_d" />
+			<dcl:columnRef name="DrivenByPerson_Person_id" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
-	<dcl:procedure name="InsrtPrsnDrvsCr" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertPersonDrivesCar" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="DrivesCar_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DrvnByPrsn_Prsn_d">
+		<dcl:parameter mode="IN" name="DrivenByPerson_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dml:insertStatement schema="SampleModel" name="PersonDrivesCar">
 			<dml:fromConstructor>
 				<ddl:column name="DrivesCar_vin" />
-				<ddl:column name="DrvnByPrsn_Prsn_d" />
+				<ddl:column name="DrivenByPerson_Person_id" />
 				<dep:sqlParameterReference name="DrivesCar_vin" />
-				<dep:sqlParameterReference name="DrvnByPrsn_Prsn_d" />
+				<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DltPrsnDrvsCr" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeletePersonDrivesCar" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="DrivesCar_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DrvnByPrsn_Prsn_d">
+		<dcl:parameter mode="IN" name="DrivenByPerson_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dml:deleteStatement schema="SampleModel" name="PersonDrivesCar">
@@ -125,15 +125,15 @@
 							<dep:sqlParameterReference name="DrivesCar_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="DrvnByPrsn_Prsn_d" />
-							<dep:sqlParameterReference name="DrvnByPrsn_Prsn_d" />
+							<dep:columnReference name="DrivenByPerson_Person_id" />
+							<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:deleteStatement>
 	</dcl:procedure>
-	<dcl:table name="PBCFPOD">
+	<dcl:table name="PrsnBghtCrFrmPrsnOnDt">
 		<dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
@@ -152,23 +152,23 @@
 		<dcl:referenceConstraint name="Seller_FK" targetTable="Person">
 			<dcl:columnRef sourceName="Seller_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="IUC23" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint23" isPrimary="true">
 			<dcl:columnRef name="Buyer_Person_id" />
 			<dcl:columnRef name="CarSold_vin" />
 			<dcl:columnRef name="Seller_Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="IUC24" isPrimary="false">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint24" isPrimary="false">
 			<dcl:columnRef name="SaleDate_YMD" />
 			<dcl:columnRef name="Seller_Person_id" />
 			<dcl:columnRef name="CarSold_vin" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="IUC25" isPrimary="false">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint25" isPrimary="false">
 			<dcl:columnRef name="CarSold_vin" />
 			<dcl:columnRef name="SaleDate_YMD" />
 			<dcl:columnRef name="Buyer_Person_id" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
-	<dcl:procedure name="IPBCFPOD" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsrtPrsnBghtCrFrmPrsnOnDt" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="CarSold_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -181,7 +181,7 @@
 		<dcl:parameter mode="IN" name="Seller_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dml:insertStatement schema="SampleModel" name="PBCFPOD">
+		<dml:insertStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
 			<dml:fromConstructor>
 				<ddl:column name="CarSold_vin" />
 				<ddl:column name="SaleDate_YMD" />
@@ -194,7 +194,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DPBCFPOD" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DltPrsnBghtCrFrmPrsnOnDt" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="Buyer_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -204,7 +204,7 @@
 		<dcl:parameter mode="IN" name="Seller_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dml:deleteStatement schema="SampleModel" name="PBCFPOD">
+		<dml:deleteStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
 			<dml:whereClause>
 				<dml:searchCondition>
 					<dep:and>
@@ -235,7 +235,7 @@
 		<dcl:column name="Criterion_Name" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC26" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint26" isPrimary="true">
 			<dcl:columnRef name="Car_vin" />
 			<dcl:columnRef name="Criterion_Name" />
 		</dcl:uniquenessConstraint>
@@ -295,12 +295,12 @@
 		<dcl:referenceConstraint name="Person_FK" targetTable="Person">
 			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="IUC33" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint33" isPrimary="true">
 			<dcl:columnRef name="NickName" />
 			<dcl:columnRef name="Person_Person_id" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
-	<dcl:procedure name="InsrtPrsnHsNckNm" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertPersonHasNickName" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="NickName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
@@ -316,7 +316,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DltPrsnHsNckNm" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeletePersonHasNickName" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="NickName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
@@ -347,7 +347,7 @@
 		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC2" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint2" isPrimary="true">
 			<dcl:columnRef name="Person_id" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="Date_YMD" isNullable="false" isIdentity="false">
@@ -356,11 +356,11 @@
 		<dcl:column name="LastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:column name="OptnlUnqStrng" isNullable="true" isIdentity="false">
-			<dcl:domainDataTypeRef name="OptnlUnqStrng" />
+		<dcl:column name="OptionalUniqueString" isNullable="true" isIdentity="false">
+			<dcl:domainDataTypeRef name="OptionalUniqueString" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC9" isPrimary="false">
-			<dcl:columnRef name="OptnlUnqStrng" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint9" isPrimary="false">
+			<dcl:columnRef name="OptionalUniqueString" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="HatType_ColorARGB" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -371,7 +371,7 @@
 		<dcl:column name="OwnsCar_vin" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC22" isPrimary="false">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint22" isPrimary="false">
 			<dcl:columnRef name="OwnsCar_vin" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="Gender_Gender_Code" isNullable="false" isIdentity="false">
@@ -380,23 +380,23 @@
 		<dcl:column name="hasParents" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="OptnlUnqDcml" isNullable="true" isIdentity="false">
+		<dcl:column name="OptionalUniqueDecimal" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC65" isPrimary="false">
-			<dcl:columnRef name="OptnlUnqDcml" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint65" isPrimary="false">
+			<dcl:columnRef name="OptionalUniqueDecimal" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="MndtryUnqDcml" isNullable="false" isIdentity="false">
+		<dcl:column name="MandatoryUniqueDecimal" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC69" isPrimary="false">
-			<dcl:columnRef name="MndtryUnqDcml" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint69" isPrimary="false">
+			<dcl:columnRef name="MandatoryUniqueDecimal" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="MndtryUnqStrng" isNullable="false" isIdentity="false">
-			<dcl:domainDataTypeRef name="MndtryUnqStrng" />
+		<dcl:column name="MandatoryUniqueString" isNullable="false" isIdentity="false">
+			<dcl:domainDataTypeRef name="MandatoryUniqueString" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC67" isPrimary="false">
-			<dcl:columnRef name="MndtryUnqStrng" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint67" isPrimary="false">
+			<dcl:columnRef name="MandatoryUniqueString" />
 		</dcl:uniquenessConstraint>
 		<dcl:column isNullable="true" isIdentity="false" name="Husband_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -404,13 +404,13 @@
 		<dcl:referenceConstraint name="Husband_FK" targetTable="Person">
 			<dcl:columnRef sourceName="Husband_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="VT1DSEWVT1V">
+		<dcl:column isNullable="true" isIdentity="false" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="VT1DSEWFK" targetTable="ValueType1">
-			<dcl:columnRef sourceName="VT1DSEWVT1V" targetName="ValueType1Value" />
+		<dcl:referenceConstraint name="VlTyp1DsSmthngElsWth_FK" targetTable="ValueType1">
+			<dcl:columnRef sourceName="VlTyp1DsSmthngElsWth_VlTyp1Vl" targetName="ValueType1Value" />
 		</dcl:referenceConstraint>
-		<dcl:column name="CPBOBON" isNullable="true" isIdentity="false">
+		<dcl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
 		<dcl:column isNullable="false" isIdentity="false" name="Father_Person_id">
@@ -425,31 +425,31 @@
 		<dcl:referenceConstraint name="Mother_FK" targetTable="Person">
 			<dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="CPIUC49" isPrimary="false">
+		<dcl:uniquenessConstraint name="ChldPrsn_IntrnlUnqnssCnstrnt49" isPrimary="false">
 			<dcl:columnRef name="Father_Person_id" />
-			<dcl:columnRef name="CPBOBON" />
+			<dcl:columnRef name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
 			<dcl:columnRef name="Mother_Person_id" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="Death_Date_YMD" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column name="DDCDCT" isNullable="true" isIdentity="false">
+		<dcl:column name="Dth_DthCs_DthCs_Typ" isNullable="true" isIdentity="false">
 			<dcl:domainDataTypeRef name="DeathCause_Type" />
 		</dcl:column>
-		<dcl:column name="DNDFPC" isNullable="true" isIdentity="false">
+		<dcl:column name="Dth_NtrlDth_sFrmPrsttCncr" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="DUDV" isNullable="true" isIdentity="false">
+		<dcl:column name="Death_UnnaturalDeath_isViolent" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="DUDB" isNullable="true" isIdentity="false">
+		<dcl:column name="Death_UnnaturalDeath_isBloody" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="EUC1" isPrimary="false">
+		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="false">
 			<dcl:columnRef name="FirstName" />
 			<dcl:columnRef name="Date_YMD" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="EUC2" isPrimary="false">
+		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint2" isPrimary="false">
 			<dcl:columnRef name="LastName" />
 			<dcl:columnRef name="Date_YMD" />
 		</dcl:uniquenessConstraint>
@@ -467,7 +467,7 @@
 		<dcl:parameter mode="IN" name="LastName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="OptnlUnqStrng">
+		<dcl:parameter mode="IN" name="OptionalUniqueString">
 			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="HatType_ColorARGB">
@@ -485,22 +485,22 @@
 		<dcl:parameter mode="IN" name="hasParents">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="OptnlUnqDcml">
+		<dcl:parameter mode="IN" name="OptionalUniqueDecimal">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="MndtryUnqDcml">
+		<dcl:parameter mode="IN" name="MandatoryUniqueDecimal">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="MndtryUnqStrng">
+		<dcl:parameter mode="IN" name="MandatoryUniqueString">
 			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Husband_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="VT1DSEWVT1V">
+		<dcl:parameter mode="IN" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="CPBOBON">
+		<dcl:parameter mode="IN" name="ChldPrsn_BrthOrdr_BrthOrdr_Nr">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Father_Person_id">
@@ -512,16 +512,16 @@
 		<dcl:parameter mode="IN" name="Death_Date_YMD">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DDCDCT">
+		<dcl:parameter mode="IN" name="Dth_DthCs_DthCs_Typ">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DNDFPC">
+		<dcl:parameter mode="IN" name="Dth_NtrlDth_sFrmPrsttCncr">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DUDV">
+		<dcl:parameter mode="IN" name="Death_UnnaturalDeath_isViolent">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DUDB">
+		<dcl:parameter mode="IN" name="Death_UnnaturalDeath_isBloody">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
 		<dml:insertStatement schema="SampleModel" name="Person">
@@ -530,48 +530,48 @@
 				<ddl:column name="Person_id" />
 				<ddl:column name="Date_YMD" />
 				<ddl:column name="LastName" />
-				<ddl:column name="OptnlUnqStrng" />
+				<ddl:column name="OptionalUniqueString" />
 				<ddl:column name="HatType_ColorARGB" />
 				<ddl:column name="HTHTSHTSD" />
 				<ddl:column name="OwnsCar_vin" />
 				<ddl:column name="Gender_Gender_Code" />
 				<ddl:column name="hasParents" />
-				<ddl:column name="OptnlUnqDcml" />
-				<ddl:column name="MndtryUnqDcml" />
-				<ddl:column name="MndtryUnqStrng" />
+				<ddl:column name="OptionalUniqueDecimal" />
+				<ddl:column name="MandatoryUniqueDecimal" />
+				<ddl:column name="MandatoryUniqueString" />
 				<ddl:column name="Husband_Person_id" />
-				<ddl:column name="VT1DSEWVT1V" />
-				<ddl:column name="CPBOBON" />
+				<ddl:column name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+				<ddl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
 				<ddl:column name="Father_Person_id" />
 				<ddl:column name="Mother_Person_id" />
 				<ddl:column name="Death_Date_YMD" />
-				<ddl:column name="DDCDCT" />
-				<ddl:column name="DNDFPC" />
-				<ddl:column name="DUDV" />
-				<ddl:column name="DUDB" />
+				<ddl:column name="Dth_DthCs_DthCs_Typ" />
+				<ddl:column name="Dth_NtrlDth_sFrmPrsttCncr" />
+				<ddl:column name="Death_UnnaturalDeath_isViolent" />
+				<ddl:column name="Death_UnnaturalDeath_isBloody" />
 				<dep:sqlParameterReference name="FirstName" />
 				<dep:sqlParameterReference name="Person_id" />
 				<dep:sqlParameterReference name="Date_YMD" />
 				<dep:sqlParameterReference name="LastName" />
-				<dep:sqlParameterReference name="OptnlUnqStrng" />
+				<dep:sqlParameterReference name="OptionalUniqueString" />
 				<dep:sqlParameterReference name="HatType_ColorARGB" />
 				<dep:sqlParameterReference name="HTHTSHTSD" />
 				<dep:sqlParameterReference name="OwnsCar_vin" />
 				<dep:sqlParameterReference name="Gender_Gender_Code" />
 				<dep:sqlParameterReference name="hasParents" />
-				<dep:sqlParameterReference name="OptnlUnqDcml" />
-				<dep:sqlParameterReference name="MndtryUnqDcml" />
-				<dep:sqlParameterReference name="MndtryUnqStrng" />
+				<dep:sqlParameterReference name="OptionalUniqueDecimal" />
+				<dep:sqlParameterReference name="MandatoryUniqueDecimal" />
+				<dep:sqlParameterReference name="MandatoryUniqueString" />
 				<dep:sqlParameterReference name="Husband_Person_id" />
-				<dep:sqlParameterReference name="VT1DSEWVT1V" />
-				<dep:sqlParameterReference name="CPBOBON" />
+				<dep:sqlParameterReference name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+				<dep:sqlParameterReference name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
 				<dep:sqlParameterReference name="Father_Person_id" />
 				<dep:sqlParameterReference name="Mother_Person_id" />
 				<dep:sqlParameterReference name="Death_Date_YMD" />
-				<dep:sqlParameterReference name="DDCDCT" />
-				<dep:sqlParameterReference name="DNDFPC" />
-				<dep:sqlParameterReference name="DUDV" />
-				<dep:sqlParameterReference name="DUDB" />
+				<dep:sqlParameterReference name="Dth_DthCs_DthCs_Typ" />
+				<dep:sqlParameterReference name="Dth_NtrlDth_sFrmPrsttCncr" />
+				<dep:sqlParameterReference name="Death_UnnaturalDeath_isViolent" />
+				<dep:sqlParameterReference name="Death_UnnaturalDeath_isBloody" />
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
@@ -594,7 +594,7 @@
 		<dcl:column name="Task_id" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="IUC16" isPrimary="true">
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint16" isPrimary="true">
 			<dcl:columnRef name="Task_id" />
 		</dcl:uniquenessConstraint>
 		<dcl:column isNullable="true" isIdentity="false" name="Person_Person_id">
@@ -639,29 +639,29 @@
 		<dcl:column name="ValueType1Value" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="VlTyp1Vl_Unq" isPrimary="true">
+		<dcl:uniquenessConstraint name="ValueType1Value_Unique" isPrimary="true">
 			<dcl:columnRef name="ValueType1Value" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="DSWPP">
+		<dcl:column isNullable="true" isIdentity="false" name="DsSmthngWthPrsn_Prsn_d">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="DsSmthngWthPrsn_FK" targetTable="Person">
-			<dcl:columnRef sourceName="DSWPP" targetName="Person_id" />
+		<dcl:referenceConstraint name="DoesSomethingWithPerson_FK" targetTable="Person">
+			<dcl:columnRef sourceName="DsSmthngWthPrsn_Prsn_d" targetName="Person_id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:procedure name="InsertValueType1" sqlDataAccessIndication="MODIFIES SQL DATA">
 		<dcl:parameter mode="IN" name="ValueType1Value">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DSWPP">
+		<dcl:parameter mode="IN" name="DsSmthngWthPrsn_Prsn_d">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
 		<dml:insertStatement schema="SampleModel" name="ValueType1">
 			<dml:fromConstructor>
 				<ddl:column name="ValueType1Value" />
-				<ddl:column name="DSWPP" />
+				<ddl:column name="DsSmthngWthPrsn_Prsn_d" />
 				<dep:sqlParameterReference name="ValueType1Value" />
-				<dep:sqlParameterReference name="DSWPP" />
+				<dep:sqlParameterReference name="DsSmthngWthPrsn_Prsn_d" />
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
