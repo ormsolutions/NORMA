@@ -3160,6 +3160,214 @@
 					</plx:alternateBranch>
 				</plx:loop>
 			</plx:loop>
+			<plx:loop>
+				<plx:initializeLoop>
+					<plx:local name="ConstraintIter1" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:value data="0" type="i4"/>
+						</plx:initialize>
+					</plx:local>
+				</plx:initializeLoop>
+				<plx:condition>
+					<plx:binaryOperator type="lessThan">
+						<plx:left>
+							<plx:nameRef name="ConstraintIter1"/>
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="constraintRoleArity"/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:beforeLoop>
+					<plx:increment>
+						<plx:nameRef name="ConstraintIter1"/>
+					</plx:increment>
+				</plx:beforeLoop>
+				<plx:local name="roleArity" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="allConstraintSequences"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="ConstraintIter1"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:loop>
+					<plx:initializeLoop>
+						<plx:local name="RoleIter1" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="0" type="i4"/>
+							</plx:initialize>
+						</plx:local>
+					</plx:initializeLoop>
+					<plx:condition>
+						<plx:binaryOperator type="lessThan">
+							<plx:left>
+								<plx:nameRef name="RoleIter1"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="roleArity"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="RoleIter1"/>
+						</plx:increment>
+					</plx:beforeLoop>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="factRoles"/>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="RoleCollection" type="property">
+								<plx:callObject>
+									<plx:callInstance name="FactType" type="property">
+										<plx:callObject>
+											<plx:callInstance name=".implied" type="indexerCall">
+												<plx:callObject>
+													<plx:callInstance name=".implied" type="indexerCall">
+														<plx:callObject>
+															<plx:nameRef name="allConstraintSequences"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="ConstraintIter1"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:nameRef name="RoleIter1"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:local name="factCount" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="Count" type="property">
+								<plx:callObject>
+									<plx:nameRef name="factRoles"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop>
+						<plx:initializeLoop>
+							<plx:local name="FactIter1" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value data="0" type="i4"/>
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef name="FactIter1"/>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="factCount"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment>
+								<plx:nameRef name="FactIter1"/>
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="allReadingOrders"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="ReadingOrderCollection" type="property">
+									<plx:callObject>
+										<plx:callInstance name="FactType" type="property">
+											<plx:callObject>
+												<plx:callInstance name=".implied" type="indexerCall">
+													<plx:callObject>
+														<plx:nameRef name="factRoles" />
+													</plx:callObject>
+													<plx:passParam>
+														<plx:nameRef name="FactIter1"/>
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="reading"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="GetMatchingReading" dataTypeName="FactType">
+									<plx:passParam>
+										<plx:nameRef name="allReadingOrders"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nullKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name=".implied" type="indexerCall">
+											<plx:callObject>
+												<plx:nameRef name="factRoles"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:value data="0" type="i4"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nullKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:falseKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:falseKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="factRoles"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+							</plx:callStatic>
+							</plx:right>
+						</plx:assign>
+						<plx:branch>
+							<plx:condition>
+								<plx:callStatic name="IsHyphenBound" dataTypeName="VerbalizationHyphenBinder">
+									<plx:passParam>
+										<plx:nameRef name="reading"/>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:condition>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="isBinaryLeadReading"/>
+								</plx:left>
+								<plx:right>
+									<plx:falseKeyword/>
+								</plx:right>
+							</plx:assign>
+							<plx:break/>
+						</plx:branch>
+					</plx:loop>
+				</plx:loop>
+			</plx:loop>
 		</xsl:if>
 		<xsl:for-each select="child::cvg:Snippet">
 			<xsl:if test="position()=1">

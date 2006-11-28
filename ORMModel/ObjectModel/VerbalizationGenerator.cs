@@ -8628,6 +8628,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
+				for (int ConstraintIter1 = 0; ConstraintIter1 < constraintRoleArity; ++ConstraintIter1)
+				{
+					int roleArity = allConstraintSequences[ConstraintIter1].Count;
+					for (int RoleIter1 = 0; RoleIter1 < roleArity; ++RoleIter1)
+					{
+						factRoles = allConstraintSequences[ConstraintIter1][RoleIter1].FactType.RoleCollection;
+						int factCount = factRoles.Count;
+						for (int FactIter1 = 0; FactIter1 < factCount; ++FactIter1)
+						{
+							allReadingOrders = factRoles[FactIter1].FactType.ReadingOrderCollection;
+							reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+							if (VerbalizationHyphenBinder.IsHyphenBound(reading))
+							{
+								isBinaryLeadReading = false;
+								break;
+							}
+						}
+					}
+				}
 				CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
 				if (isBinaryLeadReading)
 				{

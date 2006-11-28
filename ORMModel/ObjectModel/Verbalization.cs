@@ -658,8 +658,75 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static Regex myMainRegex;
 		private static Regex myIndexMapRegex;
 		#endregion // Member Variables
-		#region Constructor
-		/// <summary>
+        #region Regex properties
+        private static Regex MainRegex
+        {
+            get
+            {
+                #region Commented main regex pattern
+                //            string mainPatternCommented = @"(?xn)
+                //\G
+                //# Test if there is a hyphen binding match before the next format replacement field
+                //(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
+                //	# If there is a hyphen bind before the next replacement field then use it
+                //	((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))
+                //	|
+                //	# Otherwise, pick up all text before the next format replacement field
+                //	((?<BeforeLeftHyphenWord>.*?))
+                //)
+                //# Get the format replacement field
+                //((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))
+                //# Get any trailing information if it exists prior to the next format field
+                //(
+                //	(?=
+                //		# Positive lookahead to see if there is a next format string
+                //		(?(.+(?<!\{)\{\d+\}(?!\}))
+                //			# Check before if there is a next format string
+                //			(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))
+                //			|
+                //			# Get any trailer if there is not a next format string
+                //			([^\-]*?\s-\S.*?)
+                //		)
+                //	)
+                //	# Get the before hyphen and right hyphen word if the look ahead succeeded
+                //	(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+)
+                //)?";
+                #endregion // Commented main regex pattern
+                Regex regexMain = myMainRegex;
+                if (regexMain == null)
+                {
+                    System.Threading.Interlocked.CompareExchange<Regex>(
+                        ref myMainRegex,
+                        new Regex(
+                            @"(?n)\G(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
+                            RegexOptions.Compiled),
+                        null);
+                    regexMain = myMainRegex;
+                }
+                return regexMain;
+            }
+        }
+        private static Regex IndexMapRegex
+        {
+            get
+            {
+                Regex regexIndexMap = myIndexMapRegex;
+                if (regexIndexMap == null)
+                {
+                    System.Threading.Interlocked.CompareExchange<Regex>(
+                        ref myIndexMapRegex,
+                        new Regex(
+                            @"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
+                            RegexOptions.Compiled),
+                        null);
+                    regexIndexMap = myIndexMapRegex;
+                }
+                return regexIndexMap;
+            }
+        }
+        #endregion // Regex properties
+        #region Constructor
+        /// <summary>
 		/// Initialize a structure to hyphen-bind the verbalization for a reading
 		/// </summary>
 		/// <param name="reading">The reading to test.</param>
@@ -720,57 +787,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			// Make sure the regex objects are initialied
-			#region Commented main regex pattern
-			//            string mainPatternCommented = @"(?xn)
-			//\G
-			//# Test if there is a hyphen binding match before the next format replacement field
-			//(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
-			//	# If there is a hyphen bind before the next replacement field then use it
-			//	((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))
-			//	|
-			//	# Otherwise, pick up all text before the next format replacement field
-			//	((?<BeforeLeftHyphenWord>.*?))
-			//)
-			//# Get the format replacement field
-			//((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))
-			//# Get any trailing information if it exists prior to the next format field
-			//(
-			//	(?=
-			//		# Positive lookahead to see if there is a next format string
-			//		(?(.+(?<!\{)\{\d+\}(?!\}))
-			//			# Check before if there is a next format string
-			//			(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))
-			//			|
-			//			# Get any trailer if there is not a next format string
-			//			([^\-]*?\s-\S.*?)
-			//		)
-			//	)
-			//	# Get the before hyphen and right hyphen word if the look ahead succeeded
-			//	(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+)
-			//)?";
-			#endregion // Commented main regex pattern
-			Regex regexMain = myMainRegex;
-			if (regexMain == null)
-			{
-				System.Threading.Interlocked.CompareExchange<Regex>(
-					ref myMainRegex,
-					new Regex(
-						@"(?n)\G(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
-						RegexOptions.Compiled),
-					null);
-				regexMain = myMainRegex;
-			}
-			Regex regexIndexMap = myIndexMapRegex;
-			if (regexIndexMap == null)
-			{
-				System.Threading.Interlocked.CompareExchange<Regex>(
-					ref myIndexMapRegex,
-					new Regex(
-						@"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
-						RegexOptions.Compiled),
-					null);
-				regexIndexMap = myIndexMapRegex;
-			}
+			Regex regexMain = MainRegex;
+			Regex regexIndexMap = IndexMapRegex;
 
 			// Build the new format string and do index mapping along the way
 			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
@@ -896,6 +914,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Member Functions
-	}
+        #region Static Functions
+        /// <summary>
+        /// Determines whether or not the given predicate is hyphen bound.
+        /// </summary>
+        /// <param name="reading">The reading to test.</param>
+        /// <returns>True if the predicate is hyphen bound</returns>
+        public static bool IsHyphenBound(Reading reading)
+        {
+            string readingText;
+
+            // First test if there is any hyphen to look for
+            if (reading == null ||
+                -1 == (readingText = reading.Text).IndexOf('-'))
+            {
+                return false;
+            }
+
+            Match match = MainRegex.Match(readingText);
+            while (match.Success)
+            {
+                GroupCollection groups = match.Groups;
+                string leftWord = groups["LeftHyphenWord"].Value;
+                string rightWord = groups["RightHyphenWord"].Value;
+                if (leftWord.Length != 0 || rightWord.Length != 0)
+                {
+                    return true;
+                }
+                match = match.NextMatch();
+            }
+            return false;
+        }
+        #endregion
+    }
 	#endregion // VerbalizationHyphenBinder struct
 }
