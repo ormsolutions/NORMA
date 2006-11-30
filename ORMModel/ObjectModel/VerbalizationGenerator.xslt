@@ -674,9 +674,7 @@
 							<plx:callNew dataTypeName="Role">
 								<plx:arrayDescriptor rank="1"/>
 								<plx:arrayInitializer>
-									<plx:passParam>
-										<plx:nameRef name="valueRole" type="local"/>
-									</plx:passParam>
+									<plx:nameRef name="valueRole" type="local"/>
 								</plx:arrayInitializer>
 							</plx:callNew>
 						</plx:initialize>

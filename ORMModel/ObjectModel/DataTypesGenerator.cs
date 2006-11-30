@@ -19,106 +19,56 @@ using System.Diagnostics;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region PortableDataType Enum
-	/// <summary>
-	/// A list of predefined data types. One DataType-derived class is defined for each value.
-	/// </summary>
+	/// <summary>A list of predefined data types. One DataType-derived class is defined for each value.</summary>
 	public enum PortableDataType
 	{
-		/// <summary>
-		/// A default type indicating 'no type set'
-		/// </summary>
+		/// <summary>A default type indicating 'no type set'</summary>
 		Unspecified,
-		/// <summary>
-		/// A fixed length text data type
-		/// </summary>
+		/// <summary>A fixed length text data type</summary>
 		TextFixedLength,
-		/// <summary>
-		/// A variable length text data type
-		/// </summary>
+		/// <summary>A variable length text data type</summary>
 		TextVariableLength,
-		/// <summary>
-		/// A large length text data type
-		/// </summary>
+		/// <summary>A large length text data type</summary>
 		TextLargeLength,
-		/// <summary>
-		/// A signed integer numeric data type
-		/// </summary>
+		/// <summary>A signed integer numeric data type</summary>
 		NumericSignedInteger,
-		/// <summary>
-		/// An unsigned integer numeric data type
-		/// </summary>
+		/// <summary>An unsigned integer numeric data type</summary>
 		NumericUnsignedInteger,
-		/// <summary>
-		/// An auto counter numeric data type
-		/// </summary>
+		/// <summary>An auto counter numeric data type</summary>
 		NumericAutoCounter,
-		/// <summary>
-		/// A floating point numeric data type
-		/// </summary>
+		/// <summary>A floating point numeric data type</summary>
 		NumericFloatingPoint,
-		/// <summary>
-		/// A decimal numeric data type
-		/// </summary>
+		/// <summary>A decimal numeric data type</summary>
 		NumericDecimal,
-		/// <summary>
-		/// A money numeric data type
-		/// </summary>
+		/// <summary>A money numeric data type</summary>
 		NumericMoney,
-		/// <summary>
-		/// A fixed length raw data data type
-		/// </summary>
+		/// <summary>A fixed length raw data data type</summary>
 		RawDataFixedLength,
-		/// <summary>
-		/// A variable length raw data data type
-		/// </summary>
+		/// <summary>A variable length raw data data type</summary>
 		RawDataVariableLength,
-		/// <summary>
-		/// A large length raw data data type
-		/// </summary>
+		/// <summary>A large length raw data data type</summary>
 		RawDataLargeLength,
-		/// <summary>
-		/// A picture raw data data type
-		/// </summary>
+		/// <summary>A picture raw data data type</summary>
 		RawDataPicture,
-		/// <summary>
-		/// An OLE object raw data data type
-		/// </summary>
+		/// <summary>An OLE object raw data data type</summary>
 		RawDataOleObject,
-		/// <summary>
-		/// An auto timestamp temporal data type
-		/// </summary>
+		/// <summary>An auto timestamp temporal data type</summary>
 		TemporalAutoTimestamp,
-		/// <summary>
-		/// A time temporal data type
-		/// </summary>
+		/// <summary>A time temporal data type</summary>
 		TemporalTime,
-		/// <summary>
-		/// A date temporal data type
-		/// </summary>
+		/// <summary>A date temporal data type</summary>
 		TemporalDate,
-		/// <summary>
-		/// A date and time temporal data type
-		/// </summary>
+		/// <summary>A date and time temporal data type</summary>
 		TemporalDateAndTime,
-		/// <summary>
-		/// A true or false logical data type
-		/// </summary>
+		/// <summary>A true or false logical data type</summary>
 		LogicalTrueOrFalse,
-		/// <summary>
-		/// A yes or no logical data type
-		/// </summary>
+		/// <summary>A yes or no logical data type</summary>
 		LogicalYesOrNo,
-		/// <summary>
-		/// A row id data type (can not be classified in any of the groups above)
-		/// </summary>
+		/// <summary>A row id data type (can not be classified in any of the groups above)</summary>
 		OtherRowId,
-		/// <summary>
-		/// An object id data type (can not be classified in any of the groups above)
-		/// </summary>
+		/// <summary>An object id data type (can not be classified in any of the groups above)</summary>
 		OtherObjectId,
-		/// <summary>
-		/// Used for the upper bounds of the enum values.
-		/// </summary>
+		/// <summary>Used for the upper bounds of the enum values.</summary>
 		UserDefined,
 	}
 	#endregion // PortableDataType Enum
@@ -158,14 +108,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 #region Bind data types to enums and localized names
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	/// <summary>
-	/// A default type indicating 'no type set'
-	/// </summary>
+	/// <summary>A default type indicating 'no type set'</summary>
 	public partial class UnspecifiedDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -173,16 +119,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.Unspecified;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeUnspecified;
 		}
-		/// <summary>
-		/// The data type does not support comparison
-		/// </summary>
+		/// <summary>The data type does not support comparison</summary>
 		public override bool CanCompare
 		{
 			get
@@ -190,17 +132,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// CanCompare is false. Compare asserts if called.
-		/// </summary>
+		/// <summary>CanCompare is false. Compare asserts if called.</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -209,14 +147,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// A fixed length text data type
-	/// </summary>
+	/// <summary>A fixed length text data type</summary>
 	public partial class FixedLengthTextDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -224,16 +158,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TextFixedLength;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTextFixedLength;
 		}
-		/// <summary>
-		/// The data type supports 'Closed' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Closed' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -241,22 +171,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Closed;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			return value1.CompareTo(value2);
 		}
 	}
-	/// <summary>
-	/// A variable length text data type
-	/// </summary>
+	/// <summary>A variable length text data type</summary>
 	public partial class VariableLengthTextDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -264,16 +188,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TextVariableLength;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTextVariableLength;
 		}
-		/// <summary>
-		/// The data type supports 'Closed' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Closed' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -281,22 +201,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Closed;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			return value1.CompareTo(value2);
 		}
 	}
-	/// <summary>
-	/// A large length text data type
-	/// </summary>
+	/// <summary>A large length text data type</summary>
 	public partial class LargeLengthTextDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -304,16 +218,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TextLargeLength;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTextLargeLength;
 		}
-		/// <summary>
-		/// The data type supports 'Closed' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Closed' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -321,22 +231,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Closed;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			return value1.CompareTo(value2);
 		}
 	}
-	/// <summary>
-	/// A signed integer numeric data type
-	/// </summary>
+	/// <summary>A signed integer numeric data type</summary>
 	public partial class SignedIntegerNumericDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -344,16 +248,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.NumericSignedInteger;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericSignedInteger;
 		}
-		/// <summary>
-		/// The data type supports 'Closed' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Closed' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -361,17 +261,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Closed;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			int result;
 			return int.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -379,9 +275,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -393,14 +287,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<int>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// An unsigned integer numeric data type
-	/// </summary>
+	/// <summary>An unsigned integer numeric data type</summary>
 	public partial class UnsignedIntegerNumericDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -408,16 +298,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.NumericUnsignedInteger;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericUnsignedInteger;
 		}
-		/// <summary>
-		/// The data type supports 'Closed' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Closed' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -425,17 +311,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Closed;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			uint result;
 			return uint.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -443,9 +325,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -457,14 +337,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<uint>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// An auto counter numeric data type
-	/// </summary>
+	/// <summary>An auto counter numeric data type</summary>
 	public partial class AutoCounterNumericDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -472,16 +348,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.NumericAutoCounter;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericAutoCounter;
 		}
-		/// <summary>
-		/// The data type supports 'Closed' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Closed' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -489,17 +361,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Closed;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			ulong result;
 			return ulong.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -507,9 +375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -521,14 +387,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A floating point numeric data type
-	/// </summary>
+	/// <summary>A floating point numeric data type</summary>
 	public partial class FloatingPointNumericDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -536,16 +398,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.NumericFloatingPoint;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericFloatingPoint;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -553,17 +411,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			double result;
 			return double.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -571,9 +425,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -585,14 +437,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A decimal numeric data type
-	/// </summary>
+	/// <summary>A decimal numeric data type</summary>
 	public partial class DecimalNumericDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -600,16 +448,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.NumericDecimal;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericDecimal;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -617,17 +461,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			decimal result;
 			return decimal.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -635,9 +475,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -649,14 +487,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A money numeric data type
-	/// </summary>
+	/// <summary>A money numeric data type</summary>
 	public partial class MoneyNumericDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -664,16 +498,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.NumericMoney;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericMoney;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -681,17 +511,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			decimal result;
 			return decimal.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -699,9 +525,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -713,14 +537,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A fixed length raw data data type
-	/// </summary>
+	/// <summary>A fixed length raw data data type</summary>
 	public partial class FixedLengthRawDataDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -728,16 +548,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.RawDataFixedLength;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataFixedLength;
 		}
-		/// <summary>
-		/// The data type does not support comparison
-		/// </summary>
+		/// <summary>The data type does not support comparison</summary>
 		public override bool CanCompare
 		{
 			get
@@ -745,17 +561,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// CanCompare is false. Compare asserts if called.
-		/// </summary>
+		/// <summary>CanCompare is false. Compare asserts if called.</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -764,14 +576,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// A variable length raw data data type
-	/// </summary>
+	/// <summary>A variable length raw data data type</summary>
 	public partial class VariableLengthRawDataDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -779,16 +587,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.RawDataVariableLength;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataVariableLength;
 		}
-		/// <summary>
-		/// The data type does not support comparison
-		/// </summary>
+		/// <summary>The data type does not support comparison</summary>
 		public override bool CanCompare
 		{
 			get
@@ -796,17 +600,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// CanCompare is false. Compare asserts if called.
-		/// </summary>
+		/// <summary>CanCompare is false. Compare asserts if called.</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -815,14 +615,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// A large length raw data data type
-	/// </summary>
+	/// <summary>A large length raw data data type</summary>
 	public partial class LargeLengthRawDataDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -830,16 +626,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.RawDataLargeLength;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataLargeLength;
 		}
-		/// <summary>
-		/// The data type does not support comparison
-		/// </summary>
+		/// <summary>The data type does not support comparison</summary>
 		public override bool CanCompare
 		{
 			get
@@ -847,17 +639,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// CanCompare is false. Compare asserts if called.
-		/// </summary>
+		/// <summary>CanCompare is false. Compare asserts if called.</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -866,14 +654,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// A picture raw data data type
-	/// </summary>
+	/// <summary>A picture raw data data type</summary>
 	public partial class PictureRawDataDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -881,16 +665,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.RawDataPicture;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataPicture;
 		}
-		/// <summary>
-		/// The data type does not support comparison
-		/// </summary>
+		/// <summary>The data type does not support comparison</summary>
 		public override bool CanCompare
 		{
 			get
@@ -898,17 +678,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// CanCompare is false. Compare asserts if called.
-		/// </summary>
+		/// <summary>CanCompare is false. Compare asserts if called.</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -917,14 +693,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// An OLE object raw data data type
-	/// </summary>
+	/// <summary>An OLE object raw data data type</summary>
 	public partial class OleObjectRawDataDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -932,16 +704,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.RawDataOleObject;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataOleObject;
 		}
-		/// <summary>
-		/// The data type does not support comparison
-		/// </summary>
+		/// <summary>The data type does not support comparison</summary>
 		public override bool CanCompare
 		{
 			get
@@ -949,17 +717,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// CanCompare is false. Compare asserts if called.
-		/// </summary>
+		/// <summary>CanCompare is false. Compare asserts if called.</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -968,14 +732,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// An auto timestamp temporal data type
-	/// </summary>
+	/// <summary>An auto timestamp temporal data type</summary>
 	public partial class AutoTimestampTemporalDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -983,16 +743,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TemporalAutoTimestamp;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTemporalAutoTimestamp;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1000,17 +756,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			System.DateTime result;
 			return System.DateTime.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1018,9 +770,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -1032,14 +782,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A time temporal data type
-	/// </summary>
+	/// <summary>A time temporal data type</summary>
 	public partial class TimeTemporalDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1047,16 +793,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TemporalTime;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTemporalTime;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1064,17 +806,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			System.DateTime result;
 			return System.DateTime.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1082,9 +820,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -1096,14 +832,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A date temporal data type
-	/// </summary>
+	/// <summary>A date temporal data type</summary>
 	public partial class DateTemporalDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1111,16 +843,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TemporalDate;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTemporalDate;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1128,17 +856,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			System.DateTime result;
 			return System.DateTime.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1146,9 +870,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -1160,14 +882,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A date and time temporal data type
-	/// </summary>
+	/// <summary>A date and time temporal data type</summary>
 	public partial class DateAndTimeTemporalDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1175,16 +893,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.TemporalDateAndTime;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTemporalDateAndTime;
 		}
-		/// <summary>
-		/// The data type supports 'Open' ranges
-		/// </summary>
+		/// <summary>The data type supports 'Open' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1192,17 +906,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.Open;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			System.DateTime result;
 			return System.DateTime.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1210,9 +920,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -1224,14 +932,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
 		}
 	}
-	/// <summary>
-	/// A true or false logical data type
-	/// </summary>
+	/// <summary>A true or false logical data type</summary>
 	public partial class TrueOrFalseLogicalDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1239,16 +943,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.LogicalTrueOrFalse;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeLogicalTrueOrFalse;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1256,17 +956,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.None;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			bool result;
 			return bool.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1274,9 +970,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -1292,14 +986,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return 1;
 		}
 	}
-	/// <summary>
-	/// A yes or no logical data type
-	/// </summary>
+	/// <summary>A yes or no logical data type</summary>
 	public partial class YesOrNoLogicalDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1307,16 +997,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.LogicalYesOrNo;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeLogicalYesOrNo;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1325,14 +1011,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	/// <summary>
-	/// A row id data type (can not be classified in any of the groups above)
-	/// </summary>
+	/// <summary>A row id data type (can not be classified in any of the groups above)</summary>
 	public partial class RowIdOtherDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1340,16 +1022,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.OtherRowId;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeOtherRowId;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1357,17 +1035,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.None;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			ulong result;
 			return ulong.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1375,9 +1049,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
@@ -1393,14 +1065,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return 1;
 		}
 	}
-	/// <summary>
-	/// An object id data type (can not be classified in any of the groups above)
-	/// </summary>
+	/// <summary>An object id data type (can not be classified in any of the groups above)</summary>
 	public partial class ObjectIdOtherDataType
 	{
-		/// <summary>
-		/// PortableDataType enum value for this type
-		/// </summary>
+		/// <summary>PortableDataType enum value for this type</summary>
 		public override PortableDataType PortableDataType
 		{
 			get
@@ -1408,16 +1076,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return PortableDataType.OtherObjectId;
 			}
 		}
-		/// <summary>
-		/// Localized data type name
-		/// </summary>
+		/// <summary>Localized data type name</summary>
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeOtherObjectId;
 		}
-		/// <summary>
-		/// The data type supports 'None' ranges
-		/// </summary>
+		/// <summary>The data type supports 'None' ranges</summary>
 		public override DataTypeRangeSupport RangeSupport
 		{
 			get
@@ -1425,17 +1089,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return DataTypeRangeSupport.None;
 			}
 		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
 			ulong result;
 			return ulong.TryParse(value, out result);
 		}
-		/// <summary>
-		/// Returns false, meaning that CanParse can fail for some values
-		/// </summary>
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
 		{
 			get
@@ -1443,9 +1103,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Compare two values. Each value should be checked previously with CanParse
-		/// </summary>
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string value1, string value2)
 		{
 			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");

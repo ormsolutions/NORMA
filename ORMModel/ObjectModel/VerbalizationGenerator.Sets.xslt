@@ -1000,11 +1000,7 @@
 				<plx:callNew dataTypeName=".string" dataTypeIsSimpleArray="true">
 					<plx:arrayInitializer>
 						<xsl:for-each select="exsl:node-set($SnippetsFragment)/child::*">
-							<plx:passParam>
-								<plx:string>
-									<xsl:value-of select="@text"/>
-								</plx:string>
-							</plx:passParam>
+							<plx:string data="{@text}"/>
 						</xsl:for-each>
 					</plx:arrayInitializer>
 				</plx:callNew>

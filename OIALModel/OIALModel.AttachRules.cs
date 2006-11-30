@@ -60,12 +60,8 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
-		/// <summary>
-		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
-		/// </summary>
-		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
-		/// 
-		/// </seealso>
+		/// <summary>Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
 			if (Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems)
@@ -86,9 +82,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
-		/// <summary>
-		/// Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization
-		/// </summary>
+		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
 		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
 		{
 			Type[] disabledRuleTypes = OIALDomainModel.CustomDomainModelTypes;

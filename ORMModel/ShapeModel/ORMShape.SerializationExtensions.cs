@@ -27,13 +27,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ORMShapeDomainModel model serialization
 	partial class ORMShapeDomainModel : IORMCustomSerializedDomainModel
 	{
-		/// <summary>
-		/// The default XmlNamespace associated with the 'ORMShapeDomainModel' extension model
-		/// </summary>
+		/// <summary>The default XmlNamespace associated with the 'ORMShapeDomainModel' extension model</summary>
 		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram";
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.DefaultElementPrefix
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
 			get
@@ -48,9 +44,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return DefaultElementPrefix;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[1, 3];
@@ -80,9 +74,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
@@ -97,9 +89,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.ShouldSerializeDomainClass(store, classInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.GetRootElementClasses
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[]{
@@ -109,9 +99,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return GetRootElementClasses();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.MapRootElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
 			if ((elementName == "ORMDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"))
@@ -124,9 +112,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return MapRootElement(xmlNamespace, elementName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.MapClassName
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
 			Collection<string> validNamespaces = ORMShapeDomainModel.myValidNamespaces;
@@ -165,9 +151,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ORMDiagram serialization
 	partial class ORMDiagram : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -183,9 +167,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		private static ORMCustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			ORMCustomSerializedContainerElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
@@ -201,9 +183,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
 		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
 		{
 			get
@@ -218,9 +198,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return this.CustomSerializedElementInfo;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == ORMDiagram.DiagramIdDomainPropertyId)
@@ -257,9 +235,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
@@ -303,9 +279,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
@@ -327,9 +301,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapChildElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
 		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMDiagram.myChildElementMappings;
@@ -351,9 +323,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			return default(Guid);
@@ -362,9 +332,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.ShouldSerialize
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
 			return this.Store.DefaultPartition == this.Partition;
@@ -378,9 +346,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ORMBaseShape serialization
 	partial class ORMBaseShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -396,9 +362,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		private static ORMCustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			ORMCustomSerializedContainerElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
@@ -415,9 +379,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
 		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
 		{
 			get
@@ -432,9 +394,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return this.CustomSerializedElementInfo;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == ORMBaseShape.IsExpandedDomainPropertyId)
@@ -451,9 +411,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
@@ -499,9 +457,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
@@ -523,9 +479,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapChildElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
 		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMBaseShape.myChildElementMappings;
@@ -550,9 +504,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = ORMBaseShape.myCustomSerializedAttributes;
@@ -576,9 +528,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.ShouldSerialize
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
 		protected static bool ShouldSerialize()
 		{
 			return true;
@@ -592,9 +542,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ObjectTypeShape serialization
 	partial class ObjectTypeShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -609,9 +557,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return this.SupportedCustomSerializedOperations;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == ObjectTypeShape.ExpandRefModeDomainPropertyId)
@@ -633,9 +579,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = ObjectTypeShape.myCustomSerializedAttributes;
@@ -666,9 +610,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ObjectifiedFactTypeNameShape serialization
 	partial class ObjectifiedFactTypeNameShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -683,9 +625,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return this.SupportedCustomSerializedOperations;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId)
@@ -707,9 +647,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = ObjectifiedFactTypeNameShape.myCustomSerializedAttributes;
@@ -740,9 +678,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ReadingShape serialization
 	partial class ReadingShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -762,9 +698,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ValueConstraintShape serialization
 	partial class ValueConstraintShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -784,9 +718,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region RoleNameShape serialization
 	partial class RoleNameShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -806,9 +738,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region FactTypeShape serialization
 	partial class FactTypeShape : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -824,9 +754,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		private static ORMCustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 		protected new ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			ORMCustomSerializedContainerElementInfo[] ret = FactTypeShape.myCustomSerializedChildElementInfo;
@@ -856,9 +784,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
@@ -891,9 +817,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
@@ -949,9 +873,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
@@ -978,9 +900,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapChildElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
 		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactTypeShape.myChildElementMappings;
@@ -1004,9 +924,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			Dictionary<string, Guid> customSerializedAttributes = FactTypeShape.myCustomSerializedAttributes;

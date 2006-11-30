@@ -85,9 +85,7 @@
 											<xsl:variable name="dataTypeName" select="@name"/>
 											<xsl:if test="not(@enumOnly)">
 												<xsl:for-each select="SubType">
-													<plx:passParam type="in">
-														<plx:typeOf dataTypeName="{@name}{$dataTypeName}DataType" />
-													</plx:passParam>
+													<plx:typeOf dataTypeName="{@name}{$dataTypeName}DataType" />
 												</xsl:for-each>
 											</xsl:if>
 										</xsl:for-each>

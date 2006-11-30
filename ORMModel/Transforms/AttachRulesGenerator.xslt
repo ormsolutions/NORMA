@@ -103,14 +103,12 @@
 										<plx:arrayInitializer>
 											<xsl:variable name="contextClass" select="@class"/>
 											<xsl:for-each select="$allReflectedTypes">
-												<plx:passParam>
-													<xsl:call-template name="GenerateTypeOf">
-														<xsl:with-param name="className" select="@class"/>
-														<xsl:with-param name="namespace" select="@namespace"/>
-														<xsl:with-param name="contextClass" select="$contextClass"/>
-														<xsl:with-param name="contextNamespace" select="$namespaceName"/>
-													</xsl:call-template>
-												</plx:passParam>
+												<xsl:call-template name="GenerateTypeOf">
+													<xsl:with-param name="className" select="@class"/>
+													<xsl:with-param name="namespace" select="@namespace"/>
+													<xsl:with-param name="contextClass" select="$contextClass"/>
+													<xsl:with-param name="contextNamespace" select="$namespaceName"/>
+												</xsl:call-template>
 											</xsl:for-each>
 										</plx:arrayInitializer>
 									</plx:callNew>
@@ -191,16 +189,14 @@
 												<xsl:for-each select="$allReflectedTypes">
 													<!-- We already have this set in disabledRules, but we need the position values from the allReflectedTypes set, so refilter -->
 													<xsl:if test="not(@alwaysOn='true' or @alwaysOn='1')">
-														<plx:passParam>
-															<plx:callInstance name=".implied" type="arrayIndexer">
-																<plx:callObject>
-																	<plx:nameRef name="customDomainModelTypes"/>
-																</plx:callObject>
-																<plx:passParam>
-																	<plx:value data="{position()-1}" type="i4"/>
-																</plx:passParam>
-															</plx:callInstance>
-														</plx:passParam>
+														<plx:callInstance name=".implied" type="arrayIndexer">
+															<plx:callObject>
+																<plx:nameRef name="customDomainModelTypes"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:value data="{position()-1}" type="i4"/>
+															</plx:passParam>
+														</plx:callInstance>
 													</xsl:if>
 												</xsl:for-each>
 											</plx:arrayInitializer>

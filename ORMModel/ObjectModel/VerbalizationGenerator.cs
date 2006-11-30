@@ -22,707 +22,361 @@ using Microsoft.VisualStudio.Modeling;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region CoreVerbalizationSnippetType enum
-	/// <summary>
-	/// An enum with one value for each recognized snippet
-	/// </summary>
+	/// <summary>An enum with one value for each recognized snippet</summary>
 	public enum CoreVerbalizationSnippetType
 	{
-		/// <summary>
-		/// The 'AtMostOneQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'AtMostOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		AtMostOneQuantifier,
-		/// <summary>
-		/// The 'CloseVerbalizationSentence' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CloseVerbalizationSentence' simple snippet value.</summary>
 		CloseVerbalizationSentence,
-		/// <summary>
-		/// The 'CombinationAssociation' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'CombinationAssociation' format string snippet. Contains 2 replacement fields.</summary>
 		CombinationAssociation,
-		/// <summary>
-		/// The 'CombinationIdentifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'CombinationIdentifier' format string snippet. Contains 1 replacement field.</summary>
 		CombinationIdentifier,
-		/// <summary>
-		/// The 'CombinedObjectAndInstance' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'CombinedObjectAndInstance' format string snippet. Contains 2 replacement fields.</summary>
 		CombinedObjectAndInstance,
-		/// <summary>
-		/// The 'CombinedObjectAndInstanceTypeMissing' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'CombinedObjectAndInstanceTypeMissing' format string snippet. Contains 1 replacement field.</summary>
 		CombinedObjectAndInstanceTypeMissing,
-		/// <summary>
-		/// The 'CompactSimpleListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompactSimpleListClose' simple snippet value.</summary>
 		CompactSimpleListClose,
-		/// <summary>
-		/// The 'CompactSimpleListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompactSimpleListFinalSeparator' simple snippet value.</summary>
 		CompactSimpleListFinalSeparator,
-		/// <summary>
-		/// The 'CompactSimpleListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompactSimpleListOpen' simple snippet value.</summary>
 		CompactSimpleListOpen,
-		/// <summary>
-		/// The 'CompactSimpleListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompactSimpleListPairSeparator' simple snippet value.</summary>
 		CompactSimpleListPairSeparator,
-		/// <summary>
-		/// The 'CompactSimpleListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompactSimpleListSeparator' simple snippet value.</summary>
 		CompactSimpleListSeparator,
-		/// <summary>
-		/// The 'CompoundListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompoundListClose' simple snippet value.</summary>
 		CompoundListClose,
-		/// <summary>
-		/// The 'CompoundListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompoundListFinalSeparator' simple snippet value.</summary>
 		CompoundListFinalSeparator,
-		/// <summary>
-		/// The 'CompoundListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompoundListOpen' simple snippet value.</summary>
 		CompoundListOpen,
-		/// <summary>
-		/// The 'CompoundListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompoundListPairSeparator' simple snippet value.</summary>
 		CompoundListPairSeparator,
-		/// <summary>
-		/// The 'CompoundListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'CompoundListSeparator' simple snippet value.</summary>
 		CompoundListSeparator,
-		/// <summary>
-		/// The 'Conditional' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'Conditional' format string snippet. Contains 2 replacement fields.</summary>
 		Conditional,
-		/// <summary>
-		/// The 'ConstraintProvidesPreferredIdentifier' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ConstraintProvidesPreferredIdentifier' format string snippet. Contains 2 replacement fields.</summary>
 		ConstraintProvidesPreferredIdentifier,
-		/// <summary>
-		/// The 'ContextScope' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ContextScope' format string snippet. Contains 1 replacement field.</summary>
 		ContextScope,
-		/// <summary>
-		/// The 'ContextScopeReference' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ContextScopeReference' format string snippet. Contains 1 replacement field.</summary>
 		ContextScopeReference,
-		/// <summary>
-		/// The 'DefiniteArticle' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'DefiniteArticle' format string snippet. Contains 1 replacement field.</summary>
 		DefiniteArticle,
-		/// <summary>
-		/// The 'EachInstanceQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'EachInstanceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		EachInstanceQuantifier,
-		/// <summary>
-		/// The 'EntityTypeVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'EntityTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		EntityTypeVerbalization,
-		/// <summary>
-		/// The 'Equality' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'Equality' format string snippet. Contains 2 replacement fields.</summary>
 		Equality,
-		/// <summary>
-		/// The 'EqualityForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'EqualityForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		EqualityForEachIndentedQuantifier,
-		/// <summary>
-		/// The 'ErrorClosePrimaryReport' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ErrorClosePrimaryReport' simple snippet value.</summary>
 		ErrorClosePrimaryReport,
-		/// <summary>
-		/// The 'ErrorCloseSecondaryReport' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ErrorCloseSecondaryReport' simple snippet value.</summary>
 		ErrorCloseSecondaryReport,
-		/// <summary>
-		/// The 'ErrorOpenPrimaryReport' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ErrorOpenPrimaryReport' simple snippet value.</summary>
 		ErrorOpenPrimaryReport,
-		/// <summary>
-		/// The 'ErrorOpenSecondaryReport' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ErrorOpenSecondaryReport' simple snippet value.</summary>
 		ErrorOpenSecondaryReport,
-		/// <summary>
-		/// The 'ErrorPrimary' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ErrorPrimary' format string snippet. Contains 1 replacement field.</summary>
 		ErrorPrimary,
-		/// <summary>
-		/// The 'ErrorSecondary' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ErrorSecondary' format string snippet. Contains 1 replacement field.</summary>
 		ErrorSecondary,
-		/// <summary>
-		/// The 'ExactlyOneQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ExactlyOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		ExactlyOneQuantifier,
-		/// <summary>
-		/// The 'ExclusionBinaryLeadReading' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ExclusionBinaryLeadReading' format string snippet. Contains 2 replacement fields.</summary>
 		ExclusionBinaryLeadReading,
-		/// <summary>
-		/// The 'ExclusionCombined' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ExclusionCombined' format string snippet. Contains 2 replacement fields.</summary>
 		ExclusionCombined,
-		/// <summary>
-		/// The 'ExclusionForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ExclusionForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		ExclusionForEachIndentedQuantifier,
-		/// <summary>
-		/// The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		ExistentialQuantifier,
-		/// <summary>
-		/// The 'FactTypeInstanceBlockEnd' simple snippet value.
-		/// </summary>
+		/// <summary>The 'FactTypeInstanceBlockEnd' simple snippet value.</summary>
 		FactTypeInstanceBlockEnd,
-		/// <summary>
-		/// The 'FactTypeInstanceBlockStart' simple snippet value.
-		/// </summary>
+		/// <summary>The 'FactTypeInstanceBlockStart' simple snippet value.</summary>
 		FactTypeInstanceBlockStart,
-		/// <summary>
-		/// The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		ForEachCompactQuantifier,
-		/// <summary>
-		/// The 'ForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		ForEachIndentedQuantifier,
-		/// <summary>
-		/// The 'HyphenBoundPredicatePart' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'HyphenBoundPredicatePart' format string snippet. Contains 2 replacement fields.</summary>
 		HyphenBoundPredicatePart,
-		/// <summary>
-		/// The 'IdentityEqualityListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IdentityEqualityListClose' simple snippet value.</summary>
 		IdentityEqualityListClose,
-		/// <summary>
-		/// The 'IdentityEqualityListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IdentityEqualityListFinalSeparator' simple snippet value.</summary>
 		IdentityEqualityListFinalSeparator,
-		/// <summary>
-		/// The 'IdentityEqualityListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IdentityEqualityListOpen' simple snippet value.</summary>
 		IdentityEqualityListOpen,
-		/// <summary>
-		/// The 'IdentityEqualityListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IdentityEqualityListPairSeparator' simple snippet value.</summary>
 		IdentityEqualityListPairSeparator,
-		/// <summary>
-		/// The 'IdentityEqualityListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IdentityEqualityListSeparator' simple snippet value.</summary>
 		IdentityEqualityListSeparator,
-		/// <summary>
-		/// The 'IdentityReferenceQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'IdentityReferenceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		IdentityReferenceQuantifier,
-		/// <summary>
-		/// The 'ImpersonalPronoun' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ImpersonalPronoun' format string snippet. Contains 1 replacement field.</summary>
 		ImpersonalPronoun,
-		/// <summary>
-		/// The 'ImpliedModalNecessityOperator' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ImpliedModalNecessityOperator' format string snippet. Contains 1 replacement field.</summary>
 		ImpliedModalNecessityOperator,
-		/// <summary>
-		/// The 'IndentedCompoundListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedCompoundListClose' simple snippet value.</summary>
 		IndentedCompoundListClose,
-		/// <summary>
-		/// The 'IndentedCompoundListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedCompoundListFinalSeparator' simple snippet value.</summary>
 		IndentedCompoundListFinalSeparator,
-		/// <summary>
-		/// The 'IndentedCompoundListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedCompoundListOpen' simple snippet value.</summary>
 		IndentedCompoundListOpen,
-		/// <summary>
-		/// The 'IndentedCompoundListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedCompoundListPairSeparator' simple snippet value.</summary>
 		IndentedCompoundListPairSeparator,
-		/// <summary>
-		/// The 'IndentedCompoundListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedCompoundListSeparator' simple snippet value.</summary>
 		IndentedCompoundListSeparator,
-		/// <summary>
-		/// The 'IndentedListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedListClose' simple snippet value.</summary>
 		IndentedListClose,
-		/// <summary>
-		/// The 'IndentedListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedListFinalSeparator' simple snippet value.</summary>
 		IndentedListFinalSeparator,
-		/// <summary>
-		/// The 'IndentedListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedListOpen' simple snippet value.</summary>
 		IndentedListOpen,
-		/// <summary>
-		/// The 'IndentedListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedListPairSeparator' simple snippet value.</summary>
 		IndentedListPairSeparator,
-		/// <summary>
-		/// The 'IndentedListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedListSeparator' simple snippet value.</summary>
 		IndentedListSeparator,
-		/// <summary>
-		/// The 'IndentedLogicalAndListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalAndListClose' simple snippet value.</summary>
 		IndentedLogicalAndListClose,
-		/// <summary>
-		/// The 'IndentedLogicalAndListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalAndListFinalSeparator' simple snippet value.</summary>
 		IndentedLogicalAndListFinalSeparator,
-		/// <summary>
-		/// The 'IndentedLogicalAndListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalAndListOpen' simple snippet value.</summary>
 		IndentedLogicalAndListOpen,
-		/// <summary>
-		/// The 'IndentedLogicalAndListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalAndListPairSeparator' simple snippet value.</summary>
 		IndentedLogicalAndListPairSeparator,
-		/// <summary>
-		/// The 'IndentedLogicalAndListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalAndListSeparator' simple snippet value.</summary>
 		IndentedLogicalAndListSeparator,
-		/// <summary>
-		/// The 'IndentedLogicalOrListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalOrListClose' simple snippet value.</summary>
 		IndentedLogicalOrListClose,
-		/// <summary>
-		/// The 'IndentedLogicalOrListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalOrListFinalSeparator' simple snippet value.</summary>
 		IndentedLogicalOrListFinalSeparator,
-		/// <summary>
-		/// The 'IndentedLogicalOrListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalOrListOpen' simple snippet value.</summary>
 		IndentedLogicalOrListOpen,
-		/// <summary>
-		/// The 'IndentedLogicalOrListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalOrListPairSeparator' simple snippet value.</summary>
 		IndentedLogicalOrListPairSeparator,
-		/// <summary>
-		/// The 'IndentedLogicalOrListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'IndentedLogicalOrListSeparator' simple snippet value.</summary>
 		IndentedLogicalOrListSeparator,
-		/// <summary>
-		/// The 'IndependentVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'IndependentVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		IndependentVerbalization,
-		/// <summary>
-		/// The 'InQuantifier' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'InQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		InQuantifier,
-		/// <summary>
-		/// The 'MinClosedMaxClosed' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'MinClosedMaxClosed' format string snippet. Contains 2 replacement fields.</summary>
 		MinClosedMaxClosed,
-		/// <summary>
-		/// The 'MinClosedMaxOpen' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'MinClosedMaxOpen' format string snippet. Contains 2 replacement fields.</summary>
 		MinClosedMaxOpen,
-		/// <summary>
-		/// The 'MinClosedMaxUnbounded' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'MinClosedMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
 		MinClosedMaxUnbounded,
-		/// <summary>
-		/// The 'MinOpenMaxClosed' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'MinOpenMaxClosed' format string snippet. Contains 2 replacement fields.</summary>
 		MinOpenMaxClosed,
-		/// <summary>
-		/// The 'MinOpenMaxOpen' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'MinOpenMaxOpen' format string snippet. Contains 2 replacement fields.</summary>
 		MinOpenMaxOpen,
-		/// <summary>
-		/// The 'MinOpenMaxUnbounded' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'MinOpenMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
 		MinOpenMaxUnbounded,
-		/// <summary>
-		/// The 'MinUnboundedMaxClosed' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'MinUnboundedMaxClosed' format string snippet. Contains 1 replacement field.</summary>
 		MinUnboundedMaxClosed,
-		/// <summary>
-		/// The 'MinUnboundedMaxOpen' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'MinUnboundedMaxOpen' format string snippet. Contains 1 replacement field.</summary>
 		MinUnboundedMaxOpen,
-		/// <summary>
-		/// The 'ModalNecessityOperator' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ModalNecessityOperator' format string snippet. Contains 1 replacement field.</summary>
 		ModalNecessityOperator,
-		/// <summary>
-		/// The 'ModalPossibilityOperator' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ModalPossibilityOperator' format string snippet. Contains 1 replacement field.</summary>
 		ModalPossibilityOperator,
-		/// <summary>
-		/// The 'MoreThanOneQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'MoreThanOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		MoreThanOneQuantifier,
-		/// <summary>
-		/// The 'MultiValueValueConstraint' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'MultiValueValueConstraint' format string snippet. Contains 2 replacement fields.</summary>
 		MultiValueValueConstraint,
-		/// <summary>
-		/// The 'NegativeReadingForUnaryOnlyDisjunctiveMandatory' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'NegativeReadingForUnaryOnlyDisjunctiveMandatory' format string snippet. Contains 2 replacement fields.</summary>
 		NegativeReadingForUnaryOnlyDisjunctiveMandatory,
-		/// <summary>
-		/// The 'NonTextInstanceValue' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'NonTextInstanceValue' format string snippet. Contains 1 replacement field.</summary>
 		NonTextInstanceValue,
-		/// <summary>
-		/// The 'NotesVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'NotesVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		NotesVerbalization,
-		/// <summary>
-		/// The 'ObjectifiesFactTypeVerbalization' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ObjectifiesFactTypeVerbalization' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectifiesFactTypeVerbalization,
-		/// <summary>
-		/// The 'ObjectType' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ObjectType' format string snippet. Contains 1 replacement field.</summary>
 		ObjectType,
-		/// <summary>
-		/// The 'ObjectTypeInstanceListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ObjectTypeInstanceListClose' simple snippet value.</summary>
 		ObjectTypeInstanceListClose,
-		/// <summary>
-		/// The 'ObjectTypeInstanceListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ObjectTypeInstanceListFinalSeparator' simple snippet value.</summary>
 		ObjectTypeInstanceListFinalSeparator,
-		/// <summary>
-		/// The 'ObjectTypeInstanceListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ObjectTypeInstanceListOpen' simple snippet value.</summary>
 		ObjectTypeInstanceListOpen,
-		/// <summary>
-		/// The 'ObjectTypeInstanceListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ObjectTypeInstanceListPairSeparator' simple snippet value.</summary>
 		ObjectTypeInstanceListPairSeparator,
-		/// <summary>
-		/// The 'ObjectTypeInstanceListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'ObjectTypeInstanceListSeparator' simple snippet value.</summary>
 		ObjectTypeInstanceListSeparator,
-		/// <summary>
-		/// The 'ObjectTypeMissing' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ObjectTypeMissing' format string snippet. Contains 1 replacement field.</summary>
 		ObjectTypeMissing,
-		/// <summary>
-		/// The 'ObjectTypeWithSubscript' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ObjectTypeWithSubscript' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectTypeWithSubscript,
-		/// <summary>
-		/// The 'OccursInPopulation' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'OccursInPopulation' format string snippet. Contains 2 replacement fields.</summary>
 		OccursInPopulation,
-		/// <summary>
-		/// The 'OneQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'OneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		OneQuantifier,
-		/// <summary>
-		/// The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.</summary>
 		PeriodSeparator,
-		/// <summary>
-		/// The 'PersonalPronoun' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'PersonalPronoun' format string snippet. Contains 1 replacement field.</summary>
 		PersonalPronoun,
-		/// <summary>
-		/// The 'PortableDataTypeVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'PortableDataTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		PortableDataTypeVerbalization,
-		/// <summary>
-		/// The 'ReferenceModeVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ReferenceModeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		ReferenceModeVerbalization,
-		/// <summary>
-		/// The 'ReferenceScheme' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'ReferenceScheme' format string snippet. Contains 2 replacement fields.</summary>
 		ReferenceScheme,
-		/// <summary>
-		/// The 'ReferenceSchemeVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ReferenceSchemeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		ReferenceSchemeVerbalization,
-		/// <summary>
-		/// The 'SelfReference' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'SelfReference' format string snippet. Contains 1 replacement field.</summary>
 		SelfReference,
-		/// <summary>
-		/// The 'SemiColonListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SemiColonListClose' simple snippet value.</summary>
 		SemiColonListClose,
-		/// <summary>
-		/// The 'SemiColonListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SemiColonListFinalSeparator' simple snippet value.</summary>
 		SemiColonListFinalSeparator,
-		/// <summary>
-		/// The 'SemiColonListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SemiColonListOpen' simple snippet value.</summary>
 		SemiColonListOpen,
-		/// <summary>
-		/// The 'SemiColonListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SemiColonListPairSeparator' simple snippet value.</summary>
 		SemiColonListPairSeparator,
-		/// <summary>
-		/// The 'SemiColonListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SemiColonListSeparator' simple snippet value.</summary>
 		SemiColonListSeparator,
-		/// <summary>
-		/// The 'SimpleListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleListClose' simple snippet value.</summary>
 		SimpleListClose,
-		/// <summary>
-		/// The 'SimpleListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleListFinalSeparator' simple snippet value.</summary>
 		SimpleListFinalSeparator,
-		/// <summary>
-		/// The 'SimpleListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleListOpen' simple snippet value.</summary>
 		SimpleListOpen,
-		/// <summary>
-		/// The 'SimpleListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleListPairSeparator' simple snippet value.</summary>
 		SimpleListPairSeparator,
-		/// <summary>
-		/// The 'SimpleListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleListSeparator' simple snippet value.</summary>
 		SimpleListSeparator,
-		/// <summary>
-		/// The 'SimpleLogicalAndListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalAndListClose' simple snippet value.</summary>
 		SimpleLogicalAndListClose,
-		/// <summary>
-		/// The 'SimpleLogicalAndListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalAndListFinalSeparator' simple snippet value.</summary>
 		SimpleLogicalAndListFinalSeparator,
-		/// <summary>
-		/// The 'SimpleLogicalAndListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalAndListOpen' simple snippet value.</summary>
 		SimpleLogicalAndListOpen,
-		/// <summary>
-		/// The 'SimpleLogicalAndListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalAndListPairSeparator' simple snippet value.</summary>
 		SimpleLogicalAndListPairSeparator,
-		/// <summary>
-		/// The 'SimpleLogicalAndListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalAndListSeparator' simple snippet value.</summary>
 		SimpleLogicalAndListSeparator,
-		/// <summary>
-		/// The 'SimpleLogicalOrListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalOrListClose' simple snippet value.</summary>
 		SimpleLogicalOrListClose,
-		/// <summary>
-		/// The 'SimpleLogicalOrListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalOrListFinalSeparator' simple snippet value.</summary>
 		SimpleLogicalOrListFinalSeparator,
-		/// <summary>
-		/// The 'SimpleLogicalOrListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalOrListOpen' simple snippet value.</summary>
 		SimpleLogicalOrListOpen,
-		/// <summary>
-		/// The 'SimpleLogicalOrListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalOrListPairSeparator' simple snippet value.</summary>
 		SimpleLogicalOrListPairSeparator,
-		/// <summary>
-		/// The 'SimpleLogicalOrListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'SimpleLogicalOrListSeparator' simple snippet value.</summary>
 		SimpleLogicalOrListSeparator,
-		/// <summary>
-		/// The 'SingleValueValueConstraint' format string snippet. Contains 2 replacement fields.
-		/// </summary>
+		/// <summary>The 'SingleValueValueConstraint' format string snippet. Contains 2 replacement fields.</summary>
 		SingleValueValueConstraint,
-		/// <summary>
-		/// The 'TextInstanceValue' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'TextInstanceValue' format string snippet. Contains 1 replacement field.</summary>
 		TextInstanceValue,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalAndListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalAndListClose' simple snippet value.</summary>
 		TopLevelIndentedLogicalAndListClose,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalAndListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalAndListFinalSeparator' simple snippet value.</summary>
 		TopLevelIndentedLogicalAndListFinalSeparator,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalAndListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalAndListOpen' simple snippet value.</summary>
 		TopLevelIndentedLogicalAndListOpen,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalAndListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalAndListPairSeparator' simple snippet value.</summary>
 		TopLevelIndentedLogicalAndListPairSeparator,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalAndListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalAndListSeparator' simple snippet value.</summary>
 		TopLevelIndentedLogicalAndListSeparator,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalOrListClose' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalOrListClose' simple snippet value.</summary>
 		TopLevelIndentedLogicalOrListClose,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalOrListFinalSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalOrListFinalSeparator' simple snippet value.</summary>
 		TopLevelIndentedLogicalOrListFinalSeparator,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalOrListOpen' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalOrListOpen' simple snippet value.</summary>
 		TopLevelIndentedLogicalOrListOpen,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalOrListPairSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalOrListPairSeparator' simple snippet value.</summary>
 		TopLevelIndentedLogicalOrListPairSeparator,
-		/// <summary>
-		/// The 'TopLevelIndentedLogicalOrListSeparator' simple snippet value.
-		/// </summary>
+		/// <summary>The 'TopLevelIndentedLogicalOrListSeparator' simple snippet value.</summary>
 		TopLevelIndentedLogicalOrListSeparator,
-		/// <summary>
-		/// The 'UniversalQuantifier' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'UniversalQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		UniversalQuantifier,
-		/// <summary>
-		/// The 'ValueTypeVerbalization' format string snippet. Contains 1 replacement field.
-		/// </summary>
+		/// <summary>The 'ValueTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		ValueTypeVerbalization,
-		/// <summary>
-		/// The 'VerbalizerCloseVerbalization' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerCloseVerbalization' simple snippet value.</summary>
 		VerbalizerCloseVerbalization,
-		/// <summary>
-		/// The 'VerbalizerDecreaseIndent' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerDecreaseIndent' simple snippet value.</summary>
 		VerbalizerDecreaseIndent,
-		/// <summary>
-		/// The 'VerbalizerDocumentFooter' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerDocumentFooter' simple snippet value.</summary>
 		VerbalizerDocumentFooter,
-		/// <summary>
-		/// The 'VerbalizerDocumentHeader' format string snippet. Contains 12 replacement fields.
-		/// </summary>
+		/// <summary>The 'VerbalizerDocumentHeader' format string snippet. Contains 12 replacement fields.</summary>
 		VerbalizerDocumentHeader,
-		/// <summary>
-		/// The 'VerbalizerFontWeightBold' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerFontWeightBold' simple snippet value.</summary>
 		VerbalizerFontWeightBold,
-		/// <summary>
-		/// The 'VerbalizerFontWeightNormal' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerFontWeightNormal' simple snippet value.</summary>
 		VerbalizerFontWeightNormal,
-		/// <summary>
-		/// The 'VerbalizerIncreaseIndent' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerIncreaseIndent' simple snippet value.</summary>
 		VerbalizerIncreaseIndent,
-		/// <summary>
-		/// The 'VerbalizerNewLine' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerNewLine' simple snippet value.</summary>
 		VerbalizerNewLine,
-		/// <summary>
-		/// The 'VerbalizerOpenVerbalization' simple snippet value.
-		/// </summary>
+		/// <summary>The 'VerbalizerOpenVerbalization' simple snippet value.</summary>
 		VerbalizerOpenVerbalization,
 	}
 	#endregion // CoreVerbalizationSnippetType enum
 	#region IVerbalizationSets interface
-	/// <summary>
-	/// A base interface for the generic VerbalizationSets interface.
-	/// </summary>
+	/// <summary>A base interface for the generic VerbalizationSets interface.</summary>
 	public interface IVerbalizationSets
 	{
 	}
 	#endregion // IVerbalizationSets interface
 	#region IVerbalizationSets interface
-	/// <summary>
-	/// An interface representing generic verbalization sets.
-	/// </summary>
-	/// <typeParam name="TEnum">
-	/// An enumeration representing the verbalization sets
-	/// </typeParam>
+	/// <summary>An interface representing generic verbalization sets.</summary>
+	/// <typeParam name="TEnum">An enumeration representing the verbalization sets</typeParam>
 	public interface IVerbalizationSets<TEnum> : IVerbalizationSets
 		where TEnum : struct
 	{
-		/// <summary>
-		/// Retrieve a snippet for the specified type and criteria.
-		/// </summary>
-		/// <param name="snippetType">
-		/// A value from the TEnum enum.
-		/// </param>
-		/// <param name="isDeontic">
-		/// Set to true to retrieve the snippet for a deontic verbalization, false for alethic.
-		/// </param>
-		/// <param name="isNegative">
-		/// Set to true to retrieve the snippet for a negative reading, false for positive.
-		/// </param>
-		/// <returns>
-		/// Snippet string
-		/// </returns>
+		/// <summary>Retrieve a snippet for the specified type and criteria.</summary>
+		/// <param name="snippetType">A value from the TEnum enum.</param>
+		/// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+		/// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+		/// <returns>Snippet string</returns>
 		string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative);
-		/// <summary>
-		/// Retrieve a snippet for the specified type with default criteria.
-		/// </summary>
-		/// <param name="snippetType">
-		/// A value from the TEnum enum.
-		/// </param>
-		/// <returns>
-		/// Snippet string
-		/// </returns>
+		/// <summary>Retrieve a snippet for the specified type with default criteria.</summary>
+		/// <param name="snippetType">A value from the TEnum enum.</param>
+		/// <returns>Snippet string</returns>
 		string GetSnippet(TEnum snippetType);
 	}
 	#endregion // Genereic IVerbalizationSets interface
 	#region Generic VerbalizationSets class
-	/// <summary>
-	/// A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.
-	/// </summary>
-	/// <typeparam name="TEnum">
-	/// The enumeration type of snippet set
-	/// </typeparam>
+	/// <summary>A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.</summary>
+	/// <typeparam name="TEnum">The enumeration type of snippet set</typeparam>
 	public abstract class VerbalizationSets<TEnum> : IVerbalizationSets<TEnum>
 		where TEnum : struct
 	{
 		#region VerbalizationSet class
-		/// <summary>
-		/// An abstract class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.
-		/// </summary>
+		/// <summary>An abstract class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.</summary>
 		protected abstract class VerbalizationSet
 		{
-			/// <summary>
-			/// Retrieve a snippet value
-			/// </summary>
-			/// <param name="snippetType">
-			/// A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.
-			/// </param>
-			/// <param name="owner">
-			/// The VerbalizationSets object that is the owner of the snippet sets.
-			/// </param>
-			/// <returns>
-			/// Snippet string
-			/// </returns>
+			/// <summary>Retrieve a snippet value</summary>
+			/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+			/// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
+			/// <returns>Snippet string</returns>
 			public abstract string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner);
 		}
 		#endregion // VerbalizationSet class
 		#region ArrayVerbalizationSet class
-		/// <summary>
-		/// A class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.
-		/// </summary>
+		/// <summary>A class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.</summary>
 		protected class ArrayVerbalizationSet : VerbalizationSet
 		{
 			private string[] mySnippets;
-			/// <summary>
-			/// VerbalizationSet constructor.
-			/// </summary>
-			/// <param name="snippets">
-			/// An array of strings with one string for each value in the CoreVerbalizationSnippetType enum.
-			/// </param>
+			/// <summary>VerbalizationSet constructor.</summary>
+			/// <param name="snippets">An array of strings with one string for each value in the CoreVerbalizationSnippetType enum.</param>
 			public ArrayVerbalizationSet(string[] snippets)
 			{
 				this.mySnippets = snippets;
 			}
-			/// <summary>
-			/// Retrieve a snippet value
-			/// </summary>
-			/// <param name="snippetType">
-			/// A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.
-			/// </param>
-			/// <param name="owner">
-			/// The VerbalizationSets object that is the owner of the snippet sets.
-			/// </param>
-			/// <returns>
-			/// Snippet string
-			/// </returns>
+			/// <summary>Retrieve a snippet value</summary>
+			/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+			/// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
+			/// <returns>Snippet string</returns>
 			public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
 			{
 				return this.mySnippets[owner.ValueToIndex(snippetType)];
@@ -730,15 +384,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ArrayVerbalizationSet class
 		#region DictionaryVerbalizationSet class
-		/// <summary>
-		/// A class holding dictionary items that refer to values from the enumeration of CoreVerbalizationSnippetType.
-		/// </summary>
+		/// <summary>A class holding dictionary items that refer to values from the enumeration of CoreVerbalizationSnippetType.</summary>
 		protected class DictionaryVerbalizationSet : VerbalizationSet
 		{
 			private Dictionary<TEnum, string> mySnippets;
-			/// <summary>
-			/// Retrieves all of the IDictionary snippets in the snippet set
-			/// </summary>
+			/// <summary>Retrieves all of the IDictionary snippets in the snippet set</summary>
 			public IDictionary<TEnum, string> Dictionary
 			{
 				get
@@ -746,25 +396,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return mySnippets;
 				}
 			}
-			/// <summary>
-			/// VerbalizationSet constructor.
-			/// </summary>
+			/// <summary>VerbalizationSet constructor.</summary>
 			public DictionaryVerbalizationSet()
 			{
 				this.mySnippets = new Dictionary<TEnum, string>();
 			}
-			/// <summary>
-			/// Retrieve a snippet value
-			/// </summary>
-			/// <param name="snippetType">
-			/// A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.
-			/// </param>
-			/// <param name="owner">
-			/// The VerbalizationSets object that is the owner of the snippet sets.
-			/// </param>
-			/// <returns>
-			/// Snippet string
-			/// </returns>
+			/// <summary>Retrieve a snippet value</summary>
+			/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+			/// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
+			/// <returns>Snippet string</returns>
 			public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
 			{
 				string retVal = null;
@@ -774,15 +414,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // DictionaryVerbalizationSet class
 		private VerbalizationSet[] mySets;
-		/// <summary>
-		/// Retrieve a snippet for the specified type with default criteria.
-		/// </summary>
-		/// <param name="snippetType">
-		/// A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.
-		/// </param>
-		/// <returns>
-		/// Snippet string
-		/// </returns>
+		/// <summary>Retrieve a snippet for the specified type with default criteria.</summary>
+		/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+		/// <returns>Snippet string</returns>
 		protected string GetSnippet(TEnum snippetType)
 		{
 			return this.GetSnippet(snippetType, false, false);
@@ -791,21 +425,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.GetSnippet(snippetType);
 		}
-		/// <summary>
-		/// Retrieve a snippet for the specified type and criteria.
-		/// </summary>
-		/// <param name="snippetType">
-		/// A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.
-		/// </param>
-		/// <param name="isDeontic">
-		/// Set to true to retrieve the snippet for a deontic verbalization, false for alethic.
-		/// </param>
-		/// <param name="isNegative">
-		/// Set to true to retrieve the snippet for a negative reading, false for positive.
-		/// </param>
-		/// <returns>
-		/// Snippet string
-		/// </returns>
+		/// <summary>Retrieve a snippet for the specified type and criteria.</summary>
+		/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+		/// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+		/// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+		/// <returns>Snippet string</returns>
 		protected string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
 		{
 			VerbalizationSet set = this.mySets[VerbalizationSets<TEnum>.GetSetIndex(isDeontic, isNegative)];
@@ -822,18 +446,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.GetSnippet(snippetType, isDeontic, isNegative);
 		}
-		/// <summary>
-		/// Get the snippet index of the deontic/negative VerbalizationSet
-		/// </summary>
-		/// <param name="isDeontic">
-		/// Set to true to retrieve the snippet for a deontic verbalization, false for alethic.
-		/// </param>
-		/// <param name="isNegative">
-		/// Set to true to retrieve the snippet for a negative reading, false for positive.
-		/// </param>
-		/// <returns>
-		/// 0-based index
-		/// </returns>
+		/// <summary>Get the snippet index of the deontic/negative VerbalizationSet</summary>
+		/// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+		/// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+		/// <returns>0-based index</returns>
 		protected static int GetSetIndex(bool isDeontic, bool isNegative)
 		{
 			int setIndex = 0;
@@ -847,38 +463,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return setIndex;
 		}
-		/// <summary>
-		/// Method to populate verbalization sets of an abstract VerbalizationSets object.
-		/// </summary>
-		/// <param name="sets">
-		/// The empty verbalization sets to be populated
-		/// </param>
-		/// <param name="userData">
-		/// User-defined data passed to the Create method
-		/// </param>
+		/// <summary>Method to populate verbalization sets of an abstract VerbalizationSets object.</summary>
+		/// <param name="sets">The empty verbalization sets to be populated</param>
+		/// <param name="userData">User-defined data passed to the Create method</param>
 		protected abstract void PopulateVerbalizationSets(VerbalizationSet[] sets, object userData);
-		/// <summary>
-		/// Method to convert enum value to integer index value
-		/// </summary>
-		/// <param name="enumValue">
-		/// The enum value to be converted
-		/// </param>
-		/// <returns>
-		/// integer value of enum type
-		/// </returns>
+		/// <summary>Method to convert enum value to integer index value</summary>
+		/// <param name="enumValue">The enum value to be converted</param>
+		/// <returns>integer value of enum type</returns>
 		protected abstract int ValueToIndex(TEnum enumValue);
-		/// <summary>
-		/// Creates an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.
-		/// </summary>
-		/// <typeparam name="DerivedType">
-		/// Name of class to instantiate that derives from VerbalizationSets.
-		/// </typeparam>
-		/// <param name="userPopulationData">
-		/// User-defined data passed forward to PopulateVerbalizationSets
-		/// </param>
-		/// <returns>
-		/// Returns a generic VerbalizationSetsobject with snippet sets
-		/// </returns>
+		/// <summary>Creates an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.</summary>
+		/// <typeparam name="DerivedType">Name of class to instantiate that derives from VerbalizationSets.</typeparam>
+		/// <param name="userPopulationData">User-defined data passed forward to PopulateVerbalizationSets</param>
+		/// <returns>Returns a generic VerbalizationSetsobject with snippet sets</returns>
 		public static VerbalizationSets<TEnum> Create<DerivedType>(object userPopulationData)
 			where DerivedType : VerbalizationSets<TEnum>, new()
 		{
@@ -886,18 +482,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Initialize(retVal, userPopulationData);
 			return retVal;
 		}
-		/// <summary>
-		/// Initializes an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.
-		/// </summary>
-		/// <param name="target">
-		/// The newly created object to populate.
-		/// </param>
-		/// <param name="userPopulationData">
-		/// User-defined data passed forward to PopulateVerbalizationSets
-		/// </param>
-		/// <returns>
-		/// Returns a generic VerbalizationSets object with snippet sets
-		/// </returns>
+		/// <summary>Initializes an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.</summary>
+		/// <param name="target">The newly created object to populate.</param>
+		/// <param name="userPopulationData">User-defined data passed forward to PopulateVerbalizationSets</param>
+		/// <returns>Returns a generic VerbalizationSets object with snippet sets</returns>
 		public static void Initialize(VerbalizationSets<TEnum> target, object userPopulationData)
 		{
 			VerbalizationSet[] newSets = new VerbalizationSet[4];
@@ -907,24 +495,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Generic VerbalizationSets class
 	#region CoreVerbalizationSets class
-	/// <summary>
-	/// A class derving from VerbalizationSets.
-	/// </summary>
+	/// <summary>A class derving from VerbalizationSets.</summary>
 	public class CoreVerbalizationSets : VerbalizationSets<CoreVerbalizationSnippetType>
 	{
-		/// <summary>
-		/// The default verbalization snippet set. Contains english HTML snippets.
-		/// </summary>
+		/// <summary>The default verbalization snippet set. Contains english HTML snippets.</summary>
 		public static readonly CoreVerbalizationSets Default = (CoreVerbalizationSets)VerbalizationSets<CoreVerbalizationSnippetType>.Create<CoreVerbalizationSets>(null);
-		/// <summary>
-		/// Populates the snippet sets of the CoreVerbalizationSets object.
-		/// </summary>
-		/// <param name="sets">
-		/// The sets to be populated.
-		/// </param>
-		/// <param name="userData">
-		/// User-defined data passed to the Create method
-		/// </param>
+		/// <summary>Populates the snippet sets of the CoreVerbalizationSets object.</summary>
+		/// <param name="sets">The sets to be populated.</param>
+		/// <param name="userData">User-defined data passed to the Create method</param>
 		protected override void PopulateVerbalizationSets(VerbalizationSet[] sets, object userData)
 		{
 			sets[0] = new ArrayVerbalizationSet(new string[]{
@@ -1096,7 +674,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				"<br/>\n",
+				@"<br/>\n",
 				@"<p class=""verbalization"">"});
 			sets[1] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -1267,7 +845,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				"<br/>\n",
+				@"<br/>\n",
 				@"<p class=""verbalization"">"});
 			sets[2] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -1438,7 +1016,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				"<br/>\n",
+				@"<br/>\n",
 				@"<p class=""verbalization"">"});
 			sets[3] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -1609,12 +1187,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				"<br/>\n",
+				@"<br/>\n",
 				@"<p class=""verbalization"">"});
 		}
-		/// <summary>
-		/// Converts enum value of CoreVerbalizationSnippetType to an integer index value.
-		/// </summary>
+		/// <summary>Converts enum value of CoreVerbalizationSnippetType to an integer index value.</summary>
 		protected override int ValueToIndex(CoreVerbalizationSnippetType enumValue)
 		{
 			return (int)enumValue;
@@ -1624,9 +1200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region FactType verbalization
 	public partial class FactType : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -1733,9 +1307,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ObjectType verbalization
 	public partial class ObjectType : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -1976,9 +1548,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Note verbalization
 	public partial class Note : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -2090,9 +1660,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<ImpliedUniqueVerbalizer>(ref myCache, this, null as ImpliedUniqueVerbalizer);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -2382,9 +1950,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<ImpliedMandatoryVerbalizer>(ref myCache, this, null as ImpliedMandatoryVerbalizer);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -2565,9 +2131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<DefaultBinaryMissingUniquenessVerbalizer>(ref myCache, this, null as DefaultBinaryMissingUniquenessVerbalizer);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -2667,9 +2231,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<CombinedMandatoryUniqueVerbalizer>(ref myCache, this, null as CombinedMandatoryUniqueVerbalizer);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -2825,9 +2387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region MandatoryConstraint verbalization
 	public partial class MandatoryConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -3938,9 +3498,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region UniquenessConstraint verbalization
 	public partial class UniquenessConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -5286,9 +4844,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region RoleValueConstraint verbalization
 	public partial class RoleValueConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -5599,9 +5155,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ValueTypeValueConstraint verbalization
 	public partial class ValueTypeValueConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -5791,9 +5345,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region RingConstraint verbalization
 	public partial class RingConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -6046,9 +5598,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region SubsetConstraint verbalization
 	public partial class SubsetConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -7251,9 +6801,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region EqualityConstraint verbalization
 	public partial class EqualityConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -8233,9 +7781,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ExclusionConstraint verbalization
 	public partial class ExclusionConstraint : IVerbalize
 	{
-		/// <summary>
-		/// IVerbalize.GetVerbalization implementation
-		/// </summary>
+		/// <summary>IVerbalize.GetVerbalization implementation</summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -9412,9 +8958,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockStart>(ref myCache, this, null as FactTypeInstanceBlockStart);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -9457,9 +9001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockEnd>(ref myCache, this, null as FactTypeInstanceBlockEnd);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -9503,9 +9045,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<FactTypeInstanceVerbalizer>(ref myCache, this, null as FactTypeInstanceVerbalizer);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
@@ -9666,9 +9206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					System.Threading.Interlocked.CompareExchange<ObjectTypeInstanceVerbalizer>(ref myCache, this, null as ObjectTypeInstanceVerbalizer);
 				}
 			}
-			/// <summary>
-			/// IVerbalize.GetVerbalization implementation
-			/// </summary>
+			/// <summary>IVerbalize.GetVerbalization implementation</summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];

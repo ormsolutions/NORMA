@@ -34,9 +34,7 @@
 							<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
 								<plx:arrayInitializer>
 									<xsl:for-each select="qp:provideSurveyQuestion">
-										<plx:passParam>
-											<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
-										</plx:passParam>
+										<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
 									</xsl:for-each>
 								</plx:arrayInitializer>
 							</plx:callNew>

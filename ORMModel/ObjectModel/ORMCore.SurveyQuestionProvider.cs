@@ -7,9 +7,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static readonly ISurveyQuestionTypeInfo[] SurveyQuestionTypeInfo = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForElementType.Instance,
 			ProvideSurveyQuestionForErrorState.Instance};
-		/// <summary>
-		/// Returns an array of ISurveyQuestionTypeInfo representing the questions that can be asked of objects in this DomainModel
-		/// </summary>
+		/// <summary>Returns an array of ISurveyQuestionTypeInfo representing the questions that can be asked of objects in this DomainModel</summary>
 		protected static ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo()
 		{
 			return (ISurveyQuestionTypeInfo[])ORMCoreDomainModel.SurveyQuestionTypeInfo.Clone();

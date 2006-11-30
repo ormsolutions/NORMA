@@ -2240,9 +2240,7 @@
 							<xsl:when test="$rootElements">
 								<plx:arrayInitializer>
 									<xsl:for-each select="$rootElements">
-										<plx:passParam>
-											<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
-										</plx:passParam>
+										<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
 									</xsl:for-each>
 								</plx:arrayInitializer>
 							</xsl:when>
