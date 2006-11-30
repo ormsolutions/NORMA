@@ -166,7 +166,7 @@
 
 	<xsl:template match="dml:insertStatement">
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:insertStatement schema="{dsf:makeValidIdentifier(@schema)}" name="{dsf:makeValidIdentifier(@name)}">
+			<dml:insertStatement schema="{@schema}" name="{@name}">
 				<dml:fromConstructor>
 					<xsl:for-each select="dml:fromConstructor/ddl:column">
 						<ddl:column name="{@name}"/>
@@ -187,7 +187,7 @@
 
 	<xsl:template match="dml:deleteStatement">
 		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-		<dml:deleteStatement schema="{dsf:makeValidIdentifier(@schema)}" name="{dsf:makeValidIdentifier(@name)}">
+		<dml:deleteStatement schema="{@schema}" name="{@name}">
 			<xsl:for-each select="dml:whereClause">
 				<xsl:copy-of select="." />
 			</xsl:for-each>

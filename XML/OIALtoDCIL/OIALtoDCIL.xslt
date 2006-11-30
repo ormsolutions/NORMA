@@ -43,7 +43,7 @@
 
 			<xsl:variable name="domainDataTypesFragment">
 				<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainDataTypeRef]/@name]">
-					<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}">
+					<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}" oilRefName="{@name}">
 						<xsl:apply-templates select="." mode="GenerateDomain"/>
 					</dcl:domainDataType>
 				</xsl:for-each>
@@ -54,7 +54,7 @@
 			<xsl:for-each select="oil:conceptType">
 
 				<xsl:variable name="tableFragment">
-					<dcl:table name="{dsf:makeValidIdentifier(@name)}">
+					<dcl:table name="{dsf:makeValidIdentifier(@name)}" oilRefName="{@name}">
 						<xsl:apply-templates select="." mode="GenerateTableContent">
 							<xsl:with-param name="OilModel" select="$oilModel"/>
 							<xsl:with-param name="DataTypes" select="$dataTypes"/>
@@ -86,12 +86,21 @@
 		<xsl:attribute name="isForIdentity">
 			<xsl:value-of select="true()"/>
 		</xsl:attribute>
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<dcl:predefinedDataType name="BIGINT"/>
 	</xsl:template>
 	<xsl:template match="odt:boolean" mode="GenerateDataTypeReference">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<dcl:predefinedDataType name="BOOLEAN"/>
 	</xsl:template>
 	<xsl:template match="odt:decimalNumber" mode="GenerateDataTypeReference">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="odt:enumeration or odt:range">
 				<dcl:domainDataTypeRef name="{dsf:makeValidIdentifier(@name)}"/>
@@ -116,6 +125,9 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="odt:floatingPointNumber" mode="GenerateDataTypeReference">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="odt:enumeration or odt:range">
 				<dcl:domainDataTypeRef name="{dsf:makeValidIdentifier(@name)}"/>
@@ -132,6 +144,9 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="odt:string" mode="GenerateDataTypeReference">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="oil:pattern or odt:enumeration or @minLength">
 				<dcl:domainDataTypeRef name="{dsf:makeValidIdentifier(@name)}"/>
@@ -148,6 +163,9 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="odt:binary" mode="GenerateDataTypeReference">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<dcl:predefinedDataType name="BINARY LARGE OBJECT">
 			<xsl:if test="@maxLength">
 				<xsl:attribute name="length">
@@ -161,6 +179,9 @@
 	</xsl:template>
 
 	<xsl:template match="odt:decimalNumber" mode="GenerateDomain">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<dcl:predefinedDataType>
 			<xsl:choose>
 				<xsl:when test="@fractionDigits=0 and not(@totalDigits)">
@@ -223,6 +244,9 @@
 		</dcl:checkConstraint>
 	</xsl:template>
 	<xsl:template match="odt:floatingPointNumber" mode="GenerateDomain">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<dcl:predefinedDataType name="FLOAT">
 			<xsl:attribute name="precision">
 				<xsl:call-template name="GetFloatPrecisionAsNumber">
@@ -268,6 +292,9 @@
 		</dcl:checkConstraint>
 	</xsl:template>
 	<xsl:template match="odt:string" mode="GenerateDomain">
+		<xsl:attribute name="oilRefName">
+			<xsl:value-of select="@name"/>
+		</xsl:attribute>
 		<dcl:predefinedDataType>
 			<xsl:attribute name="name">
 				<xsl:choose>
@@ -359,12 +386,12 @@
 				<xsl:with-param name="DataTypes" select="$DataTypes"/>
 				<xsl:with-param name="TargetInformationType" select="."/>
 				<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
-				<xsl:with-param name="AllowIdentity" select="true()"/>
+				<xsl:with-param name="AllowIdentity" select="boolean(@name=@formatRef)"/>
 				<xsl:with-param name="Prefix" select="$prefix"/>
 			</xsl:call-template>
 			<xsl:for-each select="oil:singleRoleUniquenessConstraint[@modality='alethic']">
-				<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPreferred}">
-					<dcl:columnRef name="{dsf:makeValidIdentifier(concat($prefix,../@name))}"/>
+				<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPreferred}" oilRefName="{@name}">
+					<dcl:columnRef name="{dsf:makeValidIdentifier(concat($prefix,../@name))}" oilRefName="{$prefix}{../@name}"/>
 				</dcl:uniquenessConstraint>
 			</xsl:for-each>
 		</xsl:for-each>
@@ -394,7 +421,7 @@
 					<!-- TODO: Check clause for all null or all not null -->
 				</dcl:checkConstraint>
 			</xsl:if>
-			<dcl:referenceConstraint name="{dsf:makeValidIdentifier(concat($conceptTypeRefName,'_FK'))}">
+			<dcl:referenceConstraint name="{dsf:makeValidIdentifier(concat($conceptTypeRefName,'_FK'))}" oilRefName="{$conceptTypeRefName}">
 				<xsl:attribute name="targetTable">
 					<xsl:call-template name="GetTableNameForConceptTypeName">
 						<xsl:with-param name="OilModel" select="$OilModel"/>
@@ -422,7 +449,7 @@
 
 		<!-- TODO: This will break if @targetConceptType is not this table. -->
 		<xsl:for-each select="oil:roleSequenceUniquenessConstraint[@modality='alethic']">
-			<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPreferred}">
+			<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPreferred}" oilRefName="{@name}">
 				<xsl:for-each select="oil:roleSequence/oil:typeRef">
 					<xsl:variable name="refTarget" select="parent::oil:roleSequence/parent::oil:roleSequenceUniquenessConstraint/parent::oil:conceptType/child::*[@name=current()/@targetChild]"/>
 					<xsl:call-template name="GetColumnRef">
@@ -448,7 +475,7 @@
 	<xsl:template match="oil:conceptType" mode="GenerateInsertProcedure">
 		<xsl:param name="Table"/>
 		<xsl:param name="DomainDataTypes"/>
-		<dcl:procedure name="{dsf:makeValidIdentifier(concat('Insert',@name))}" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:procedure name="{dsf:makeValidIdentifier(concat('Insert',@name))}" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="{@name}">
 			<xsl:for-each select="$Table/dcl:column">
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
@@ -474,7 +501,7 @@
 		<xsl:param name="OilModel" />
 		<xsl:param name="DomainDataTypes" />
 		<xsl:param name="DataTypes" />
-		<dcl:procedure name="{dsf:makeValidIdentifier(concat('Delete',@name))}" sqlDataAccessIndication="MODIFIES SQL DATA">
+		<dcl:procedure name="{dsf:makeValidIdentifier(concat('Delete',@name))}" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="{@name}">
 
 			<xsl:variable name="preferredIdentifierColumnsFragment">
 				<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
@@ -593,7 +620,7 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:for-each select="exsl:node-set($preferredIdentifierColumnsFragment)/child::*">
-					<dcl:columnRef name="{dsf:makeValidIdentifier(concat($conceptTypeRefPrefix,@name))}"/>
+					<dcl:columnRef name="{dsf:makeValidIdentifier(concat($conceptTypeRefPrefix,@name))}" oilRefName="{$conceptTypeRefPrefix}{@name}"/>
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:when test="$Target/self::oil:informationType">
@@ -603,7 +630,7 @@
 						<xsl:with-param name="TargetInformationType" select="$Target"/>
 					</xsl:call-template>
 				</xsl:variable>
-				<dcl:columnRef name="{exsl:node-set($informationTypeColumnFragment)/child::*/@name}"/>
+				<dcl:columnRef name="{exsl:node-set($informationTypeColumnFragment)/child::*/@name}" oilRefName="{$Target/@name}"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
@@ -619,7 +646,7 @@
 			</xsl:call-template>
 		</xsl:param>
 		<xsl:variable name="dataType" select="$DataTypes[@name=$TargetInformationType/@formatRef]"/>
-		<dcl:column name="{dsf:makeValidIdentifier(concat($Prefix,$TargetInformationType/@name))}" isNullable="{$AlwaysNullable or not($TargetInformationType/@mandatory='alethic')}" isIdentity="{$AllowIdentity and $dataType/@isForIdentity='true'}">
+		<dcl:column name="{dsf:makeValidIdentifier(concat($Prefix,$TargetInformationType/@name))}" isNullable="{$AlwaysNullable or not($TargetInformationType/@mandatory='alethic')}" isIdentity="{$AllowIdentity and $dataType/@isForIdentity='true'}" oilRefName="{$TargetInformationType/@name}">
 			<xsl:copy-of select="$dataType/child::*"/>
 		</dcl:column>
 	</xsl:template>
@@ -866,7 +893,7 @@
 		<xsl:param name="TargetColumns"/>
 		<xsl:param name="CurrentColumn" select="1"/>
 		<xsl:param name="TotalColumns" select="count($SourceColumns)"/>
-		<dcl:columnRef sourceName="{$SourceColumns[$CurrentColumn]/@name}" targetName="{$TargetColumns[$CurrentColumn]/@name}"/>
+		<dcl:columnRef sourceName="{$SourceColumns[$CurrentColumn]/@name}" targetName="{$TargetColumns[$CurrentColumn]/@name}" oilRefName="{@name}_{$TargetColumns[$CurrentColumn]/@oilRefName}"/>
 		<xsl:if test="$CurrentColumn &lt; $TotalColumns">
 			<xsl:call-template name="GenerateColumnRefsForReferenceConstraint">
 				<xsl:with-param name="SourceColumns" select="$SourceColumns"/>

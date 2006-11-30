@@ -20,7 +20,7 @@
 			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, Rolando Sanidad</xs:appinfo>
 		<xs:documentation>Database Conceptual Intermediate Language</xs:documentation>
 	</xs:annotation>
 
@@ -116,6 +116,16 @@
 					<xs:documentation>The name of the table.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="oilRefName" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 		<xs:key name="tableChildKey">
 			<xs:selector xpath="dcl:table/child::*"/>
@@ -193,6 +203,16 @@
 					<xs:documentation>If 'true' is specified for this attribute, the generationCode element must not be present.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="oilRefName" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 		<xs:keyref name="domainDataTypeKeyRef" refer="dcl:domainDataTypeKey">
 			<xs:selector xpath="dcl:domainDataTypeRef"/>
@@ -237,6 +257,16 @@
 				<xs:documentation>The name of the constraint.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="oilRefName" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 
 	<xs:element name="uniquenessConstraint">
@@ -256,6 +286,16 @@
 									<xs:annotation>
 										<xs:documentation>The name of the column being referenced.</xs:documentation>
 									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="oilRefName" use="required">
+									<xs:annotation>
+										<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:token">
+											<xs:minLength value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
 								</xs:attribute>
 							</xs:complexType>
 						</xs:element>
@@ -296,6 +336,16 @@
 									<xs:annotation>
 										<xs:documentation>The name of the referenced column in the target table.</xs:documentation>
 									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="oilRefName" use="required">
+									<xs:annotation>
+										<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:token">
+											<xs:minLength value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
 								</xs:attribute>
 							</xs:complexType>
 						</xs:element>
@@ -352,6 +402,16 @@
 										<xs:annotation>
 											<xs:documentation>The name of the column being referenced.</xs:documentation>
 										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="oilRefName" use="required">
+										<xs:annotation>
+											<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:token">
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
 									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
@@ -487,6 +547,16 @@
 						<xs:enumeration value="CONTAINS SQL"/>
 						<xs:enumeration value="READS SQL DATA"/>
 						<xs:enumeration value="MODIFIES SQL DATA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="oilRefName" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
