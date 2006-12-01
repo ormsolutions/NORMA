@@ -684,21 +684,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = playedRoles[i];
 				if (role is SubtypeMetaRole)
 				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					switch (WalkSupertypes(startingType, subtypeFact.Supertype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+					SubtypeFact subtypeFact;
+					ObjectType superType;
+					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
+						null != (superType = subtypeFact.Supertype))
 					{
-						case ObjectTypeVisitorResult.Stop:
-							return ObjectTypeVisitorResult.Stop;
-						case ObjectTypeVisitorResult.SkipChildren:
-							if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
-							{
-								result = ObjectTypeVisitorResult.SkipChildren;
-							}
+						switch (WalkSupertypes(startingType, subtypeFact.Supertype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+						{
+							case ObjectTypeVisitorResult.Stop:
+								return ObjectTypeVisitorResult.Stop;
+							case ObjectTypeVisitorResult.SkipChildren:
+								if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
+								{
+									result = ObjectTypeVisitorResult.SkipChildren;
+								}
+								break;
+						}
+						if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
+						{
 							break;
-					}
-					if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
-					{
-						break;
+						}
 					}
 				}
 			}
