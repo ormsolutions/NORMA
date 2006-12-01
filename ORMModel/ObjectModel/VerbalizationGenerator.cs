@@ -674,7 +674,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				@"<br/>\n",
+				"<br/>",
 				@"<p class=""verbalization"">"});
 			sets[1] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -845,7 +845,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				@"<br/>\n",
+				"<br/>",
 				@"<p class=""verbalization"">"});
 			sets[2] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -1016,7 +1016,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				@"<br/>\n",
+				"<br/>",
 				@"<p class=""verbalization"">"});
 			sets[3] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -1187,7 +1187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: bold;",
 				"font-weight: normal;",
 				@"<span class=""indent"">",
-				@"<br/>\n",
+				"<br/>",
 				@"<p class=""verbalization"">"});
 		}
 		/// <summary>Converts enum value of CoreVerbalizationSnippetType to an integer index value.</summary>

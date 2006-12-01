@@ -164,7 +164,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ErrorPrimary"><![CDATA[Model Error: {0}]]></Snippet>
 			<Snippet type="ErrorSecondary"><![CDATA[Model Error: {0}]]></Snippet>
 			<Snippet type="CloseVerbalizationSentence"><![CDATA[<span class="listSeparator">.</span>]]></Snippet>
-			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>\n]]></Snippet>
+			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="VerbalizerIncreaseIndent"><![CDATA[<span class="indent">]]></Snippet>
 			<Snippet type="VerbalizerDecreaseIndent"><![CDATA[</span>]]></Snippet>
 			<Snippet type="VerbalizerOpenVerbalization"><![CDATA[<p class="verbalization">]]></Snippet>
