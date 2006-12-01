@@ -333,16 +333,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public void RenameReferenceMode(string valueTypeName)
 		{
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
-			if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
+			LinkedElementCollection<Role> constraintRoles;
+			if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier ||
+				// Sanity check because this is a public method, will not happen from our codebase
+				(constraintRoles = preferredConstraint.RoleCollection).Count != 1)
 			{
 				CreateReferenceMode(valueTypeName);
 				return;
 			}
 			ORMModel model = this.Model;
 			ObjectType valueType = FindValueType(valueTypeName, model);
+			Role constrainedRole = constraintRoles[0];
 			if (!IsValueTypeShared(preferredConstraint) && valueType == null)
 			{
-				valueType = preferredConstraint.RoleCollection[0].RolePlayer;
+				valueType = constrainedRole.RolePlayer;
 				if (valueType.IsValueType)
 				{
 					valueType.Name = valueTypeName;
@@ -361,10 +365,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (!IsValueTypeShared(preferredConstraint))
 				{
-					preferredConstraint.RoleCollection[0].RolePlayer.Delete();
+					constrainedRole.RolePlayer.Delete();
 				}
 
-				preferredConstraint.RoleCollection[0].RolePlayer = valueType;
+				constrainedRole.RolePlayer = valueType;
 			}
 		}
 
@@ -378,15 +382,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
 			if (preferredConstraint.IsInternal && !preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
 			{
-				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
-				if (valueType.IsValueType)
+				LinkedElementCollection<Role> constraintRoles = preferredConstraint.RoleCollection;
+				if (constraintRoles.Count == 1)
 				{
-					FactType refFact = preferredConstraint.RoleCollection[0].FactType;
-					if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
+					Role constrainedRole = constraintRoles[0];
+					ObjectType valueType = constrainedRole.RolePlayer;
+					if (valueType.IsValueType)
 					{
-						valueType.Delete();
+						if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
+						{
+							valueType.Delete();
+						}
+						constrainedRole.FactType.Delete();
 					}
-					refFact.Delete();
 				}
 			}
 		}
@@ -406,8 +414,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (preferredConstraint != null && preferredConstraint.IsInternal)
 			{
-				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
-				if (valueType.IsValueType)
+				LinkedElementCollection<Role> constraintRoles = preferredConstraint.RoleCollection;
+				ObjectType valueType;
+				if (constraintRoles.Count == 1 && (valueType = constraintRoles[0].RolePlayer).IsValueType)
 				{
 					ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(valueType);
 					int linkCount = links.Count;
@@ -462,7 +471,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// player is a value type then return the value type.
 			if (prefConstraint != null && prefConstraint.IsInternal)
 			{
-				return prefConstraint.RoleCollection[0].RolePlayer;
+				LinkedElementCollection<Role> constraintRoles = prefConstraint.RoleCollection;
+				if (constraintRoles.Count == 1)
+				{
+					return constraintRoles[0].RolePlayer;
+				}
 			}
 			return null;
 		}

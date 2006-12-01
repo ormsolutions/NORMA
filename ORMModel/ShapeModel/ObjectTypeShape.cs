@@ -495,7 +495,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
 					null != (constraint = link.PreferredIdentifier) &&
 					constraint.IsInternal &&
-					0 != (roles = constraint.RoleCollection).Count &&
+					1 == (roles = constraint.RoleCollection).Count &&
 					null != (rolePlayer = roles[0].RolePlayer) &&
 					rolePlayer.IsValueType)
 				{
@@ -503,6 +503,44 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			} //method
 		} //class
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // AddRule
+		private sealed partial class PreferredIdentifierLengthened : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint constraint;
+				ObjectType preferredIdentifierFor;
+				LinkedElementCollection<Role> constraintRoles;
+				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!constraint.IsDeleted &&
+					null != (preferredIdentifierFor = constraint.PreferredIdentifierFor) &&
+					null != preferredIdentifierFor.Objectification &&
+					(constraintRoles = constraint.RoleCollection).Count != 1)
+				{
+					ResizeAssociatedShapes(preferredIdentifierFor);
+				}
+			}
+		}
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		private sealed partial class PreferredIdentifierShortened : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint constraint;
+				ObjectType preferredIdentifierFor;
+				LinkedElementCollection<Role> constraintRoles;
+				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!constraint.IsDeleted &&
+					null != (preferredIdentifierFor = constraint.PreferredIdentifierFor) &&
+					null != preferredIdentifierFor.Objectification &&
+					(constraintRoles = constraint.RoleCollection).Count == 1)
+				{
+					ResizeAssociatedShapes(preferredIdentifierFor);
+				}
+			}
+		}
 
 		// Note that we do not need a RolePlayerChangeRule for ValueTypeHasDataType as
 		// this will not change whether a given type is used as a refmode or not

@@ -35,6 +35,8 @@
 		<arg:Rule class="ObjectTypeShape.ObjectTypeShapeChangeRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierAddedRule"/>
+		<arg:Rule class="ObjectTypeShape.PreferredIdentifierLengthened"/>
+		<arg:Rule class="ObjectTypeShape.PreferredIdentifierShortened"/>
 		<arg:Rule class="ObjectTypeShape.RolePlayerAddedRule"/>
 		<arg:Rule class="ObjectTypeShape.RolePlayerDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>

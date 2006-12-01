@@ -53,6 +53,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("ObjectTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierLengthened", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierShortened", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -318,6 +320,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class PreferredIdentifierAddedRule
 		{
 			public PreferredIdentifierAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class PreferredIdentifierLengthened
+		{
+			public PreferredIdentifierLengthened()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class PreferredIdentifierShortened
+		{
+			public PreferredIdentifierShortened()
 			{
 				base.IsEnabled = false;
 			}
