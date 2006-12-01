@@ -332,21 +332,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="valueTypeName"></param>
 		public void RenameReferenceMode(string valueTypeName)
 		{
-			ORMModel model = this.Model;
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
-			Objectification objectification = Objectification;
-			LinkedElementCollection<Role> constraintRoles;
-			RoleProxy proxy;
-			FactType impliedFact;
-			if (objectification != null &&
-				1 == (constraintRoles = preferredConstraint.RoleCollection).Count &&
-				null != (proxy = constraintRoles[0].Proxy) &&
-				null != (impliedFact = proxy.FactType) &&
-				impliedFact.ImpliedByObjectification == objectification)
+			if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
 			{
 				CreateReferenceMode(valueTypeName);
 				return;
 			}
+			ORMModel model = this.Model;
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			if (!IsValueTypeShared(preferredConstraint) && valueType == null)
 			{
@@ -384,7 +376,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void KillReferenceMode(bool aggressivelyKillValueType)
 		{
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
-			if (preferredConstraint.IsInternal)
+			if (preferredConstraint.IsInternal && !preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
 			{
 				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
@@ -1204,10 +1196,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					Debug.Assert(haveNew);
 					objectType.CreateReferenceMode(name);
 				}
-				//Now, set the dataType
-				DataType dataType = null;
 				if (newMode != null)
 				{
+					//Now, set the dataType
+					DataType dataType = null;
 					ORMModel ormModel = objectType.Model;
 					dataType = ormModel.GetPortableDataType(newMode.Type);
 					//Change the objectType to the ref mode's preferred valueType and set the
@@ -1217,10 +1209,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
 					if (refModeRolePlayer != null)
 					{
-						objectType = refModeRolePlayer;
+						refModeRolePlayer.DataType = dataType;
 					}
 				}
-				objectType.DataType = dataType;
 			}
 		}
 		#endregion // ObjectTypeChangeRule class

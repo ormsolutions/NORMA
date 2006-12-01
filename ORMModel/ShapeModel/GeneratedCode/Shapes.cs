@@ -1514,6 +1514,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ObjectifiedFactTypeNameShape
 	/// Description for Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ObjectifiedFactTypeNameShape, global::Neumont.Tools.ORM.ObjectModel.ObjectType, Design.ObjectifiedFactTypeNameShapeTypeDescriptor<ObjectifiedFactTypeNameShape, global::Neumont.Tools.ORM.ObjectModel.ObjectType>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

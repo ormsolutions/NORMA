@@ -4134,6 +4134,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return false;
 		}
 		#endregion // Customize property display
+		#region UniquenessConstraint Specific
+		/// <summary>
+		/// Returns true if this is a single role internal uniqueness constraint.
+		/// If this is true, then the constraint might match the reference mode
+		/// pattern between the objectifying EntityType and one of its role
+		/// players. This requires special handling.
+		/// </summary>
+		public bool IsObjectifiedSingleRolePreferredIdentifier
+		{
+			get
+			{
+				ObjectType preferredFor = PreferredIdentifierFor;
+				Objectification objectification;
+				LinkedElementCollection<Role> constraintRoles;
+				RoleProxy proxy;
+				FactType impliedFact;
+				return preferredFor != null &&
+					null != (objectification = preferredFor.Objectification) &&
+					1 == (constraintRoles = RoleCollection).Count &&
+					null != (proxy = constraintRoles[0].Proxy) &&
+					null != (impliedFact = proxy.FactType) &&
+					impliedFact.ImpliedByObjectification == objectification;
+			}
+		}
+		#endregion // UniquenessConstraint Specific
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the error associated with the constraint.

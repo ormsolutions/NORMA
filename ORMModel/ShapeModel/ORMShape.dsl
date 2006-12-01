@@ -185,6 +185,13 @@
 			</BaseGeometryShape>
 		</GeometryShape>
 		<GeometryShape Name="ObjectifiedFactTypeNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="7FD5183A-8BC2-43BB-8474-A0A2D558D90A" FillGradientMode="None">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ObjectifiedFactTypeNameShape, global::Neumont.Tools.ORM.ObjectModel.ObjectType, Design.ObjectifiedFactTypeNameShapeTypeDescriptor&lt;ObjectifiedFactTypeNameShape, global::Neumont.Tools.ORM.ObjectModel.ObjectType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>

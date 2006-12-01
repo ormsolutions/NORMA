@@ -335,13 +335,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				//if primaryidentifyer for a Entity type is 
 				//removed and ref mode is not expanded...AutoResize() the entity type
 				Guid attributeGuid = e.DomainProperty.Id;
-				bool resizeShapes = false;
+				ObjectType changeType = null;
 				if (attributeGuid == ORMNamedElement.NameDomainPropertyId)
 				{
 					// Figure out if we need to resize related object shapes. This happens
 					// when we've renamed a value type that is bound to the reference scheme
 					// of an entity type.
-					ObjectType changeType = e.ModelElement as ObjectType;
+					changeType = e.ModelElement as ObjectType;
 		
 					if (changeType.IsValueType)
 					{
@@ -358,40 +358,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 								IConstraint associatedConstraint = currentConstraintRoleSequence.Constraint;
 								if (associatedConstraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
-									ObjectType identifierFor = associatedConstraint.PreferredIdentifierFor;
-									if (identifierFor != null)
-									{
-										LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(identifierFor);
-										int pelCount = pels.Count;
-										ORMBaseShape ots;
-										for (int k = 0; k < pelCount; ++k)
-										{
-											if (null != (ots = pels[k] as ORMBaseShape))
-											{
-												ots.AutoResize();
-											}
-										}
-									}
+									ResizeAssociatedShapes(associatedConstraint.PreferredIdentifierFor);
 								}
 							}
 						}
 					}
-					resizeShapes = true;
 				}
 				else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
 				{
-					resizeShapes = true;
+					changeType = e.ModelElement as ObjectType;
 				}
-				if (resizeShapes)
+				if (changeType != null)
 				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(e.ModelElement))
-					{
-						ORMBaseShape shape = pel as ORMBaseShape;
-						if (shape != null)
-						{
-							shape.AutoResize();
-						}
-					}
+					ResizeAssociatedShapes(changeType);
 				}
 			}
 		}
@@ -418,15 +397,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectType entityType = link.PreferredIdentifierFor;
 				if (!entityType.IsDeleted)
 				{
-					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(entityType);
-					int pelCount = pels.Count;
-					ORMBaseShape ots; // Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
-					for (int i = 0; i < pelCount; ++i)
+					ResizeAssociatedShapes(entityType);
+				}
+			}
+		}
+		/// <summary>
+		/// Resize shapes for the provided object type
+		/// </summary>
+		/// <param name="objectType">The associated model element</param>
+		private static void ResizeAssociatedShapes(ObjectType objectType)
+		{
+			if (objectType != null)
+			{
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(objectType);
+				int pelCount = pels.Count;
+				for (int i = 0; i < pelCount; ++i)
+				{
+					// ORMBaseShape Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
+					ORMBaseShape objectShape = pels[i] as ORMBaseShape;
+					if (null != objectShape)
 					{
-						PresentationElement pel = pels[i];
-						if (null != (ots = pel as ORMBaseShape))
+						SizeD oldSize = objectShape.Size;
+						objectShape.AutoResize();
+						if (oldSize == objectShape.Size)
 						{
-							ots.AutoResize();
+							objectShape.InvalidateRequired(true);
 						}
 					}
 				}
@@ -453,12 +448,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 					//If there is a fact shape and it is visible then we need to 
 					//set ExpandRefMode to true, otherwise set it to false.
 					FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactTypeCollection[0]);
-					objectShape.ExpandRefMode = factShape != null && factShape.IsVisible;
+					bool newValue = factShape != null && factShape.IsVisible;
+					if (objectShape.ExpandRefMode != newValue)
+					{
+						objectShape.ExpandRefMode = newValue;
+					}
+					else
+					{
+						SizeD oldSize = objectShape.Size;
+						objectShape.AutoResize();
+						if (oldSize == objectShape.Size)
+						{
+							objectShape.InvalidateRequired(true);
+						}
+					}
 				}
 				else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
 				{
 					FactTypeShape factShape = (objectifiedShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactTypeCollection[0]);
-					objectifiedShape.ExpandRefMode = factShape != null && factShape.IsVisible;
+					bool newValue = factShape != null && factShape.IsVisible;
+					if (objectifiedShape.ExpandRefMode != newValue)
+					{
+						objectifiedShape.ExpandRefMode = newValue;
+					}
+					else
+					{
+						SizeD oldSize = objectifiedShape.Size;
+						objectifiedShape.AutoResize();
+						if (oldSize == objectifiedShape.Size)
+						{
+							objectifiedShape.InvalidateRequired(true);
+						}
+					}
 				}
 			}
 		}
@@ -495,12 +516,42 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelElement element = e.ModelElement;
-				EntityTypeHasPreferredIdentifier link;
-				if (null == (link = element as EntityTypeHasPreferredIdentifier))
+				ValueTypeHasDataType dataTypeLink = e.ModelElement as ValueTypeHasDataType;
+				LinkedElementCollection<Role> playedRoles = dataTypeLink.ValueType.PlayedRoleCollection;
+				int playedRolesCount = playedRoles.Count;
+				for (int i = 0; i < playedRolesCount; ++i)
 				{
-					ValueTypeHasDataType dataTypeLink = element as ValueTypeHasDataType;
-					LinkedElementCollection<Role> playedRoles = dataTypeLink.ValueType.PlayedRoleCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = playedRoles[i].ConstraintRoleSequenceCollection;
+					int constraintsCount = sequences.Count;
+					for (int j = 0; j < constraintsCount; ++j)
+					{
+						UniquenessConstraint iuc = sequences[j] as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
+						{
+							ObjectType preferredFor = iuc.PreferredIdentifierFor;
+							if (preferredFor != null)
+							{
+								EnsureRefModeExpanded(iuc, preferredFor);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// An object type can be a preferred identifier. Changing it to a value
+		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))] // DeleteRule
+		private sealed partial class DataTypeDeleteRule : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ValueTypeHasDataType dataTypeLink = e.ModelElement as ValueTypeHasDataType;
+				ObjectType valueType = dataTypeLink.ValueType;
+				if (!valueType.IsDeleted)
+				{
+					LinkedElementCollection<Role> playedRoles = valueType.PlayedRoleCollection;
 					int playedRolesCount = playedRoles.Count;
 					for (int i = 0; i < playedRolesCount; ++i)
 					{
@@ -514,7 +565,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								ObjectType preferredFor = iuc.PreferredIdentifierFor;
 								if (preferredFor != null)
 								{
-									EnsureRefModeExpanded(iuc, preferredFor);
+									ResizeAssociatedShapes(preferredFor);
 								}
 							}
 						}
@@ -571,18 +622,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						UniquenessConstraint iuc = sequence as UniquenessConstraint;
 						if (iuc != null && iuc.IsInternal)
 						{
-							ObjectType objectType = iuc.PreferredIdentifierFor;
-							if (objectType != null)
-							{
-								foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(objectType))
-								{
-									ORMBaseShape objectShape; // Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
-									if (null != (objectShape = pel as ORMBaseShape))
-									{
-										objectShape.AutoResize();
-									}
-								}
-							}
+							ResizeAssociatedShapes(iuc.PreferredIdentifierFor);
 						}
 					}
 				}

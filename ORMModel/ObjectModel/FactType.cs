@@ -995,6 +995,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Validation Methods
 		#region Automatic Name Generation
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// synchronizes the initial name settings with any objectifying fact.
+		/// </summary>
+		public static IDeserializationFixupListener NameFixupListener
+		{
+			get
+			{
+				return new GeneratedNameFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Properly initializes the myGeneratedName field
+		/// </summary>
+		private sealed class GeneratedNameFixupListener : DeserializationFixupListener<Objectification>
+		{
+			/// <summary>
+			/// ExternalConstraintFixupListener constructor
+			/// </summary>
+			public GeneratedNameFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateElementNames)
+			{
+			}
+			/// <summary>
+			/// Process objectification elements
+			/// </summary>
+			/// <param name="element">An Objectification element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(Objectification element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					FactType factType = element.NestedFactType;
+					string generatedName = factType.GenerateName();
+					if (generatedName == element.NestingType.Name)
+					{
+						factType.myGeneratedName = generatedName;
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 		private static void DelayValidateFactTypeNamePartChanged(ModelElement element)
 		{
 			FactType factType = element as FactType;
@@ -1031,10 +1075,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								ruleDisabled = true;
 								if (string.IsNullOrEmpty(oldGeneratedName))
 								{
-									factType.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
+									factType.myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
 								}
 								factType.Name = newGeneratedName;
-								factType.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
+								factType.myGeneratedName = newGeneratedName; // See notes in SetNameValue on setting myGeneratedName
 								contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
 								nestingType.Name = newGeneratedName;
 							}
@@ -1049,7 +1093,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							// Rule updates for this case are handled in 
+							// Rule updates for this case are handled in ValidateFactNameForObjectTypeNameChange
 							haveNewName = false;
 							newGeneratedName = null;
 							raiseEvent = false;
@@ -1061,7 +1105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 
-				if (!haveNewName || newGeneratedName != null)
+				if (raiseEvent && (!haveNewName || newGeneratedName != null))
 				{
 					// Now move on to any model errors
 					foreach (ModelError error in (factType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
@@ -1089,10 +1133,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 										ruleDisabled = true;
 										if (string.IsNullOrEmpty(oldGeneratedName))
 										{
-											factType.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
+											factType.myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
 										}
 										factType.Name = newGeneratedName;
-										factType.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
+										factType.myGeneratedName = newGeneratedName; // See notes in SetNameValue on setting myGeneratedName
 									}
 									finally
 									{

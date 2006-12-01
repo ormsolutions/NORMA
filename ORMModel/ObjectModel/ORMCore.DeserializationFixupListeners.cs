@@ -34,6 +34,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				yield return SetConstraint.FixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames);
 				yield return SubtypeFact.FixupListener;
+				yield return FactType.NameFixupListener;
 				yield return Objectification.FixupListener;
 				yield return Objectification.ImpliedFixupListener;
 				yield return ModelError.FixupListener;

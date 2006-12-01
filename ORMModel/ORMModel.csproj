@@ -126,6 +126,7 @@
     <Compile Include="ObjectModel\Design\Editors\ObjectificationPickers.cs" />
     <Compile Include="ObjectModel\HierarchyContext.cs" />
     <Compile Include="ObjectModel\UnaryBinarization.cs" />
+    <Compile Include="ShapeModel\Design\ObjectifiedFactTypeNameShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseBinaryLinkShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMPresentationElementTypeDescriptor.cs" />

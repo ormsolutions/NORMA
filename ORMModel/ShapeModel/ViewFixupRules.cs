@@ -82,6 +82,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 
 						bool expandingRefMode = (bool)e.NewValue;
+						if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
+						{
+							// Back up the property descriptor, which sets the ExpandRefMode property
+							// to readonly in this case
+							if (!expandingRefMode)
+							{
+								if (objectTypeShape != null)
+								{
+									objectTypeShape.ExpandRefMode = true;
+								}
+								else
+								{
+									objectifiedShape.ExpandRefMode = true;
+								}
+							}
+							return;
+						}
 						ORMDiagram parentDiagram = ((objectTypeShape != null) ? objectTypeShape.Diagram : objectifiedShape.Diagram) as ORMDiagram;
 						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
