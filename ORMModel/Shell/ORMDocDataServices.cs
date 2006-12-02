@@ -1271,7 +1271,7 @@ namespace Neumont.Tools.ORM.Shell
 						// Grab the shapes in priority order
 						if (!selectShapesInitialized)
 						{
-							selectShapes.Initialize();
+							Array.Clear(selectShapes, 0, selectShapes.Length);
 							selectShapesInitialized = true;
 						}
 						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))

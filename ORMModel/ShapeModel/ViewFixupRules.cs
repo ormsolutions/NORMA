@@ -744,7 +744,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(FactConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				FixupExternalConstraintLink(element);
+				if (!element.IsDeleted)
+				{
+					FixupExternalConstraintLink(element);
+				}
 			}
 		}
 		#endregion // DisplayExternalConstraintLinksFixupListener class

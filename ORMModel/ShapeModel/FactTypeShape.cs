@@ -2287,8 +2287,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 							RectangleF roleBounds = drawHorizontal ?
 								new RectangleF((float)lastX, top, (float)offsetBy, height) :
 								new RectangleF(top, (float)lastX, height, (float)offsetBy);
-							RoleBase currentRole = roles[reverseRoleOrder ? roleCount - i - 1 : i];
-							highlightThisRole = i == highlightRoleBox || factShapeHighlighted;
+							int iRole = reverseRoleOrder ? roleCount - i - 1 : i;
+							RoleBase currentRole = roles[iRole];
+							highlightThisRole = factShapeHighlighted || iRole == highlightRoleBox;
 
 							Brush roleCenterBrush;
 							if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary))
