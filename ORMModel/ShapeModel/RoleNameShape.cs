@@ -106,16 +106,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			Location = new PointD(x, y);
 		}
-		/// <summary>
-		/// Display a solid background
-		/// </summary>
-		protected override bool HasTransparentBackground
-		{
-			get
-			{
-				return false;
-			}
-		}
 		#endregion // Base overrides
 		#region RoleNameShape specific
 		/// <summary>

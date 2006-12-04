@@ -21,6 +21,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -32,6 +34,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
@@ -528,7 +531,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				DiagramClientView clientView = mouseArgs.DiagramClientView;
 				// Get the mouse point (relative to the diagram's position), and convert it to a point on the screen
-				System.Drawing.Point emulateClickPoint = clientView.PointToScreen(clientView.WorldToDevice(mouseArgs.MousePosition));
+				Point emulateClickPoint = clientView.PointToScreen(clientView.WorldToDevice(mouseArgs.MousePosition));
 				this.MenuService.ShowContextMenu(ORMDesignerCommandIds.ViewContextMenu, emulateClickPoint.X, emulateClickPoint.Y);
 			}
 			else
@@ -2035,237 +2038,319 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		#region OnMenuCopyImage
-#if CUSTOM_COPY_IMAGE
-		#region NativeMethods
+
+		#region OnMenuCopyImage method and support
+		#region UnsafeNativeMethods
 		[System.Security.SuppressUnmanagedCodeSecurity]
-		private static partial class NativeMethods
+		private static partial class UnsafeNativeMethods
 		{
-#if !CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
-			#region GetNewMetafile
-			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
-			private static extern IntPtr GetDesktopWindow();
+			[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			private static extern bool OpenClipboard([In] HandleRef hWndNewOwner);
 
-			/// <summary>This supports <see cref="OnMenuCopyImage"/>, and should NOT be used by other methods.</summary>
-			internal static System.Drawing.Imaging.Metafile GetNewMetafile(System.Drawing.Imaging.EmfType emfType)
-			{
-				System.Drawing.Graphics graphics = null;
-				System.Drawing.Imaging.Metafile metafile = null;
-				IntPtr hdc = IntPtr.Zero;
-				try
-				{
-					graphics = System.Drawing.Graphics.FromHwnd(NativeMethods.GetDesktopWindow());
-					hdc = graphics.GetHdc();
-					metafile = new System.Drawing.Imaging.Metafile(hdc, emfType);
-				}
-				finally
-				{
-					if (graphics != null)
-					{
-						if (hdc != IntPtr.Zero)
-						{
-							graphics.ReleaseHdc(hdc);
-						}
-						graphics.Dispose();
-					}
-				}
-				return metafile;
-			}
-			#endregion
-#endif
-
-			#region CopyMetafileToClipboard
-			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
-			private static extern bool CloseClipboard();
-			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
+			[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
 			private static extern bool EmptyClipboard();
-			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
-			private static extern bool OpenClipboard(IntPtr hWndNewOwner);
-			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
-			private static extern IntPtr SetClipboardData(uint uFormat, IntPtr hMem);
-			[System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-			private static extern IntPtr CopyEnhMetaFile(IntPtr hemfSrc, IntPtr lpszFile);
-			[System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-			private static extern bool DeleteEnhMetaFile(IntPtr hemfSrc);
 
-			/// <summary>This supports <see cref="OnMenuCopyImage"/>, and should NOT be used by other methods.</summary>
-			internal static void CopyMetafileToClipboard(IntPtr hWndNewOwner, System.Drawing.Imaging.Metafile metafile)
+			[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			private static extern bool CloseClipboard();
+
+			[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
+			private static extern IntPtr SetClipboardData([In] uint uFormat, [In] IntPtr hMem);
+
+			[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+			private static extern IntPtr CopyEnhMetaFile([In] IntPtr hemfSrc, [In] [MarshalAs(UnmanagedType.LPTStr)] string lpszFile);
+
+			[DllImport("gdi32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			private static extern bool DeleteEnhMetaFile([In] IntPtr hemfSrc);
+
+			[System.Security.Permissions.UIPermission(System.Security.Permissions.SecurityAction.Demand, Clipboard = System.Security.Permissions.UIPermissionClipboard.OwnClipboard)]
+			public static void CopyImagesToClipboard(HandleRef hWndNewOwner, Bitmap bitmap, Metafile metafile)
 			{
+				const uint CF_BITMAP = 2;
 				const uint CF_ENHMETAFILE = 14;
+
+				// These are the retry values that System.Windows.Forms.Clipboard uses by default,
+				// so they should also work well for us.
+				const int RetryTimes = 10;
+				const int RetryDelay = 100;
 
 				bool clipboardOpen = false;
 				IntPtr hEnhmetafile = IntPtr.Zero;
 				try
 				{
-					if (clipboardOpen = OpenClipboard(hWndNewOwner) && EmptyClipboard())
+					int retriesLeft = RetryTimes;
+					// If something else already has the clipboard open, we won't be able to open it.
+					// Hence the loop here, since we may need to try multiple times.
+					while (true)
 					{
-						hEnhmetafile = metafile.GetHenhmetafile();
-						SetClipboardData(CF_ENHMETAFILE, CopyEnhMetaFile(hEnhmetafile, IntPtr.Zero));
-					}
-				}
-				finally
-				{
-					if (clipboardOpen)
-					{
-						CloseClipboard();
-					}
-					if (hEnhmetafile != IntPtr.Zero)
-					{
-						DeleteEnhMetaFile(hEnhmetafile);
-					}
-				}
-			}
-			#endregion
-
-#if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
-			#region MakeBackgroundTransparent
-			[System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-			private static extern bool ExtFloodFill(IntPtr hdc, int nXStart, int nYStart, uint crColor, uint fuFillType);
-
-			/// <summary>This supports <see cref="OnMenuCopyImage"/>, and should NOT be used by other methods.</summary>
-			internal static void MakeBackgroundTransparent(System.Drawing.Imaging.Metafile metafile)
-			{
-				const uint FLOODFILLSURFACE = 1;
-
-				System.Drawing.Graphics graphics = null;
-				IntPtr hdc = IntPtr.Zero;
-				try
-				{
-					graphics = System.Drawing.Graphics.FromImage(metafile);
-					hdc = graphics.GetHdc();
-					ExtFloodFill(hdc, 0, metafile.Height, 0xFFFFFFFF, FLOODFILLSURFACE);
-				}
-				finally
-				{
-					if (graphics != null)
-					{
-						if (hdc != IntPtr.Zero)
+						// Open and empty the clipboard
+						if (clipboardOpen = OpenClipboard(hWndNewOwner) && EmptyClipboard())
 						{
-							graphics.ReleaseHdc(hdc);
+							// Copy the metafile to the clipboard
+							hEnhmetafile = metafile.GetHenhmetafile();
+							IntPtr hEnhmetafileCopy = CopyEnhMetaFile(hEnhmetafile, null);
+							if (hEnhmetafileCopy == IntPtr.Zero || SetClipboardData(CF_ENHMETAFILE, hEnhmetafileCopy) == IntPtr.Zero)
+							{
+								throw new Win32Exception();
+							}
+
+							// Copy the bitmap to the clipboard
+							// Yes, we're passing null for the 'this' parameter, but the method doesn't use it anyway
+							IntPtr hCompatibleBitmap = GetCompatibleBitmap(null, bitmap);
+							if (hCompatibleBitmap == IntPtr.Zero || SetClipboardData(CF_BITMAP, hCompatibleBitmap) == IntPtr.Zero)
+							{
+								throw new Win32Exception();
+							}
+							break;
 						}
-						graphics.Dispose();
+						else
+						{
+							// We couldn't open the clipboard this time.
+							// If we haven't tried more than RetryTimes already, wait RetryDelay and then try again
+							if (retriesLeft-- > 0)
+							{
+								System.Threading.Thread.Sleep(RetryDelay);
+							}
+							else
+							{
+								throw new Win32Exception();
+							}
+						}
+					}
+				}
+				finally
+				{
+					// Close the clipboard and delete the original metafile
+					if ((clipboardOpen && !CloseClipboard()) || ((hEnhmetafile != IntPtr.Zero) && !DeleteEnhMetaFile(hEnhmetafile)))
+					{
+						throw new Win32Exception();
 					}
 				}
 			}
-			#endregion
-#endif
 		}
-		#endregion
-#endif
+		#endregion // UnsafeNativeMethods
+
 		/// <summary>
 		/// Copies the selected elements as an image.
 		/// </summary>
 		protected virtual void OnMenuCopyImage()
 		{
-			Diagram diagram;
-			DiagramView diagramView;
-			if (null != (diagram = CurrentDiagram) &&
-				null != (diagramView = diagram.ActiveDiagramView))
+			Diagram diagram = this.CurrentDiagram;
+			if (diagram == null)
 			{
-				SelectedShapesCollection selectedShapes = diagramView.DiagramClientView.Selection;
-				Dictionary<ShapeElement, ShapeElement> shapesDictionary = null;
-				foreach (DiagramItem diagramItem in selectedShapes)
+				return;
+			}
+			ICollection selectedElements = GetSelectedShapesForImage(diagram);
+			if (selectedElements == null)
+			{
+				return;
+			}
+			CopyImageToClipboard(diagram, selectedElements);
+		}
+		
+		private static void CopyImageToClipboard(Diagram diagram, ICollection selectedElements)
+		{
+			GetShapesToDrawDelegate getShapesToDraw = GetShapesToDraw;
+			if (getShapesToDraw != null && GetCompatibleBitmap != null)
+			{
+				RectangleD boundingBoxForShapes;
+				ArrayList shapesToDraw = getShapesToDraw(diagram, selectedElements, out boundingBoxForShapes);
+				if (shapesToDraw.Count <= 0)
 				{
-					// Note that we ignore any field/subfield portions of
-					// diagramItem. These are automatically copied as part of the shape.
-					ShapeElement shape = diagramItem.Shape;
-					if (shape == diagram)
-					{
-						// In this case, we want to copy the nested children
-						// of the diagram, not the diagram itself. Copying the
-						// diagram gets all of the extra whitespace in the diagram itself.
-						// Diagrams don't have relative children, so just do the nested.
-						diagram.CopyImageToClipboard(diagram.NestedChildShapes);
-						return;
-					}
-					shape = ResolveTopLevelShape(shape, diagram);
-					if (shapesDictionary == null)
-					{
-						shapesDictionary = new Dictionary<ShapeElement, ShapeElement>(selectedShapes.Count * 2);
-					}
-					if (!shapesDictionary.ContainsKey(shape))
-					{
-						shapesDictionary.Add(shape, shape);
-					}
+					return;
 				}
-				if (shapesDictionary != null)
+				boundingBoxForShapes.Inflate(0.1, 0.1);
+				PointD sourceLocation = boundingBoxForShapes.Location;
+				DiagramView diagramView = diagram.ActiveDiagramView;
+				Rectangle clipRectangle;
+				Metafile metafile = null;
+				try
 				{
-					Dictionary<ShapeElement, ShapeElement>.ValueCollection values = shapesDictionary.Values;
-
-					// We have the top-level shapes, now go on a link walk to
-					// find all links not currently selected that are linked
-					// directly or indirectly at both ends to a selected shape.
-					int topLevelShapesCount = values.Count;
-					ShapeElement[] topLevelShapes = new ShapeElement[topLevelShapesCount];
-					values.CopyTo(topLevelShapes, 0);
-					AddSharedLinkShapes(shapesDictionary, topLevelShapes, diagram);
-#if !CUSTOM_COPY_IMAGE
-					diagram.CopyImageToClipboard(values);
-#else
-#if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
-				System.Drawing.Imaging.Metafile createdMetafile = diagram.CreateMetafile(values);
-				
-				NativeMethods.MakeBackgroundTransparent(createdMetafile);
-				NativeMethods.CopyMetafileToClipboard(diagramView.Handle, createdMetafile);
-#else
-				System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
-				
-				Type diagramType = typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram);
-				System.Reflection.MethodInfo getShapesToDraw = diagramType.GetMethod("GetShapesToDraw", bindingFlags);
-				if (getShapesToDraw == null)
-				{
-					throw new MissingMethodException(diagramType.FullName, "GetShapesToDraw");
-				}
-								
-				RectangleD rect = default(RectangleD);
-				object[] parameters = new object[] { values, rect };
-
-				ArrayList shapesToDraw = getShapesToDraw.Invoke(diagram, parameters) as ArrayList;
-				rect = (RectangleD)parameters[1];
-
-				const double imageMargin = 0.1;
-				rect.Inflate(imageMargin, imageMargin);
-
-				System.Drawing.Imaging.Metafile metafile = NativeMethods.GetNewMetafile(System.Drawing.Imaging.EmfType.EmfPlusDual);
-
-				using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(metafile))
-				{
-					if (rect.Location.X != 0 || rect.Location.Y != 0)
+					// Calculate the size taking into acount the current DPI, and create the Metafile
+					using (Graphics graphics = Graphics.FromHwndInternal(diagramView.Handle))
 					{
-						graphics.TranslateTransform((float)(-rect.Location.X), (float)(-rect.Location.Y));
-					}
-					graphics.PageUnit = System.Drawing.GraphicsUnit.Inch;
-					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-					graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-					graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-
-					System.Drawing.Rectangle clipRectangle = new System.Drawing.Rectangle(0, 0, (int)Math.Ceiling(rect.Width * graphics.DpiX), (int)Math.Ceiling(rect.Height * graphics.DpiY));
-					DiagramPaintEventArgs diagramPaintEventArgs = new DiagramPaintEventArgs(graphics, clipRectangle, null, true);
-
-					foreach (ShapeElement shapeElement in shapesToDraw)
-					{
-						if (!shapeElement.IsDeleted)
+						float dpiX = graphics.DpiX;
+						float dpiY = graphics.DpiY;
+						clipRectangle = new Rectangle(
+							(int)(boundingBoxForShapes.X * dpiX),
+							(int)(boundingBoxForShapes.Y * dpiY),
+							(int)Math.Ceiling(boundingBoxForShapes.Width * dpiX),
+							(int)Math.Ceiling(boundingBoxForShapes.Height * dpiY));
+						IntPtr referenceHdc = IntPtr.Zero;
+						try
 						{
-							shapeElement.OnPaintShape(diagramPaintEventArgs);
+							referenceHdc = graphics.GetHdc();
+							metafile = new Metafile(referenceHdc, EmfType.EmfPlusDual);
+						}
+						finally
+						{
+							if (referenceHdc != IntPtr.Zero)
+							{
+								graphics.ReleaseHdc(referenceHdc);
+							}
 						}
 					}
+
+					// Draw the Metafile
+					DrawDiagramShapesForImage(metafile, shapesToDraw, sourceLocation, clipRectangle);
+
+					// Create the Bitmap
+					using (Bitmap bitmap = new Bitmap(clipRectangle.Width, clipRectangle.Height, PixelFormat.Format32bppArgb))
+					{
+						// Draw the Bitmap
+						DrawDiagramShapesForImage(bitmap, shapesToDraw, sourceLocation, clipRectangle);
+
+						// Copy the Bitmap and Metafile to the clipboard
+						UnsafeNativeMethods.CopyImagesToClipboard(new HandleRef(diagramView, diagramView.Handle), bitmap, metafile);
+					}
+				}
+				finally
+				{
+					if (metafile != null)
+					{
+						metafile.Dispose();
+					}
 				}
 				
-				NativeMethods.CopyMetafileToClipboard(diagramView.Handle, metafile);
-#endif
-#endif
+				return;
+			}
+			// Fall back to the built-in support if we can't copy to the clipboard ourselves.
+			diagram.CopyImageToClipboard(selectedElements);
+		}
+
+		#region Reflected delegates
+		private delegate ArrayList GetShapesToDrawDelegate(Diagram @this, ICollection topLevelShapes, out RectangleD boundingBoxForShapes);
+		private static readonly GetShapesToDrawDelegate GetShapesToDraw = InitializeGetShapesToDraw();
+		private static GetShapesToDrawDelegate InitializeGetShapesToDraw()
+		{
+			const System.Reflection.BindingFlags bindingFlags =
+				System.Reflection.BindingFlags.DeclaredOnly |
+				System.Reflection.BindingFlags.ExactBinding |
+				System.Reflection.BindingFlags.Instance |
+				System.Reflection.BindingFlags.NonPublic;
+			System.Reflection.MethodInfo getShapesToDrawMethodInfo = typeof(Diagram).GetMethod("GetShapesToDraw", bindingFlags, null, new Type[] { typeof(ICollection), typeof(RectangleD).MakeByRefType() }, null);
+			return getShapesToDrawMethodInfo != null ? (GetShapesToDrawDelegate)Delegate.CreateDelegate(typeof(GetShapesToDrawDelegate), getShapesToDrawMethodInfo, false) : null;
+		}
+
+		private delegate IntPtr GetCompatibleBitmapDelegate(Diagram @this, Bitmap bitmap);
+		private static readonly GetCompatibleBitmapDelegate GetCompatibleBitmap = InitializeGetCompatibleBitmap();
+		private static GetCompatibleBitmapDelegate InitializeGetCompatibleBitmap()
+		{
+			const System.Reflection.BindingFlags bindingFlags =
+				System.Reflection.BindingFlags.DeclaredOnly |
+				System.Reflection.BindingFlags.ExactBinding |
+				System.Reflection.BindingFlags.Instance |
+				System.Reflection.BindingFlags.NonPublic;
+			System.Reflection.MethodInfo getCompatibleBitmapMethodInfo = typeof(Diagram).GetMethod("GetCompatibleBitmap", bindingFlags, null, new Type[] { typeof(Bitmap) }, null);
+			return getCompatibleBitmapMethodInfo != null ? (GetCompatibleBitmapDelegate)Delegate.CreateDelegate(typeof(GetCompatibleBitmapDelegate), getCompatibleBitmapMethodInfo, false) : null;
+		}
+		#endregion // Reflected delegates
+
+		private static void DrawDiagramShapesForImage(Image image, ArrayList shapesToDraw, PointD sourceLocation, Rectangle clipRectangle)
+		{
+			using (Graphics graphics = Graphics.FromImage(image))
+			{
+				// Configure graphics
+				if (sourceLocation.X != 0 || sourceLocation.Y != 0)
+				{
+					graphics.TranslateTransform((float)-sourceLocation.X, (float)-sourceLocation.Y);
+				}
+				graphics.PageUnit = GraphicsUnit.Inch;
+				graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+				graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+				graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+				graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+				graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+				// Respect the user's preference for text rendering
+				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+
+				// UNDONE: HACK: Draw a white background for the Bitmap since the transparency gets lost after the call to
+				// GetHbitmap() (which is the first step of GetCompatibleBitmap()). We need to find a way to get the bitmap
+				// on the clipboard without it losing its transparency.
+				if (image is Bitmap)
+				{
+					graphics.Clear(Color.White);
+				}
+
+				// Draw the items
+				DiagramPaintEventArgs e = new DiagramPaintEventArgs(graphics, clipRectangle, null, false);
+				int shapesToDrawCount = shapesToDraw.Count;
+				for (int i = 0; i < shapesToDrawCount; i++)
+				{
+					ShapeElement shapeElement = (ShapeElement)shapesToDraw[i];
+					if (!shapeElement.IsDeleted)
+					{
+						shapeElement.OnPaintShape(e);
+					}
 				}
 			}
 		}
+
+		#region GetSelectedShapesForImage method and support
 		/// <summary>
-		/// Helper function for OnMenuCopyImage. Recursively add link shapes
-		/// to the shapes to draw.
+		/// Obtains an <see cref="ICollection"/> of <see cref="ShapeElement"/>s that is appropriate for rendering as an image
+		/// based on the current selection.
 		/// </summary>
-		/// <param name="shapesDictionary">A dictionary of shapes currently being drawn</param>
-		/// <param name="shapes">The set of shapes to walk and attach links to.</param>
-		/// <param name="diagram">The current diagram</param>
-		private static void AddSharedLinkShapes(Dictionary<ShapeElement, ShapeElement> shapesDictionary, IList<ShapeElement> shapes, Diagram diagram)
+		/// <param name="diagram">The <see cref="Diagram"/> containing the current selection.</param>
+		private static ICollection GetSelectedShapesForImage(Diagram diagram)
+		{
+			DiagramView diagramView = diagram.ActiveDiagramView;
+			if (diagramView == null)
+			{
+				return null;
+			}
+
+			SelectedShapesCollection selection = diagramView.Selection;
+			IEnumerator enumerator = selection.GetEnumerator();
+			if (!enumerator.MoveNext())
+			{
+				return null;
+			}
+			// Note that we ignore any field/subfield portions of the DiagramItems.
+			// These are automatically copied as part of the shape.
+			ShapeElement shape = ((DiagramItem)enumerator.Current).Shape;
+			if (shape == diagram)
+			{
+				// In this case, we want to copy the nested children of the diagram,
+				// not the diagram itself. Copying the diagram gets all of the extra
+				// whitespace in the diagram itself. Diagrams don't have relative
+				// children, so we just need to get the nested children.
+				return diagram.NestedChildShapes;
+			}
+
+			HashSet<ShapeElement, ShapeElement> shapesSet = new HashSet<ShapeElement, ShapeElement>(selection.Count * 3, KeyProvider<ShapeElement, ShapeElement>.Default);
+			shape = ResolveTopLevelShape(shape, diagram);
+			shapesSet[shape] = shape;
+
+			while (enumerator.MoveNext())
+			{
+				shape = ((DiagramItem)enumerator.Current).Shape;
+				// Check whether the current shape is the diagram. The diagram will usually be
+				// the first item in the selection if it is part of it at all, but just in case...
+				if (shape == diagram)
+				{
+					return diagram.NestedChildShapes;
+				}
+				shape = ResolveTopLevelShape(shape, diagram);
+				shapesSet[shape] = shape;
+			}
+			// We have the top-level shapes, now go on a link walk to
+			// find all links not currently selected that are linked
+			// directly or indirectly at both ends to a selected shape.
+			AddSharedLinkShapes(shapesSet, shapesSet.ToArray(), diagram);
+			return shapesSet;
+		}
+		/// <summary>
+		/// Helper function for <see cref="GetSelectedShapesForImage"/>. Recursively adds <see cref="LinkShape"/>s
+		/// to the set of <see cref="ShapeElement"/>s to draw (<paramref name="shapesSet"/>).
+		/// </summary>
+		/// <param name="shapesSet">The <see cref="ShapeElement"/>s currently being drawn.</param>
+		/// <param name="shapes">The set of <see cref="ShapeElement"/>s to walk and attach <see cref="LinkShape"/>s to.</param>
+		/// <param name="diagram">The current <see cref="Diagram"/>.</param>
+		private static void AddSharedLinkShapes(HashSet<ShapeElement, ShapeElement> shapesSet, IList<ShapeElement> shapes, Diagram diagram)
 		{
 			int shapesCount = shapes.Count;
 			for (int i = 0; i < shapesCount; ++i)
@@ -2274,27 +2359,21 @@ namespace Neumont.Tools.ORM.Shell
 				NodeShape nodeShape = shape as NodeShape;
 				if (null != nodeShape)
 				{
-					LinkedElementCollection<LinkShape> linkShapes = LinkConnectsToNode.GetLink(nodeShape);
-					int linkShapeCount = linkShapes.Count;
-					for (int j = 0; j < linkShapeCount; ++j)
+					foreach (LinkShape currentLinkShape in LinkConnectsToNode.GetLink(nodeShape))
 					{
-						LinkShape currentLinkShape = linkShapes[j];
-						if (shapesDictionary.ContainsKey(currentLinkShape))
+						if (shapesSet.Contains(currentLinkShape))
 						{
 							continue;
 						}
-						LinkedElementCollection<NodeShape> nodes = currentLinkShape.Nodes;
-						int nodesCount = nodes.Count;
-						for (int k = 0; k < nodesCount; ++k)
+						foreach (NodeShape currentNode in currentLinkShape.Nodes)
 						{
-							NodeShape currentNode = nodes[k];
 							if (currentNode != nodeShape)
 							{
 								ShapeElement resolvedShape = ResolveTopLevelShape(currentNode, diagram);
 								LinkShape resolvedLinkShape;
-								if (shapesDictionary.ContainsKey(resolvedShape))
+								if (shapesSet.Contains(resolvedShape))
 								{
-									shapesDictionary.Add(currentLinkShape, currentLinkShape);
+									shapesSet[currentLinkShape] = currentLinkShape;
 								}
 								else if (null != (resolvedLinkShape = resolvedShape as LinkShape))
 								{
@@ -2302,36 +2381,40 @@ namespace Neumont.Tools.ORM.Shell
 									// selection order dependencies for links connected to links.
 									LinkedElementCollection<NodeShape> secondaryNodes = resolvedLinkShape.Nodes;
 									int secondaryNodesCount = secondaryNodes.Count;
-									int l = 0;
-									for (; l < secondaryNodesCount; ++l)
+									int drawnNodesCount = 0;
+									for (; drawnNodesCount < secondaryNodesCount; ++drawnNodesCount)
 									{
-										if (!shapesDictionary.ContainsKey(ResolveTopLevelShape(secondaryNodes[l], diagram)))
+										if (!shapesSet.Contains(ResolveTopLevelShape(secondaryNodes[drawnNodesCount], diagram)))
 										{
 											break;
 										}
 									}
-									if (l == secondaryNodesCount)
+									if (drawnNodesCount == secondaryNodesCount)
 									{
-										shapesDictionary.Add(resolvedLinkShape, resolvedLinkShape);
-										shapesDictionary.Add(currentLinkShape, currentLinkShape);
+										shapesSet[resolvedLinkShape] = resolvedLinkShape;
+										shapesSet[currentLinkShape] = currentLinkShape;
 									}
 								}
 							}
 						}
 					}
 				}
-				AddSharedLinkShapes(shapesDictionary, shape.NestedChildShapes, diagram);
-				AddSharedLinkShapes(shapesDictionary, shape.RelativeChildShapes, diagram);
+				AddSharedLinkShapes(shapesSet, shape.NestedChildShapes, diagram);
+				AddSharedLinkShapes(shapesSet, shape.RelativeChildShapes, diagram);
 			}
 		}
 		/// <summary>
-		/// Helper function for OnMenuCopyImage. Given a shape and a diagram,
-		/// find the shape that is an ancestor (or self) of the shape and a
-		/// direct child of the diagram.
+		/// Helper function for <see cref="GetSelectedShapesForImage"/>. Given a <see cref="ShapeElement"/>
+		/// specified by <paramref name="shape"/> and a <see cref="Diagram"/> specified by <paramref name="diagram"/>,
+		/// finds the <see cref="ShapeElement"/> that is an ancestor (or self) of <paramref name="shape"/> and a
+		/// direct child of the <paramref name="diagram"/>.
 		/// </summary>
-		/// <param name="shape">A shape element</param>
-		/// <param name="diagram">The containing diagram</param>
-		/// <returns>The top level shape, or the starting shape if resolution fails (very unlikely)</returns>
+		/// <param name="shape">A <see cref="ShapeElement"/>.</param>
+		/// <param name="diagram">The containing <see cref="Diagram"/>.</param>
+		/// <returns>
+		/// The top level <see cref="ShapeElement"/>, or the starting <see cref="ShapeElement"/> if resolution fails
+		/// (very unlikely).
+		/// </returns>
 		private static ShapeElement ResolveTopLevelShape(ShapeElement shape, Diagram diagram)
 		{
 			ShapeElement startShape = shape;
@@ -2347,7 +2430,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return shape;
 		}
-		#endregion
+		#endregion // GetSelectedShapesForImage method and support
+		#endregion // OnMenuCopyImage method and support
 
 		/// <summary>
 		/// Activate the RoleSequence for editing.
