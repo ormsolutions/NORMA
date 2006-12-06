@@ -111,7 +111,7 @@ namespace Neumont.Tools.Modeling.Shell
 				base.Dock = DockStyle.Fill;
 				base.Alignment = TabAlignment.Bottom;
 				base.DrawMode = TabDrawMode.OwnerDrawFixed;
-				base.Padding = new Point(4, 4);
+				base.Padding = new Point(TabOutsideBorderLength + TabInsideBorderLength, TabOutsideBorderLength + TabInsideBorderLength);
 				base.HotTrack = false;
 				base.TabStop = false;
 
@@ -178,6 +178,7 @@ namespace Neumont.Tools.Modeling.Shell
 						this.DisposeUnmanagedFont();
 					}
 					this.UpdateUnmanagedFont();
+					this.UpdateItemSize();
 				}
 			}
 			#endregion // Font property
@@ -231,11 +232,24 @@ namespace Neumont.Tools.Modeling.Shell
 				UnsafeNativeMethods.SendMessage(new HandleRef(this, base.Handle), WM_SETFONT, hFont, IntPtr.Zero);
 			}
 			#endregion // UpdateUnmanagedFont method
+			#region UpdateItemSize method
+			private void UpdateItemSize()
+			{
+				const int borderPadding = (TabOutsideBorderLength * 2) + (TabInsideBorderLength * 2);
+				int fontHeight;
+				using (Graphics graphics = base.CreateGraphics())
+				{
+					fontHeight = (int)Math.Ceiling(base.Font.GetHeight(graphics));
+				}
+				base.ItemSize = new Size(0, Math.Max(base.ItemSize.Height, Math.Max(DiagramImageHeight + borderPadding, fontHeight + borderPadding)));
+			}
+			#endregion // UpdateItemSize method
 			#region OnHandleCreated method
 			protected sealed override void OnHandleCreated(EventArgs e)
 			{
 				base.OnHandleCreated(e);
 				this.UpdateUnmanagedFont();
+				this.UpdateItemSize();
 			}
 			#endregion // OnHandleCreated method
 			#region Dispose method
@@ -419,7 +433,7 @@ namespace Neumont.Tools.Modeling.Shell
 				{
 					// Make sure that our tab rectangle still contains the point after we've deflated it
 					Rectangle tabRect = base.GetTabRect(index);
-					tabRect.Inflate(TabOutsideBorderInflate, TabOutsideBorderInflate);
+					tabRect.Inflate(-TabOutsideBorderLength, -TabOutsideBorderLength);
 					if (tabRect.Contains(point))
 					{
 						return ((DiagramTabPage)base.TabPages[index]);
@@ -462,11 +476,13 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 			#endregion // OnPaint method
 			#region DrawTab method
-			private const int TabOutsideBorderInflate = -2;
-			private const int TabInsideBorderInflate = -3;
+			private const int TabOutsideBorderLength = 2;
+			private const int TabInsideBorderLength = 3;
 			private void DrawTab(Graphics g, Rectangle bounds, TabPage tabPage, bool selected, TabPage renamingTabPage)
 			{
-				bounds.Inflate(TabOutsideBorderInflate, TabOutsideBorderInflate);
+				const int diagramImagePadding = 2;
+
+				bounds.Inflate(-TabOutsideBorderLength, -TabOutsideBorderLength);
 
 				// Draw the background (if selected) and border
 				if (selected)
@@ -479,7 +495,7 @@ namespace Neumont.Tools.Modeling.Shell
 					g.DrawRectangle(SystemPens.ControlDark, bounds);
 				}
 
-				bounds.Inflate(TabInsideBorderInflate, TabInsideBorderInflate);
+				bounds.Inflate(-TabInsideBorderLength, -TabInsideBorderLength);
 
 				// Draw the image, if any
 				ImageList imageList = base.ImageList;
@@ -490,8 +506,8 @@ namespace Neumont.Tools.Modeling.Shell
 					{
 						int imageY = bounds.Y + ((bounds.Height - DiagramImageHeight) / 2);
 						imageList.Draw(g, bounds.X, imageY, imageIndex);
-						bounds.Width -= DiagramImageWidth;
-						bounds.X += DiagramImageWidth;
+						bounds.Width -= DiagramImageWidth + diagramImagePadding;
+						bounds.X += DiagramImageWidth + diagramImagePadding;
 					}
 				}
 
@@ -511,7 +527,7 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 				else
 				{
-					const TextFormatFlags textFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix | TextFormatFlags.LeftAndRightPadding;
+					const TextFormatFlags textFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix | TextFormatFlags.NoClipping;
 					TextRenderer.DrawText(g, tabPage.Name, base.Font, bounds, SystemColors.WindowText, textFormatFlags);
 				}
 			}
