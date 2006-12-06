@@ -61,17 +61,31 @@
 						</xsl:apply-templates>
 					</dcl:table>
 				</xsl:variable>
-				
+
 				<xsl:variable name="table" select="exsl:node-set($tableFragment)/child::*"/>
 				<xsl:copy-of select="$table"/>
 
-				<!--Insert Procedure-->
+				<!--Generic Insert Procedure - Generate entire table (all column values except identity specified) insert-->
 				<xsl:apply-templates select="." mode="GenerateInsertProcedure">
 					<xsl:with-param name="Table" select="$table"/>
 					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
 				</xsl:apply-templates>
-				<!-- Delete Procedure-->
+				<!--Generic Delete Procedure - delete all rows matching <primary key values>-->
 				<xsl:apply-templates select="." mode="GenerateDeleteProcedure">
+					<xsl:with-param name="Table" select="$table"/>
+					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+					<xsl:with-param name="OilModel" select="$oilModel"/>
+					<xsl:with-param name="DataTypes" select="$dataTypes"/>
+				</xsl:apply-templates>
+				<!--Generic Update procedures - update for single row matching <primary key values>-->
+				<xsl:apply-templates select="." mode="GenerateUpdateProcedures">
+					<xsl:with-param name="Table" select="$table"/>
+					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+					<xsl:with-param name="OilModel" select="$oilModel"/>
+					<xsl:with-param name="DataTypes" select="$dataTypes"/>
+				</xsl:apply-templates>
+				<!--Generic Select procedures - select all rows that match <unique identifier>-->
+				<xsl:apply-templates select="." mode="GenerateSelectProcedures">
 					<xsl:with-param name="Table" select="$table"/>
 					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
 					<xsl:with-param name="OilModel" select="$oilModel"/>
@@ -494,6 +508,7 @@
 			</dml:insertStatement>
 		</dcl:procedure>
 	</xsl:template>
+	<!--End of insert statement-->
 
 	<!-- Generate the delete statement -->
 	<xsl:template match="oil:conceptType" mode="GenerateDeleteProcedure">
@@ -513,7 +528,7 @@
 			</xsl:variable>
 
 			<xsl:variable name="preferredIdentifierColumns" select="exsl:node-set($preferredIdentifierColumnsFragment)" />
-			
+
 			<xsl:for-each select="$preferredIdentifierColumns/child::*">
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
@@ -528,13 +543,13 @@
 							<!-- If there is more than one child of the identifier columns it is a role sequence uniqueness contraint.-->
 							<xsl:when test="count($preferredIdentifierColumns/child::*) > 1">
 								<dep:and>
-								<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
-									<dep:comparisonPredicate operator="equals">
-										<dep:columnReference name="{@name}"/>
-										<dep:sqlParameterReference name="{@name}"/>
-									</dep:comparisonPredicate>
-								</xsl:for-each>
-							</dep:and>
+									<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
+										<dep:comparisonPredicate operator="equals">
+											<dep:columnReference name="{@name}"/>
+											<dep:sqlParameterReference name="{@name}"/>
+										</dep:comparisonPredicate>
+									</xsl:for-each>
+								</dep:and>
 							</xsl:when>
 							<xsl:when test="count($preferredIdentifierColumns/child::*) = 1">
 								<dep:comparisonPredicate operator="equals">
@@ -543,9 +558,11 @@
 								</dep:comparisonPredicate>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:message terminate="yes">Error creating Delete statement.  Unable to locate a 
-								oil:roleSequenceUniquenessConstraint that is prefferred or an 
-								oil:singleRoleUniquenessConstraint that is preferred.</xsl:message>
+								<xsl:message terminate="yes">
+									Error creating Delete statement.  Unable to locate a
+									oil:roleSequenceUniquenessConstraint that is prefferred or an
+									oil:singleRoleUniquenessConstraint that is preferred.
+								</xsl:message>
 							</xsl:otherwise>
 						</xsl:choose>
 					</dml:searchCondition>
@@ -553,6 +570,98 @@
 			</dml:deleteStatement>
 		</dcl:procedure>
 	</xsl:template>
+	<!--End of delete statement-->
+	<!--Generate update procedures - one for each column, searched by primary key-->
+	<xsl:template match="oil:conceptType" mode="GenerateUpdateProcedures">
+		<xsl:param name="OilModel" />
+		<xsl:param name="DataTypes" />
+		<xsl:param name="Table"/>
+		<xsl:param name="DomainDataTypes"/>
+
+		<xsl:variable name="preferredIdentifierColumnsFragment">
+			<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
+				<xsl:with-param name="OilModel" select="$OilModel"/>
+				<xsl:with-param name="DataTypes" select="$DataTypes"/>
+				<xsl:with-param name="TargetConceptType" select="."/>
+				<xsl:with-param name="AddPrefixForConceptTypeRef" select="true()"/>
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:variable name="preferredIdentifierColumns" select="exsl:node-set($preferredIdentifierColumnsFragment)" />
+		<xsl:variable name="SchemaName" select="dsf:makeValidIdentifier(../@name)" />
+		<xsl:variable name="TableName" select="dsf:makeValidIdentifier(@name)"/>
+
+
+		<xsl:for-each select="$Table/dcl:column[not(@isIdentity='true')]">
+			<dcl:procedure name="{dsf:makeValidIdentifier(concat('Update',../@name,@name))}" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="{../@name}" oilColumnRef="{@name}">
+				<dcl:parameter mode="IN" name="{@name}">
+					<xsl:copy-of select="dcl:predefinedDataType"/>
+					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+				</dcl:parameter>
+				<dml:updateStatement schema="{$SchemaName}" name="{$TableName}" >
+					<dml:setClause>
+						<ddl:column name="{@name}"/>
+						<dep:sqlParameterReference name="{@name}"/>
+					</dml:setClause>
+					<dml:whereClause>
+						<dml:searchCondition>
+							<xsl:choose>
+								<!-- If there is more than one child of the identifier columns it is a role sequence uniqueness contraint.-->
+								<xsl:when test="count($preferredIdentifierColumns/child::*) > 1">
+									<dep:and>
+										<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
+											<dep:comparisonPredicate operator="equals">
+												<dep:columnReference name="{@name}"/>
+												<dep:sqlParameterReference name="{@name}"/>
+											</dep:comparisonPredicate>
+										</xsl:for-each>
+									</dep:and>
+								</xsl:when>
+								<xsl:when test="count($preferredIdentifierColumns/child::*) = 1">
+									<dep:comparisonPredicate operator="equals">
+										<dep:columnReference name="{$preferredIdentifierColumns/dcl:column/@name}"/>
+										<dep:sqlParameterReference name="{$preferredIdentifierColumns/dcl:column/@name}"/>
+									</dep:comparisonPredicate>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										Error creating Delete statement.  Unable to locate a
+										oil:roleSequenceUniquenessConstraint that is prefferred or an
+										oil:singleRoleUniquenessConstraint that is preferred.
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</dml:searchCondition>
+					</dml:whereClause>
+				</dml:updateStatement>
+			</dcl:procedure>
+		</xsl:for-each>
+	</xsl:template>
+	<!--End of update procedure generation-->
+	<!--Select procedures generation-->
+	<xsl:template match="oil:conceptType" mode="GenerateSelectProcedures">
+		<xsl:param name="OilModel" />
+		<xsl:param name="DataTypes" />
+		<xsl:param name="Table"/>
+		<xsl:param name="DomainDataTypes"/>
+
+		<xsl:variable name="preferredIdentifierColumnsFragment">
+			<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
+				<xsl:with-param name="OilModel" select="$OilModel"/>
+				<xsl:with-param name="DataTypes" select="$DataTypes"/>
+				<xsl:with-param name="TargetConceptType" select="."/>
+				<xsl:with-param name="AddPrefixForConceptTypeRef" select="true()"/>
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:variable name="preferredIdentifierColumns" select="exsl:node-set($preferredIdentifierColumnsFragment)" />
+		<xsl:variable name="SchemaName" select="dsf:makeValidIdentifier(../@name)" />
+		<xsl:variable name="TableName" select="dsf:makeValidIdentifier(@name)"/>
+
+		<!-- for each unique identified, generate a select statement taking the columns in that identifier as parameters -->
+		
+	</xsl:template>
+	<!--End of select proceure generation-->
 
 
 	<xsl:template name="GetTableNameForConceptTypeName">
@@ -589,7 +698,7 @@
 			</xsl:copy>
 		</xsl:for-each>
 	</xsl:template>
-	
+
 	<xsl:template name="GetColumnRef">
 		<xsl:param name="OilModel"/>
 		<xsl:param name="DataTypes"/>

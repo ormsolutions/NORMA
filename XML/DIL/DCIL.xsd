@@ -238,6 +238,16 @@
 					<xs:documentation>The name of the domain-specific data type.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="oilRefName" use="optional">
+				<xs:annotation>
+					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 
@@ -257,7 +267,7 @@
 				<xs:documentation>The name of the constraint.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="oilRefName" use="required">
+		<xs:attribute name="oilRefName" use="optional">
 			<xs:annotation>
 				<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
 			</xs:annotation>
@@ -287,7 +297,7 @@
 										<xs:documentation>The name of the column being referenced.</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
-								<xs:attribute name="oilRefName" use="required">
+								<xs:attribute name="oilRefName" use="optional">
 									<xs:annotation>
 										<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
 									</xs:annotation>
@@ -337,7 +347,7 @@
 										<xs:documentation>The name of the referenced column in the target table.</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
-								<xs:attribute name="oilRefName" use="required">
+								<xs:attribute name="oilRefName" use="optional">
 									<xs:annotation>
 										<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
 									</xs:annotation>
@@ -403,7 +413,7 @@
 											<xs:documentation>The name of the column being referenced.</xs:documentation>
 										</xs:annotation>
 									</xs:attribute>
-									<xs:attribute name="oilRefName" use="required">
+									<xs:attribute name="oilRefName" use="optional">
 										<xs:annotation>
 											<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
 										</xs:annotation>
@@ -550,9 +560,19 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="oilRefName" use="required">
+			<xs:attribute name="oilRefName" use="optional">
 				<xs:annotation>
 					<xs:documentation>The name of the OIAL element that corresponds to this element name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="oilColumnRef" use="optional">
+				<xs:annotation>
+					<xs:documentation>The name of the OIAL column for update statements</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:token">

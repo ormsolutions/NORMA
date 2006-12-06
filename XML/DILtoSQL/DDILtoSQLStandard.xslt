@@ -791,11 +791,13 @@
 			<xsl:text>.</xsl:text>
 		</xsl:if>
 		<xsl:value-of select="@name"/>
-		<xsl:apply-templates select="child::*" />
+		<xsl:value-of select="$NewLine" />
+		<xsl:apply-templates select="dml:setClause"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="dml:whereClause" />
 	</xsl:template>
 
 	<xsl:template match="dml:setClause">
-		<xsl:value-of select="$NewLine" />
 		<xsl:choose>
 			<xsl:when test="not(position()> 1)">
 				<xsl:text>SET </xsl:text>
@@ -804,11 +806,12 @@
 				<xsl:text>, </xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-
-		<xsl:value-of  select="@name"/>
+		<xsl:value-of select="ddl:column/@name"/>
+		<xsl:text> </xsl:text>
 		<xsl:value-of select="$setClauseEqualsOperator" />
-		<xsl:apply-templates select="child::*" />
-		<xsl:value-of select="$NewLine" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="dep:sqlParameterReference/@name"/>
+
 	</xsl:template>
 
 	<xsl:template match="dml:fromConstructor">

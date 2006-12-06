@@ -561,14 +561,10 @@
 			<xs:documentation>&lt;multiple column="" assignment=""&gt;| &lt;set target=""&gt;&lt;equals operator=""&gt;&lt;update source=""&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:complexContent>
-				<xs:extension base="ddt:schemaQualifiedName">
-					<xs:sequence>
-						<xs:group ref="dep:valueExpressionPrimary" />
-						<!-- What goes here ???-->
-					</xs:sequence>
-				</xs:extension>
-			</xs:complexContent>
+			<xs:sequence>
+				<xs:element ref="ddl:column" />
+				<xs:element ref="dep:sqlParameterReference" />
+			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 

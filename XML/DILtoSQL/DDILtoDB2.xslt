@@ -85,14 +85,14 @@
 		<xsl:value-of select="$RightParen"/>
 		<xsl:text> FOR BIT DATA </xsl:text>
 	</xsl:template>
-
-	<!-- UNDONE: This isn't going to work for ddl:tableConstraintDefinition elements that are not inside of ddl:tableDefinition elements -->
-	<xsl:template match="ddl:tableConstraintDefinition[child::ddl:uniqueConstraintDefinition]">
+	<!-- This commentput here by Cle' for testing.
+	<!- UNDONE: This isn't going to work for ddl:tableConstraintDefinition elements that are not inside of ddl:tableDefinition elements ->
+	<xsl:template match="ddl:tableConstraintDefinition[child::ddl:uniqueConstraintDefinition]kk">
 		<xsl:param name="indent"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:choose>
 			<xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/ddl:column/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
-				<!-- Rather than just absorb the constraints, triggers need to be generated. -->
+				<!- Rather than just absorb the constraints, triggers need to be generated. ->
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates/>
@@ -123,6 +123,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
-	</xsl:template>
+	</xsl:template> -->
+
 
 </xsl:stylesheet>
