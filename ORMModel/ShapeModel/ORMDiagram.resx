@@ -590,6 +590,14 @@
     <value xml:space="preserve">Display Internal Preferred</value>
     <comment xml:space="preserve">The display name for the Internal Uniqueness Constraint Display option.</comment>
   </data>
+  <data name="OptionsPage.Property.ReadingDirectionIndicatorDisplay.Description">
+    <value xml:space="preserve">Reading direction indicators are shown when the reading is taking a direction opposite to the displayed fact type. This option determines when direction indicators are displayed with readings on the design surface.</value>
+    <comment xml:space="preserve">The description for the Reading Direction Indicator Display option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ReadingDirectionIndicatorDisplay.DisplayName">
+    <value xml:space="preserve">Display Reading Indicator</value>
+    <comment xml:space="preserve">The display name for the Reading Direction Indicator Display option.</comment>
+  </data>
   <data name="OptionsPage.Property.RoleNameDisplay.Description">
     <value xml:space="preserve">Object Types can have Role Names associated with them. This option set the default value of the DisplayRoleNames property on a Fact to On or Off.</value>
     <comment xml:space="preserve">The description for the Display Role Names option.</comment>
@@ -642,16 +650,12 @@
     <value xml:space="preserve">…</value>
     <comment xml:space="preserve">The character to use as the object placeholder in a ReadingShape.</comment>
   </data>
-  <data name="ReadingShape.InverseReading">
-    <value xml:space="preserve">« </value>
-    <comment xml:space="preserve">The string to use to indicate that a reading goes in the opposite direction. The preferred string (per Terry Halpin) is "\u25C4 ", but the unicode character is not available in that Tahoma font.</comment>
-  </data>
   <data name="ReadingShape.ReadingSeparator">
     <value xml:space="preserve"> / </value>
     <comment xml:space="preserve">The string used to divide multiple readings shown in a ReadingShape.</comment>
   </data>
   <data name="ReadingShape.UnattachedRoleDisplay">
-    <value xml:space="preserve">[Object{0}]</value>
+    <value xml:space="preserve">[Missing{0}]</value>
     <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached.</comment>
   </data>
   <data name="RoleConnectAction.TransactionName">

@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORM.Shell
 		AnyRole,
 	}
 	/// <summary>
-	/// Determine when an internal uniqueness constraint being
+	/// Determine when an internal uniqueness constraint
 	/// that is a preferred identifier displays as a double line.
 	/// These options are cumulative, so any higher display option
 	/// turns on all other displays.
@@ -154,6 +154,32 @@ namespace Neumont.Tools.ORM.Shell
 		/// spanning internal uniqueness constraints on binaries as preferred.
 		/// </summary>
 		SingleImpliedObjectifiedInternalConstraint,
+	}
+	/// <summary>
+	/// Determine when a reading direction indicator is displayed for
+	/// readings on binary fact types. These options are cumulative,
+	/// so any higher display option turns on all other displays.
+	/// </summary>
+	public enum ReadingDirectionIndicatorDisplay
+	{
+		/// <summary>
+		/// Display for reverse readings only
+		/// </summary>
+		Reversed,
+		/// <summary>
+		/// If the forward and reverse readings are split into
+		/// two shapes, then display for both of them.
+		/// </summary>
+		Separated,
+		/// <summary>
+		/// Display if the fact type is rotated, even if the
+		/// reading order is top-down.
+		/// </summary>
+		Rotated,
+		/// <summary>
+		/// Always display a reading direction indicator
+		/// </summary>
+		Always,
 	}
 	#endregion // Shape enums
 	#region Other Options Enums
@@ -310,6 +336,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const PreferredInternalUniquenessConstraintDisplay PreferredInternalUniquenessConstraintDisplay_Default = PreferredInternalUniquenessConstraintDisplay.MultipleObjectifiedInternalConstraints;
 		private static PreferredInternalUniquenessConstraintDisplay myCurrentPreferredInternalUniquenessConstraintDisplay = PreferredInternalUniquenessConstraintDisplay_Default;
 		private PreferredInternalUniquenessConstraintDisplay myPreferredInternalUniquenessConstraintDisplay = PreferredInternalUniquenessConstraintDisplay_Default;
+
+		private const ReadingDirectionIndicatorDisplay ReadingDirectionIndicatorDisplay_Default = ReadingDirectionIndicatorDisplay.Separated;
+		private static ReadingDirectionIndicatorDisplay myCurrentReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay_Default;
+		private ReadingDirectionIndicatorDisplay myReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -331,6 +361,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
+			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -351,6 +382,7 @@ namespace Neumont.Tools.ORM.Shell
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
+			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
 		}
 
 		/// <summary>
@@ -363,13 +395,14 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization ||
 				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization ||
 				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets;
-			// Get out early if none of the settings have changed
+			// Get out early if none of the displayed settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
 				myCurrentObjectTypeDisplayShape == myObjectTypeDisplayShape &&
 				myCurrentRoleNameDisplay == myRoleNameDisplay &&
 				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay &&
-				myCurrentPreferredInternalUniquenessConstraintDisplay == myPreferredInternalUniquenessConstraintDisplay)
+				myCurrentPreferredInternalUniquenessConstraintDisplay == myPreferredInternalUniquenessConstraintDisplay &&
+				myCurrentReadingDirectionIndicatorDisplay == myReadingDirectionIndicatorDisplay)
 			{
 				// Non-displayed setting, don't notify
 				myCurrentDefaultDataType = myDefaultDataType;
@@ -388,6 +421,7 @@ namespace Neumont.Tools.ORM.Shell
 			// See if facts need resizing
 			bool resizeFactShapes = myCurrentExternalConstraintRoleBarDisplay != myExternalConstraintRoleBarDisplay;
 			bool updateRoleNames = myCurrentRoleNameDisplay != myRoleNameDisplay;
+			bool resizeReadingShapes = myCurrentReadingDirectionIndicatorDisplay != myReadingDirectionIndicatorDisplay;
 
 			// Set the new options
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
@@ -402,6 +436,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
+			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -432,6 +467,13 @@ namespace Neumont.Tools.ORM.Shell
 							foreach (Role role in store.ElementDirectory.FindElements<Role>(true))
 							{
 								RoleNameShape.SetRoleNameDisplay(role.FactType);
+							}
+						}
+						if (resizeReadingShapes)
+						{
+							foreach (ReadingShape readingShape in store.ElementDirectory.FindElements<ReadingShape>(true))
+							{
+								readingShape.InvalidateDisplayText();
 							}
 						}
 						if (t.HasPendingChanges)
@@ -767,6 +809,26 @@ namespace Neumont.Tools.ORM.Shell
 		public static PreferredInternalUniquenessConstraintDisplay CurrentPreferredInternalUniquenessConstraintDisplay
 		{
 			get { return myCurrentPreferredInternalUniquenessConstraintDisplay; }
+		}
+		/// <summary>
+		/// Current setting for ReadingDirectionIndicatorDisplay
+		/// </summary>
+		[DefaultValue(ReadingDirectionIndicatorDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyReadingDirectionIndicatorDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyReadingDirectionIndicatorDisplayDisplayNameId)]
+		public ReadingDirectionIndicatorDisplay ReadingDirectionIndicatorDisplay
+		{
+			get { return myReadingDirectionIndicatorDisplay; }
+			set { myReadingDirectionIndicatorDisplay = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for ReadingDirectionIndicatorDisplay
+		/// </summary>
+		public static ReadingDirectionIndicatorDisplay CurrentReadingDirectionIndicatorDisplay
+		{
+			get { return myCurrentReadingDirectionIndicatorDisplay; }
 		}
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option

@@ -9922,6 +9922,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReadingTextEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingOrder/ReadingText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingOrder/ReadingText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("4e75ad63-a42b-4571-85ce-81a4c5e02c23")]
 		public global::System.String ReadingText

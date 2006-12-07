@@ -1636,14 +1636,6 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.Ellipsis");
 			}
 		}
-		/// <summary>The string to use to indicate that a reading goes in the opposite direction. The preferred string (per Terry Halpin) is "\u25C4 ", but the unicode character is not available in that Tahoma font.</summary>
-		public static string ReadingShapeInverseReading
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.InverseReading");
-			}
-		}
 		/// <summary>The string used to display a reading with a non-primary order when the role is attached.</summary>
 		public static string ReadingShapeAttachedRoleDisplay
 		{

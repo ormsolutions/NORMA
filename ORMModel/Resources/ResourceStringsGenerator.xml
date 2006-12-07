@@ -678,9 +678,6 @@
 	<ResourceString name="ReadingShapeEllipsis" model="Diagram" resourceName="ReadingShape.Ellipsis">
 		<comment type="summary">The character to use as the object placeholder in a ReadingShape (an ellipsis).</comment>
 	</ResourceString>
-	<ResourceString name="ReadingShapeInverseReading" model="Diagram" resourceName="ReadingShape.InverseReading">
-		<comment type="summary">The string to use to indicate that a reading goes in the opposite direction. The preferred string (per Terry Halpin) is "\u25C4 ", but the unicode character is not available in that Tahoma font.</comment>
-	</ResourceString>
 	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay">
 		<comment type="summary">The string used to display a reading with a non-primary order when the role is attached.</comment>
 	</ResourceString>

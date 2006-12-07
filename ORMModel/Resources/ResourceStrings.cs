@@ -302,6 +302,14 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPagePropertyPreferredInternalUniquenessConstraintDisplayDisplayNameId = "OptionsPage.Property.PreferredInternalUniquenessConstraintDisplay.DisplayName";
 		/// <summary>
+		/// Description of the reading direction indicator display option
+		/// </summary>
+		public const string OptionsPagePropertyReadingDirectionIndicatorDisplayDescriptionId = "OptionsPage.Property.ReadingDirectionIndicatorDisplay.Description";
+		/// <summary>
+		/// Display name of the reading direction indicator display option
+		/// </summary>
+		public const string OptionsPagePropertyReadingDirectionIndicatorDisplayDisplayNameId = "OptionsPage.Property.ReadingDirectionIndicatorDisplay.DisplayName";
+		/// <summary>
 		/// Description of the object type shape
 		/// </summary>
 		public const string OptionsPagePropertyObjectTypeShapeDescriptionId = "OptionsPage.Property.ObjectTypeShape.Description";

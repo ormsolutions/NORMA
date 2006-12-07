@@ -28,6 +28,8 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Drawing;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.ORM.Shell;
+using System.Drawing.Drawing2D;
 
 #endregion
 
@@ -35,13 +37,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter
 	{
-		#region Member Variables and Constants
+		#region Size Constants
+		/// <summary>
+		/// The height of reading indicator with the arrow pointing up
+		/// </summary>
+		private const double ReadingIndicatorArrowHeight = .05d;
+		/// <summary>
+		/// The width of reading indicator arrow with the arrow pointing up
+		/// </summary>
+		private const double ReadingIndicatorArrowWidth = .055d;
+		/// <summary>
+		/// Returns the size of a reading indicator arrow associated with a vertically <see cref="FactTypeShape"/>
+		/// </summary>
+		private static readonly SizeD ReadingIndicatorArrowVerticalSize = new SizeD(ReadingIndicatorArrowWidth, ReadingIndicatorArrowHeight);
+		/// <summary>
+		/// Returns the size of a reading indicator arrow associated with a horizontal <see cref="FactTypeShape"/>
+		/// </summary>
+		private static readonly SizeD ReadingIndicatorArrowHorizontalSize = new SizeD(ReadingIndicatorArrowHeight, ReadingIndicatorArrowWidth);
+		#endregion // Size Constants
+		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
+		private static DirectionIndicatorField myLeftDirectionIndicator;
+		private static DirectionIndicatorField myRightDirectionIndicator;
 		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}", RegexOptions.Compiled);
 		private static readonly string ellipsis = ResourceStrings.ReadingShapeEllipsis;
 		private static readonly char c_ellipsis = ellipsis[0];
 		private string myDisplayText;
-		#endregion // Member Variables and Constants
+		#endregion // Member Variables
 		#region Model Event Hookup and Handlers
 		#region Event Hookup
 		/// <summary>
@@ -316,13 +338,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		/// <summary>
+		/// Add reading indicator shape fields
+		/// </summary>
+		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
+		{
+			base.InitializeShapeFields(shapeFields);
+			DirectionIndicatorField leftField = new DirectionIndicatorField("", true);
+			DirectionIndicatorField rightField = new DirectionIndicatorField("", false);
+			shapeFields.Add(leftField);
+			shapeFields.Add(rightField);
+			AnchoringBehavior behavior = leftField.AnchoringBehavior;
+			behavior.SetRightAnchor(TextShapeField, AnchoringBehavior.Edge.Left, 0d);
+			behavior.CenterVertically();
+			behavior = rightField.AnchoringBehavior;
+			behavior.SetLeftAnchor(TextShapeField, AnchoringBehavior.Edge.Right, 0d);
+			behavior.CenterVertically();
+			Debug.Assert(myLeftDirectionIndicator == null && myRightDirectionIndicator == null);
+			myLeftDirectionIndicator = leftField;
+			myRightDirectionIndicator = rightField;
+		}
+		/// <summary>
+		/// Set the content size of the ReadingShape
+		/// </summary>
+		protected override SizeD ContentSize
+		{
+			get
+			{
+				SizeD retVal = SizeD.Empty;
+				ShapeField textField = TextShapeField;
+				if (textField != null)
+				{
+					retVal = textField.GetMinimumSize(this);
+					retVal = new SizeD(retVal.Width + myLeftDirectionIndicator.GetMinimumSize(this).Width + myRightDirectionIndicator.GetMinimumSize(this).Width, retVal.Height);
+				}
+				return retVal;
+			}
+		}
 		#endregion // Base Overrides
 		#region Helper methods
 		/// <summary>
 		/// Notifies the shape that the currently cached display text may no longer
 		/// be accurate, so it needs to be recreated.
 		/// </summary>
-		private void InvalidateDisplayText()
+		public void InvalidateDisplayText()
 		{
 			BeforeInvalidate();
 			//this is triggering code that needs a transaction
@@ -342,39 +401,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Check to see if FactType Derivation symbols should be appended to the display text
 		/// </summary>
-		private void AppendDerivation(StringBuilder stringBuilder)
+		private static string GetDerivationDecorator(FactType factType)
 		{
-			FactType ft = this.ParentShape.ModelElement as FactType;
-
-			if (ft != null)
+			string retVal = null;
+			if (factType != null)
 			{
-				FactTypeDerivationExpression derivation = ft.DerivationRule;
+				FactTypeDerivationExpression derivation = factType.DerivationRule;
 				if (derivation != null && !derivation.IsDeleted)
 				{
 					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
-					string decorator = null;
-					DerivationStorageType storage = ft.DerivationStorageDisplay;
-					switch (storage)
+					DerivationStorageType storage = factType.DerivationStorageDisplay;
+					switch (factType.DerivationStorageDisplay)
 					{
 						case DerivationStorageType.Derived:
-							decorator = " *";
+							retVal = " *";
 							break;
 						case DerivationStorageType.DerivedAndStored:
-							decorator = " **";
+							retVal = " **";
 							break;
 						case DerivationStorageType.PartiallyDerived:
-							decorator = " *—";
+							retVal = " *—";
 							break;
 						default:
 							Debug.Fail("Unknown derivation storage type");
 							break;
 					}
-					if (decorator != null)
-					{
-						stringBuilder.Append(decorator);
-					}
 				}
 			}
+			return retVal;
 		}
 
 		/// <summary>
@@ -411,97 +465,134 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				if (myDisplayText == null)
 				{
-					StringBuilder retval = new StringBuilder();
-					ReadingOrder readingOrd = this.ModelElement as ReadingOrder;
-					Debug.Assert(readingOrd != null);
-
-					FactType factType = readingOrd.FactType;
-					FactTypeShape factShape = this.ParentShape as FactTypeShape;
-					if (factType == null || factType.IsDeleted)
+					FactTypeShape factShape;
+					FactType factType;
+					LinkedElementCollection<ReadingOrder> readingOrders;
+					int readingOrderCount;
+					if (null == (factShape = ParentShape as FactTypeShape) ||
+						null == (factType = factShape.AssociatedFactType) ||
+						0 == (readingOrderCount = (readingOrders = factType.ReadingOrderCollection).Count))
 					{
 						return "";
 					}
-					LinkedElementCollection<ReadingOrder> readingOrderCollection = factType.ReadingOrderCollection;
-					ReadingOrder primaryReadingOrder = FactTypeShape.FindMatchingReadingOrder(factShape);
-					int numReadingOrders = readingOrderCollection.Count;
-					for (int i = 0; i < numReadingOrders; ++i)
+					string derivationDecorator = GetDerivationDecorator(factType);
+					string retVal = null;
+					bool doNamedReplacement = false;
+					ReadingOrder defaultOrder = readingOrders[0];
+					LinkedElementCollection<RoleBase> orderedRoles = defaultOrder.RoleCollection;
+					int roleCount = orderedRoles.Count;
+					string readingFormatString = null;
+					if (readingOrderCount == 1)
 					{
-						if (i > 0)
+						readingFormatString = defaultOrder.ReadingText;
+						if (roleCount > 2 && defaultOrder != FactTypeShape.FindMatchingReadingOrder(factShape))
 						{
-							retval.Append(ResourceStrings.ReadingShapeReadingSeparator);
-							if (numReadingOrders > 2)
-							{
-								retval.Append("\u000A\u000D");
-							}
-						}
-						ReadingOrder readingOrder = readingOrderCollection[i];
-						string aReading = readingOrder.ReadingText;
-						LinkedElementCollection<RoleBase> roleCollection = readingOrder.RoleCollection;
-						int roleCount = roleCollection.Count;
-						if (roleCount <= 2 || (numReadingOrders > 1 && i == 0))
-						{
-							aReading = regCountPlaces.Replace(aReading, ellipsis).Trim();
-							if (i == 0 && ((factShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft) ? roleCollection[0] == factShape.DisplayedRoleOrder[0] : roleCollection[0] != factShape.DisplayedRoleOrder[0]))
-							{
-								//Terry's preffered character to append is \u25C4 which can
-								//be found in the "Arial Unicode MS" font
-								retval.Append(ResourceStrings.ReadingShapeInverseReading);
-							}
-							if (numReadingOrders <= 2 && roleCount <= 2 &&
-								aReading.IndexOf(c_ellipsis) == 0 &&
-								(roleCount == 1 || aReading.LastIndexOf(c_ellipsis) == aReading.Length - 1))
-							{
-								aReading = aReading.Replace(ellipsis, String.Empty).Trim();
-							}
+							doNamedReplacement = true;
 						}
 						else
 						{
-							LinkedElementCollection<RoleBase> factRoleCollection = factShape.DisplayedRoleOrder;
-							//LinkedElementCollection<Role> factRoleCollection = factType.RoleCollection;
-							bool primaryOrder = primaryReadingOrder == readingOrder;
-							//UNDONE: the roleCount should be factRoleCollection.Count. However, this causes
-							//an error when a role is added to a factType because the factType attempts to
-							//update the ReadingShape before the ReadingOrders have had the role added to them.
-							//Check the order of execution to see if the ReadingOrders can have the role added
-							//to them before the ReadingShape is updated.
-							string[] roleTranslator = new string[roleCount];
-							if (primaryOrder)
+							retVal = EllipsizeReadingFormatString(readingFormatString, roleCount);
+						}
+					}
+					else if (roleCount > 2)
+					{
+						ReadingOrder matchingOrder = FactTypeShape.FindMatchingReadingOrder(factShape);
+						if (matchingOrder != null)
+						{
+							retVal = regCountPlaces.Replace(matchingOrder.ReadingText, ellipsis).Trim();
+						}
+						else
+						{
+							// CONSIDER: Do we want to attempt a better match, such as a leading role
+							// match if we don't get the full match.
+							doNamedReplacement = true;
+						}
+					}
+					else
+					{
+						// UNDONE: Unary binarization is likely to hit this assert
+						Debug.Assert(roleCount == 2, "A unary fact should not have more than one reading order.");
+						ReadingOrder firstOrder;
+						ReadingOrder secondOrder;
+						if (defaultOrder == FactTypeShape.FindMatchingReadingOrder(factShape))
+						{
+							firstOrder = defaultOrder;
+							secondOrder = readingOrders[1];
+						}
+						else
+						{
+							firstOrder = readingOrders[1];
+							secondOrder = defaultOrder;
+						}
+						retVal = string.Concat(
+							EllipsizeReadingFormatString(firstOrder.ReadingText, roleCount),
+							ResourceStrings.ReadingShapeReadingSeparator,
+							EllipsizeReadingFormatString(secondOrder.ReadingText, roleCount),
+							derivationDecorator);
+						derivationDecorator = null;
+					}
+					if (doNamedReplacement)
+					{
+						LinkedElementCollection<RoleBase> factRoles = factShape.DisplayedRoleOrder;
+						string[] roleTranslator = new string[roleCount];
+						for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
+						{
+							RoleBase currentRole = orderedRoles[readRoleNum];
+							ObjectType rolePlayer = currentRole.Role.RolePlayer;
+							string formatString;
+							string replacementField;
+							if (rolePlayer == null)
 							{
-								for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
-								{
-									roleTranslator[readRoleNum] = ellipsis;
-								}
+								replacementField = (factRoles.IndexOf(currentRole) + 1).ToString(CultureInfo.InvariantCulture);
+								formatString = ResourceStrings.ReadingShapeUnattachedRoleDisplay;
 							}
 							else
 							{
-								for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
-								{
-									RoleBase currentRole = roleCollection[readRoleNum];
-									ObjectType rolePlayer = currentRole.Role.RolePlayer;
-									string formatString;
-									string replacementField;
-									if (rolePlayer == null)
-									{
-										replacementField = (factRoleCollection.IndexOf(currentRole) + 1).ToString(CultureInfo.InvariantCulture);
-										formatString = ResourceStrings.ReadingShapeUnattachedRoleDisplay;
-									}
-									else
-									{
-										replacementField = rolePlayer.Name;
-										formatString = ResourceStrings.ReadingShapeAttachedRoleDisplay;
-									}
-									roleTranslator[readRoleNum] = string.Format(CultureInfo.InvariantCulture, formatString, replacementField);
-								}
+								replacementField = rolePlayer.Name;
+								formatString = ResourceStrings.ReadingShapeAttachedRoleDisplay;
 							}
-							aReading = string.Format(CultureInfo.InvariantCulture, aReading, roleTranslator);
+							roleTranslator[readRoleNum] = string.Format(CultureInfo.InvariantCulture, formatString, replacementField);
 						}
-						retval.Append(aReading);
+						retVal = string.Format(CultureInfo.InvariantCulture, readingFormatString, roleTranslator);
 					}
-					AppendDerivation(retval);
-					myDisplayText = retval.ToString();
+					if (derivationDecorator != null)
+					{
+						retVal += derivationDecorator;
+					}
+					myDisplayText = retVal;
 				}
 				return myDisplayText;
 			}
+		}
+		/// <summary>
+		/// Replace replacement fields with ellipsis and trim leading/trailing ellipsis
+		/// as appropriate for unary and binary format strings
+		/// </summary>
+		private static string EllipsizeReadingFormatString(string formatString, int roleCount)
+		{
+			string retVal = regCountPlaces.Replace(formatString, ellipsis).Trim();
+			int retValLength = retVal.Length;
+			if (retValLength != 0)
+			{
+				switch (roleCount)
+				{
+					case 1:
+						if (retVal[0] == c_ellipsis)
+						{
+							retVal = retVal.Substring(1).TrimStart();
+						}
+						break;
+					case 2:
+						if (retValLength > 1 &&
+							retVal[0] == c_ellipsis &&
+							retVal[retVal.Length - 1] == c_ellipsis)
+						{
+							retVal = retVal.Substring(1, retValLength - 2).Trim();
+						}
+						break;
+				}
+			}
+			return retVal;
 		}
 		#endregion // properties
 		#region Reading text display update rules
@@ -569,16 +660,175 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				return retval;
 			}
-
 			/// <summary>
-			/// Changed to return true to get multiple line support.
+			/// Redirect all editing to the reading editor until we get the inplace editing with locked
+			/// replacement fields live inline in the document.
 			/// </summary>
-			public override bool GetMultipleLine(ShapeElement parentShape)
+			public override bool CanEditValue(ShapeElement parentShape, DiagramClientView view)
 			{
 				return true;
 			}
+			/// <summary>
+			/// Redirect all editing to the reading editor until we get the inplace editing with locked
+			/// replacement fields live inline in the document.
+			/// </summary>
+			public override void EditValue(ShapeElement parentShape, DiagramClientView view)
+			{
+				Neumont.Tools.ORM.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
+			}
+			/// <summary>
+			/// Redirect all editing to the reading editor until we get the inplace editing with locked
+			/// replacement fields live inline in the document.
+			/// </summary>
+			public override void EditValue(ShapeElement parentShape, DiagramClientView view, PointD mousePosition)
+			{
+				Neumont.Tools.ORM.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
+			}
 		}
 		#endregion // nested class ReadingAutoSizeTextField
+		#region DirectionIndicatorField class
+		/// <summary>
+		/// Creates a shape to properly align the other shapefields within the FactTypeShape.
+		/// </summary>
+		private sealed class DirectionIndicatorField : ShapeField
+		{
+			/// <summary>
+			/// Determine the required direction for the arrow to display
+			/// </summary>
+			private enum ArrowDirection
+			{
+				None,
+				Up,
+				Down,
+				Left,
+				Right,
+			}
+			private readonly bool myIsLeft;
+			/// <summary>
+			/// A shape field to display reading direction indicators depending
+			/// on the direction of the current reading.
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			/// <param name="isLeft">Reading direction indicator is displayed on the left side of the reading</param>
+			public DirectionIndicatorField(string fieldName, bool isLeft)
+				: base(fieldName)
+			{
+				DefaultFocusable = false;
+				DefaultSelectable = false;
+				DefaultVisibility = true;
+				myIsLeft = isLeft;
+			}
+
+			/// <summary>
+			/// Returns <see cref="ReadingIndicatorArrowHorizontalSize"/> if <see cref="FactTypeShape.DisplayOrientation"/> is
+			/// <see cref="DisplayOrientation.Horizontal"/>. Otherwise, returns <see cref="ReadingIndicatorArrowVerticalSize"/>
+			/// </summary>
+			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
+			{
+				switch (GetDirection(parentShape))
+				{
+					case ArrowDirection.Up:
+					case ArrowDirection.Down:
+						return ReadingIndicatorArrowVerticalSize;
+					case ArrowDirection.Left:
+					case ArrowDirection.Right:
+						return ReadingIndicatorArrowHorizontalSize;
+				}
+				return SizeD.Empty;
+			}
+			private ArrowDirection GetDirection(ShapeElement parentShape)
+			{
+				ArrowDirection retVal = ArrowDirection.None;
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape.ParentShape;
+				FactType factType = factTypeShape.AssociatedFactType;
+				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+				if (roles.Count == 2)
+				{
+					DisplayOrientation orientation = factTypeShape.DisplayOrientation;
+					bool isVertical = orientation != DisplayOrientation.Horizontal;
+					// Vertical indicators are displayed on the right
+					bool isRight = !myIsLeft;
+					if (!isVertical || isRight)
+					{
+						LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
+						if (orders.Count == 1)
+						{
+							roles = orders[0].RoleCollection;
+							bool showForward = false;
+							ReadingDirectionIndicatorDisplay displayOption = OptionsPage.CurrentReadingDirectionIndicatorDisplay;
+							switch (displayOption)
+							{
+								//case ReadingDirectionIndicatorDisplay.Separated:
+								//case ReadingDirectionIndicatorDisplay.Reversed:
+								case ReadingDirectionIndicatorDisplay.Rotated:
+									showForward = isVertical;
+									break;
+								case ReadingDirectionIndicatorDisplay.Always:
+									showForward = isVertical || isRight;
+									break;
+							}
+							bool isReverseReading = (orientation == DisplayOrientation.VerticalRotatedLeft) ? roles[0] == factTypeShape.DisplayedRoleOrder[0] : roles[0] != factTypeShape.DisplayedRoleOrder[0];
+							if (isReverseReading || showForward)
+							{
+								if (isVertical)
+								{
+									retVal = isReverseReading ? ArrowDirection.Up : ArrowDirection.Down;
+								}
+								else
+								{
+									retVal = isReverseReading ? (isRight ? ArrowDirection.None : ArrowDirection.Left) : ArrowDirection.Right;
+								}
+							}
+						}
+					}
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Paint the direction arrow in the provided rectangle
+			/// </summary>
+			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
+			{
+				RectangleD bounds = this.GetBounds(parentShape);
+				PointD startPoint;
+				PointD midPoint;
+				PointD endPoint;
+				switch (GetDirection(parentShape))
+				{
+					case ArrowDirection.Up:
+						startPoint = new PointD(bounds.Left, bounds.Bottom);
+						midPoint = new PointD(bounds.Left + bounds.Width / 2, bounds.Top);
+						endPoint = new PointD(bounds.Right, bounds.Bottom);
+						break;
+					case ArrowDirection.Down:
+						startPoint = new PointD(bounds.Left, bounds.Top);
+						midPoint = new PointD(bounds.Left + bounds.Width / 2, bounds.Bottom);
+						endPoint = new PointD(bounds.Right, bounds.Top);
+						break;
+					case ArrowDirection.Left:
+						startPoint = new PointD(bounds.Right, bounds.Top);
+						midPoint = new PointD(bounds.Left, bounds.Top + bounds.Height / 2);
+						endPoint = new PointD(bounds.Right, bounds.Bottom);
+						break;
+					case ArrowDirection.Right:
+						startPoint = new PointD(bounds.Left, bounds.Top);
+						midPoint = new PointD(bounds.Right, bounds.Top + bounds.Height / 2);
+						endPoint = new PointD(bounds.Left, bounds.Bottom);
+						break;
+					default:
+						return;
+				}
+				using (GraphicsPath path = new GraphicsPath())
+				{
+					path.AddPolygon(new PointF[] {
+							PointD.ToPointF(startPoint),
+							PointD.ToPointF(midPoint),
+							PointD.ToPointF(endPoint)});
+					e.Graphics.FillPath(SystemBrushes.WindowText, path);
+				}
+			}
+		}
+		#endregion // DirectionIndicatorField class
 		#region change rules
 		/// <summary>
 		/// Changing the position of a Reading in a ReadingOrder changes the

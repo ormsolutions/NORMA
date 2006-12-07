@@ -35,8 +35,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
 		private static AutoSizeTextField myReferenceModeShapeField;
-		private const double HorizontalMargin = 0.080;
-		private const double VerticalMargin = 0.060;
+		private const double HorizontalMargin = 0.060;
+		private const double VerticalMargin = 0.050;
 		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("Neumont", "DashedShapeOutlinePen");
 		#endregion // Member Variables
 		#region Customize appearance

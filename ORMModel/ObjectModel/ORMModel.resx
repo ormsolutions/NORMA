@@ -430,7 +430,7 @@
     <comment>The text that will be displayed in the column header of the reading list in the reading editor tool window.</comment>
   </data>
 	<data name="ModelReadingEditor.MissingRolePlayerText" xml:space="preserve">
-    <value>[missing]</value>
+    <value>[Missing]</value>
     <comment>Text to display in the reading editor when the role has no roleplayer to substitute into the text.</comment>
   </data>
 	<data name="ModelReadingEditor.NewItemText" xml:space="preserve">

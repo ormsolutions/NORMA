@@ -1070,7 +1070,7 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="ReadingText" DefaultValue="" DisplayName="ReadingText" Id="4E75AD63-A42B-4571-85CE-81A4C5E02C23" Kind="CustomStorage">
+				<DomainProperty Name="ReadingText" DefaultValue="" DisplayName="ReadingText" IsUIReadOnly="true" Id="4E75AD63-A42B-4571-85CE-81A4C5E02C23" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
