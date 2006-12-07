@@ -20,6 +20,7 @@
 #define menuIdVerbalizationToolBar		0x0101
 #define menuIdErrorList					0x0102
 #define menuIdReadingEditorContextMenu	0x0103
+#define menuIdDisplayOrientation		0x0104
 
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
@@ -36,8 +37,13 @@
 #define groupIdErrorList				0x1007
 #define groupIdErrorListTest			0x1008
 #define groupIdReadingEditorContextAddDelete		0x1009
-#define groupIdReadingEditorContextReadingPromoteDemote 0x1010
-#define groupIdReadingEditorContextOrderPromoteDemote		0x10011
+#define groupIdReadingEditorContextReadingPromoteDemote 0x100A
+#define groupIdReadingEditorContextOrderPromoteDemote		0x100B
+#define groupIdProperties				0x100C
+#define groupIdFactShapeCommands		0x100D
+#define groupIdDisplayOrientation		0x100E
+#define groupIdDisplayConstraintPosition 0x100F
+#define groupIdDisplayReverseRoleOrder	0x1020
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -84,9 +90,17 @@
 #define cmdIdReadingEditorDemoteReading			0x291C
 #define cmdIdReadingEditorPromoteReadingOrder	0x291D
 #define cmdIdReadingEditorDemoteReadingOrder	0x291E
-#define cmdIdViewSamplePopulationEditor	0x2930
 
 #define cmdIdObjectifyFactType			0x291F
+
+#define cmdIdViewSamplePopulationEditor			0x2920
+
+#define cmdIdDisplayOrientationHorizontal		0x2921
+#define cmdIdDisplayOrientationRotatedLeft		0x2922
+#define cmdIdDisplayOrientationRotatedRight		0x2923
+#define cmdIdDisplayConstraintsOnTop			0x2924
+#define cmdIdDisplayConstraintsOnBottom			0x2925
+#define cmdIdDisplayReverseRoleOrder			0x2926
 
 #define cmdIdErrorList					0x2A00
 #define cmdIdErrorListEnd				0x2AFF

@@ -672,7 +672,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return; // bail out
 			}
-			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainClass(ExternalConstraintShape.DomainClassId), new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent), action);
+			ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ExternalConstraintShape.DomainClassId), new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent), action);
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated

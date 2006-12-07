@@ -193,6 +193,30 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DeleteModelNoteReference = 0x100000000,
 		/// <summary>
+		/// Rotate a fact type shape to a horizontal orientation
+		/// </summary>
+		DisplayOrientationHorizontal = 0x200000000,
+		/// <summary>
+		/// Rotate a fact type shape to a left vertical orientation
+		/// </summary>
+		DisplayOrientationRotatedLeft = 0x400000000,
+		/// <summary>
+		/// Rotate a fact type shape to a right vertical orientation
+		/// </summary>
+		DisplayOrientationRotatedRight = 0x800000000,
+		/// <summary>
+		/// Display constraints on the top of the fact type shape
+		/// </summary>
+		DisplayConstraintsOnTop = 0x1000000000,
+		/// <summary>
+		/// Display constraints on the bottom of the fact type shape
+		/// </summary>
+		DisplayConstraintsOnBottom = 0x2000000000,
+		/// <summary>
+		/// Reverse the role order on the fact type shape
+		/// </summary>
+		DisplayReverseRoleOrder = 0x4000000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
@@ -204,6 +228,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// Mask field representing individual RoleSeqeuence edit commands
 		/// </summary>
 		RoleSequenceActions = ActivateRoleSequence | DeleteRoleSequence | MoveRoleSequenceUp | MoveRoleSequenceDown,
+		/// <summary>
+		/// Mask field representing individual DisplayOrientation edit commands
+		/// </summary>
+		DisplayOrientation = DisplayOrientationHorizontal | DisplayOrientationRotatedLeft | DisplayOrientationRotatedRight,
+		/// <summary>
+		/// Mask field representing individual DisplayConstraintsOn edit commands
+		/// </summary>
+		DisplayConstraintsPosition = DisplayConstraintsOnTop | DisplayConstraintsOnBottom,
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -226,6 +258,8 @@ namespace Neumont.Tools.ORM.Shell
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
 			ORMDesignerCommands.CopyImage |
+			ORMDesignerCommands.DisplayOrientation |
+			ORMDesignerCommands.DisplayConstraintsPosition |
 			ORMDesignerCommands.SelectAll |
 			ORMDesignerCommands.AlignShapes |
 			ORMDesignerCommands.AutoLayout |
@@ -757,10 +791,17 @@ namespace Neumont.Tools.ORM.Shell
 					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
 					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
 				}
-				if (presentationElement is FactTypeShape)
+				FactTypeShape factShape;
+				if (null != (factShape = presentationElement as FactTypeShape))
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes;
-					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes;
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.DisplayOrientation | ORMDesignerCommands.DisplayConstraintsPosition;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.DisplayOrientation | ORMDesignerCommands.DisplayConstraintsPosition;
+					// Don't flag the DisplayOrientation or DisplayConstraintsPosition commands as checkable, multiselect check state mismatches handled dynamically in OnStatusCommand
+					if (factType.RoleCollection.Count > 1)
+					{
+						visibleCommands |= ORMDesignerCommands.DisplayReverseRoleOrder;
+						enabledCommands |= ORMDesignerCommands.DisplayReverseRoleOrder;
+					}
 				}
 				else if (null != presentationElement)
 				{
@@ -1032,6 +1073,61 @@ namespace Neumont.Tools.ORM.Shell
 							break;
 						}
 					}
+				}
+				else if (0 != (commandFlag & ORMDesignerCommands.DisplayOrientation) && command.Enabled)
+				{
+					// This can change between status checks, check the selected items
+					DisplayOrientation expectedOrientation = DisplayOrientation.Horizontal;
+					switch (commandFlag & ORMDesignerCommands.DisplayOrientation)
+					{
+						case ORMDesignerCommands.DisplayOrientationRotatedLeft:
+							expectedOrientation = DisplayOrientation.VerticalRotatedLeft;
+							break;
+						case ORMDesignerCommands.DisplayOrientationRotatedRight:
+							expectedOrientation = DisplayOrientation.VerticalRotatedRight;
+							break;
+					}
+					bool isChecked = true;
+					foreach (ModelElement mel in docView.GetSelectedComponents())
+					{
+						FactTypeShape shape = mel as FactTypeShape;
+						if (shape != null)
+						{
+							// The command is checked when all selected values match the expected orientation
+							if (shape.DisplayOrientation != expectedOrientation)
+							{
+								isChecked = false;
+								break;
+							}
+						}
+					}
+					command.Checked = isChecked;
+				}
+				else if (0 != (commandFlag & ORMDesignerCommands.DisplayConstraintsPosition) && command.Enabled)
+				{
+					// This can change between status checks, check the selected items
+					ConstraintDisplayPosition expectedPosition = ConstraintDisplayPosition.Top;
+					switch (commandFlag & ORMDesignerCommands.DisplayConstraintsPosition)
+					{
+						case ORMDesignerCommands.DisplayConstraintsOnBottom:
+							expectedPosition = ConstraintDisplayPosition.Bottom;
+							break;
+					}
+					bool isChecked = true;
+					foreach (ModelElement mel in docView.GetSelectedComponents())
+					{
+						FactTypeShape shape = mel as FactTypeShape;
+						if (shape != null)
+						{
+							// The command is checked when all selected values match the expected orientation
+							if (shape.ConstraintDisplayPosition != expectedPosition)
+							{
+								isChecked = false;
+								break;
+							}
+						}
+					}
+					command.Checked = isChecked;
 				}
 				else if (0 != (commandFlag & (ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight)))
 				{
@@ -2700,6 +2796,60 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						return;
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// Set the selected FactTypeShape to the selected display orientation
+		/// </summary>
+		/// <param name="orientation">New orientation</param>
+		protected virtual void OnMenuDisplayOrientation(DisplayOrientation orientation)
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			foreach (ModelElement mel in GetSelectedComponents())
+			{
+				FactTypeShape factTypeShape = mel as FactTypeShape;
+				if (factTypeShape != null)
+				{
+					// Use the standard property descriptor to pick up the
+					// same transaction name, etc. This emulates toggling the
+					// property in the properties window.
+					DomainTypeDescriptor.CreatePropertyDescriptor(factTypeShape, FactTypeShape.DisplayOrientationDomainPropertyId).SetValue(factTypeShape, orientation);
+				}
+			}
+		}
+		/// <summary>
+		/// Set the selected FactTypeShape to the selected constraint display position
+		/// </summary>
+		/// <param name="position">New position</param>
+		protected virtual void OnMenuDisplayConstraintPosition(ConstraintDisplayPosition position)
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			foreach (ModelElement mel in GetSelectedComponents())
+			{
+				FactTypeShape factTypeShape = mel as FactTypeShape;
+				if (factTypeShape != null)
+				{
+					// Use the standard property descriptor to pick up the
+					// same transaction name, etc. This emulates toggling the
+					// property in the properties window.
+					DomainTypeDescriptor.CreatePropertyDescriptor(factTypeShape, FactTypeShape.ConstraintDisplayPositionDomainPropertyId).SetValue(factTypeShape, position);
+				}
+			}
+		}
+		/// <summary>
+		/// Reverse the role order for the selected fact type shape
+		/// </summary>
+		protected virtual void OnMenuDisplayReverseRoleOrder()
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			foreach (ModelElement mel in GetSelectedComponents())
+			{
+				FactTypeShape factTypeShape = mel as FactTypeShape;
+				if (factTypeShape != null)
+				{
+					factTypeShape.ReverseDisplayedRoleOrder();
+					break;
 				}
 			}
 		}

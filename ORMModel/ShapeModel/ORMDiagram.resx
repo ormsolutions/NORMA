@@ -658,6 +658,10 @@
     <value xml:space="preserve">[Missing{0}]</value>
     <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached.</comment>
   </data>
+  <data name="ReverseRoleOrder.TransactionName">
+    <value xml:space="preserve">Reverse Role Order</value>
+    <comment xml:space="preserve">The transaction name used for reversing the role order in a fact type shape.</comment>
+  </data>
   <data name="RoleConnectAction.TransactionName">
     <value xml:space="preserve">Set Role Player</value>
     <comment xml:space="preserve">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>

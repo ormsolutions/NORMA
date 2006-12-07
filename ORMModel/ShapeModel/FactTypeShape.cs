@@ -539,6 +539,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return moveOccured;
 		}
+		/// <summary>
+		/// Reverse the displayed role order
+		/// </summary>
+		public void ReverseDisplayedRoleOrder()
+		{
+			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.ReverseRoleOrderTransactionName))
+			{
+				LinkedElementCollection<RoleBase> displayRoles = RoleDisplayOrderCollection;
+				int rolesCount = displayRoles.Count;
+				if (rolesCount == 0)
+				{
+					FactType fact = AssociatedFactType;
+					if (fact != null)
+					{
+						LinkedElementCollection<RoleBase> nativeRoles = fact.RoleCollection;
+						int nativeRoleCount = nativeRoles.Count;
+						if (nativeRoleCount > 1)
+						{
+							// Add them to the collection in reverse
+							for (int i = nativeRoleCount - 1; i >= 0; --i)
+							{
+								displayRoles.Add(nativeRoles[i].Role);
+							}
+						}
+					}
+				}
+				else
+				{
+					int moveFrom = rolesCount - 1;
+					for (int i = 0; i < moveFrom; ++i)
+					{
+						displayRoles.Move(moveFrom, i);
+					}
+				}
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+				}
+			}
+		}
 		private LinkedElementCollection<RoleBase> EnsureDisplayOrderCollection()
 		{
 			LinkedElementCollection<RoleBase> displayRoles = RoleDisplayOrderCollection;

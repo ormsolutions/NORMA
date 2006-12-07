@@ -196,6 +196,30 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusObjectifyFactType), 
 						new EventHandler(OnMenuObjectifyFactType),
 						ORMDesignerCommandIds.ObjectifyFactType)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDisplayOrientationHorizontal), 
+						new EventHandler(OnMenuDisplayOrientationHorizontal),
+						ORMDesignerCommandIds.DisplayOrientationHorizontal)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDisplayOrientationRotatedLeft), 
+						new EventHandler(OnMenuDisplayOrientationRotatedLeft),
+						ORMDesignerCommandIds.DisplayOrientationRotatedLeft)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDisplayOrientationRotatedRight), 
+						new EventHandler(OnMenuDisplayOrientationRotatedRight),
+						ORMDesignerCommandIds.DisplayOrientationRotatedRight)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDisplayConstraintsOnTop), 
+						new EventHandler(OnMenuDisplayConstraintsOnTop),
+						ORMDesignerCommandIds.DisplayConstraintsOnTop)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDisplayConstraintsOnBottom), 
+						new EventHandler(OnMenuDisplayConstraintsOnBottom),
+						ORMDesignerCommandIds.DisplayConstraintsOnBottom)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDisplayReverseRoleOrder), 
+						new EventHandler(OnMenuDisplayReverseRoleOrder),
+						ORMDesignerCommandIds.DisplayReverseRoleOrder)
 						// Alignment Commands
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAlignShapes),
@@ -604,6 +628,101 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuObjectifyFactType();
+				}
+			}
+			private void OnStatusDisplayOrientationHorizontal(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationHorizontal);
+			}
+			private void OnStatusDisplayOrientationRotatedLeft(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationRotatedLeft);
+			}
+			private void OnStatusDisplayOrientationRotatedRight(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayOrientationRotatedRight);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDisplayOrientationHorizontal(object sender, EventArgs e)
+			{
+				OnMenuDisplayOrientation(DisplayOrientation.Horizontal);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDisplayOrientationRotatedLeft(object sender, EventArgs e)
+			{
+				OnMenuDisplayOrientation(DisplayOrientation.VerticalRotatedLeft);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDisplayOrientationRotatedRight(object sender, EventArgs e)
+			{
+				OnMenuDisplayOrientation(DisplayOrientation.VerticalRotatedRight);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuDisplayOrientation(DisplayOrientation orientation)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuDisplayOrientation(orientation);
+				}
+			}
+			private void OnStatusDisplayConstraintsOnTop(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayConstraintsOnTop);
+			}
+			private void OnStatusDisplayConstraintsOnBottom(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayConstraintsOnBottom);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDisplayConstraintsOnTop(object sender, EventArgs e)
+			{
+				OnMenuDisplayConstraintPosition(ConstraintDisplayPosition.Top);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDisplayConstraintsOnBottom(object sender, EventArgs e)
+			{
+				OnMenuDisplayConstraintPosition(ConstraintDisplayPosition.Bottom);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuDisplayConstraintPosition(ConstraintDisplayPosition position)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuDisplayConstraintPosition(position);
+				}
+			}
+			private void OnStatusDisplayReverseRoleOrder(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReverseRoleOrder);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuDisplayReverseRoleOrder(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuDisplayReverseRoleOrder();
 				}
 			}
 			/// <summary>
@@ -1137,6 +1256,30 @@ namespace Neumont.Tools.ORM.Shell
 			/// Objectifies the fact type.
 			/// </summary>
 			public static readonly CommandID ObjectifyFactType = new CommandID(guidORMDesignerCommandSet, cmdIdObjectifyFactType);
+			/// <summary>
+			/// Set the FactTypeShape.DisplayOrientation property to Horizontal
+			/// </summary>
+			public static readonly CommandID DisplayOrientationHorizontal = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayOrientationHorizontal);
+			/// <summary>
+			/// Set the FactTypeShape.DisplayOrientation property to RotatedLeft
+			/// </summary>
+			public static readonly CommandID DisplayOrientationRotatedLeft = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayOrientationRotatedLeft);
+			/// <summary>
+			/// Set the FactTypeShape.DisplayOrientation property to RotatedRight
+			/// </summary>
+			public static readonly CommandID DisplayOrientationRotatedRight = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayOrientationRotatedRight);
+			/// <summary>
+			/// Set the FactTypeShape.ConstraintDisplayPosition property to Top
+			/// </summary>
+			public static readonly CommandID DisplayConstraintsOnTop = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayConstraintsOnTop);
+			/// <summary>
+			/// Set the FactTypeShape.ConstraintDisplayPosition property to Bottom
+			/// </summary>
+			public static readonly CommandID DisplayConstraintsOnBottom = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayConstraintsOnBottom);
+			/// <summary>
+			/// Reverse the current role order
+			/// </summary>
+			public static readonly CommandID DisplayReverseRoleOrder = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayReverseRoleOrder);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -1204,7 +1347,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The Sample Population item on the context menu
 			/// </summary>
-			private const int cmdIdViewSamplePopulationEditor = 0x2930;
+			private const int cmdIdViewSamplePopulationEditor = 0x2920;
 			/// <summary>
 			/// View the reference mode editor
 			/// </summary>
@@ -1350,6 +1493,30 @@ namespace Neumont.Tools.ORM.Shell
 			/// Objectifies the fact type.
 			/// </summary>
 			private const int cmdIdObjectifyFactType = 0x291F;
+			/// <summary>
+			/// Set the FactTypeShape.DisplayOrientation property to Horizontal
+			/// </summary>
+			private const int cmdIdDisplayOrientationHorizontal = 0x2921;
+			/// <summary>
+			/// Set the FactTypeShape.DisplayOrientation property to RotatedLeft
+			/// </summary>
+			private const int cmdIdDisplayOrientationRotatedLeft = 0x2922;
+			/// <summary>
+			/// Set the FactTypeShape.DisplayOrientation property to RotatedRight
+			/// </summary>
+			private const int cmdIdDisplayOrientationRotatedRight = 0x2923;
+			/// <summary>
+			/// Set the FactTypeShape.ConstraintDisplayPosition property to Top
+			/// </summary>
+			private const int cmdIdDisplayConstraintsOnTop = 0x2924;
+			/// <summary>
+			/// Set the FactTypeShape.ConstraintDisplayPosition property to Bottom
+			/// </summary>
+			private const int cmdIdDisplayConstraintsOnBottom = 0x2925;
+			/// <summary>
+			/// Reverse the current role order
+			/// </summary>
+			private const int cmdIdDisplayReverseRoleOrder = 0x2926;
 			#endregion
 		}
 	}

@@ -42,7 +42,8 @@ CMDS_SECTION guidORMDesignerPackage
 		// Context menus
 		guidORMDesignerCommandSet:menuIdContextMenu,					guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Designer Context Menu",			"ORMDesignerContextMenu";
 		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,			guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0000,	TOOLWINDOWTOOLBAR,	"ORM Verbalization Toolbar",			"ORMDesignerVerbalizationToolbar";
-		guidORMDesignerCommandSet:menuIdErrorList,						guidORMDesignerCommandSet:groupIdErrorList,				0x0000,	CONTEXT,			"ORM Model Error List",					"Validation E&rrors";
+		guidORMDesignerCommandSet:menuIdErrorList,						guidORMDesignerCommandSet:groupIdErrorList,				0x0000,	CONTEXT,			"ORM Model Error List",					"&Validation Errors";
+		guidORMDesignerCommandSet:menuIdDisplayOrientation,				guidORMDesignerCommandSet:groupIdFactShapeCommands,		0x0000,	CONTEXT,			"ORM Fact Type Shape Orientation Menu",	"&Orientation";
 		guidORMDesignerCommandSet:menuIdReadingEditorContextMenu,		guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Reading Editor Context Menu",		"ORMReadingEditorContextMenu";
 	MENUS_END
 
@@ -54,19 +55,24 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:groupIdErrorList,					guidORMDesignerCommandSet:menuIdContextMenu,			0x0008;
 		guidORMDesignerCommandSet:groupIdRoleCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0010;
 		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0018;
+		guidORMDesignerCommandSet:groupIdFactShapeCommands,			guidORMDesignerCommandSet:menuIdContextMenu,			0x001A;
 		guidORMDesignerCommandSet:groupIdORMToolWindows,			guidORMDesignerCommandSet:menuIdContextMenu,			0x0020;
 		guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0030;
 		guidORMDesignerCommandSet:groupIdModelCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0040;
 		guidORMDesignerCommandSet:groupIdConstraintEditContext,		guidORMDesignerCommandSet:menuIdContextMenu,			0x0050;
-		guidORMDesignerCommandSet:groupIdVerbalizationCommands,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0060;
+		guidORMDesignerCommandSet:groupIdProperties,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0060;
+
+		guidORMDesignerCommandSet:groupIdVerbalizationCommands,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0010;
 	
 		guidORMDesignerCommandSet:groupIdReadingEditorContextAddDelete, guidORMDesignerCommandSet:menuIdReadingEditorContextMenu, 0x0009;		
 		guidORMDesignerCommandSet:groupIdReadingEditorContextReadingPromoteDemote, guidORMDesignerCommandSet:menuIdReadingEditorContextMenu, 0x0010;
 		guidORMDesignerCommandSet:groupIdReadingEditorContextOrderPromoteDemote, guidORMDesignerCommandSet:menuIdReadingEditorContextMenu, 0x0011;
-	  
-		
 
 		guidORMDesignerCommandSet:groupIdErrorListTest,				guidORMDesignerCommandSet:menuIdErrorList,				0x0010;
+
+		guidORMDesignerCommandSet:groupIdDisplayOrientation,		guidORMDesignerCommandSet:menuIdDisplayOrientation,		0x0010;
+		guidORMDesignerCommandSet:groupIdDisplayConstraintPosition,	guidORMDesignerCommandSet:menuIdDisplayOrientation,		0x0020;
+		guidORMDesignerCommandSet:groupIdDisplayReverseRoleOrder,	guidORMDesignerCommandSet:menuIdDisplayOrientation,		0x0030;
 	NEWGROUPS_END
 
 	BUTTONS_BEGIN
@@ -95,9 +101,9 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdReadingEditorDemoteReadingOrder		guidORMDesignerCommandSet:groupIdReadingEditorContextOrderPromoteDemote,		0x0770,		guidOfficeIcon:msotcidDownArrow2,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Order Down";
 		//UNDONE: Add menu options for: Delete Reading Order, Set as Primary Reading, & Set as Primary Reading Order
 
-		guidORMDesignerCommandSet:cmdIdViewNewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM M&odel Browser (New)";
-		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x00FF,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	0,												"ORM M&odel Browser";
-		guidORMDesignerCommandSet:cmdIdViewVerbalizationBrowser,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0200,		guidORMToolWindowIcons:bmpIdToolWindowVerbalizationBrowser,			BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Verbalization Browser";
+		guidORMDesignerCommandSet:cmdIdViewNewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Model B&rowser (New)";
+		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x00FF,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	0,												"ORM Model B&rowser";
+		guidORMDesignerCommandSet:cmdIdViewVerbalizationBrowser,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0200,		guidORMToolWindowIcons:bmpIdToolWindowVerbalizationBrowser,			BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Verbali&zation Browser";
 		guidORMDesignerCommandSet:cmdIdViewFactEditor,				guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0300,		guidORMToolWindowIcons:bmpIdToolWindowFactEditor,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Fact Editor";
 		guidORMDesignerCommandSet:cmdIdViewSamplePopulationEditor,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0400,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Sample Pop&ulation Editor";
 		guidORMDesignerCommandSet:cmdIdViewNotesWindow,				guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0500,		guidORMToolWindowIcons:bmpIdToolWindowNotesEditor,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Notes Editor";
@@ -118,6 +124,15 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdShowNegativeVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x040,		guidORMVerbalizationToolbarImages:bmpIdShowNegativeVerbalization,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Show negative verbalizations, if available";
 
 		guidORMDesignerCommandSet:cmdIdDeleteAlternate,				guidORMDesignerCommandSet:groupIdDeleteContext,			0x020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"&Delete Model Element";
+
+		guidORMDesignerCommandSet:cmdIdDisplayOrientationRotatedLeft,guidORMDesignerCommandSet:groupIdDisplayOrientation,	0x010,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Vertical Rotated &Left";
+		guidORMDesignerCommandSet:cmdIdDisplayOrientationHorizontal,guidORMDesignerCommandSet:groupIdDisplayOrientation,	0x020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Horizontal";
+		guidORMDesignerCommandSet:cmdIdDisplayOrientationRotatedRight,guidORMDesignerCommandSet:groupIdDisplayOrientation,	0x030,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Vertical Rotated &Right";
+
+		guidORMDesignerCommandSet:cmdIdDisplayConstraintsOnTop,		guidORMDesignerCommandSet:groupIdDisplayConstraintPosition,	0x010,	guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Constraints On &Top";
+		guidORMDesignerCommandSet:cmdIdDisplayConstraintsOnBottom,	guidORMDesignerCommandSet:groupIdDisplayConstraintPosition,	0x020,	guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Constraints On &Bottom";
+
+		guidORMDesignerCommandSet:cmdIdDisplayReverseRoleOrder,		guidORMDesignerCommandSet:groupIdDisplayReverseRoleOrder,0x010,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Re&verse Role Order";
 	BUTTONS_END
 	COMBOS_BEGIN
 	COMBOS_END
@@ -130,6 +145,7 @@ CMDS_SECTION guidORMDesignerPackage
 
 	CMDPLACEMENT_SECTION
 		CMDSETID_StandardCommandSet97:cmdidDelete,					guidORMDesignerCommandSet:groupIdDeleteContext,			0x0010;
+		CMDSETID_StandardCommandSet97:cmdidPropertiesWindow,		guidORMDesignerCommandSet:groupIdProperties		,		0x0010;
 	CMDPLACEMENT_END
 
 	VISIBILITY_SECTION

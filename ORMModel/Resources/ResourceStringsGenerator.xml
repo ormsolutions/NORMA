@@ -270,6 +270,9 @@
 	<ResourceString name="DeleteRoleSequenceTransactionName" model="Diagram" resourceName="DeleteRoleSequence.TransactionName">
 		<comment type="summary">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
+	<ResourceString name="ReverseRoleOrderTransactionName" model="Diagram" resourceName="ReverseRoleOrder.TransactionName">
+		<comment type="summary">The transaction name used for reversing the role order in a fact type shape. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
 	<ResourceString name="MoveRoleOrderTransactionName" model="Diagram" resourceName="MoveRoleOrder.TransactionName">
 		<comment type="summary">The transaction name used for moving a role order in a fact type. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>

@@ -548,6 +548,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "DeleteRoleSequence.TransactionName");
 			}
 		}
+		/// <summary>The transaction name used for reversing the role order in a fact type shape. The text appears in the undo dropdown in the VS IDE.</summary>
+		public static string ReverseRoleOrderTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReverseRoleOrder.TransactionName");
+			}
+		}
 		/// <summary>The transaction name used for moving a role order in a fact type. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string MoveRoleOrderTransactionName
 		{
