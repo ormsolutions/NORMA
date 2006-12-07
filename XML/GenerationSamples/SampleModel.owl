@@ -2,98 +2,6 @@
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="This needs to be done" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
 	<!--OWL Universe of Discourse for SampleModel-->
 	<!--Each ORM EntityType maps to an owl:Class-->
-	<owl:Class rdf:ID="PersonDrivesCar">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:unionOf rdf:parseType="Collection">
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#DrivesCar_vin" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#DrivenByPerson" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-			</owl:unionOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#vin" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	<owl:Class rdf:ID="PersonBoughtCarFromPersonOnDate">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:unionOf rdf:parseType="Collection">
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Buyer" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#CarSold_vin" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Seller" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-			</owl:unionOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#vin" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#YMD" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	<owl:Class rdf:ID="Review">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:unionOf rdf:parseType="Collection">
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Car_vin" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Criterion_Name" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-			</owl:unionOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#vin" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#Integer" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#Name" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	<owl:Class rdf:ID="PersonHasNickName">
-		<!--Preferred Id-->
-		<rdfs:subClassOf>
-			<owl:unionOf rdf:parseType="Collection">
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#NickName" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-				<owl:Restriction>
-					<owl:onProperty rdf:resource="#Person" />
-					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-				</owl:Restriction>
-			</owl:unionOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="#NickName" />
-				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
 	<owl:Class rdf:ID="Person">
 		<!--Preferred Id-->
 		<rdfs:subClassOf>
@@ -233,6 +141,60 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
+	<owl:Class rdf:ID="PersonBoughtCarFromPersonOnDate">
+		<!--Preferred Id-->
+		<rdfs:subClassOf>
+			<owl:unionOf rdf:parseType="Collection">
+				<owl:Restriction>
+					<owl:onProperty rdf:resource="#Buyer" />
+					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+				</owl:Restriction>
+				<owl:Restriction>
+					<owl:onProperty rdf:resource="#CarSold_vin" />
+					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+				</owl:Restriction>
+				<owl:Restriction>
+					<owl:onProperty rdf:resource="#Seller" />
+					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+				</owl:Restriction>
+			</owl:unionOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#vin" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#YMD" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	<owl:Class rdf:ID="Review">
+		<!--Preferred Id-->
+		<rdfs:subClassOf>
+			<owl:unionOf rdf:parseType="Collection">
+				<owl:Restriction>
+					<owl:onProperty rdf:resource="#Car_vin" />
+					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+				</owl:Restriction>
+				<owl:Restriction>
+					<owl:onProperty rdf:resource="#Criterion_Name" />
+					<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+				</owl:Restriction>
+			</owl:unionOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#vin" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#Integer" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="#Name" />
+				<owl:cardinality rdf:datatype="xs:nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 	<!--Each ORM ValueType maps to an owl:DatatypeProperty-->
 	<owl:DatatypeProperty rdf:ID="Person_id">
 		<rdfs:domain rdf:resource="#Person" />
@@ -259,11 +221,11 @@
 		<rdfs:range rdf:resource="xs:integer" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="vin">
-		<rdfs:domain rdf:resource="#PersonDrivesCar" />
+		<rdfs:domain rdf:resource="#Person" />
 		<rdfs:range rdf:resource="xs:decimalNumber" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="YMD">
-		<rdfs:domain rdf:resource="#PersonBoughtCarFromPersonOnDate" />
+		<rdfs:domain rdf:resource="#Person" />
 		<rdfs:range rdf:resource="xs:decimalNumber" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="Name">
@@ -275,7 +237,7 @@
 		<rdfs:range />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="NickName">
-		<rdfs:domain rdf:resource="#PersonHasNickName" />
+		<rdfs:domain rdf:resource="#" />
 		<rdfs:range rdf:resource="xs:string" />
 	</owl:DatatypeProperty>
 	<owl:DatatypeProperty rdf:ID="ValueType1">
@@ -355,34 +317,6 @@
 		<rdfs:range rdf:resource="xs:boolean" />
 	</owl:DatatypeProperty>
 	<!--Relationships between ORM EntityTypes map to an owl:ObjectProperty-->
-	<owl:ObjectProperty rdf:ID="DrivenByPerson">
-		<rdfs:domain rdf:resource="#PersonDrivesCar" />
-		<rdfs:range rdf:resource="#Person" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="PersonDrivesCar">
-		<rdfs:inverseOf rdf:resource="#DrivenByPerson" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="Buyer">
-		<rdfs:domain rdf:resource="#PersonBoughtCarFromPersonOnDate" />
-		<rdfs:range rdf:resource="#Person" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="PersonBoughtCarFromPersonOnDate">
-		<rdfs:inverseOf rdf:resource="#Buyer" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="Seller">
-		<rdfs:domain rdf:resource="#PersonBoughtCarFromPersonOnDate" />
-		<rdfs:range rdf:resource="#Person" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="PersonBoughtCarFromPersonOnDate">
-		<rdfs:inverseOf rdf:resource="#Seller" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="Person">
-		<rdfs:domain rdf:resource="#PersonHasNickName" />
-		<rdfs:range rdf:resource="#Person" />
-	</owl:ObjectProperty>
-	<owl:ObjectProperty rdf:ID="PersonHasNickName">
-		<rdfs:inverseOf rdf:resource="#Person" />
-	</owl:ObjectProperty>
 	<owl:ObjectProperty rdf:ID="">
 		<rdfs:domain rdf:resource="#Person" />
 		<rdfs:range rdf:resource="#MalePerson" />
@@ -438,5 +372,19 @@
 	</owl:ObjectProperty>
 	<owl:ObjectProperty rdf:ID="ValueType1DoesSomethingWith">
 		<rdfs:inverseOf rdf:resource="#DoesSomethingWithPerson" />
+	</owl:ObjectProperty>
+	<owl:ObjectProperty rdf:ID="Buyer">
+		<rdfs:domain rdf:resource="#PersonBoughtCarFromPersonOnDate" />
+		<rdfs:range rdf:resource="#Person" />
+	</owl:ObjectProperty>
+	<owl:ObjectProperty rdf:ID="PersonBoughtCarFromPersonOnDate">
+		<rdfs:inverseOf rdf:resource="#Buyer" />
+	</owl:ObjectProperty>
+	<owl:ObjectProperty rdf:ID="Seller">
+		<rdfs:domain rdf:resource="#PersonBoughtCarFromPersonOnDate" />
+		<rdfs:range rdf:resource="#Person" />
+	</owl:ObjectProperty>
+	<owl:ObjectProperty rdf:ID="PersonBoughtCarFromPersonOnDate">
+		<rdfs:inverseOf rdf:resource="#Seller" />
 	</owl:ObjectProperty>
 </rdf:RDF>

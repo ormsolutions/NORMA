@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -27,16 +28,16 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Microsoft.VisualStudio.Modeling.Diagrams;
-using System.Collections.ObjectModel;
-using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -572,7 +573,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Manages event handlers in the store.
 		/// </summary>
-		protected override void ManageEventHandlers(Store store, Neumont.Tools.Modeling.SafeEventManager eventManager, bool addHandlers)
+		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// empty
 		}

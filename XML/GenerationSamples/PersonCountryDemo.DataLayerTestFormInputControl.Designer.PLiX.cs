@@ -3,17 +3,11 @@
 	#region CountryCore_InputControl
 	public partial class CountryCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.TabControl actionTabs;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -22,9 +16,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -60,9 +52,7 @@
 	#region Create_CountryCore_InputControl
 	public partial class Create_CountryCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label lblCreate;
 		private System.Windows.Forms.Button btnCreate;
@@ -71,12 +61,8 @@
 		private PersonCountryDemoContext.ConnectionDelegate Create_Country_connect;
 		private IPersonCountryDemoContext testVar;
 		private Country abstractTypeVar;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -85,9 +71,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -146,7 +130,7 @@
 			// 
 			// this
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6, 13);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.pnlDisplay);
@@ -163,9 +147,7 @@
 	#region Collection_CountryCore_InputControl
 	public partial class Collection_CountryCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label lblCollection;
 		private System.Windows.Forms.Button btnCollection;
@@ -174,12 +156,8 @@
 		private PersonCountryDemoContext.ConnectionDelegate Collection_Country_connect;
 		private IPersonCountryDemoContext testVar;
 		private Country abstractTypeVar;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -188,9 +166,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -249,7 +225,7 @@
 			// 
 			// this
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6, 13);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.pnlDisplay);
@@ -266,9 +242,7 @@
 	#region SelectCountryCore_InputControl
 	public partial class Select_CountryCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label lblSelectionMode;
 		private System.Windows.Forms.ComboBox cbxSelectionMode;
@@ -286,12 +260,8 @@
 		private PersonCountryDemoContext.ConnectionDelegate Select_Country_connect;
 		private IPersonCountryDemoContext testVar;
 		private Country abstractTypeVar;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -300,9 +270,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -448,7 +416,7 @@
 			// 
 			// this
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6, 13);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.pnlDisplay);
@@ -474,17 +442,11 @@
 	#region PersonCore_InputControl
 	public partial class PersonCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.TabControl actionTabs;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -493,9 +455,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -531,9 +491,7 @@
 	#region Create_PersonCore_InputControl
 	public partial class Create_PersonCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label lblCreate;
 		private System.Windows.Forms.Button btnCreate;
@@ -542,12 +500,8 @@
 		private PersonCountryDemoContext.ConnectionDelegate Create_Person_connect;
 		private IPersonCountryDemoContext testVar;
 		private Person abstractTypeVar;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -556,9 +510,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -619,7 +571,7 @@
 			// 
 			// this
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6, 13);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.pnlDisplay);
@@ -636,9 +588,7 @@
 	#region Collection_PersonCore_InputControl
 	public partial class Collection_PersonCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label lblCollection;
 		private System.Windows.Forms.Button btnCollection;
@@ -647,12 +597,8 @@
 		private PersonCountryDemoContext.ConnectionDelegate Collection_Person_connect;
 		private IPersonCountryDemoContext testVar;
 		private Person abstractTypeVar;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -661,9 +607,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -724,7 +668,7 @@
 			// 
 			// this
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6, 13);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.pnlDisplay);
@@ -741,9 +685,7 @@
 	#region SelectPersonCore_InputControl
 	public partial class Select_PersonCore_InputControl
 	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label lblSelectionMode;
 		private System.Windows.Forms.ComboBox cbxSelectionMode;
@@ -761,12 +703,8 @@
 		private PersonCountryDemoContext.ConnectionDelegate Select_Person_connect;
 		private IPersonCountryDemoContext testVar;
 		private Person abstractTypeVar;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -775,9 +713,7 @@
 			}
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
@@ -928,7 +864,7 @@
 			// 
 			// this
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6, 13);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.pnlDisplay);

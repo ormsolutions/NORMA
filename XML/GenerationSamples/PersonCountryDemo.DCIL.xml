@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="PersonCountryDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
-	<dcl:domainDataType name="Title">
+	<dcl:domainDataType name="Title" oilRefName="Title">
 		<dcl:predefinedDataType name="CHARACTER VARYING" length="4" />
 		<dcl:checkConstraint name="Title_Chk">
 			<dep:inPredicate type="IN">
@@ -14,7 +14,7 @@
 			</dep:inPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:domainDataType name="Region_code">
+	<dcl:domainDataType name="Region_code" oilRefName="Region_code">
 		<dcl:predefinedDataType name="CHARACTER" length="8" />
 		<dcl:checkConstraint name="Region_code_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
@@ -31,30 +31,30 @@
 			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:table name="Person">
-		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
+	<dcl:table name="Person" oilRefName="Person">
+		<dcl:column name="Person_id" isNullable="false" isIdentity="true" oilRefName="Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true">
-			<dcl:columnRef name="Person_id" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint1" isPrimary="true" oilRefName="InternalUniquenessConstraint1">
+			<dcl:columnRef name="Person_id" oilRefName="Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="LastName" isNullable="false" isIdentity="false">
+		<dcl:column name="LastName" isNullable="false" isIdentity="false" oilRefName="LastName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
+		<dcl:column name="FirstName" isNullable="false" isIdentity="false" oilRefName="FirstName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="Title" isNullable="true" isIdentity="false">
+		<dcl:column name="Title" isNullable="true" isIdentity="false" oilRefName="Title">
 			<dcl:domainDataTypeRef name="Title" />
 		</dcl:column>
-		<dcl:column isNullable="true" isIdentity="false" name="Country_Country_name">
+		<dcl:column isNullable="true" isIdentity="false" oilRefName="Country_name" name="Country_Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Country_FK" targetTable="Country">
-			<dcl:columnRef sourceName="Country_Country_name" targetName="Country_name" />
+		<dcl:referenceConstraint name="Country_FK" oilRefName="Country" targetTable="Country">
+			<dcl:columnRef sourceName="Country_Country_name" targetName="Country_name" oilRefName="Country_Country_name" />
 		</dcl:referenceConstraint>
 	</dcl:table>
-	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person">
 		<dcl:parameter mode="IN" name="Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -85,7 +85,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DeletePerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeletePerson" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person">
 		<dcl:parameter mode="IN" name="Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -100,18 +100,94 @@
 			</dml:whereClause>
 		</dml:deleteStatement>
 	</dcl:procedure>
-	<dcl:table name="Country">
-		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
+	<dcl:procedure name="UpdatePersonLastName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="LastName">
+		<dcl:parameter mode="IN" name="LastName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
+		</dcl:parameter>
+		<dml:updateStatement schema="PersonCountryDemo" name="Person">
+			<dml:setClause>
+				<ddl:column name="LastName" />
+				<dep:sqlParameterReference name="LastName" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonFirstName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="FirstName">
+		<dcl:parameter mode="IN" name="FirstName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
+		</dcl:parameter>
+		<dml:updateStatement schema="PersonCountryDemo" name="Person">
+			<dml:setClause>
+				<ddl:column name="FirstName" />
+				<dep:sqlParameterReference name="FirstName" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonTitle" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Title">
+		<dcl:parameter mode="IN" name="Title">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="4" />
+		</dcl:parameter>
+		<dml:updateStatement schema="PersonCountryDemo" name="Person">
+			<dml:setClause>
+				<ddl:column name="Title" />
+				<dep:sqlParameterReference name="Title" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnCntry_Cntry_nm" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Country_Country_name">
+		<dcl:parameter mode="IN" name="Country_Country_name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
+		</dcl:parameter>
+		<dml:updateStatement schema="PersonCountryDemo" name="Person">
+			<dml:setClause>
+				<ddl:column name="Country_Country_name" />
+				<dep:sqlParameterReference name="Country_Country_name" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:table name="Country" oilRefName="Country">
+		<dcl:column name="Country_name" isNullable="false" isIdentity="false" oilRefName="Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint3" isPrimary="true">
-			<dcl:columnRef name="Country_name" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint3" isPrimary="true" oilRefName="InternalUniquenessConstraint3">
+			<dcl:columnRef name="Country_name" oilRefName="Country_name" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="Region_Region_code" isNullable="true" isIdentity="false">
+		<dcl:column name="Region_Region_code" isNullable="true" isIdentity="false" oilRefName="Region_Region_code">
 			<dcl:domainDataTypeRef name="Region_code" />
 		</dcl:column>
 	</dcl:table>
-	<dcl:procedure name="InsertCountry" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertCountry" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Country">
 		<dcl:parameter mode="IN" name="Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
@@ -127,7 +203,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DeleteCountry" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeleteCountry" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Country">
 		<dcl:parameter mode="IN" name="Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
@@ -141,5 +217,43 @@
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:deleteStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdateCountryCountry_name" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Country" oilColumnRef="Country_name">
+		<dcl:parameter mode="IN" name="Country_name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
+		</dcl:parameter>
+		<dml:updateStatement schema="PersonCountryDemo" name="Country">
+			<dml:setClause>
+				<ddl:column name="Country_name" />
+				<dep:sqlParameterReference name="Country_name" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Country_name" />
+						<dep:sqlParameterReference name="Country_name" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtCntryRgn_Rgn_cd" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Country" oilColumnRef="Region_Region_code">
+		<dcl:parameter mode="IN" name="Region_Region_code">
+			<dcl:predefinedDataType name="CHARACTER" length="8" />
+		</dcl:parameter>
+		<dml:updateStatement schema="PersonCountryDemo" name="Country">
+			<dml:setClause>
+				<ddl:column name="Region_Region_code" />
+				<dep:sqlParameterReference name="Region_Region_code" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Country_name" />
+						<dep:sqlParameterReference name="Country_name" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
 	</dcl:procedure>
 </dcl:schema>

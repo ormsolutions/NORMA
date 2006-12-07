@@ -360,9 +360,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Called during event playback before an Invalidate call triggered
-		/// via the InvalidateRequired mechanism is called. The default implementation
-		/// is empty.
+		/// Called during event playback before an <see cref="ShapeElement.Invalidate()"/> call triggered
+		/// via the <see cref="InvalidateRequired()"/> mechanism is called. The default implementation
+		/// does nothing.
 		/// </summary>
 		protected virtual void BeforeInvalidate()
 		{
@@ -387,21 +387,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Nothing to do, we're just trying to create a transaction log
 		}
 		/// <summary>
-		/// Manage base shape event handlers
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ORMBaseShape"/>s.
 		/// </summary>
-		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-
-			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ORMBaseShape.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(PropertyChangedEvent), action);
 		}
-		private static void AttributeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		private static void PropertyChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			Guid attributeId = e.DomainProperty.Id;
-			if (attributeId == UpdateCounterDomainPropertyId)
+			if (e.DomainProperty.Id.Equals(UpdateCounterDomainPropertyId))
 			{
-				ORMBaseShape shape = e.ModelElement as ORMBaseShape;
+				ORMBaseShape shape = (ORMBaseShape)e.ModelElement;
 				if (!shape.IsDeleted)
 				{
 					shape.BeforeInvalidate();

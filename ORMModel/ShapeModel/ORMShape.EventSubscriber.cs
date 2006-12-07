@@ -25,43 +25,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region IORMModelEventSubscriber Implementation
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers
+		/// Implements <see cref="IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
+		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		protected static void ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
-		}
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
-		{
-			ManagePreLoadModelingEventHandlers(eventManager, addHandlers);
 		}
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers
+		/// Implements <see cref="IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			Store store = Store;
-			ORMBaseShape.ManageEventHandlers(store, eventManager, addHandlers);
-			ReadingShape.ManageEventHandlers(store, eventManager, addHandlers);
-			ExternalConstraintShape.ManageEventHandlers(store, eventManager, addHandlers);
-			RolePlayerLink.ManageEventHandlers(store, eventManager, addHandlers);
-			ObjectTypeShape.ManageEventHandlers(store, eventManager, addHandlers);
-			FactTypeShape.ManageEventHandlers(store, eventManager, addHandlers);
-			SubtypeLink.ManageEventHandlers(store, eventManager, addHandlers);
+			ORMBaseShape.ManageEventHandlers(store, eventManager, action);
+			ReadingShape.ManageEventHandlers(store, eventManager, action);
+			ExternalConstraintShape.ManageEventHandlers(store, eventManager, action);
+			RolePlayerLink.ManageEventHandlers(store, eventManager, action);
+			ObjectTypeShape.ManageEventHandlers(store, eventManager, action);
+			FactTypeShape.ManageEventHandlers(store, eventManager, action);
+			SubtypeLink.ManageEventHandlers(store, eventManager, action);
 		}
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			ManagePostLoadModelingEventHandlers(eventManager, addHandlers);
+			ManagePostLoadModelingEventHandlers(eventManager, action);
 		}
 		/// <summary>
-		/// Implements IORMModelEvenSubscriber.ManageSurveyQuestionModelingEventHandlers
+		/// Implements <see cref="IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
+		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		protected static void ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			//currently unimplemented as the survey doesn't care about shape model changes
-		}
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
-		{
-			ManageSurveyQuestionModelingEventHandlers(eventManager, addHandlers);
 		}
 		#endregion // IORMModelEventSubscriber Implementation
 	}

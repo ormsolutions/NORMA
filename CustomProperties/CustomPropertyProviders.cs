@@ -97,10 +97,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		#endregion // CustomPropertyProviders class
 
 		#region IORMModelEventSubscriber Members
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			IORMPropertyProviderService propertyProvisioningService = ((IORMToolServices)this.Store).PropertyProviderService;
-			if (addHandlers)
+			if (action == EventHandlerAction.Add)
 			{
 				propertyProvisioningService.RegisterPropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true);
 				propertyProvisioningService.RegisterPropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true);
@@ -131,11 +131,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 				propertyProvisioningService.UnregisterPropertyProvider<ValueConstraint>(CustomPropertyProviders.ValueConstraint, true);
 			}
 		}
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Do nothing
 		}
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Do nothing
 		}

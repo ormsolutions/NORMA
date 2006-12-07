@@ -38,70 +38,6 @@
 		<odt:boolean name="UnnaturalDeath_isBloody" />
 		<odt:boolean name="Person_hasParents" />
 	</oil:informationTypeFormats>
-	<oil:conceptType name="PersonDrivesCar" sourceRef="_72D0A608-D62A-4A03-9A14-695CE9F67496">
-		<oil:conceptTypeRef name="DrivenByPerson" target="Person" oppositeName="PersonDrivesCar" mandatory="alethic" sourceRoleRef="_5E7AEB81-DCB6-441C-82AD-EADB5354CDFE" />
-		<oil:informationType name="DrivesCar_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_30AB5954-45CE-4694-8F39-9E56ACF49F90" />
-		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint18" modality="alethic" sourceRef="_E2444156-EB65-4515-B856-67D639C707CC" isPreferred="true">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="PersonDrivesCar" targetChild="DrivesCar_vin" />
-				<oil:typeRef targetConceptType="PersonDrivesCar" targetChild="DrivenByPerson" />
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
-	</oil:conceptType>
-	<oil:conceptType name="PersonBoughtCarFromPersonOnDate" sourceRef="_824C4C8F-678A-49C5-8B98-0D96C4CB59C8">
-		<oil:conceptTypeRef name="Buyer" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_AA114F40-EE80-457F-8281-5095743521CD" />
-		<oil:informationType name="CarSold_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_F4A2C1BC-AD7E-45B7-ADCC-FD7D4DEB0996" />
-		<oil:conceptTypeRef name="Seller" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_D7948E3D-17A8-4058-9C75-60397D9A7128" />
-		<oil:informationType name="SaleDate_YMD" formatRef="YMD" mandatory="alethic" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_560F290C-C76E-4B63-AE68-1C5F19E3E4A3" />
-		<oil:ringConstraint name="RingConstraint1" modality="alethic" sourceRef="_A8FB10ED-DD06-4C59-9AD4-C686D9D43AA2" type="irreflexive">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Seller" />
-			</oil:roleSequence>
-		</oil:ringConstraint>
-		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint23" modality="alethic" sourceRef="_9D379915-723A-4E7A-B3C2-F3AEB2B923D4" isPreferred="true">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="CarSold_vin" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Seller" />
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
-		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint24" modality="alethic" sourceRef="_5DB91C02-F704-45C0-BE90-69B66B587A74" isPreferred="false">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="SaleDate_YMD" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Seller" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="CarSold_vin" />
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
-		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint25" modality="alethic" sourceRef="_785F6B59-A48B-419B-9613-63219DB1ED77" isPreferred="false">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="CarSold_vin" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="SaleDate_YMD" />
-				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
-	</oil:conceptType>
-	<oil:conceptType name="Review" sourceRef="_5FF87171-44B6-47E0-BBF9-D88E6CD44AEC">
-		<oil:informationType name="Car_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_6E16C61A-BFC0-434F-A7F7-FC6CF51EF094" />
-		<oil:informationType name="Rating_Nr_Integer" formatRef="Integer" mandatory="alethic" sourceRef="_5F04E9A2-F8EC-40EA-B7F7-D99D0AAD276B" sourceRoleRef="_69ED0E04-CBAF-4E15-966E-35DF6BB5560C" />
-		<oil:informationType name="Criterion_Name" formatRef="Name" mandatory="alethic" sourceRef="_C154C7F4-A3B9-443E-9FF5-140C9F8FC56F" sourceRoleRef="_322B8813-87EB-4B95-A91A-8DDC6CBDA309" />
-		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint26" modality="alethic" sourceRef="_968E48B2-10EA-4344-8C2F-8F7BB712F87E" isPreferred="true">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Review" targetChild="Car_vin" />
-				<oil:typeRef targetConceptType="Review" targetChild="Criterion_Name" />
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
-	</oil:conceptType>
-	<oil:conceptType name="PersonHasNickName" sourceRef="_47B9564D-4556-42D6-B812-BCD5582F3AF3">
-		<oil:informationType name="NickName" formatRef="NickName" mandatory="alethic" sourceRef="_F413808F-22D4-49FD-9FAB-716C48ECE383" sourceRoleRef="_7CD796B9-EEBF-4288-8EA1-9F83EA16D684" />
-		<oil:conceptTypeRef name="Person" target="Person" oppositeName="PersonHasNickName" mandatory="alethic" sourceRoleRef="_6780ADD5-8F10-4EEE-AD67-624CD99B63F5" />
-		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint33" modality="alethic" sourceRef="_144EEAB0-D64E-4439-B9E1-AF58CA1E3257" isPreferred="true">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="PersonHasNickName" targetChild="NickName" />
-				<oil:typeRef targetConceptType="PersonHasNickName" targetChild="Person" />
-			</oil:roleSequence>
-		</oil:roleSequenceUniquenessConstraint>
-	</oil:conceptType>
 	<oil:conceptType name="Person" sourceRef="_97C09FEE-69B9-429A-9A7C-9C218CB295BB">
 		<oil:conceptType name="MalePerson" sourceRef="_E3BF7F91-1182-4A4F-8C4D-A0331B34E9A4" mandatory="false" sourceRoleRef="_2DC337A4-AE48-4EFD-8A48-D212D8F2E1FB" />
 		<oil:conceptType name="FemalePerson" sourceRef="_B6D73AD6-31DD-4147-AB22-BF6E9D994CBE" mandatory="false" sourceRoleRef="_8E6158FD-6C2F-4220-9294-8F358936935C" />
@@ -165,14 +101,6 @@
 		<oil:informationType name="MandatoryUniqueString" formatRef="MandatoryUniqueString" mandatory="alethic" sourceRef="_05B33E84-9567-412A-8ABF-DC395F52C220" sourceRoleRef="_36E5694F-1B3C-495C-ACBF-209DC6C2F4BD">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint67" sourceRef="_DBE5D226-1A64-4D1E-BC02-8E702E7560BC" modality="alethic" isPreferred="false" />
 		</oil:informationType>
-		<oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Person" targetChild="Wife" />
-			</oil:roleSequence>
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Person" targetChild="Husband" />
-			</oil:roleSequence>
-		</oil:exclusionConstraint>
 		<oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_F40FEEF1-947A-453D-8B63-C791930EB876" isPreferred="false">
 			<oil:roleSequence>
 				<oil:typeRef targetConceptType="Person" targetChild="FirstName" />
@@ -185,6 +113,14 @@
 				<oil:typeRef targetConceptType="Person" targetChild="Date_YMD" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Person" targetChild="Wife" />
+			</oil:roleSequence>
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Person" targetChild="Husband" />
+			</oil:roleSequence>
+		</oil:exclusionConstraint>
 	</oil:conceptType>
 	<oil:conceptType name="Task" sourceRef="_779E9788-0C2F-44B6-B958-AEEC22593966">
 		<oil:conceptTypeRef name="Person" target="Person" oppositeName="Task" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />
@@ -197,5 +133,49 @@
 			<oil:singleRoleUniquenessConstraint name="ValueType1Value_Unique" modality="alethic" sourceRef="_D4808010-4C18-442E-A5E4-B69A33A5FA88" isPreferred="true" />
 		</oil:informationType>
 		<oil:conceptTypeRef name="DoesSomethingWithPerson" target="Person" oppositeName="ValueType1DoesSomethingWith" mandatory="false" sourceRoleRef="_92066292-C1C5-4063-9652-E071F922267B" />
+	</oil:conceptType>
+	<oil:conceptType name="PersonBoughtCarFromPersonOnDate" sourceRef="_824C4C8F-678A-49C5-8B98-0D96C4CB59C8">
+		<oil:conceptTypeRef name="Buyer" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_AA114F40-EE80-457F-8281-5095743521CD" />
+		<oil:informationType name="CarSold_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_F4A2C1BC-AD7E-45B7-ADCC-FD7D4DEB0996" />
+		<oil:conceptTypeRef name="Seller" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_D7948E3D-17A8-4058-9C75-60397D9A7128" />
+		<oil:informationType name="SaleDate_YMD" formatRef="YMD" mandatory="alethic" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_560F290C-C76E-4B63-AE68-1C5F19E3E4A3" />
+		<oil:ringConstraint name="RingConstraint1" modality="alethic" sourceRef="_A8FB10ED-DD06-4C59-9AD4-C686D9D43AA2" type="irreflexive">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Seller" />
+			</oil:roleSequence>
+		</oil:ringConstraint>
+		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint23" modality="alethic" sourceRef="_9D379915-723A-4E7A-B3C2-F3AEB2B923D4" isPreferred="true">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="CarSold_vin" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Seller" />
+			</oil:roleSequence>
+		</oil:roleSequenceUniquenessConstraint>
+		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint24" modality="alethic" sourceRef="_5DB91C02-F704-45C0-BE90-69B66B587A74" isPreferred="false">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="SaleDate_YMD" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Seller" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="CarSold_vin" />
+			</oil:roleSequence>
+		</oil:roleSequenceUniquenessConstraint>
+		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint25" modality="alethic" sourceRef="_785F6B59-A48B-419B-9613-63219DB1ED77" isPreferred="false">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="CarSold_vin" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="SaleDate_YMD" />
+				<oil:typeRef targetConceptType="PersonBoughtCarFromPersonOnDate" targetChild="Buyer" />
+			</oil:roleSequence>
+		</oil:roleSequenceUniquenessConstraint>
+	</oil:conceptType>
+	<oil:conceptType name="Review" sourceRef="_5FF87171-44B6-47E0-BBF9-D88E6CD44AEC">
+		<oil:informationType name="Car_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_6E16C61A-BFC0-434F-A7F7-FC6CF51EF094" />
+		<oil:informationType name="Rating_Nr_Integer" formatRef="Integer" mandatory="alethic" sourceRef="_5F04E9A2-F8EC-40EA-B7F7-D99D0AAD276B" sourceRoleRef="_69ED0E04-CBAF-4E15-966E-35DF6BB5560C" />
+		<oil:informationType name="Criterion_Name" formatRef="Name" mandatory="alethic" sourceRef="_C154C7F4-A3B9-443E-9FF5-140C9F8FC56F" sourceRoleRef="_322B8813-87EB-4B95-A91A-8DDC6CBDA309" />
+		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint26" modality="alethic" sourceRef="_968E48B2-10EA-4344-8C2F-8F7BB712F87E" isPreferred="true">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Review" targetChild="Car_vin" />
+				<oil:typeRef targetConceptType="Review" targetChild="Criterion_Name" />
+			</oil:roleSequence>
+		</oil:roleSequenceUniquenessConstraint>
 	</oil:conceptType>
 </oil:model>

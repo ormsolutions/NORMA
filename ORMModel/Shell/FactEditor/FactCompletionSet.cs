@@ -343,14 +343,14 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					ModelingDocData docData = oldView.DocData;
 					if (docData != null)
 					{
-						ManageEventHandlers(docData.Store, false);
+						ManageEventHandlers(docData.Store, EventHandlerAction.Remove);
 					}
 				}
 				myCurrentDocView = value;
 				ReloadModelElements();
 				if (value != null)
 				{
-					ManageEventHandlers(value.DocData.Store, true);
+					ManageEventHandlers(value.DocData.Store, EventHandlerAction.Add);
 				}
 			}
 		}
@@ -380,23 +380,23 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
 		}
 
-		private void ManageEventHandlers(Store store, bool addHandlers)
+		private void ManageEventHandlers(Store store, EventHandlerAction action)
 		{
 			if (store == null || store.Disposed)
 			{
 				return;
 			}
-			SafeEventManager eventManager = (store as ISafeEventManagerProvider).SafeEventManager;
+			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
 			// Track ObjectType changes
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent), action);
 			
 			classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent), action);
 		}
 
 		private void ObjectTypeAddedEvent(object sender, ElementAddedEventArgs e)

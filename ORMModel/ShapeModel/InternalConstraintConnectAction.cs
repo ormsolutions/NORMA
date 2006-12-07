@@ -550,22 +550,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			myDropTargetShape = null;
 		}
 		/// <summary>
-		/// Manage events in the store during connect action
-		/// activation and deactivation. The default implementation watches for
-		/// new Internal constraints added to the diagram.
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> during connect action activation and deactivation.
+		/// The default implementation watches for new <see cref="UniquenessConstraint"/>s added to the <see cref="ORMModel"/>.
 		/// </summary>
-		/// <param name="store">Store</param>
-		/// <param name="addHandlers">true to add events, false to remove them</param>
-		protected virtual void ManageStoreEvents(Store store, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		protected virtual void ManageStoreEvents(Store store, EventHandlerAction action)
 		{
 			if (store == null || store.Disposed)
 			{
 				return; // bail out
 			}
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-
-			DomainClassInfo classInfo = dataDirectory.FindDomainClass(UniquenessConstraint.DomainClassId);
-			((ISafeEventManagerProvider)store).SafeEventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintAddedEvent), addHandlers);
+			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainClass(UniquenessConstraint.DomainClassId), new EventHandler<ElementAddedEventArgs>(InternalConstraintAddedEvent), action);
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated
@@ -632,22 +628,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // InternalConstraintAction specific
 		#region Base overrides
 		/// <summary>
-		/// Add an event on the store so we can track
-		/// the shape for an Internal constraint added during
-		/// the transaction resulting from completion of the mouse
-		/// action.
+		/// Adds an <see cref="EventHandler{TEventArgs}"/> on the <see cref="Store"/> so we can track the shape for the <see cref="UniquenessConstraint"/>
+		/// added during the <see cref="Transaction"/> resulting from completion of the <see cref="MouseAction"/>.
 		/// </summary>
-		/// <param name="e">DiagramEventArgs</param>
 		protected override void OnMouseActionActivated(DiagramEventArgs e)
 		{
-			ManageStoreEvents(Diagram.Store, true);
+			ManageStoreEvents(Diagram.Store, EventHandlerAction.Add);
 		}
 		/// <summary>
-		/// Deactivate the mouse action by removing the listening events,
-		/// call the base, then firing off our own AfterMouseActionDeactivated
-		/// event, if it is set.
+		/// Deactivates the <see cref="MouseAction"/> by removing the listening <see cref="EventHandler{TEventArgs}"/>s,
+		/// calling the base, and then raising the <see cref="AfterMouseActionDeactivated"/> event.
 		/// </summary>
-		/// <param name="e">DiagramEventArgs</param>
 		protected override void OnMouseActionDeactivated(DiagramEventArgs e)
 		{
 			if (myInOnClicked)
@@ -655,7 +646,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myDeactivatedDuringOnClick = true;
 				return;
 			}
-			ManageStoreEvents(e.DiagramClientView.Diagram.Store, false);
+			ManageStoreEvents(e.DiagramClientView.Diagram.Store, EventHandlerAction.Remove);
 			base.OnMouseActionDeactivated(e);
 			MouseActionDeactivatedEventHandler handler = AfterMouseActionDeactivated;
 			if (handler != null)

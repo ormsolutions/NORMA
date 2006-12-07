@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModelingEventManager>
+
+	<Copyright name="Common Public License Copyright Notice">
+		<CopyrightLine>/**************************************************************************\</CopyrightLine>
+		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
+		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
+		<CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</CopyrightLine>
+		<CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</CopyrightLine>
+		<CopyrightLine>* the terms of this license.                                               *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* You must not remove this notice, or any other, from this software.       *</CopyrightLine>
+		<CopyrightLine>\**************************************************************************/</CopyrightLine>
+	</Copyright>
+
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		<xs:element name="ModelingEventManager">
+			<xs:complexType>
+				<xs:sequence>
+					<xs:element name="Copyright">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="name" use="required" type="xs:string"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ModelEvent" type="ModelEvent" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="ElementEvent" type="ElementEvent" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:key name="EventNameKey">
+				<xs:selector xpath="./child::*"/>
+				<xs:field xpath="@name"/>
+			</xs:key>
+		</xs:element>
+		<xs:complexType name="ModelEvent">
+			<xs:attribute name="name" use="required" type="xs:NCName"/>
+			<xs:attribute name="eventArgsName" type="xs:NCName"/>
+			<xs:attribute name="isEvent" type="trueOnlyBoolean"/>
+		</xs:complexType>
+		<xs:complexType name="ElementEvent">
+			<xs:complexContent>
+				<xs:extension base="ModelEvent">
+					<xs:sequence>
+						<xs:element name="Guid" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Param" type="Param"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="GuidPair" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Param" type="Param" minOccurs="2" maxOccurs="2"/>
+								</xs:sequence>
+							</xs:complexType>
+							<xs:key name="GuidPairParamNameKey">
+								<xs:selector xpath="./child::Param"/>
+								<xs:field xpath="@name"/>
+							</xs:key>
+							<xs:key name="GuidPairParamPropertyNameKey">
+								<xs:selector xpath="./child::Param"/>
+								<xs:field xpath="@propertyName"/>
+							</xs:key>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="acceptsElementId" type="trueOnlyBoolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="Param">
+			<xs:attribute name="name" use="required" type="xs:NCName"/>
+			<xs:attribute name="type" use="required" type="xs:NCName"/>
+			<xs:attribute name="propertyName" use="required" type="xs:NCName"/>
+		</xs:complexType>
+		<xs:simpleType name="trueOnlyBoolean">
+			<xs:restriction base="xs:boolean">
+				<xs:pattern value="true"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:schema>
+
+	<ModelEvent name="ElementEventsBegun"/>
+	<ModelEvent name="ElementEventsEnded"/>
+	<ModelEvent name="DeserializationBeginning" eventArgsName="EventArgs" isEvent="true"/>
+	<ModelEvent name="DeserializationEnding" isEvent="true"/>
+	<ModelEvent name="TransactionBeginning"/>
+	<ModelEvent name="TransactionCommitted" eventArgsName="TransactionCommitEventArgs"/>
+	<ModelEvent name="TransactionRolledBack" eventArgsName="TransactionRollbackEventArgs"/>
+
+	<ElementEvent name="ElementAdded"/>
+	<ElementEvent name="ElementDeleted" acceptsElementId="true"/>
+	<ElementEvent name="ElementMoved" acceptsElementId="true"/>
+	<ElementEvent name="ElementPropertyChanged" acceptsElementId="true">
+		<Guid>
+			<Param name="domainProperty" type="DomainPropertyInfo" propertyName="DomainProperty"/>
+		</Guid>
+		<GuidPair>
+			<Param name="domainClass" type="DomainClassInfo" propertyName="DomainClass"/>
+			<Param name="domainProperty" type="DomainPropertyInfo" propertyName="DomainProperty"/>
+		</GuidPair>
+		<GuidPair>
+			<Param name="domainProperty" type="DomainPropertyInfo" propertyName="DomainProperty"/>
+			<Param name="elementId" type="Guid" propertyName="ElementId"/>
+		</GuidPair>
+	</ElementEvent>
+	<ElementEvent name="RolePlayerChanged" acceptsElementId="true">
+		<Guid>
+			<Param name="domainRole" type="DomainRoleInfo" propertyName="DomainRole"/>
+		</Guid>
+		<GuidPair>
+			<Param name="domainRole" type="DomainRoleInfo" propertyName="DomainRole"/>
+			<Param name="elementLinkId" type="Guid" propertyName="ElementLinkId"/>
+		</GuidPair>
+	</ElementEvent>
+	<ElementEvent name="RolePlayerOrderChanged" acceptsElementId="true">
+		<Guid>
+			<Param name="counterpartDomainRole" type="DomainRoleInfo" propertyName="CounterpartDomainRole"/>
+		</Guid>
+		<GuidPair>
+			<Param name="counterpartDomainRole" type="DomainRoleInfo" propertyName="CounterpartDomainRole"/>
+			<Param name="sourceElementId" type="Guid" propertyName="SourceElementId"/>
+		</GuidPair>
+	</ElementEvent>
+
+</ModelingEventManager>

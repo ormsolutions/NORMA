@@ -279,12 +279,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Wires event handlers to the store.
 		/// </summary>
-		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			SamplePopulationEditor editor = myEditor;
 			if (editor != null)
 			{
-				editor.ManageEventHandlers(store, eventManager, addHandlers);
+				editor.ManageEventHandlers(store, eventManager, action);
 			}
 		}
 		#endregion // ORMToolWindow Implementation

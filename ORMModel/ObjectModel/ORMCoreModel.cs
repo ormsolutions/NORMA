@@ -274,43 +274,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Delayed Model Validation
 		#region IORMModelEventSubscriber Implementation
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers
+		/// Implements <see cref="IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers"/>.
+		/// This implementation does nothing and does not need to be called.
 		/// </summary>
-		protected static void ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
-		}
-		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
-		{
-			ManagePreLoadModelingEventHandlers(eventManager, addHandlers);
 		}
 		/// <summary>
-		/// Implements IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers
+		/// Implements <see cref="IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		protected void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			NamedElementDictionary.ManageEventHandlers(Store, eventManager, addHandlers);
+			NamedElementDictionary.ManageEventHandlers(Store, eventManager, action);
 		}
-		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			ManagePostLoadModelingEventHandlers(eventManager, addHandlers);
+			this.ManagePostLoadModelingEventHandlers(eventManager, action);
 		}
 		/// <summary>
-		/// Implementes IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers
+		/// Implementes <see cref="IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers"/>.
 		/// </summary>
-		protected void ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory directory = this.Store.DomainDataDirectory;
 			DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
 
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
 			classInfo = directory.FindDomainClass(FactType.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), action);
 		}
-		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers)
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			this.ManageSurveyQuestionModelingEventHandlers(eventManager, addHandlers);
+			this.ManageSurveyQuestionModelingEventHandlers(eventManager, action);
 		}
 		#endregion // IORMModelEventSubscriber Implementation
 		#region IVerbalizationSnippetsProvider Implementation

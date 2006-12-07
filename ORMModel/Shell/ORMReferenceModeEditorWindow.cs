@@ -178,7 +178,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// NOT IMPLEMENTED: There are no event handlers to attach for this class.
 		/// </summary>
-		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers) { }
+		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action) { }
 		#endregion
 	}
 }

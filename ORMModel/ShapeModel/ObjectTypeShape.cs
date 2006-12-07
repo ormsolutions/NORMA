@@ -683,15 +683,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Manage event handlers in the store
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ObjectTypeShape"/>s.
 		/// </summary>
-		public static new void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static new void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
 			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(ValueTypeHasDataType.DomainClassId);
-			eventManager.AddOrRemove(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent), addHandlers);
-			eventManager.AddOrRemove(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent), action);
+			eventManager.AddOrRemoveHandler(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent), action);
 		}
 		/// <summary>
 		/// Update the shape when a data type is added from the ObjecType.

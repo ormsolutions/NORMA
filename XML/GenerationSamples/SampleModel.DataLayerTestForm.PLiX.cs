@@ -2,9 +2,7 @@
 {
 	public partial class SampleModelTester : System.Windows.Forms.Form
 	{
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
+		/// <summary>The main entry point for the application.</summary>
 		public static void Main()
 		{
 			System.Windows.Forms.Application.EnableVisualStyles();
@@ -15,17 +13,11 @@
 		{
 			this.InitializeComponent();
 		}
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+		/// <summary>Required designer variable.</summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.TabControl MasterTabControl;
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">
-		/// true if managed resources should be disposed; otherwise, false.
-		/// </param>
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -35,9 +27,7 @@
 			base.Dispose(disposing);
 		}
 		#region InitializeComponent method
-		/// <summary>
-		/// Required method for Designer support - do not modify the contents of this method with the code editor.
-		/// </summary>
+		/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
 		private void InitializeComponent()
 		{
 			this.MasterTabControl = new System.Windows.Forms.TabControl();
@@ -84,16 +74,6 @@
 			PersonCore_InputControl icPersonCore = new PersonCore_InputControl();
 			icPersonCore.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MasterTabControl.TabPages["Person"].Controls.Add(icPersonCore);
-
-			this.MasterTabControl.TabPages.Add("PersonDrivesCar", "PersonDrivesCar");
-			PersonDrivesCarCore_InputControl icPersonDrivesCarCore = new PersonDrivesCarCore_InputControl();
-			icPersonDrivesCarCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["PersonDrivesCar"].Controls.Add(icPersonDrivesCarCore);
-
-			this.MasterTabControl.TabPages.Add("PersonHasNickName", "PersonHasNickName");
-			PersonHasNickNameCore_InputControl icPersonHasNickNameCore = new PersonHasNickNameCore_InputControl();
-			icPersonHasNickNameCore.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MasterTabControl.TabPages["PersonHasNickName"].Controls.Add(icPersonHasNickNameCore);
 
 			this.MasterTabControl.TabPages.Add("Review", "Review");
 			ReviewCore_InputControl icReviewCore = new ReviewCore_InputControl();

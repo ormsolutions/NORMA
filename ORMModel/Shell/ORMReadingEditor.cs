@@ -548,14 +548,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// Manages event handlers in the store so that the tool window
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			ReadingsViewForm form = myForm;
 			ReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
 
 			if (readingEditor != null)
 			{
-				readingEditor.ManageEventHandlers(store, eventManager, addHandlers);
+				readingEditor.ManageEventHandlers(store, eventManager, action);
 			}
 		}
 		#endregion

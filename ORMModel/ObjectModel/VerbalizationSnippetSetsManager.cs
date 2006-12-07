@@ -259,19 +259,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override int GetHashCode()
 		{
 			// Note that myDescription is intentionally ignored
-			return (myEnumType == null) ?
-				0 :
-				myEnumType.GetHashCode() ^ RotateRight(myDefaultVerbalizationSets.GetHashCode(), 1) ^ RotateRight(myAlternateSnippetsDirectory.GetHashCode(), 2) ^ RotateRight(myDefaultSetsDescription.GetHashCode(), 3) ^ RotateRight(myTypeDescription.GetHashCode(), 4);
-		}
-		private static int RotateRight(int value, int places)
-		{
-			places = places & 0x1F;
-			if (places == 0)
-			{
-				return value;
-			}
-			int mask = ~0x7FFFFFF >> (places - 1);
-			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
+			return (myEnumType == null) ? 0 :
+				Neumont.Tools.Modeling.Utility.GetCombinedHashCode(
+					myEnumType.GetHashCode(),
+					myDefaultVerbalizationSets.GetHashCode(),
+					myAlternateSnippetsDirectory.GetHashCode(),
+					myDefaultSetsDescription.GetHashCode(),
+					myTypeDescription.GetHashCode());
 		}
 		#endregion // Equality overrides
 	}
@@ -627,19 +621,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override int GetHashCode()
 		{
 			// Note that myDescription is intentionally ignored
-			return (myEnumTypeName == null) ?
-				0 :
-				myEnumTypeName.GetHashCode() ^ RotateRight(myLangId.GetHashCode(), 1) ^ RotateRight(myId.GetHashCode(), 2);
-		}
-		private static int RotateRight(int value, int places)
-		{
-			places = places & 0x1F;
-			if (places == 0)
-			{
-				return value;
-			}
-			int mask = ~0x7FFFFFF >> (places - 1);
-			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
+			return (myEnumTypeName == null) ? 0 :
+				Neumont.Tools.Modeling.Utility.GetCombinedHashCode(myEnumTypeName.GetHashCode(), myLangId.GetHashCode(), myId.GetHashCode());
 		}
 		#endregion // Equality overrides
 	}

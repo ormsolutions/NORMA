@@ -8,12 +8,12 @@ using Neumont.Tools.ORM.SDK.TestEngine;
 
 namespace Neumont.Tools.ORM.SDK.TestDriver
 {
-	class Program
+	internal static class Program
 	{
 		public const string SchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuite";
 		public const string ReportSchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuiteReport";
 
-		static int Main(string[] args)
+		private static int Main(string[] args)
 		{
 			string suiteFile = args[0];
 			FileInfo suiteFileInfo = new FileInfo(suiteFile);

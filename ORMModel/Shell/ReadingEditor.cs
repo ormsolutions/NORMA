@@ -229,16 +229,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return retVal;
 		}
-		private static int RotateRight(int value, int places)
-		{
-			places = places & 0x1F;
-			if (places == 0)
-			{
-				return value;
-			}
-			int mask = ~0x7FFFFFF >> (places - 1);
-			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
-		}
 		/// <summary>
 		/// Standard override
 		/// </summary>
@@ -253,12 +243,12 @@ namespace Neumont.Tools.ORM.Shell
 				int count = order.Count;
 				for (int i = 0; i < count; ++i)
 				{
-					hashCode ^= RotateRight(order[i].GetHashCode(), i);
+					hashCode ^= Utility.RotateRight(order[i].GetHashCode(), i);
 				}
 				fact = myImpliedFactType;
 				if (fact != null)
 				{
-					hashCode ^= RotateRight(fact.GetHashCode(), (count == 0) ? 1 : count);
+					hashCode ^= Utility.RotateRight(fact.GetHashCode(), (count == 0) ? 1 : count);
 				}
 			}
 			return hashCode;
@@ -989,10 +979,13 @@ namespace Neumont.Tools.ORM.Shell
 		#region model events and handlers
 		#region Nested event handler attach/detach methods
 		/// <summary>
-		/// Manages event handlers in the store so that the tool window
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> so that the <see cref="ORMReadingEditorToolWindow"/>
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		public void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			if (store == null || store.Disposed)
 			{
@@ -1002,34 +995,34 @@ namespace Neumont.Tools.ORM.Shell
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
 			// Track Reading changes
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingLinkAddedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingLinkRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingLinkAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingLinkRemovedEvent), action);
 
 			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), action);
 
 			// Track ReadingOrder changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingOrderLinkRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingOrderLinkRemovedEvent), action);
 
 			//Track FactType RoleOrder changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), action);
 
 			// Track fact type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemovedEvent), action);
 
 			//Track Order Change
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingOrderPositionChangedHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingOrderPositionChangedHandler), action);
 			classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingPositionChangedHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingPositionChangedHandler), action);
 
 			//Track Currently Executing Events
-			eventManager.AddOrRemove(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), addHandlers);
-			eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
+			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 		}
 
 		#endregion //Nested event handler attach/detach methods
@@ -2414,17 +2407,6 @@ namespace Neumont.Tools.ORM.Shell
 						return true;
 					}
 
-					private static int RotateRight(int value, int places)
-					{
-						places = places & 0x1F;
-						if (places == 0)
-						{
-							return value;
-						}
-						int mask = ~0x7FFFFFF >> (places - 1);
-						return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
-					}
-
 					public int GetHashCode(IList<RoleBase> obj)
 					{
 						int objCount = obj.Count;
@@ -2436,7 +2418,7 @@ namespace Neumont.Tools.ORM.Shell
 						int hashCode = obj[0].GetHashCode();
 						for (int i = 1; i < objCount; ++i)
 						{
-							hashCode ^= RotateRight(obj[i].GetHashCode(), i);
+							hashCode ^= Utility.RotateRight(obj[i].GetHashCode(), i);
 						}
 						return hashCode;
 					}

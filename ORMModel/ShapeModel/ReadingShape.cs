@@ -67,27 +67,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region Model Event Hookup and Handlers
 		#region Event Hookup
 		/// <summary>
-		/// Managers event listeners for the purpose of notifying the
-		/// ReadingShape to invalidate its cached data.
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for the purpose of notifying the
+		/// <see cref="ReadingShape"/>s to invalidate their cached data.
 		/// </summary>
-		public static new void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static new void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
 			// Track ElementLink changes
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingAddedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingRemovedEvent), action);
 
 			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), action);
 
 			classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasRole.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(RoleAddedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(RoleRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RoleAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RoleRemovedEvent), action);
 
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeShapeHasRoleDisplayOrder.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedHandler), action);
 		}
 		#endregion // Event Hookup
 		#region Reading Events

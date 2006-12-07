@@ -4,8 +4,6 @@ using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using System.Collections;
-using System.Runtime.InteropServices;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 
@@ -166,7 +164,7 @@ namespace Neumont.Tools.ORM.Shell
 				SetCurrentDocument(monitor.CurrentDocument as ORMDesignerDocData, monitor.CurrentDocumentView as DiagramDocView);
 				CurrentORMSelectionContainer = monitor.CurrentSelectionContainer as IORMSelectionContainer;
 			}
-			catch (COMException)
+			catch (System.Runtime.InteropServices.COMException)
 			{
 				// Swallow, this will occasionally be initialized when the document is shutting down
 			}
@@ -191,12 +189,12 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // IMonitorSelectionService Event Handlers
 		#region Abstract Methods and Properties
 		/// <summary>
-		/// Attaches custom event handlers to the store.  This method must be overridden.
+		/// Attaches custom <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/>.  This method must be overridden.
 		/// </summary>
-		/// <param name="store">The store to which event handlers should be attached.</param>
-		/// <param name="eventManager">The SafeEventManager to attach events to.</param>
-		/// <param name="addHandlers">true to attach event handlers, false to detach handlers</param>
-		protected abstract void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers);
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		protected abstract void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action);
 		/// <summary>
 		/// Gets the string that should be displayed in the title bar of the tool window.
 		/// </summary>
@@ -244,10 +242,10 @@ namespace Neumont.Tools.ORM.Shell
 			return retVal;
 		}
 		/// <summary>
-		/// Passes GetSelectedComponents through to myCurrentORMSelectionContainer casted as a ModelingWindowPane.
+		/// Passes <see cref="GetSelectedComponents"/> through to <see cref="myCurrentORMSelectionContainer"/>
+		/// casted as a <see cref="ModelingWindowPane"/>.
 		/// </summary>
-		/// <returns></returns>
-		public override ICollection GetSelectedComponents()
+		public override System.Collections.ICollection GetSelectedComponents()
 		{
 			ModelingWindowPane pane = myCurrentORMSelectionContainer as ModelingWindowPane;
 			if (pane != null)
@@ -296,18 +294,18 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // ISelectionContainer overrides
 		#region ORMToolWindow specific
 		/// <summary>
-		/// Attach event handlers to the store. Defers to <see cref="ManageEventHandlers"/>.
+		/// Attach <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/>. Defers to <see cref="ManageEventHandlers"/>.
 		/// </summary>
 		protected void AttachEventHandlers(Store store)
 		{
-			ManageEventHandlers(store, (store as ISafeEventManagerProvider).SafeEventManager, true);
+			ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Add);
 		}
 		/// <summary>
-		/// Detach event handlers from the store. Defers to <see cref="ManageEventHandlers"/>.
+		/// Detach <see cref="EventHandler{TEventArgs}"/>s from the <see cref="Store"/>. Defers to <see cref="ManageEventHandlers"/>.
 		/// </summary>
 		protected void DetachEventHandlers(Store store)
 		{
-			ManageEventHandlers(store, (store as ISafeEventManagerProvider).SafeEventManager, false);
+			ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Remove);
 		}
 		#endregion // ORMToolWindow specific
 	}

@@ -98,125 +98,6 @@
 			</ddl:checkConstraintDefinition>
 		</ddl:domainConstraint>
 	</ddl:domainDefinition>
-	<ddl:tableDefinition name="PersonDrivesCar" schema="SampleModel">
-		<ddl:columnDefinition name="DrivesCar_vin">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DrivenByPerson_Person_id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint18" />
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="DrivesCar_vin" />
-				<ddl:column name="DrivenByPerson_Person_id" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-	</ddl:tableDefinition>
-	<ddl:tableDefinition name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
-		<ddl:columnDefinition name="CarSold_vin">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="SaleDate_YMD">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Buyer_Person_id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Seller_Person_id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint23" />
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="Buyer_Person_id" />
-				<ddl:column name="CarSold_vin" />
-				<ddl:column name="Seller_Person_id" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint24" />
-			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="SaleDate_YMD" />
-				<ddl:column name="Seller_Person_id" />
-				<ddl:column name="CarSold_vin" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint25" />
-			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="CarSold_vin" />
-				<ddl:column name="SaleDate_YMD" />
-				<ddl:column name="Buyer_Person_id" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-	</ddl:tableDefinition>
-	<ddl:tableDefinition name="Review" schema="SampleModel">
-		<ddl:columnDefinition name="Car_vin">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Rating_Nr_Integer">
-			<ddt:domain name="&quot;Integer&quot;" schema="SampleModel" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Criterion_Name">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint26" />
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="Car_vin" />
-				<ddl:column name="Criterion_Name" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-	</ddl:tableDefinition>
-	<ddl:tableDefinition name="PersonHasNickName" schema="SampleModel">
-		<ddl:columnDefinition name="NickName">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Person_Person_id">
-			<ddt:exactNumeric type="BIGINT" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="InternalUniquenessConstraint33" />
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
-				<ddl:column name="NickName" />
-				<ddl:column name="Person_Person_id" />
-			</ddl:uniqueConstraintDefinition>
-		</ddl:tableConstraintDefinition>
-	</ddl:tableDefinition>
 	<ddl:tableDefinition name="Person" schema="SampleModel">
 		<ddl:columnDefinition name="FirstName">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
@@ -426,50 +307,83 @@
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
-	<ddl:alterTableStatement name="PersonDrivesCar" schema="SampleModel">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="DrivenByPerson_FK" />
-			<ddl:referentialConstraintDefinition>
-				<ddl:column name="DrivenByPerson_Person_id" />
-				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<ddl:referenceColumn name="Person_id" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="Buyer_FK" />
-			<ddl:referentialConstraintDefinition>
+	<ddl:tableDefinition name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
+		<ddl:columnDefinition name="CarSold_vin">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="SaleDate_YMD">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="Buyer_Person_id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="Seller_Person_id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint23" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Buyer_Person_id" />
-				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<ddl:referenceColumn name="Person_id" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="Seller_FK" />
-			<ddl:referentialConstraintDefinition>
+				<ddl:column name="CarSold_vin" />
 				<ddl:column name="Seller_Person_id" />
-				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<ddl:referenceColumn name="Person_id" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PersonHasNickName" schema="SampleModel">
-		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="Person_FK" />
-			<ddl:referentialConstraintDefinition>
-				<ddl:column name="Person_Person_id" />
-				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
-					<ddl:referenceColumn name="Person_id" />
-				</ddl:referencesSpecification>
-			</ddl:referentialConstraintDefinition>
-		</ddl:addTableConstraintDefinition>
-	</ddl:alterTableStatement>
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint24" />
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<ddl:column name="SaleDate_YMD" />
+				<ddl:column name="Seller_Person_id" />
+				<ddl:column name="CarSold_vin" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint25" />
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<ddl:column name="CarSold_vin" />
+				<ddl:column name="SaleDate_YMD" />
+				<ddl:column name="Buyer_Person_id" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Review" schema="SampleModel">
+		<ddl:columnDefinition name="Car_vin">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="Rating_Nr_Integer">
+			<ddt:domain name="&quot;Integer&quot;" schema="SampleModel" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="Criterion_Name">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint26" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="Car_vin" />
+				<ddl:column name="Criterion_Name" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
 			<dep:constraintNameDefinition name="Husband_FK" />
@@ -536,204 +450,28 @@
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
 	</ddl:alterTableStatement>
-	<ddl:sqlInvokedProcedure name="InsertPersonDrivesCar" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="DrivesCar_vin" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DrivenByPerson_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:insertStatement schema="SampleModel" name="PersonDrivesCar">
-				<dml:fromConstructor>
-					<ddl:column name="DrivesCar_vin" />
-					<ddl:column name="DrivenByPerson_Person_id" />
-					<dep:sqlParameterReference name="DrivesCar_vin" />
-					<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
-				</dml:fromConstructor>
-			</dml:insertStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DeletePersonDrivesCar" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="DrivesCar_vin" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="DrivenByPerson_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:deleteStatement schema="SampleModel" name="PersonDrivesCar">
-				<dml:whereClause>
-					<dml:searchCondition>
-						<dep:and>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="DrivesCar_vin" />
-								<dep:sqlParameterReference name="DrivesCar_vin" />
-							</dep:comparisonPredicate>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="DrivenByPerson_Person_id" />
-								<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
-							</dep:comparisonPredicate>
-						</dep:and>
-					</dml:searchCondition>
-				</dml:whereClause>
-			</dml:deleteStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="InsrtPrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="SaleDate_YMD" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Seller_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:insertStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
-				<dml:fromConstructor>
-					<ddl:column name="CarSold_vin" />
-					<ddl:column name="SaleDate_YMD" />
-					<ddl:column name="Buyer_Person_id" />
-					<ddl:column name="Seller_Person_id" />
-					<dep:sqlParameterReference name="CarSold_vin" />
-					<dep:sqlParameterReference name="SaleDate_YMD" />
-					<dep:sqlParameterReference name="Buyer_Person_id" />
-					<dep:sqlParameterReference name="Seller_Person_id" />
-				</dml:fromConstructor>
-			</dml:insertStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DltPrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Seller_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:deleteStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
-				<dml:whereClause>
-					<dml:searchCondition>
-						<dep:and>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="Buyer_Person_id" />
-								<dep:sqlParameterReference name="Buyer_Person_id" />
-							</dep:comparisonPredicate>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="CarSold_vin" />
-								<dep:sqlParameterReference name="CarSold_vin" />
-							</dep:comparisonPredicate>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="Seller_Person_id" />
-								<dep:sqlParameterReference name="Seller_Person_id" />
-							</dep:comparisonPredicate>
-						</dep:and>
-					</dml:searchCondition>
-				</dml:whereClause>
-			</dml:deleteStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="InsertReview" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="Car_vin" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Rating_Nr_Integer" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Criterion_Name" mode="IN">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:insertStatement schema="SampleModel" name="Review">
-				<dml:fromConstructor>
-					<ddl:column name="Car_vin" />
-					<ddl:column name="Rating_Nr_Integer" />
-					<ddl:column name="Criterion_Name" />
-					<dep:sqlParameterReference name="Car_vin" />
-					<dep:sqlParameterReference name="Rating_Nr_Integer" />
-					<dep:sqlParameterReference name="Criterion_Name" />
-				</dml:fromConstructor>
-			</dml:insertStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DeleteReview" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="Car_vin" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Criterion_Name" mode="IN">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:deleteStatement schema="SampleModel" name="Review">
-				<dml:whereClause>
-					<dml:searchCondition>
-						<dep:and>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="Car_vin" />
-								<dep:sqlParameterReference name="Car_vin" />
-							</dep:comparisonPredicate>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="Criterion_Name" />
-								<dep:sqlParameterReference name="Criterion_Name" />
-							</dep:comparisonPredicate>
-						</dep:and>
-					</dml:searchCondition>
-				</dml:whereClause>
-			</dml:deleteStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="InsertPersonHasNickName" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="NickName" mode="IN">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Person_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:insertStatement schema="SampleModel" name="PersonHasNickName">
-				<dml:fromConstructor>
-					<ddl:column name="NickName" />
-					<ddl:column name="Person_Person_id" />
-					<dep:sqlParameterReference name="NickName" />
-					<dep:sqlParameterReference name="Person_Person_id" />
-				</dml:fromConstructor>
-			</dml:insertStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
-	<ddl:sqlInvokedProcedure name="DeletePersonHasNickName" schema="SampleModel">
-		<ddl:sqlParameterDeclaration name="NickName" mode="IN">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlParameterDeclaration name="Person_Person_id" mode="IN">
-			<ddt:exactNumeric type="BIGINT" />
-		</ddl:sqlParameterDeclaration>
-		<ddl:sqlRoutineSpec rightsClause="INVOKER">
-			<dml:deleteStatement schema="SampleModel" name="PersonHasNickName">
-				<dml:whereClause>
-					<dml:searchCondition>
-						<dep:and>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="NickName" />
-								<dep:sqlParameterReference name="NickName" />
-							</dep:comparisonPredicate>
-							<dep:comparisonPredicate operator="equals">
-								<dep:columnReference name="Person_Person_id" />
-								<dep:sqlParameterReference name="Person_Person_id" />
-							</dep:comparisonPredicate>
-						</dep:and>
-					</dml:searchCondition>
-				</dml:whereClause>
-			</dml:deleteStatement>
-		</ddl:sqlRoutineSpec>
-	</ddl:sqlInvokedProcedure>
+	<ddl:alterTableStatement name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="Buyer_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="Buyer_Person_id" />
+				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
+					<ddl:referenceColumn name="Person_id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="PrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="Seller_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="Seller_Person_id" />
+				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
+					<ddl:referenceColumn name="Person_id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
 	<ddl:sqlInvokedProcedure name="InsertPerson" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="FirstName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
@@ -874,6 +612,468 @@
 			</dml:deleteStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonFirstName" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="FirstName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="FirstName" />
+					<dep:sqlParameterReference name="FirstName" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonDate_YMD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Date_YMD" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Date_YMD" />
+					<dep:sqlParameterReference name="Date_YMD" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonLastName" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="LastName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="LastName" />
+					<dep:sqlParameterReference name="LastName" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnOptnlUnqStrng" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="OptionalUniqueString" mode="IN">
+			<ddt:characterString type="CHARACTER" length="11" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="OptionalUniqueString" />
+					<dep:sqlParameterReference name="OptionalUniqueString" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonHatType_ColorARGB" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="HatType_ColorARGB" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="HatType_ColorARGB" />
+					<dep:sqlParameterReference name="HatType_ColorARGB" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonHTHTSHTSD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="HTHTSHTSD" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="256" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="HTHTSHTSD" />
+					<dep:sqlParameterReference name="HTHTSHTSD" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonOwnsCar_vin" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="OwnsCar_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="OwnsCar_vin" />
+					<dep:sqlParameterReference name="OwnsCar_vin" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonGender_Gender_Code" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Gender_Gender_Code" mode="IN">
+			<ddt:characterString type="CHARACTER" length="1" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Gender_Gender_Code" />
+					<dep:sqlParameterReference name="Gender_Gender_Code" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonhasParents" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="hasParents" mode="IN">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="hasParents" />
+					<dep:sqlParameterReference name="hasParents" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnOptnlUnqDcml" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="OptionalUniqueDecimal" mode="IN">
+			<ddt:exactNumeric type="DECIMAL" precision="9" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="OptionalUniqueDecimal" />
+					<dep:sqlParameterReference name="OptionalUniqueDecimal" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnMndtryUnqDcml" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="MandatoryUniqueDecimal" mode="IN">
+			<ddt:exactNumeric type="DECIMAL" precision="9" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="MandatoryUniqueDecimal" />
+					<dep:sqlParameterReference name="MandatoryUniqueDecimal" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnMndtryUnqStrng" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="MandatoryUniqueString" mode="IN">
+			<ddt:characterString type="CHARACTER" length="11" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="MandatoryUniqueString" />
+					<dep:sqlParameterReference name="MandatoryUniqueString" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonHusband_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Husband_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Husband_Person_id" />
+					<dep:sqlParameterReference name="Husband_Person_id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPVT1DSEWVT1V" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="VlTyp1DsSmthngElsWth_VlTyp1Vl" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+					<dep:sqlParameterReference name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPCPBOBON" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
+					<dep:sqlParameterReference name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonFather_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Father_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Father_Person_id" />
+					<dep:sqlParameterReference name="Father_Person_id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonMother_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Mother_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Mother_Person_id" />
+					<dep:sqlParameterReference name="Mother_Person_id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdatePersonDeath_Date_YMD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Death_Date_YMD" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Death_Date_YMD" />
+					<dep:sqlParameterReference name="Death_Date_YMD" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnDth_DthCs_DthCs_Typ" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Dth_DthCs_DthCs_Typ" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="14" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Dth_DthCs_DthCs_Typ" />
+					<dep:sqlParameterReference name="Dth_DthCs_DthCs_Typ" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPDNDFPC" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Dth_NtrlDth_sFrmPrsttCncr" mode="IN">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Dth_NtrlDth_sFrmPrsttCncr" />
+					<dep:sqlParameterReference name="Dth_NtrlDth_sFrmPrsttCncr" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnDth_UnntrlDth_sVlnt" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Death_UnnaturalDeath_isViolent" mode="IN">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Death_UnnaturalDeath_isViolent" />
+					<dep:sqlParameterReference name="Death_UnnaturalDeath_isViolent" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtPrsnDth_UnntrlDth_sBldy" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Death_UnnaturalDeath_isBloody" mode="IN">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Person">
+				<dml:setClause>
+					<ddl:column name="Death_UnnaturalDeath_isBloody" />
+					<dep:sqlParameterReference name="Death_UnnaturalDeath_isBloody" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Person_id" />
+							<dep:sqlParameterReference name="Person_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="InsertTask" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="Task_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
@@ -909,6 +1109,27 @@
 			</dml:deleteStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateTaskPerson_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Person_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Task">
+				<dml:setClause>
+					<ddl:column name="Person_Person_id" />
+					<dep:sqlParameterReference name="Person_Person_id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Task_id" />
+							<dep:sqlParameterReference name="Task_id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="InsertValueType1" schema="SampleModel">
 		<ddl:sqlParameterDeclaration name="ValueType1Value" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
@@ -942,6 +1163,363 @@
 					</dml:searchCondition>
 				</dml:whereClause>
 			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtVlTyp1VlTyp1Vl" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="ValueType1Value" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="ValueType1">
+				<dml:setClause>
+					<ddl:column name="ValueType1Value" />
+					<dep:sqlParameterReference name="ValueType1Value" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="ValueType1Value" />
+							<dep:sqlParameterReference name="ValueType1Value" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UVT1DSWPP" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="DsSmthngWthPrsn_Prsn_d" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="ValueType1">
+				<dml:setClause>
+					<ddl:column name="DsSmthngWthPrsn_Prsn_d" />
+					<dep:sqlParameterReference name="DsSmthngWthPrsn_Prsn_d" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="ValueType1Value" />
+							<dep:sqlParameterReference name="ValueType1Value" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="InsrtPrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="SaleDate_YMD" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+				<dml:fromConstructor>
+					<ddl:column name="CarSold_vin" />
+					<ddl:column name="SaleDate_YMD" />
+					<ddl:column name="Buyer_Person_id" />
+					<ddl:column name="Seller_Person_id" />
+					<dep:sqlParameterReference name="CarSold_vin" />
+					<dep:sqlParameterReference name="SaleDate_YMD" />
+					<dep:sqlParameterReference name="Buyer_Person_id" />
+					<dep:sqlParameterReference name="Seller_Person_id" />
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="DltPrsnBghtCrFrmPrsnOnDt" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:deleteStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="Buyer_Person_id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="CarSold_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="Seller_Person_id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPBCFPODCS" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+				<dml:setClause>
+					<ddl:column name="CarSold_vin" />
+					<dep:sqlParameterReference name="CarSold_vin" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="Buyer_Person_id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="CarSold_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="Seller_Person_id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPBCFPODSDYMD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="SaleDate_YMD" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+				<dml:setClause>
+					<ddl:column name="SaleDate_YMD" />
+					<dep:sqlParameterReference name="SaleDate_YMD" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="Buyer_Person_id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="CarSold_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="Seller_Person_id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPBCFPODBP" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+				<dml:setClause>
+					<ddl:column name="Buyer_Person_id" />
+					<dep:sqlParameterReference name="Buyer_Person_id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="Buyer_Person_id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="CarSold_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="Seller_Person_id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UPBCFPODSP" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+				<dml:setClause>
+					<ddl:column name="Seller_Person_id" />
+					<dep:sqlParameterReference name="Seller_Person_id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="Buyer_Person_id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="CarSold_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="Seller_Person_id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="InsertReview" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Car_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="Rating_Nr_Integer" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="Criterion_Name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="SampleModel" name="Review">
+				<dml:fromConstructor>
+					<ddl:column name="Car_vin" />
+					<ddl:column name="Rating_Nr_Integer" />
+					<ddl:column name="Criterion_Name" />
+					<dep:sqlParameterReference name="Car_vin" />
+					<dep:sqlParameterReference name="Rating_Nr_Integer" />
+					<dep:sqlParameterReference name="Criterion_Name" />
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="DeleteReview" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Car_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="Criterion_Name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:deleteStatement schema="SampleModel" name="Review">
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Car_vin" />
+								<dep:sqlParameterReference name="Car_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="Criterion_Name" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateReviewCar_vin" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Car_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Review">
+				<dml:setClause>
+					<ddl:column name="Car_vin" />
+					<dep:sqlParameterReference name="Car_vin" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Car_vin" />
+								<dep:sqlParameterReference name="Car_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="Criterion_Name" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateReviewRating_Nr_Integer" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Rating_Nr_Integer" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Review">
+				<dml:setClause>
+					<ddl:column name="Rating_Nr_Integer" />
+					<dep:sqlParameterReference name="Rating_Nr_Integer" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Car_vin" />
+								<dep:sqlParameterReference name="Car_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="Criterion_Name" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateReviewCriterion_Name" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="Criterion_Name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="SampleModel" name="Review">
+				<dml:setClause>
+					<ddl:column name="Criterion_Name" />
+					<dep:sqlParameterReference name="Criterion_Name" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Car_vin" />
+								<dep:sqlParameterReference name="Car_vin" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="Criterion_Name" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<dms:commitStatement />

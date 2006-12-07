@@ -420,14 +420,14 @@ namespace Neumont.Tools.ORM.Shell
 				ModelingDocData oldDocData = container.ModelingDocData;
 				if (oldDocData != null)
 				{
-					ManageModelEvents(oldDocData.Store, false);
+					this.ManageModelEvents(oldDocData.Store, EventHandlerAction.Remove);
 				}
 				ModelingDocData newDocData = (newView != null) ? (newView.DocData as ModelingDocData) : null;
 				myFactCollectionNode = null;
 				if (newDocData != null)
 				{
 					container.ObjectModelBrowser.Show();
-					ManageModelEvents(newDocData.Store, true);
+					this.ManageModelEvents(newDocData.Store, EventHandlerAction.Add);
 				}
 				else
 				{
@@ -436,13 +436,13 @@ namespace Neumont.Tools.ORM.Shell
 				container.ModelingDocData = newDocData;
 			}
 		}
-		private void ManageModelEvents(Store store, bool addHandlers)
+		private void ManageModelEvents(Store store, EventHandlerAction action)
 		{
 			if (store == null || store.Disposed)
 			{
 				return;
 			}
-			((ISafeEventManagerProvider)store).SafeEventManager.AddOrRemove(store.DomainDataDirectory.FindDomainProperty(FactType.NameChangedDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), addHandlers);
+			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainProperty(FactType.NameChangedDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), action);
 		}
 		private RoleGroupTreeNode myFactCollectionNode;
 		/// <summary>

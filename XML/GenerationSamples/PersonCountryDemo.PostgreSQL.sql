@@ -50,6 +50,50 @@ AS
 	'DELETE FROM PersonCountryDemo.Person
 	WHERE Person_id = $1';
 
+CREATE FUNCTION PersonCountryDemo.UpdatePersonLastName
+(
+	LastName CHARACTER VARYING(30) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE PersonCountryDemo.Person
+SET LastName = LastName
+	WHERE Person_id = $';
+
+CREATE FUNCTION PersonCountryDemo.UpdatePersonFirstName
+(
+	FirstName CHARACTER VARYING(30) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE PersonCountryDemo.Person
+SET FirstName = FirstName
+	WHERE Person_id = $';
+
+CREATE FUNCTION PersonCountryDemo.UpdatePersonTitle
+(
+	Title CHARACTER VARYING(4) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE PersonCountryDemo.Person
+SET Title = Title
+	WHERE Person_id = $';
+
+CREATE FUNCTION PersonCountryDemo.UpdtPrsnCntry_Cntry_nm
+(
+	Country_Country_name CHARACTER VARYING(20) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE PersonCountryDemo.Person
+SET Country_Country_name = Country_Country_name
+	WHERE Person_id = $';
+
 CREATE FUNCTION PersonCountryDemo.InsertCountry
 (
 	Country_name CHARACTER VARYING(20) , 
@@ -70,5 +114,27 @@ LANGUAGE SQL
 AS
 	'DELETE FROM PersonCountryDemo.Country
 	WHERE Country_name = $1';
+
+CREATE FUNCTION PersonCountryDemo.UpdateCountryCountry_name
+(
+	Country_name CHARACTER VARYING(20) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE PersonCountryDemo.Country
+SET Country_name = Country_name
+	WHERE Country_name = $1';
+
+CREATE FUNCTION PersonCountryDemo.UpdtCntryRgn_Rgn_cd
+(
+	Region_Region_code CHARACTER(8) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE PersonCountryDemo.Country
+SET Region_Region_code = Region_Region_code
+	WHERE Country_name = $';
 COMMIT WORK;
 

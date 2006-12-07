@@ -74,23 +74,6 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<!--Each ORM EntityType and it's Preferred Id or top level ValueType-->
-	<xs:complexType name="PersonDrivesCarIdentifier">
-		<xs:attribute name="DrivesCar_vin" use="required" type="xs:integer" />
-		<xs:attribute name="Person_id" use="required" type="xs:integer" />
-	</xs:complexType>
-	<xs:complexType name="PersonBoughtCarFromPersonOnDateIdentifier">
-		<xs:attribute name="Person_id" use="required" type="xs:integer" />
-		<xs:attribute name="CarSold_vin" use="required" type="xs:integer" />
-		<xs:attribute name="Person_id" use="required" type="xs:integer" />
-	</xs:complexType>
-	<xs:complexType name="ReviewIdentifier">
-		<xs:attribute name="Car_vin" use="required" type="xs:integer" />
-		<xs:attribute name="Criterion_Name" use="required" type="oxs:Name" />
-	</xs:complexType>
-	<xs:complexType name="PersonHasNickNameIdentifier">
-		<xs:attribute name="NickName" use="required" type="oxs:NickName" />
-		<xs:attribute name="Person_id" use="required" type="xs:integer" />
-	</xs:complexType>
 	<xs:complexType name="PersonIdentifier">
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 	</xs:complexType>
@@ -106,49 +89,16 @@
 	<xs:complexType name="ValueType1Identifier">
 		<xs:attribute name="ValueType1Value" use="required" type="xs:integer" />
 	</xs:complexType>
+	<xs:complexType name="PersonBoughtCarFromPersonOnDateIdentifier">
+		<xs:attribute name="Person_id" use="required" type="xs:integer" />
+		<xs:attribute name="CarSold_vin" use="required" type="xs:integer" />
+		<xs:attribute name="Person_id" use="required" type="xs:integer" />
+	</xs:complexType>
+	<xs:complexType name="ReviewIdentifier">
+		<xs:attribute name="Car_vin" use="required" type="xs:integer" />
+		<xs:attribute name="Criterion_Name" use="required" type="oxs:Name" />
+	</xs:complexType>
 	<!--Each ORM Major Object Type grouping-->
-	<xs:complexType name="PersonDrivesCarFacts">
-		<xs:complexContent>
-			<xs:extension base="oxs:PersonDrivesCarIdentifier">
-				<xs:sequence>
-					<xs:element name="DrivenByPerson" type="oxs:PersonIdentifier" />
-				</xs:sequence>
-				<xs:attribute name="vin" type="xs:integer" use="required" />
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="PersonBoughtCarFromPersonOnDateFacts">
-		<xs:complexContent>
-			<xs:extension base="oxs:PersonBoughtCarFromPersonOnDateIdentifier">
-				<xs:sequence>
-					<xs:element name="Buyer" type="oxs:PersonIdentifier" />
-					<xs:element name="Seller" type="oxs:PersonIdentifier" />
-				</xs:sequence>
-				<xs:attribute name="vin" type="xs:integer" use="required" />
-				<xs:attribute name="YMD" type="xs:integer" use="required" />
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="ReviewFacts">
-		<xs:complexContent>
-			<xs:extension base="oxs:ReviewIdentifier">
-				<xs:sequence />
-				<xs:attribute name="vin" type="xs:integer" use="required" />
-				<xs:attribute name="Integer" type="oxs:Integer" use="required" />
-				<xs:attribute name="Name" type="oxs:Name" use="required" />
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="PersonHasNickNameFacts">
-		<xs:complexContent>
-			<xs:extension base="oxs:PersonHasNickNameIdentifier">
-				<xs:sequence>
-					<xs:element name="Person" type="oxs:PersonIdentifier" />
-				</xs:sequence>
-				<xs:attribute name="NickName" type="oxs:NickName" use="required" />
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="PersonFacts">
 		<xs:complexContent>
 			<xs:extension base="oxs:PersonIdentifier">
@@ -207,38 +157,32 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="PersonBoughtCarFromPersonOnDateFacts">
+		<xs:complexContent>
+			<xs:extension base="oxs:PersonBoughtCarFromPersonOnDateIdentifier">
+				<xs:sequence>
+					<xs:element name="Buyer" type="oxs:PersonIdentifier" />
+					<xs:element name="Seller" type="oxs:PersonIdentifier" />
+				</xs:sequence>
+				<xs:attribute name="vin" type="xs:integer" use="required" />
+				<xs:attribute name="YMD" type="xs:integer" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReviewFacts">
+		<xs:complexContent>
+			<xs:extension base="oxs:ReviewIdentifier">
+				<xs:sequence />
+				<xs:attribute name="vin" type="xs:integer" use="required" />
+				<xs:attribute name="Integer" type="oxs:Integer" use="required" />
+				<xs:attribute name="Name" type="oxs:Name" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<!--Each ORM Major Object Type in the 'SampleModel' schema-->
 	<xs:element name="SampleModel">
 		<xs:complexType>
 			<xs:all>
-				<xs:element name="PersonDrivesCarElements">
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="PersonDrivesCar" type="oxs:PersonDrivesCarFacts" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="PersonBoughtCarFromPersonOnDateElements">
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="PersonBoughtCarFromPersonOnDate" type="oxs:PersonBoughtCarFromPersonOnDateFacts" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="ReviewElements">
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Review" type="oxs:ReviewFacts" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="PersonHasNickNameElements">
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="PersonHasNickName" type="oxs:PersonHasNickNameFacts" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
 				<xs:element name="PersonElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -260,21 +204,23 @@
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
+				<xs:element name="PersonBoughtCarFromPersonOnDateElements">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="PersonBoughtCarFromPersonOnDate" type="oxs:PersonBoughtCarFromPersonOnDateFacts" />
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ReviewElements">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Review" type="oxs:ReviewFacts" />
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
 			</xs:all>
 		</xs:complexType>
 		<!--Key Constraints-->
-		<xs:key name="PersonDrivesCarKey">
-			<xs:selector xpath="oxs:PersonDrivesCarElements/oxs:PersonDrivesCar" />
-		</xs:key>
-		<xs:key name="PersonBoughtCarFromPersonOnDateKey">
-			<xs:selector xpath="oxs:PersonBoughtCarFromPersonOnDateElements/oxs:PersonBoughtCarFromPersonOnDate" />
-		</xs:key>
-		<xs:key name="ReviewKey">
-			<xs:selector xpath="oxs:ReviewElements/oxs:Review" />
-		</xs:key>
-		<xs:key name="PersonHasNickNameKey">
-			<xs:selector xpath="oxs:PersonHasNickNameElements/oxs:PersonHasNickName" />
-		</xs:key>
 		<xs:key name="PersonKey">
 			<xs:selector xpath="oxs:PersonElements/oxs:Person" />
 			<xs:field xpath="@Person_id" />
@@ -286,6 +232,12 @@
 		<xs:key name="ValueType1Key">
 			<xs:selector xpath="oxs:ValueType1Elements/oxs:ValueType1" />
 			<xs:field xpath="@ValueType1Value" />
+		</xs:key>
+		<xs:key name="PersonBoughtCarFromPersonOnDateKey">
+			<xs:selector xpath="oxs:PersonBoughtCarFromPersonOnDateElements/oxs:PersonBoughtCarFromPersonOnDate" />
+		</xs:key>
+		<xs:key name="ReviewKey">
+			<xs:selector xpath="oxs:ReviewElements/oxs:Review" />
 		</xs:key>
 		<!--Uniqueness Constraints-->
 		<xs:unique name="OptionalUniqueStringUnique">
@@ -309,22 +261,6 @@
 			<xs:field xpath="oxs:MandatoryUniqueString" />
 		</xs:unique>
 		<!--KeyRefs between Major Object Type groupings-->
-		<xs:keyref name="PersonDrivesCarDrivenByPersonRef" refer="PersonKey">
-			<xs:selector xpath="oxs:PersonDrivesCarElements/oxs:PersonDrivesCar" />
-			<xs:field xpath="oxs:Person/@Person_id" />
-		</xs:keyref>
-		<xs:keyref name="PersonBoughtCarFromPersonOnDateBuyerRef" refer="PersonKey">
-			<xs:selector xpath="oxs:PersonBoughtCarFromPersonOnDateElements/oxs:PersonBoughtCarFromPersonOnDate" />
-			<xs:field xpath="oxs:Person/@Person_id" />
-		</xs:keyref>
-		<xs:keyref name="PersonBoughtCarFromPersonOnDateSellerRef" refer="PersonKey">
-			<xs:selector xpath="oxs:PersonBoughtCarFromPersonOnDateElements/oxs:PersonBoughtCarFromPersonOnDate" />
-			<xs:field xpath="oxs:Person/@Person_id" />
-		</xs:keyref>
-		<xs:keyref name="PersonHasNickNamePersonRef" refer="PersonKey">
-			<xs:selector xpath="oxs:PersonHasNickNameElements/oxs:PersonHasNickName" />
-			<xs:field xpath="oxs:Person/@Person_id" />
-		</xs:keyref>
 		<xs:keyref name="PersonHusbandRef" refer="PersonKey">
 			<xs:selector xpath="oxs:PersonElements/oxs:Person" />
 			<xs:field xpath="oxs:Person/@Person_id" />
@@ -339,6 +275,14 @@
 		</xs:keyref>
 		<xs:keyref name="ValueType1DoesSomethingWithPersonRef" refer="PersonKey">
 			<xs:selector xpath="oxs:ValueType1Elements/oxs:ValueType1" />
+			<xs:field xpath="oxs:Person/@Person_id" />
+		</xs:keyref>
+		<xs:keyref name="PersonBoughtCarFromPersonOnDateBuyerRef" refer="PersonKey">
+			<xs:selector xpath="oxs:PersonBoughtCarFromPersonOnDateElements/oxs:PersonBoughtCarFromPersonOnDate" />
+			<xs:field xpath="oxs:Person/@Person_id" />
+		</xs:keyref>
+		<xs:keyref name="PersonBoughtCarFromPersonOnDateSellerRef" refer="PersonKey">
+			<xs:selector xpath="oxs:PersonBoughtCarFromPersonOnDateElements/oxs:PersonBoughtCarFromPersonOnDate" />
 			<xs:field xpath="oxs:Person/@Person_id" />
 		</xs:keyref>
 	</xs:element>

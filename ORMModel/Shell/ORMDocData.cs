@@ -408,13 +408,13 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void AddPreLoadModelingEventHandlers()
 		{
 			Store store = Store;
-			SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
+			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			foreach (DomainModel domainModel in store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
 				if (subscriber != null)
 				{
-					subscriber.ManagePreLoadModelingEventHandlers(eventManager, true);
+					subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 				}
 			}
 			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
@@ -426,17 +426,17 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void AddPostLoadModelingEventHandlers()
 		{
 			Store store = Store;
-			SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
+			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			foreach (DomainModel domainModel in store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
 				if (subscriber != null)
 				{
-					subscriber.ManagePostLoadModelingEventHandlers(eventManager, true);
+					subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 				}
 			}
-			ManageErrorReportingEvents(eventManager, true);
-			ManageTabRestoreEvents(eventManager, true);
+			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
+			ManageTabRestoreEvents(eventManager, EventHandlerAction.Add);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 		}
 		/// <summary>
@@ -454,7 +454,7 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			Store store = Store;
-			SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
+			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			foreach (DomainModel domainModel in store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
@@ -462,22 +462,22 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					if (addedPreLoad)
 					{
-						subscriber.ManagePreLoadModelingEventHandlers(eventManager, false);
+						subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
 					}
 					if (addedPostLoad)
 					{
-						subscriber.ManagePostLoadModelingEventHandlers(eventManager, false);
+						subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
 					}
 					if (addedSurveyQuestion)
 					{
-						subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, false);
+						subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Remove);
 					}
 				}
 			}
 			if (addedPostLoad)
 			{
-				ManageTabRestoreEvents(eventManager, false);
-				ManageErrorReportingEvents(eventManager, false);
+				ManageTabRestoreEvents(eventManager, EventHandlerAction.Remove);
+				ManageErrorReportingEvents(eventManager, EventHandlerAction.Remove);
 			}
 		}
 		/// <summary>
@@ -515,17 +515,17 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Base overrides
 		#region Error reporting
-		private void ManageErrorReportingEvents(SafeEventManager eventManager, bool addHandlers)
+		private void ManageErrorReportingEvents(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			Store store = Store;
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ModelHasError.DomainClassId);
 
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent), action);
 
 			classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), action);
 		}
 		private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -552,14 +552,14 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Error reporting
 		#region Tab Restoration Hack
-		private void ManageTabRestoreEvents(SafeEventManager eventManager, bool addHandlers)
+		private void ManageTabRestoreEvents(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			// Add event handlers to cater for undo/redo and initial
 			// add when multiple windows are open
 			Store store = Store;
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainClass(Diagram.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(AddOrRemoveTabForEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(AddOrRemoveTabForEvent), action);
 		}
 		private void AddOrRemoveTabForEvent(object sender, ElementAddedEventArgs e)
 		{

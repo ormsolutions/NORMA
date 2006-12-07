@@ -13,23 +13,17 @@ namespace System
 {
 	#region Tuple Support
 	[System.Serializable()]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.ComponentModel.ImmutableObject(true)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Tuple
 	{
 		protected Tuple()
 		{
 		}
-		[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow")]
 		protected static int RotateRight(int value, int places)
 		{
-			places = places & 0x1F;
-			if (places == 0)
-			{
-				return value;
-			}
-			int mask = ~0x7FFFFFF >> (places - 1);
-			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
+			return (int)(((uint)value >> (places & 31)) | ((uint)value << ((32 - places) & 31)));
 		}
 		public abstract override string ToString();
 		public abstract string ToString(System.IFormatProvider provider);
@@ -48,7 +42,7 @@ namespace System
 		}
 	}
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2> : Tuple, System.IEquatable<Tuple<T1, T2>>
 	{
 		private readonly T1 _item1;
@@ -76,7 +70,7 @@ namespace System
 			this._item1 = item1;
 			this._item2 = item2;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2>);
 		}
@@ -88,15 +82,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1);
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2})", this._item1, this._item2);
 		}
@@ -175,9 +169,9 @@ namespace System
 			return new Tuple<T1, T2, T3>(item1, item2, item3);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3> : Tuple, System.IEquatable<Tuple<T1, T2, T3>>
 	{
 		private readonly T1 _item1;
@@ -214,7 +208,7 @@ namespace System
 			this._item2 = item2;
 			this._item3 = item3;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3>);
 		}
@@ -226,15 +220,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3})", this._item1, this._item2, this._item3);
 		}
@@ -267,9 +261,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4>(item1, item2, item3, item4);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4>>
 	{
 		private readonly T1 _item1;
@@ -315,7 +309,7 @@ namespace System
 			this._item3 = item3;
 			this._item4 = item4;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4>);
 		}
@@ -327,15 +321,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3)));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4})", this._item1, this._item2, this._item3, this._item4);
 		}
@@ -368,9 +362,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5>>
 	{
 		private readonly T1 _item1;
@@ -425,7 +419,7 @@ namespace System
 			this._item4 = item4;
 			this._item5 = item5;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4, T5>);
 		}
@@ -437,15 +431,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4))));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4}, {5})", this._item1, this._item2, this._item3, this._item4, this._item5);
 		}
@@ -478,9 +472,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6>>
 	{
 		private readonly T1 _item1;
@@ -544,7 +538,7 @@ namespace System
 			this._item5 = item5;
 			this._item6 = item6;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4, T5, T6>);
 		}
@@ -556,15 +550,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5)))));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6);
 		}
@@ -597,9 +591,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7>>
 	{
 		private readonly T1 _item1;
@@ -672,7 +666,7 @@ namespace System
 			this._item6 = item6;
 			this._item7 = item7;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4, T5, T6, T7>);
 		}
@@ -684,15 +678,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6))))));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7);
 		}
@@ -725,9 +719,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7, T8>(item1, item2, item3, item4, item5, item6, item7, item8);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>>
 	{
 		private readonly T1 _item1;
@@ -809,7 +803,7 @@ namespace System
 			this._item7 = item7;
 			this._item8 = item8;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4, T5, T6, T7, T8>);
 		}
@@ -821,15 +815,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ Tuple.RotateRight(this._item8.GetHashCode(), 7)))))));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7, this._item8);
 		}
@@ -862,9 +856,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(item1, item2, item3, item4, item5, item6, item7, item8, item9);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>>
 	{
 		private readonly T1 _item1;
@@ -955,7 +949,7 @@ namespace System
 			this._item8 = item8;
 			this._item9 = item9;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>);
 		}
@@ -967,15 +961,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ Tuple.RotateRight(this._item9.GetHashCode(), 8))))))));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7, this._item8, this._item9);
 		}
@@ -1008,9 +1002,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(item1, item2, item3, item4, item5, item6, item7, item8, item9, item10);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>
 	{
 		private readonly T1 _item1;
@@ -1110,7 +1104,7 @@ namespace System
 			this._item9 = item9;
 			this._item10 = item10;
 		}
-		public override bool Equals(object obj)
+		public sealed override bool Equals(object obj)
 		{
 			return this.Equals(obj as Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>);
 		}
@@ -1122,15 +1116,15 @@ namespace System
 			}
 			return true;
 		}
-		public override int GetHashCode()
+		public sealed override int GetHashCode()
 		{
 			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ (Tuple.RotateRight(this._item9.GetHashCode(), 8) ^ Tuple.RotateRight(this._item10.GetHashCode(), 9)))))))));
 		}
-		public override string ToString()
+		public sealed override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public override string ToString(System.IFormatProvider provider)
+		public sealed override string ToString(System.IFormatProvider provider)
 		{
 			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7, this._item8, this._item9, this._item10);
 		}
@@ -1200,7 +1194,7 @@ namespace System
 			}
 		}
 	}
-	[SuppressMessageAttribute("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+	[SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
 	public interface IPropertyChangeEventArgs<TClass, TProperty>
 	{
 		TClass Instance
@@ -1217,7 +1211,7 @@ namespace System
 		}
 	}
 	[Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class PropertyChangingEventArgs<TClass, TProperty> : CancelEventArgs, IPropertyChangeEventArgs<TClass, TProperty>
 	{
 		private readonly TClass _instance;
@@ -1256,7 +1250,7 @@ namespace System
 		}
 	}
 	[Serializable()]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class PropertyChangedEventArgs<TClass, TProperty> : EventArgs, IPropertyChangeEventArgs<TClass, TProperty>
 	{
 		private readonly TClass _instance;

@@ -4949,18 +4949,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Manage event handlers in the store
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="FactTypeShape"/>s.
 		/// </summary>
-		public static new void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static new void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(UniquenessConstraint.ModalityDomainPropertyId);
-			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(UniquenessConstraint.ModalityDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), action);
 
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), action);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of an internal uniqueness constraint changes

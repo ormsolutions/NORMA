@@ -917,14 +917,14 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			private void AddErrorReportingEvents(Store store)
 			{
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-				SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
-				DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ModelHasError.DomainClassId);
+				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 
-				eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent), true);
+				DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ModelHasError.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent), EventHandlerAction.Add);
 
 				classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
-				eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent), true);
-				eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), true);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent), EventHandlerAction.Add);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), EventHandlerAction.Add);
 			}
 
 			private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)

@@ -1,46 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
-	<prop:Properties conceptTypeName="PersonDrivesCar">
-		<prop:Property name="DrivesCar_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="DrivenByPerson" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonDrivesCar">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="PersonBoughtCarFromPersonOnDate">
-		<prop:Property name="CarSold_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="SaleDate_YMD" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="Buyer" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-		<prop:Property name="Seller" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="Review">
-		<prop:Property name="Car_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="Rating_Nr_Integer" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="Criterion_Name" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".string" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="PersonHasNickName">
-		<prop:Property name="NickName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".string" />
-		</prop:Property>
-		<prop:Property name="Person" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonHasNickName">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
 	<prop:Properties conceptTypeName="Person">
 		<prop:Property name="FirstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
@@ -103,26 +62,6 @@
 		<prop:Property name="Death" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
 			<prop:DataType dataTypeName="Death" />
 		</prop:Property>
-		<prop:Property name="PersonDrivesCarViaDrivenByPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DrivenByPerson">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="PersonDrivesCar" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="PersonBoughtCarFromPersonOnDateViaBuyerCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Buyer">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="PersonBoughtCarFromPersonOnDateViaSellerCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Seller">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="PersonHasNickNameViaPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Person">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="PersonHasNickName" />
-			</prop:DataType>
-		</prop:Property>
 		<prop:Property name="Wife" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Husband">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
@@ -134,6 +73,16 @@
 		<prop:Property name="ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingWithPerson">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="ValueType1" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="PersonBoughtCarFromPersonOnDateViaBuyerCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Buyer">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="PersonBoughtCarFromPersonOnDateViaSellerCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Seller">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
@@ -226,6 +175,31 @@
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="Person" />
 			</prop:DataType>
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="PersonBoughtCarFromPersonOnDate">
+		<prop:Property name="CarSold_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="SaleDate_YMD" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="Buyer" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+		<prop:Property name="Seller" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="Review">
+		<prop:Property name="Car_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="Rating_Nr_Integer" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="Criterion_Name" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
 	</prop:Properties>
 </prop:AllProperties>

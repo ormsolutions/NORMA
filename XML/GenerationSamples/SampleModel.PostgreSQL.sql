@@ -13,39 +13,6 @@ VALUE IN ('M', 'F')) ;
 
 CREATE DOMAIN SampleModel.MandatoryUniqueString AS CHARACTER(11) CONSTRAINT MandatoryUniqueString_Chk CHECK ((CHARACTER_LENGTH(TRIM(BOTH FROM VALUE))) >= 11) ;
 
-CREATE TABLE SampleModel.PersonDrivesCar
-(
-	DrivesCar_vin BIGINT NOT NULL, 
-	DrivenByPerson_Person_id BIGINT NOT NULL, 
-	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(DrivesCar_vin, DrivenByPerson_Person_id)
-);
-
-CREATE TABLE SampleModel.PrsnBghtCrFrmPrsnOnDt
-(
-	CarSold_vin BIGINT NOT NULL, 
-	SaleDate_YMD BIGINT NOT NULL, 
-	Buyer_Person_id BIGINT NOT NULL, 
-	Seller_Person_id BIGINT NOT NULL, 
-	CONSTRAINT InternalUniquenessConstraint23 PRIMARY KEY(Buyer_Person_id, CarSold_vin, Seller_Person_id), 
-	CONSTRAINT InternalUniquenessConstraint24 UNIQUE(SaleDate_YMD, Seller_Person_id, CarSold_vin), 
-	CONSTRAINT InternalUniquenessConstraint25 UNIQUE(CarSold_vin, SaleDate_YMD, Buyer_Person_id)
-);
-
-CREATE TABLE SampleModel.Review
-(
-	Car_vin BIGINT NOT NULL, 
-	Rating_Nr_Integer SampleModel."Integer" NOT NULL, 
-	Criterion_Name CHARACTER VARYING(64) NOT NULL, 
-	CONSTRAINT InternalUniquenessConstraint26 PRIMARY KEY(Car_vin, Criterion_Name)
-);
-
-CREATE TABLE SampleModel.PersonHasNickName
-(
-	NickName CHARACTER VARYING(64) NOT NULL, 
-	Person_Person_id BIGINT NOT NULL, 
-	CONSTRAINT InternalUniquenessConstraint33 PRIMARY KEY(NickName, Person_Person_id)
-);
-
 CREATE TABLE SampleModel.Person
 (
 	FirstName CHARACTER VARYING(64) NOT NULL, 
@@ -96,13 +63,24 @@ CREATE TABLE SampleModel.ValueType1
 	CONSTRAINT ValueType1Value_Unique PRIMARY KEY(ValueType1Value)
 );
 
-ALTER TABLE SampleModel.PersonDrivesCar ADD CONSTRAINT DrivenByPerson_FK FOREIGN KEY (DrivenByPerson_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+CREATE TABLE SampleModel.PrsnBghtCrFrmPrsnOnDt
+(
+	CarSold_vin BIGINT NOT NULL, 
+	SaleDate_YMD BIGINT NOT NULL, 
+	Buyer_Person_id BIGINT NOT NULL, 
+	Seller_Person_id BIGINT NOT NULL, 
+	CONSTRAINT InternalUniquenessConstraint23 PRIMARY KEY(Buyer_Person_id, CarSold_vin, Seller_Person_id), 
+	CONSTRAINT InternalUniquenessConstraint24 UNIQUE(SaleDate_YMD, Seller_Person_id, CarSold_vin), 
+	CONSTRAINT InternalUniquenessConstraint25 UNIQUE(CarSold_vin, SaleDate_YMD, Buyer_Person_id)
+);
 
-ALTER TABLE SampleModel.PrsnBghtCrFrmPrsnOnDt ADD CONSTRAINT Buyer_FK FOREIGN KEY (Buyer_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE SampleModel.PrsnBghtCrFrmPrsnOnDt ADD CONSTRAINT Seller_FK FOREIGN KEY (Seller_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE SampleModel.PersonHasNickName ADD CONSTRAINT Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+CREATE TABLE SampleModel.Review
+(
+	Car_vin BIGINT NOT NULL, 
+	Rating_Nr_Integer SampleModel."Integer" NOT NULL, 
+	Criterion_Name CHARACTER VARYING(64) NOT NULL, 
+	CONSTRAINT InternalUniquenessConstraint26 PRIMARY KEY(Car_vin, Criterion_Name)
+);
 
 ALTER TABLE SampleModel.Person ADD CONSTRAINT Husband_FK FOREIGN KEY (Husband_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
@@ -116,103 +94,10 @@ ALTER TABLE SampleModel.Task ADD CONSTRAINT Person_FK FOREIGN KEY (Person_Person
 
 ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT DoesSomethingWithPerson_FK FOREIGN KEY (DsSmthngWthPrsn_Prsn_d)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE SampleModel.PrsnBghtCrFrmPrsnOnDt ADD CONSTRAINT Buyer_FK FOREIGN KEY (Buyer_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-CREATE FUNCTION SampleModel.InsertPersonDrivesCar
-(
-	DrivesCar_vin BIGINT , 
-	DrivenByPerson_Person_id BIGINT 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'INSERT INTO SampleModel.PersonDrivesCar(DrivesCar_vin, DrivenByPerson_Person_id)
-	VALUES ($1, $2)';
+ALTER TABLE SampleModel.PrsnBghtCrFrmPrsnOnDt ADD CONSTRAINT Seller_FK FOREIGN KEY (Seller_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-CREATE FUNCTION SampleModel.DeletePersonDrivesCar
-(
-	DrivesCar_vin BIGINT , 
-	DrivenByPerson_Person_id BIGINT 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'DELETE FROM SampleModel.PersonDrivesCar
-	WHERE DrivesCar_vin = $1 AND 
-DrivenByPerson_Person_id = $2';
-
-CREATE FUNCTION SampleModel.InsrtPrsnBghtCrFrmPrsnOnDt
-(
-	CarSold_vin BIGINT , 
-	SaleDate_YMD BIGINT , 
-	Buyer_Person_id BIGINT , 
-	Seller_Person_id BIGINT 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'INSERT INTO SampleModel.PrsnBghtCrFrmPrsnOnDt(CarSold_vin, SaleDate_YMD, Buyer_Person_id, Seller_Person_id)
-	VALUES ($1, $2, $3, $4)';
-
-CREATE FUNCTION SampleModel.DltPrsnBghtCrFrmPrsnOnDt
-(
-	Buyer_Person_id BIGINT , 
-	CarSold_vin BIGINT , 
-	Seller_Person_id BIGINT 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'DELETE FROM SampleModel.PrsnBghtCrFrmPrsnOnDt
-	WHERE Buyer_Person_id = $1 AND 
-CarSold_vin = $2 AND 
-Seller_Person_id = $3';
-
-CREATE FUNCTION SampleModel.InsertReview
-(
-	Car_vin BIGINT , 
-	Rating_Nr_Integer BIGINT , 
-	Criterion_Name CHARACTER VARYING(64) 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'INSERT INTO SampleModel.Review(Car_vin, Rating_Nr_Integer, Criterion_Name)
-	VALUES ($1, $2, $3)';
-
-CREATE FUNCTION SampleModel.DeleteReview
-(
-	Car_vin BIGINT , 
-	Criterion_Name CHARACTER VARYING(64) 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'DELETE FROM SampleModel.Review
-	WHERE Car_vin = $1 AND 
-Criterion_Name = $2';
-
-CREATE FUNCTION SampleModel.InsertPersonHasNickName
-(
-	NickName CHARACTER VARYING(64) , 
-	Person_Person_id BIGINT 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'INSERT INTO SampleModel.PersonHasNickName(NickName, Person_Person_id)
-	VALUES ($1, $2)';
-
-CREATE FUNCTION SampleModel.DeletePersonHasNickName
-(
-	NickName CHARACTER VARYING(64) , 
-	Person_Person_id BIGINT 
-)
-RETURNS VOID
-LANGUAGE SQL
-AS
-	'DELETE FROM SampleModel.PersonHasNickName
-	WHERE NickName = $1 AND 
-Person_Person_id = $2';
 
 CREATE FUNCTION SampleModel.InsertPerson
 (
@@ -256,6 +141,248 @@ AS
 	'DELETE FROM SampleModel.Person
 	WHERE Person_id = $1';
 
+CREATE FUNCTION SampleModel.UpdatePersonFirstName
+(
+	FirstName CHARACTER VARYING(64) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET FirstName = FirstName
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonDate_YMD
+(
+	Date_YMD BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Date_YMD = Date_YMD
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonLastName
+(
+	LastName CHARACTER VARYING(64) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET LastName = LastName
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnOptnlUnqStrng
+(
+	OptionalUniqueString CHARACTER(11) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET OptionalUniqueString = OptionalUniqueString
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonHatType_ColorARGB
+(
+	HatType_ColorARGB BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET HatType_ColorARGB = HatType_ColorARGB
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonHTHTSHTSD
+(
+	HTHTSHTSD CHARACTER VARYING(256) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET HTHTSHTSD = HTHTSHTSD
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonOwnsCar_vin
+(
+	OwnsCar_vin BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET OwnsCar_vin = OwnsCar_vin
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonGender_Gender_Code
+(
+	Gender_Gender_Code CHARACTER(1) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Gender_Gender_Code = Gender_Gender_Code
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonhasParents
+(
+	hasParents BOOLEAN 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET hasParents = hasParents
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnOptnlUnqDcml
+(
+	OptionalUniqueDecimal DECIMAL(9) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET OptionalUniqueDecimal = OptionalUniqueDecimal
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnMndtryUnqDcml
+(
+	MandatoryUniqueDecimal DECIMAL(9) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET MandatoryUniqueDecimal = MandatoryUniqueDecimal
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnMndtryUnqStrng
+(
+	MandatoryUniqueString CHARACTER(11) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET MandatoryUniqueString = MandatoryUniqueString
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonHusband_Person_id
+(
+	Husband_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Husband_Person_id = Husband_Person_id
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UPVT1DSEWVT1V
+(
+	VlTyp1DsSmthngElsWth_VlTyp1Vl BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET VlTyp1DsSmthngElsWth_VlTyp1Vl = VlTyp1DsSmthngElsWth_VlTyp1Vl
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UPCPBOBON
+(
+	ChldPrsn_BrthOrdr_BrthOrdr_Nr BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET ChldPrsn_BrthOrdr_BrthOrdr_Nr = ChldPrsn_BrthOrdr_BrthOrdr_Nr
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonFather_Person_id
+(
+	Father_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Father_Person_id = Father_Person_id
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonMother_Person_id
+(
+	Mother_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Mother_Person_id = Mother_Person_id
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdatePersonDeath_Date_YMD
+(
+	Death_Date_YMD BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Death_Date_YMD = Death_Date_YMD
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnDth_DthCs_DthCs_Typ
+(
+	Dth_DthCs_DthCs_Typ CHARACTER VARYING(14) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Dth_DthCs_DthCs_Typ = Dth_DthCs_DthCs_Typ
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UPDNDFPC
+(
+	Dth_NtrlDth_sFrmPrsttCncr BOOLEAN 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Dth_NtrlDth_sFrmPrsttCncr = Dth_NtrlDth_sFrmPrsttCncr
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnDth_UnntrlDth_sVlnt
+(
+	Death_UnnaturalDeath_isViolent BOOLEAN 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Death_UnnaturalDeath_isViolent = Death_UnnaturalDeath_isViolent
+	WHERE Person_id = $';
+
+CREATE FUNCTION SampleModel.UpdtPrsnDth_UnntrlDth_sBldy
+(
+	Death_UnnaturalDeath_isBloody BOOLEAN 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Person
+SET Death_UnnaturalDeath_isBloody = Death_UnnaturalDeath_isBloody
+	WHERE Person_id = $';
+
 CREATE FUNCTION SampleModel.InsertTask
 (
 	Task_id BIGINT , 
@@ -277,6 +404,17 @@ AS
 	'DELETE FROM SampleModel.Task
 	WHERE Task_id = $1';
 
+CREATE FUNCTION SampleModel.UpdateTaskPerson_Person_id
+(
+	Person_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Task
+SET Person_Person_id = Person_Person_id
+	WHERE Task_id = $';
+
 CREATE FUNCTION SampleModel.InsertValueType1
 (
 	ValueType1Value BIGINT , 
@@ -297,5 +435,166 @@ LANGUAGE SQL
 AS
 	'DELETE FROM SampleModel.ValueType1
 	WHERE ValueType1Value = $1';
+
+CREATE FUNCTION SampleModel.UpdtVlTyp1VlTyp1Vl
+(
+	ValueType1Value BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.ValueType1
+SET ValueType1Value = ValueType1Value
+	WHERE ValueType1Value = $1';
+
+CREATE FUNCTION SampleModel.UVT1DSWPP
+(
+	DsSmthngWthPrsn_Prsn_d BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.ValueType1
+SET DsSmthngWthPrsn_Prsn_d = DsSmthngWthPrsn_Prsn_d
+	WHERE ValueType1Value = $';
+
+CREATE FUNCTION SampleModel.InsrtPrsnBghtCrFrmPrsnOnDt
+(
+	CarSold_vin BIGINT , 
+	SaleDate_YMD BIGINT , 
+	Buyer_Person_id BIGINT , 
+	Seller_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'INSERT INTO SampleModel.PrsnBghtCrFrmPrsnOnDt(CarSold_vin, SaleDate_YMD, Buyer_Person_id, Seller_Person_id)
+	VALUES ($1, $2, $3, $4)';
+
+CREATE FUNCTION SampleModel.DltPrsnBghtCrFrmPrsnOnDt
+(
+	Buyer_Person_id BIGINT , 
+	CarSold_vin BIGINT , 
+	Seller_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'DELETE FROM SampleModel.PrsnBghtCrFrmPrsnOnDt
+	WHERE Buyer_Person_id = $1 AND 
+CarSold_vin = $2 AND 
+Seller_Person_id = $3';
+
+CREATE FUNCTION SampleModel.UPBCFPODCS
+(
+	CarSold_vin BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
+SET CarSold_vin = CarSold_vin
+	WHERE Buyer_Person_id = $ AND 
+CarSold_vin = $1 AND 
+Seller_Person_id = $';
+
+CREATE FUNCTION SampleModel.UPBCFPODSDYMD
+(
+	SaleDate_YMD BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
+SET SaleDate_YMD = SaleDate_YMD
+	WHERE Buyer_Person_id = $ AND 
+CarSold_vin = $ AND 
+Seller_Person_id = $';
+
+CREATE FUNCTION SampleModel.UPBCFPODBP
+(
+	Buyer_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
+SET Buyer_Person_id = Buyer_Person_id
+	WHERE Buyer_Person_id = $1 AND 
+CarSold_vin = $ AND 
+Seller_Person_id = $';
+
+CREATE FUNCTION SampleModel.UPBCFPODSP
+(
+	Seller_Person_id BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
+SET Seller_Person_id = Seller_Person_id
+	WHERE Buyer_Person_id = $ AND 
+CarSold_vin = $ AND 
+Seller_Person_id = $1';
+
+CREATE FUNCTION SampleModel.InsertReview
+(
+	Car_vin BIGINT , 
+	Rating_Nr_Integer BIGINT , 
+	Criterion_Name CHARACTER VARYING(64) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'INSERT INTO SampleModel.Review(Car_vin, Rating_Nr_Integer, Criterion_Name)
+	VALUES ($1, $2, $3)';
+
+CREATE FUNCTION SampleModel.DeleteReview
+(
+	Car_vin BIGINT , 
+	Criterion_Name CHARACTER VARYING(64) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'DELETE FROM SampleModel.Review
+	WHERE Car_vin = $1 AND 
+Criterion_Name = $2';
+
+CREATE FUNCTION SampleModel.UpdateReviewCar_vin
+(
+	Car_vin BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Review
+SET Car_vin = Car_vin
+	WHERE Car_vin = $1 AND 
+Criterion_Name = $';
+
+CREATE FUNCTION SampleModel.UpdateReviewRating_Nr_Integer
+(
+	Rating_Nr_Integer BIGINT 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Review
+SET Rating_Nr_Integer = Rating_Nr_Integer
+	WHERE Car_vin = $ AND 
+Criterion_Name = $';
+
+CREATE FUNCTION SampleModel.UpdateReviewCriterion_Name
+(
+	Criterion_Name CHARACTER VARYING(64) 
+)
+RETURNS VOID
+LANGUAGE SQL
+AS
+	'UPDATE SampleModel.Review
+SET Criterion_Name = Criterion_Name
+	WHERE Car_vin = $ AND 
+Criterion_Name = $1';
 COMMIT WORK;
 

@@ -115,103 +115,56 @@
 				<plx:param type="in" name="value" dataTypeName=".i4"/>
 				<plx:param type="in" name="places" dataTypeName=".i4"/>
 				<plx:returns dataTypeName=".i4"/>
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef type="parameter" name="places"/>
-					</plx:left>
-					<plx:right>
-						<plx:binaryOperator type="bitwiseAnd">
+				<plx:return>
+					<plx:cast type="exceptionCast" dataTypeName=".i4">
+						<plx:binaryOperator type="bitwiseOr">
 							<plx:left>
-								<plx:nameRef type="parameter" name="places"/>
-							</plx:left>
-							<plx:right>
-								<plx:value type="hex4" data="1F"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:right>
-				</plx:assign>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="equality">
-							<plx:left>
-								<plx:nameRef type="parameter" name="places"/>
-							</plx:left>
-							<plx:right>
-								<plx:value type="i4" data="0"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:nameRef type="parameter" name="value"/>
-					</plx:return>
-				</plx:branch>
-				<plx:local name="mask" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:binaryOperator type="shiftRight">
-							<plx:left>
-								<plx:unaryOperator type="bitwiseNot">
-									<plx:value type="hex4" data="7FFFFFF"/>
-								</plx:unaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="subtract">
+								<plx:binaryOperator type="shiftRight">
 									<plx:left>
-										<plx:nameRef type="parameter" name="places"/>
+										<plx:cast type="exceptionCast" dataTypeName=".u4">
+											<plx:nameRef type="parameter" name="value"/>
+										</plx:cast>
 									</plx:left>
 									<plx:right>
-										<plx:value type="i4" data="1"/>
+										<plx:binaryOperator type="bitwiseAnd">
+											<plx:left>
+												<plx:nameRef type="parameter" name="places"/>
+											</plx:left>
+											<plx:right>
+												<plx:value type="i4" data="31"/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="shiftLeft">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".u4">
+											<plx:nameRef type="parameter" name="value"/>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="bitwiseAnd">
+											<plx:left>
+												<plx:binaryOperator type="subtract">
+													<plx:left>
+														<plx:value type="i4" data="32"/>
+													</plx:left>
+													<plx:right>
+														<plx:nameRef type="parameter" name="places"/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:left>
+											<plx:right>
+												<plx:value type="i4" data="31"/>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:right>
 						</plx:binaryOperator>
-					</plx:initialize>
-				</plx:local>
-				<plx:return>
-					<plx:binaryOperator type="bitwiseOr">
-						<plx:left>
-							<plx:binaryOperator type="bitwiseAnd">
-								<plx:left>
-									<plx:binaryOperator type="shiftRight">
-										<plx:left>
-											<plx:nameRef type="parameter" name="value"/>
-										</plx:left>
-										<plx:right>
-											<plx:nameRef type="parameter" name="places"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:unaryOperator type="bitwiseNot">
-										<plx:nameRef type="local" name="mask"/>
-									</plx:unaryOperator>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:left>
-						<plx:right>
-							<plx:binaryOperator type="bitwiseAnd">
-								<plx:left>
-									<plx:binaryOperator type="shiftLeft">
-										<plx:left>
-											<plx:nameRef type="parameter" name="value"/>
-										</plx:left>
-										<plx:right>
-											<plx:binaryOperator type="subtract">
-												<plx:left>
-													<plx:value type="i4" data="32"/>
-												</plx:left>
-												<plx:right>
-													<plx:nameRef type="parameter" name="places"/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:left>
-								<plx:right>
-									<plx:nameRef type="local" name="mask"/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:right>
-					</plx:binaryOperator>
+					</plx:cast>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="abstractOverride" overload="true" name="ToString">
@@ -485,7 +438,7 @@
 				</xsl:for-each>
 			</plx:function>
 
-			<plx:function visibility="public" modifier="override" overload="true" name="Equals">
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
 				<plx:param name="obj" dataTypeName=".object"/>
 				<plx:returns dataTypeName=".boolean"/>
 				<plx:return>
@@ -545,7 +498,7 @@
 				</plx:return>
 			</plx:function>
 
-			<plx:function visibility="public" modifier="override" name="GetHashCode">
+			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
 				<plx:returns dataTypeName=".i4"/>
 				<plx:return>
 					<plx:binaryOperator type="bitwiseExclusiveOr">
@@ -569,7 +522,7 @@
 				</plx:return>
 			</plx:function>
 
-			<plx:function visibility="public" modifier="override" overload="true" name="ToString">
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="ToString">
 				<plx:returns dataTypeName=".string"/>
 				<plx:return>
 					<plx:callThis accessor="this" type="methodCall" name="ToString">
@@ -579,7 +532,7 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="public" modifier="override" overload="true" name="ToString">
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="ToString">
 				<plx:param name="provider" dataTypeName="IFormatProvider" dataTypeQualifier="System"/>
 				<plx:returns dataTypeName=".string"/>
 				<plx:return>

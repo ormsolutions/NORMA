@@ -109,26 +109,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public interface IORMModelEventSubscriber
 	{
 		/// <summary>
-		/// This method attaches ModelEvents to the primary Store. Called before the Document is Loaded
-		/// and when event handlers are removed.
+		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
+		/// Called before the document is loaded and when <see cref="EventHandler{TEventArgs}"/>s are removed.
 		/// </summary>
-		/// <param name="eventManager">The <see cref="SafeEventManager"/> used to add or remove events</param>
-		/// <param name="addHandlers">true to add event handlers, false to remove handlers.</param>
-		void ManagePreLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers);
+		/// <param name="eventManager">
+		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
+		/// </param>
+		/// <param name="action">
+		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
+		/// </param>
+		void ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
 		/// <summary>
-		/// This method attaches ModelEvents to the primary Store. Called after the Document is Loaded
-		/// and when event handlers are removed.
+		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
+		/// Called after the document is loaded and when <see cref="EventHandler{TEventArgs}"/>s are removed.
 		/// </summary>
-		/// <param name="eventManager">The <see cref="SafeEventManager"/> used to add or remove events</param>
-		/// <param name="addHandlers">true to add event handlers, false to remove handlers.</param>
-		void ManagePostLoadModelingEventHandlers(SafeEventManager eventManager, bool addHandlers);
+		/// <param name="eventManager">
+		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
+		/// </param>
+		/// <param name="action">
+		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
+		/// </param>
+		void ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
 		/// <summary>
-		/// This method attaches ModelEvents to the primary Store. Called when survey questions (used to load
-		/// the model browser) are required and when event handlers are removed.
+		/// Manages modeling <see cref="EventHandler{TEventArgs}"/>s for the primary <see cref="Store"/>.
+		/// Called when survey questions (used to load the model browser) are required and when
+		/// <see cref="EventHandler{TEventArgs}"/>s are removed.
 		/// </summary>
-		/// <param name="eventManager">The <see cref="SafeEventManager"/> used to add or remove events</param>
-		/// <param name="addHandlers">true to add event handlers, false to remove handlers.</param>
-		void ManageSurveyQuestionModelingEventHandlers(SafeEventManager eventManager, bool addHandlers);
+		/// <param name="eventManager">
+		/// The <see cref="ModelingEventManager"/> used to add or remove <see cref="EventHandler{TEventArgs}"/>s.
+		/// </param>
+		/// <param name="action">
+		/// The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.
+		/// </param>
+		void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
 	}
 	#endregion // IORMModelEventSubscriber
 	#region IDomainModelEnablesRulesAfterDeserialization interface

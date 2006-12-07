@@ -492,18 +492,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Manage event handlers in the store
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="RolePlayerLink"/>s.
 		/// </summary>
-		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId);
-			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), addHandlers);
-			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId);
-			eventManager.AddOrRemove(relInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent), addHandlers);
-			relInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
-			eventManager.AddOrRemove(relInfo, new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent), action);
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId), new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent), action);
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId), new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent), action);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of a simple mandatory constraint changes

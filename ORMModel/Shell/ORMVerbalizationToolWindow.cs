@@ -552,13 +552,17 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Manages event handlers in the store.
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> so that the <see cref="ORMVerbalizationToolWindow"/>
+		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			if (store != null && !store.Disposed)
 			{
-				eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ModelStateChangedEvent), addHandlers);
+				eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ModelStateChangedEvent), action);
 			}
 		}
 		#endregion // ORMToolWindow Implementation

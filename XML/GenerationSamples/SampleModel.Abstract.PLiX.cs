@@ -11,724 +11,10 @@ using LayoutKind = System.Runtime.InteropServices.LayoutKind;
 using CharSet = System.Runtime.InteropServices.CharSet;
 namespace SampleModel
 {
-	#region PersonDrivesCar
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-	public abstract partial class PersonDrivesCar : INotifyPropertyChanged, IHasSampleModelContext
-	{
-		protected PersonDrivesCar()
-		{
-		}
-		private System.Delegate[] _events;
-		private System.Delegate[] Events
-		{
-			get
-			{
-				return this._events ?? (this._events = new System.Delegate[4]);
-			}
-		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-		}
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonDrivesCar, int>> DrivesCar_vinChanging
-		{
-			add
-			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
-			}
-			remove
-			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
-			}
-		}
-		protected bool OnDrivesCar_vinChanging(int newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonDrivesCar, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<PersonDrivesCar, int>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonDrivesCar, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonDrivesCar, int>(this, this.DrivesCar_vin, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonDrivesCar, int>> DrivesCar_vinChanged
-		{
-			add
-			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
-			}
-			remove
-			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
-			}
-		}
-		protected void OnDrivesCar_vinChanged(int oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonDrivesCar, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<PersonDrivesCar, int>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonDrivesCar, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonDrivesCar, int>(this, oldValue, this.DrivesCar_vin));
-				this.OnPropertyChanged("DrivesCar_vin");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonDrivesCar, Person>> DrivenByPersonChanging
-		{
-			add
-			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
-			}
-			remove
-			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
-			}
-		}
-		protected bool OnDrivenByPersonChanging(Person newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonDrivesCar, Person>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<PersonDrivesCar, Person>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonDrivesCar, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonDrivesCar, Person>(this, this.DrivenByPerson, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonDrivesCar, Person>> DrivenByPersonChanged
-		{
-			add
-			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
-			}
-			remove
-			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
-			}
-		}
-		protected void OnDrivenByPersonChanged(Person oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonDrivesCar, Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<PersonDrivesCar, Person>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonDrivesCar, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonDrivesCar, Person>(this, oldValue, this.DrivenByPerson));
-				this.OnPropertyChanged("DrivenByPerson");
-			}
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract int DrivesCar_vin
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract Person DrivenByPerson
-		{
-			get;
-			set;
-		}
-		public override string ToString()
-		{
-			return this.ToString(null);
-		}
-		public virtual string ToString(IFormatProvider provider)
-		{
-			return string.Format(provider, @"PersonDrivesCar{0}{{{0}{1}DrivesCar_vin = ""{2}"",{0}{1}DrivenByPerson = {3}{0}}}", Environment.NewLine, "	", this.DrivesCar_vin, "TODO: Recursively call ToString for customTypes...");
-		}
-	}
-	#endregion // PersonDrivesCar
-	#region PersonBoughtCarFromPersonOnDate
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-	public abstract partial class PersonBoughtCarFromPersonOnDate : INotifyPropertyChanged, IHasSampleModelContext
-	{
-		protected PersonBoughtCarFromPersonOnDate()
-		{
-		}
-		private System.Delegate[] _events;
-		private System.Delegate[] Events
-		{
-			get
-			{
-				return this._events ?? (this._events = new System.Delegate[8]);
-			}
-		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-		}
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> CarSold_vinChanging
-		{
-			add
-			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
-			}
-			remove
-			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
-			}
-		}
-		protected bool OnCarSold_vinChanging(int newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, this.CarSold_vin, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> CarSold_vinChanged
-		{
-			add
-			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
-			}
-			remove
-			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
-			}
-		}
-		protected void OnCarSold_vinChanged(int oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, oldValue, this.CarSold_vin));
-				this.OnPropertyChanged("CarSold_vin");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> SaleDate_YMDChanging
-		{
-			add
-			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
-			}
-			remove
-			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
-			}
-		}
-		protected bool OnSaleDate_YMDChanging(int newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, this.SaleDate_YMD, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> SaleDate_YMDChanged
-		{
-			add
-			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
-			}
-			remove
-			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
-			}
-		}
-		protected void OnSaleDate_YMDChanged(int oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, oldValue, this.SaleDate_YMD));
-				this.OnPropertyChanged("SaleDate_YMD");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> BuyerChanging
-		{
-			add
-			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
-			}
-			remove
-			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
-			}
-		}
-		protected bool OnBuyerChanging(Person newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, this.Buyer, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> BuyerChanged
-		{
-			add
-			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
-			}
-			remove
-			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
-			}
-		}
-		protected void OnBuyerChanged(Person oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, oldValue, this.Buyer));
-				this.OnPropertyChanged("Buyer");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> SellerChanging
-		{
-			add
-			{
-				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
-			}
-			remove
-			{
-				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
-			}
-		}
-		protected bool OnSellerChanging(Person newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, this.Seller, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> SellerChanged
-		{
-			add
-			{
-				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
-			}
-			remove
-			{
-				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
-			}
-		}
-		protected void OnSellerChanged(Person oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, oldValue, this.Seller));
-				this.OnPropertyChanged("Seller");
-			}
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract int CarSold_vin
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract int SaleDate_YMD
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract Person Buyer
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract Person Seller
-		{
-			get;
-			set;
-		}
-		public override string ToString()
-		{
-			return this.ToString(null);
-		}
-		public virtual string ToString(IFormatProvider provider)
-		{
-			return string.Format(provider, @"PersonBoughtCarFromPersonOnDate{0}{{{0}{1}CarSold_vin = ""{2}"",{0}{1}SaleDate_YMD = ""{3}"",{0}{1}Buyer = {4},{0}{1}Seller = {5}{0}}}", Environment.NewLine, "	", this.CarSold_vin, this.SaleDate_YMD, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
-		}
-	}
-	#endregion // PersonBoughtCarFromPersonOnDate
-	#region Review
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-	public abstract partial class Review : INotifyPropertyChanged, IHasSampleModelContext
-	{
-		protected Review()
-		{
-		}
-		private System.Delegate[] _events;
-		private System.Delegate[] Events
-		{
-			get
-			{
-				return this._events ?? (this._events = new System.Delegate[6]);
-			}
-		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-		}
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
-		}
-		public event EventHandler<PropertyChangingEventArgs<Review, int>> Car_vinChanging
-		{
-			add
-			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
-			}
-			remove
-			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
-			}
-		}
-		protected bool OnCar_vinChanging(int newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, this.Car_vin, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<Review, int>> Car_vinChanged
-		{
-			add
-			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
-			}
-			remove
-			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
-			}
-		}
-		protected void OnCar_vinChanged(int oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, oldValue, this.Car_vin));
-				this.OnPropertyChanged("Car_vin");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<Review, int>> Rating_Nr_IntegerChanging
-		{
-			add
-			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
-			}
-			remove
-			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
-			}
-		}
-		protected bool OnRating_Nr_IntegerChanging(int newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, this.Rating_Nr_Integer, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<Review, int>> Rating_Nr_IntegerChanged
-		{
-			add
-			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
-			}
-			remove
-			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
-			}
-		}
-		protected void OnRating_Nr_IntegerChanged(int oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, oldValue, this.Rating_Nr_Integer));
-				this.OnPropertyChanged("Rating_Nr_Integer");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<Review, string>> Criterion_NameChanging
-		{
-			add
-			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
-			}
-			remove
-			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
-			}
-		}
-		protected bool OnCriterion_NameChanging(string newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<Review, string>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<Review, string>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, string>>(eventHandler, this, new PropertyChangingEventArgs<Review, string>(this, this.Criterion_Name, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<Review, string>> Criterion_NameChanged
-		{
-			add
-			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
-			}
-			remove
-			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
-			}
-		}
-		protected void OnCriterion_NameChanged(string oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<Review, string>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<Review, string>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, string>>(eventHandler, this, new PropertyChangedEventArgs<Review, string>(this, oldValue, this.Criterion_Name));
-				this.OnPropertyChanged("Criterion_Name");
-			}
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract int Car_vin
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract int Rating_Nr_Integer
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract string Criterion_Name
-		{
-			get;
-			set;
-		}
-		public override string ToString()
-		{
-			return this.ToString(null);
-		}
-		public virtual string ToString(IFormatProvider provider)
-		{
-			return string.Format(provider, @"Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criterion_Name = ""{4}""{0}}}", Environment.NewLine, "	", this.Car_vin, this.Rating_Nr_Integer, this.Criterion_Name);
-		}
-	}
-	#endregion // Review
-	#region PersonHasNickName
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-	public abstract partial class PersonHasNickName : INotifyPropertyChanged, IHasSampleModelContext
-	{
-		protected PersonHasNickName()
-		{
-		}
-		private System.Delegate[] _events;
-		private System.Delegate[] Events
-		{
-			get
-			{
-				return this._events ?? (this._events = new System.Delegate[4]);
-			}
-		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-		}
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonHasNickName, string>> NickNameChanging
-		{
-			add
-			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
-			}
-			remove
-			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
-			}
-		}
-		protected bool OnNickNameChanging(string newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonHasNickName, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<PersonHasNickName, string>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonHasNickName, string>>(eventHandler, this, new PropertyChangingEventArgs<PersonHasNickName, string>(this, this.NickName, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonHasNickName, string>> NickNameChanged
-		{
-			add
-			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
-			}
-			remove
-			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
-			}
-		}
-		protected void OnNickNameChanged(string oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonHasNickName, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<PersonHasNickName, string>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonHasNickName, string>>(eventHandler, this, new PropertyChangedEventArgs<PersonHasNickName, string>(this, oldValue, this.NickName));
-				this.OnPropertyChanged("NickName");
-			}
-		}
-		public event EventHandler<PropertyChangingEventArgs<PersonHasNickName, Person>> PersonChanging
-		{
-			add
-			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
-			}
-			remove
-			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
-			}
-		}
-		protected bool OnPersonChanging(Person newValue)
-		{
-			EventHandler<PropertyChangingEventArgs<PersonHasNickName, Person>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<PersonHasNickName, Person>>;
-			if ((object)eventHandler != null)
-			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonHasNickName, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonHasNickName, Person>(this, this.Person, newValue));
-			}
-			return true;
-		}
-		public event EventHandler<PropertyChangedEventArgs<PersonHasNickName, Person>> PersonChanged
-		{
-			add
-			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
-			}
-			remove
-			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
-			}
-		}
-		protected void OnPersonChanged(Person oldValue)
-		{
-			EventHandler<PropertyChangedEventArgs<PersonHasNickName, Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<PersonHasNickName, Person>>;
-			if ((object)eventHandler != null)
-			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonHasNickName, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonHasNickName, Person>(this, oldValue, this.Person));
-				this.OnPropertyChanged("Person");
-			}
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract string NickName
-		{
-			get;
-			set;
-		}
-		[DataObjectFieldAttribute(false, false, false)]
-		public abstract Person Person
-		{
-			get;
-			set;
-		}
-		public override string ToString()
-		{
-			return this.ToString(null);
-		}
-		public virtual string ToString(IFormatProvider provider)
-		{
-			return string.Format(provider, @"PersonHasNickName{0}{{{0}{1}NickName = ""{2}"",{0}{1}Person = {3}{0}}}", Environment.NewLine, "	", this.NickName, "TODO: Recursively call ToString for customTypes...");
-		}
-	}
-	#endregion // PersonHasNickName
 	#region Person
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Person : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Person()
@@ -743,7 +29,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -1527,147 +813,137 @@ namespace SampleModel
 				this.OnPropertyChanged("Wife");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string FirstName
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract int Date_YMD
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string LastName
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract string OptionalUniqueString
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Nullable<int> HatType_ColorARGB
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Nullable<int> OwnsCar_vin
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string Gender_Gender_Code
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract bool hasParents
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Nullable<decimal> OptionalUniqueDecimal
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract decimal MandatoryUniqueDecimal
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string MandatoryUniqueString
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Person Husband
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract MalePerson MalePerson
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract FemalePerson FemalePerson
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract ChildPerson ChildPerson
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Death Death
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get;
-		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get;
-		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get;
-		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get;
-		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Person Wife
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract IEnumerable<Task> TaskViaPersonCollection
 		{
 			get;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract IEnumerable<ValueType1> ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection
+		{
+			get;
+		}
+		[DataObjectField(false, false, true)]
+		public abstract IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get;
+		}
+		[DataObjectField(false, false, true)]
+		public abstract IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
 		{
 			get;
 		}
@@ -1677,7 +953,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}hasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}Husband = {14},{0}{1}ValueType1DoesSomethingElseWith = {15},{0}{1}MalePerson = {16},{0}{1}FemalePerson = {17},{0}{1}ChildPerson = {18},{0}{1}Death = {19},{0}{1}Wife = {20}{0}}}", Environment.NewLine, "	", this.FirstName, this.Date_YMD, this.LastName, this.OptionalUniqueString, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.hasParents, this.OptionalUniqueDecimal, this.MandatoryUniqueDecimal, this.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}hasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}Husband = {14},{0}{1}ValueType1DoesSomethingElseWith = {15},{0}{1}MalePerson = {16},{0}{1}FemalePerson = {17},{0}{1}ChildPerson = {18},{0}{1}Death = {19},{0}{1}Wife = {20}{0}}}", Environment.NewLine, @"	", this.FirstName, this.Date_YMD, this.LastName, this.OptionalUniqueString, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.hasParents, this.OptionalUniqueDecimal, this.MandatoryUniqueDecimal, this.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
 		public static explicit operator MalePerson(Person Person)
 		{
@@ -1764,9 +1040,9 @@ namespace SampleModel
 	}
 	#endregion // Person
 	#region MalePerson
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class MalePerson : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected MalePerson()
@@ -1781,7 +1057,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -1845,13 +1121,13 @@ namespace SampleModel
 				this.OnPropertyChanged("Person");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract Person Person
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract IEnumerable<ChildPerson> ChildPersonViaFatherCollection
 		{
 			get;
@@ -1862,7 +1138,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, "MalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "	", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, "MalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, @"	", "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Person(MalePerson MalePerson)
 		{
@@ -2436,34 +1712,6 @@ namespace SampleModel
 				this.Person.DeathChanged -= value;
 			}
 		}
-		public virtual IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonDrivesCarViaDrivenByPersonCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonHasNickNameViaPersonCollection;
-			}
-		}
 		public virtual Person Wife
 		{
 			get
@@ -2511,12 +1759,26 @@ namespace SampleModel
 				return this.Person.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			}
 		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			}
+		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			}
+		}
 	}
 	#endregion // MalePerson
 	#region FemalePerson
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class FemalePerson : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected FemalePerson()
@@ -2531,7 +1793,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -2595,13 +1857,13 @@ namespace SampleModel
 				this.OnPropertyChanged("Person");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract Person Person
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract IEnumerable<ChildPerson> ChildPersonViaMotherCollection
 		{
 			get;
@@ -2612,7 +1874,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, "FemalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "	", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, "FemalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, @"	", "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Person(FemalePerson FemalePerson)
 		{
@@ -3186,34 +2448,6 @@ namespace SampleModel
 				this.Person.DeathChanged -= value;
 			}
 		}
-		public virtual IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonDrivesCarViaDrivenByPersonCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonHasNickNameViaPersonCollection;
-			}
-		}
 		public virtual Person Wife
 		{
 			get
@@ -3261,12 +2495,26 @@ namespace SampleModel
 				return this.Person.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			}
 		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			}
+		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			}
+		}
 	}
 	#endregion // FemalePerson
 	#region ChildPerson
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class ChildPerson : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected ChildPerson()
@@ -3281,7 +2529,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -3465,25 +2713,25 @@ namespace SampleModel
 				this.OnPropertyChanged("Person");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract int BirthOrder_BirthOrder_Nr
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract MalePerson Father
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract FemalePerson Mother
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract Person Person
 		{
 			get;
@@ -3495,7 +2743,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"ChildPerson{0}{{{0}{1}BirthOrder_BirthOrder_Nr = ""{2}"",{0}{1}Father = {3},{0}{1}Mother = {4},{0}{1}Person = {5}{0}}}", Environment.NewLine, "	", this.BirthOrder_BirthOrder_Nr, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"ChildPerson{0}{{{0}{1}BirthOrder_BirthOrder_Nr = ""{2}"",{0}{1}Father = {3},{0}{1}Mother = {4},{0}{1}Person = {5}{0}}}", Environment.NewLine, @"	", this.BirthOrder_BirthOrder_Nr, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Person(ChildPerson ChildPerson)
 		{
@@ -4069,34 +3317,6 @@ namespace SampleModel
 				this.Person.DeathChanged -= value;
 			}
 		}
-		public virtual IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonDrivesCarViaDrivenByPersonCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonHasNickNameViaPersonCollection;
-			}
-		}
 		public virtual Person Wife
 		{
 			get
@@ -4144,12 +3364,26 @@ namespace SampleModel
 				return this.Person.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			}
 		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			}
+		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			}
+		}
 	}
 	#endregion // ChildPerson
 	#region Death
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Death : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Death()
@@ -4164,7 +3398,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -4388,31 +3622,31 @@ namespace SampleModel
 				this.OnPropertyChanged("Person");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Nullable<int> Date_YMD
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string DeathCause_DeathCause_Type
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract NaturalDeath NaturalDeath
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract UnnaturalDeath UnnaturalDeath
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract Person Person
 		{
 			get;
@@ -4424,7 +3658,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Death{0}{{{0}{1}Date_YMD = ""{2}"",{0}{1}DeathCause_DeathCause_Type = ""{3}"",{0}{1}NaturalDeath = {4},{0}{1}UnnaturalDeath = {5},{0}{1}Person = {6}{0}}}", Environment.NewLine, "	", this.Date_YMD, this.DeathCause_DeathCause_Type, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"Death{0}{{{0}{1}Date_YMD = ""{2}"",{0}{1}DeathCause_DeathCause_Type = ""{3}"",{0}{1}NaturalDeath = {4},{0}{1}UnnaturalDeath = {5},{0}{1}Person = {6}{0}}}", Environment.NewLine, @"	", this.Date_YMD, this.DeathCause_DeathCause_Type, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Person(Death Death)
 		{
@@ -4965,34 +4199,6 @@ namespace SampleModel
 				this.Person.ChildPersonChanged -= value;
 			}
 		}
-		public virtual IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonDrivesCarViaDrivenByPersonCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get
-			{
-				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get
-			{
-				return this.Person.PersonHasNickNameViaPersonCollection;
-			}
-		}
 		public virtual Person Wife
 		{
 			get
@@ -5040,6 +4246,20 @@ namespace SampleModel
 				return this.Person.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			}
 		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			}
+		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+		{
+			get
+			{
+				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			}
+		}
 		public static explicit operator NaturalDeath(Death Death)
 		{
 			if (Death == null)
@@ -5073,9 +4293,9 @@ namespace SampleModel
 	}
 	#endregion // Death
 	#region NaturalDeath
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class NaturalDeath : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected NaturalDeath()
@@ -5090,7 +4310,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -5194,13 +4414,13 @@ namespace SampleModel
 				this.OnPropertyChanged("Death");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract bool isFromProstateCancer
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract Death Death
 		{
 			get;
@@ -5212,7 +4432,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"NaturalDeath{0}{{{0}{1}isFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "	", this.isFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"NaturalDeath{0}{{{0}{1}isFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, @"	", this.isFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Death(NaturalDeath NaturalDeath)
 		{
@@ -5896,34 +5116,6 @@ namespace SampleModel
 				this.Death.Person.ChildPersonChanged -= value;
 			}
 		}
-		public virtual IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonDrivesCarViaDrivenByPersonCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonHasNickNameViaPersonCollection;
-			}
-		}
 		public virtual Person Wife
 		{
 			get
@@ -5971,12 +5163,26 @@ namespace SampleModel
 				return this.Death.Person.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			}
 		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get
+			{
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			}
+		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+		{
+			get
+			{
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			}
+		}
 	}
 	#endregion // NaturalDeath
 	#region UnnaturalDeath
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class UnnaturalDeath : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected UnnaturalDeath()
@@ -5991,7 +5197,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -6135,19 +5341,19 @@ namespace SampleModel
 				this.OnPropertyChanged("Death");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract bool isViolent
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract bool isBloody
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract Death Death
 		{
 			get;
@@ -6159,7 +5365,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}isViolent = ""{2}"",{0}{1}isBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "	", this.isViolent, this.isBloody, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}isViolent = ""{2}"",{0}{1}isBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, @"	", this.isViolent, this.isBloody, "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Death(UnnaturalDeath UnnaturalDeath)
 		{
@@ -6843,34 +6049,6 @@ namespace SampleModel
 				this.Death.Person.ChildPersonChanged -= value;
 			}
 		}
-		public virtual IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonDrivesCarViaDrivenByPersonCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			}
-		}
-		public virtual IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-		{
-			get
-			{
-				return this.Death.Person.PersonHasNickNameViaPersonCollection;
-			}
-		}
 		public virtual Person Wife
 		{
 			get
@@ -6918,12 +6096,26 @@ namespace SampleModel
 				return this.Death.Person.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			}
 		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+		{
+			get
+			{
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			}
+		}
+		public virtual IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+		{
+			get
+			{
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			}
+		}
 	}
 	#endregion // UnnaturalDeath
 	#region Task
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Task : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Task()
@@ -6938,7 +6130,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -7002,7 +6194,7 @@ namespace SampleModel
 				this.OnPropertyChanged("Person");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Person Person
 		{
 			get;
@@ -7014,14 +6206,14 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, "Task{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "	", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, "Task{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, @"	", "TODO: Recursively call ToString for customTypes...");
 		}
 	}
 	#endregion // Task
 	#region ValueType1
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class ValueType1 : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected ValueType1()
@@ -7036,7 +6228,7 @@ namespace SampleModel
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -7140,19 +6332,19 @@ namespace SampleModel
 				this.OnPropertyChanged("DoesSomethingWithPerson");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract int ValueType1Value
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Person DoesSomethingWithPerson
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract IEnumerable<Person> DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection
 		{
 			get;
@@ -7163,12 +6355,438 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"ValueType1{0}{{{0}{1}ValueType1Value = ""{2}"",{0}{1}DoesSomethingWithPerson = {3}{0}}}", Environment.NewLine, "	", this.ValueType1Value, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"ValueType1{0}{{{0}{1}ValueType1Value = ""{2}"",{0}{1}DoesSomethingWithPerson = {3}{0}}}", Environment.NewLine, @"	", this.ValueType1Value, "TODO: Recursively call ToString for customTypes...");
 		}
 	}
 	#endregion // ValueType1
+	#region PersonBoughtCarFromPersonOnDate
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	public abstract partial class PersonBoughtCarFromPersonOnDate : INotifyPropertyChanged, IHasSampleModelContext
+	{
+		protected PersonBoughtCarFromPersonOnDate()
+		{
+		}
+		private System.Delegate[] _events;
+		private System.Delegate[] Events
+		{
+			get
+			{
+				return this._events ?? (this._events = new System.Delegate[8]);
+			}
+		}
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
+			}
+			remove
+			{
+				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		public abstract SampleModelContext Context
+		{
+			get;
+		}
+		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> CarSold_vinChanging
+		{
+			add
+			{
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+			}
+			remove
+			{
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+			}
+		}
+		protected bool OnCarSold_vinChanging(int newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, this.CarSold_vin, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> CarSold_vinChanged
+		{
+			add
+			{
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+			}
+			remove
+			{
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+			}
+		}
+		protected void OnCarSold_vinChanged(int oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, oldValue, this.CarSold_vin));
+				this.OnPropertyChanged("CarSold_vin");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> SaleDate_YMDChanging
+		{
+			add
+			{
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+			}
+			remove
+			{
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+			}
+		}
+		protected bool OnSaleDate_YMDChanging(int newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, this.SaleDate_YMD, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> SaleDate_YMDChanged
+		{
+			add
+			{
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+			}
+			remove
+			{
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+			}
+		}
+		protected void OnSaleDate_YMDChanged(int oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, oldValue, this.SaleDate_YMD));
+				this.OnPropertyChanged("SaleDate_YMD");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> BuyerChanging
+		{
+			add
+			{
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+			}
+			remove
+			{
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+			}
+		}
+		protected bool OnBuyerChanging(Person newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, this.Buyer, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> BuyerChanged
+		{
+			add
+			{
+				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+			}
+			remove
+			{
+				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+			}
+		}
+		protected void OnBuyerChanged(Person oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, oldValue, this.Buyer));
+				this.OnPropertyChanged("Buyer");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> SellerChanging
+		{
+			add
+			{
+				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
+			}
+			remove
+			{
+				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
+			}
+		}
+		protected bool OnSellerChanging(Person newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, this.Seller, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> SellerChanged
+		{
+			add
+			{
+				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
+			}
+			remove
+			{
+				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
+			}
+		}
+		protected void OnSellerChanged(Person oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, oldValue, this.Seller));
+				this.OnPropertyChanged("Seller");
+			}
+		}
+		[DataObjectField(false, false, false)]
+		public abstract int CarSold_vin
+		{
+			get;
+			set;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract int SaleDate_YMD
+		{
+			get;
+			set;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract Person Buyer
+		{
+			get;
+			set;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract Person Seller
+		{
+			get;
+			set;
+		}
+		public override string ToString()
+		{
+			return this.ToString(null);
+		}
+		public virtual string ToString(IFormatProvider provider)
+		{
+			return string.Format(provider, @"PersonBoughtCarFromPersonOnDate{0}{{{0}{1}CarSold_vin = ""{2}"",{0}{1}SaleDate_YMD = ""{3}"",{0}{1}Buyer = {4},{0}{1}Seller = {5}{0}}}", Environment.NewLine, @"	", this.CarSold_vin, this.SaleDate_YMD, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
+		}
+	}
+	#endregion // PersonBoughtCarFromPersonOnDate
+	#region Review
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	public abstract partial class Review : INotifyPropertyChanged, IHasSampleModelContext
+	{
+		protected Review()
+		{
+		}
+		private System.Delegate[] _events;
+		private System.Delegate[] Events
+		{
+			get
+			{
+				return this._events ?? (this._events = new System.Delegate[6]);
+			}
+		}
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
+			}
+			remove
+			{
+				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		public abstract SampleModelContext Context
+		{
+			get;
+		}
+		public event EventHandler<PropertyChangingEventArgs<Review, int>> Car_vinChanging
+		{
+			add
+			{
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+			}
+			remove
+			{
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+			}
+		}
+		protected bool OnCar_vinChanging(int newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Review, int>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, this.Car_vin, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<Review, int>> Car_vinChanged
+		{
+			add
+			{
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+			}
+			remove
+			{
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+			}
+		}
+		protected void OnCar_vinChanged(int oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Review, int>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, oldValue, this.Car_vin));
+				this.OnPropertyChanged("Car_vin");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<Review, int>> Rating_Nr_IntegerChanging
+		{
+			add
+			{
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+			}
+			remove
+			{
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+			}
+		}
+		protected bool OnRating_Nr_IntegerChanging(int newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Review, int>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, this.Rating_Nr_Integer, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<Review, int>> Rating_Nr_IntegerChanged
+		{
+			add
+			{
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+			}
+			remove
+			{
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+			}
+		}
+		protected void OnRating_Nr_IntegerChanged(int oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Review, int>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, oldValue, this.Rating_Nr_Integer));
+				this.OnPropertyChanged("Rating_Nr_Integer");
+			}
+		}
+		public event EventHandler<PropertyChangingEventArgs<Review, string>> Criterion_NameChanging
+		{
+			add
+			{
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+			}
+			remove
+			{
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+			}
+		}
+		protected bool OnCriterion_NameChanging(string newValue)
+		{
+			EventHandler<PropertyChangingEventArgs<Review, string>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<Review, string>>;
+			if ((object)eventHandler != null)
+			{
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, string>>(eventHandler, this, new PropertyChangingEventArgs<Review, string>(this, this.Criterion_Name, newValue));
+			}
+			return true;
+		}
+		public event EventHandler<PropertyChangedEventArgs<Review, string>> Criterion_NameChanged
+		{
+			add
+			{
+				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+			}
+			remove
+			{
+				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+			}
+		}
+		protected void OnCriterion_NameChanged(string oldValue)
+		{
+			EventHandler<PropertyChangedEventArgs<Review, string>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<Review, string>>;
+			if ((object)eventHandler != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, string>>(eventHandler, this, new PropertyChangedEventArgs<Review, string>(this, oldValue, this.Criterion_Name));
+				this.OnPropertyChanged("Criterion_Name");
+			}
+		}
+		[DataObjectField(false, false, false)]
+		public abstract int Car_vin
+		{
+			get;
+			set;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract int Rating_Nr_Integer
+		{
+			get;
+			set;
+		}
+		[DataObjectField(false, false, false)]
+		public abstract string Criterion_Name
+		{
+			get;
+			set;
+		}
+		public override string ToString()
+		{
+			return this.ToString(null);
+		}
+		public virtual string ToString(IFormatProvider provider)
+		{
+			return string.Format(provider, @"Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criterion_Name = ""{4}""{0}}}", Environment.NewLine, @"	", this.Car_vin, this.Rating_Nr_Integer, this.Criterion_Name);
+		}
+	}
+	#endregion // Review
 	#region IHasSampleModelContext
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface IHasSampleModelContext
 	{
 		SampleModelContext Context
@@ -7178,11 +6796,15 @@ namespace SampleModel
 	}
 	#endregion // IHasSampleModelContext
 	#region ISampleModelContext
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface ISampleModelContext
 	{
-		PersonDrivesCar GetPersonDrivesCarByInternalUniquenessConstraint18(int DrivesCar_vin, Person DrivenByPerson);
-		bool TryGetPersonDrivesCarByInternalUniquenessConstraint18(int DrivesCar_vin, Person DrivenByPerson, out PersonDrivesCar PersonDrivesCar);
+		ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother);
+		bool TryGetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson);
+		Person GetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD);
+		bool TryGetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD, out Person Person);
+		Person GetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD);
+		bool TryGetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD, out Person Person);
 		PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint23(Person Buyer, int CarSold_vin, Person Seller);
 		bool TryGetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint23(Person Buyer, int CarSold_vin, Person Seller, out PersonBoughtCarFromPersonOnDate PersonBoughtCarFromPersonOnDate);
 		PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint24(int SaleDate_YMD, Person Seller, int CarSold_vin);
@@ -7191,14 +6813,6 @@ namespace SampleModel
 		bool TryGetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint25(int CarSold_vin, int SaleDate_YMD, Person Buyer, out PersonBoughtCarFromPersonOnDate PersonBoughtCarFromPersonOnDate);
 		Review GetReviewByInternalUniquenessConstraint26(int Car_vin, string Criterion_Name);
 		bool TryGetReviewByInternalUniquenessConstraint26(int Car_vin, string Criterion_Name, out Review Review);
-		PersonHasNickName GetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person);
-		bool TryGetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person, out PersonHasNickName PersonHasNickName);
-		ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother);
-		bool TryGetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson);
-		Person GetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD);
-		bool TryGetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD, out Person Person);
-		Person GetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD);
-		bool TryGetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD, out Person Person);
 		Person GetPersonByOptionalUniqueString(string OptionalUniqueString);
 		bool TryGetPersonByOptionalUniqueString(string OptionalUniqueString, out Person Person);
 		Person GetPersonByOwnsCar_vin(int OwnsCar_vin);
@@ -7211,26 +6825,6 @@ namespace SampleModel
 		bool TryGetPersonByMandatoryUniqueString(string MandatoryUniqueString, out Person Person);
 		ValueType1 GetValueType1ByValueType1Value(int ValueType1Value);
 		bool TryGetValueType1ByValueType1Value(int ValueType1Value, out ValueType1 ValueType1);
-		PersonDrivesCar CreatePersonDrivesCar(int DrivesCar_vin, Person DrivenByPerson);
-		IEnumerable<PersonDrivesCar> PersonDrivesCarCollection
-		{
-			get;
-		}
-		PersonBoughtCarFromPersonOnDate CreatePersonBoughtCarFromPersonOnDate(int CarSold_vin, int SaleDate_YMD, Person Buyer, Person Seller);
-		IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateCollection
-		{
-			get;
-		}
-		Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criterion_Name);
-		IEnumerable<Review> ReviewCollection
-		{
-			get;
-		}
-		PersonHasNickName CreatePersonHasNickName(string NickName, Person Person);
-		IEnumerable<PersonHasNickName> PersonHasNickNameCollection
-		{
-			get;
-		}
 		Person CreatePerson(string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, bool hasParents, decimal MandatoryUniqueDecimal, string MandatoryUniqueString);
 		IEnumerable<Person> PersonCollection
 		{
@@ -7273,6 +6867,16 @@ namespace SampleModel
 		}
 		ValueType1 CreateValueType1(int ValueType1Value);
 		IEnumerable<ValueType1> ValueType1Collection
+		{
+			get;
+		}
+		PersonBoughtCarFromPersonOnDate CreatePersonBoughtCarFromPersonOnDate(int CarSold_vin, int SaleDate_YMD, Person Buyer, Person Seller);
+		IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateCollection
+		{
+			get;
+		}
+		Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criterion_Name);
+		IEnumerable<Review> ReviewCollection
 		{
 			get;
 		}

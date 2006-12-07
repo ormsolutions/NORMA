@@ -12,9 +12,9 @@ using CharSet = System.Runtime.InteropServices.CharSet;
 namespace PersonCountryDemo
 {
 	#region Person
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Person : INotifyPropertyChanged, IHasPersonCountryDemoContext
 	{
 		protected Person()
@@ -29,7 +29,7 @@ namespace PersonCountryDemo
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -213,25 +213,25 @@ namespace PersonCountryDemo
 				this.OnPropertyChanged("Country");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string LastName
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string FirstName
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract string Title
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract Country Country
 		{
 			get;
@@ -243,14 +243,14 @@ namespace PersonCountryDemo
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Person{0}{{{0}{1}LastName = ""{2}"",{0}{1}FirstName = ""{3}"",{0}{1}Title = ""{4}"",{0}{1}Country = {5}{0}}}", Environment.NewLine, "	", this.LastName, this.FirstName, this.Title, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"Person{0}{{{0}{1}LastName = ""{2}"",{0}{1}FirstName = ""{3}"",{0}{1}Title = ""{4}"",{0}{1}Country = {5}{0}}}", Environment.NewLine, @"	", this.LastName, this.FirstName, this.Title, "TODO: Recursively call ToString for customTypes...");
 		}
 	}
 	#endregion // Person
 	#region Country
-	[DataObjectAttribute()]
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[DataObject()]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Country : INotifyPropertyChanged, IHasPersonCountryDemoContext
 	{
 		protected Country()
@@ -265,7 +265,7 @@ namespace PersonCountryDemo
 			}
 		}
 		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
@@ -369,19 +369,19 @@ namespace PersonCountryDemo
 				this.OnPropertyChanged("Region_Region_code");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, false)]
+		[DataObjectField(false, false, false)]
 		public abstract string Country_name
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract string Region_Region_code
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
+		[DataObjectField(false, false, true)]
 		public abstract IEnumerable<Person> PersonViaCountryCollection
 		{
 			get;
@@ -392,12 +392,12 @@ namespace PersonCountryDemo
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Country{0}{{{0}{1}Country_name = ""{2}"",{0}{1}Region_Region_code = ""{3}""{0}}}", Environment.NewLine, "	", this.Country_name, this.Region_Region_code);
+			return string.Format(provider, @"Country{0}{{{0}{1}Country_name = ""{2}"",{0}{1}Region_Region_code = ""{3}""{0}}}", Environment.NewLine, @"	", this.Country_name, this.Region_Region_code);
 		}
 	}
 	#endregion // Country
 	#region IHasPersonCountryDemoContext
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface IHasPersonCountryDemoContext
 	{
 		PersonCountryDemoContext Context
@@ -407,7 +407,7 @@ namespace PersonCountryDemo
 	}
 	#endregion // IHasPersonCountryDemoContext
 	#region IPersonCountryDemoContext
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface IPersonCountryDemoContext
 	{
 		Country GetCountryByCountry_name(string Country_name);

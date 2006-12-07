@@ -1501,31 +1501,32 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		/// <summary>
-		/// Call from IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers implementations to
-		/// attach handlers that correctly deal with undo and redo scenarios.
+		/// Call from <see cref="Neumont.Tools.ORM.ObjectModel.IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers"/>
+		/// implementations to attach <see cref="EventHandler{TEventArgs}"/>s that correctly deal with undo and redo scenarios.
 		/// </summary>
-		/// <param name="store">The store to attach to</param>
-		/// <param name="eventManager">The <see cref="SafeEventManager"/> use to manage events</param>
-		/// <param name="addHandlers">true to add handlers, false to remove them.</param>
-		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
+			
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ElementLink.DomainClassId);
 
 			// Track ElementLink changes
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ElementLinkAddedEvent), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ElementLinkAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent), action);
 			// UNDONE: RolePlayerChanged
 
 			// Track ModelElement 
 			classInfo = dataDirectory.FindDomainClass(ModelElement.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent), action);
 
-			eventManager.AddOrRemove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 
 			// Track commit and rollback events so we can rollback/abandon a change log as needed.
-			eventManager.AddOrRemove(new EventHandler<TransactionCommitEventArgs>(TransactionCommittedEvent), addHandlers);
-			eventManager.AddOrRemove(new EventHandler<TransactionRollbackEventArgs>(TransactionRolledBackEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(new EventHandler<TransactionCommitEventArgs>(TransactionCommittedEvent), action);
+			eventManager.AddOrRemoveHandler(new EventHandler<TransactionRollbackEventArgs>(TransactionRolledBackEvent), action);
 		}
 		#endregion // IMS integration
 	}

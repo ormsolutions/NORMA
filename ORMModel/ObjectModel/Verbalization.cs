@@ -18,11 +18,11 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using System.Diagnostics;
-using Microsoft.VisualStudio.Modeling;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -161,19 +161,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IVerbalize instance = myInstance;
 			if (instance != null)
 			{
-				return instance.GetHashCode() ^ RotateRight(myOptions.GetHashCode(), 1);
+				return Neumont.Tools.Modeling.Utility.GetCombinedHashCode(instance.GetHashCode(), myOptions.GetHashCode());
 			}
 			return 0;
-		}
-		private static int RotateRight(int value, int places)
-		{
-			places &= 0x1F;
-			if (places == 0)
-			{
-				return value;
-			}
-			int mask = ~0x7FFFFFF >> (places - 1);
-			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
 		}
 		/// <summary>
 		/// Typed Equals method

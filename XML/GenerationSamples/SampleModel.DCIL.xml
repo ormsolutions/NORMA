@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
-	<dcl:domainDataType name="OptionalUniqueString">
+	<dcl:domainDataType name="OptionalUniqueString" oilRefName="OptionalUniqueString">
 		<dcl:predefinedDataType name="CHARACTER" length="11" />
 		<dcl:checkConstraint name="OptionalUniqueString_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
@@ -17,7 +17,7 @@
 			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:domainDataType name="&quot;Integer&quot;">
+	<dcl:domainDataType name="&quot;Integer&quot;" oilRefName="Integer">
 		<dcl:predefinedDataType name="BIGINT" />
 		<dcl:checkConstraint name="Integer_Chk">
 			<dep:betweenPredicate type="BETWEEN">
@@ -27,7 +27,7 @@
 			</dep:betweenPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:domainDataType name="DeathCause_Type">
+	<dcl:domainDataType name="DeathCause_Type" oilRefName="DeathCause_Type">
 		<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
 		<dcl:checkConstraint name="DeathCause_Type_Chk">
 			<dep:inPredicate type="IN">
@@ -37,7 +37,7 @@
 			</dep:inPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:domainDataType name="Gender_Code">
+	<dcl:domainDataType name="Gender_Code" oilRefName="Gender_Code">
 		<dcl:predefinedDataType name="CHARACTER" length="1" />
 		<dcl:checkConstraint name="Gender_Code_Chk">
 			<dep:and>
@@ -61,7 +61,7 @@
 			</dep:and>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:domainDataType name="MandatoryUniqueString">
+	<dcl:domainDataType name="MandatoryUniqueString" oilRefName="MandatoryUniqueString">
 		<dcl:predefinedDataType name="CHARACTER" length="11" />
 		<dcl:checkConstraint name="MandatoryUniqueString_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
@@ -78,383 +78,121 @@
 			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
-	<dcl:table name="PersonDrivesCar">
-		<dcl:column name="DrivesCar_vin" isNullable="false" isIdentity="false">
+	<dcl:table name="Person" oilRefName="Person">
+		<dcl:column name="FirstName" isNullable="false" isIdentity="false" oilRefName="FirstName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:column>
+		<dcl:column name="Person_id" isNullable="false" isIdentity="true" oilRefName="Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" name="DrivenByPerson_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="DrivenByPerson_FK" targetTable="Person">
-			<dcl:columnRef sourceName="DrivenByPerson_Person_id" targetName="Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint18" isPrimary="true">
-			<dcl:columnRef name="DrivesCar_vin" />
-			<dcl:columnRef name="DrivenByPerson_Person_id" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint2" isPrimary="true" oilRefName="InternalUniquenessConstraint2">
+			<dcl:columnRef name="Person_id" oilRefName="Person_id" />
 		</dcl:uniquenessConstraint>
-	</dcl:table>
-	<dcl:procedure name="InsertPersonDrivesCar" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="DrivesCar_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DrivenByPerson_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dml:insertStatement schema="SampleModel" name="PersonDrivesCar">
-			<dml:fromConstructor>
-				<ddl:column name="DrivesCar_vin" />
-				<ddl:column name="DrivenByPerson_Person_id" />
-				<dep:sqlParameterReference name="DrivesCar_vin" />
-				<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
-			</dml:fromConstructor>
-		</dml:insertStatement>
-	</dcl:procedure>
-	<dcl:procedure name="DeletePersonDrivesCar" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="DrivesCar_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="DrivenByPerson_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dml:deleteStatement schema="SampleModel" name="PersonDrivesCar">
-			<dml:whereClause>
-				<dml:searchCondition>
-					<dep:and>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="DrivesCar_vin" />
-							<dep:sqlParameterReference name="DrivesCar_vin" />
-						</dep:comparisonPredicate>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="DrivenByPerson_Person_id" />
-							<dep:sqlParameterReference name="DrivenByPerson_Person_id" />
-						</dep:comparisonPredicate>
-					</dep:and>
-				</dml:searchCondition>
-			</dml:whereClause>
-		</dml:deleteStatement>
-	</dcl:procedure>
-	<dcl:table name="PrsnBghtCrFrmPrsnOnDt">
-		<dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
+		<dcl:column name="Date_YMD" isNullable="false" isIdentity="false" oilRefName="Date_YMD">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column name="SaleDate_YMD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" name="Buyer_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Buyer_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Buyer_Person_id" targetName="Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:column isNullable="false" isIdentity="false" name="Seller_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Seller_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Seller_Person_id" targetName="Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint23" isPrimary="true">
-			<dcl:columnRef name="Buyer_Person_id" />
-			<dcl:columnRef name="CarSold_vin" />
-			<dcl:columnRef name="Seller_Person_id" />
-		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint24" isPrimary="false">
-			<dcl:columnRef name="SaleDate_YMD" />
-			<dcl:columnRef name="Seller_Person_id" />
-			<dcl:columnRef name="CarSold_vin" />
-		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint25" isPrimary="false">
-			<dcl:columnRef name="CarSold_vin" />
-			<dcl:columnRef name="SaleDate_YMD" />
-			<dcl:columnRef name="Buyer_Person_id" />
-		</dcl:uniquenessConstraint>
-	</dcl:table>
-	<dcl:procedure name="InsrtPrsnBghtCrFrmPrsnOnDt" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="CarSold_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="SaleDate_YMD">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Buyer_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Seller_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dml:insertStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
-			<dml:fromConstructor>
-				<ddl:column name="CarSold_vin" />
-				<ddl:column name="SaleDate_YMD" />
-				<ddl:column name="Buyer_Person_id" />
-				<ddl:column name="Seller_Person_id" />
-				<dep:sqlParameterReference name="CarSold_vin" />
-				<dep:sqlParameterReference name="SaleDate_YMD" />
-				<dep:sqlParameterReference name="Buyer_Person_id" />
-				<dep:sqlParameterReference name="Seller_Person_id" />
-			</dml:fromConstructor>
-		</dml:insertStatement>
-	</dcl:procedure>
-	<dcl:procedure name="DltPrsnBghtCrFrmPrsnOnDt" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="Buyer_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="CarSold_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Seller_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dml:deleteStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
-			<dml:whereClause>
-				<dml:searchCondition>
-					<dep:and>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="Buyer_Person_id" />
-							<dep:sqlParameterReference name="Buyer_Person_id" />
-						</dep:comparisonPredicate>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="CarSold_vin" />
-							<dep:sqlParameterReference name="CarSold_vin" />
-						</dep:comparisonPredicate>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="Seller_Person_id" />
-							<dep:sqlParameterReference name="Seller_Person_id" />
-						</dep:comparisonPredicate>
-					</dep:and>
-				</dml:searchCondition>
-			</dml:whereClause>
-		</dml:deleteStatement>
-	</dcl:procedure>
-	<dcl:table name="Review">
-		<dcl:column name="Car_vin" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:column name="Rating_Nr_Integer" isNullable="false" isIdentity="false">
-			<dcl:domainDataTypeRef name="&quot;Integer&quot;" />
-		</dcl:column>
-		<dcl:column name="Criterion_Name" isNullable="false" isIdentity="false">
+		<dcl:column name="LastName" isNullable="false" isIdentity="false" oilRefName="LastName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint26" isPrimary="true">
-			<dcl:columnRef name="Car_vin" />
-			<dcl:columnRef name="Criterion_Name" />
-		</dcl:uniquenessConstraint>
-	</dcl:table>
-	<dcl:procedure name="InsertReview" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="Car_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Rating_Nr_Integer">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Criterion_Name">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:parameter>
-		<dml:insertStatement schema="SampleModel" name="Review">
-			<dml:fromConstructor>
-				<ddl:column name="Car_vin" />
-				<ddl:column name="Rating_Nr_Integer" />
-				<ddl:column name="Criterion_Name" />
-				<dep:sqlParameterReference name="Car_vin" />
-				<dep:sqlParameterReference name="Rating_Nr_Integer" />
-				<dep:sqlParameterReference name="Criterion_Name" />
-			</dml:fromConstructor>
-		</dml:insertStatement>
-	</dcl:procedure>
-	<dcl:procedure name="DeleteReview" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="Car_vin">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Criterion_Name">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:parameter>
-		<dml:deleteStatement schema="SampleModel" name="Review">
-			<dml:whereClause>
-				<dml:searchCondition>
-					<dep:and>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="Car_vin" />
-							<dep:sqlParameterReference name="Car_vin" />
-						</dep:comparisonPredicate>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="Criterion_Name" />
-							<dep:sqlParameterReference name="Criterion_Name" />
-						</dep:comparisonPredicate>
-					</dep:and>
-				</dml:searchCondition>
-			</dml:whereClause>
-		</dml:deleteStatement>
-	</dcl:procedure>
-	<dcl:table name="PersonHasNickName">
-		<dcl:column name="NickName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" name="Person_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:referenceConstraint name="Person_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
-		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint33" isPrimary="true">
-			<dcl:columnRef name="NickName" />
-			<dcl:columnRef name="Person_Person_id" />
-		</dcl:uniquenessConstraint>
-	</dcl:table>
-	<dcl:procedure name="InsertPersonHasNickName" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="NickName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Person_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dml:insertStatement schema="SampleModel" name="PersonHasNickName">
-			<dml:fromConstructor>
-				<ddl:column name="NickName" />
-				<ddl:column name="Person_Person_id" />
-				<dep:sqlParameterReference name="NickName" />
-				<dep:sqlParameterReference name="Person_Person_id" />
-			</dml:fromConstructor>
-		</dml:insertStatement>
-	</dcl:procedure>
-	<dcl:procedure name="DeletePersonHasNickName" sqlDataAccessIndication="MODIFIES SQL DATA">
-		<dcl:parameter mode="IN" name="NickName">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:parameter>
-		<dcl:parameter mode="IN" name="Person_Person_id">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:parameter>
-		<dml:deleteStatement schema="SampleModel" name="PersonHasNickName">
-			<dml:whereClause>
-				<dml:searchCondition>
-					<dep:and>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="NickName" />
-							<dep:sqlParameterReference name="NickName" />
-						</dep:comparisonPredicate>
-						<dep:comparisonPredicate operator="equals">
-							<dep:columnReference name="Person_Person_id" />
-							<dep:sqlParameterReference name="Person_Person_id" />
-						</dep:comparisonPredicate>
-					</dep:and>
-				</dml:searchCondition>
-			</dml:whereClause>
-		</dml:deleteStatement>
-	</dcl:procedure>
-	<dcl:table name="Person">
-		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:column>
-		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint2" isPrimary="true">
-			<dcl:columnRef name="Person_id" />
-		</dcl:uniquenessConstraint>
-		<dcl:column name="Date_YMD" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="BIGINT" />
-		</dcl:column>
-		<dcl:column name="LastName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
-		</dcl:column>
-		<dcl:column name="OptionalUniqueString" isNullable="true" isIdentity="false">
+		<dcl:column name="OptionalUniqueString" isNullable="true" isIdentity="false" oilRefName="OptionalUniqueString">
 			<dcl:domainDataTypeRef name="OptionalUniqueString" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint9" isPrimary="false">
-			<dcl:columnRef name="OptionalUniqueString" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint9" isPrimary="false" oilRefName="InternalUniquenessConstraint9">
+			<dcl:columnRef name="OptionalUniqueString" oilRefName="OptionalUniqueString" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="HatType_ColorARGB" isNullable="true" isIdentity="false">
+		<dcl:column name="HatType_ColorARGB" isNullable="true" isIdentity="false" oilRefName="HatType_ColorARGB">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column name="HTHTSHTSD" isNullable="true" isIdentity="false">
+		<dcl:column name="HTHTSHTSD" isNullable="true" isIdentity="false" oilRefName="HatType_HatTypeStyle_HatTypeStyle_Description">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
 		</dcl:column>
-		<dcl:column name="OwnsCar_vin" isNullable="true" isIdentity="false">
+		<dcl:column name="OwnsCar_vin" isNullable="true" isIdentity="false" oilRefName="OwnsCar_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint22" isPrimary="false">
-			<dcl:columnRef name="OwnsCar_vin" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint22" isPrimary="false" oilRefName="InternalUniquenessConstraint22">
+			<dcl:columnRef name="OwnsCar_vin" oilRefName="OwnsCar_vin" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="Gender_Gender_Code" isNullable="false" isIdentity="false">
+		<dcl:column name="Gender_Gender_Code" isNullable="false" isIdentity="false" oilRefName="Gender_Gender_Code">
 			<dcl:domainDataTypeRef name="Gender_Code" />
 		</dcl:column>
-		<dcl:column name="hasParents" isNullable="false" isIdentity="false">
+		<dcl:column name="hasParents" isNullable="false" isIdentity="false" oilRefName="hasParents">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="OptionalUniqueDecimal" isNullable="true" isIdentity="false">
+		<dcl:column name="OptionalUniqueDecimal" isNullable="true" isIdentity="false" oilRefName="OptionalUniqueDecimal">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint65" isPrimary="false">
-			<dcl:columnRef name="OptionalUniqueDecimal" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint65" isPrimary="false" oilRefName="InternalUniquenessConstraint65">
+			<dcl:columnRef name="OptionalUniqueDecimal" oilRefName="OptionalUniqueDecimal" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="MandatoryUniqueDecimal" isNullable="false" isIdentity="false">
+		<dcl:column name="MandatoryUniqueDecimal" isNullable="false" isIdentity="false" oilRefName="MandatoryUniqueDecimal">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint69" isPrimary="false">
-			<dcl:columnRef name="MandatoryUniqueDecimal" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint69" isPrimary="false" oilRefName="InternalUniquenessConstraint69">
+			<dcl:columnRef name="MandatoryUniqueDecimal" oilRefName="MandatoryUniqueDecimal" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="MandatoryUniqueString" isNullable="false" isIdentity="false">
+		<dcl:column name="MandatoryUniqueString" isNullable="false" isIdentity="false" oilRefName="MandatoryUniqueString">
 			<dcl:domainDataTypeRef name="MandatoryUniqueString" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint67" isPrimary="false">
-			<dcl:columnRef name="MandatoryUniqueString" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint67" isPrimary="false" oilRefName="InternalUniquenessConstraint67">
+			<dcl:columnRef name="MandatoryUniqueString" oilRefName="MandatoryUniqueString" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="Husband_Person_id">
+		<dcl:column isNullable="true" isIdentity="false" oilRefName="Person_id" name="Husband_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Husband_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Husband_Person_id" targetName="Person_id" />
+		<dcl:referenceConstraint name="Husband_FK" oilRefName="Husband" targetTable="Person">
+			<dcl:columnRef sourceName="Husband_Person_id" targetName="Person_id" oilRefName="Husband_Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
+		<dcl:column isNullable="true" isIdentity="false" oilRefName="ValueType1Value" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="VlTyp1DsSmthngElsWth_FK" targetTable="ValueType1">
-			<dcl:columnRef sourceName="VlTyp1DsSmthngElsWth_VlTyp1Vl" targetName="ValueType1Value" />
+		<dcl:referenceConstraint name="VlTyp1DsSmthngElsWth_FK" oilRefName="ValueType1DoesSomethingElseWith" targetTable="ValueType1">
+			<dcl:columnRef sourceName="VlTyp1DsSmthngElsWth_VlTyp1Vl" targetName="ValueType1Value" oilRefName="ValueType1DoesSomethingElseWith_ValueType1Value" />
 		</dcl:referenceConstraint>
-		<dcl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" isNullable="true" isIdentity="false">
+		<dcl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" isNullable="true" isIdentity="false" oilRefName="BirthOrder_BirthOrder_Nr">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column isNullable="false" isIdentity="false" name="Father_Person_id">
+		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Father_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Father_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Father_Person_id" targetName="Person_id" />
+		<dcl:referenceConstraint name="Father_FK" oilRefName="Father" targetTable="Person">
+			<dcl:columnRef sourceName="Father_Person_id" targetName="Person_id" oilRefName="Father_Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:column isNullable="false" isIdentity="false" name="Mother_Person_id">
+		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Mother_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Mother_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" />
+		<dcl:referenceConstraint name="Mother_FK" oilRefName="Mother" targetTable="Person">
+			<dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" oilRefName="Mother_Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="ChldPrsn_IntrnlUnqnssCnstrnt49" isPrimary="false">
-			<dcl:columnRef name="Father_Person_id" />
-			<dcl:columnRef name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
-			<dcl:columnRef name="Mother_Person_id" />
+		<dcl:uniquenessConstraint name="ChldPrsn_IntrnlUnqnssCnstrnt49" isPrimary="false" oilRefName="InternalUniquenessConstraint49">
+			<dcl:columnRef name="Father_Person_id" oilRefName="Father_Person_id" />
+			<dcl:columnRef name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" oilRefName="BirthOrder_BirthOrder_Nr" />
+			<dcl:columnRef name="Mother_Person_id" oilRefName="Mother_Person_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column name="Death_Date_YMD" isNullable="true" isIdentity="false">
+		<dcl:column name="Death_Date_YMD" isNullable="true" isIdentity="false" oilRefName="Date_YMD">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:column name="Dth_DthCs_DthCs_Typ" isNullable="true" isIdentity="false">
+		<dcl:column name="Dth_DthCs_DthCs_Typ" isNullable="true" isIdentity="false" oilRefName="DeathCause_DeathCause_Type">
 			<dcl:domainDataTypeRef name="DeathCause_Type" />
 		</dcl:column>
-		<dcl:column name="Dth_NtrlDth_sFrmPrsttCncr" isNullable="true" isIdentity="false">
+		<dcl:column name="Dth_NtrlDth_sFrmPrsttCncr" isNullable="true" isIdentity="false" oilRefName="isFromProstateCancer">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="Death_UnnaturalDeath_isViolent" isNullable="true" isIdentity="false">
+		<dcl:column name="Death_UnnaturalDeath_isViolent" isNullable="true" isIdentity="false" oilRefName="isViolent">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column name="Death_UnnaturalDeath_isBloody" isNullable="true" isIdentity="false">
+		<dcl:column name="Death_UnnaturalDeath_isBloody" isNullable="true" isIdentity="false" oilRefName="isBloody">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="false">
-			<dcl:columnRef name="FirstName" />
-			<dcl:columnRef name="Date_YMD" />
+		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint1" isPrimary="false" oilRefName="ExternalUniquenessConstraint1">
+			<dcl:columnRef name="FirstName" oilRefName="FirstName" />
+			<dcl:columnRef name="Date_YMD" oilRefName="Date_YMD" />
 		</dcl:uniquenessConstraint>
-		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint2" isPrimary="false">
-			<dcl:columnRef name="LastName" />
-			<dcl:columnRef name="Date_YMD" />
+		<dcl:uniquenessConstraint name="ExternalUniquenessConstraint2" isPrimary="false" oilRefName="ExternalUniquenessConstraint2">
+			<dcl:columnRef name="LastName" oilRefName="LastName" />
+			<dcl:columnRef name="Date_YMD" oilRefName="Date_YMD" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
-	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertPerson" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person">
 		<dcl:parameter mode="IN" name="FirstName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
@@ -575,7 +313,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DeletePerson" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeletePerson" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person">
 		<dcl:parameter mode="IN" name="Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -590,21 +328,439 @@
 			</dml:whereClause>
 		</dml:deleteStatement>
 	</dcl:procedure>
-	<dcl:table name="Task">
-		<dcl:column name="Task_id" isNullable="false" isIdentity="true">
+	<dcl:procedure name="UpdatePersonFirstName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="FirstName">
+		<dcl:parameter mode="IN" name="FirstName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="FirstName" />
+				<dep:sqlParameterReference name="FirstName" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonDate_YMD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Date_YMD">
+		<dcl:parameter mode="IN" name="Date_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Date_YMD" />
+				<dep:sqlParameterReference name="Date_YMD" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonLastName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="LastName">
+		<dcl:parameter mode="IN" name="LastName">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="LastName" />
+				<dep:sqlParameterReference name="LastName" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnOptnlUnqStrng" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="OptionalUniqueString">
+		<dcl:parameter mode="IN" name="OptionalUniqueString">
+			<dcl:predefinedDataType name="CHARACTER" length="11" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="OptionalUniqueString" />
+				<dep:sqlParameterReference name="OptionalUniqueString" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonHatType_ColorARGB" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="HatType_ColorARGB">
+		<dcl:parameter mode="IN" name="HatType_ColorARGB">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="HatType_ColorARGB" />
+				<dep:sqlParameterReference name="HatType_ColorARGB" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonHTHTSHTSD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="HTHTSHTSD">
+		<dcl:parameter mode="IN" name="HTHTSHTSD">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="HTHTSHTSD" />
+				<dep:sqlParameterReference name="HTHTSHTSD" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonOwnsCar_vin" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="OwnsCar_vin">
+		<dcl:parameter mode="IN" name="OwnsCar_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="OwnsCar_vin" />
+				<dep:sqlParameterReference name="OwnsCar_vin" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonGender_Gender_Code" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Gender_Gender_Code">
+		<dcl:parameter mode="IN" name="Gender_Gender_Code">
+			<dcl:predefinedDataType name="CHARACTER" length="1" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Gender_Gender_Code" />
+				<dep:sqlParameterReference name="Gender_Gender_Code" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonhasParents" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="hasParents">
+		<dcl:parameter mode="IN" name="hasParents">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="hasParents" />
+				<dep:sqlParameterReference name="hasParents" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnOptnlUnqDcml" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="OptionalUniqueDecimal">
+		<dcl:parameter mode="IN" name="OptionalUniqueDecimal">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="OptionalUniqueDecimal" />
+				<dep:sqlParameterReference name="OptionalUniqueDecimal" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnMndtryUnqDcml" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="MandatoryUniqueDecimal">
+		<dcl:parameter mode="IN" name="MandatoryUniqueDecimal">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="MandatoryUniqueDecimal" />
+				<dep:sqlParameterReference name="MandatoryUniqueDecimal" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnMndtryUnqStrng" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="MandatoryUniqueString">
+		<dcl:parameter mode="IN" name="MandatoryUniqueString">
+			<dcl:predefinedDataType name="CHARACTER" length="11" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="MandatoryUniqueString" />
+				<dep:sqlParameterReference name="MandatoryUniqueString" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonHusband_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Husband_Person_id">
+		<dcl:parameter mode="IN" name="Husband_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Husband_Person_id" />
+				<dep:sqlParameterReference name="Husband_Person_id" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPVT1DSEWVT1V" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="VlTyp1DsSmthngElsWth_VlTyp1Vl">
+		<dcl:parameter mode="IN" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+				<dep:sqlParameterReference name="VlTyp1DsSmthngElsWth_VlTyp1Vl" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPCPBOBON" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="ChldPrsn_BrthOrdr_BrthOrdr_Nr">
+		<dcl:parameter mode="IN" name="ChldPrsn_BrthOrdr_BrthOrdr_Nr">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
+				<dep:sqlParameterReference name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonFather_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Father_Person_id">
+		<dcl:parameter mode="IN" name="Father_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Father_Person_id" />
+				<dep:sqlParameterReference name="Father_Person_id" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonMother_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Mother_Person_id">
+		<dcl:parameter mode="IN" name="Mother_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Mother_Person_id" />
+				<dep:sqlParameterReference name="Mother_Person_id" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdatePersonDeath_Date_YMD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Death_Date_YMD">
+		<dcl:parameter mode="IN" name="Death_Date_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Death_Date_YMD" />
+				<dep:sqlParameterReference name="Death_Date_YMD" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnDth_DthCs_DthCs_Typ" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Dth_DthCs_DthCs_Typ">
+		<dcl:parameter mode="IN" name="Dth_DthCs_DthCs_Typ">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Dth_DthCs_DthCs_Typ" />
+				<dep:sqlParameterReference name="Dth_DthCs_DthCs_Typ" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPDNDFPC" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Dth_NtrlDth_sFrmPrsttCncr">
+		<dcl:parameter mode="IN" name="Dth_NtrlDth_sFrmPrsttCncr">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Dth_NtrlDth_sFrmPrsttCncr" />
+				<dep:sqlParameterReference name="Dth_NtrlDth_sFrmPrsttCncr" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnDth_UnntrlDth_sVlnt" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Death_UnnaturalDeath_isViolent">
+		<dcl:parameter mode="IN" name="Death_UnnaturalDeath_isViolent">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Death_UnnaturalDeath_isViolent" />
+				<dep:sqlParameterReference name="Death_UnnaturalDeath_isViolent" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtPrsnDth_UnntrlDth_sBldy" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Death_UnnaturalDeath_isBloody">
+		<dcl:parameter mode="IN" name="Death_UnnaturalDeath_isBloody">
+			<dcl:predefinedDataType name="BOOLEAN" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Person">
+			<dml:setClause>
+				<ddl:column name="Death_UnnaturalDeath_isBloody" />
+				<dep:sqlParameterReference name="Death_UnnaturalDeath_isBloody" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Person_id" />
+						<dep:sqlParameterReference name="Person_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:table name="Task" oilRefName="Task">
+		<dcl:column name="Task_id" isNullable="false" isIdentity="true" oilRefName="Task_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="InternalUniquenessConstraint16" isPrimary="true">
-			<dcl:columnRef name="Task_id" />
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint16" isPrimary="true" oilRefName="InternalUniquenessConstraint16">
+			<dcl:columnRef name="Task_id" oilRefName="Task_id" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="Person_Person_id">
+		<dcl:column isNullable="true" isIdentity="false" oilRefName="Person_id" name="Person_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Person_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
+		<dcl:referenceConstraint name="Person_FK" oilRefName="Person" targetTable="Person">
+			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" oilRefName="Person_Person_id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
-	<dcl:procedure name="InsertTask" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertTask" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Task">
 		<dcl:parameter mode="IN" name="Task_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -620,7 +776,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DeleteTask" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeleteTask" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Task">
 		<dcl:parameter mode="IN" name="Task_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -635,21 +791,40 @@
 			</dml:whereClause>
 		</dml:deleteStatement>
 	</dcl:procedure>
-	<dcl:table name="ValueType1">
-		<dcl:column name="ValueType1Value" isNullable="false" isIdentity="false">
+	<dcl:procedure name="UpdateTaskPerson_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Task" oilColumnRef="Person_Person_id">
+		<dcl:parameter mode="IN" name="Person_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Task">
+			<dml:setClause>
+				<ddl:column name="Person_Person_id" />
+				<dep:sqlParameterReference name="Person_Person_id" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="Task_id" />
+						<dep:sqlParameterReference name="Task_id" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:table name="ValueType1" oilRefName="ValueType1">
+		<dcl:column name="ValueType1Value" isNullable="false" isIdentity="false" oilRefName="ValueType1Value">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:uniquenessConstraint name="ValueType1Value_Unique" isPrimary="true">
-			<dcl:columnRef name="ValueType1Value" />
+		<dcl:uniquenessConstraint name="ValueType1Value_Unique" isPrimary="true" oilRefName="ValueType1Value_Unique">
+			<dcl:columnRef name="ValueType1Value" oilRefName="ValueType1Value" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="DsSmthngWthPrsn_Prsn_d">
+		<dcl:column isNullable="true" isIdentity="false" oilRefName="Person_id" name="DsSmthngWthPrsn_Prsn_d">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="DoesSomethingWithPerson_FK" targetTable="Person">
-			<dcl:columnRef sourceName="DsSmthngWthPrsn_Prsn_d" targetName="Person_id" />
+		<dcl:referenceConstraint name="DoesSomethingWithPerson_FK" oilRefName="DoesSomethingWithPerson" targetTable="Person">
+			<dcl:columnRef sourceName="DsSmthngWthPrsn_Prsn_d" targetName="Person_id" oilRefName="DoesSomethingWithPerson_Person_id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
-	<dcl:procedure name="InsertValueType1" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="InsertValueType1" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="ValueType1">
 		<dcl:parameter mode="IN" name="ValueType1Value">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -665,7 +840,7 @@
 			</dml:fromConstructor>
 		</dml:insertStatement>
 	</dcl:procedure>
-	<dcl:procedure name="DeleteValueType1" sqlDataAccessIndication="MODIFIES SQL DATA">
+	<dcl:procedure name="DeleteValueType1" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="ValueType1">
 		<dcl:parameter mode="IN" name="ValueType1Value">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -679,5 +854,386 @@
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:deleteStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdtVlTyp1VlTyp1Vl" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="ValueType1" oilColumnRef="ValueType1Value">
+		<dcl:parameter mode="IN" name="ValueType1Value">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="ValueType1">
+			<dml:setClause>
+				<ddl:column name="ValueType1Value" />
+				<dep:sqlParameterReference name="ValueType1Value" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="ValueType1Value" />
+						<dep:sqlParameterReference name="ValueType1Value" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UVT1DSWPP" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="ValueType1" oilColumnRef="DsSmthngWthPrsn_Prsn_d">
+		<dcl:parameter mode="IN" name="DsSmthngWthPrsn_Prsn_d">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="ValueType1">
+			<dml:setClause>
+				<ddl:column name="DsSmthngWthPrsn_Prsn_d" />
+				<dep:sqlParameterReference name="DsSmthngWthPrsn_Prsn_d" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:comparisonPredicate operator="equals">
+						<dep:columnReference name="ValueType1Value" />
+						<dep:sqlParameterReference name="ValueType1Value" />
+					</dep:comparisonPredicate>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:table name="PrsnBghtCrFrmPrsnOnDt" oilRefName="PersonBoughtCarFromPersonOnDate">
+		<dcl:column name="CarSold_vin" isNullable="false" isIdentity="false" oilRefName="CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:column>
+		<dcl:column name="SaleDate_YMD" isNullable="false" isIdentity="false" oilRefName="SaleDate_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:column>
+		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:column>
+		<dcl:referenceConstraint name="Buyer_FK" oilRefName="Buyer" targetTable="Person">
+			<dcl:columnRef sourceName="Buyer_Person_id" targetName="Person_id" oilRefName="Buyer_Person_id" />
+		</dcl:referenceConstraint>
+		<dcl:column isNullable="false" isIdentity="false" oilRefName="Person_id" name="Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:column>
+		<dcl:referenceConstraint name="Seller_FK" oilRefName="Seller" targetTable="Person">
+			<dcl:columnRef sourceName="Seller_Person_id" targetName="Person_id" oilRefName="Seller_Person_id" />
+		</dcl:referenceConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint23" isPrimary="true" oilRefName="InternalUniquenessConstraint23">
+			<dcl:columnRef name="Buyer_Person_id" oilRefName="Buyer_Person_id" />
+			<dcl:columnRef name="CarSold_vin" oilRefName="CarSold_vin" />
+			<dcl:columnRef name="Seller_Person_id" oilRefName="Seller_Person_id" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint24" isPrimary="false" oilRefName="InternalUniquenessConstraint24">
+			<dcl:columnRef name="SaleDate_YMD" oilRefName="SaleDate_YMD" />
+			<dcl:columnRef name="Seller_Person_id" oilRefName="Seller_Person_id" />
+			<dcl:columnRef name="CarSold_vin" oilRefName="CarSold_vin" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint25" isPrimary="false" oilRefName="InternalUniquenessConstraint25">
+			<dcl:columnRef name="CarSold_vin" oilRefName="CarSold_vin" />
+			<dcl:columnRef name="SaleDate_YMD" oilRefName="SaleDate_YMD" />
+			<dcl:columnRef name="Buyer_Person_id" oilRefName="Buyer_Person_id" />
+		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:procedure name="InsrtPrsnBghtCrFrmPrsnOnDt" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PersonBoughtCarFromPersonOnDate">
+		<dcl:parameter mode="IN" name="CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="SaleDate_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+			<dml:fromConstructor>
+				<ddl:column name="CarSold_vin" />
+				<ddl:column name="SaleDate_YMD" />
+				<ddl:column name="Buyer_Person_id" />
+				<ddl:column name="Seller_Person_id" />
+				<dep:sqlParameterReference name="CarSold_vin" />
+				<dep:sqlParameterReference name="SaleDate_YMD" />
+				<dep:sqlParameterReference name="Buyer_Person_id" />
+				<dep:sqlParameterReference name="Seller_Person_id" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DltPrsnBghtCrFrmPrsnOnDt" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PersonBoughtCarFromPersonOnDate">
+		<dcl:parameter mode="IN" name="Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="Buyer_Person_id" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="CarSold_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="Seller_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPBCFPODCS" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="CarSold_vin">
+		<dcl:parameter mode="IN" name="CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+			<dml:setClause>
+				<ddl:column name="CarSold_vin" />
+				<dep:sqlParameterReference name="CarSold_vin" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="Buyer_Person_id" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="CarSold_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="Seller_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPBCFPODSDYMD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="SaleDate_YMD">
+		<dcl:parameter mode="IN" name="SaleDate_YMD">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+			<dml:setClause>
+				<ddl:column name="SaleDate_YMD" />
+				<dep:sqlParameterReference name="SaleDate_YMD" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="Buyer_Person_id" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="CarSold_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="Seller_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPBCFPODBP" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="Buyer_Person_id">
+		<dcl:parameter mode="IN" name="Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+			<dml:setClause>
+				<ddl:column name="Buyer_Person_id" />
+				<dep:sqlParameterReference name="Buyer_Person_id" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="Buyer_Person_id" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="CarSold_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="Seller_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UPBCFPODSP" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="Seller_Person_id">
+		<dcl:parameter mode="IN" name="Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="PrsnBghtCrFrmPrsnOnDt">
+			<dml:setClause>
+				<ddl:column name="Seller_Person_id" />
+				<dep:sqlParameterReference name="Seller_Person_id" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="Buyer_Person_id" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="CarSold_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="Seller_Person_id" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:table name="Review" oilRefName="Review">
+		<dcl:column name="Car_vin" isNullable="false" isIdentity="false" oilRefName="Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:column>
+		<dcl:column name="Rating_Nr_Integer" isNullable="false" isIdentity="false" oilRefName="Rating_Nr_Integer">
+			<dcl:domainDataTypeRef name="&quot;Integer&quot;" />
+		</dcl:column>
+		<dcl:column name="Criterion_Name" isNullable="false" isIdentity="false" oilRefName="Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="InternalUniquenessConstraint26" isPrimary="true" oilRefName="InternalUniquenessConstraint26">
+			<dcl:columnRef name="Car_vin" oilRefName="Car_vin" />
+			<dcl:columnRef name="Criterion_Name" oilRefName="Criterion_Name" />
+		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:procedure name="InsertReview" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review">
+		<dcl:parameter mode="IN" name="Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Rating_Nr_Integer">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
+		<dml:insertStatement schema="SampleModel" name="Review">
+			<dml:fromConstructor>
+				<ddl:column name="Car_vin" />
+				<ddl:column name="Rating_Nr_Integer" />
+				<ddl:column name="Criterion_Name" />
+				<dep:sqlParameterReference name="Car_vin" />
+				<dep:sqlParameterReference name="Rating_Nr_Integer" />
+				<dep:sqlParameterReference name="Criterion_Name" />
+			</dml:fromConstructor>
+		</dml:insertStatement>
+	</dcl:procedure>
+	<dcl:procedure name="DeleteReview" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review">
+		<dcl:parameter mode="IN" name="Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
+		<dml:deleteStatement schema="SampleModel" name="Review">
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Car_vin" />
+							<dep:sqlParameterReference name="Car_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="Criterion_Name" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:deleteStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdateReviewCar_vin" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review" oilColumnRef="Car_vin">
+		<dcl:parameter mode="IN" name="Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Review">
+			<dml:setClause>
+				<ddl:column name="Car_vin" />
+				<dep:sqlParameterReference name="Car_vin" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Car_vin" />
+							<dep:sqlParameterReference name="Car_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="Criterion_Name" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdateReviewRating_Nr_Integer" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review" oilColumnRef="Rating_Nr_Integer">
+		<dcl:parameter mode="IN" name="Rating_Nr_Integer">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Review">
+			<dml:setClause>
+				<ddl:column name="Rating_Nr_Integer" />
+				<dep:sqlParameterReference name="Rating_Nr_Integer" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Car_vin" />
+							<dep:sqlParameterReference name="Car_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="Criterion_Name" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
+	</dcl:procedure>
+	<dcl:procedure name="UpdateReviewCriterion_Name" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review" oilColumnRef="Criterion_Name">
+		<dcl:parameter mode="IN" name="Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
+		<dml:updateStatement schema="SampleModel" name="Review">
+			<dml:setClause>
+				<ddl:column name="Criterion_Name" />
+				<dep:sqlParameterReference name="Criterion_Name" />
+			</dml:setClause>
+			<dml:whereClause>
+				<dml:searchCondition>
+					<dep:and>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Car_vin" />
+							<dep:sqlParameterReference name="Car_vin" />
+						</dep:comparisonPredicate>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="Criterion_Name" />
+						</dep:comparisonPredicate>
+					</dep:and>
+				</dml:searchCondition>
+			</dml:whereClause>
+		</dml:updateStatement>
 	</dcl:procedure>
 </dcl:schema>

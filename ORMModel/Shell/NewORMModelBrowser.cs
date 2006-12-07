@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// currently unimplemented, all events handled by tree directly
 		/// </summary>
-		protected override void ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store store, Neumont.Tools.Modeling.SafeEventManager eventManager, bool addHandlers)
+		protected override void ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store store, Neumont.Tools.Modeling.ModelingEventManager eventManager, Neumont.Tools.Modeling.EventHandlerAction action)
 		{
 		}
 		/// <summary>

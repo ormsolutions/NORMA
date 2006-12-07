@@ -12,37 +12,23 @@ using CharSet = System.Runtime.InteropServices.CharSet;
 namespace SampleModel
 {
 	#region SampleModelContext
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class SampleModelContext : ISampleModelContext
 	{
 		public SampleModelContext()
 		{
-			Dictionary<Type, object> constraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<Type, object>(7);
+			Dictionary<Type, object> constraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<Type, object>(5);
 			Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> constraintEnforcementCollectionCallbacksByTypeAndNameDictionary = new Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object>(2);
 			this._ContraintEnforcementCollectionCallbacksByTypeDictionary = constraintEnforcementCollectionCallbacksByTypeDictionary;
 			this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = constraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, PersonDrivesCar>), new ConstraintEnforcementCollectionCallbacks<Person, PersonDrivesCar>(new PotentialCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarViaDrivenByPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarViaDrivenByPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarViaDrivenByPersonCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateViaBuyerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateViaSellerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, PersonHasNickName>), new ConstraintEnforcementCollectionCallbacks<Person, PersonHasNickName>(new PotentialCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameViaPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameViaPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameViaPersonCollectionRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, Task>), new ConstraintEnforcementCollectionCallbacks<Person, Task>(new PotentialCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, ValueType1>), new ConstraintEnforcementCollectionCallbacks<Person, ValueType1>(new PotentialCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateViaBuyerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateViaSellerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<MalePerson, ChildPerson>), new ConstraintEnforcementCollectionCallbacks<MalePerson, ChildPerson>(new PotentialCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionAdding), new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionAdded), null, new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<FemalePerson, ChildPerson>), new ConstraintEnforcementCollectionCallbacks<FemalePerson, ChildPerson>(new PotentialCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionAdding), new CommittedCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionAdded), null, new CommittedCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<ValueType1, Person>), new ConstraintEnforcementCollectionCallbacks<ValueType1, Person>(new PotentialCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdding), new CommittedCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdded), null, new CommittedCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionRemoved)));
-			List<PersonDrivesCar> PersonDrivesCarList = new List<PersonDrivesCar>();
-			this._PersonDrivesCarList = PersonDrivesCarList;
-			this._PersonDrivesCarReadOnlyCollection = new ReadOnlyCollection<PersonDrivesCar>(PersonDrivesCarList);
-			List<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateList = new List<PersonBoughtCarFromPersonOnDate>();
-			this._PersonBoughtCarFromPersonOnDateList = PersonBoughtCarFromPersonOnDateList;
-			this._PersonBoughtCarFromPersonOnDateReadOnlyCollection = new ReadOnlyCollection<PersonBoughtCarFromPersonOnDate>(PersonBoughtCarFromPersonOnDateList);
-			List<Review> ReviewList = new List<Review>();
-			this._ReviewList = ReviewList;
-			this._ReviewReadOnlyCollection = new ReadOnlyCollection<Review>(ReviewList);
-			List<PersonHasNickName> PersonHasNickNameList = new List<PersonHasNickName>();
-			this._PersonHasNickNameList = PersonHasNickNameList;
-			this._PersonHasNickNameReadOnlyCollection = new ReadOnlyCollection<PersonHasNickName>(PersonHasNickNameList);
 			List<Person> PersonList = new List<Person>();
 			this._PersonList = PersonList;
 			this._PersonReadOnlyCollection = new ReadOnlyCollection<Person>(PersonList);
@@ -70,9 +56,15 @@ namespace SampleModel
 			List<ValueType1> ValueType1List = new List<ValueType1>();
 			this._ValueType1List = ValueType1List;
 			this._ValueType1ReadOnlyCollection = new ReadOnlyCollection<ValueType1>(ValueType1List);
+			List<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateList = new List<PersonBoughtCarFromPersonOnDate>();
+			this._PersonBoughtCarFromPersonOnDateList = PersonBoughtCarFromPersonOnDateList;
+			this._PersonBoughtCarFromPersonOnDateReadOnlyCollection = new ReadOnlyCollection<PersonBoughtCarFromPersonOnDate>(PersonBoughtCarFromPersonOnDateList);
+			List<Review> ReviewList = new List<Review>();
+			this._ReviewList = ReviewList;
+			this._ReviewReadOnlyCollection = new ReadOnlyCollection<Review>(ReviewList);
 		}
 		#region Exception Helpers
-		[SuppressMessageAttribute("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
+		[SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
 		private static ArgumentException GetDifferentContextsException()
 		{
 			return new ArgumentException("All objects in a relationship must be part of the same Context.", "value");
@@ -83,36 +75,100 @@ namespace SampleModel
 		}
 		#endregion // Exception Helpers
 		#region Lookup and External Constraint Enforcement
-		private readonly Dictionary<Tuple<int, Person>, PersonDrivesCar> _InternalUniquenessConstraint18Dictionary = new Dictionary<Tuple<int, Person>, PersonDrivesCar>();
-		public PersonDrivesCar GetPersonDrivesCarByInternalUniquenessConstraint18(int DrivesCar_vin, Person DrivenByPerson)
+		private readonly Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson> _InternalUniquenessConstraint49Dictionary = new Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson>();
+		public ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother)
 		{
-			return this._InternalUniquenessConstraint18Dictionary[Tuple.CreateTuple<int, Person>(DrivesCar_vin, DrivenByPerson)];
+			return this._InternalUniquenessConstraint49Dictionary[Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother)];
 		}
-		public bool TryGetPersonDrivesCarByInternalUniquenessConstraint18(int DrivesCar_vin, Person DrivenByPerson, out PersonDrivesCar PersonDrivesCar)
+		public bool TryGetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson)
 		{
-			return this._InternalUniquenessConstraint18Dictionary.TryGetValue(Tuple.CreateTuple<int, Person>(DrivesCar_vin, DrivenByPerson), out PersonDrivesCar);
+			return this._InternalUniquenessConstraint49Dictionary.TryGetValue(Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother), out ChildPerson);
 		}
-		private bool OnInternalUniquenessConstraint18Changing(PersonDrivesCar instance, Tuple<int, Person> newValue)
+		private bool OnInternalUniquenessConstraint49Changing(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> newValue)
 		{
 			if ((object)newValue != null)
 			{
-				PersonDrivesCar currentInstance;
-				if (this._InternalUniquenessConstraint18Dictionary.TryGetValue(newValue, out currentInstance))
+				ChildPerson currentInstance;
+				if (this._InternalUniquenessConstraint49Dictionary.TryGetValue(newValue, out currentInstance))
 				{
 					return (object)currentInstance == instance;
 				}
 			}
 			return true;
 		}
-		private void OnInternalUniquenessConstraint18Changed(PersonDrivesCar instance, Tuple<int, Person> oldValue, Tuple<int, Person> newValue)
+		private void OnInternalUniquenessConstraint49Changed(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> oldValue, Tuple<MalePerson, int, FemalePerson> newValue)
 		{
 			if ((object)oldValue != null)
 			{
-				this._InternalUniquenessConstraint18Dictionary.Remove(oldValue);
+				this._InternalUniquenessConstraint49Dictionary.Remove(oldValue);
 			}
 			if ((object)newValue != null)
 			{
-				this._InternalUniquenessConstraint18Dictionary.Add(newValue, instance);
+				this._InternalUniquenessConstraint49Dictionary.Add(newValue, instance);
+			}
+		}
+		private readonly Dictionary<Tuple<string, int>, Person> _ExternalUniquenessConstraint1Dictionary = new Dictionary<Tuple<string, int>, Person>();
+		public Person GetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD)
+		{
+			return this._ExternalUniquenessConstraint1Dictionary[Tuple.CreateTuple<string, int>(FirstName, Date_YMD)];
+		}
+		public bool TryGetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD, out Person Person)
+		{
+			return this._ExternalUniquenessConstraint1Dictionary.TryGetValue(Tuple.CreateTuple<string, int>(FirstName, Date_YMD), out Person);
+		}
+		private bool OnExternalUniquenessConstraint1Changing(Person instance, Tuple<string, int> newValue)
+		{
+			if ((object)newValue != null)
+			{
+				Person currentInstance;
+				if (this._ExternalUniquenessConstraint1Dictionary.TryGetValue(newValue, out currentInstance))
+				{
+					return (object)currentInstance == instance;
+				}
+			}
+			return true;
+		}
+		private void OnExternalUniquenessConstraint1Changed(Person instance, Tuple<string, int> oldValue, Tuple<string, int> newValue)
+		{
+			if ((object)oldValue != null)
+			{
+				this._ExternalUniquenessConstraint1Dictionary.Remove(oldValue);
+			}
+			if ((object)newValue != null)
+			{
+				this._ExternalUniquenessConstraint1Dictionary.Add(newValue, instance);
+			}
+		}
+		private readonly Dictionary<Tuple<string, int>, Person> _ExternalUniquenessConstraint2Dictionary = new Dictionary<Tuple<string, int>, Person>();
+		public Person GetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD)
+		{
+			return this._ExternalUniquenessConstraint2Dictionary[Tuple.CreateTuple<string, int>(LastName, Date_YMD)];
+		}
+		public bool TryGetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD, out Person Person)
+		{
+			return this._ExternalUniquenessConstraint2Dictionary.TryGetValue(Tuple.CreateTuple<string, int>(LastName, Date_YMD), out Person);
+		}
+		private bool OnExternalUniquenessConstraint2Changing(Person instance, Tuple<string, int> newValue)
+		{
+			if ((object)newValue != null)
+			{
+				Person currentInstance;
+				if (this._ExternalUniquenessConstraint2Dictionary.TryGetValue(newValue, out currentInstance))
+				{
+					return (object)currentInstance == instance;
+				}
+			}
+			return true;
+		}
+		private void OnExternalUniquenessConstraint2Changed(Person instance, Tuple<string, int> oldValue, Tuple<string, int> newValue)
+		{
+			if ((object)oldValue != null)
+			{
+				this._ExternalUniquenessConstraint2Dictionary.Remove(oldValue);
+			}
+			if ((object)newValue != null)
+			{
+				this._ExternalUniquenessConstraint2Dictionary.Add(newValue, instance);
 			}
 		}
 		private readonly Dictionary<Tuple<Person, int, Person>, PersonBoughtCarFromPersonOnDate> _InternalUniquenessConstraint23Dictionary = new Dictionary<Tuple<Person, int, Person>, PersonBoughtCarFromPersonOnDate>();
@@ -243,134 +299,6 @@ namespace SampleModel
 				this._InternalUniquenessConstraint26Dictionary.Add(newValue, instance);
 			}
 		}
-		private readonly Dictionary<Tuple<string, Person>, PersonHasNickName> _InternalUniquenessConstraint33Dictionary = new Dictionary<Tuple<string, Person>, PersonHasNickName>();
-		public PersonHasNickName GetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person)
-		{
-			return this._InternalUniquenessConstraint33Dictionary[Tuple.CreateTuple<string, Person>(NickName, Person)];
-		}
-		public bool TryGetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person, out PersonHasNickName PersonHasNickName)
-		{
-			return this._InternalUniquenessConstraint33Dictionary.TryGetValue(Tuple.CreateTuple<string, Person>(NickName, Person), out PersonHasNickName);
-		}
-		private bool OnInternalUniquenessConstraint33Changing(PersonHasNickName instance, Tuple<string, Person> newValue)
-		{
-			if ((object)newValue != null)
-			{
-				PersonHasNickName currentInstance;
-				if (this._InternalUniquenessConstraint33Dictionary.TryGetValue(newValue, out currentInstance))
-				{
-					return (object)currentInstance == instance;
-				}
-			}
-			return true;
-		}
-		private void OnInternalUniquenessConstraint33Changed(PersonHasNickName instance, Tuple<string, Person> oldValue, Tuple<string, Person> newValue)
-		{
-			if ((object)oldValue != null)
-			{
-				this._InternalUniquenessConstraint33Dictionary.Remove(oldValue);
-			}
-			if ((object)newValue != null)
-			{
-				this._InternalUniquenessConstraint33Dictionary.Add(newValue, instance);
-			}
-		}
-		private readonly Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson> _InternalUniquenessConstraint49Dictionary = new Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson>();
-		public ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother)
-		{
-			return this._InternalUniquenessConstraint49Dictionary[Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother)];
-		}
-		public bool TryGetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson)
-		{
-			return this._InternalUniquenessConstraint49Dictionary.TryGetValue(Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother), out ChildPerson);
-		}
-		private bool OnInternalUniquenessConstraint49Changing(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> newValue)
-		{
-			if ((object)newValue != null)
-			{
-				ChildPerson currentInstance;
-				if (this._InternalUniquenessConstraint49Dictionary.TryGetValue(newValue, out currentInstance))
-				{
-					return (object)currentInstance == instance;
-				}
-			}
-			return true;
-		}
-		private void OnInternalUniquenessConstraint49Changed(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> oldValue, Tuple<MalePerson, int, FemalePerson> newValue)
-		{
-			if ((object)oldValue != null)
-			{
-				this._InternalUniquenessConstraint49Dictionary.Remove(oldValue);
-			}
-			if ((object)newValue != null)
-			{
-				this._InternalUniquenessConstraint49Dictionary.Add(newValue, instance);
-			}
-		}
-		private readonly Dictionary<Tuple<string, int>, Person> _ExternalUniquenessConstraint1Dictionary = new Dictionary<Tuple<string, int>, Person>();
-		public Person GetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD)
-		{
-			return this._ExternalUniquenessConstraint1Dictionary[Tuple.CreateTuple<string, int>(FirstName, Date_YMD)];
-		}
-		public bool TryGetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD, out Person Person)
-		{
-			return this._ExternalUniquenessConstraint1Dictionary.TryGetValue(Tuple.CreateTuple<string, int>(FirstName, Date_YMD), out Person);
-		}
-		private bool OnExternalUniquenessConstraint1Changing(Person instance, Tuple<string, int> newValue)
-		{
-			if ((object)newValue != null)
-			{
-				Person currentInstance;
-				if (this._ExternalUniquenessConstraint1Dictionary.TryGetValue(newValue, out currentInstance))
-				{
-					return (object)currentInstance == instance;
-				}
-			}
-			return true;
-		}
-		private void OnExternalUniquenessConstraint1Changed(Person instance, Tuple<string, int> oldValue, Tuple<string, int> newValue)
-		{
-			if ((object)oldValue != null)
-			{
-				this._ExternalUniquenessConstraint1Dictionary.Remove(oldValue);
-			}
-			if ((object)newValue != null)
-			{
-				this._ExternalUniquenessConstraint1Dictionary.Add(newValue, instance);
-			}
-		}
-		private readonly Dictionary<Tuple<string, int>, Person> _ExternalUniquenessConstraint2Dictionary = new Dictionary<Tuple<string, int>, Person>();
-		public Person GetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD)
-		{
-			return this._ExternalUniquenessConstraint2Dictionary[Tuple.CreateTuple<string, int>(LastName, Date_YMD)];
-		}
-		public bool TryGetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD, out Person Person)
-		{
-			return this._ExternalUniquenessConstraint2Dictionary.TryGetValue(Tuple.CreateTuple<string, int>(LastName, Date_YMD), out Person);
-		}
-		private bool OnExternalUniquenessConstraint2Changing(Person instance, Tuple<string, int> newValue)
-		{
-			if ((object)newValue != null)
-			{
-				Person currentInstance;
-				if (this._ExternalUniquenessConstraint2Dictionary.TryGetValue(newValue, out currentInstance))
-				{
-					return (object)currentInstance == instance;
-				}
-			}
-			return true;
-		}
-		private void OnExternalUniquenessConstraint2Changed(Person instance, Tuple<string, int> oldValue, Tuple<string, int> newValue)
-		{
-			if ((object)oldValue != null)
-			{
-				this._ExternalUniquenessConstraint2Dictionary.Remove(oldValue);
-			}
-			if ((object)newValue != null)
-			{
-				this._ExternalUniquenessConstraint2Dictionary.Add(newValue, instance);
-			}
-		}
 		private readonly Dictionary<string, Person> _PersonOptionalUniqueStringDictionary = new Dictionary<string, Person>();
 		public Person GetPersonByOptionalUniqueString(string OptionalUniqueString)
 		{
@@ -431,7 +359,7 @@ namespace SampleModel
 			where TClass : class, IHasSampleModelContext;
 		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
 			where TClass : class, IHasSampleModelContext;
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionCallbacks<TClass, TProperty>
 			where TClass : class, IHasSampleModelContext
 		{
@@ -447,7 +375,7 @@ namespace SampleModel
 			public readonly PotentialCollectionModificationCallback<TClass, TProperty> Removing;
 			public readonly CommittedCollectionModificationCallback<TClass, TProperty> Removed;
 		}
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private struct ConstraintEnforcementCollectionTypeAndPropertyNameKey : IEquatable<ConstraintEnforcementCollectionTypeAndPropertyNameKey>
 		{
 			public ConstraintEnforcementCollectionTypeAndPropertyNameKey(Type type, string name)
@@ -556,7 +484,7 @@ namespace SampleModel
 				removed(instance, value);
 			}
 		}
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasSampleModelContext
 		{
@@ -636,7 +564,7 @@ namespace SampleModel
 				}
 			}
 		}
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasSampleModelContext
 		{
@@ -719,804 +647,6 @@ namespace SampleModel
 			}
 		}
 		#endregion // ConstraintEnforcementCollection
-		#region PersonDrivesCar
-		public PersonDrivesCar CreatePersonDrivesCar(int DrivesCar_vin, Person DrivenByPerson)
-		{
-			if ((object)DrivenByPerson == null)
-			{
-				throw new ArgumentNullException("DrivenByPerson");
-			}
-			if (!(this.OnPersonDrivesCarDrivesCar_vinChanging(null, DrivesCar_vin)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("DrivesCar_vin");
-			}
-			if (!(this.OnPersonDrivesCarDrivenByPersonChanging(null, DrivenByPerson)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("DrivenByPerson");
-			}
-			return new PersonDrivesCarCore(this, DrivesCar_vin, DrivenByPerson);
-		}
-		private bool OnPersonDrivesCarDrivesCar_vinChanging(PersonDrivesCar instance, int newValue)
-		{
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint18Changing(instance, Tuple.CreateTuple<int, Person>(newValue, instance.DrivenByPerson))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonDrivesCarDrivesCar_vinChanged(PersonDrivesCar instance, Nullable<int> oldValue)
-		{
-			Tuple<int, Person> InternalUniquenessConstraint18OldValueTuple;
-			if (oldValue.HasValue)
-			{
-				InternalUniquenessConstraint18OldValueTuple = Tuple.CreateTuple<int, Person>(oldValue.Value, instance.DrivenByPerson);
-			}
-			else
-			{
-				InternalUniquenessConstraint18OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint18Changed(instance, InternalUniquenessConstraint18OldValueTuple, Tuple.CreateTuple<int, Person>(instance.DrivesCar_vin, instance.DrivenByPerson));
-		}
-		private bool OnPersonDrivesCarDrivenByPersonChanging(PersonDrivesCar instance, Person newValue)
-		{
-			if ((object)this != newValue.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint18Changing(instance, Tuple.CreateTuple<int, Person>(instance.DrivesCar_vin, newValue))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonDrivesCarDrivenByPersonChanged(PersonDrivesCar instance, Person oldValue)
-		{
-			((ICollection<PersonDrivesCar>)instance.DrivenByPerson.PersonDrivesCarViaDrivenByPersonCollection).Add(instance);
-			Tuple<int, Person> InternalUniquenessConstraint18OldValueTuple;
-			if ((object)oldValue != null)
-			{
-				((ICollection<PersonDrivesCar>)oldValue.PersonDrivesCarViaDrivenByPersonCollection).Remove(instance);
-				InternalUniquenessConstraint18OldValueTuple = Tuple.CreateTuple<int, Person>(instance.DrivesCar_vin, oldValue);
-			}
-			else
-			{
-				InternalUniquenessConstraint18OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint18Changed(instance, InternalUniquenessConstraint18OldValueTuple, Tuple.CreateTuple<int, Person>(instance.DrivesCar_vin, instance.DrivenByPerson));
-		}
-		private readonly List<PersonDrivesCar> _PersonDrivesCarList;
-		private readonly ReadOnlyCollection<PersonDrivesCar> _PersonDrivesCarReadOnlyCollection;
-		public IEnumerable<PersonDrivesCar> PersonDrivesCarCollection
-		{
-			get
-			{
-				return this._PersonDrivesCarReadOnlyCollection;
-			}
-		}
-		#region PersonDrivesCarCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class PersonDrivesCarCore : PersonDrivesCar
-		{
-			public PersonDrivesCarCore(SampleModelContext context, int DrivesCar_vin, Person DrivenByPerson)
-			{
-				this._Context = context;
-				this._DrivesCar_vin = DrivesCar_vin;
-				context.OnPersonDrivesCarDrivesCar_vinChanged(this, null);
-				this._DrivenByPerson = DrivenByPerson;
-				context.OnPersonDrivesCarDrivenByPersonChanged(this, null);
-				context._PersonDrivesCarList.Add(this);
-			}
-			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
-			{
-				get
-				{
-					return this._Context;
-				}
-			}
-			[AccessedThroughPropertyAttribute("DrivesCar_vin")]
-			private int _DrivesCar_vin;
-			public override int DrivesCar_vin
-			{
-				get
-				{
-					return this._DrivesCar_vin;
-				}
-				set
-				{
-					int oldValue = this._DrivesCar_vin;
-					if (oldValue != value)
-					{
-						if (this._Context.OnPersonDrivesCarDrivesCar_vinChanging(this, value) && base.OnDrivesCar_vinChanging(value))
-						{
-							this._DrivesCar_vin = value;
-							this._Context.OnPersonDrivesCarDrivesCar_vinChanged(this, oldValue);
-							base.OnDrivesCar_vinChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("DrivenByPerson")]
-			private Person _DrivenByPerson;
-			public override Person DrivenByPerson
-			{
-				get
-				{
-					return this._DrivenByPerson;
-				}
-				set
-				{
-					if ((object)value == null)
-					{
-						throw new ArgumentNullException("value");
-					}
-					Person oldValue = this._DrivenByPerson;
-					if ((object)oldValue != value)
-					{
-						if (this._Context.OnPersonDrivesCarDrivenByPersonChanging(this, value) && base.OnDrivenByPersonChanging(value))
-						{
-							this._DrivenByPerson = value;
-							this._Context.OnPersonDrivesCarDrivenByPersonChanged(this, oldValue);
-							base.OnDrivenByPersonChanged(oldValue);
-						}
-					}
-				}
-			}
-		}
-		#endregion // PersonDrivesCarCore
-		#endregion // PersonDrivesCar
-		#region PersonBoughtCarFromPersonOnDate
-		public PersonBoughtCarFromPersonOnDate CreatePersonBoughtCarFromPersonOnDate(int CarSold_vin, int SaleDate_YMD, Person Buyer, Person Seller)
-		{
-			if ((object)Buyer == null)
-			{
-				throw new ArgumentNullException("Buyer");
-			}
-			if ((object)Seller == null)
-			{
-				throw new ArgumentNullException("Seller");
-			}
-			if (!(this.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanging(null, CarSold_vin)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("CarSold_vin");
-			}
-			if (!(this.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanging(null, SaleDate_YMD)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("SaleDate_YMD");
-			}
-			if (!(this.OnPersonBoughtCarFromPersonOnDateBuyerChanging(null, Buyer)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("Buyer");
-			}
-			if (!(this.OnPersonBoughtCarFromPersonOnDateSellerChanging(null, Seller)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("Seller");
-			}
-			return new PersonBoughtCarFromPersonOnDateCore(this, CarSold_vin, SaleDate_YMD, Buyer, Seller);
-		}
-		private bool OnPersonBoughtCarFromPersonOnDateCarSold_vinChanging(PersonBoughtCarFromPersonOnDate instance, int newValue)
-		{
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint23Changing(instance, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, newValue, instance.Seller))))
-				{
-					return false;
-				}
-				if (!(this.OnInternalUniquenessConstraint24Changing(instance, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, newValue))))
-				{
-					return false;
-				}
-				if (!(this.OnInternalUniquenessConstraint25Changing(instance, Tuple.CreateTuple<int, int, Person>(newValue, instance.SaleDate_YMD, instance.Buyer))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonBoughtCarFromPersonOnDateCarSold_vinChanged(PersonBoughtCarFromPersonOnDate instance, Nullable<int> oldValue)
-		{
-			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
-			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
-			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
-			if (oldValue.HasValue)
-			{
-				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, oldValue.Value, instance.Seller);
-				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, oldValue.Value);
-				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(oldValue.Value, instance.SaleDate_YMD, instance.Buyer);
-			}
-			else
-			{
-				InternalUniquenessConstraint23OldValueTuple = null;
-				InternalUniquenessConstraint24OldValueTuple = null;
-				InternalUniquenessConstraint25OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint23Changed(instance, InternalUniquenessConstraint23OldValueTuple, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, instance.Seller));
-			this.OnInternalUniquenessConstraint24Changed(instance, InternalUniquenessConstraint24OldValueTuple, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, instance.CarSold_vin));
-			this.OnInternalUniquenessConstraint25Changed(instance, InternalUniquenessConstraint25OldValueTuple, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, instance.Buyer));
-		}
-		private bool OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanging(PersonBoughtCarFromPersonOnDate instance, int newValue)
-		{
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint24Changing(instance, Tuple.CreateTuple<int, Person, int>(newValue, instance.Seller, instance.CarSold_vin))))
-				{
-					return false;
-				}
-				if (!(this.OnInternalUniquenessConstraint25Changing(instance, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, newValue, instance.Buyer))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanged(PersonBoughtCarFromPersonOnDate instance, Nullable<int> oldValue)
-		{
-			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
-			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
-			if (oldValue.HasValue)
-			{
-				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(oldValue.Value, instance.Seller, instance.CarSold_vin);
-				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, oldValue.Value, instance.Buyer);
-			}
-			else
-			{
-				InternalUniquenessConstraint24OldValueTuple = null;
-				InternalUniquenessConstraint25OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint24Changed(instance, InternalUniquenessConstraint24OldValueTuple, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, instance.CarSold_vin));
-			this.OnInternalUniquenessConstraint25Changed(instance, InternalUniquenessConstraint25OldValueTuple, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, instance.Buyer));
-		}
-		private bool OnPersonBoughtCarFromPersonOnDateBuyerChanging(PersonBoughtCarFromPersonOnDate instance, Person newValue)
-		{
-			if ((object)this != newValue.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint23Changing(instance, Tuple.CreateTuple<Person, int, Person>(newValue, instance.CarSold_vin, instance.Seller))))
-				{
-					return false;
-				}
-				if (!(this.OnInternalUniquenessConstraint25Changing(instance, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, newValue))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonBoughtCarFromPersonOnDateBuyerChanged(PersonBoughtCarFromPersonOnDate instance, Person oldValue)
-		{
-			((ICollection<PersonBoughtCarFromPersonOnDate>)instance.Buyer.PersonBoughtCarFromPersonOnDateViaBuyerCollection).Add(instance);
-			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
-			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
-			if ((object)oldValue != null)
-			{
-				((ICollection<PersonBoughtCarFromPersonOnDate>)oldValue.PersonBoughtCarFromPersonOnDateViaBuyerCollection).Remove(instance);
-				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(oldValue, instance.CarSold_vin, instance.Seller);
-				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, oldValue);
-			}
-			else
-			{
-				InternalUniquenessConstraint23OldValueTuple = null;
-				InternalUniquenessConstraint25OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint23Changed(instance, InternalUniquenessConstraint23OldValueTuple, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, instance.Seller));
-			this.OnInternalUniquenessConstraint25Changed(instance, InternalUniquenessConstraint25OldValueTuple, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, instance.Buyer));
-		}
-		private bool OnPersonBoughtCarFromPersonOnDateSellerChanging(PersonBoughtCarFromPersonOnDate instance, Person newValue)
-		{
-			if ((object)this != newValue.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint23Changing(instance, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, newValue))))
-				{
-					return false;
-				}
-				if (!(this.OnInternalUniquenessConstraint24Changing(instance, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, newValue, instance.CarSold_vin))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonBoughtCarFromPersonOnDateSellerChanged(PersonBoughtCarFromPersonOnDate instance, Person oldValue)
-		{
-			((ICollection<PersonBoughtCarFromPersonOnDate>)instance.Seller.PersonBoughtCarFromPersonOnDateViaSellerCollection).Add(instance);
-			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
-			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
-			if ((object)oldValue != null)
-			{
-				((ICollection<PersonBoughtCarFromPersonOnDate>)oldValue.PersonBoughtCarFromPersonOnDateViaSellerCollection).Remove(instance);
-				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, oldValue);
-				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, oldValue, instance.CarSold_vin);
-			}
-			else
-			{
-				InternalUniquenessConstraint23OldValueTuple = null;
-				InternalUniquenessConstraint24OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint23Changed(instance, InternalUniquenessConstraint23OldValueTuple, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, instance.Seller));
-			this.OnInternalUniquenessConstraint24Changed(instance, InternalUniquenessConstraint24OldValueTuple, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, instance.CarSold_vin));
-		}
-		private readonly List<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateList;
-		private readonly ReadOnlyCollection<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateReadOnlyCollection;
-		public IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateCollection
-		{
-			get
-			{
-				return this._PersonBoughtCarFromPersonOnDateReadOnlyCollection;
-			}
-		}
-		#region PersonBoughtCarFromPersonOnDateCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class PersonBoughtCarFromPersonOnDateCore : PersonBoughtCarFromPersonOnDate
-		{
-			public PersonBoughtCarFromPersonOnDateCore(SampleModelContext context, int CarSold_vin, int SaleDate_YMD, Person Buyer, Person Seller)
-			{
-				this._Context = context;
-				this._CarSold_vin = CarSold_vin;
-				context.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanged(this, null);
-				this._SaleDate_YMD = SaleDate_YMD;
-				context.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanged(this, null);
-				this._Buyer = Buyer;
-				context.OnPersonBoughtCarFromPersonOnDateBuyerChanged(this, null);
-				this._Seller = Seller;
-				context.OnPersonBoughtCarFromPersonOnDateSellerChanged(this, null);
-				context._PersonBoughtCarFromPersonOnDateList.Add(this);
-			}
-			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
-			{
-				get
-				{
-					return this._Context;
-				}
-			}
-			[AccessedThroughPropertyAttribute("CarSold_vin")]
-			private int _CarSold_vin;
-			public override int CarSold_vin
-			{
-				get
-				{
-					return this._CarSold_vin;
-				}
-				set
-				{
-					int oldValue = this._CarSold_vin;
-					if (oldValue != value)
-					{
-						if (this._Context.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanging(this, value) && base.OnCarSold_vinChanging(value))
-						{
-							this._CarSold_vin = value;
-							this._Context.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanged(this, oldValue);
-							base.OnCarSold_vinChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("SaleDate_YMD")]
-			private int _SaleDate_YMD;
-			public override int SaleDate_YMD
-			{
-				get
-				{
-					return this._SaleDate_YMD;
-				}
-				set
-				{
-					int oldValue = this._SaleDate_YMD;
-					if (oldValue != value)
-					{
-						if (this._Context.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanging(this, value) && base.OnSaleDate_YMDChanging(value))
-						{
-							this._SaleDate_YMD = value;
-							this._Context.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanged(this, oldValue);
-							base.OnSaleDate_YMDChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("Buyer")]
-			private Person _Buyer;
-			public override Person Buyer
-			{
-				get
-				{
-					return this._Buyer;
-				}
-				set
-				{
-					if ((object)value == null)
-					{
-						throw new ArgumentNullException("value");
-					}
-					Person oldValue = this._Buyer;
-					if ((object)oldValue != value)
-					{
-						if (this._Context.OnPersonBoughtCarFromPersonOnDateBuyerChanging(this, value) && base.OnBuyerChanging(value))
-						{
-							this._Buyer = value;
-							this._Context.OnPersonBoughtCarFromPersonOnDateBuyerChanged(this, oldValue);
-							base.OnBuyerChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("Seller")]
-			private Person _Seller;
-			public override Person Seller
-			{
-				get
-				{
-					return this._Seller;
-				}
-				set
-				{
-					if ((object)value == null)
-					{
-						throw new ArgumentNullException("value");
-					}
-					Person oldValue = this._Seller;
-					if ((object)oldValue != value)
-					{
-						if (this._Context.OnPersonBoughtCarFromPersonOnDateSellerChanging(this, value) && base.OnSellerChanging(value))
-						{
-							this._Seller = value;
-							this._Context.OnPersonBoughtCarFromPersonOnDateSellerChanged(this, oldValue);
-							base.OnSellerChanged(oldValue);
-						}
-					}
-				}
-			}
-		}
-		#endregion // PersonBoughtCarFromPersonOnDateCore
-		#endregion // PersonBoughtCarFromPersonOnDate
-		#region Review
-		public Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criterion_Name)
-		{
-			if ((object)Criterion_Name == null)
-			{
-				throw new ArgumentNullException("Criterion_Name");
-			}
-			if (!(this.OnReviewCar_vinChanging(null, Car_vin)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("Car_vin");
-			}
-			if (!(this.OnReviewRating_Nr_IntegerChanging(null, Rating_Nr_Integer)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("Rating_Nr_Integer");
-			}
-			if (!(this.OnReviewCriterion_NameChanging(null, Criterion_Name)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("Criterion_Name");
-			}
-			return new ReviewCore(this, Car_vin, Rating_Nr_Integer, Criterion_Name);
-		}
-		private bool OnReviewCar_vinChanging(Review instance, int newValue)
-		{
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple<int, string>(newValue, instance.Criterion_Name))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnReviewCar_vinChanged(Review instance, Nullable<int> oldValue)
-		{
-			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
-			if (oldValue.HasValue)
-			{
-				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(oldValue.Value, instance.Criterion_Name);
-			}
-			else
-			{
-				InternalUniquenessConstraint26OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criterion_Name));
-		}
-		private bool OnReviewRating_Nr_IntegerChanging(Review instance, int newValue)
-		{
-			return true;
-		}
-		private bool OnReviewCriterion_NameChanging(Review instance, string newValue)
-		{
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple<int, string>(instance.Car_vin, newValue))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnReviewCriterion_NameChanged(Review instance, string oldValue)
-		{
-			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
-			if ((object)oldValue != null)
-			{
-				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(instance.Car_vin, oldValue);
-			}
-			else
-			{
-				InternalUniquenessConstraint26OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criterion_Name));
-		}
-		private readonly List<Review> _ReviewList;
-		private readonly ReadOnlyCollection<Review> _ReviewReadOnlyCollection;
-		public IEnumerable<Review> ReviewCollection
-		{
-			get
-			{
-				return this._ReviewReadOnlyCollection;
-			}
-		}
-		#region ReviewCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class ReviewCore : Review
-		{
-			public ReviewCore(SampleModelContext context, int Car_vin, int Rating_Nr_Integer, string Criterion_Name)
-			{
-				this._Context = context;
-				this._Car_vin = Car_vin;
-				context.OnReviewCar_vinChanged(this, null);
-				this._Rating_Nr_Integer = Rating_Nr_Integer;
-				this._Criterion_Name = Criterion_Name;
-				context.OnReviewCriterion_NameChanged(this, null);
-				context._ReviewList.Add(this);
-			}
-			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
-			{
-				get
-				{
-					return this._Context;
-				}
-			}
-			[AccessedThroughPropertyAttribute("Car_vin")]
-			private int _Car_vin;
-			public override int Car_vin
-			{
-				get
-				{
-					return this._Car_vin;
-				}
-				set
-				{
-					int oldValue = this._Car_vin;
-					if (oldValue != value)
-					{
-						if (this._Context.OnReviewCar_vinChanging(this, value) && base.OnCar_vinChanging(value))
-						{
-							this._Car_vin = value;
-							this._Context.OnReviewCar_vinChanged(this, oldValue);
-							base.OnCar_vinChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("Rating_Nr_Integer")]
-			private int _Rating_Nr_Integer;
-			public override int Rating_Nr_Integer
-			{
-				get
-				{
-					return this._Rating_Nr_Integer;
-				}
-				set
-				{
-					int oldValue = this._Rating_Nr_Integer;
-					if (oldValue != value)
-					{
-						if (this._Context.OnReviewRating_Nr_IntegerChanging(this, value) && base.OnRating_Nr_IntegerChanging(value))
-						{
-							this._Rating_Nr_Integer = value;
-							base.OnRating_Nr_IntegerChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("Criterion_Name")]
-			private string _Criterion_Name;
-			public override string Criterion_Name
-			{
-				get
-				{
-					return this._Criterion_Name;
-				}
-				set
-				{
-					if ((object)value == null)
-					{
-						throw new ArgumentNullException("value");
-					}
-					string oldValue = this._Criterion_Name;
-					if (!(object.Equals(oldValue, value)))
-					{
-						if (this._Context.OnReviewCriterion_NameChanging(this, value) && base.OnCriterion_NameChanging(value))
-						{
-							this._Criterion_Name = value;
-							this._Context.OnReviewCriterion_NameChanged(this, oldValue);
-							base.OnCriterion_NameChanged(oldValue);
-						}
-					}
-				}
-			}
-		}
-		#endregion // ReviewCore
-		#endregion // Review
-		#region PersonHasNickName
-		public PersonHasNickName CreatePersonHasNickName(string NickName, Person Person)
-		{
-			if ((object)NickName == null)
-			{
-				throw new ArgumentNullException("NickName");
-			}
-			if ((object)Person == null)
-			{
-				throw new ArgumentNullException("Person");
-			}
-			if (!(this.OnPersonHasNickNameNickNameChanging(null, NickName)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("NickName");
-			}
-			if (!(this.OnPersonHasNickNamePersonChanging(null, Person)))
-			{
-				throw SampleModelContext.GetConstraintEnforcementFailedException("Person");
-			}
-			return new PersonHasNickNameCore(this, NickName, Person);
-		}
-		private bool OnPersonHasNickNameNickNameChanging(PersonHasNickName instance, string newValue)
-		{
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint33Changing(instance, Tuple.CreateTuple<string, Person>(newValue, instance.Person))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonHasNickNameNickNameChanged(PersonHasNickName instance, string oldValue)
-		{
-			Tuple<string, Person> InternalUniquenessConstraint33OldValueTuple;
-			if ((object)oldValue != null)
-			{
-				InternalUniquenessConstraint33OldValueTuple = Tuple.CreateTuple<string, Person>(oldValue, instance.Person);
-			}
-			else
-			{
-				InternalUniquenessConstraint33OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint33Changed(instance, InternalUniquenessConstraint33OldValueTuple, Tuple.CreateTuple<string, Person>(instance.NickName, instance.Person));
-		}
-		private bool OnPersonHasNickNamePersonChanging(PersonHasNickName instance, Person newValue)
-		{
-			if ((object)this != newValue.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			if ((object)instance != null)
-			{
-				if (!(this.OnInternalUniquenessConstraint33Changing(instance, Tuple.CreateTuple<string, Person>(instance.NickName, newValue))))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		private void OnPersonHasNickNamePersonChanged(PersonHasNickName instance, Person oldValue)
-		{
-			((ICollection<PersonHasNickName>)instance.Person.PersonHasNickNameViaPersonCollection).Add(instance);
-			Tuple<string, Person> InternalUniquenessConstraint33OldValueTuple;
-			if ((object)oldValue != null)
-			{
-				((ICollection<PersonHasNickName>)oldValue.PersonHasNickNameViaPersonCollection).Remove(instance);
-				InternalUniquenessConstraint33OldValueTuple = Tuple.CreateTuple<string, Person>(instance.NickName, oldValue);
-			}
-			else
-			{
-				InternalUniquenessConstraint33OldValueTuple = null;
-			}
-			this.OnInternalUniquenessConstraint33Changed(instance, InternalUniquenessConstraint33OldValueTuple, Tuple.CreateTuple<string, Person>(instance.NickName, instance.Person));
-		}
-		private readonly List<PersonHasNickName> _PersonHasNickNameList;
-		private readonly ReadOnlyCollection<PersonHasNickName> _PersonHasNickNameReadOnlyCollection;
-		public IEnumerable<PersonHasNickName> PersonHasNickNameCollection
-		{
-			get
-			{
-				return this._PersonHasNickNameReadOnlyCollection;
-			}
-		}
-		#region PersonHasNickNameCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class PersonHasNickNameCore : PersonHasNickName
-		{
-			public PersonHasNickNameCore(SampleModelContext context, string NickName, Person Person)
-			{
-				this._Context = context;
-				this._NickName = NickName;
-				context.OnPersonHasNickNameNickNameChanged(this, null);
-				this._Person = Person;
-				context.OnPersonHasNickNamePersonChanged(this, null);
-				context._PersonHasNickNameList.Add(this);
-			}
-			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
-			{
-				get
-				{
-					return this._Context;
-				}
-			}
-			[AccessedThroughPropertyAttribute("NickName")]
-			private string _NickName;
-			public override string NickName
-			{
-				get
-				{
-					return this._NickName;
-				}
-				set
-				{
-					if ((object)value == null)
-					{
-						throw new ArgumentNullException("value");
-					}
-					string oldValue = this._NickName;
-					if (!(object.Equals(oldValue, value)))
-					{
-						if (this._Context.OnPersonHasNickNameNickNameChanging(this, value) && base.OnNickNameChanging(value))
-						{
-							this._NickName = value;
-							this._Context.OnPersonHasNickNameNickNameChanged(this, oldValue);
-							base.OnNickNameChanged(oldValue);
-						}
-					}
-				}
-			}
-			[AccessedThroughPropertyAttribute("Person")]
-			private Person _Person;
-			public override Person Person
-			{
-				get
-				{
-					return this._Person;
-				}
-				set
-				{
-					if ((object)value == null)
-					{
-						throw new ArgumentNullException("value");
-					}
-					Person oldValue = this._Person;
-					if ((object)oldValue != value)
-					{
-						if (this._Context.OnPersonHasNickNamePersonChanging(this, value) && base.OnPersonChanging(value))
-						{
-							this._Person = value;
-							this._Context.OnPersonHasNickNamePersonChanged(this, oldValue);
-							base.OnPersonChanged(oldValue);
-						}
-					}
-				}
-			}
-		}
-		#endregion // PersonHasNickNameCore
-		#endregion // PersonHasNickName
 		#region Person
 		public Person CreatePerson(string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, bool hasParents, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
 		{
@@ -1912,82 +1042,6 @@ namespace SampleModel
 				oldValue.Person = null;
 			}
 		}
-		private bool OnPersonPersonDrivesCarViaDrivenByPersonCollectionAdding(Person instance, PersonDrivesCar value)
-		{
-			if ((object)this != value.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			return true;
-		}
-		private void OnPersonPersonDrivesCarViaDrivenByPersonCollectionAdded(Person instance, PersonDrivesCar value)
-		{
-			value.DrivenByPerson = instance;
-		}
-		private void OnPersonPersonDrivesCarViaDrivenByPersonCollectionRemoved(Person instance, PersonDrivesCar value)
-		{
-			if ((object)value.DrivenByPerson == instance)
-			{
-				value.DrivenByPerson = null;
-			}
-		}
-		private bool OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			if ((object)this != value.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			return true;
-		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			value.Buyer = instance;
-		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			if ((object)value.Buyer == instance)
-			{
-				value.Buyer = null;
-			}
-		}
-		private bool OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			if ((object)this != value.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			return true;
-		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			value.Seller = instance;
-		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			if ((object)value.Seller == instance)
-			{
-				value.Seller = null;
-			}
-		}
-		private bool OnPersonPersonHasNickNameViaPersonCollectionAdding(Person instance, PersonHasNickName value)
-		{
-			if ((object)this != value.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			return true;
-		}
-		private void OnPersonPersonHasNickNameViaPersonCollectionAdded(Person instance, PersonHasNickName value)
-		{
-			value.Person = instance;
-		}
-		private void OnPersonPersonHasNickNameViaPersonCollectionRemoved(Person instance, PersonHasNickName value)
-		{
-			if ((object)value.Person == instance)
-			{
-				value.Person = null;
-			}
-		}
 		private bool OnPersonWifeChanging(Person instance, Person newValue)
 		{
 			if ((object)newValue != null)
@@ -2048,6 +1102,44 @@ namespace SampleModel
 				value.DoesSomethingWithPerson = null;
 			}
 		}
+		private bool OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
+		{
+			if ((object)this != value.Context)
+			{
+				throw SampleModelContext.GetDifferentContextsException();
+			}
+			return true;
+		}
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
+		{
+			value.Buyer = instance;
+		}
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
+		{
+			if ((object)value.Buyer == instance)
+			{
+				value.Buyer = null;
+			}
+		}
+		private bool OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
+		{
+			if ((object)this != value.Context)
+			{
+				throw SampleModelContext.GetDifferentContextsException();
+			}
+			return true;
+		}
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
+		{
+			value.Seller = instance;
+		}
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
+		{
+			if ((object)value.Seller == instance)
+			{
+				value.Seller = null;
+			}
+		}
 		private readonly List<Person> _PersonList;
 		private readonly ReadOnlyCollection<Person> _PersonReadOnlyCollection;
 		public IEnumerable<Person> PersonCollection
@@ -2058,18 +1150,16 @@ namespace SampleModel
 			}
 		}
 		#region PersonCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class PersonCore : Person
 		{
 			public PersonCore(SampleModelContext context, string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, bool hasParents, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
 			{
 				this._Context = context;
-				this._PersonDrivesCarViaDrivenByPersonCollection = new ConstraintEnforcementCollection<Person, PersonDrivesCar>(this);
-				this._PersonBoughtCarFromPersonOnDateViaBuyerCollection = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDateViaBuyerCollection");
-				this._PersonBoughtCarFromPersonOnDateViaSellerCollection = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDateViaSellerCollection");
-				this._PersonHasNickNameViaPersonCollection = new ConstraintEnforcementCollection<Person, PersonHasNickName>(this);
 				this._TaskViaPersonCollection = new ConstraintEnforcementCollection<Person, Task>(this);
 				this._ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection = new ConstraintEnforcementCollection<Person, ValueType1>(this);
+				this._PersonBoughtCarFromPersonOnDateViaBuyerCollection = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDateViaBuyerCollection");
+				this._PersonBoughtCarFromPersonOnDateViaSellerCollection = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDateViaSellerCollection");
 				this._FirstName = FirstName;
 				context.OnPersonFirstNameChanged(this, null);
 				this._Date_YMD = Date_YMD;
@@ -2092,7 +1182,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("FirstName")]
+			[AccessedThroughProperty("FirstName")]
 			private string _FirstName;
 			public override string FirstName
 			{
@@ -2118,7 +1208,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Date_YMD")]
+			[AccessedThroughProperty("Date_YMD")]
 			private int _Date_YMD;
 			public override int Date_YMD
 			{
@@ -2140,7 +1230,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("LastName")]
+			[AccessedThroughProperty("LastName")]
 			private string _LastName;
 			public override string LastName
 			{
@@ -2166,7 +1256,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("OptionalUniqueString")]
+			[AccessedThroughProperty("OptionalUniqueString")]
 			private string _OptionalUniqueString;
 			public override string OptionalUniqueString
 			{
@@ -2188,7 +1278,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("HatType_ColorARGB")]
+			[AccessedThroughProperty("HatType_ColorARGB")]
 			private Nullable<int> _HatType_ColorARGB;
 			public override Nullable<int> HatType_ColorARGB
 			{
@@ -2209,7 +1299,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("HatType_HatTypeStyle_HatTypeStyle_Description")]
+			[AccessedThroughProperty("HatType_HatTypeStyle_HatTypeStyle_Description")]
 			private string _HatType_HatTypeStyle_HatTypeStyle_Description;
 			public override string HatType_HatTypeStyle_HatTypeStyle_Description
 			{
@@ -2230,7 +1320,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("OwnsCar_vin")]
+			[AccessedThroughProperty("OwnsCar_vin")]
 			private Nullable<int> _OwnsCar_vin;
 			public override Nullable<int> OwnsCar_vin
 			{
@@ -2252,7 +1342,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Gender_Gender_Code")]
+			[AccessedThroughProperty("Gender_Gender_Code")]
 			private string _Gender_Gender_Code;
 			public override string Gender_Gender_Code
 			{
@@ -2277,7 +1367,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("hasParents")]
+			[AccessedThroughProperty("hasParents")]
 			private bool _hasParents;
 			public override bool hasParents
 			{
@@ -2298,7 +1388,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("OptionalUniqueDecimal")]
+			[AccessedThroughProperty("OptionalUniqueDecimal")]
 			private Nullable<decimal> _OptionalUniqueDecimal;
 			public override Nullable<decimal> OptionalUniqueDecimal
 			{
@@ -2320,7 +1410,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("MandatoryUniqueDecimal")]
+			[AccessedThroughProperty("MandatoryUniqueDecimal")]
 			private decimal _MandatoryUniqueDecimal;
 			public override decimal MandatoryUniqueDecimal
 			{
@@ -2342,7 +1432,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("MandatoryUniqueString")]
+			[AccessedThroughProperty("MandatoryUniqueString")]
 			private string _MandatoryUniqueString;
 			public override string MandatoryUniqueString
 			{
@@ -2368,7 +1458,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Husband")]
+			[AccessedThroughProperty("Husband")]
 			private Person _Husband;
 			public override Person Husband
 			{
@@ -2390,7 +1480,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("ValueType1DoesSomethingElseWith")]
+			[AccessedThroughProperty("ValueType1DoesSomethingElseWith")]
 			private ValueType1 _ValueType1DoesSomethingElseWith;
 			public override ValueType1 ValueType1DoesSomethingElseWith
 			{
@@ -2412,7 +1502,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("MalePerson")]
+			[AccessedThroughProperty("MalePerson")]
 			private MalePerson _MalePerson;
 			public override MalePerson MalePerson
 			{
@@ -2434,7 +1524,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("FemalePerson")]
+			[AccessedThroughProperty("FemalePerson")]
 			private FemalePerson _FemalePerson;
 			public override FemalePerson FemalePerson
 			{
@@ -2456,7 +1546,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("ChildPerson")]
+			[AccessedThroughProperty("ChildPerson")]
 			private ChildPerson _ChildPerson;
 			public override ChildPerson ChildPerson
 			{
@@ -2478,7 +1568,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Death")]
+			[AccessedThroughProperty("Death")]
 			private Death _Death;
 			public override Death Death
 			{
@@ -2500,43 +1590,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonDrivesCarViaDrivenByPersonCollection")]
-			private readonly IEnumerable<PersonDrivesCar> _PersonDrivesCarViaDrivenByPersonCollection;
-			public override IEnumerable<PersonDrivesCar> PersonDrivesCarViaDrivenByPersonCollection
-			{
-				get
-				{
-					return this._PersonDrivesCarViaDrivenByPersonCollection;
-				}
-			}
-			[AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDateViaBuyerCollection")]
-			private readonly IEnumerable<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			public override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
-			{
-				get
-				{
-					return this._PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-				}
-			}
-			[AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDateViaSellerCollection")]
-			private readonly IEnumerable<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			public override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
-			{
-				get
-				{
-					return this._PersonBoughtCarFromPersonOnDateViaSellerCollection;
-				}
-			}
-			[AccessedThroughPropertyAttribute("PersonHasNickNameViaPersonCollection")]
-			private readonly IEnumerable<PersonHasNickName> _PersonHasNickNameViaPersonCollection;
-			public override IEnumerable<PersonHasNickName> PersonHasNickNameViaPersonCollection
-			{
-				get
-				{
-					return this._PersonHasNickNameViaPersonCollection;
-				}
-			}
-			[AccessedThroughPropertyAttribute("Wife")]
+			[AccessedThroughProperty("Wife")]
 			private Person _Wife;
 			public override Person Wife
 			{
@@ -2558,7 +1612,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("TaskViaPersonCollection")]
+			[AccessedThroughProperty("TaskViaPersonCollection")]
 			private readonly IEnumerable<Task> _TaskViaPersonCollection;
 			public override IEnumerable<Task> TaskViaPersonCollection
 			{
@@ -2567,13 +1621,31 @@ namespace SampleModel
 					return this._TaskViaPersonCollection;
 				}
 			}
-			[AccessedThroughPropertyAttribute("ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection")]
+			[AccessedThroughProperty("ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection")]
 			private readonly IEnumerable<ValueType1> _ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 			public override IEnumerable<ValueType1> ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection
 			{
 				get
 				{
 					return this._ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
+				}
+			}
+			[AccessedThroughProperty("PersonBoughtCarFromPersonOnDateViaBuyerCollection")]
+			private readonly IEnumerable<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+			public override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+			{
+				get
+				{
+					return this._PersonBoughtCarFromPersonOnDateViaBuyerCollection;
+				}
+			}
+			[AccessedThroughProperty("PersonBoughtCarFromPersonOnDateViaSellerCollection")]
+			private readonly IEnumerable<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateViaSellerCollection;
+			public override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+			{
+				get
+				{
+					return this._PersonBoughtCarFromPersonOnDateViaSellerCollection;
 				}
 			}
 		}
@@ -2637,7 +1709,7 @@ namespace SampleModel
 			}
 		}
 		#region MalePersonCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class MalePersonCore : MalePerson
 		{
 			public MalePersonCore(SampleModelContext context, Person Person)
@@ -2656,7 +1728,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("Person")]
+			[AccessedThroughProperty("Person")]
 			private Person _Person;
 			public override Person Person
 			{
@@ -2682,7 +1754,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("ChildPersonViaFatherCollection")]
+			[AccessedThroughProperty("ChildPersonViaFatherCollection")]
 			private readonly IEnumerable<ChildPerson> _ChildPersonViaFatherCollection;
 			public override IEnumerable<ChildPerson> ChildPersonViaFatherCollection
 			{
@@ -2752,7 +1824,7 @@ namespace SampleModel
 			}
 		}
 		#region FemalePersonCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class FemalePersonCore : FemalePerson
 		{
 			public FemalePersonCore(SampleModelContext context, Person Person)
@@ -2771,7 +1843,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("Person")]
+			[AccessedThroughProperty("Person")]
 			private Person _Person;
 			public override Person Person
 			{
@@ -2797,7 +1869,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("ChildPersonViaMotherCollection")]
+			[AccessedThroughProperty("ChildPersonViaMotherCollection")]
 			private readonly IEnumerable<ChildPerson> _ChildPersonViaMotherCollection;
 			public override IEnumerable<ChildPerson> ChildPersonViaMotherCollection
 			{
@@ -2952,7 +2024,7 @@ namespace SampleModel
 			}
 		}
 		#region ChildPersonCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ChildPersonCore : ChildPerson
 		{
 			public ChildPersonCore(SampleModelContext context, int BirthOrder_BirthOrder_Nr, MalePerson Father, FemalePerson Mother, Person Person)
@@ -2976,7 +2048,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("BirthOrder_BirthOrder_Nr")]
+			[AccessedThroughProperty("BirthOrder_BirthOrder_Nr")]
 			private int _BirthOrder_BirthOrder_Nr;
 			public override int BirthOrder_BirthOrder_Nr
 			{
@@ -2998,7 +2070,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Father")]
+			[AccessedThroughProperty("Father")]
 			private MalePerson _Father;
 			public override MalePerson Father
 			{
@@ -3024,7 +2096,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Mother")]
+			[AccessedThroughProperty("Mother")]
 			private FemalePerson _Mother;
 			public override FemalePerson Mother
 			{
@@ -3050,7 +2122,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Person")]
+			[AccessedThroughProperty("Person")]
 			private Person _Person;
 			public override Person Person
 			{
@@ -3178,7 +2250,7 @@ namespace SampleModel
 			}
 		}
 		#region DeathCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class DeathCore : Death
 		{
 			public DeathCore(SampleModelContext context, string DeathCause_DeathCause_Type, Person Person)
@@ -3197,7 +2269,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("Date_YMD")]
+			[AccessedThroughProperty("Date_YMD")]
 			private Nullable<int> _Date_YMD;
 			public override Nullable<int> Date_YMD
 			{
@@ -3218,7 +2290,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("DeathCause_DeathCause_Type")]
+			[AccessedThroughProperty("DeathCause_DeathCause_Type")]
 			private string _DeathCause_DeathCause_Type;
 			public override string DeathCause_DeathCause_Type
 			{
@@ -3243,7 +2315,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("NaturalDeath")]
+			[AccessedThroughProperty("NaturalDeath")]
 			private NaturalDeath _NaturalDeath;
 			public override NaturalDeath NaturalDeath
 			{
@@ -3265,7 +2337,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("UnnaturalDeath")]
+			[AccessedThroughProperty("UnnaturalDeath")]
 			private UnnaturalDeath _UnnaturalDeath;
 			public override UnnaturalDeath UnnaturalDeath
 			{
@@ -3287,7 +2359,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Person")]
+			[AccessedThroughProperty("Person")]
 			private Person _Person;
 			public override Person Person
 			{
@@ -3363,7 +2435,7 @@ namespace SampleModel
 			}
 		}
 		#region NaturalDeathCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class NaturalDeathCore : NaturalDeath
 		{
 			public NaturalDeathCore(SampleModelContext context, bool isFromProstateCancer, Death Death)
@@ -3382,7 +2454,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("isFromProstateCancer")]
+			[AccessedThroughProperty("isFromProstateCancer")]
 			private bool _isFromProstateCancer;
 			public override bool isFromProstateCancer
 			{
@@ -3403,7 +2475,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Death")]
+			[AccessedThroughProperty("Death")]
 			private Death _Death;
 			public override Death Death
 			{
@@ -3487,7 +2559,7 @@ namespace SampleModel
 			}
 		}
 		#region UnnaturalDeathCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class UnnaturalDeathCore : UnnaturalDeath
 		{
 			public UnnaturalDeathCore(SampleModelContext context, bool isViolent, bool isBloody, Death Death)
@@ -3507,7 +2579,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("isViolent")]
+			[AccessedThroughProperty("isViolent")]
 			private bool _isViolent;
 			public override bool isViolent
 			{
@@ -3528,7 +2600,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("isBloody")]
+			[AccessedThroughProperty("isBloody")]
 			private bool _isBloody;
 			public override bool isBloody
 			{
@@ -3549,7 +2621,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Death")]
+			[AccessedThroughProperty("Death")]
 			private Death _Death;
 			public override Death Death
 			{
@@ -3615,7 +2687,7 @@ namespace SampleModel
 			}
 		}
 		#region TaskCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class TaskCore : Task
 		{
 			public TaskCore(SampleModelContext context)
@@ -3631,7 +2703,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("Person")]
+			[AccessedThroughProperty("Person")]
 			private Person _Person;
 			public override Person Person
 			{
@@ -3736,7 +2808,7 @@ namespace SampleModel
 			}
 		}
 		#region ValueType1Core
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ValueType1Core : ValueType1
 		{
 			public ValueType1Core(SampleModelContext context, int ValueType1Value)
@@ -3755,7 +2827,7 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("ValueType1Value")]
+			[AccessedThroughProperty("ValueType1Value")]
 			private int _ValueType1Value;
 			public override int ValueType1Value
 			{
@@ -3777,7 +2849,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("DoesSomethingWithPerson")]
+			[AccessedThroughProperty("DoesSomethingWithPerson")]
 			private Person _DoesSomethingWithPerson;
 			public override Person DoesSomethingWithPerson
 			{
@@ -3799,7 +2871,7 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection")]
+			[AccessedThroughProperty("DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection")]
 			private readonly IEnumerable<Person> _DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection;
 			public override IEnumerable<Person> DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection
 			{
@@ -3811,6 +2883,492 @@ namespace SampleModel
 		}
 		#endregion // ValueType1Core
 		#endregion // ValueType1
+		#region PersonBoughtCarFromPersonOnDate
+		public PersonBoughtCarFromPersonOnDate CreatePersonBoughtCarFromPersonOnDate(int CarSold_vin, int SaleDate_YMD, Person Buyer, Person Seller)
+		{
+			if ((object)Buyer == null)
+			{
+				throw new ArgumentNullException("Buyer");
+			}
+			if ((object)Seller == null)
+			{
+				throw new ArgumentNullException("Seller");
+			}
+			if (!(this.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanging(null, CarSold_vin)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("CarSold_vin");
+			}
+			if (!(this.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanging(null, SaleDate_YMD)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("SaleDate_YMD");
+			}
+			if (!(this.OnPersonBoughtCarFromPersonOnDateBuyerChanging(null, Buyer)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("Buyer");
+			}
+			if (!(this.OnPersonBoughtCarFromPersonOnDateSellerChanging(null, Seller)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("Seller");
+			}
+			return new PersonBoughtCarFromPersonOnDateCore(this, CarSold_vin, SaleDate_YMD, Buyer, Seller);
+		}
+		private bool OnPersonBoughtCarFromPersonOnDateCarSold_vinChanging(PersonBoughtCarFromPersonOnDate instance, int newValue)
+		{
+			if ((object)instance != null)
+			{
+				if (!(this.OnInternalUniquenessConstraint23Changing(instance, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, newValue, instance.Seller))))
+				{
+					return false;
+				}
+				if (!(this.OnInternalUniquenessConstraint24Changing(instance, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, newValue))))
+				{
+					return false;
+				}
+				if (!(this.OnInternalUniquenessConstraint25Changing(instance, Tuple.CreateTuple<int, int, Person>(newValue, instance.SaleDate_YMD, instance.Buyer))))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnPersonBoughtCarFromPersonOnDateCarSold_vinChanged(PersonBoughtCarFromPersonOnDate instance, Nullable<int> oldValue)
+		{
+			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
+			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
+			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
+			if (oldValue.HasValue)
+			{
+				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, oldValue.Value, instance.Seller);
+				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, oldValue.Value);
+				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(oldValue.Value, instance.SaleDate_YMD, instance.Buyer);
+			}
+			else
+			{
+				InternalUniquenessConstraint23OldValueTuple = null;
+				InternalUniquenessConstraint24OldValueTuple = null;
+				InternalUniquenessConstraint25OldValueTuple = null;
+			}
+			this.OnInternalUniquenessConstraint23Changed(instance, InternalUniquenessConstraint23OldValueTuple, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, instance.Seller));
+			this.OnInternalUniquenessConstraint24Changed(instance, InternalUniquenessConstraint24OldValueTuple, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, instance.CarSold_vin));
+			this.OnInternalUniquenessConstraint25Changed(instance, InternalUniquenessConstraint25OldValueTuple, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, instance.Buyer));
+		}
+		private bool OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanging(PersonBoughtCarFromPersonOnDate instance, int newValue)
+		{
+			if ((object)instance != null)
+			{
+				if (!(this.OnInternalUniquenessConstraint24Changing(instance, Tuple.CreateTuple<int, Person, int>(newValue, instance.Seller, instance.CarSold_vin))))
+				{
+					return false;
+				}
+				if (!(this.OnInternalUniquenessConstraint25Changing(instance, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, newValue, instance.Buyer))))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanged(PersonBoughtCarFromPersonOnDate instance, Nullable<int> oldValue)
+		{
+			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
+			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
+			if (oldValue.HasValue)
+			{
+				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(oldValue.Value, instance.Seller, instance.CarSold_vin);
+				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, oldValue.Value, instance.Buyer);
+			}
+			else
+			{
+				InternalUniquenessConstraint24OldValueTuple = null;
+				InternalUniquenessConstraint25OldValueTuple = null;
+			}
+			this.OnInternalUniquenessConstraint24Changed(instance, InternalUniquenessConstraint24OldValueTuple, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, instance.CarSold_vin));
+			this.OnInternalUniquenessConstraint25Changed(instance, InternalUniquenessConstraint25OldValueTuple, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, instance.Buyer));
+		}
+		private bool OnPersonBoughtCarFromPersonOnDateBuyerChanging(PersonBoughtCarFromPersonOnDate instance, Person newValue)
+		{
+			if ((object)this != newValue.Context)
+			{
+				throw SampleModelContext.GetDifferentContextsException();
+			}
+			if ((object)instance != null)
+			{
+				if (!(this.OnInternalUniquenessConstraint23Changing(instance, Tuple.CreateTuple<Person, int, Person>(newValue, instance.CarSold_vin, instance.Seller))))
+				{
+					return false;
+				}
+				if (!(this.OnInternalUniquenessConstraint25Changing(instance, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, newValue))))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnPersonBoughtCarFromPersonOnDateBuyerChanged(PersonBoughtCarFromPersonOnDate instance, Person oldValue)
+		{
+			((ICollection<PersonBoughtCarFromPersonOnDate>)instance.Buyer.PersonBoughtCarFromPersonOnDateViaBuyerCollection).Add(instance);
+			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
+			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
+			if ((object)oldValue != null)
+			{
+				((ICollection<PersonBoughtCarFromPersonOnDate>)oldValue.PersonBoughtCarFromPersonOnDateViaBuyerCollection).Remove(instance);
+				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(oldValue, instance.CarSold_vin, instance.Seller);
+				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, oldValue);
+			}
+			else
+			{
+				InternalUniquenessConstraint23OldValueTuple = null;
+				InternalUniquenessConstraint25OldValueTuple = null;
+			}
+			this.OnInternalUniquenessConstraint23Changed(instance, InternalUniquenessConstraint23OldValueTuple, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, instance.Seller));
+			this.OnInternalUniquenessConstraint25Changed(instance, InternalUniquenessConstraint25OldValueTuple, Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, instance.Buyer));
+		}
+		private bool OnPersonBoughtCarFromPersonOnDateSellerChanging(PersonBoughtCarFromPersonOnDate instance, Person newValue)
+		{
+			if ((object)this != newValue.Context)
+			{
+				throw SampleModelContext.GetDifferentContextsException();
+			}
+			if ((object)instance != null)
+			{
+				if (!(this.OnInternalUniquenessConstraint23Changing(instance, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, newValue))))
+				{
+					return false;
+				}
+				if (!(this.OnInternalUniquenessConstraint24Changing(instance, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, newValue, instance.CarSold_vin))))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnPersonBoughtCarFromPersonOnDateSellerChanged(PersonBoughtCarFromPersonOnDate instance, Person oldValue)
+		{
+			((ICollection<PersonBoughtCarFromPersonOnDate>)instance.Seller.PersonBoughtCarFromPersonOnDateViaSellerCollection).Add(instance);
+			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
+			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
+			if ((object)oldValue != null)
+			{
+				((ICollection<PersonBoughtCarFromPersonOnDate>)oldValue.PersonBoughtCarFromPersonOnDateViaSellerCollection).Remove(instance);
+				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, oldValue);
+				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, oldValue, instance.CarSold_vin);
+			}
+			else
+			{
+				InternalUniquenessConstraint23OldValueTuple = null;
+				InternalUniquenessConstraint24OldValueTuple = null;
+			}
+			this.OnInternalUniquenessConstraint23Changed(instance, InternalUniquenessConstraint23OldValueTuple, Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, instance.Seller));
+			this.OnInternalUniquenessConstraint24Changed(instance, InternalUniquenessConstraint24OldValueTuple, Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, instance.CarSold_vin));
+		}
+		private readonly List<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateList;
+		private readonly ReadOnlyCollection<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateReadOnlyCollection;
+		public IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateCollection
+		{
+			get
+			{
+				return this._PersonBoughtCarFromPersonOnDateReadOnlyCollection;
+			}
+		}
+		#region PersonBoughtCarFromPersonOnDateCore
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		private sealed class PersonBoughtCarFromPersonOnDateCore : PersonBoughtCarFromPersonOnDate
+		{
+			public PersonBoughtCarFromPersonOnDateCore(SampleModelContext context, int CarSold_vin, int SaleDate_YMD, Person Buyer, Person Seller)
+			{
+				this._Context = context;
+				this._CarSold_vin = CarSold_vin;
+				context.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanged(this, null);
+				this._SaleDate_YMD = SaleDate_YMD;
+				context.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanged(this, null);
+				this._Buyer = Buyer;
+				context.OnPersonBoughtCarFromPersonOnDateBuyerChanged(this, null);
+				this._Seller = Seller;
+				context.OnPersonBoughtCarFromPersonOnDateSellerChanged(this, null);
+				context._PersonBoughtCarFromPersonOnDateList.Add(this);
+			}
+			private readonly SampleModelContext _Context;
+			public override SampleModelContext Context
+			{
+				get
+				{
+					return this._Context;
+				}
+			}
+			[AccessedThroughProperty("CarSold_vin")]
+			private int _CarSold_vin;
+			public override int CarSold_vin
+			{
+				get
+				{
+					return this._CarSold_vin;
+				}
+				set
+				{
+					int oldValue = this._CarSold_vin;
+					if (oldValue != value)
+					{
+						if (this._Context.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanging(this, value) && base.OnCarSold_vinChanging(value))
+						{
+							this._CarSold_vin = value;
+							this._Context.OnPersonBoughtCarFromPersonOnDateCarSold_vinChanged(this, oldValue);
+							base.OnCarSold_vinChanged(oldValue);
+						}
+					}
+				}
+			}
+			[AccessedThroughProperty("SaleDate_YMD")]
+			private int _SaleDate_YMD;
+			public override int SaleDate_YMD
+			{
+				get
+				{
+					return this._SaleDate_YMD;
+				}
+				set
+				{
+					int oldValue = this._SaleDate_YMD;
+					if (oldValue != value)
+					{
+						if (this._Context.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanging(this, value) && base.OnSaleDate_YMDChanging(value))
+						{
+							this._SaleDate_YMD = value;
+							this._Context.OnPersonBoughtCarFromPersonOnDateSaleDate_YMDChanged(this, oldValue);
+							base.OnSaleDate_YMDChanged(oldValue);
+						}
+					}
+				}
+			}
+			[AccessedThroughProperty("Buyer")]
+			private Person _Buyer;
+			public override Person Buyer
+			{
+				get
+				{
+					return this._Buyer;
+				}
+				set
+				{
+					if ((object)value == null)
+					{
+						throw new ArgumentNullException("value");
+					}
+					Person oldValue = this._Buyer;
+					if ((object)oldValue != value)
+					{
+						if (this._Context.OnPersonBoughtCarFromPersonOnDateBuyerChanging(this, value) && base.OnBuyerChanging(value))
+						{
+							this._Buyer = value;
+							this._Context.OnPersonBoughtCarFromPersonOnDateBuyerChanged(this, oldValue);
+							base.OnBuyerChanged(oldValue);
+						}
+					}
+				}
+			}
+			[AccessedThroughProperty("Seller")]
+			private Person _Seller;
+			public override Person Seller
+			{
+				get
+				{
+					return this._Seller;
+				}
+				set
+				{
+					if ((object)value == null)
+					{
+						throw new ArgumentNullException("value");
+					}
+					Person oldValue = this._Seller;
+					if ((object)oldValue != value)
+					{
+						if (this._Context.OnPersonBoughtCarFromPersonOnDateSellerChanging(this, value) && base.OnSellerChanging(value))
+						{
+							this._Seller = value;
+							this._Context.OnPersonBoughtCarFromPersonOnDateSellerChanged(this, oldValue);
+							base.OnSellerChanged(oldValue);
+						}
+					}
+				}
+			}
+		}
+		#endregion // PersonBoughtCarFromPersonOnDateCore
+		#endregion // PersonBoughtCarFromPersonOnDate
+		#region Review
+		public Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criterion_Name)
+		{
+			if ((object)Criterion_Name == null)
+			{
+				throw new ArgumentNullException("Criterion_Name");
+			}
+			if (!(this.OnReviewCar_vinChanging(null, Car_vin)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("Car_vin");
+			}
+			if (!(this.OnReviewRating_Nr_IntegerChanging(null, Rating_Nr_Integer)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("Rating_Nr_Integer");
+			}
+			if (!(this.OnReviewCriterion_NameChanging(null, Criterion_Name)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("Criterion_Name");
+			}
+			return new ReviewCore(this, Car_vin, Rating_Nr_Integer, Criterion_Name);
+		}
+		private bool OnReviewCar_vinChanging(Review instance, int newValue)
+		{
+			if ((object)instance != null)
+			{
+				if (!(this.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple<int, string>(newValue, instance.Criterion_Name))))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnReviewCar_vinChanged(Review instance, Nullable<int> oldValue)
+		{
+			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
+			if (oldValue.HasValue)
+			{
+				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(oldValue.Value, instance.Criterion_Name);
+			}
+			else
+			{
+				InternalUniquenessConstraint26OldValueTuple = null;
+			}
+			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criterion_Name));
+		}
+		private bool OnReviewRating_Nr_IntegerChanging(Review instance, int newValue)
+		{
+			return true;
+		}
+		private bool OnReviewCriterion_NameChanging(Review instance, string newValue)
+		{
+			if ((object)instance != null)
+			{
+				if (!(this.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple<int, string>(instance.Car_vin, newValue))))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		private void OnReviewCriterion_NameChanged(Review instance, string oldValue)
+		{
+			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
+			if ((object)oldValue != null)
+			{
+				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(instance.Car_vin, oldValue);
+			}
+			else
+			{
+				InternalUniquenessConstraint26OldValueTuple = null;
+			}
+			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criterion_Name));
+		}
+		private readonly List<Review> _ReviewList;
+		private readonly ReadOnlyCollection<Review> _ReviewReadOnlyCollection;
+		public IEnumerable<Review> ReviewCollection
+		{
+			get
+			{
+				return this._ReviewReadOnlyCollection;
+			}
+		}
+		#region ReviewCore
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		private sealed class ReviewCore : Review
+		{
+			public ReviewCore(SampleModelContext context, int Car_vin, int Rating_Nr_Integer, string Criterion_Name)
+			{
+				this._Context = context;
+				this._Car_vin = Car_vin;
+				context.OnReviewCar_vinChanged(this, null);
+				this._Rating_Nr_Integer = Rating_Nr_Integer;
+				this._Criterion_Name = Criterion_Name;
+				context.OnReviewCriterion_NameChanged(this, null);
+				context._ReviewList.Add(this);
+			}
+			private readonly SampleModelContext _Context;
+			public override SampleModelContext Context
+			{
+				get
+				{
+					return this._Context;
+				}
+			}
+			[AccessedThroughProperty("Car_vin")]
+			private int _Car_vin;
+			public override int Car_vin
+			{
+				get
+				{
+					return this._Car_vin;
+				}
+				set
+				{
+					int oldValue = this._Car_vin;
+					if (oldValue != value)
+					{
+						if (this._Context.OnReviewCar_vinChanging(this, value) && base.OnCar_vinChanging(value))
+						{
+							this._Car_vin = value;
+							this._Context.OnReviewCar_vinChanged(this, oldValue);
+							base.OnCar_vinChanged(oldValue);
+						}
+					}
+				}
+			}
+			[AccessedThroughProperty("Rating_Nr_Integer")]
+			private int _Rating_Nr_Integer;
+			public override int Rating_Nr_Integer
+			{
+				get
+				{
+					return this._Rating_Nr_Integer;
+				}
+				set
+				{
+					int oldValue = this._Rating_Nr_Integer;
+					if (oldValue != value)
+					{
+						if (this._Context.OnReviewRating_Nr_IntegerChanging(this, value) && base.OnRating_Nr_IntegerChanging(value))
+						{
+							this._Rating_Nr_Integer = value;
+							base.OnRating_Nr_IntegerChanged(oldValue);
+						}
+					}
+				}
+			}
+			[AccessedThroughProperty("Criterion_Name")]
+			private string _Criterion_Name;
+			public override string Criterion_Name
+			{
+				get
+				{
+					return this._Criterion_Name;
+				}
+				set
+				{
+					if ((object)value == null)
+					{
+						throw new ArgumentNullException("value");
+					}
+					string oldValue = this._Criterion_Name;
+					if (!(object.Equals(oldValue, value)))
+					{
+						if (this._Context.OnReviewCriterion_NameChanging(this, value) && base.OnCriterion_NameChanging(value))
+						{
+							this._Criterion_Name = value;
+							this._Context.OnReviewCriterion_NameChanged(this, oldValue);
+							base.OnCriterion_NameChanged(oldValue);
+						}
+					}
+				}
+			}
+		}
+		#endregion // ReviewCore
+		#endregion // Review
 	}
 	#endregion // SampleModelContext
 }

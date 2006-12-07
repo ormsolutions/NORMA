@@ -424,14 +424,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SubtypeLink specific
 		#region Store Event Handlers
 		/// <summary>
-		/// Manage event handlers in the store
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="SubtypeLink"/>s.
 		/// </summary>
-		public static void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
-			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent), addHandlers);
+			eventManager.AddOrRemoveHandler(store.DomainDataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent), action);
 		}
 		/// <summary>
 		/// Event handler for IsPrimary property on the associated subtype fact

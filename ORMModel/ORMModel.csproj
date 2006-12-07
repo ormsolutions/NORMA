@@ -92,6 +92,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\ModelingEventManager.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelingEventManager.xml</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Design\ResourceAccessor.cs" />
     <Compile Include="Framework\Design\ExpandableElementConverter.cs" />
     <Compile Include="Framework\Design\DomainTypeDescriptor.cs" />
@@ -101,7 +105,6 @@
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptor.cs" />
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptionProvider.cs" />
     <Compile Include="Framework\HashSet.cs" />
-    <Compile Include="Framework\SafeEventManager.cs" />
     <Compile Include="ObjectModel\Design\FactTypeTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\JoinTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\RoleTypeDescriptor.cs" />
@@ -134,8 +137,7 @@
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
     <Compile Include="ShapeModel\ModelNoteConnectAction.cs" />
     <Compile Include="ShapeModel\ModelNoteShape.cs" />
-    <Compile Include="Shell\ORMContextWindow.cs">
-    </Compile>
+    <Compile Include="Shell\ORMContextWindow.cs" />
     <Compile Include="Shell\FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="Shell\FactEditor\FactColorizer.cs" />
     <Compile Include="Shell\FactEditor\FactCompletionSet.cs" />
@@ -384,6 +386,15 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\ModelingEventManager.cs" />
+    <Content Include="Framework\ModelingEventManager.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ModelingEventManager.Generated.cs</LastGenOutput>
+      <DependentUpon>ModelingEventManager.cs</DependentUpon>
+    </Content>
+    <None Include="Framework\ModelingEventManager.xslt">
+      <DependentUpon>ModelingEventManager.cs</DependentUpon>
+    </None>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>

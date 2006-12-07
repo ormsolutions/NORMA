@@ -57,11 +57,11 @@ namespace Neumont.Tools.ORM.Shell
 				Store newStore = (model == null) ? null : model.Store;
 				if (myStore != null && myStore != newStore && !myStore.Disposed)
 				{
-					ManageStoreEvents(myStore, false);
+					ManageStoreEvents(myStore, EventHandlerAction.Remove);
 				}
 				if (newStore != null && newStore != myStore)
 				{
-					ManageStoreEvents(newStore, true);
+					ManageStoreEvents(newStore, EventHandlerAction.Add);
 
 				}
 				this.myModel = model;
@@ -97,11 +97,11 @@ namespace Neumont.Tools.ORM.Shell
 				Store newStore = model.Store;
 				if (oldStore != null && oldStore != newStore && !oldStore.Disposed)
 				{
-					ManageStoreEvents(oldStore, false);
+					ManageStoreEvents(oldStore, EventHandlerAction.Remove);
 				}
 				if (oldStore != newStore)
 				{
-					ManageStoreEvents(newStore, true);
+					ManageStoreEvents(newStore, EventHandlerAction.Add);
 
 				}
 				myStore = newStore;
@@ -189,21 +189,18 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
-		/// Manage events in the store during activation
-		/// and deactivation.
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> during activation and
+		/// deactivation.
 		/// </summary>
-		/// <param name="store">Store</param>
-		/// <param name="addHandlers">true to add handlers, false to remove them</param>
-		protected virtual void ManageStoreEvents(Store store, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		protected virtual void ManageStoreEvents(Store store, EventHandlerAction action)
 		{
 			if (store == null || store.Disposed)
 			{
 				return; // bail out
 			}
-			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-
-			DomainClassInfo referenceModeKindClassInfo = dataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId);
-			((ISafeEventManagerProvider)store).SafeEventManager.AddOrRemove(referenceModeKindClassInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), addHandlers);
+			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
 		}
 		#endregion // EventHandling
 		#region IMultiColumnBranch Members

@@ -53,6 +53,50 @@ AS
 GO
 
 
+CREATE PROCEDURE PersonCountryDemo.UpdatePersonLastName
+(
+	@LastName NATIONAL CHARACTER VARYING(30) 
+)
+AS
+	UPDATE PersonCountryDemo.Person
+SET LastName = LastName
+	WHERE Person_id = @Person_id
+GO
+
+
+CREATE PROCEDURE PersonCountryDemo.UpdatePersonFirstName
+(
+	@FirstName NATIONAL CHARACTER VARYING(30) 
+)
+AS
+	UPDATE PersonCountryDemo.Person
+SET FirstName = FirstName
+	WHERE Person_id = @Person_id
+GO
+
+
+CREATE PROCEDURE PersonCountryDemo.UpdatePersonTitle
+(
+	@Title NATIONAL CHARACTER VARYING(4) 
+)
+AS
+	UPDATE PersonCountryDemo.Person
+SET Title = Title
+	WHERE Person_id = @Person_id
+GO
+
+
+CREATE PROCEDURE PersonCountryDemo.UpdtPrsnCntry_Cntry_nm
+(
+	@Country_Country_name NATIONAL CHARACTER VARYING(20) 
+)
+AS
+	UPDATE PersonCountryDemo.Person
+SET Country_Country_name = Country_Country_name
+	WHERE Person_id = @Person_id
+GO
+
+
 CREATE PROCEDURE PersonCountryDemo.InsertCountry
 (
 	@Country_name NATIONAL CHARACTER VARYING(20) , 
@@ -70,6 +114,28 @@ CREATE PROCEDURE PersonCountryDemo.DeleteCountry
 )
 AS
 	DELETE FROM PersonCountryDemo.Country
+	WHERE Country_name = @Country_name
+GO
+
+
+CREATE PROCEDURE PersonCountryDemo.UpdateCountryCountry_name
+(
+	@Country_name NATIONAL CHARACTER VARYING(20) 
+)
+AS
+	UPDATE PersonCountryDemo.Country
+SET Country_name = Country_name
+	WHERE Country_name = @Country_name
+GO
+
+
+CREATE PROCEDURE PersonCountryDemo.UpdtCntryRgn_Rgn_cd
+(
+	@Region_Region_code NATIONAL CHARACTER(8) 
+)
+AS
+	UPDATE PersonCountryDemo.Country
+SET Region_Region_code = Region_Region_code
 	WHERE Country_name = @Country_name
 GO
 

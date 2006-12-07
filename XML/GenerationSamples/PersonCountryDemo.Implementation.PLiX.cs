@@ -12,8 +12,8 @@ using CharSet = System.Runtime.InteropServices.CharSet;
 namespace PersonCountryDemo
 {
 	#region PersonCountryDemoContext
-	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class PersonCountryDemoContext : IPersonCountryDemoContext
 	{
 		public PersonCountryDemoContext()
@@ -31,7 +31,7 @@ namespace PersonCountryDemo
 			this._CountryReadOnlyCollection = new ReadOnlyCollection<Country>(CountryList);
 		}
 		#region Exception Helpers
-		[SuppressMessageAttribute("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
+		[SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
 		private static ArgumentException GetDifferentContextsException()
 		{
 			return new ArgumentException("All objects in a relationship must be part of the same Context.", "value");
@@ -57,7 +57,7 @@ namespace PersonCountryDemo
 			where TClass : class, IHasPersonCountryDemoContext;
 		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
 			where TClass : class, IHasPersonCountryDemoContext;
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionCallbacks<TClass, TProperty>
 			where TClass : class, IHasPersonCountryDemoContext
 		{
@@ -73,7 +73,7 @@ namespace PersonCountryDemo
 			public readonly PotentialCollectionModificationCallback<TClass, TProperty> Removing;
 			public readonly CommittedCollectionModificationCallback<TClass, TProperty> Removed;
 		}
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private struct ConstraintEnforcementCollectionTypeAndPropertyNameKey : IEquatable<ConstraintEnforcementCollectionTypeAndPropertyNameKey>
 		{
 			public ConstraintEnforcementCollectionTypeAndPropertyNameKey(Type type, string name)
@@ -182,7 +182,7 @@ namespace PersonCountryDemo
 				removed(instance, value);
 			}
 		}
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasPersonCountryDemoContext
 		{
@@ -262,7 +262,7 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasPersonCountryDemoContext
 		{
@@ -410,7 +410,7 @@ namespace PersonCountryDemo
 			}
 		}
 		#region PersonCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class PersonCore : Person
 		{
 			public PersonCore(PersonCountryDemoContext context, string LastName, string FirstName)
@@ -428,7 +428,7 @@ namespace PersonCountryDemo
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("LastName")]
+			[AccessedThroughProperty("LastName")]
 			private string _LastName;
 			public override string LastName
 			{
@@ -453,7 +453,7 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("FirstName")]
+			[AccessedThroughProperty("FirstName")]
 			private string _FirstName;
 			public override string FirstName
 			{
@@ -478,7 +478,7 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Title")]
+			[AccessedThroughProperty("Title")]
 			private string _Title;
 			public override string Title
 			{
@@ -499,7 +499,7 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Country")]
+			[AccessedThroughProperty("Country")]
 			private Country _Country;
 			public override Country Country
 			{
@@ -590,7 +590,7 @@ namespace PersonCountryDemo
 			}
 		}
 		#region CountryCore
-		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class CountryCore : Country
 		{
 			public CountryCore(PersonCountryDemoContext context, string Country_name)
@@ -609,7 +609,7 @@ namespace PersonCountryDemo
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("Country_name")]
+			[AccessedThroughProperty("Country_name")]
 			private string _Country_name;
 			public override string Country_name
 			{
@@ -635,7 +635,7 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("Region_Region_code")]
+			[AccessedThroughProperty("Region_Region_code")]
 			private string _Region_Region_code;
 			public override string Region_Region_code
 			{
@@ -656,7 +656,7 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonViaCountryCollection")]
+			[AccessedThroughProperty("PersonViaCountryCollection")]
 			private readonly IEnumerable<Person> _PersonViaCountryCollection;
 			public override IEnumerable<Person> PersonViaCountryCollection
 			{

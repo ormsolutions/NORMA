@@ -55,10 +55,10 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					mySurveyTree = new VirtualTree();
 					Store store = Store;
-					IList<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
-					IList<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
+					List<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
+					List<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
 					ICollection<DomainModel> domainModels = store.DomainModels;
-					SafeEventManager eventManager = ((ISafeEventManagerProvider)store).SafeEventManager;
+					ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 					foreach (DomainModel domainModel in domainModels)
 					{
 						ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
@@ -74,7 +74,7 @@ namespace Neumont.Tools.ORM.Shell
 						IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
 						if (eventSubscriber != null)
 						{
-							eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, true);
+							eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
 							SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 						}
 					}
@@ -99,11 +99,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// A store implementation that defers all services to the
 		/// owning document.
 		/// </summary>
-		protected class ORMStore : Store, IORMToolServices, ISafeEventManagerProvider
+		protected class ORMStore : Store, IORMToolServices
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
-			private readonly SafeEventManager mySafeEventManager;
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -115,7 +114,6 @@ namespace Neumont.Tools.ORM.Shell
 				: base(serviceProvider, null)
 			{
 				myServices = services;
-				mySafeEventManager = new UISafeEventManager(this, serviceProvider);
 			}
 			#endregion // Constructors
 			#region IORMToolServices Implementation
@@ -252,25 +250,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion // IORMToolServices Implementation
-			#region ISafeEventManagerProvider Implementation
-			/// <summary>
-			/// Implements ISafeEventManagerProvider.SafeEventManager
-			/// </summary>
-			protected SafeEventManager SafeEventManager
-			{
-				get
-				{
-					return mySafeEventManager;
-				}
-			}
-			SafeEventManager ISafeEventManagerProvider.SafeEventManager
-			{
-				get
-				{
-					return SafeEventManager;
-				}
-			}
-			#endregion // ISafeEventManagerProvider Implementation
 		}
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
@@ -1566,38 +1545,5 @@ namespace Neumont.Tools.ORM.Shell
 			return new ORMTaskProvider(this);
 		}
 		#endregion // TaskProvider implementation
-		#region UISafeEventManager class
-		/// <summary>
-		/// A class to display an exception message without
-		/// breaking an event loop.
-		/// </summary>
-		public class UISafeEventManager : SafeEventManager
-		{
-			private IServiceProvider myServiceProvider;
-			/// <summary>
-			/// Create a new UISafeEventManager
-			/// </summary>
-			public UISafeEventManager(Store store, IServiceProvider serviceProvider)
-				: base(store)
-			{
-				myServiceProvider = serviceProvider;
-			}
-			/// <summary>
-			/// Use the standard <see cref="System.Windows.Forms.Design.IUIService"/> to display
-			/// the exception message.
-			/// </summary>
-			/// <param name="ex">The exception to display.</param>
-			protected override void DisplayException(Exception ex)
-			{
-				IServiceProvider provider;
-				System.Windows.Forms.Design.IUIService uiService;
-				if (null != (provider = myServiceProvider) &&
-					null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
-				{
-					uiService.ShowError(ex);
-				}
-			}
-		}
-		#endregion // UISafeEventManager class
 	}
 }

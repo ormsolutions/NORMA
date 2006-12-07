@@ -395,9 +395,13 @@ namespace Neumont.Tools.ORM.Shell
 			PopulateSelectedNoteOwners();
 		}
 		/// <summary>
-		/// Manages event handlers in the store.
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> so that the <see cref="ORMNotesToolWindow"/>
+		/// contents can be updated to reflect any model changes.
 		/// </summary>
-		protected override void ManageEventHandlers(Store store, SafeEventManager eventManager, bool addHandlers)
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			if (store == null || store.Disposed)
 			{
@@ -407,18 +411,17 @@ namespace Neumont.Tools.ORM.Shell
 
 			// Track Note additions and deletions changes
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasNote.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler), action);
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasNote.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler), action);
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelNote.DomainClassId);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler), addHandlers);
-			eventManager.AddOrRemove(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler), action);
 
 			// Track Note.Text changes
-			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(Note.TextDomainPropertyId);
-			eventManager.AddOrRemove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), addHandlers);
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(Note.TextDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), action);
 		}
 		/// <summary>
 		/// Returns the title of the window.
