@@ -376,7 +376,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return; // bail out
 			}
-			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainClass(ModelNoteShape.DomainClassId), new EventHandler<ElementAddedEventArgs>(ModelNoteShapeAddedEvent), action);
+			ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ModelNoteShape.DomainClassId), new EventHandler<ElementAddedEventArgs>(ModelNoteShapeAddedEvent), action);
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated

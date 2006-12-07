@@ -200,7 +200,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return; // bail out
 			}
-			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
+			ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
 		}
 		#endregion // EventHandling
 		#region IMultiColumnBranch Members

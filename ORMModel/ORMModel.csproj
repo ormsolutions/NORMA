@@ -92,10 +92,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\ModelingEventManager.Generated.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelingEventManager.xml</DependentUpon>
-    </Compile>
     <Compile Include="Framework\Design\ResourceAccessor.cs" />
     <Compile Include="Framework\Design\ExpandableElementConverter.cs" />
     <Compile Include="Framework\Design\DomainTypeDescriptor.cs" />
@@ -387,14 +383,6 @@
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
     <Compile Include="Framework\ModelingEventManager.cs" />
-    <Content Include="Framework\ModelingEventManager.xml">
-      <Generator>NUPlixLoader</Generator>
-      <LastGenOutput>ModelingEventManager.Generated.cs</LastGenOutput>
-      <DependentUpon>ModelingEventManager.cs</DependentUpon>
-    </Content>
-    <None Include="Framework\ModelingEventManager.xslt">
-      <DependentUpon>ModelingEventManager.cs</DependentUpon>
-    </None>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>

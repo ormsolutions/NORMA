@@ -15,15 +15,11 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
+using System.ComponentModel;
 
 namespace Neumont.Tools.Modeling
 {
@@ -44,253 +40,773 @@ namespace Neumont.Tools.Modeling
 		Remove = 1
 	}
 	#endregion // EventHandlerAction enum
-
+	#region IModelingEventManagerProvider interface
+	/// <summary>
+	/// An interface to implement on a Store to provide
+	/// a <see cref="ModelingEventManager"/> class for the store.
+	/// </summary>
+	public interface IModelingEventManagerProvider
+	{
+		/// <summary>
+		/// Return the <see cref="ModelingEventManager"/> corresponding
+		/// to the current store.
+		/// </summary>
+		ModelingEventManager ModelingEventManager { get;}
+	}
+	#endregion // ISafeEventManagerProvider interface
 	#region ModelingEventManager class
 	/// <summary>
-	/// Provides a more reliable and performant alternative to <see cref="EventManagerDirectory"/> for the purpose
-	/// of managing <see cref="EventHandler{TEventArgs}"/> subscriptions and invocations for a <see cref="Store"/>.
+	/// An event manager used to protected the state of
+	/// event listeners from event handlers that throw exceptions.
+	/// Event handlers should not throw exceptions, but it is
+	/// too risky to chance breaking the VS session because
+	/// of one non-compliant event handler.
 	/// </summary>
-	public sealed partial class ModelingEventManager
+	public abstract class ModelingEventManager
 	{
-		#region ModelingEventManagerKeyProvider class
-		[Serializable]
-		private sealed class ModelingEventManagerKeyProvider : IKeyProvider<Store, ModelingEventManager>
+		#region TypeAndDomainObjectKey struct
+		private struct TypeAndDomainObjectKey
 		{
-			private ModelingEventManagerKeyProvider()
-				: base()
+			private Type myHandlerType;
+			private DomainObjectInfo myInfoIdentifier1;
+			private DomainObjectInfo myInfoIdentifier2;
+			public TypeAndDomainObjectKey(Type handlerType, DomainObjectInfo infoIdentifier1, DomainObjectInfo infoIdentifier2)
 			{
-			}
-			public static readonly ModelingEventManagerKeyProvider Instance = new ModelingEventManagerKeyProvider();
-			public Store GetKey(ModelingEventManager value)
-			{
-				return value._store;
-			}
-		}
-		#endregion // ModelingEventManagerKeyProvider class
-
-		// We lock on a separate object rather than locking on 'this' to prevent deadlocks in case other code
-		// locks on instances of this class.
-		private readonly object _lockObject = new object();
-		private readonly Store _store;
-		private ModelingEventManager(Store store)
-			: base()
-		{
-			this._store = store;
-			store.StoreDisposing += ModelingEventManager.StoreDisposingEventHandler;
-		}
-
-		#region Store/ModelingEventManager storage
-		private static readonly HashSet<Store, ModelingEventManager> _modelingEventManagers = new HashSet<Store, ModelingEventManager>(ModelingEventManagerKeyProvider.Instance);
-
-		private static readonly EventHandler StoreDisposingEventHandler = new EventHandler(ModelingEventManager.HandleStoreDisposing);
-		private static void HandleStoreDisposing(object sender, EventArgs e)
-		{
-			Store store = (Store)sender;
-			HashSet<Store, ModelingEventManager> modelingEventManagers = ModelingEventManager._modelingEventManagers;
-			lock (modelingEventManagers)
-			{
-				modelingEventManagers.RemoveAll(store);
-			}
-			store.StoreDisposing -= ModelingEventManager.StoreDisposingEventHandler;
-		}
-
-		private static ModelingEventManager GetModelingEventManager(Store store, EventHandlerAction action)
-		{
-			if (store == null)
-			{
-				throw new ArgumentNullException("store");
-			}
-			if (store.Disposed)
-			{
-				throw new ObjectDisposedException(store.GetType().Name);
-			}
-			HashSet<Store, ModelingEventManager> modelingEventManagers = ModelingEventManager._modelingEventManagers;
-			ModelingEventManager modelingEventManager = modelingEventManagers.FindAnyValue(store, null);
-			if (modelingEventManager == null && action == EventHandlerAction.Add)
-			{
-				lock (modelingEventManagers)
-				{
-					modelingEventManager = modelingEventManagers.FindAnyValue(store, null);
-					if (modelingEventManager == null)
-					{
-						modelingEventManagers[store] = modelingEventManager = new ModelingEventManager(store);
-						store.StoreDisposing += ModelingEventManager.StoreDisposingEventHandler;
-					}
-				}
-			}
-			return modelingEventManager;
-		}
-
-		/// <summary>
-		/// Retrieves the <see cref="ModelingEventManager"/> for the <see cref="Store"/> specified by <paramref name="store"/>.
-		/// </summary>
-		/// <param name="store">
-		/// The <see cref="Store"/> for which the <see cref="ModelingEventManager"/> should be retrieved.
-		/// </param>
-		/// <returns>
-		/// The <see cref="ModelingEventManager"/> for the <see cref="Store"/> specified by <paramref name="store"/>.
-		/// </returns>
-		/// <remarks>
-		/// If no <see cref="ModelingEventManager"/> exists for <paramref name="store"/>, a new <see cref="ModelingEventManager"/>
-		/// will be instantiated.
-		/// </remarks>
-		/// <exception cref="ArgumentNullException"><paramref name="store"/> is <see langword="null"/>.</exception>
-		/// <exception cref="ObjectDisposedException"><paramref name="store"/> has been disposed.</exception>
-		public static ModelingEventManager GetModelingEventManager(Store store)
-		{
-			return GetModelingEventManager(store, EventHandlerAction.Add);
-		}
-		#endregion // Store/ModelingEventManager storage
-
-		#region GuidPair struct
-		[Serializable]
-		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
-		private struct GuidPair : IEquatable<GuidPair>
-		{
-			public GuidPair(Guid guid1, Guid guid2)
-			{
-				this.Guid1 = guid1;
-				this.Guid2 = guid2;
-			}
-			public readonly Guid Guid1;
-			public readonly Guid Guid2;
-			public override bool Equals(object obj)
-			{
-				return obj is GuidPair && this.Equals((GuidPair)obj);
-			}
-			public bool Equals(GuidPair other)
-			{
-				return this.Guid1.Equals(other.Guid1) && this.Guid2.Equals(other.Guid2);
+				Debug.Assert(typeof(ModelingEventArgs).IsAssignableFrom(handlerType), "Not a valid event handler type");
+				myHandlerType = handlerType;
+				myInfoIdentifier1 = infoIdentifier1;
+				myInfoIdentifier2 = infoIdentifier2;
 			}
 			public override int GetHashCode()
 			{
-				return this.Guid1.GetHashCode() ^ this.Guid2.GetHashCode();
+				int retVal = myHandlerType.GetHashCode();
+				if (myInfoIdentifier1 != null)
+				{
+					retVal ^= RotateRight(myInfoIdentifier1.GetHashCode(), 1);
+				}
+				if (myInfoIdentifier2 != null)
+				{
+					retVal ^= RotateRight(myInfoIdentifier2.GetHashCode(), 2);
+				}
+				return retVal;
+			}
+			private static int RotateRight(int value, int places)
+			{
+				places = places & 0x1F;
+				if (places == 0)
+				{
+					return value;
+				}
+				int mask = ~0x7FFFFFF >> (places - 1);
+				return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
 			}
 		}
-		#endregion // GuidPair struct
-
-		#region Static helper methods
-		private static void AddOrRemoveHandler<TEventArgs>(List<EventHandler<TEventArgs>> handlers, EventHandler<TEventArgs> handler, EventHandlerAction action)
-			where TEventArgs : EventArgs
+		#endregion // TypeAndDomainObjectKey struct
+		#region EventHandlerWrapper class (abstract base and generic versions)
+		private abstract class EventHandlerWrapper
 		{
-			if (handlers != null)
+			protected EventHandlerWrapper()
 			{
-				switch (action)
+			}
+			public abstract Delegate InnerHandler { get;set;}
+		}
+		private class EventHandlerWrapper<TEventArgs> : EventHandlerWrapper where TEventArgs : ModelingEventArgs
+		{
+			private EventHandler<TEventArgs> myInnerHandler;
+			private ModelingEventManager myEventManager;
+			public EventHandlerWrapper(EventHandler<TEventArgs> handler, ModelingEventManager eventManager)
+			{
+				myInnerHandler = handler;
+				myEventManager = eventManager;
+			}
+			/// <summary>
+			/// Get the inner handler so that it can be directly managed without
+			/// changing the wrapped element in the dictionary.
+			/// </summary>
+			public override Delegate InnerHandler
+			{
+				get
 				{
-					case EventHandlerAction.Add:
-						handlers.Add(handler);
-						break;
-					case EventHandlerAction.Remove:
-						handlers.Remove(handler);
-						break;
-					default:
-						throw new InvalidEnumArgumentException("action", (int)action, typeof(EventHandlerAction));
+					return myInnerHandler;
+				}
+				set
+				{
+					myInnerHandler = (EventHandler<TEventArgs>)value;
 				}
 			}
-		}
-
-		private static void AddOrRemoveHandler<TKey, TEventArgs>(Dictionary<TKey, List<EventHandler<TEventArgs>>> handlersDictionary, TKey key, EventHandler<TEventArgs> handler, EventHandlerAction action)
-			where TKey : struct
-			where TEventArgs : EventArgs
-		{
-			if (handlersDictionary != null)
+			/// <summary>
+			/// The public method to handle the event fired by the store.
+			/// </summary>
+			public void Handler(object sender, TEventArgs e)
 			{
-				List<EventHandler<TEventArgs>> handlers;
-				if (!handlersDictionary.TryGetValue(key, out handlers))
+				Delegate[] targets = myInnerHandler.GetInvocationList();
+				for (int i = 0; i < targets.Length; ++i)
 				{
-					if (action != EventHandlerAction.Add)
+					try
 					{
-						return;
+						((EventHandler<TEventArgs>)targets[i]).Invoke(sender, e);
 					}
-					lock (handlersDictionary)
+					catch (Exception ex)
 					{
-						if (!handlersDictionary.TryGetValue(key, out handlers))
-						{
-							handlers = handlersDictionary[key] = new List<EventHandler<TEventArgs>>();
-						}
-					}
-				}
-				ModelingEventManager.AddOrRemoveHandler<TEventArgs>(handlers, handler, action);
-			}
-		}
-
-		private static void InvokeHandlers<TEventArgs>(IServiceProvider serviceProvider, List<EventHandler<TEventArgs>> handlers, object sender, TEventArgs e)
-			where TEventArgs : EventArgs
-		{
-			IUIService uiService = null;
-			int handlersCount = handlers.Count;
-			for (int i = 0; i < handlersCount; i++)
-			{
-				try
-				{
-					handlers[i].Invoke(sender, e);
-				}
-				catch (Exception ex)
-				{
-					// UNDONE: We may want to use a callback here to allow for other ways to handle exceptions
-					if (uiService == null)
-					{
-						uiService = (IUIService)serviceProvider.GetService(typeof(IUIService));
-					}
-					if (uiService != null)
-					{
-						// DialogResult.Cancel corresponds to Continue
-						// DialogResult.Abort corresponds to Quit (only shown if Application.AllowQuit returns true)
-						// DialogResult.Yes corresponds to Help (only shown if ex is WarningException)
-						if (uiService.ShowDialog(new ThreadExceptionDialog(ex)) == DialogResult.Abort)
-						{
-							// The user wants to quit, so try to invoke the exit command
-							IMenuCommandService menuCommandService = (IMenuCommandService)serviceProvider.GetService(typeof(IMenuCommandService));
-							if (menuCommandService != null)
-							{
-								menuCommandService.GlobalInvoke(new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.Exit));
-							}
-						}
-					}
-					do
-					{
-						if (ex is StackOverflowException ||
-							ex is OutOfMemoryException ||
-							ex is ThreadAbortException ||
-							ex is ExecutionEngineException ||
-							ex is AccessViolationException)
+						if (myEventManager.OnException(ex))
 						{
 							throw;
 						}
-					} while ((ex = ex.InnerException) != null);
+					}
 				}
 			}
 		}
-
-		private static void InvokeHandlers<TEventArgs>(IServiceProvider serviceProvider, Dictionary<Guid, List<EventHandler<TEventArgs>>> handlersDictionary, object sender, TEventArgs e)
-			where TEventArgs : GenericEventArgs
+		#endregion // EventHandlerWrapper class (abstract base and generic versions)
+		#region Member Variables
+		private Store myStore;
+		private Dictionary<TypeAndDomainObjectKey, EventHandlerWrapper> myDictionary;
+		private EventHandler<ElementEventsBegunEventArgs> myRegisteredBeginningEvents;
+		private EventHandler<ElementEventsEndedEventArgs> myRegisteredEndedEvents;
+		private Exception myPendingException;
+		#endregion // Member Variables
+		#region Constructors
+		/// <summary>
+		/// Create a new ModelingEventManager class. Used to ensure that all events fire,
+		/// even if an event throws in the middle.
+		/// </summary>
+		/// <param name="store">The store to attach to</param>
+		protected ModelingEventManager(Store store)
 		{
-			List<EventHandler<TEventArgs>> handlers;
-
-			// Invoke the handlers for this specific element (except for ElementAddedEventArgs)
-			if (typeof(TEventArgs) != typeof(ElementAddedEventArgs) && handlersDictionary.TryGetValue(e.ElementId, out handlers))
-			{
-				ModelingEventManager.InvokeHandlers<TEventArgs>(serviceProvider, handlers, sender, e);
-			}
-
-			// Invoke the handlers for this specific DomainModel
-			if (handlersDictionary.TryGetValue(e.DomainModel.Id, out handlers))
-			{
-				ModelingEventManager.InvokeHandlers<TEventArgs>(serviceProvider, handlers, sender, e);
-			}
-
-			// Invoke the handlers for this specific DomainClass and each of its base DomainClasses
-			DomainClassInfo domainClassInfo = e.DomainClass;
-			do
-			{
-				if (handlersDictionary.TryGetValue(domainClassInfo.Id, out handlers))
-				{
-					ModelingEventManager.InvokeHandlers<TEventArgs>(serviceProvider, handlers, sender, e);
-				}
-			} while ((domainClassInfo = domainClassInfo.BaseDomainClass) != null);
+			myStore = store;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+			eventDirectory.ElementEventsBegun.Add(new EventHandler<ElementEventsBegunEventArgs>(EventsBeginning));
+			eventDirectory.ElementEventsEnded.Add(new EventHandler<ElementEventsEndedEventArgs>(EventsEnding));
+			myDictionary = new Dictionary<TypeAndDomainObjectKey, EventHandlerWrapper>();
 		}
-		#endregion // Static helper methods
+		#endregion // Constructors
+		#region Helper methods
+		/// <summary>
+		/// Return a <see cref="ModelingEventManager"/> associated with the store implementation
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> object. Must implement <see cref="IModelingEventManagerProvider"/></param>
+		/// <returns>Associated <see cref="ModelingEventManager"/></returns>
+		public static ModelingEventManager GetModelingEventManager(Store store)
+		{
+			return ((IModelingEventManagerProvider)store).ModelingEventManager;
+		}
+		#endregion // Helper methods
+		#region Abstract methods
+		/// <summary>
+		/// A virtual function to allow different displays of exception messages
+		/// </summary>
+		/// <param name="ex"></param>
+		protected abstract void DisplayException(Exception ex);
+		#endregion // Abstract methods
+		#region ElementEventsBegun/ElementEventsEnded Functions
+		/// <summary>
+		/// Track a thrown exception to display later
+		/// </summary>
+		/// <param name="exception">The thrown exception</param>
+		/// <returns>true to rethrow the exception, false to swallow it</returns>
+		private bool OnException(Exception exception)
+		{
+			if (IsCriticalException(exception))
+			{
+				return true;
+			}
+			if (myPendingException == null)
+			{
+				myPendingException = exception;
+			}
+			return false;
+		}
+		private bool IsCriticalException(Exception ex)
+		{
+			if (((ex is StackOverflowException)) || ((ex is OutOfMemoryException) || (ex is System.Threading.ThreadAbortException)))
+			{
+				return true;
+			}
+			Exception inner = ex.InnerException;
+			if (inner != null)
+			{
+				return IsCriticalException(inner);
+			}
+			return false;
+		}
+		private void EventsBeginning(object sender, ElementEventsBegunEventArgs e)
+		{
+			myPendingException = null;
+			EventHandler<ElementEventsBegunEventArgs> beginningEvents = myRegisteredBeginningEvents;
+			if (beginningEvents != null)
+			{
+				beginningEvents(sender, e);
+			}
+		}
+		private void EventsEnding(object sender, ElementEventsEndedEventArgs e)
+		{
+			EventHandler<ElementEventsEndedEventArgs> endedEvents = myRegisteredEndedEvents;
+			if (endedEvents != null)
+			{
+				endedEvents(sender, e);
+			}
+			Exception ex = myPendingException;
+			if (ex != null)
+			{
+				myPendingException = null;
+				DisplayException(ex);
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementEventsBegun"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(EventHandler<ElementEventsBegunEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementEventsBegunEventArgs>(handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myRegisteredBeginningEvents = (EventHandler<ElementEventsBegunEventArgs>)wrapperDelegate;
+				}
+				else
+				{
+					myRegisteredBeginningEvents = null;
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementEventsEnded"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(EventHandler<ElementEventsEndedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementEventsEndedEventArgs>(handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myRegisteredEndedEvents = (EventHandler<ElementEventsEndedEventArgs>)wrapperDelegate;
+				}
+				else
+				{
+					myRegisteredEndedEvents = null;
+				}
 
+			}
+		}
+		#endregion // ElementEventsBegun/ElementEventsEnded Functions
+		#region Typed AddOrRemove Functions
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementAdded"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, EventHandler<ElementAddedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementAddedEventArgs>(domainClass, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementAdded.Add(domainClass, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementAdded.Remove(domainClass, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementAdded"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainModelInfo domainModel, EventHandler<ElementAddedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementAddedEventArgs>(domainModel, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementAdded.Add(domainModel, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementAdded.Remove(domainModel, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementDeleted"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, EventHandler<ElementDeletedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementDeletedEventArgs>(domainClass, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementDeleted.Add(domainClass, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementDeleted.Remove(domainClass, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementDeleted"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainModelInfo domainModel, EventHandler<ElementDeletedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementDeletedEventArgs>(domainModel, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementDeleted.Add(domainModel, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementDeleted.Remove(domainModel, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementMoved"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, EventHandler<ElementMovedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementMovedEventArgs>(domainClass, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementMoved.Add(domainClass, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementMoved.Remove(domainClass, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementMoved"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainModelInfo domainModel, EventHandler<ElementMovedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementMovedEventArgs>(domainModel, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementMoved.Add(domainModel, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementMoved.Remove(domainModel, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementPropertyChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, EventHandler<ElementPropertyChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementPropertyChangedEventArgs>(domainClass, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Add(domainClass, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Remove(domainClass, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementPropertyChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, DomainPropertyInfo domainProperty, EventHandler<ElementPropertyChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementPropertyChangedEventArgs>(domainClass, domainProperty, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Add(domainClass, domainProperty, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Remove(domainClass, domainProperty, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementPropertyChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainPropertyInfo domainProperty, EventHandler<ElementPropertyChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementPropertyChangedEventArgs>(domainProperty, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Add(domainProperty, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Remove(domainProperty, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.ElementPropertyChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainModelInfo domainModel, EventHandler<ElementPropertyChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<ElementPropertyChangedEventArgs>(domainModel, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Add(domainModel, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.ElementPropertyChanged.Remove(domainModel, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.RolePlayerChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, EventHandler<RolePlayerChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<RolePlayerChangedEventArgs>(domainClass, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.RolePlayerChanged.Add(domainClass, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.RolePlayerChanged.Remove(domainClass, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.RolePlayerChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainRoleInfo domainRole, EventHandler<RolePlayerChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<RolePlayerChangedEventArgs>(domainRole, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.RolePlayerChanged.Add(domainRole, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.RolePlayerChanged.Remove(domainRole, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.RolePlayerChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainModelInfo domainModel, EventHandler<RolePlayerChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<RolePlayerChangedEventArgs>(domainModel, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.RolePlayerChanged.Add(domainModel, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.RolePlayerChanged.Remove(domainModel, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.RolePlayerOrderChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainClassInfo domainClass, EventHandler<RolePlayerOrderChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<RolePlayerOrderChangedEventArgs>(domainClass, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.RolePlayerOrderChanged.Add(domainClass, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.RolePlayerOrderChanged.Remove(domainClass, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.RolePlayerOrderChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainRoleInfo counterpartDomainRole, EventHandler<RolePlayerOrderChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<RolePlayerOrderChangedEventArgs>(counterpartDomainRole, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.RolePlayerOrderChanged.Add(counterpartDomainRole, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.RolePlayerOrderChanged.Remove(counterpartDomainRole, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.RolePlayerOrderChanged"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(DomainModelInfo domainModel, EventHandler<RolePlayerOrderChangedEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<RolePlayerOrderChangedEventArgs>(domainModel, handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.RolePlayerOrderChanged.Add(domainModel, wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.RolePlayerOrderChanged.Remove(domainModel, wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.TransactionBeginning"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(EventHandler<TransactionBeginningEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<TransactionBeginningEventArgs>(handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.TransactionBeginning.Add(wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.TransactionBeginning.Remove(wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.TransactionCommitted"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(EventHandler<TransactionCommitEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<TransactionCommitEventArgs>(handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.TransactionCommitted.Add(wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.TransactionCommitted.Remove(wrapperDelegate);
+				}
+			}
+		}
+		/// <summary>
+		/// Add or remove an event handler. Use in place of the Add and Remove methods available through
+		/// <see cref="EventManagerDirectory.TransactionRolledBack"/>. Set the addHandler parameter to true for an Add
+		/// and false for a remove.
+		/// </summary>
+		public void AddOrRemoveHandler(EventHandler<TransactionRollbackEventArgs> handler, EventHandlerAction action)
+		{
+			bool addHandler = action == EventHandlerAction.Add;
+			Delegate wrapperDelegate = AddOrRemove<TransactionRollbackEventArgs>(handler, addHandler);
+			if (wrapperDelegate != null)
+			{
+				if (addHandler)
+				{
+					myStore.EventManagerDirectory.TransactionRolledBack.Add(wrapperDelegate);
+				}
+				else
+				{
+					myStore.EventManagerDirectory.TransactionRolledBack.Remove(wrapperDelegate);
+				}
+			}
+		}
+		#endregion // Typed AddOrRemove Functions
+		#region Generic AddOrRemove Helper Functions
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="handler">The event to add or remove</param>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			return AddOrRemove<TEventArgs>(new TypeAndDomainObjectKey(typeof(TEventArgs), null, null), handler, addHandler);
+		}
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="domainClass">The domainClass to add</param>
+		/// <param name="handler">The event to add or remove</param>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(DomainClassInfo domainClass, EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			return AddOrRemove<TEventArgs>(new TypeAndDomainObjectKey(typeof(TEventArgs), domainClass, null), handler, addHandler);
+		}
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="domainClass">The domainClass to add</param>
+		/// <param name="domainProperty">The domainProperty to add</param>
+		/// <param name="handler">The event to add or remove</param>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(DomainClassInfo domainClass, DomainPropertyInfo domainProperty, EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			return AddOrRemove<TEventArgs>(new TypeAndDomainObjectKey(typeof(TEventArgs), domainClass, domainProperty), handler, addHandler);
+		}
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="domainProperty">The domainProperty to add</param>
+		/// <param name="handler">The event to add or remove</param>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(DomainPropertyInfo domainProperty, EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			return AddOrRemove<TEventArgs>(new TypeAndDomainObjectKey(typeof(TEventArgs), domainProperty, null), handler, addHandler);
+		}
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="domainRole">The domainRole to add</param>
+		/// <param name="handler">The event to add or remove</param>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(DomainRoleInfo domainRole, EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			return AddOrRemove<TEventArgs>(new TypeAndDomainObjectKey(typeof(TEventArgs), domainRole, null), handler, addHandler);
+		}
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="domainModel">The domainModel to add</param>
+		/// <param name="handler">The event to add or remove</param>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(DomainModelInfo domainModel, EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			return AddOrRemove<TEventArgs>(new TypeAndDomainObjectKey(typeof(TEventArgs), domainModel, null), handler, addHandler);
+		}
+		/// <summary>
+		/// Add or remove the provided handler
+		/// </summary>
+		/// <typeparam name="TEventArgs">The type of the handler</typeparam>
+		/// <param name="addHandler">true to add an event listener, false to remove one</param>
+		/// <param name="key">The key to the current handler</param>
+		/// <param name="handler">The event to add or remove</param>
+		/// <returns>Returns non-null if the wrapper needs to be added or removed</returns>
+		private Delegate AddOrRemove<TEventArgs>(TypeAndDomainObjectKey key, EventHandler<TEventArgs> handler, bool addHandler) where TEventArgs : ModelingEventArgs
+		{
+			Delegate retVal = null;
+			EventHandlerWrapper currentWrapper = null;
+			if (myDictionary.TryGetValue(key, out currentWrapper))
+			{
+				if (addHandler)
+				{
+					currentWrapper.InnerHandler = MulticastDelegate.Combine(currentWrapper.InnerHandler, handler);
+				}
+				else
+				{
+					Delegate newDelegate = MulticastDelegate.Remove(currentWrapper.InnerHandler, handler);
+					currentWrapper.InnerHandler = newDelegate;
+					if (newDelegate == null)
+					{
+						myDictionary.Remove(key);
+						retVal = new EventHandler<TEventArgs>(((EventHandlerWrapper<TEventArgs>)currentWrapper).Handler);
+					}
+				}
+			}
+			else
+			{
+				EventHandlerWrapper<TEventArgs> wrappedHandler = new EventHandlerWrapper<TEventArgs>(handler, this);
+				myDictionary.Add(key, wrappedHandler);
+				retVal = new EventHandler<TEventArgs>(wrappedHandler.Handler);
+			}
+			return retVal;
+		}
+		#endregion // Generic AddOrRemove Helper Functions
 	}
 	#endregion // ModelingEventManager class
 }

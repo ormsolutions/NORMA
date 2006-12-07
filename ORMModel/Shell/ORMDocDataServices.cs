@@ -99,10 +99,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// A store implementation that defers all services to the
 		/// owning document.
 		/// </summary>
-		protected class ORMStore : Store, IORMToolServices
+		protected class ORMStore : Store, IORMToolServices, IModelingEventManagerProvider
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
+            private readonly ModelingEventManager myModelingEventManager;  
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -114,6 +115,7 @@ namespace Neumont.Tools.ORM.Shell
 				: base(serviceProvider, null)
 			{
 				myServices = services;
+				myModelingEventManager = new UIModelingEventManager(this, serviceProvider);
 			}
 			#endregion // Constructors
 			#region IORMToolServices Implementation
@@ -250,6 +252,25 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion // IORMToolServices Implementation
+			#region IModelingEventManagerProvider Implementation
+			/// <summary>  
+			/// Implements IModelingEventManagerProvider.ModelingEventManager  
+			/// </summary>  
+			protected ModelingEventManager ModelingEventManager
+			{
+				get
+				{
+					return myModelingEventManager;
+				}
+			}
+			ModelingEventManager IModelingEventManagerProvider.ModelingEventManager
+			{
+				get
+				{
+					return ModelingEventManager;
+				}
+			}
+			#endregion // ISafeEventManagerProvider Implementation  
 		}
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
@@ -1545,5 +1566,38 @@ namespace Neumont.Tools.ORM.Shell
 			return new ORMTaskProvider(this);
 		}
 		#endregion // TaskProvider implementation
+		#region UISafeEventManager class
+		/// <summary>  
+		/// A class to display an exception message without  
+		/// breaking an event loop.  
+		/// </summary>  
+		private class UIModelingEventManager : ModelingEventManager
+		{
+			private IServiceProvider myServiceProvider;
+			/// <summary>  
+			/// Create a new UISafeEventManager  
+			/// </summary>  
+			public UIModelingEventManager(Store store, IServiceProvider serviceProvider)
+				: base(store)
+			{
+				myServiceProvider = serviceProvider;
+			}
+			/// <summary>  
+			/// Use the standard <see cref="System.Windows.Forms.Design.IUIService"/> to display  
+			/// the exception message.  
+			/// </summary>  
+			/// <param name="ex">The exception to display.</param>  
+			protected override void DisplayException(Exception ex)
+			{
+				IServiceProvider provider;
+				System.Windows.Forms.Design.IUIService uiService;
+				if (null != (provider = myServiceProvider) &&
+						null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
+				{
+					uiService.ShowError(ex);
+				}
+			}
+		}
+		#endregion // UISafeEventManager class  
 	}
 }

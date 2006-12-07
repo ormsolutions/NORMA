@@ -442,7 +442,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainProperty(FactType.NameChangedDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), action);
+			ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainProperty(FactType.NameChangedDomainPropertyId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), action);
 		}
 		private RoleGroupTreeNode myFactCollectionNode;
 		/// <summary>

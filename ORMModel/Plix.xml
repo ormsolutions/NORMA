@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
-	<plixLoader:sourceFile file="Framework\ModelingEventManager.xml" transformFile="Framework\ModelingEventManager.xslt"/>
 	<plixLoader:sourceFile file="ObjectModel\ORMCore.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="ShapeModel\ORMShape.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="ObjectModel\ORMCore.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>

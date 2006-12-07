@@ -160,7 +160,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		protected virtual void ManageStoreEvents(Store store, EventHandlerAction action)
 		{
-			ModelingEventManager.AddOrRemoveHandler(store, store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
+			ModelingEventManager.GetModelingEventManager(store).AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ReferenceModeKind.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ReferenceModeKindChangeEvent), action);
 		}
 		#endregion // EventHandling
 
