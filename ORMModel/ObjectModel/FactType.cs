@@ -66,25 +66,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// it will then create a new ReadingOrder. It operates under the assumption
 		/// that a transaction has already been started.
 		/// </summary>
-		public static ReadingOrder GetReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
+		public ReadingOrder GetReadingOrder(IList<RoleBase> roleOrder)
 		{
-			ReadingOrder retval = FindMatchingReadingOrder(theFact, roleOrder);
-			if (retval == null)
+			ReadingOrder retVal = FindMatchingReadingOrder(roleOrder);
+			if (retVal == null)
 			{
-				retval = CreateReadingOrder(theFact, roleOrder);
+				retVal = CreateReadingOrder(roleOrder);
 			}
-			return retval;
+			return retVal;
 		}
 
 		/// <summary>
 		/// Looks for a ReadingOrder that has the roles in the same order
 		/// as the currently selected role order.
 		/// </summary>
+		/// <param name="roleOrder">An IList of <see cref="RoleBase"/> elements. </param>
 		/// <returns>The reading order if found, null if it was not.</returns>
-		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
+		public ReadingOrder FindMatchingReadingOrder(IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
-			LinkedElementCollection<ReadingOrder> readingOrders = theFact.ReadingOrderCollection;
+			LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
 			int roleOrderCount = roleOrder.Count;
 			foreach (ReadingOrder order in readingOrders)
 			{
@@ -112,37 +113,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Gets the reading order that matches the currently displayed order of the
-		/// fact that is passed in.
-		/// </summary>
-		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
-		public static ReadingOrder FindMatchingReadingOrder(FactType theFact)
-		{
-			LinkedElementCollection<RoleBase> factRoles = theFact.RoleCollection;
-			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
-			factRoles.CopyTo(roleOrder, 0);
-			return FindMatchingReadingOrder(theFact, roleOrder);
-		}
-
-		/// <summary>
 		/// Creates a new ReadingOrder with the same role sequence as the currently selected one.
 		/// A transaction should have been pushed before calling this method. It operates under
 		/// the assumption that a transaction has already been started.
 		/// </summary>
 		/// <returns>Should always return a value unless there was an error creating the ReadingOrder</returns>
-		public static ReadingOrder CreateReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
+		public ReadingOrder CreateReadingOrder(IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
 			if (roleOrder.Count > 0)
 			{
-				retval = new ReadingOrder(theFact.Store);
+				retval = new ReadingOrder(Store);
 				LinkedElementCollection<RoleBase> readingRoles = retval.RoleCollection;
 				int numRoles = roleOrder.Count;
 				for (int i = 0; i < numRoles; ++i)
 				{
 					readingRoles.Add(roleOrder[i]);
 				}
-				theFact.ReadingOrderCollection.Add(retval);
+				ReadingOrderCollection.Add(retval);
 			}
 			return retval;
 		}

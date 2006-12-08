@@ -625,16 +625,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// fact that is passed in.
 		/// </summary>
 		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
-		public static ReadingOrder FindMatchingReadingOrder(FactTypeShape theFact)
+		public ReadingOrder FindMatchingReadingOrder()
 		{
-			LinkedElementCollection<RoleBase> factRoles = theFact.DisplayedRoleOrder;
-			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
-			factRoles.CopyTo(roleOrder, 0);
-			if (theFact.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft)
+			return FindMatchingReadingOrder(false);
+		}
+		/// <summary>
+		/// Gets the reading order that matches the currently displayed order of the
+		/// fact that is passed in.
+		/// </summary>
+		/// <param name="reverseOrder">Find the reverse reading order</param>
+		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
+		public ReadingOrder FindMatchingReadingOrder(bool reverseOrder)
+		{
+			IList<RoleBase> roleOrder = DisplayedRoleOrder;
+			if (reverseOrder ^ (DisplayOrientation == DisplayOrientation.VerticalRotatedLeft))
 			{
-				Array.Reverse(roleOrder);
+				RoleBase[] reverseRoleOrder = new RoleBase[roleOrder.Count];
+				roleOrder.CopyTo(reverseRoleOrder, 0);
+				Array.Reverse(reverseRoleOrder);
+				roleOrder = reverseRoleOrder;
 			}
-			return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
+			return AssociatedFactType.FindMatchingReadingOrder(roleOrder);
 		}
 		#region RoleDisplayOrderChanged class
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule

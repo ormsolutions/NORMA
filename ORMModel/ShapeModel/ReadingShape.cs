@@ -488,7 +488,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (readingOrderCount == 1)
 					{
 						readingFormatString = defaultOrder.ReadingText;
-						if (roleCount > 2 && defaultOrder != FactTypeShape.FindMatchingReadingOrder(factShape))
+						if (roleCount > 2 &&
+							defaultOrder != factShape.FindMatchingReadingOrder(false) &&
+							defaultOrder != factShape.FindMatchingReadingOrder(true))
 						{
 							doNamedReplacement = true;
 						}
@@ -499,8 +501,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else if (roleCount > 2)
 					{
-						ReadingOrder matchingOrder = FactTypeShape.FindMatchingReadingOrder(factShape);
-						if (matchingOrder != null)
+						ReadingOrder matchingOrder;
+						if (null != (matchingOrder = factShape.FindMatchingReadingOrder(false)) ||
+							null != (matchingOrder = factShape.FindMatchingReadingOrder(true)))
 						{
 							retVal = regCountPlaces.Replace(matchingOrder.ReadingText, ellipsis).Trim();
 						}
@@ -517,7 +520,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Debug.Assert(roleCount == 2, "A unary fact should not have more than one reading order.");
 						ReadingOrder firstOrder;
 						ReadingOrder secondOrder;
-						if (defaultOrder == FactTypeShape.FindMatchingReadingOrder(factShape))
+						if (defaultOrder == factShape.FindMatchingReadingOrder())
 						{
 							firstOrder = defaultOrder;
 							secondOrder = readingOrders[1];
@@ -745,7 +748,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeShape factTypeShape = (FactTypeShape)parentShape.ParentShape;
 				FactType factType = factTypeShape.AssociatedFactType;
 				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-				if (roles.Count == 2)
+				int roleCount = roles.Count;
+				if (roleCount > 1)
 				{
 					DisplayOrientation orientation = factTypeShape.DisplayOrientation;
 					bool isVertical = orientation != DisplayOrientation.Horizontal;
@@ -753,24 +757,44 @@ namespace Neumont.Tools.ORM.ShapeModel
 					bool isRight = !myIsLeft;
 					if (!isVertical || isRight)
 					{
-						LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
-						if (orders.Count == 1)
+						bool continueArrowCheck = false;
+						bool isReverseReading = false;
+						if (roleCount == 2)
 						{
-							roles = orders[0].RoleCollection;
-							bool showForward = false;
-							ReadingDirectionIndicatorDisplay displayOption = OptionsPage.CurrentReadingDirectionIndicatorDisplay;
-							switch (displayOption)
+							LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
+							if (orders.Count == 1)
 							{
-								//case ReadingDirectionIndicatorDisplay.Separated:
-								//case ReadingDirectionIndicatorDisplay.Reversed:
-								case ReadingDirectionIndicatorDisplay.Rotated:
-									showForward = isVertical;
-									break;
-								case ReadingDirectionIndicatorDisplay.Always:
-									showForward = isVertical || isRight;
-									break;
+								roles = orders[0].RoleCollection;
+								isReverseReading = (orientation == DisplayOrientation.VerticalRotatedLeft) ? roles[0] == factTypeShape.DisplayedRoleOrder[0] : roles[0] != factTypeShape.DisplayedRoleOrder[0];
+								continueArrowCheck = true;
 							}
-							bool isReverseReading = (orientation == DisplayOrientation.VerticalRotatedLeft) ? roles[0] == factTypeShape.DisplayedRoleOrder[0] : roles[0] != factTypeShape.DisplayedRoleOrder[0];
+						}
+						else
+						{
+							// Display direction indicators if either the forward or reverse orders are
+							// an exact match. Other orders are displayed with named replacement fields
+							bool haveForwardReading = null != factTypeShape.FindMatchingReadingOrder(false);
+							isReverseReading = !haveForwardReading && null != factTypeShape.FindMatchingReadingOrder(true);
+							continueArrowCheck = haveForwardReading | isReverseReading;
+						}
+						if (continueArrowCheck)
+						{
+							bool showForward = false;
+							if (!isReverseReading)
+							{
+								ReadingDirectionIndicatorDisplay displayOption = OptionsPage.CurrentReadingDirectionIndicatorDisplay;
+								switch (displayOption)
+								{
+									//case ReadingDirectionIndicatorDisplay.Reversed:
+									//case ReadingDirectionIndicatorDisplay.Separated:
+									case ReadingDirectionIndicatorDisplay.Rotated:
+										showForward = isVertical;
+										break;
+									case ReadingDirectionIndicatorDisplay.Always:
+										showForward = isVertical || isRight;
+										break;
+								}
+							}
 							if (isReverseReading || showForward)
 							{
 								if (isVertical)

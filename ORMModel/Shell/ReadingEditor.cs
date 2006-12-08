@@ -1653,7 +1653,7 @@ namespace Neumont.Tools.ORM.Shell
 									myInsertedRow = row;
 									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 									{
-										ReadingOrder theOrder = FactType.GetReadingOrder(myFact, myReadingOrderKeyedCollection[row].RoleOrder as IList<RoleBase>);
+										ReadingOrder theOrder = myFact.GetReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
 										Debug.Assert(theOrder != null, "A ReadingOrder should have been found or created.");
 										theNewReading = new Reading(store);
 										LinkedElementCollection<Reading> readings = theOrder.ReadingCollection;
@@ -2482,7 +2482,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							if (myReadingOrder == null) //obtain new readingOrder to commit a new reading (in readingOrder is non-existent)
 							{
-								myReadingOrder = FactType.GetReadingOrder(myParentBranch.Fact, this.myRoleOrder);
+								myReadingOrder = myParentBranch.Fact.GetReadingOrder(this.myRoleOrder);
 							}
 							myReadingBranch = new ReadingBranch(myParentBranch.Fact, myReadingOrder, this);
 							return myReadingBranch;

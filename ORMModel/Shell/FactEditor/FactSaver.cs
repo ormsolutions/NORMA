@@ -115,7 +115,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					else
 					{
 						currentFact = startingFact;
-						readOrd = FactType.FindMatchingReadingOrder(currentFact);
+						readOrd = currentFact.FindMatchingReadingOrder(currentFact.RoleCollection);
 						primaryReading = readOrd.PrimaryReading;
 					}
 

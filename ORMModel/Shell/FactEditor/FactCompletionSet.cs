@@ -487,7 +487,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			ReadingOrder readingOrder = null;
 			if (fact != null)
 			{
-				readingOrder = FactType.FindMatchingReadingOrder(fact);
+				readingOrder = fact.FindMatchingReadingOrder(fact.RoleCollection);
 				if (readingOrder != null)
 				{
 					reading = readingOrder.PrimaryReading;
