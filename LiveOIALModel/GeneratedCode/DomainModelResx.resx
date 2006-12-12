@@ -1,0 +1,1075 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALDomainModel.Description" xml:space="preserve">
+    <value>Extension rules and elements used to perform dynamic object absorption. Used by more compact views on the ORM model.</value>
+    <comment>Description for DslLibrary &apos;OIAL&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALDomainModel.DisplayName" xml:space="preserve">
+    <value>LIVE ORM Intermediate Abstraction Language</value>
+    <comment>DisplayName for DslLibrary &apos;OIAL&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALNamedElement.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;OIALNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALNamedElement.DisplayName" xml:space="preserve">
+    <value>OIALNamedElement</value>
+    <comment>DisplayName for DomainClass &apos;OIALNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALNamedElement/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALNamedElement.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;OIALNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALNamedElement/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;OIALNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.LiveOIALModel.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;LiveOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.LiveOIALModel.DisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>DisplayName for DomainClass &apos;LiveOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptType.DisplayName" xml:space="preserve">
+    <value>ConceptType</value>
+    <comment>DisplayName for DomainClass &apos;ConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormat.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>InformationTypeFormat</value>
+    <comment>DisplayName for DomainClass &apos;InformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequence.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequence.DisplayName" xml:space="preserve">
+    <value>ChildSequence</value>
+    <comment>DisplayName for DomainClass &apos;ChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.Constraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.Constraint.DisplayName" xml:space="preserve">
+    <value>Constraint</value>
+    <comment>DisplayName for DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.Constraint/Modality.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.Constraint.Modality</value>
+    <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.Constraint/Modality.DisplayName" xml:space="preserve">
+    <value>Modality</value>
+    <comment>DisplayName for DomainProperty &apos;Modality&apos; on DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildConstraint</value>
+    <comment>DisplayName for DomainClass &apos;SingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>ChildSequenceConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildUniquenessConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SingleChildUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildUniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildUniquenessConstraint</value>
+    <comment>DisplayName for DomainClass &apos;SingleChildUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildUniquenessConstraint/IsPreferred.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SingleChildUniquenessConstraint.IsPreferred</value>
+    <comment>Description for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;SingleChildUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildUniquenessConstraint/IsPreferred.DisplayName" xml:space="preserve">
+    <value>IsPreferred</value>
+    <comment>DisplayName for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;SingleChildUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SingleChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildSequenceConstraint</value>
+    <comment>DisplayName for DomainClass &apos;SingleChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MultiChildSequenceConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;MultiChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MultiChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>MultiChildSequenceConstraint</value>
+    <comment>DisplayName for DomainClass &apos;MultiChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildFrequencyConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SingleChildFrequencyConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildFrequencyConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildFrequencyConstraint</value>
+    <comment>DisplayName for DomainClass &apos;SingleChildFrequencyConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ValueConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ValueConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ValueConstraint.DisplayName" xml:space="preserve">
+    <value>ValueConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ValueConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceFrequencyConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ChildSequenceFrequencyConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceFrequencyConstraint.DisplayName" xml:space="preserve">
+    <value>ChildSequenceFrequencyConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ChildSequenceFrequencyConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.RingConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RingConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.RingConstraint.DisplayName" xml:space="preserve">
+    <value>RingConstraint</value>
+    <comment>DisplayName for DomainClass &apos;RingConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.DisjunctiveMandatoryConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DisjunctiveMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.DisjunctiveMandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>DisjunctiveMandatoryConstraint</value>
+    <comment>DisplayName for DomainClass &apos;DisjunctiveMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>ChildSequenceUniquenessConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint/ShouldIgnore.Description" xml:space="preserve">
+    <value>Describes whether views should ignore generating primary key notation for this constraint even though the &lt;see cref=&quot;P:Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint.IsPreferred&quot; /&gt; property may be true.</value>
+    <comment>Description for DomainProperty &apos;ShouldIgnore&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint/ShouldIgnore.DisplayName" xml:space="preserve">
+    <value>ShouldIgnore</value>
+    <comment>DisplayName for DomainProperty &apos;ShouldIgnore&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint/IsPreferred.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint.IsPreferred</value>
+    <comment>Description for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceUniquenessConstraint/IsPreferred.DisplayName" xml:space="preserve">
+    <value>IsPreferred</value>
+    <comment>DisplayName for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;ChildSequenceUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MinTwoChildrenChildSequence.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;MinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MinTwoChildrenChildSequence.DisplayName" xml:space="preserve">
+    <value>MinTwoChildrenChildSequence</value>
+    <comment>DisplayName for DomainClass &apos;MinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SubsetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraint.DisplayName" xml:space="preserve">
+    <value>SubsetConstraint</value>
+    <comment>DisplayName for DomainClass &apos;SubsetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;TwoOrMoreChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>TwoOrMoreChildSequenceConstraint</value>
+    <comment>DisplayName for DomainClass &apos;TwoOrMoreChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ExclusionConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ExclusionConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ExclusionConstraint.DisplayName" xml:space="preserve">
+    <value>ExclusionConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ExclusionConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.EqualityConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;EqualityConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.EqualityConstraint.DisplayName" xml:space="preserve">
+    <value>EqualityConstraint</value>
+    <comment>DisplayName for DomainClass &apos;EqualityConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel</value>
+    <comment>Description for DomainClass &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.DisplayName" xml:space="preserve">
+    <value>OIALModel Has ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel/OIALModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.OIALModel</value>
+    <comment>Description for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel/OIALModel.DisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>DisplayName for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel/OIALModel.PropertyDisplayName" xml:space="preserve">
+    <value>ORMModel</value>
+    <comment>PropertyDisplayName for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>ORMModel</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;OIALModelHasORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType</value>
+    <comment>Description for DomainClass &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType.DisplayName" xml:space="preserve">
+    <value>OIALModel Has Concept Type</value>
+    <comment>DisplayName for DomainClass &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType.ConceptType</value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType/ConceptType.DisplayName" xml:space="preserve">
+    <value>ConceptType</value>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;OIALModelHasConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild</value>
+    <comment>Description for DomainClass &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Concept Type Child</value>
+    <comment>DisplayName for DomainClass &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Mandatory.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild.Mandatory</value>
+    <comment>Description for DomainProperty &apos;Mandatory&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Mandatory.DisplayName" xml:space="preserve">
+    <value>Mandatory</value>
+    <comment>DisplayName for DomainProperty &apos;Mandatory&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Parent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild.Parent</value>
+    <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Parent.DisplayName" xml:space="preserve">
+    <value>Parent</value>
+    <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Parent.PropertyDisplayName" xml:space="preserve">
+    <value>Target Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Target.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild.Target</value>
+    <comment>Description for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Target.DisplayName" xml:space="preserve">
+    <value>Child</value>
+    <comment>DisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChild/Target.PropertyDisplayName" xml:space="preserve">
+    <value>Parent</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType</value>
+    <comment>Description for DomainClass &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType.DisplayName" xml:space="preserve">
+    <value>Concept Type Absorbed Concept Type</value>
+    <comment>DisplayName for DomainClass &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType/AbsorbingConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType.AbsorbingConceptType</value>
+    <comment>Description for DomainRole &apos;AbsorbingConceptType&apos; on DomainRelationship &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType/AbsorbingConceptType.DisplayName" xml:space="preserve">
+    <value>AbsorbingConceptType</value>
+    <comment>DisplayName for DomainRole &apos;AbsorbingConceptType&apos; on DomainRelationship &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType/AbsorbingConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Absorbed Concept Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AbsorbingConceptType&apos; on DomainRelationship &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType/AbsorbedConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType.AbsorbedConceptType</value>
+    <comment>Description for DomainRole &apos;AbsorbedConceptType&apos; on DomainRelationship &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType/AbsorbedConceptType.DisplayName" xml:space="preserve">
+    <value>AbsorbedConceptType</value>
+    <comment>DisplayName for DomainRole &apos;AbsorbedConceptType&apos; on DomainRelationship &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeAbsorbedConceptType/AbsorbedConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Absorbing Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AbsorbedConceptType&apos; on DomainRelationship &apos;ConceptTypeAbsorbedConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.InformationType</value>
+    <comment>Description for DomainClass &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType.DisplayName" xml:space="preserve">
+    <value>Information Type</value>
+    <comment>DisplayName for DomainClass &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.InformationType.ConceptType</value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType/ConceptType.DisplayName" xml:space="preserve">
+    <value>ConceptType</value>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType/ConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Information Type Format Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.InformationType.InformationTypeFormat</value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType/InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>InformationTypeFormat</value>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationType/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat</value>
+    <comment>Description for DomainClass &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>OIALHas Information Type Format</value>
+    <comment>DisplayName for DomainClass &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Information Type Format Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat.InformationTypeFormat</value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>InformationTypeFormat</value>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALHasInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;OIALHasInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef</value>
+    <comment>Description for DomainClass &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef.DisplayName" xml:space="preserve">
+    <value>Concept Type Ref</value>
+    <comment>DisplayName for DomainClass &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/OppositeName.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef.OppositeName</value>
+    <comment>Description for DomainProperty &apos;OppositeName&apos; on DomainClass &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/OppositeName.DisplayName" xml:space="preserve">
+    <value>OppositeName</value>
+    <comment>DisplayName for DomainProperty &apos;OppositeName&apos; on DomainClass &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/ReferencingConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef.ReferencingConceptType</value>
+    <comment>Description for DomainRole &apos;ReferencingConceptType&apos; on DomainRelationship &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/ReferencingConceptType.DisplayName" xml:space="preserve">
+    <value>ReferencingConceptType</value>
+    <comment>DisplayName for DomainRole &apos;ReferencingConceptType&apos; on DomainRelationship &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/ReferencingConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Referenced Concept Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferencingConceptType&apos; on DomainRelationship &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/ReferencedConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef.ReferencedConceptType</value>
+    <comment>Description for DomainRole &apos;ReferencedConceptType&apos; on DomainRelationship &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/ReferencedConceptType.DisplayName" xml:space="preserve">
+    <value>ReferencedConceptType</value>
+    <comment>DisplayName for DomainRole &apos;ReferencedConceptType&apos; on DomainRelationship &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeRef/ReferencedConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Referencing Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferencedConceptType&apos; on DomainRelationship &apos;ConceptTypeRef&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType</value>
+    <comment>Description for DomainClass &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.DisplayName" xml:space="preserve">
+    <value>Information Type Format Has Object Type</value>
+    <comment>DisplayName for DomainClass &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.InformationTypeFormat</value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>InformationTypeFormat</value>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+    <value>Value Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType/ValueType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.ValueType</value>
+    <comment>Description for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType/ValueType.DisplayName" xml:space="preserve">
+    <value>ValueType</value>
+    <comment>DisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType/ValueType.PropertyDisplayName" xml:space="preserve">
+    <value>Information Type Format</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;InformationTypeFormatHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType</value>
+    <comment>Description for DomainClass &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.DisplayName" xml:space="preserve">
+    <value>Concept Type Has Object Type</value>
+    <comment>DisplayName for DomainClass &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.ConceptType</value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType/ConceptType.DisplayName" xml:space="preserve">
+    <value>ConceptType</value>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType/ConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType/ObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType/ObjectType.DisplayName" xml:space="preserve">
+    <value>ObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ConceptTypeHasObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence</value>
+    <comment>Description for DomainClass &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence.DisplayName" xml:space="preserve">
+    <value>Child Sequence Constraint Has Child Sequence</value>
+    <comment>DisplayName for DomainClass &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence/ChildSequenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence.ChildSequenceConstraint</value>
+    <comment>Description for DomainRole &apos;ChildSequenceConstraint&apos; on DomainRelationship &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence/ChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildSequenceConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ChildSequenceConstraint&apos; on DomainRelationship &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence/ChildSequenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Child Sequence</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildSequenceConstraint&apos; on DomainRelationship &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence/ChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence.ChildSequence</value>
+    <comment>Description for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence/ChildSequence.DisplayName" xml:space="preserve">
+    <value>ChildSequence</value>
+    <comment>DisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceConstraintHasChildSequence/ChildSequence.PropertyDisplayName" xml:space="preserve">
+    <value>Child Sequence Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;ChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence</value>
+    <comment>Description for DomainClass &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.DisplayName" xml:space="preserve">
+    <value>Single Child Sequence Constraint Has Min Two Children Child Sequence</value>
+    <comment>DisplayName for DomainClass &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence/SingleChildSequenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.SingleChildSequenceConstraint</value>
+    <comment>Description for DomainRole &apos;SingleChildSequenceConstraint&apos; on DomainRelationship &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence/SingleChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildSequenceConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SingleChildSequenceConstraint&apos; on DomainRelationship &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence/SingleChildSequenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Child Sequence</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SingleChildSequenceConstraint&apos; on DomainRelationship &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence/ChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequence</value>
+    <comment>Description for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence/ChildSequence.DisplayName" xml:space="preserve">
+    <value>ChildSequence</value>
+    <comment>DisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence/ChildSequence.PropertyDisplayName" xml:space="preserve">
+    <value>Single Child Sequence Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;SingleChildSequenceConstraintHasMinTwoChildrenChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence</value>
+    <comment>Description for DomainClass &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.DisplayName" xml:space="preserve">
+    <value>Subset Constraint Has Sub Child Sequence</value>
+    <comment>DisplayName for DomainClass &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence/SubsetConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.SubsetConstraint</value>
+    <comment>Description for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence/SubsetConstraint.DisplayName" xml:space="preserve">
+    <value>SubsetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence/SubsetConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Sub Child Sequence</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence/SubChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.SubChildSequence</value>
+    <comment>Description for DomainRole &apos;SubChildSequence&apos; on DomainRelationship &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence/SubChildSequence.DisplayName" xml:space="preserve">
+    <value>SubChildSequence</value>
+    <comment>DisplayName for DomainRole &apos;SubChildSequence&apos; on DomainRelationship &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence/SubChildSequence.PropertyDisplayName" xml:space="preserve">
+    <value>Subset Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SubChildSequence&apos; on DomainRelationship &apos;SubsetConstraintHasSubChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence</value>
+    <comment>Description for DomainClass &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.DisplayName" xml:space="preserve">
+    <value>Subset Constraint Has Super Child Sequence</value>
+    <comment>DisplayName for DomainClass &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence/SubsetConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraint</value>
+    <comment>Description for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence/SubsetConstraint.DisplayName" xml:space="preserve">
+    <value>SubsetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence/SubsetConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Super Child Sequence</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence/SuperChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.SuperChildSequence</value>
+    <comment>Description for DomainRole &apos;SuperChildSequence&apos; on DomainRelationship &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence/SuperChildSequence.DisplayName" xml:space="preserve">
+    <value>SuperChildSequence</value>
+    <comment>DisplayName for DomainRole &apos;SuperChildSequence&apos; on DomainRelationship &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence/SuperChildSequence.PropertyDisplayName" xml:space="preserve">
+    <value>Subset Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SuperChildSequence&apos; on DomainRelationship &apos;SubsetConstraintHasSuperChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence</value>
+    <comment>Description for DomainClass &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence.DisplayName" xml:space="preserve">
+    <value>Two Or More Child Sequence Constraint Has Child Sequence</value>
+    <comment>DisplayName for DomainClass &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence/TwoOrMoreChildSequenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence.TwoOrMoreChildSequenceConstraint</value>
+    <comment>Description for DomainRole &apos;TwoOrMoreChildSequenceConstraint&apos; on DomainRelationship &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence/TwoOrMoreChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>TwoOrMoreChildSequenceConstraint</value>
+    <comment>DisplayName for DomainRole &apos;TwoOrMoreChildSequenceConstraint&apos; on DomainRelationship &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence/TwoOrMoreChildSequenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Child Sequence</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TwoOrMoreChildSequenceConstraint&apos; on DomainRelationship &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence/ChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence.ChildSequence</value>
+    <comment>Description for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence/ChildSequence.DisplayName" xml:space="preserve">
+    <value>ChildSequence</value>
+    <comment>DisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence/ChildSequence.PropertyDisplayName" xml:space="preserve">
+    <value>Two Or More Child Sequence Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;TwoOrMoreChildSequenceConstraintHasChildSequence&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint</value>
+    <comment>Description for DomainClass &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint.DisplayName" xml:space="preserve">
+    <value>Child Has Single Child Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint/ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint.ConceptTypeChild</value>
+    <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint/ConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>ConceptTypeChild</value>
+    <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+    <value>Single Child Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint.SingleChildConstraint</value>
+    <comment>Description for DomainRole &apos;SingleChildConstraint&apos; on DomainRelationship &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.DisplayName" xml:space="preserve">
+    <value>SingleChildConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SingleChildConstraint&apos; on DomainRelationship &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type Child</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SingleChildConstraint&apos; on DomainRelationship &apos;ChildHasSingleChildConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint</value>
+    <comment>Description for DomainClass &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>OIALModel Has Child Sequence Constraint</value>
+    <comment>DisplayName for DomainClass &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint/OIALModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint.OIALModel</value>
+    <comment>Description for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint/OIALModel.DisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>DisplayName for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint/OIALModel.PropertyDisplayName" xml:space="preserve">
+    <value>Child Sequence Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint/ChildSequenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint.ChildSequenceConstraint</value>
+    <comment>Description for DomainRole &apos;ChildSequenceConstraint&apos; on DomainRelationship &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint/ChildSequenceConstraint.DisplayName" xml:space="preserve">
+    <value>ChildSequenceConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ChildSequenceConstraint&apos; on DomainRelationship &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.OIALModelHasChildSequenceConstraint/ChildSequenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildSequenceConstraint&apos; on DomainRelationship &apos;OIALModelHasChildSequenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole</value>
+    <comment>Description for DomainClass &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole.DisplayName" xml:space="preserve">
+    <value>Concept Type Child Has Path Role</value>
+    <comment>DisplayName for DomainClass &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole/ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole.ConceptTypeChild</value>
+    <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole/ConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>ConceptTypeChild</value>
+    <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+    <value>Path Role Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole/PathRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole.PathRole</value>
+    <comment>Description for DomainRole &apos;PathRole&apos; on DomainRelationship &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole/PathRole.DisplayName" xml:space="preserve">
+    <value>PathRole</value>
+    <comment>DisplayName for DomainRole &apos;PathRole&apos; on DomainRelationship &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ConceptTypeChildHasPathRole/PathRole.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type Child</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathRole&apos; on DomainRelationship &apos;ConceptTypeChildHasPathRole&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild</value>
+    <comment>Description for DomainClass &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Child Sequence Has Concept Type Child</value>
+    <comment>DisplayName for DomainClass &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild/ChildSequence.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild.ChildSequence</value>
+    <comment>Description for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild/ChildSequence.DisplayName" xml:space="preserve">
+    <value>ChildSequence</value>
+    <comment>DisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild/ChildSequence.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type Child Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildSequence&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild.ConceptTypeChild</value>
+    <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>ConceptTypeChild</value>
+    <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.ChildSequenceHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+    <value>Child Sequence Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MandatoryConstraintModality/NotMandatory.DisplayName" xml:space="preserve">
+    <value>NotMandatory</value>
+    <comment>Display name for EnumerationLiteral &apos;NotMandatory&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MandatoryConstraintModality/NotMandatory.Description" xml:space="preserve">
+    <value>See &lt;see langword=&quot;null&quot;/&gt;.</value>
+    <comment>Description for EnumerationLiteral &apos;NotMandatory&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MandatoryConstraintModality/Alethic.DisplayName" xml:space="preserve">
+    <value>Alethic</value>
+    <comment>Display name for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MandatoryConstraintModality/Alethic.Description" xml:space="preserve">
+    <value>See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic&quot;/&gt;.</value>
+    <comment>Description for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MandatoryConstraintModality/Deontic.DisplayName" xml:space="preserve">
+    <value>Deontic</value>
+    <comment>Display name for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.TestOIALModel.MandatoryConstraintModality/Deontic.Description" xml:space="preserve">
+    <value>See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Deontic&quot;/&gt;.</value>
+    <comment>Description for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
