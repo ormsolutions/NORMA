@@ -87,7 +87,6 @@ namespace Neumont.Tools.ORM.Shell
 				if (viewControl == null)
 				{
 					myDiagramView = viewControl = new DiagramView();
-					myDiagramView.HasWatermark = false;
 				}
 				myUpDownGenerations = new System.Windows.Forms.NumericUpDown();
 				// 
@@ -124,7 +123,6 @@ namespace Neumont.Tools.ORM.Shell
 				// 
 				// viewControl
 				// 
-				viewControl.HasWatermark = false;
 				viewControl.Size = new Size(myPanel.ClientSize.Width, myPanel.ClientSize.Height - 24);
 				viewControl.Location = new Point(0, 24);
 				viewControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
@@ -252,17 +250,27 @@ namespace Neumont.Tools.ORM.Shell
 					break;
 				}
 			}
-			if (hierarchyElement == null && myDiagram == null)
+			bool storeChange = false;
+			if (hierarchyElement == null && (myDiagram == null || (element != null && (storeChange = (element.Store != myDiagram.Store)))))
 			{
+				ModelElement selectedElement = element;
 				element = myCurrentlySelectedObject as ModelElement;
-				if (element != null && (element.IsDeleted || element.Store == null))
+				if (element != null && ((element.IsDeleted || element.Store == null) || storeChange))
 				{
 					myCurrentlySelectedObject = null;
 					RemoveDiagram();
 				}
 				hierarchyElement = myCurrentlySelectedObject;
+				if (hierarchyElement == null && selectedElement != null && !selectedElement.IsDeleted && selectedElement.Store != null)
+				{
+					ORMModel attachToModel = selectedElement as ORMModel;
+					if (attachToModel != null)
+					{
+						EnsureDiagram(attachToModel);
+					}
+				}
 			}
-			else if (hierarchyElement == myCurrentlySelectedObject && refresh == false && (myDiagram != null && myDiagram.HasChildren))
+			else if (hierarchyElement == myCurrentlySelectedObject && !refresh && (myDiagram != null && myDiagram.HasChildren))
 			{
 				return;
 			}
@@ -425,18 +433,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void EnsureDiagram(ModelElement model)
 		{
-			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(model))
-			{
-				ORMDiagram diagram = pel as ORMDiagram;
-				if (diagram != null && diagram.InDragAndDrop)
-				{
-					if (myDiagram != null && model != myDiagram.ModelElement)
-					{
-						this.RemoveDiagram();
-					}
-					return;
-				}
-			}
 			if (myDiagram == null || myDiagram.IsDeleted || myDiagram.Store != model.Store)
 			{
 				ResetDiagram(model);
@@ -485,6 +481,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					diagram = new ORMDiagram(partition);
 					diagram.Associate(myDiagramView);
+					myDiagramView.HasWatermark = false;
 					diagram.ModelElement = model;
 					diagram.AutoPopulateShapes = false;
 					if (t.HasPendingChanges)

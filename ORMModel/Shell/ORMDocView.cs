@@ -1698,10 +1698,10 @@ namespace Neumont.Tools.ORM.Shell
 								}
 							}
 							pel.Delete();
-							int newPelCount;
-							LinkedElementCollection<PresentationElement> remainingPels;
-							if (backingMel != null && !backingMel.IsDeleted && (newPelCount = (remainingPels = PresentationViewsSubject.GetPresentation(backingMel)).Count) != 0)
+							if (backingMel != null && !backingMel.IsDeleted)
 							{
+								LinkedElementCollection<PresentationElement> remainingPels = PresentationViewsSubject.GetPresentation(backingMel);
+								int newPelCount = remainingPels.Count;
 								Partition partition = store.DefaultPartition;
 								for (int i = newPelCount - 1; i >= 0; --i)
 								{
