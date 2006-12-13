@@ -1,0 +1,1875 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHPEntities">
+		<plx:class visibility="public" partial="true" name="Person">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="MalePerson" dataTypeName="MalePerson" />
+			<plx:field visibility="private" name="FemalePerson" dataTypeName="FemalePerson" />
+			<plx:field visibility="private" name="ChildPerson" dataTypeName="ChildPerson" />
+			<plx:field visibility="private" name="FirstName" dataTypeName=".string" />
+			<plx:field visibility="private" name="Person_id" dataTypeName=".object" />
+			<plx:field visibility="private" name="Date_YMD" dataTypeName=".i4" />
+			<plx:field visibility="private" name="LastName" dataTypeName=".string" />
+			<plx:field visibility="private" name="OptionalUniqueString" dataTypeName=".string" />
+			<plx:field visibility="private" name="HatType_ColorARGB" dataTypeName=".i4" />
+			<plx:field visibility="private" name="HatType_HatTypeStyle_HatTypeStyle_Description" dataTypeName=".string" />
+			<plx:field visibility="private" name="Wife_Husband_Person_Proxy" dataTypeName="Wife_Husband_Person_Proxy" />
+			<plx:field visibility="private" name="OwnsCar_vin" dataTypeName=".i4" />
+			<plx:field visibility="private" name="Death" dataTypeName="Death" />
+			<plx:field visibility="private" name="Gender_Gender_Code" dataTypeName=".string" />
+			<plx:field visibility="private" name="hasParents" dataTypeName=".boolean" />
+			<plx:field visibility="private" name="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy" dataTypeName="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy" />
+			<plx:field visibility="private" name="OptionalUniqueDecimal" dataTypeName=".decimal" />
+			<plx:field visibility="private" name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
+			<plx:field visibility="private" name="MandatoryUniqueString" dataTypeName=".string" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="Wife_Husband_Person_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="Wife_Husband_Person_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>FirstName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>FirstName</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="64" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Person_id</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Date_YMD</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>LastName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>LastName</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="64" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>OptionalUniqueString</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>OptionalUniqueString</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="11" type=".string" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="11" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>HatType_ColorARGB</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>HatType_HatTypeStyle_HatTypeStyle_Description</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>HatTypeStyle_Description</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="256" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>OwnsCar_vin</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Gender_Gender_Code</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Gender_Code</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="1" type=".string" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="1" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>hasParents</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>OptionalUniqueDecimal</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>MandatoryUniqueDecimal</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>MandatoryUniqueString</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>MandatoryUniqueString</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="11" type=".string" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="11" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="MalePerson">
+				<plx:returns dataTypeName="MalePerson" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="MalePerson" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="MalePerson" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="MalePerson" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Person" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="FemalePerson">
+				<plx:returns dataTypeName="FemalePerson" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="FemalePerson" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="FemalePerson" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="FemalePerson" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Person" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="ChildPerson">
+				<plx:returns dataTypeName="ChildPerson" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="ChildPerson" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="ChildPerson" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="ChildPerson" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Person" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Death">
+				<plx:returns dataTypeName="Death" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Death" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Death" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Death" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Person" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="FirstName">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="FirstName" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="FirstName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Person_id">
+				<plx:returns dataTypeName=".object" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Person_id" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Person_id" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Date_YMD">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Date_YMD" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Date_YMD" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="LastName">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="LastName" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="LastName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="OptionalUniqueString">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="OptionalUniqueString" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="OptionalUniqueString" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="HatType_ColorARGB">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="HatType_ColorARGB" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="HatType_ColorARGB" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="HatType_HatTypeStyle_HatTypeStyle_Description">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="HatType_HatTypeStyle_HatTypeStyle_Description" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="HatType_HatTypeStyle_HatTypeStyle_Description" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setHusband" visibility="public">
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="Wife_Husband_Person_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getHusband" visibility="public">
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="Wife_Husband_Person_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="OwnsCar_vin">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="OwnsCar_vin" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="OwnsCar_vin" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Gender_Gender_Code">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Gender_Gender_Code" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Gender_Gender_Code" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="hasParents">
+				<plx:returns dataTypeName=".boolean" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="hasParents" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="hasParents" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setValueType1DoesSomethingElseWith" visibility="public">
+				<plx:param name="value" dataTypeName="ValueType1" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getValueType1DoesSomethingElseWith" visibility="public">
+				<plx:returns dataTypeName="ValueType1" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="OptionalUniqueDecimal">
+				<plx:returns dataTypeName=".decimal" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="OptionalUniqueDecimal" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="OptionalUniqueDecimal" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="MandatoryUniqueDecimal">
+				<plx:returns dataTypeName=".decimal" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="MandatoryUniqueDecimal" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="MandatoryUniqueDecimal" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="MandatoryUniqueString">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="MandatoryUniqueString" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="MandatoryUniqueString" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="MalePerson">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="Person" dataTypeName="Person" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override" />
+			<plx:property visibility="public" name="Person">
+				<plx:returns dataTypeName="Person" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Person" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Person" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Person" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="MalePerson" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="FemalePerson">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="Person" dataTypeName="Person" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override" />
+			<plx:property visibility="public" name="Person">
+				<plx:returns dataTypeName="Person" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Person" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Person" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Person" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="FemalePerson" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="ChildPerson">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="ChildPerson_Father_MalePerson_Proxy" dataTypeName="ChildPerson_Father_MalePerson_Proxy" />
+			<plx:field visibility="private" name="BirthOrder_BirthOrder_Nr" dataTypeName=".i4" />
+			<plx:field visibility="private" name="ChildPerson_Mother_FemalePerson_Proxy" dataTypeName="ChildPerson_Mother_FemalePerson_Proxy" />
+			<plx:field visibility="private" name="Person" dataTypeName="Person" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="ChildPerson_Father_MalePerson_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="ChildPerson_Father_MalePerson_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="ChildPerson_Mother_FemalePerson_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="ChildPerson_Mother_FemalePerson_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>BirthOrder_BirthOrder_Nr</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Person">
+				<plx:returns dataTypeName="Person" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Person" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Person" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Person" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="ChildPerson" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setFather" visibility="public">
+				<plx:param name="value" dataTypeName="MalePerson" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="ChildPerson_Father_MalePerson_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getFather" visibility="public">
+				<plx:returns dataTypeName="MalePerson" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="ChildPerson_Father_MalePerson_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="BirthOrder_BirthOrder_Nr">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="BirthOrder_BirthOrder_Nr" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="BirthOrder_BirthOrder_Nr" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setMother" visibility="public">
+				<plx:param name="value" dataTypeName="FemalePerson" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="ChildPerson_Mother_FemalePerson_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getMother" visibility="public">
+				<plx:returns dataTypeName="FemalePerson" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="ChildPerson_Mother_FemalePerson_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="Death">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="NaturalDeath" dataTypeName="NaturalDeath" />
+			<plx:field visibility="private" name="UnnaturalDeath" dataTypeName="UnnaturalDeath" />
+			<plx:field visibility="private" name="Date_YMD" dataTypeName=".i4" />
+			<plx:field visibility="private" name="DeathCause_DeathCause_Type" dataTypeName=".string" />
+			<plx:field visibility="private" name="Person" dataTypeName="Person" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Date_YMD</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>DeathCause_DeathCause_Type</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>DeathCause_Type</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="14" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Person">
+				<plx:returns dataTypeName="Person" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Person" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Person" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Person" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Death" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="NaturalDeath">
+				<plx:returns dataTypeName="NaturalDeath" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="NaturalDeath" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="NaturalDeath" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="NaturalDeath" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Death" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="UnnaturalDeath">
+				<plx:returns dataTypeName="UnnaturalDeath" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="UnnaturalDeath" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="UnnaturalDeath" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="UnnaturalDeath" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Death" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Date_YMD">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Date_YMD" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Date_YMD" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="DeathCause_DeathCause_Type">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="DeathCause_DeathCause_Type" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="DeathCause_DeathCause_Type" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="NaturalDeath">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="isFromProstateCancer" dataTypeName=".boolean" />
+			<plx:field visibility="private" name="Death" dataTypeName="Death" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>isFromProstateCancer</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Death">
+				<plx:returns dataTypeName="Death" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Death" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Death" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Death" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="NaturalDeath" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="isFromProstateCancer">
+				<plx:returns dataTypeName=".boolean" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="isFromProstateCancer" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="isFromProstateCancer" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="UnnaturalDeath">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="isViolent" dataTypeName=".boolean" />
+			<plx:field visibility="private" name="isBloody" dataTypeName=".boolean" />
+			<plx:field visibility="private" name="Death" dataTypeName="Death" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>isViolent</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>isBloody</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Death">
+				<plx:returns dataTypeName="Death" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Death" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="Death" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="Death" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="UnnaturalDeath" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="isViolent">
+				<plx:returns dataTypeName=".boolean" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="isViolent" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="isViolent" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="isBloody">
+				<plx:returns dataTypeName=".boolean" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="isBloody" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="isBloody" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="Task">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="Task_Person_Person_Proxy" dataTypeName="Task_Person_Person_Proxy" />
+			<plx:field visibility="private" name="Task_id" dataTypeName=".object" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="Task_Person_Person_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="Task_Person_Person_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Task_id</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="setPerson" visibility="public">
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="Task_Person_Person_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getPerson" visibility="public">
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="Task_Person_Person_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="Task_id">
+				<plx:returns dataTypeName=".object" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Task_id" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Task_id" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="ValueType1">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="ValueType1Value" dataTypeName=".i4" />
+			<plx:field visibility="private" name="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy" dataTypeName="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>ValueType1Value</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="ValueType1Value">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="ValueType1Value" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="ValueType1Value" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setDoesSomethingWithPerson" visibility="public">
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getDoesSomethingWithPerson" visibility="public">
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="PersonBoughtCarFromPersonOnDate">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy" dataTypeName="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy" />
+			<plx:field visibility="private" name="CarSold_vin" dataTypeName=".i4" />
+			<plx:field visibility="private" name="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy" dataTypeName="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy" />
+			<plx:field visibility="private" name="SaleDate_YMD" dataTypeName=".i4" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>CarSold_vin</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>SaleDate_YMD</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="setBuyer" visibility="public">
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getBuyer" visibility="public">
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="CarSold_vin">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="CarSold_vin" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="CarSold_vin" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setSeller" visibility="public">
+				<plx:param name="value" dataTypeName="Person" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getSeller" visibility="public">
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="SaleDate_YMD">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="SaleDate_YMD" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="SaleDate_YMD" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="Review">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="Car_vin" dataTypeName=".i4" />
+			<plx:field visibility="private" name="Rating_Nr_Integer" dataTypeName=".i4" />
+			<plx:field visibility="private" name="Criterion_Name" dataTypeName=".string" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Car_vin</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Rating_Nr_Integer</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="ValueRangeValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Integer</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="1" type=".i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="7" type=".i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="inclusive" type="field" dataTypeName="ValueRangeValidatorClusivity" dataTypeQualifier="PHPEntities" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Criterion_Name</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Name</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="64" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Car_vin">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Car_vin" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Car_vin" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Rating_Nr_Integer">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Rating_Nr_Integer" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Rating_Nr_Integer" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Criterion_Name">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Criterion_Name" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Criterion_Name" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

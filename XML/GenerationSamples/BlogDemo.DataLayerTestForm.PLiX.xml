@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<plx:namespace name="BlogDemo">
+		<plx:class visibility="public" partial="true" name="BlogDemoTester">
+			<plx:derivesFromClass dataTypeName="Form" dataTypeQualifier="System.Windows.Forms" />
+			<plx:function name="Main" modifier="static" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>The main entry point for the application.</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:callStatic name="EnableVisualStyles" dataTypeName="Application" dataTypeQualifier="System.Windows.Forms" type="methodCall" />
+				<plx:callStatic name="SetCompatibleTextRenderingDefault" dataTypeName="Application" dataTypeQualifier="System.Windows.Forms" type="methodCall">
+					<plx:passParam>
+						<plx:falseKeyword />
+					</plx:passParam>
+				</plx:callStatic>
+				<plx:callStatic name="Run" dataTypeName="Application" dataTypeQualifier="System.Windows.Forms" type="methodCall">
+					<plx:passParam>
+						<plx:callNew type="new" dataTypeName="BlogDemoTester" />
+					</plx:passParam>
+				</plx:callStatic>
+			</plx:function>
+			<plx:function name=".construct" visibility="public">
+				<plx:callThis name="InitializeComponent" type="methodCall" />
+			</plx:function>
+			<plx:field name="components" visibility="private" dataTypeName="IContainer" dataTypeQualifier="System.ComponentModel">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Required designer variable.</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="MasterTabControl" visibility="private" dataTypeName="TabControl" dataTypeQualifier="System.Windows.Forms" />
+			<plx:function name="Dispose" overload="true" modifier="override" visibility="protected">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Clean up any resources being used.</summary>
+						<param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="disposing" dataTypeName=".boolean" />
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:nameRef name="disposing" />
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:nameRef name="components" />
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword />
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance name="Dispose" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="components" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:branch>
+				<plx:callThis name="Dispose" accessor="base">
+					<plx:passParam>
+						<plx:nameRef name="disposing" />
+					</plx:passParam>
+				</plx:callThis>
+			</plx:function>
+			<plx:function visibility="private" name="InitializeComponent">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="InitializeComponent method" />
+					<plx:docComment>
+						<summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="InitializeComponent method" />
+				</plx:trailingInfo>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="MasterTabControl" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="TabControl" type="new" dataTypeQualifier="System.Windows.Forms" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:callThis name="MasterTabControl" accessor="this" type="field" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Multiline" type="property">
+							<plx:callObject>
+								<plx:callThis name="MasterTabControl" accessor="this" type="field" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:trueKeyword />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="components" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="Container" dataTypeQualifier="System.ComponentModel" type="new" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="AutoScaleMode" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Font" type="property" dataTypeName="AutoScaleMode" dataTypeQualifier="System.Windows.Forms" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="Text" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:string data="NORMA:  BlogDemo Data Test Form" />
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Size" type="property">
+							<plx:callObject>
+								<plx:callThis name="MasterTabControl" type="field" accessor="this" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
+							<plx:passParam>
+								<plx:value data="540" type="i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="520" type="i4" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callThis name="Controls" type="property" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="MasterTabControl" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="Size" type="property" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="Size" dataTypeQualifier="System.Drawing">
+							<plx:passParam>
+								<plx:value data="550" type="i4" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="550" type="i4" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="BlogComment" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="BlogComment" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="BlogCommentCore_InputControl" name="icBlogCommentCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="BlogCommentCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icBlogCommentCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="BlogComment" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icBlogCommentCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="BlogEntry" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="BlogEntry" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="BlogEntryCore_InputControl" name="icBlogEntryCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="BlogEntryCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icBlogEntryCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="BlogEntry" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icBlogEntryCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="BlogEntryLabel" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="BlogEntryLabel" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="BlogEntryLabelCore_InputControl" name="icBlogEntryLabelCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="BlogEntryLabelCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icBlogEntryLabelCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="BlogEntryLabel" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icBlogEntryLabelCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="BlogLabel" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="BlogLabel" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="BlogLabelCore_InputControl" name="icBlogLabelCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="BlogLabelCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icBlogLabelCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="BlogLabel" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icBlogLabelCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="NonCommentEntry" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="NonCommentEntry" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="NonCommentEntryCore_InputControl" name="icNonCommentEntryCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="NonCommentEntryCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icNonCommentEntryCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="NonCommentEntry" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icNonCommentEntryCore" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:comment blankLine="true" />
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="TabPages" type="property">
+							<plx:callObject>
+								<plx:callInstance name="MasterTabControl" type="field">
+									<plx:callObject>
+										<plx:thisKeyword />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:string data="User" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="User" />
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:local dataTypeName="UserCore_InputControl" name="icUserCore">
+					<plx:initialize>
+						<plx:callNew dataTypeName="UserCore_InputControl" />
+					</plx:initialize>
+				</plx:local>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="Dock" type="property">
+							<plx:callObject>
+								<plx:nameRef name="icUserCore" type="local" />
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Fill" dataTypeName="DockStyle" dataTypeQualifier="System.Windows.Forms" type="property" />
+					</plx:right>
+				</plx:assign>
+				<plx:callInstance name="Add" type="methodCall">
+					<plx:callObject>
+						<plx:callInstance name="Controls" type="property">
+							<plx:callObject>
+								<plx:callInstance name="TabPages" type="property">
+									<plx:callObject>
+										<plx:callInstance name="MasterTabControl" type="field">
+											<plx:callObject>
+												<plx:thisKeyword />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="User" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="icUserCore" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

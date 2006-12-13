@@ -1,0 +1,727 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dil:root xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:ddl="http://schemas.orm.net/DIL/DDIL" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:dms="http://schemas.orm.net/DIL/DILMS">
+	<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE" />
+	<ddl:schemaDefinition schemaName="BlogDemo" defaultCharacterSet="UTF8" />
+	<dms:setSchemaStatement>
+		<ddt:characterStringLiteral value="BLOGDEMO" />
+	</dms:setSchemaStatement>
+	<ddl:domainDefinition name="Password" schema="BlogDemo">
+		<ddt:characterString type="CHARACTER" length="32" />
+		<ddl:domainConstraint>
+			<dep:constraintNameDefinition name="Password_Chk" />
+			<ddl:checkConstraintDefinition>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:parenthesizedValueExpression>
+						<dep:charLengthExpression>
+							<dep:trimFunction specification="BOTH">
+								<dep:trimSource>
+									<dep:valueKeyword />
+								</dep:trimSource>
+							</dep:trimFunction>
+						</dep:charLengthExpression>
+					</dep:parenthesizedValueExpression>
+					<ddt:exactNumericLiteral value="32" />
+				</dep:comparisonPredicate>
+			</ddl:checkConstraintDefinition>
+		</ddl:domainConstraint>
+	</ddl:domainDefinition>
+	<ddl:tableDefinition name="BlogEntryLabel" schema="BlogDemo">
+		<ddl:columnDefinition name="blogEntryId_BlogEntry_Id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="blogLabelId_BlogLabel_Id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint20" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="blogEntryId_BlogEntry_Id" />
+				<ddl:column name="blogLabelId_BlogLabel_Id" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="BlogEntry" schema="BlogDemo">
+		<ddl:columnDefinition name="BlogEntry_Id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="entryTitle">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="entryBody">
+			<ddt:characterString type="CHARACTER VARYING" length="" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="postedDate_MDYValue">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="userId_firstName">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="userId_lastName">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="parentEntryId_BlogEntry_Id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint1" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="BlogEntry_Id" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="&quot;User&quot;" schema="BlogDemo">
+		<ddl:columnDefinition name="firstName">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="lastName">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="username">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="password">
+			<ddt:domain name="Password" schema="BlogDemo" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="ExternalUniquenessConstraint1" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="firstName" />
+				<ddl:column name="lastName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="BlogLabel" schema="BlogDemo">
+		<ddl:columnDefinition name="BlogLabel_Id">
+			<ddt:exactNumeric type="BIGINT" />
+			<ddl:identityColumnSpecification type="ALWAYS">
+				<ddl:sequenceGeneratorStartWithOption>
+					<ddt:exactNumericLiteral value="1" />
+				</ddl:sequenceGeneratorStartWithOption>
+				<ddl:sequenceGeneratorIncrementByOption>
+					<ddt:exactNumericLiteral value="1" />
+				</ddl:sequenceGeneratorIncrementByOption>
+			</ddl:identityColumnSpecification>
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="title">
+			<ddt:characterString type="CHARACTER VARYING" length="" />
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="InternalUniquenessConstraint18" />
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="BlogLabel_Id" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:alterTableStatement name="BlogEntryLabel" schema="BlogDemo">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="blogEntryId_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="blogEntryId_BlogEntry_Id" />
+				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
+					<ddl:referenceColumn name="BlogEntry_Id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BlogEntryLabel" schema="BlogDemo">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="blogLabelId_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="blogLabelId_BlogLabel_Id" />
+				<ddl:referencesSpecification name="BlogLabel" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
+					<ddl:referenceColumn name="BlogLabel_Id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="userId_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="userId_firstName" />
+				<ddl:column name="userId_lastName" />
+				<ddl:referencesSpecification name="&quot;User&quot;" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
+					<ddl:referenceColumn name="firstName" />
+					<ddl:referenceColumn name="lastName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BlogEntry" schema="BlogDemo">
+		<ddl:addTableConstraintDefinition>
+			<dep:constraintNameDefinition name="parentEntryId_FK" />
+			<ddl:referentialConstraintDefinition>
+				<ddl:column name="parentEntryId_BlogEntry_Id" />
+				<ddl:referencesSpecification name="BlogEntry" onDelete="RESTRICT" onUpdate="RESTRICT" schema="BlogDemo">
+					<ddl:referenceColumn name="BlogEntry_Id" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:sqlInvokedProcedure name="InsertBlogEntryLabel" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="blogEntryId_BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="blogLabelId_BlogLabel_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="BlogDemo" name="BlogEntryLabel">
+				<dml:fromConstructor>
+					<ddl:column name="blogEntryId_BlogEntry_Id" />
+					<ddl:column name="blogLabelId_BlogLabel_Id" />
+					<dep:sqlParameterReference name="blogEntryId_BlogEntry_Id" />
+					<dep:sqlParameterReference name="blogLabelId_BlogLabel_Id" />
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="DeleteBlogEntryLabel" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="blogEntryId_BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="blogLabelId_BlogLabel_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:deleteStatement schema="BlogDemo" name="BlogEntryLabel">
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="blogEntryId_BlogEntry_Id" />
+								<dep:sqlParameterReference name="blogEntryId_BlogEntry_Id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="blogLabelId_BlogLabel_Id" />
+								<dep:sqlParameterReference name="blogLabelId_BlogLabel_Id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UBELEIBEI" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="blogEntryId_BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntryLabel">
+				<dml:setClause>
+					<ddl:column name="blogEntryId_BlogEntry_Id" />
+					<dep:sqlParameterReference name="blogEntryId_BlogEntry_Id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="blogEntryId_BlogEntry_Id" />
+								<dep:sqlParameterReference name="blogEntryId_BlogEntry_Id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="blogLabelId_BlogLabel_Id" />
+								<dep:sqlParameterReference name="blogLabelId_BlogLabel_Id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UBELLIBLI" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="blogLabelId_BlogLabel_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntryLabel">
+				<dml:setClause>
+					<ddl:column name="blogLabelId_BlogLabel_Id" />
+					<dep:sqlParameterReference name="blogLabelId_BlogLabel_Id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="blogEntryId_BlogEntry_Id" />
+								<dep:sqlParameterReference name="blogEntryId_BlogEntry_Id" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="blogLabelId_BlogLabel_Id" />
+								<dep:sqlParameterReference name="blogLabelId_BlogLabel_Id" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="InsertBlogEntry" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="entryTitle" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="entryBody" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="postedDate_MDYValue" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="userId_firstName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="userId_lastName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="parentEntryId_BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="BlogDemo" name="BlogEntry">
+				<dml:fromConstructor>
+					<ddl:column name="BlogEntry_Id" />
+					<ddl:column name="entryTitle" />
+					<ddl:column name="entryBody" />
+					<ddl:column name="postedDate_MDYValue" />
+					<ddl:column name="userId_firstName" />
+					<ddl:column name="userId_lastName" />
+					<ddl:column name="parentEntryId_BlogEntry_Id" />
+					<dep:sqlParameterReference name="BlogEntry_Id" />
+					<dep:sqlParameterReference name="entryTitle" />
+					<dep:sqlParameterReference name="entryBody" />
+					<dep:sqlParameterReference name="postedDate_MDYValue" />
+					<dep:sqlParameterReference name="userId_firstName" />
+					<dep:sqlParameterReference name="userId_lastName" />
+					<dep:sqlParameterReference name="parentEntryId_BlogEntry_Id" />
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="DeleteBlogEntry" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:deleteStatement schema="BlogDemo" name="BlogEntry">
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateBlogEntryBlogEntry_Id" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="BlogEntry_Id" />
+					<dep:sqlParameterReference name="BlogEntry_Id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateBlogEntryentryTitle" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="entryTitle" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="entryTitle" />
+					<dep:sqlParameterReference name="entryTitle" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateBlogEntryentryBody" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="entryBody" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="entryBody" />
+					<dep:sqlParameterReference name="entryBody" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtBlgEntrypstdDt_MDYVl" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="postedDate_MDYValue" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="postedDate_MDYValue" />
+					<dep:sqlParameterReference name="postedDate_MDYValue" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdtBlgEntrysrId_frstNm" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="userId_firstName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="userId_firstName" />
+					<dep:sqlParameterReference name="userId_firstName" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateBlogEntryuserId_lastName" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="userId_lastName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="userId_lastName" />
+					<dep:sqlParameterReference name="userId_lastName" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UBEEIBEI" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="parentEntryId_BlogEntry_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogEntry">
+				<dml:setClause>
+					<ddl:column name="parentEntryId_BlogEntry_Id" />
+					<dep:sqlParameterReference name="parentEntryId_BlogEntry_Id" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogEntry_Id" />
+							<dep:sqlParameterReference name="BlogEntry_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="InsertUser" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="firstName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="lastName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="username" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="password" mode="IN">
+			<ddt:characterString type="CHARACTER" length="32" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="BlogDemo" name="&quot;User&quot;">
+				<dml:fromConstructor>
+					<ddl:column name="firstName" />
+					<ddl:column name="lastName" />
+					<ddl:column name="username" />
+					<ddl:column name="password" />
+					<dep:sqlParameterReference name="firstName" />
+					<dep:sqlParameterReference name="lastName" />
+					<dep:sqlParameterReference name="username" />
+					<dep:sqlParameterReference name="password" />
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="DeleteUser" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="firstName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="lastName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:deleteStatement schema="BlogDemo" name="&quot;User&quot;">
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="firstName" />
+								<dep:sqlParameterReference name="firstName" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="lastName" />
+								<dep:sqlParameterReference name="lastName" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="&quot;Update&quot;&quot;User&quot;&quot;firstName&quot;" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="firstName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="&quot;User&quot;">
+				<dml:setClause>
+					<ddl:column name="firstName" />
+					<dep:sqlParameterReference name="firstName" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="firstName" />
+								<dep:sqlParameterReference name="firstName" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="lastName" />
+								<dep:sqlParameterReference name="lastName" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="&quot;Update&quot;&quot;User&quot;&quot;lastName&quot;" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="lastName" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="&quot;User&quot;">
+				<dml:setClause>
+					<ddl:column name="lastName" />
+					<dep:sqlParameterReference name="lastName" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="firstName" />
+								<dep:sqlParameterReference name="firstName" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="lastName" />
+								<dep:sqlParameterReference name="lastName" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="&quot;Update&quot;&quot;User&quot;&quot;username&quot;" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="username" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="&quot;User&quot;">
+				<dml:setClause>
+					<ddl:column name="username" />
+					<dep:sqlParameterReference name="username" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="firstName" />
+								<dep:sqlParameterReference name="firstName" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="lastName" />
+								<dep:sqlParameterReference name="lastName" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="&quot;Update&quot;&quot;User&quot;&quot;password&quot;" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="password" mode="IN">
+			<ddt:characterString type="CHARACTER" length="32" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="&quot;User&quot;">
+				<dml:setClause>
+					<ddl:column name="password" />
+					<dep:sqlParameterReference name="password" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:and>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="firstName" />
+								<dep:sqlParameterReference name="firstName" />
+							</dep:comparisonPredicate>
+							<dep:comparisonPredicate operator="equals">
+								<dep:columnReference name="lastName" />
+								<dep:sqlParameterReference name="lastName" />
+							</dep:comparisonPredicate>
+						</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="InsertBlogLabel" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="BlogLabel_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="title" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="BlogDemo" name="BlogLabel">
+				<dml:fromConstructor>
+					<ddl:column name="BlogLabel_Id" />
+					<ddl:column name="title" />
+					<dep:sqlParameterReference name="BlogLabel_Id" />
+					<dep:sqlParameterReference name="title" />
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="DeleteBlogLabel" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="BlogLabel_Id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:deleteStatement schema="BlogDemo" name="BlogLabel">
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogLabel_Id" />
+							<dep:sqlParameterReference name="BlogLabel_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<ddl:sqlInvokedProcedure name="UpdateBlogLabeltitle" schema="BlogDemo">
+		<ddl:sqlParameterDeclaration name="title" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:updateStatement schema="BlogDemo" name="BlogLabel">
+				<dml:setClause>
+					<ddl:column name="title" />
+					<dep:sqlParameterReference name="title" />
+				</dml:setClause>
+				<dml:whereClause>
+					<dml:searchCondition>
+						<dep:comparisonPredicate operator="equals">
+							<dep:columnReference name="BlogLabel_Id" />
+							<dep:sqlParameterReference name="BlogLabel_Id" />
+						</dep:comparisonPredicate>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:updateStatement>
+		</ddl:sqlRoutineSpec>
+	</ddl:sqlInvokedProcedure>
+	<dms:commitStatement />
+</dil:root>

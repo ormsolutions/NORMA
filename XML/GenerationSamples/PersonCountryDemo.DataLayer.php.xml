@@ -1,0 +1,1596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHP">
+		<plx:class partial="true" modifier="static" name="DataAccess">
+			<plx:field dataTypeIsSimpleArray="true" static="true" name="params">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function modifier="static" name="getDataAdapter" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Gets the appropriate data adapter for the current database configuration</plx:docComment>
+				</plx:leadingInfo>
+				<plx:returns dataTypeName="Zend_Db_Adapter" />
+				<plx:return>
+					<plx:callStatic dataTypeName="Zend_Db" name="factory">
+						<plx:passParam>
+							<plx:callThis accessor="static" name="pdoType" type="property" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callThis accessor="static" name="params" type="property" />
+						</plx:passParam>
+					</plx:callStatic>
+				</plx:return>
+			</plx:function>
+			<plx:property modifier="static" name="" visibility="private">
+				<plx:leadingInfo>
+					<plx:docComment>Gets the current database configuration</plx:docComment>
+				</plx:leadingInfo>
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callThis accessor="static" name="params" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="params" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName=".global" name="array" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:callThis accessor="static" name="params" type="field" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="host" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:string data="" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:callThis accessor="static" name="params" type="field" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="username" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:string data="" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:callThis accessor="static" name="params" type="field" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="password" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:string data="" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:callThis accessor="static" name="params" type="field" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="dbname" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:string data="" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="params" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:property modifier="static" name="pdoType" visibility="private">
+				<plx:leadingInfo>
+					<plx:docComment>Gets the current PDO string</plx:docComment>
+				</plx:leadingInfo>
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callThis accessor="static" name="pdoType" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="pdoType" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:string data="PDO_MYSQL" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="pdoType" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+		</plx:class>
+		<plx:class name="PersonDao" partial="true" visibility="public">
+			<plx:field dataTypeName="PersonDao" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of PersonDao</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="PersonDao" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset">
+									<plx:passParam>
+										<plx:callThis accessor="static" name="instance" type="field" />
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="PersonDao" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of Person objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:try>
+					<plx:local name="retVal" dataTypeIsSimpleArray="true" />
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="select" dataTypeName="Zend_Db_Select">
+						<plx:initialize>
+							<plx:callInstance name="select" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="from">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string>Person</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string data="*" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="setFetchMode" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="db" type="local" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic dataTypeName=".global" name="PDO::FETCH_ASSOC" type="field" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="result" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="fetchPairs" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="select" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local dataTypeName=".i4" name="rowCount">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="count">
+								<plx:passParam>
+									<plx:nameRef name="result" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop>
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="rowCount" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment>
+								<plx:nameRef name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local dataTypeName="Person" name="tempEntity">
+							<plx:initialize>
+								<plx:callNew dataTypeName="Person" type="new" />
+							</plx:initialize>
+						</plx:local>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Country_name" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Country_Country_name" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="LastName" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="LastName" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="FirstName" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="FirstName" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Title" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Title" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="retVal" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="tempEntity" />
+							</plx:right>
+						</plx:assign>
+					</plx:loop>
+					<plx:return>
+						<plx:nameRef name="retVal" />
+					</plx:return>
+					<plx:catch dataTypeName="Exception" localName="exc">
+						<plx:return>
+							<plx:nullKeyword />
+						</plx:return>
+					</plx:catch>
+				</plx:try>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified Personobject from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="Person_id" dataTypeName=".i4" />
+				<plx:returns dataTypeName="Person" />
+				<plx:try>
+					<plx:local name="retVal" dataTypeName="Person">
+						<plx:initialize>
+							<plx:callNew dataTypeName="Person" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="setFetchMode" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="db" type="local" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic dataTypeName=".global" name="PDO::FETCH_ASSOC" type="field" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="select" dataTypeName="Zend_Db_Select">
+						<plx:initialize>
+							<plx:callInstance name="select" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="from">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string>Person</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string data="*" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="where" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string data="Person_id = ?" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="Person_id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="row" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="fetchRow" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="select" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Country_name" type="property">
+								<plx:callObject>
+									<plx:nameRef name="retVal" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="row" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country_Country_name" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="LastName" type="property">
+								<plx:callObject>
+									<plx:nameRef name="retVal" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="row" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="LastName" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="FirstName" type="property">
+								<plx:callObject>
+									<plx:nameRef name="retVal" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="row" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="FirstName" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Title" type="property">
+								<plx:callObject>
+									<plx:nameRef name="retVal" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="row" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Title" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:return>
+						<plx:nameRef name="retVal" />
+					</plx:return>
+					<plx:catch dataTypeName="Exception" localName="exc">
+						<plx:return>
+							<plx:nullKeyword />
+						</plx:return>
+					</plx:catch>
+				</plx:try>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given Person object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Person" name="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="retVal" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword />
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="dataArray">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="array" />
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Person_id" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Person_id" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Country_name" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="LastName" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="LastName" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="FirstName" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="FirstName" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Title" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Title" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:local name="nrRowsAffected" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="insert" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Person" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="dataArray" type="local" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:catch dataTypeName="Exception" localName="exc" />
+				</plx:try>
+				<plx:return>
+					<plx:nameRef name="retVal" />
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given Person object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Person" name="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="retVal" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword />
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="dataArray">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="array" />
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Person_id" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Person_id" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Country_name" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="LastName" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="LastName" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="FirstName" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="FirstName" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Title" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Title" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Person" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:local name="whereClause" dataTypeName=".string">
+						<plx:initialize>
+							<plx:concatenate>
+								<plx:callInstance name="quoteInto" type="methodCall">
+									<plx:callObject>
+										<plx:nameRef name="db" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Person_id = ?" />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="Person_id" type="property">
+											<plx:callObject>
+												<plx:nameRef name="Person" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:concatenate>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="nrRowsAffected" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="update" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Person" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="dataArray" type="local" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="whereClause" type="local" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:catch dataTypeName="Exception" localName="exc" />
+				</plx:try>
+				<plx:return>
+					<plx:nameRef name="retVal" />
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given Person object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Person" name="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="retVal" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword />
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="whereClause" dataTypeName=".string">
+						<plx:initialize>
+							<plx:concatenate>
+								<plx:callInstance name="quoteInto" type="methodCall">
+									<plx:callObject>
+										<plx:nameRef name="db" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Person_id = ?" />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="Person_id" type="property">
+											<plx:callObject>
+												<plx:nameRef name="Person" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:concatenate>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="nrRowsAffected" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="delete" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Person" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="whereClause" type="local" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:catch dataTypeName="Exception" localName="exc" />
+				</plx:try>
+				<plx:return>
+					<plx:nameRef name="retVal" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="CountryDao" partial="true" visibility="public">
+			<plx:field dataTypeName="CountryDao" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of CountryDao</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="CountryDao" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset">
+									<plx:passParam>
+										<plx:callThis accessor="static" name="instance" type="field" />
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="CountryDao" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of Country objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:try>
+					<plx:local name="retVal" dataTypeIsSimpleArray="true" />
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="select" dataTypeName="Zend_Db_Select">
+						<plx:initialize>
+							<plx:callInstance name="select" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="from">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string>Country</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string data="*" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="setFetchMode" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="db" type="local" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic dataTypeName=".global" name="PDO::FETCH_ASSOC" type="field" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="result" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="fetchPairs" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="select" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local dataTypeName=".i4" name="rowCount">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="count">
+								<plx:passParam>
+									<plx:nameRef name="result" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop>
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="rowCount" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment>
+								<plx:nameRef name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local dataTypeName="Country" name="tempEntity">
+							<plx:initialize>
+								<plx:callNew dataTypeName="Country" type="new" />
+							</plx:initialize>
+						</plx:local>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Region_Region_code" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Region_Region_code" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="retVal" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="tempEntity" />
+							</plx:right>
+						</plx:assign>
+					</plx:loop>
+					<plx:return>
+						<plx:nameRef name="retVal" />
+					</plx:return>
+					<plx:catch dataTypeName="Exception" localName="exc">
+						<plx:return>
+							<plx:nullKeyword />
+						</plx:return>
+					</plx:catch>
+				</plx:try>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified Countryobject from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:returns dataTypeName="Country" />
+				<plx:try>
+					<plx:local name="retVal" dataTypeName="Country">
+						<plx:initialize>
+							<plx:callNew dataTypeName="Country" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="setFetchMode" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="db" type="local" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic dataTypeName=".global" name="PDO::FETCH_ASSOC" type="field" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="select" dataTypeName="Zend_Db_Select">
+						<plx:initialize>
+							<plx:callInstance name="select" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="from">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string>Country</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string data="*" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="where" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string data="Country_name = ?" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="Country_name" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="row" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="fetchRow" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="select" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Region_Region_code" type="property">
+								<plx:callObject>
+									<plx:nameRef name="retVal" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="row" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Region_Region_code" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:return>
+						<plx:nameRef name="retVal" />
+					</plx:return>
+					<plx:catch dataTypeName="Exception" localName="exc">
+						<plx:return>
+							<plx:nullKeyword />
+						</plx:return>
+					</plx:catch>
+				</plx:try>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given Country object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Country" name="Country" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="retVal" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword />
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="dataArray">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="array" />
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country_name" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Country_name" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Country" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Region_Region_code" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Region_Region_code" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Country" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:local name="nrRowsAffected" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="insert" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="dataArray" type="local" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:catch dataTypeName="Exception" localName="exc" />
+				</plx:try>
+				<plx:return>
+					<plx:nameRef name="retVal" />
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given Country object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Country" name="Country" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="retVal" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword />
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="dataArray">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="array" />
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country_name" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Country_name" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Country" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="dataArray" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Region_Region_code" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="Region_Region_code" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Country" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:local name="whereClause" dataTypeName=".string">
+						<plx:initialize>
+							<plx:concatenate>
+								<plx:callInstance name="quoteInto" type="methodCall">
+									<plx:callObject>
+										<plx:nameRef name="db" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Country_name = ?" />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="Country_name" type="property">
+											<plx:callObject>
+												<plx:nameRef name="Country" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:concatenate>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="nrRowsAffected" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="update" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="dataArray" type="local" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="whereClause" type="local" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:catch dataTypeName="Exception" localName="exc" />
+				</plx:try>
+				<plx:return>
+					<plx:nameRef name="retVal" />
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given Country object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="Country" name="Country" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:local name="retVal" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword />
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="whereClause" dataTypeName=".string">
+						<plx:initialize>
+							<plx:concatenate>
+								<plx:callInstance name="quoteInto" type="methodCall">
+									<plx:callObject>
+										<plx:nameRef name="db" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Country_name = ?" />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="Country_name" type="property">
+											<plx:callObject>
+												<plx:nameRef name="Country" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:concatenate>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="nrRowsAffected" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="delete" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string data="Country" />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="whereClause" type="local" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:catch dataTypeName="Exception" localName="exc" />
+				</plx:try>
+				<plx:return>
+					<plx:nameRef name="retVal" />
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_Person_Collection_By_Country" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of Person objects by the given Country object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:try>
+					<plx:local name="retVal" dataTypeIsSimpleArray="true" />
+					<plx:local name="db" dataTypeName="Zend_Db_Adapter">
+						<plx:initialize>
+							<plx:callStatic dataTypeName="DataAccess" name="getDataAdapter" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="select" dataTypeName="Zend_Db_Select">
+						<plx:initialize>
+							<plx:callInstance name="select" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:callInstance name="from">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string>Person</plx:string>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string data="*" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="where" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="select" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string data="Country_name = ?" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="Country_name" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="setFetchMode" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="db" type="local" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic dataTypeName=".global" name="PDO::FETCH_ASSOC" type="field" />
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:local name="result" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="fetchPairs" type="methodCall">
+								<plx:callObject>
+									<plx:nameRef name="db" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="select" />
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local dataTypeName=".i4" name="rowCount">
+						<plx:initialize>
+							<plx:callStatic dataTypeName=".global" name="count">
+								<plx:passParam>
+									<plx:nameRef name="result" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop>
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="rowCount" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment>
+								<plx:nameRef name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local dataTypeName="Person" name="tempEntity">
+							<plx:initialize>
+								<plx:callNew dataTypeName="Person" type="new" />
+							</plx:initialize>
+						</plx:local>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Country_name" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Country_Country_name" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="LastName" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="LastName" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="FirstName" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="FirstName" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="Title" type="property">
+									<plx:callObject>
+										<plx:nameRef name="tempEntity" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="results" />
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string data="Title" />
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="retVal" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="tempEntity" />
+							</plx:right>
+						</plx:assign>
+					</plx:loop>
+					<plx:return>
+						<plx:nameRef name="retVal" />
+					</plx:return>
+					<plx:catch dataTypeName="Exception" localName="exc">
+						<plx:return>
+							<plx:nullKeyword />
+						</plx:return>
+					</plx:catch>
+				</plx:try>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

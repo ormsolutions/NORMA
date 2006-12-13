@@ -1,0 +1,769 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHP">
+		<plx:callStatic dataTypeName=".global" name="require_once" type="methodCall">
+			<plx:passParam>
+				<plx:string>Entities.php</plx:string>
+			</plx:passParam>
+		</plx:callStatic>
+		<plx:callStatic dataTypeName=".global" name="require_once" type="methodCall">
+			<plx:passParam>
+				<plx:string>DataLayer.php</plx:string>
+			</plx:passParam>
+		</plx:callStatic>
+		<plx:class name="BlogEntryLabelService" partial="true" visibility="public">
+			<plx:field dataTypeName="BlogEntryLabelService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of BlogEntryLabelService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="BlogEntryLabelService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="BlogEntryLabelService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of BlogEntryLabel objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified BlogEntryLabel object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogEntry_Id" />
+				<plx:param name="BlogLabel_Id" />
+				<plx:returns dataTypeName="BlogEntryLabel" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry_Id" type="parameter" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="BlogLabel_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given BlogEntryLabel object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogEntryLabel" name="BlogEntryLabel" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntryLabel" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given BlogEntryLabel object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogEntryLabel" name="BlogEntryLabel" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntryLabel" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given BlogEntryLabel object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogEntryLabel" name="BlogEntryLabel" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntryLabel" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="BlogEntryService" partial="true" visibility="public">
+			<plx:field dataTypeName="BlogEntryService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of BlogEntryService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="BlogEntryService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="BlogEntryService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of BlogEntry objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified BlogEntry object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogEntry_Id" />
+				<plx:returns dataTypeName="BlogEntry" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given BlogEntry object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogEntry" name="BlogEntry" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given BlogEntry object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogEntry" name="BlogEntry" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given BlogEntry object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogEntry" name="BlogEntry" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_BlogEntryLabel_Collection_By_blogEntryId" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of BlogEntryLabel objects by the given BlogEntry object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogEntry_Id" dataTypeName=".decimal" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:return>
+					<plx:callInstance name="get_BlogEntryLabel_Collection_By_blogEntryId" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="BlogCommentService" partial="true" visibility="public">
+			<plx:field dataTypeName="BlogCommentService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of BlogCommentService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="BlogCommentService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="BlogCommentService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of BlogComment objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogCommentDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified BlogComment object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogEntry_Id" />
+				<plx:returns dataTypeName="BlogComment" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogCommentDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given BlogComment object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogComment" name="BlogComment" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogCommentDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogComment" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given BlogComment object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogComment" name="BlogComment" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogCommentDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogComment" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given BlogComment object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogComment" name="BlogComment" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogCommentDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogComment" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="NonCommentEntryService" partial="true" visibility="public">
+			<plx:field dataTypeName="NonCommentEntryService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of NonCommentEntryService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="NonCommentEntryService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="NonCommentEntryService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of NonCommentEntry objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified NonCommentEntry object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogEntry_Id" />
+				<plx:returns dataTypeName="NonCommentEntry" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given NonCommentEntry object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="NonCommentEntry" name="NonCommentEntry" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="NonCommentEntry" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given NonCommentEntry object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="NonCommentEntry" name="NonCommentEntry" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="NonCommentEntry" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given NonCommentEntry object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="NonCommentEntry" name="NonCommentEntry" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="NonCommentEntry" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_BlogComment_Collection_By_parentEntryId" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of BlogComment objects by the given NonCommentEntry object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogEntry_Id" dataTypeName=".decimal" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:return>
+					<plx:callInstance name="get_BlogComment_Collection_By_parentEntryId" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogEntry_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="UserService" partial="true" visibility="public">
+			<plx:field dataTypeName="UserService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of UserService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="UserService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="UserService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of User objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified User object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="firstName" />
+				<plx:param name="lastName" />
+				<plx:returns dataTypeName="User" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="firstName" type="parameter" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="lastName" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given User object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="User" name="User" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="User" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given User object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="User" name="User" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="User" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given User object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="User" name="User" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="User" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_BlogEntry_Collection_By_userId" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of BlogEntry objects by the given User object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="firstName" dataTypeName=".string" />
+				<plx:param name="lastName" dataTypeName=".string" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:return>
+					<plx:callInstance name="get_BlogEntry_Collection_By_userId" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="firstName" type="parameter" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="lastName" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class name="BlogLabelService" partial="true" visibility="public">
+			<plx:field dataTypeName="BlogLabelService" static="true" name="instance" visibility="private" />
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Instantiates a new instance of BlogLabelService</plx:docComment>
+				</plx:leadingInfo>
+			</plx:function>
+			<plx:property name="Instance" modifier="static" visibility="public">
+				<plx:returns dataTypeName="BlogLabelService" />
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName=".global" name="isset" />
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="static" name="instance" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="BlogLabelService" type="new" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="static" name="instance" type="field" />
+					</plx:return>
+				</plx:get>
+			</plx:property>
+			<plx:function name="getAll" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the entire collection of BlogLabel objects</plx:docComment>
+				</plx:leadingInfo>
+				<plx:return>
+					<plx:callInstance name="getAll" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="getSingle" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Retrieves the specified BlogLabel object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogLabel_Id" />
+				<plx:returns dataTypeName="BlogLabel" />
+				<plx:return>
+					<plx:callInstance name="getSingle" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogLabel_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="insert" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Inserts the given BlogLabel object into the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogLabel" name="BlogLabel" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="insert" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogLabel" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="update" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Updates the given BlogLabel object in the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogLabel" name="BlogLabel" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="update" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogLabel" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="delete" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>Deletes the given BlogLabel object from the database</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param dataTypeName="BlogLabel" name="BlogLabel" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="delete" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogLabel" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="get_BlogEntryLabel_Collection_By_blogLabelId" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieves a collection of BlogEntryLabel objects by the given BlogLabel object</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="BlogLabel_Id" dataTypeName=".i4" />
+				<plx:returns dataTypeIsSimpleArray="true" />
+				<plx:return>
+					<plx:callInstance name="get_BlogEntryLabel_Collection_By_blogLabelId" type="methodCall">
+						<plx:callObject>
+							<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="BlogLabel_Id" type="parameter" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

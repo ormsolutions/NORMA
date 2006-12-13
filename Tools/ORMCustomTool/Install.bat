@@ -8,6 +8,7 @@ SET XMLDir=%~dp0\..\..\XML
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
 SET DILTransformsDir=%CommonProgramFiles%\Neumont\DIL\Transforms
+SET PLiXDir=%CommonProgramFiles%\Neumont\PLiX
 
 :: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed)
 :: Note that this method of determining whether a native image already exists is an undocumented hack that is subject to change. It should not be used for anything where reliability matters.
@@ -51,6 +52,7 @@ XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTes
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "%ORMTransformsDir%\DataLayerTestForm\"
 
+
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".CoRef.orm" "ORM" "CoRefORM" "%ORMTransformsDir%\CoRefORM.xslt" "" "1"
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt" "" "1"
 CALL:_AddXslORMGenerator "OIALtoXSD" "OIAL to XSD" "Transforms an OIAL file to XML Schema." ".xsd" "OIAL" "XSD" "%ORMTransformsDir%\OIALtoXSD.xslt"
@@ -75,6 +77,7 @@ XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoPostgreSQL.xslt" "%DILTransformsDir%\
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoDB2.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoSQLServer.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoOracle.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoMySQL.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DomainInliner.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DIL\DILSupportFunctions.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoDDIL" "DCIL to DDIL" "Transforms DCIL to DDIL." ".DDIL.xml" "DCIL" "DDIL" "%DILTransformsDir%\DCILtoDDIL.xslt" "" "1"
@@ -83,11 +86,29 @@ CALL:_AddXslORMGenerator "DDILtoPostgreSQL" "DDIL to PostgreSQL" "Transforms DDI
 CALL:_AddXslORMGenerator "DDILtoDB2" "DDIL to DB2" "Transforms DDIL to DB2-dialect SQL." ".DB2.sql" "DDIL" "SQL_DB2" "%DILTransformsDir%\DDILtoDB2.xslt"
 CALL:_AddXslORMGenerator "DDILtoSQLServer" "DDIL to SQL Server" "Transforms DDIL to SQL Server-dialect SQL." ".SQLServer.sql" "DDIL" "SQL_SQLServer" "%DILTransformsDir%\DDILtoSQLServer.xslt"
 CALL:_AddXslORMGenerator "DDILtoOracle" "DDIL to Oracle" "Transforms DDIL to Oracle-dialect SQL." ".Oracle.sql" "DDIL" "SQL_Oracle" "%DILTransformsDir%\DDILtoOracle.xslt"
+CALL:_AddXslORMGenerator "DDILtoMySQL" "DDIL to MySQL" "Transforms DDIL to MySQL-dialect SQL." ".MySQL.sql" "DDIL" "SQL_MySQL" "%DILTransformsDir%\DDILtoMySQL.xslt"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\DCILtoTV.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\TVtoHTML.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to TableView." ".TableView.xml" "DCIL" "TV" "%DILTransformsDir%\DCILtoTV.xslt" "" "1"
 CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".TableView.html" "TV" "TableViewHTML" "%DILTransformsDir%\TVtoHTML.xslt"
 
+:: Install and register PHP Transforms
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPDataLayer.xslt" "%ORMTransformsDir%\PHP\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPServices.xslt" "%ORMTransformsDir%\PHP\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPProxies.xslt" "%ORMTransformsDir%\PHP\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPEntities.xslt" "%ORMTransformsDir%\PHP\"
+
+CALL:_AddXslORMGenerator "OIALtoPHPEntitiesPLiX" "OIAL to PHP Entities PLiX" "Transforms OIAL to PHP Entities PLiX." ".Entities.php.xml" "OIAL" "PHPEntitiesPLiX" "%ORMTransformsDir%\PHP\PHPEntities.xslt" "" "1" "" "" "PHPProxiesPLiX\0PHPServicesPLiX\0PHPDataLayerPLiX\0"
+CALL:_AddXslORMGenerator "PHPEntitiesPLiXtoPHP" "PHP Entities PLiX to PHP" "Transforms PLiX Entities TO PHP." ".Entities.php" "PHPEntitiesPLiX" "PHPEntitiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "" "" "" "PHPProxiesImplementation\0PHPServicesImplementation\0PHPDataLayerImplementation\0"
+
+CALL:_AddXslORMGenerator "OIALtoPHPProxiesPLiX" "OIAL to PHP Proxies PLiX" "Transforms OIAL to PHP Proxies PLiX." ".Proxies.php.xml" "OIAL" "PHPProxiesPLiX" "%ORMTransformsDir%\PHP\PHPProxies.xslt" "" "1"
+CALL:_AddXslORMGenerator "PHPProxiesPLiXtoPHP" "PHP Proxies PLiX to PHP" "Transforms PLiX Proxies TO PHP." ".Proxies.php" "PHPProxiesPLiX" "PHPProxiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"
+
+CALL:_AddXslORMGenerator "OIALtoPHPServicesPLiX" "OIAL to PHP Services PLiX" "Transforms OIAL to PHP Services PLiX." ".Services.php.xml" "OIAL" "PHPServicesPLiX" "%ORMTransformsDir%\PHP\PHPServices.xslt" "" "1"
+CALL:_AddXslORMGenerator "PHPServicesPLiXtoPHP" "PHP Services PLiX to PHP" "Transforms PLiX Services TO PHP." ".Services.php" "PHPServicesPLiX" "PHPServicesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"
+
+CALL:_AddXslORMGenerator "OIALtoPHPDataLayerPLiX" "OIAL to PHP Data Layer PLiX" "Transforms OIAL to PHP Data Layer PLiX." ".DataLayer.php.xml" "OIAL" "PHPDataLayerPLiX" "%ORMTransformsDir%\PHP\PHPDataLayer.xslt" "" "1"
+CALL:_AddXslORMGenerator "PHPDataLayerPLiXtoPHP" "PHP DataLayer PLiX to PHP" "Transforms PLiX Data Layer TO PHP." ".DataLayer.php" "PHPDataLayerPLiX" "PHPDataLayerImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"
 GOTO:EOF
 
 :_InstallCustomToolReg

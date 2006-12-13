@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<oil:model name="BlogDemo" sourceRef="_F434295F-CF9E-4E0A-8EAC-7DBF899336FD" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
+	<DEBUG_INFORMATION>
+		<FactTypeAbsorptions>
+			<AbsorbFactType ref="_DC45E85B-959A-4E8C-8344-268B0B372C82" towards="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" type="factOnly" towardsName="BlogEntry" />
+			<AbsorbFactType ref="_1263E7DB-185B-44CF-AFC0-1D0FE66FABE7" towards="_F1AF1CAB-4BAD-4A43-8712-F5BCDC292550" type="factOnly" towardsName="Date" />
+			<AbsorbFactType ref="_830FA036-7C59-484A-80CF-F4A38C4841E3" towards="_DCA9F048-CDA6-4D87-AEC6-4172CD670DAB" type="factOnly" towardsName="BlogLabel" />
+		</FactTypeAbsorptions>
+		<ObjectTypeAbsorptions>
+			<AbsorbObjectType ref="_FC4B6034-FD2F-48BB-89C1-5E60BCF9E82F" towards="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" refName="BlogComment" towardsName="BlogEntry" />
+			<AbsorbObjectType ref="_DC84D934-1982-4B2B-B9E0-9989407A6135" towards="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" refName="NonCommentEntry" towardsName="BlogEntry" />
+		</ObjectTypeAbsorptions>
+		<TopLevelTypes>
+			<orm:EntityType id="_6E7E0F2F-EAF0-4D19-91CA-71E702D587CC" Name="BlogEntryLabel" IsIndependent="true" _ReferenceMode="" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
+			<orm:EntityType id="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" Name="BlogEntry" _ReferenceMode="Id" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
+			<orm:EntityType id="_3B54939A-BBEE-4561-8D7A-7E2AA0055C32" Name="User" _ReferenceMode="" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
+			<orm:EntityType id="_DCA9F048-CDA6-4D87-AEC6-4172CD670DAB" Name="BlogLabel" _ReferenceMode="Id" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
+		</TopLevelTypes>
+	</DEBUG_INFORMATION>
+	<oil:informationTypeFormats>
+		<!--These may change in the future once they are integrated into the core ORM model file.-->
+		<odt:decimalNumber name="BlogEntry_Id" fractionDigits="0" />
+		<odt:string name="EntryTitle" maxLength="30" />
+		<odt:string name="EntryBody" />
+		<!--WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.-->
+		<odt:decimalNumber name="MDYValue" fractionDigits="0" />
+		<odt:string name="Name" maxLength="30" />
+		<odt:string name="Username" maxLength="30" />
+		<odt:string name="Password" maxLength="32" minLength="32" />
+		<odt:identity name="BlogLabel_Id" />
+		<odt:string name="Title" />
+	</oil:informationTypeFormats>
+	<oil:conceptType name="BlogEntryLabel" sourceRef="_6E7E0F2F-EAF0-4D19-91CA-71E702D587CC">
+		<oil:conceptTypeRef name="blogEntryId" target="BlogEntry" oppositeName="BlogEntryLabel" mandatory="alethic" sourceRoleRef="_842AE0A8-31EE-4EA5-8AC8-75226E9944D1" />
+		<oil:conceptTypeRef name="blogLabelId" target="BlogLabel" oppositeName="BlogEntryLabel" mandatory="alethic" sourceRoleRef="_3B9F9EC0-C0FF-4AA0-9F49-92A02080376A" />
+		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint20" modality="alethic" sourceRef="_2585D64F-E562-4EBF-A5CD-D99AA171CCD9" isPreferred="true">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="BlogEntryLabel" targetChild="blogEntryId" />
+				<oil:typeRef targetConceptType="BlogEntryLabel" targetChild="blogLabelId" />
+			</oil:roleSequence>
+		</oil:roleSequenceUniquenessConstraint>
+	</oil:conceptType>
+	<oil:conceptType name="BlogEntry" sourceRef="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216">
+		<oil:conceptType name="BlogComment" sourceRef="_FC4B6034-FD2F-48BB-89C1-5E60BCF9E82F" mandatory="false" sourceRoleRef="_BF787BAC-4058-462F-9B63-BB5B79049B43">
+			<oil:conceptTypeRef name="parentEntryId" target="NonCommentEntry" oppositeName="BlogComment" mandatory="alethic" sourceRoleRef="_2ADCCAF9-7967-4708-B08B-41752E602893" />
+			<oil:ringConstraint name="RingConstraint1" modality="alethic" sourceRef="_2D02679E-BE7D-4589-BBBF-CE3FD703AC39" type="asymmetric">
+				<oil:roleSequence>
+					<oil:typeRef targetConceptType="BlogComment" targetChild="BlogComment" />
+					<oil:typeRef targetConceptType="BlogComment" targetChild="parentEntryId" />
+				</oil:roleSequence>
+			</oil:ringConstraint>
+		</oil:conceptType>
+		<oil:conceptType name="NonCommentEntry" sourceRef="_DC84D934-1982-4B2B-B9E0-9989407A6135" mandatory="false" sourceRoleRef="_28E6E94A-7CBC-46DD-83E2-8D066C1945AA">
+			<oil:ringConstraint name="RingConstraint1" modality="alethic" sourceRef="_2D02679E-BE7D-4589-BBBF-CE3FD703AC39" type="asymmetric">
+				<oil:roleSequence>
+					<oil:typeRef targetConceptType="NonCommentEntry" targetChild="BlogComment" />
+					<oil:typeRef targetConceptType="NonCommentEntry" targetChild="parentEntryId" />
+				</oil:roleSequence>
+			</oil:ringConstraint>
+		</oil:conceptType>
+		<oil:conceptTypeRef name="userId" target="User" oppositeName="BlogEntry" mandatory="alethic" sourceRoleRef="_5A1C68A8-DF82-476A-A612-B37429ACD3B8" />
+		<oil:informationType name="BlogEntry_Id" formatRef="BlogEntry_Id" mandatory="alethic" sourceRef="_DC45E85B-959A-4E8C-8344-268B0B372C82" sourceRoleRef="_1184CDF1-60FB-4085-B30E-38F6D35E54BD">
+			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint1" sourceRef="_1308359E-A13C-4FE9-B4CC-D11FCE34CB42" modality="alethic" isPreferred="true" />
+		</oil:informationType>
+		<oil:informationType name="entryTitle" formatRef="EntryTitle" mandatory="alethic" sourceRef="_8BF97E24-CE4B-4B6F-AD61-C1BA3831A3D8" sourceRoleRef="_6BB4079A-E058-4A66-A079-0AFE8B3667D2" />
+		<oil:informationType name="entryBody" formatRef="EntryBody" mandatory="alethic" sourceRef="_FF5DA300-C8EA-412E-9A44-3EE1186D0B20" sourceRoleRef="_F33106E7-37E6-47E4-AC98-16CF52A2AD48" />
+		<oil:informationType name="postedDate_MDYValue" formatRef="MDYValue" mandatory="alethic" sourceRef="_1263E7DB-185B-44CF-AFC0-1D0FE66FABE7" sourceRoleRef="_8A64BBE4-259B-4D69-B96C-1B438FA47267" />
+	</oil:conceptType>
+	<oil:conceptType name="User" sourceRef="_3B54939A-BBEE-4561-8D7A-7E2AA0055C32">
+		<oil:informationType name="firstName" formatRef="Name" mandatory="alethic" sourceRef="_07FC4CB9-64C8-4E44-89AA-3968F7770978" sourceRoleRef="_CAAFF7E9-0492-40E7-80DA-3DC8505F8C79" />
+		<oil:informationType name="lastName" formatRef="Name" mandatory="alethic" sourceRef="_63EBE4F9-CB2D-4B60-B2CD-78495E20788B" sourceRoleRef="_50140AAA-6E9A-4304-BE0F-FECDC8565467" />
+		<oil:informationType name="username" formatRef="Username" mandatory="alethic" sourceRef="_35190598-CC98-4BAE-82DB-FCB2C1A261E3" sourceRoleRef="_E03D5927-A739-4610-AAF2-C9B78DBB3416" />
+		<oil:informationType name="password" formatRef="Password" mandatory="alethic" sourceRef="_8AEEAC43-20F0-4C0A-9BC0-871AF3C3281F" sourceRoleRef="_6D57513D-94D4-4A3B-BB3F-CD8AA02F0DAB" />
+		<oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_8C76A78B-2E52-43CE-B552-6F1986149B4F" isPreferred="true">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="User" targetChild="firstName" />
+				<oil:typeRef targetConceptType="User" targetChild="lastName" />
+			</oil:roleSequence>
+		</oil:roleSequenceUniquenessConstraint>
+	</oil:conceptType>
+	<oil:conceptType name="BlogLabel" sourceRef="_DCA9F048-CDA6-4D87-AEC6-4172CD670DAB">
+		<oil:informationType name="BlogLabel_Id" formatRef="BlogLabel_Id" mandatory="alethic" sourceRef="_830FA036-7C59-484A-80CF-F4A38C4841E3" sourceRoleRef="_96B55F4F-86BC-4F6A-A02B-96FFE75A9506">
+			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint18" sourceRef="_F52012AD-AD06-4FED-9CB8-A3EA95143CCC" modality="alethic" isPreferred="true" />
+		</oil:informationType>
+		<oil:informationType name="title" formatRef="Title" mandatory="false" sourceRef="_7B4A38A8-B4CC-4786-9B63-DA83D0CB1DF3" sourceRoleRef="_894AC80C-952B-4652-96B9-090F1EBCEDC9" />
+	</oil:conceptType>
+</oil:model>

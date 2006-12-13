@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="DDILtoDB2.xslt" />
+    <Content Include="DDILtoMySQL.xslt" />
     <Content Include="DDILtoOracle.xslt" />
     <Content Include="DomainInliner.xslt" />
     <Content Include="DCILtoDDIL.xslt" />
@@ -17,5 +18,8 @@
     <Content Include="DDILtoPostgreSQL.xslt" />
     <Content Include="DDILtoSQLServer.xslt" />
     <Content Include="DDILtoSQLStandard.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
 </Project>

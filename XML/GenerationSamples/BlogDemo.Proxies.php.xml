@@ -1,0 +1,523 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHP">
+		<plx:class visibility="public" name="BlogEntryLabel_blogEntryId_BlogEntry_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a BlogEntry for the role blogEntryId for use inside of a BlogEntryLabel isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="BlogEntry_Id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="BlogEntryLabel_blogLabelId_BlogLabel_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a BlogLabel for the role blogLabelId for use inside of a BlogEntryLabel isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryLabelDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="BlogLabel_Id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="BlogEntry_userId_User_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a User for the role userId for use inside of a BlogEntry isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="firstName" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="lastName" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="BlogEntry_blogEntryId_BlogEntryLabel_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a BlogEntry for the role blogEntryId for use inside of a BlogEntry isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_BlogEntryLabel_Collection_By_blogEntryId" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="BlogEntryDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="BlogEntry_Id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="BlogComment_parentEntryId_NonCommentEntry_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a NonCommentEntry for the role parentEntryId for use inside of a BlogComment isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="BlogCommentDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="BlogEntry_Id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="NonCommentEntry_parentEntryId_BlogComment_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a NonCommentEntry for the role parentEntryId for use inside of a NonCommentEntry isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_BlogComment_Collection_By_parentEntryId" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="NonCommentEntryDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="BlogEntry_Id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="User_userId_BlogEntry_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a User for the role userId for use inside of a User isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_BlogEntry_Collection_By_userId" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="UserDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="firstName" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="lastName" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="BlogLabel_blogLabelId_BlogEntryLabel_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a BlogLabel for the role blogLabelId for use inside of a BlogLabel isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_BlogEntryLabel_Collection_By_blogLabelId" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="BlogLabelDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="BlogLabel_Id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

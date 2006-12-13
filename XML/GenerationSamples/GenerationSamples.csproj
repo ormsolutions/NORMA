@@ -9,6 +9,10 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="BlogDemo.orm">
+      <Generator>ORMCustomTool</Generator>
+      <LastGenOutput>BlogDemo._ORMCustomToolReport.cs</LastGenOutput>
+    </None>
     <None Include="SampleModel.orm">
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>SampleModel._ORMCustomToolReport.cs</LastGenOutput>
@@ -18,105 +22,35 @@
       <LastGenOutput>PersonCountryDemo._ORMCustomToolReport.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
-    <None Include="PersonCountryDemo.Abstract.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <Generator>NUPlixLoader</Generator>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
-      <LastGenOutput>PersonCountryDemo.Abstract.PLiX.cs</LastGenOutput>
-    </None>
-    <None Include="PersonCountryDemo.CLIProperties.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.CoRef.orm">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>CoRefORM</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.DataLayerTestForm.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <Generator>NUPlixLoader</Generator>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DataLayerTestForm</ORMGenerator>
-      <LastGenOutput>PersonCountryDemo.DataLayerTestForm.PLiX.cs</LastGenOutput>
-    </None>
-    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <Generator>NUPlixLoader</Generator>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
-      <LastGenOutput>PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
-    </None>
-    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <Generator>NUPlixLoader</Generator>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
-      <LastGenOutput>PersonCountryDemo.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
-    </None>
-    <None Include="PersonCountryDemo.DB2.sql">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DDILtoDB2</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.DCIL.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoDCIL</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.DDIL.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DCILtoDDIL</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.Implementation.PLiX.xml">
-      <AutoGen>True</AutoGen>
-      <Generator>NUPlixLoader</Generator>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
-      <LastGenOutput>PersonCountryDemo.Implementation.PLiX.cs</LastGenOutput>
-    </None>
-    <None Include="PersonCountryDemo.OIAL.xml">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>ORMtoOIAL</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.Oracle.sql">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DDILtoOracle</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.owl">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoOWL</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.PostgreSQL.sql">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.SQLServer.sql">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DDILtoSQLServer</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.SQLStandard.sql">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
-    </None>
-    <None Include="PersonCountryDemo.xsd">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
-      <ORMGenerator>OIALtoXSD</ORMGenerator>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlogDemo.Abstract.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.Abstract.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDemo.CoRef._ORMCustomToolReport.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.CoRef.orm</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDemo.DataLayerTestForm.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.DataLayerTestForm.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDemo.DataLayerTestFormInputControl.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.DataLayerTestFormInputControl.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDemo.Implementation.PLiX.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.Implementation.PLiX.xml</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDemo._ORMCustomToolReport.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+    </Compile>
     <Compile Include="PersonCountryDemo.Abstract.PLiX.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.Abstract.PLiX.xml</DependentUpon>
@@ -188,6 +122,16 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
     </None>
+    <None Include="SampleModel.DataLayer.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PHPDataLayerPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="SampleModel.DataLayer.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPDataLayerPLiX</ORMGenerator>
+    </None>
     <None Include="SampleModel.DataLayerTestForm.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
@@ -224,12 +168,27 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DCILtoDDIL</ORMGenerator>
     </None>
+    <None Include="SampleModel.Entities.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PHPEntitiesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Entities.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPEntitiesPLiX</ORMGenerator>
+    </None>
     <None Include="SampleModel.Implementation.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
       <LastGenOutput>SampleModel.Implementation.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.MySQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DDILtoMySQL</ORMGenerator>
     </None>
     <None Include="SampleModel.OIAL.xml">
       <AutoGen>True</AutoGen>
@@ -250,6 +209,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Proxies.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PHPProxiesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Proxies.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPProxiesPLiX</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Services.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PHPServicesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="SampleModel.Services.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPServicesPLiX</ORMGenerator>
     </None>
     <None Include="SampleModel.SQLServer.sql">
       <AutoGen>True</AutoGen>
@@ -273,6 +252,291 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
       <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
+    <None Include="PersonCountryDemo.Abstract.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.Abstract.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.CLIProperties.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.CoRef.orm">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>CoRefORM</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DataLayer.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>PHPDataLayerPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DataLayer.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPDataLayerPLiX</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestForm.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestForm</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestForm.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DataLayerTestFormInputControl.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.DB2.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoDB2</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DCIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DDIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DCILtoDDIL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Entities.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>PHPEntitiesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Entities.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPEntitiesPLiX</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Implementation.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
+      <LastGenOutput>PersonCountryDemo.Implementation.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="PersonCountryDemo.MySQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoMySQL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.OIAL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>ORMtoOIAL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Oracle.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoOracle</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.owl">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoOWL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.PostgreSQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Proxies.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>PHPProxiesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Proxies.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPProxiesPLiX</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Services.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>PHPServicesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Services.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPServicesPLiX</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.SQLServer.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLServer</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.SQLStandard.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.xsd">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoXSD</ORMGenerator>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup Condition="Exists('BlogDemo.orm')">
+    <None Include="BlogDemo.Abstract.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
+      <LastGenOutput>BlogDemo.Abstract.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="BlogDemo.CLIProperties.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.CoRef.orm">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>CoRefORM</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.DataLayer.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>PHPDataLayerPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.DataLayer.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPDataLayerPLiX</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.DataLayerTestForm.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestForm</ORMGenerator>
+      <LastGenOutput>BlogDemo.DataLayerTestForm.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
+      <LastGenOutput>BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="BlogDemo.DataLayerTestFormInputControl.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
+      <LastGenOutput>BlogDemo.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="BlogDemo.DB2.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoDB2</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.DCIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.DDIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DCILtoDDIL</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Entities.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>PHPEntitiesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Entities.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPEntitiesPLiX</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Implementation.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPliXDataLayerSprocFree</ORMGenerator>
+      <LastGenOutput>BlogDemo.Implementation.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="BlogDemo.MySQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoMySQL</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.OIAL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>ORMtoOIAL</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Oracle.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoOracle</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.owl">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoOWL</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.PostgreSQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Proxies.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>PHPProxiesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Proxies.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPProxiesPLiX</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Services.php">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>PHPServicesPLiXtoPHP</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.Services.php.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPHPServicesPLiX</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.SQLServer.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLServer</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.SQLStandard.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
+    </None>
+    <None Include="BlogDemo.xsd">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoXSD</ORMGenerator>
     </None>
   </ItemGroup>
 </Project>

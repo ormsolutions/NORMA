@@ -1,0 +1,1013 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHP">
+		<plx:class visibility="public" name="Wife_Husband_Person_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Husband for use inside of a Person isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="DoesSomethingElseWithPerson_ValueType1DoesSomethingElseWith_ValueType1_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a ValueType1 for the role ValueType1DoesSomethingElseWith for use inside of a Person isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="ValueType1Value" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="Person_Husband_Wife_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Husband for use inside of a Person isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_Wife_Collection_By_Husband" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="Person_Person_Task_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Person for use inside of a Person isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_Task_Collection_By_Person" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="Person_DoesSomethingWithPerson_ValueType1DoesSomethingWith_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role DoesSomethingWithPerson for use inside of a Person isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_ValueType1DoesSomethingWith_Collection_By_DoesSomethingWithPerson" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="Person_Buyer_PersonBoughtCarFromPersonOnDate_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Buyer for use inside of a Person isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_PersonBoughtCarFromPersonOnDate_Collection_By_Buyer" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="Person_Seller_PersonBoughtCarFromPersonOnDate_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Seller for use inside of a Person isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_PersonBoughtCarFromPersonOnDate_Collection_By_Seller" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="MalePerson_Father_ChildPerson_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a MalePerson for the role Father for use inside of a MalePerson isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_ChildPerson_Collection_By_Father" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="MalePersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="FemalePerson_Mother_ChildPerson_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a FemalePerson for the role Mother for use inside of a FemalePerson isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_ChildPerson_Collection_By_Mother" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="FemalePersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="ChildPerson_Father_MalePerson_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a MalePerson for the role Father for use inside of a ChildPerson isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="ChildPersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="ChildPerson_Mother_FemalePerson_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a FemalePerson for the role Mother for use inside of a ChildPerson isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="ChildPersonDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="Task_Person_Person_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Person for use inside of a Task isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="TaskDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="ValueType1DoesSomethingWith_DoesSomethingWithPerson_Person_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role DoesSomethingWithPerson for use inside of a ValueType1 isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="ValueType1DAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="ValueType1_ValueType1DoesSomethingElseWith_DoesSomethingElseWithPerson_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a ValueType1 for the role ValueType1DoesSomethingElseWith for use inside of a ValueType1 isCollection: true</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="get_DoesSomethingElseWithPerson_Collection_By_ValueType1DoesSomethingElseWith" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="ValueType1DAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="ValueType1Value" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="PersonBoughtCarFromPersonOnDate_Buyer_Person_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Buyer for use inside of a PersonBoughtCarFromPersonOnDate isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonBoughtCarFromPersonOnDateDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" name="PersonBoughtCarFromPersonOnDate_Seller_Person_Proxy">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>Class used to proxy a Person for the role Seller for use inside of a PersonBoughtCarFromPersonOnDate isCollection: false</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:field name="ref" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:field name="value" visibility="private" dataTypeName=".object">
+				<plx:initialize>
+					<plx:nullKeyword />
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name=".construct">
+				<plx:param name="ref" dataTypeName=".object" />
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" name="ref" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="ref" type="local" />
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="get" visibility="public">
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic dataTypeName=".global" name="isset" type="methodCall">
+								<plx:passParam>
+									<plx:callThis accessor="this" name="value" type="field" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" name="value" type="field" />
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="getSingle" type="methodCall">
+								<plx:callObject>
+									<plx:callStatic name="Instance" type="property" dataTypeName="PersonBoughtCarFromPersonOnDateDAO" />
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Person_id" type="property">
+										<plx:callObject>
+											<plx:callThis accessor="this" name="ref" type="field" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:return>
+					<plx:callThis accessor="this" name="value" type="field" />
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

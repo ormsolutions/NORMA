@@ -1,0 +1,770 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHPEntities">
+		<plx:class visibility="public" partial="true" name="BlogEntryLabel">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="BlogEntryLabel_blogEntryId_BlogEntry_Proxy" dataTypeName="BlogEntryLabel_blogEntryId_BlogEntry_Proxy" />
+			<plx:field visibility="private" name="BlogEntryLabel_blogLabelId_BlogLabel_Proxy" dataTypeName="BlogEntryLabel_blogLabelId_BlogLabel_Proxy" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="BlogEntryLabel_blogEntryId_BlogEntry_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="BlogEntryLabel_blogEntryId_BlogEntry_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="BlogEntryLabel_blogLabelId_BlogLabel_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="BlogEntryLabel_blogLabelId_BlogLabel_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override" />
+			<plx:function name="setblogEntryId" visibility="public">
+				<plx:param name="value" dataTypeName="BlogEntry" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="BlogEntryLabel_blogEntryId_BlogEntry_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getblogEntryId" visibility="public">
+				<plx:returns dataTypeName="BlogEntry" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="BlogEntryLabel_blogEntryId_BlogEntry_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function name="setblogLabelId" visibility="public">
+				<plx:param name="value" dataTypeName="BlogLabel" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="BlogEntryLabel_blogLabelId_BlogLabel_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getblogLabelId" visibility="public">
+				<plx:returns dataTypeName="BlogLabel" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="BlogEntryLabel_blogLabelId_BlogLabel_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="BlogEntry">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="BlogComment" dataTypeName="BlogComment" />
+			<plx:field visibility="private" name="NonCommentEntry" dataTypeName="NonCommentEntry" />
+			<plx:field visibility="private" name="BlogEntry_userId_User_Proxy" dataTypeName="BlogEntry_userId_User_Proxy" />
+			<plx:field visibility="private" name="BlogEntry_Id" dataTypeName=".i4" />
+			<plx:field visibility="private" name="entryTitle" dataTypeName=".string" />
+			<plx:field visibility="private" name="entryBody" dataTypeName=".string" />
+			<plx:field visibility="private" name="postedDate_MDYValue" dataTypeName=".i4" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="BlogEntry_userId_User_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="BlogEntry_userId_User_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>BlogEntry_Id</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>entryTitle</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>EntryTitle</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="30" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>entryBody</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>postedDate_MDYValue</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="BlogComment">
+				<plx:returns dataTypeName="BlogComment" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="BlogComment" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="BlogComment" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="BlogComment" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="BlogEntry" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="NonCommentEntry">
+				<plx:returns dataTypeName="NonCommentEntry" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="NonCommentEntry" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="NonCommentEntry" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="NonCommentEntry" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="BlogEntry" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setuserId" visibility="public">
+				<plx:param name="value" dataTypeName="User" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="BlogEntry_userId_User_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getuserId" visibility="public">
+				<plx:returns dataTypeName="User" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="BlogEntry_userId_User_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="BlogEntry_Id">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="BlogEntry_Id" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="BlogEntry_Id" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="entryTitle">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="entryTitle" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="entryTitle" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="entryBody">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="entryBody" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="entryBody" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="postedDate_MDYValue">
+				<plx:returns dataTypeName=".i4" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="postedDate_MDYValue" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="postedDate_MDYValue" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="BlogComment">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="BlogComment_parentEntryId_NonCommentEntry_Proxy" dataTypeName="BlogComment_parentEntryId_NonCommentEntry_Proxy" />
+			<plx:field visibility="private" name="BlogEntry" dataTypeName="BlogEntry" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="BlogComment_parentEntryId_NonCommentEntry_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="BlogComment_parentEntryId_NonCommentEntry_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override" />
+			<plx:property visibility="public" name="BlogEntry">
+				<plx:returns dataTypeName="BlogEntry" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="BlogEntry" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="BlogEntry" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="BlogEntry" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="BlogComment" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setparentEntryId" visibility="public">
+				<plx:param name="value" dataTypeName="NonCommentEntry" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="BlogComment_parentEntryId_NonCommentEntry_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getparentEntryId" visibility="public">
+				<plx:returns dataTypeName="NonCommentEntry" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="BlogComment_parentEntryId_NonCommentEntry_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="NonCommentEntry">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="BlogEntry" dataTypeName="BlogEntry" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override" />
+			<plx:property visibility="public" name="BlogEntry">
+				<plx:returns dataTypeName="BlogEntry" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="BlogEntry" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callThis name="BlogEntry" type="field" />
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="value" type="parameter" />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="BlogEntry" type="field" />
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="value" type="parameter" />
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name="NonCommentEntry" type="property">
+									<plx:callObject>
+										<plx:nameRef name="value" type="parameter" />
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:thisKeyword />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="User">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="firstName" dataTypeName=".string" />
+			<plx:field visibility="private" name="lastName" dataTypeName=".string" />
+			<plx:field visibility="private" name="username" dataTypeName=".string" />
+			<plx:field visibility="private" name="password" dataTypeName=".string" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>firstName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Name</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="30" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>lastName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Name</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="30" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>username</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Username</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="30" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>password</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Password</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="32" type=".string" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="32" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="firstName">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="firstName" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="firstName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="lastName">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="lastName" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="lastName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="username">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="username" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="username" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="password">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="password" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="password" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="BlogLabel">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="BlogLabel_Id" dataTypeName=".object" />
+			<plx:field visibility="private" name="title" dataTypeName=".string" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>BlogLabel_Id</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>title</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="BlogLabel_Id">
+				<plx:returns dataTypeName=".object" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="BlogLabel_Id" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="BlogLabel_Id" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="title">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="title" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="title" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+	</plx:namespace>
+</plx:root>

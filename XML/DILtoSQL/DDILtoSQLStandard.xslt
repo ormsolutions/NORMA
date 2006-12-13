@@ -1000,7 +1000,7 @@
 
 	<xsl:template match="ddl:referenceColumn">
 		<xsl:value-of select="@name"/>
-		<xsl:if test="not(position()=last()) and following-sibling::ddl:column">
+		<xsl:if test="not(position()=last()) and following-sibling::ddl:referenceColumn">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 	</xsl:template>

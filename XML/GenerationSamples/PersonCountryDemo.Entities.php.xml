@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<plx:namespace name="PHPEntities">
+		<plx:class visibility="public" partial="true" name="Person">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="Person_id" dataTypeName=".object" />
+			<plx:field visibility="private" name="Person_Country_Country_Proxy" dataTypeName="Person_Country_Country_Proxy" />
+			<plx:field visibility="private" name="LastName" dataTypeName=".string" />
+			<plx:field visibility="private" name="FirstName" dataTypeName=".string" />
+			<plx:field visibility="private" name="Title" dataTypeName=".string" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="Person_Country_Country_Proxy" type="field" />
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="Person_Country_Country_Proxy">
+							<plx:passParam>
+								<plx:thisKeyword />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Person_id</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>LastName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>LastName</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="30" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>FirstName</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>FirstName</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="30" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Title</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Title</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="4" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Person_id">
+				<plx:returns dataTypeName=".object" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Person_id" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Person_id" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:function name="setCountry" visibility="public">
+				<plx:param name="value" dataTypeName="Country" />
+				<plx:callInstance name="Set">
+					<plx:callObject>
+						<plx:callThis name="Person_Country_Country_Proxy" type="field" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="value" type="parameter" />
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:function name="getCountry" visibility="public">
+				<plx:returns dataTypeName="Country" />
+				<plx:return>
+					<plx:callInstance name="Get">
+						<plx:callObject>
+							<plx:callThis name="Person_Country_Country_Proxy" type="field" />
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:property visibility="public" name="LastName">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="LastName" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="LastName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="FirstName">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="FirstName" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="FirstName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Title">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Title" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Title" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+		<plx:class visibility="public" partial="true" name="Country">
+			<plx:derivesFromClass dataTypeName="Entity" />
+			<plx:field visibility="private" name="Country_name" dataTypeName=".string" />
+			<plx:field visibility="private" name="Region_Region_code" dataTypeName=".string" />
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied" accessor="base" />
+				</plx:initialize>
+			</plx:function>
+			<plx:function name="addValidationRules" visibility="public" modifier="override">
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Country_name</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Country_name</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="20" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="RequiredFieldValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Region_Region_code</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+				<plx:callInstance name="addValidationRule">
+					<plx:callObject>
+						<plx:callThis name="validationRules" type="field" accessor="this" />
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callNew dataTypeName="StringLenthValidator" dataTypeQualifier="PHPEntities">
+							<plx:passParam>
+								<plx:string>Region_code</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="8" type=".string" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:value data="8" type=".string" />
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:function>
+			<plx:property visibility="public" name="Country_name">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Country_name" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Country_name" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+			<plx:property visibility="public" name="Region_Region_code">
+				<plx:returns dataTypeName=".string" />
+				<plx:get>
+					<plx:return>
+						<plx:callThis type="field" name="Region_Region_code" />
+					</plx:return>
+				</plx:get>
+				<plx:set>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis type="field" name="Region_Region_code" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="value" type="parameter" />
+						</plx:right>
+					</plx:assign>
+				</plx:set>
+			</plx:property>
+		</plx:class>
+	</plx:namespace>
+</plx:root>
