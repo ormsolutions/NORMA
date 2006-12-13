@@ -137,7 +137,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				if (extensionManager.ckLaunchCustomPropertiesEditor.Checked)
 				{
-					Type customPropertyDomainModelType = ORMDesignerPackage.GetExtensionDomainModel("http://schemas.orm.net/ORM/CustomProperties");
+					Type customPropertyDomainModelType = ORMDesignerPackage.GetExtensionDomainModel("http://schemas.neumont.edu/ORM/Preview/CustomProperties");
 					Store store = docData.Store;
 
 					customPropertyDomainModelType.InvokeMember("ShowCustomGroups", System.Reflection.BindingFlags.ExactBinding | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.InvokeMethod,
