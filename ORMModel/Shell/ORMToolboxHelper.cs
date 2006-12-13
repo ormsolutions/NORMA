@@ -70,6 +70,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Debug.Assert(myFactTypeCount < 3);
 				AddFactType(store, group, ++myFactTypeCount);
 			}
+			else if (domainClassId.Equals(ExclusiveOrConstraintCoupler.DomainClassId))
+			{
+				group = new ElementGroup(store);
+				MandatoryConstraint mandatory = new MandatoryConstraint(store, null);
+				group.AddGraph(mandatory, true);
+				ExclusionConstraint exclusion = new ExclusionConstraint(store, null);
+				group.AddGraph(exclusion, true);
+				group.AddGraph(new ExclusiveOrConstraintCoupler(mandatory, exclusion), false);
+			}
 			else if (domainClassId.Equals(UniquenessConstraint.DomainClassId))
 			{
 				group = new ElementGroup(store);

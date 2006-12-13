@@ -53,6 +53,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeInstance).GetNestedType("RoleInstanceHasPopulationUniquenessErrorDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleDeleting", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("CouplerAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("CouplerDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("ExclusionConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("MandatoryConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RolePositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleSequenceAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleSequencePositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeHasReadingOrderAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeHasReadingOrderDeleteRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
@@ -341,6 +350,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[94],
 						customDomainModelTypes[95],
 						customDomainModelTypes[96],
+						customDomainModelTypes[97],
+						customDomainModelTypes[98],
 						customDomainModelTypes[99],
 						customDomainModelTypes[100],
 						customDomainModelTypes[101],
@@ -348,8 +359,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[103],
 						customDomainModelTypes[104],
 						customDomainModelTypes[105],
-						customDomainModelTypes[106],
-						customDomainModelTypes[107],
 						customDomainModelTypes[108],
 						customDomainModelTypes[109],
 						customDomainModelTypes[110],
@@ -435,7 +444,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[190],
 						customDomainModelTypes[191],
 						customDomainModelTypes[192],
-						customDomainModelTypes[193]};
+						customDomainModelTypes[193],
+						customDomainModelTypes[194],
+						customDomainModelTypes[195],
+						customDomainModelTypes[196],
+						customDomainModelTypes[197],
+						customDomainModelTypes[198],
+						customDomainModelTypes[199],
+						customDomainModelTypes[200],
+						customDomainModelTypes[201],
+						customDomainModelTypes[202]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -665,6 +683,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class ConstraintRoleSequenceHasRoleDeleting
 		{
 			public ConstraintRoleSequenceHasRoleDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class CouplerAddRule
+		{
+			public CouplerAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class CouplerDeleteRule
+		{
+			public CouplerDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class ExclusionConstraintChangeRule
+		{
+			public ExclusionConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class MandatoryConstraintChangeRule
+		{
+			public MandatoryConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class RoleAddRule
+		{
+			public RoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class RoleDeletingRule
+		{
+			public RoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class RolePositionChangeRule
+		{
+			public RolePositionChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class RoleSequenceAddRule
+		{
+			public RoleSequenceAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		private partial class RoleSequencePositionChangeRule
+		{
+			public RoleSequencePositionChangeRule()
 			{
 				base.IsEnabled = false;
 			}

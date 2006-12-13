@@ -21,6 +21,7 @@
 #define menuIdErrorList					0x0102
 #define menuIdReadingEditorContextMenu	0x0103
 #define menuIdDisplayOrientation		0x0104
+#define menuIdToolWindows				0x0105
 
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
@@ -43,7 +44,8 @@
 #define groupIdFactShapeCommands		0x100D
 #define groupIdDisplayOrientation		0x100E
 #define groupIdDisplayConstraintPosition 0x100F
-#define groupIdDisplayReverseRoleOrder	0x1020
+#define groupIdDisplayReverseRoleOrder	0x1010
+#define groupIdToolWindows				0x1011
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -101,6 +103,9 @@
 #define cmdIdDisplayConstraintsOnTop			0x2924
 #define cmdIdDisplayConstraintsOnBottom			0x2925
 #define cmdIdDisplayReverseRoleOrder			0x2926
+
+#define cmdIdExclusiveOrCoupler					0x2927
+#define cmdIdExclusiveOrDecoupler				0x2928
 
 #define cmdIdErrorList					0x2A00
 #define cmdIdErrorListEnd				0x2AFF

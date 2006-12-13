@@ -470,6 +470,13 @@
 		</DomainClass>
 
 		<DomainClass Name="ExclusionConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7766C350-ADFC-464C-B200-E4473F551E03" DisplayName="ExclusionConstraint" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ExclusionConstraint, Design.ExclusionConstraintTypeDescriptor&lt;ExclusionConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="SetComparisonConstraint"/>
 			</BaseClass>
@@ -1715,6 +1722,26 @@
 				<DomainRole Name="FactConstraint" PropertyName="ConstrainedRoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactConstraint" Id="8E11E9E0-DEC5-405D-8757-E34582339384">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="FactConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ExclusiveOrConstraintCoupler" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F2244A4C-BBE0-463B-9E8B-6A768C5C1469">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="MandatoryConstraint" PropertyName="ExclusiveOrExclusionConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExclusiveOrExclusionConstraint" Id="5CB84560-B945-4D22-BD70-523D502FBB95">
+					<RolePlayer>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ExclusionConstraint" PropertyName="ExclusiveOrMandatoryConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExclusiveOrMandatoryConstraint" Id="6413EE7E-A13F-4330-A45E-79727EA49A30">
+					<RolePlayer>
+						<DomainClassMoniker Name="ExclusionConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -3030,7 +3057,6 @@
 			</Target>
 		</DomainRelationship>
 
-		<!-- UNDONE: 2006-06 DSL Tools port: @IsEmbedding was true on this relationship, but that is no longer allowed when the target role player is itself a DomainRelationship. -->
 		<DomainRelationship Name="EntityTypeInstanceHasRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="05C64570-96FE-42C4-B9A6-F88D3BDC7C1F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3071,7 +3097,6 @@
 			</Target>
 		</DomainRelationship>
 
-		<!-- UNDONE: 2006-06 DSL Tools port: @IsEmbedding was true on this relationship, but that is no longer allowed when the target role player is itself a DomainRelationship. -->
 		<DomainRelationship Name="FactTypeInstanceHasRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F92B6EC1-8055-4502-BD5D-763D1F5B6849">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>

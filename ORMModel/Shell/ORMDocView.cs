@@ -217,6 +217,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DisplayReverseRoleOrder = 0x4000000000,
 		/// <summary>
+		/// Couple a MandatoryConstraint and an ExclusionConstraint into an ExclusiveOr constraint
+		/// </summary>
+		ExclusiveOrCoupler = 0x8000000000,
+		/// <summary>
+		/// Separate an ExclusiveOr constraint coupling
+		/// </summary>
+		ExclusiveOrDecoupler = 0x10000000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
@@ -260,6 +268,7 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerCommands.CopyImage |
 			ORMDesignerCommands.DisplayOrientation |
 			ORMDesignerCommands.DisplayConstraintsPosition |
+			ORMDesignerCommands.ExclusiveOrDecoupler |
 			ORMDesignerCommands.SelectAll |
 			ORMDesignerCommands.AlignShapes |
 			ORMDesignerCommands.AutoLayout |
@@ -272,13 +281,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
 		/// </summary>
-		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = EnabledSimpleMultiSelectCommandFilter;
+		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter =
+			EnabledSimpleMultiSelectCommandFilter |
+			ORMDesignerCommands.ExclusiveOrCoupler;
 		/// <summary>
 		/// A filter to turn off commands for a single selection
 		/// </summary>
 		private const ORMDesignerCommands DisabledSingleSelectCommandFilter =
 			ORMDesignerCommands.AutoLayout |
-			ORMDesignerCommands.AlignShapes;
+			ORMDesignerCommands.AlignShapes |
+			ORMDesignerCommands.ExclusiveOrCoupler;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -627,7 +639,7 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDesignerCommands currentCheckable;
 					ORMDesignerCommands currentChecked;
 					ORMDesignerCommands currentTolerated;
-					visibleCommands = enabledCommands = checkableCommands = checkedCommands = EnabledSimpleMultiSelectCommandFilter;
+					visibleCommands = enabledCommands = checkableCommands = checkedCommands = (EnabledSimpleMultiSelectCommandFilter | EnabledComplexMultiSelectCommandFilter);
 					Type firstType = null;
 					bool isComplex = false;
 					NodeShape primaryShape = PrimarySelectedShape;
@@ -781,6 +793,7 @@ namespace Neumont.Tools.ORM.Shell
 			ObjectType objectType;
 			NodeShape nodeShape;
 			SetConstraint setConstraint;
+			SetComparisonConstraint setComparisonConstraint = null;
 			bool otherShape = false;
 			if (null != (factType = element as FactType))
 			{
@@ -840,9 +853,36 @@ namespace Neumont.Tools.ORM.Shell
 					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 				}
 			}
-			else if (setConstraint != null || element is SetComparisonConstraint)
+			else if ((null != setConstraint) || (null != (setComparisonConstraint = element as SetComparisonConstraint)))
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
+				ExclusionConstraint exclusionConstraint;
+				if (setConstraint != null)
+				{
+					if (setConstraint.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+					{
+						if (((MandatoryConstraint)setConstraint).ExclusiveOrExclusionConstraint != null)
+						{
+							visibleCommands |= ORMDesignerCommands.ExclusiveOrDecoupler;
+							enabledCommands |= ORMDesignerCommands.ExclusiveOrDecoupler;
+						}
+						else
+						{
+							// We'll do deeper processing of this command in OnStatusCommand
+							visibleCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+							enabledCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+						}
+					}
+				}
+				else if (null != (exclusionConstraint = setComparisonConstraint as ExclusionConstraint))
+				{
+					if (exclusionConstraint.ExclusiveOrMandatoryConstraint == null)
+					{
+						// We'll do deeper processing of this command in OnStatusCommand
+						visibleCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+						enabledCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+					}
+				}
 				if (presentationElement is ExternalConstraintShape)
 				{
 					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.AutoLayout;
@@ -917,44 +957,33 @@ namespace Neumont.Tools.ORM.Shell
 					if (null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
 						&& null != (constraint = constraintShape.AssociatedConstraint))
 					{
-						bool thisRoleInConstraint = false;
 						switch (constraint.ConstraintStorageStyle)
 						{
 							case ConstraintStorageStyle.SetConstraint:
-								SetConstraint scec = constraint as SetConstraint;
-								if (scec.RoleCollection.IndexOf(role) >= 0)
+								if ((constraint as SetConstraint).RoleCollection.IndexOf(role) >= 0)
 								{
-									thisRoleInConstraint = true;
 									visibleCommands |= ORMDesignerCommands.ActivateRoleSequence;
 									enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
 								}
 								break;
 							case ConstraintStorageStyle.SetComparisonConstraint:
-								SetComparisonConstraint mcec = constraint as SetComparisonConstraint;
-								int indexOfRole = -1;
-								LinkedElementCollection<Role> currentRoleSequence = null;
-								foreach (SetComparisonConstraintRoleSequence rs in mcec.RoleSequenceCollection)
+								LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = (constraint as SetComparisonConstraint).RoleSequenceCollection;
+								int sequenceCount = roleSequences.Count;
+								for (int i = 0; i < sequenceCount; ++i)
 								{
-									currentRoleSequence = rs.RoleCollection;
-									indexOfRole = currentRoleSequence.IndexOf(role);
-									if (indexOfRole >= 0)
+									if (roleSequences[i].RoleCollection.Contains(role))
 									{
-										thisRoleInConstraint = true;
-										indexOfRole = mcec.RoleSequenceCollection.IndexOf(rs);
+										visibleCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
+										enabledCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
+										if (i == 0)
+										{
+											enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
+										}
+										else if (i == (sequenceCount - 1))
+										{
+											enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
+										}
 										break;
-									}
-								}
-								if (thisRoleInConstraint)
-								{
-									visibleCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
-									enabledCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
-									if (indexOfRole == 0)
-									{
-										enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
-									}
-									else if (indexOfRole == currentRoleSequence.Count - 1)
-									{
-										enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
 									}
 								}
 								break;
@@ -1048,9 +1077,16 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDesignerCommands activeFilter = ORMDesignerCommands.DisplayStandardWindows;
 					commandFlag &= activeFilter;
 				}
-				command.Visible = 0 != (commandFlag & docView.myVisibleCommands);
-				command.Enabled = 0 != (commandFlag & docView.myEnabledCommands);
+				bool isVisible;
+				bool isEnabled;
+				ORMDesignerCommands allEnabledCommands;
+				command.Visible = isVisible = (0 != (commandFlag & docView.myVisibleCommands));
+				command.Enabled = isEnabled = (0 != (commandFlag & (allEnabledCommands = docView.myEnabledCommands)));
 				command.Checked = 0 != (commandFlag & docView.myCheckedCommands);
+				if (!isVisible && !isEnabled)
+				{
+					return;
+				}
 				if (0 != (commandFlag & (ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny)))
 				{
 					docView.SetDeleteElementCommandText((OleMenuCommand)command);
@@ -1059,75 +1095,152 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					docView.SetDeleteShapeCommandText((OleMenuCommand)command);
 				}
-				else if (commandFlag == ORMDesignerCommands.ToggleSimpleMandatory && command.Enabled)
+				else if (commandFlag == ORMDesignerCommands.ToggleSimpleMandatory)
 				{
-					foreach (ModelElement mel in docView.GetSelectedComponents())
+					if (isEnabled)
 					{
-						Role role = mel as Role;
-						if (role != null)
+						foreach (ModelElement mel in docView.GetSelectedComponents())
 						{
-							// The command is only enabled when all selected roles have
-							// the same mandatory state. A quick check will let us know when
-							// the state has been changed.
-							command.Checked = role.IsMandatory;
-							break;
-						}
-					}
-				}
-				else if (0 != (commandFlag & ORMDesignerCommands.DisplayOrientation) && command.Enabled)
-				{
-					// This can change between status checks, check the selected items
-					DisplayOrientation expectedOrientation = DisplayOrientation.Horizontal;
-					switch (commandFlag & ORMDesignerCommands.DisplayOrientation)
-					{
-						case ORMDesignerCommands.DisplayOrientationRotatedLeft:
-							expectedOrientation = DisplayOrientation.VerticalRotatedLeft;
-							break;
-						case ORMDesignerCommands.DisplayOrientationRotatedRight:
-							expectedOrientation = DisplayOrientation.VerticalRotatedRight;
-							break;
-					}
-					bool isChecked = true;
-					foreach (ModelElement mel in docView.GetSelectedComponents())
-					{
-						FactTypeShape shape = mel as FactTypeShape;
-						if (shape != null)
-						{
-							// The command is checked when all selected values match the expected orientation
-							if (shape.DisplayOrientation != expectedOrientation)
+							Role role = mel as Role;
+							if (role != null)
 							{
-								isChecked = false;
+								// The command is only enabled when all selected roles have
+								// the same mandatory state. A quick check will let us know when
+								// the state has been changed.
+								command.Checked = role.IsMandatory;
 								break;
 							}
 						}
 					}
-					command.Checked = isChecked;
 				}
-				else if (0 != (commandFlag & ORMDesignerCommands.DisplayConstraintsPosition) && command.Enabled)
+				else if (0 != (commandFlag & ORMDesignerCommands.ExclusiveOrCoupler))
 				{
-					// This can change between status checks, check the selected items
-					ConstraintDisplayPosition expectedPosition = ConstraintDisplayPosition.Top;
-					switch (commandFlag & ORMDesignerCommands.DisplayConstraintsPosition)
+					if (isEnabled)
 					{
-						case ORMDesignerCommands.DisplayConstraintsOnBottom:
-							expectedPosition = ConstraintDisplayPosition.Bottom;
-							break;
-					}
-					bool isChecked = true;
-					foreach (ModelElement mel in docView.GetSelectedComponents())
-					{
-						FactTypeShape shape = mel as FactTypeShape;
-						if (shape != null)
+						// Given the strict and unusual requirements on this command,
+						// most of the processing for this command is deferred to this point.
+						// If it is visible but not enabled, then we have done this processing
+						// once already.
+						ICollection collection;
+						bool disable = false;
+						bool hide = false;
+						if (0 != (allEnabledCommands & ORMDesignerCommands.ExclusiveOrDecoupler) ||
+							2 != (collection = docView.GetSelectedComponents()).Count)
 						{
-							// The command is checked when all selected values match the expected orientation
-							if (shape.ConstraintDisplayPosition != expectedPosition)
+							disable = hide = true;
+						}
+						else
+						{
+							MandatoryConstraint mandatory = null;
+							ExclusionConstraint exclusion = null;
+							foreach (ModelElement mel in docView.GetSelectedComponents())
 							{
-								isChecked = false;
-								break;
+								PresentationElement pel = mel as PresentationElement;
+								IConstraint testConstraint = (pel != null) ? pel.Subject as IConstraint : mel as IConstraint;
+								if (testConstraint == null)
+								{
+									break;
+								}
+								switch (testConstraint.ConstraintType)
+								{
+									case ConstraintType.DisjunctiveMandatory:
+										if (mandatory == null)
+										{
+											mandatory = (MandatoryConstraint)testConstraint;
+										}
+										break;
+									case ConstraintType.Exclusion:
+										if (exclusion == null)
+										{
+											exclusion = (ExclusionConstraint)testConstraint;
+										}
+										break;
+								}
+							}
+							if (null == mandatory && null == exclusion)
+							{
+								disable = hide = true;
+							}
+							else
+							{
+								if (!ExclusiveOrConstraintCoupler.CanCoupleConstraints(mandatory, exclusion))
+								{
+									disable = true;
+								}
 							}
 						}
+						if (disable)
+						{
+							docView.myEnabledCommands &= ~ORMDesignerCommands.ExclusiveOrCoupler;
+							command.Enabled = false;
+						}
+						if (hide)
+						{
+							docView.myVisibleCommands &= ~ORMDesignerCommands.ExclusiveOrCoupler;
+							command.Visible = false;
+						}
 					}
-					command.Checked = isChecked;
+				}
+				else if (0 != (commandFlag & ORMDesignerCommands.DisplayOrientation))
+				{
+					if (isEnabled)
+					{
+						// This can change between status checks, check the selected items
+						DisplayOrientation expectedOrientation = DisplayOrientation.Horizontal;
+						switch (commandFlag & ORMDesignerCommands.DisplayOrientation)
+						{
+							case ORMDesignerCommands.DisplayOrientationRotatedLeft:
+								expectedOrientation = DisplayOrientation.VerticalRotatedLeft;
+								break;
+							case ORMDesignerCommands.DisplayOrientationRotatedRight:
+								expectedOrientation = DisplayOrientation.VerticalRotatedRight;
+								break;
+						}
+						bool isChecked = true;
+						foreach (ModelElement mel in docView.GetSelectedComponents())
+						{
+							FactTypeShape shape = mel as FactTypeShape;
+							if (shape != null)
+							{
+								// The command is checked when all selected values match the expected orientation
+								if (shape.DisplayOrientation != expectedOrientation)
+								{
+									isChecked = false;
+									break;
+								}
+							}
+						}
+						command.Checked = isChecked;
+					}
+				}
+				else if (0 != (commandFlag & ORMDesignerCommands.DisplayConstraintsPosition))
+				{
+					if (isEnabled)
+					{
+						// This can change between status checks, check the selected items
+						ConstraintDisplayPosition expectedPosition = ConstraintDisplayPosition.Top;
+						switch (commandFlag & ORMDesignerCommands.DisplayConstraintsPosition)
+						{
+							case ORMDesignerCommands.DisplayConstraintsOnBottom:
+								expectedPosition = ConstraintDisplayPosition.Bottom;
+								break;
+						}
+						bool isChecked = true;
+						foreach (ModelElement mel in docView.GetSelectedComponents())
+						{
+							FactTypeShape shape = mel as FactTypeShape;
+							if (shape != null)
+							{
+								// The command is checked when all selected values match the expected orientation
+								if (shape.ConstraintDisplayPosition != expectedPosition)
+								{
+									isChecked = false;
+									break;
+								}
+							}
+						}
+						command.Checked = isChecked;
+					}
 				}
 				else if (0 != (commandFlag & (ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight)))
 				{
@@ -1144,115 +1257,122 @@ namespace Neumont.Tools.ORM.Shell
 						}
 					}
 				}
-				else if (commandFlag == ORMDesignerCommands.ErrorList && command.Enabled)
+				else if (commandFlag == ORMDesignerCommands.ErrorList)
 				{
-					OleMenuCommand cmd = sender as OleMenuCommand;
-					string errorText = null;
-					int errorIndex = cmd.MatchedCommandId;
-					foreach (ModelElement mel in docView.GetSelectedComponents())
+					if (isEnabled)
 					{
-						IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
-						if (errorOwner != null)
-						{
-							foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
-							{
-								if (errorIndex == 0)
-								{
-									errorText = error.Name;
-									break;
-								}
-								--errorIndex;
-							}
-						}
-					}
-					if (errorText != null)
-					{
-						cmd.Enabled = true;
-						cmd.Visible = true;
-						cmd.Supported = true;
-						cmd.Text = errorText;
-					}
-					else
-					{
-						cmd.Supported = false;
-					}
-				}
-				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness && command.Enabled)
-				{
-					// Determine if a unique internal uniqueness constraint can
-					// be added at this point.
-
-					// Delay processing for this one until this point. There
-					// is no need to run it whenever the selection changes to include
-					// a role, given than it is only used when the context menu is opened.
-					bool disable = false;
-					bool hide = false;
-					int selCount = docView.SelectionCount;
-					if (selCount != 0)
-					{
-						Role[] roles = new Role[selCount];
-						FactType fact = null;
-						int currentRoleIndex = 0;
+						OleMenuCommand cmd = sender as OleMenuCommand;
+						string errorText = null;
+						int errorIndex = cmd.MatchedCommandId;
 						foreach (ModelElement mel in docView.GetSelectedComponents())
 						{
-							Role role = mel as Role;
-							if (role == null)
+							IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
+							if (errorOwner != null)
 							{
-								break;
-							}
-							FactType testFact = role.FactType;
-							if (fact == null)
-							{
-								fact = testFact;
-							}
-							else if (fact != testFact)
-							{
-								fact = null;
-								break;
-							}
-							roles[currentRoleIndex] = role;
-							++currentRoleIndex;
-						}
-						if (currentRoleIndex == selCount && fact != null)
-						{
-							foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
-							{
-								LinkedElementCollection<Role> factRoles = iuc.RoleCollection;
-								if (factRoles.Count == selCount)
+								foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 								{
-									int i = 0;
-									for (; i < selCount; ++i)
+									if (errorIndex == 0)
 									{
-										if (!factRoles.Contains(roles[i]))
-										{
-											break;
-										}
-									}
-									if (i == selCount)
-									{
-										disable = true;
+										errorText = error.Name;
 										break;
 									}
+									--errorIndex;
 								}
 							}
+						}
+						if (errorText != null)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = errorText;
 						}
 						else
 						{
-							hide = true;
-							disable = true;
-						}
-					}
-					if (disable)
-					{
-						docView.myEnabledCommands &= ~ORMDesignerCommands.AddInternalUniqueness;
-						command.Enabled = false;
-						if (hide)
-						{
-							docView.myVisibleCommands &= ~ORMDesignerCommands.AddInternalUniqueness;
-							command.Visible = false;
+							cmd.Supported = false;
 						}
 					}
 				}
+				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness)
+				{
+					if (isEnabled)
+					{
+						// Determine if a unique internal uniqueness constraint can
+						// be added at this point.
+
+						// Delay processing for this one until this point. There
+						// is no need to run it whenever the selection changes to include
+						// a role, given than it is only used when the context menu is opened.
+						bool disable = false;
+						bool hide = false;
+						int selCount = docView.SelectionCount;
+						if (selCount != 0)
+						{
+							Role[] roles = new Role[selCount];
+							FactType fact = null;
+							int currentRoleIndex = 0;
+							foreach (ModelElement mel in docView.GetSelectedComponents())
+							{
+								Role role = mel as Role;
+								if (role == null)
+								{
+									break;
+								}
+								FactType testFact = role.FactType;
+								if (fact == null)
+								{
+									fact = testFact;
+								}
+								else if (fact != testFact)
+								{
+									fact = null;
+									break;
+								}
+								roles[currentRoleIndex] = role;
+								++currentRoleIndex;
+							}
+							if (currentRoleIndex == selCount && fact != null)
+							{
+								foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
+								{
+									LinkedElementCollection<Role> factRoles = iuc.RoleCollection;
+									if (factRoles.Count == selCount)
+									{
+										int i = 0;
+										for (; i < selCount; ++i)
+										{
+											if (!factRoles.Contains(roles[i]))
+											{
+												break;
+											}
+										}
+										if (i == selCount)
+										{
+											disable = true;
+											break;
+										}
+									}
+								}
+							}
+							else
+							{
+								hide = true;
+								disable = true;
+							}
+						}
+						if (disable)
+						{
+							docView.myEnabledCommands &= ~ORMDesignerCommands.AddInternalUniqueness;
+							command.Enabled = false;
+							if (hide)
+							{
+								docView.myVisibleCommands &= ~ORMDesignerCommands.AddInternalUniqueness;
+								command.Visible = false;
+							}
+						}
+					}
+				}
+
 			}
 		}
 
@@ -2850,6 +2970,64 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					factTypeShape.ReverseDisplayedRoleOrder();
 					break;
+				}
+			}
+		}
+		/// <summary>
+		/// Couple selected disjunctive mandatory and exclusion constraints
+		/// </summary>
+		protected virtual void OnMenuExclusiveOrCoupler()
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			ICollection collection;
+			if (2 == (collection = GetSelectedComponents()).Count)
+			{
+				MandatoryConstraint mandatory = null;
+				ExclusionConstraint exclusion = null;
+				foreach (ModelElement mel in GetSelectedComponents())
+				{
+					PresentationElement pel = mel as PresentationElement;
+					IConstraint testConstraint = (pel != null) ? pel.Subject as IConstraint : mel as IConstraint;
+					switch (testConstraint.ConstraintType)
+					{
+						case ConstraintType.DisjunctiveMandatory:
+							mandatory = (MandatoryConstraint)testConstraint;
+							break;
+						case ConstraintType.Exclusion:
+							exclusion = (ExclusionConstraint)testConstraint;
+							break;
+					}
+				}
+				if (null != mandatory && null != exclusion)
+				{
+					using (Transaction t = mandatory.Store.TransactionManager.BeginTransaction(ResourceStrings.ExclusiveOrCouplerTransactionName))
+					{
+						new ExclusiveOrConstraintCoupler(mandatory, exclusion);
+						t.Commit();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Decouple selected ExclusiveOr constraint
+		/// </summary>
+		protected virtual void OnMenuExclusiveOrDecoupler()
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			foreach (ModelElement mel in GetSelectedComponents())
+			{
+				PresentationElement pel = mel as PresentationElement;
+				MandatoryConstraint constraint = (pel != null) ? pel.Subject as MandatoryConstraint : mel as MandatoryConstraint;
+				if (constraint != null)
+				{
+					using (Transaction t = constraint.Store.TransactionManager.BeginTransaction(ResourceStrings.ExclusiveOrDecouplerTransactionName))
+					{
+						constraint.ExclusiveOrExclusionConstraint = null;
+						if (t.HasPendingChanges)
+						{
+							t.Commit();
+						}
+					}
 				}
 			}
 		}

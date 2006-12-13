@@ -35,6 +35,15 @@
 		<arg:Rule class="EntityTypeInstance.RoleInstanceHasPopulationUniquenessErrorDeleted"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleDeleting"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.CouplerAddRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.CouplerDeleteRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.ExclusionConstraintChangeRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.MandatoryConstraintChangeRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.RoleAddRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.RoleDeletingRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.RolePositionChangeRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.RoleSequenceAddRule"/>
+		<arg:Rule class="ExclusiveOrConstraintCoupler.RoleSequencePositionChangeRule"/>
 		<arg:Rule class="FactType.FactTypeChangeRule"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderAddRuleModelValidation"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderDeleteRuleModelValidation"/>

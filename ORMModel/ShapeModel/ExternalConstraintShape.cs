@@ -255,6 +255,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					RectangleF shrinkBounds = boundsF;
 					shrinkBounds.Inflate(-boundsF.Width * .22f, -boundsF.Height * .22f);
 					g.FillEllipse(brush, shrinkBounds);
+					if (null != ExclusiveOrConstraintCoupler.GetExclusiveOrExclusionConstraint((MandatoryConstraint)constraint))
+					{
+						goto case ConstraintType.Exclusion;
+					}
 					break;
 				}
 				#endregion
@@ -684,5 +688,75 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Store Event Handlers
+		#region ExclusiveOrCoupler rules
+		/// <summary>
+		/// Remove shapes associated with the exclusion constraint
+		/// when exclusion and mandatory constraints are coupled.
+		/// </summary>
+		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
+		private partial class ExclusiveOrCouplerAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+				MandatoryConstraint mandatory = link.MandatoryConstraint;
+				ExclusionConstraint exclusion = link.ExclusionConstraint;
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(exclusion);
+				int pelCount = pels.Count;
+				for (int i = pelCount - 1; i >= 0; --i)
+				{
+					ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
+					if (shape != null)
+					{
+						shape.Delete();
+					}
+				}
+				pels = PresentationViewsSubject.GetPresentation(mandatory);
+				pelCount = pels.Count;
+				for (int i = 0; i < pelCount; ++i)
+				{
+					ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
+					if (shape != null)
+					{
+						shape.InvalidateRequired(true);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Split a single shape into two shapes when a exclusion constraint
+		/// is decoupled from a mandatory constraint
+		/// </summary>
+		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
+		private partial class ExclusiveOrCouplerDeleted : DeleteRule
+		{
+			public override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+				MandatoryConstraint mandatory = link.MandatoryConstraint;
+				ExclusionConstraint exclusion = link.ExclusionConstraint;
+				if (!mandatory.IsDeleted && !exclusion.IsDeleted)
+				{
+					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(mandatory);
+					int pelCount = pels.Count;
+					for (int i = 0; i < pelCount; ++i)
+					{
+						ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
+						if (shape != null)
+						{
+							ORMDiagram diagram = (ORMDiagram)shape.Diagram;
+							RectangleD bounds = shape.AbsoluteBounds;
+							double width = bounds.Width;
+							bounds.Offset(-width / 2, 0);
+							bounds = diagram.BoundsRules.GetCompliantBounds(shape, bounds);
+							shape.AbsoluteBounds = bounds;
+							bounds.Offset(width, 0);
+							diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location);
+						}
+					}
+				}
+			}
+		}
+		#endregion // ExclusiveOrCoupler rules
 	}
 }

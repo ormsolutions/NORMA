@@ -4262,6 +4262,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// DomainClass ExclusionConstraint
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ExclusionConstraint, Design.ExclusionConstraintTypeDescriptor<ExclusionConstraint>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -4292,6 +4293,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public ExclusionConstraint(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
+		}
+		#endregion
+		#region ExclusiveOrMandatoryConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ExclusiveOrMandatoryConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraint
+		/// </summary>
+		public virtual MandatoryConstraint ExclusiveOrMandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId) as MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId, value);
+			}
 		}
 		#endregion
 	}
@@ -5695,6 +5716,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		
+		#endregion
+		#region ExclusiveOrExclusionConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ExclusiveOrExclusionConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraint
+		/// </summary>
+		public virtual ExclusionConstraint ExclusiveOrExclusionConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId) as ExclusionConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId, value);
+			}
+		}
 		#endregion
 	}
 }

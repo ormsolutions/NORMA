@@ -4713,6 +4713,450 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion //VerifyImpliedMandatoryRole Add/Remove Methods
 	}
 	#endregion // MandatoryConstraint class
+	#region ExlusiveOrConstraintCoupler class
+	public partial class ExclusiveOrConstraintCoupler
+	{
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies the pattern between coupled constraints.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ExclusiveOrPatternFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Properly initializes the myGeneratedName field
+		/// </summary>
+		private sealed class ExclusiveOrPatternFixupListener : DeserializationFixupListener<ExclusiveOrConstraintCoupler>
+		{
+			/// <summary>
+			/// ExclusiveOrPatternFixupListener constructor
+			/// </summary>
+			public ExclusiveOrPatternFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Process ExclusiveOrConstraintCoupler elements
+			/// </summary>
+			/// <param name="element">An ExclusiveOrConstraintCoupler element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(ExclusiveOrConstraintCoupler element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					if (!element.SynchronizeCoupledRoles(false))
+					{
+						element.Delete();
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
+		#region Pattern verification helper methods
+		/// <summary>
+		/// Determine if an ExclusiveOrConstraintCoupler can be successfully created
+		/// between the two provided constraints.
+		/// </summary>
+		/// <param name="mandatoryConstraint">A candidate <see cref="MandatoryConstraint"/></param>
+		/// <param name="exclusionConstraint">A candidate <see cref="ExclusionConstraint"/></param>
+		/// <returns>true if the constraints can be coupled</returns>
+		public static bool CanCoupleConstraints(MandatoryConstraint mandatoryConstraint, ExclusionConstraint exclusionConstraint)
+		{
+			if (mandatoryConstraint.Constraint.ConstraintType != ConstraintType.DisjunctiveMandatory ||
+				mandatoryConstraint.ExclusiveOrExclusionConstraint != null ||
+				exclusionConstraint.ExclusiveOrMandatoryConstraint != null)
+			{
+				return false;
+			}
+			LinkedElementCollection<Role> mandatoryRoles = mandatoryConstraint.RoleCollection;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences = exclusionConstraint.RoleSequenceCollection;
+			int sequenceCount = exclusionSequences.Count;
+			bool retVal = false;
+			if (mandatoryRoles.Count == sequenceCount)
+			{
+				retVal = true; // Prove otherwise
+				IList<Role> testRoles = null; // A temporary array so we can null out roles that are already matched
+				for (int i = 0; i < sequenceCount; ++i)
+				{
+					SetComparisonConstraintRoleSequence exclusionSequence = exclusionSequences[i];
+					LinkedElementCollection<Role> exclusionRoles = exclusionSequence.RoleCollection;
+					if (exclusionRoles.Count != 1)
+					{
+						retVal = false;
+						break;
+					}
+					if (testRoles == null)
+					{
+						if (exclusionRoles[0] == mandatoryRoles[i])
+						{
+							// If the roles are already in the same order then
+							// we don't need to work as hard
+							continue;
+						}
+						else if (i < (sequenceCount - 1))
+						{
+							Role[] roles = new Role[sequenceCount];
+							mandatoryRoles.CopyTo(roles, 0);
+							for (int j = 0; j < i; ++j)
+							{
+								// These have already been matched
+								roles[j] = null;
+							}
+							testRoles = roles;
+						}
+						else
+						{
+							retVal = false;
+							break;
+						}
+					}
+					int matchIndex = testRoles.IndexOf(exclusionRoles[0]);
+					if (matchIndex >= 0)
+					{
+						testRoles[matchIndex] = null;
+					}
+					else
+					{
+						retVal = false;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Verify and synchronize the roles of the MandatoryConstraint with
+		/// those of the ExclusionConstraint.
+		/// </summary>
+		/// <param name="throwOnFailure">true to raise an exception on failure</param>
+		/// <returns>true if the synchronization succeeded.</returns>
+		private bool SynchronizeCoupledRoles(bool throwOnFailure)
+		{
+			LinkedElementCollection<Role> mandatoryRoles = MandatoryConstraint.RoleCollection;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences = ExclusionConstraint.RoleSequenceCollection;
+			int sequenceCount = exclusionSequences.Count;
+			bool invalidConfiguration = true;
+			if (mandatoryRoles.Count == sequenceCount)
+			{
+				invalidConfiguration = false; // Prove otherwise
+				int sequenceIndex = 0;
+				// n is small here (more than 5 is rare), so I'm not too
+				// concerned about the efficiency of the algorithm.
+				while (sequenceIndex < sequenceCount)
+				{
+					SetComparisonConstraintRoleSequence exclusionSequence = exclusionSequences[sequenceIndex];
+					LinkedElementCollection<Role> exclusionRoles = exclusionSequence.RoleCollection;
+					if (exclusionRoles.Count != 1)
+					{
+						invalidConfiguration = true;
+						break;
+					}
+					int mandatoryIndex = mandatoryRoles.IndexOf(exclusionRoles[0]);
+					if (mandatoryIndex == sequenceIndex)
+					{
+						++sequenceIndex;
+					}
+					else if (mandatoryIndex < sequenceIndex)
+					{
+						// Duplicate role in the exclusion constraint, we've already
+						// see this one.
+						invalidConfiguration = true;
+						break;
+					}
+					else
+					{
+						// Move the sequence. We'll reverify its position later.
+						exclusionSequences.Move(sequenceIndex, mandatoryIndex);
+					}
+				}
+			}
+			if (invalidConfiguration && throwOnFailure)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceSingleFactForInternalConstraint);
+			}
+			return !invalidConfiguration;
+		}
+		private static void ThrowDirectExclusionConstraintEditException()
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit);
+		}
+		#endregion // Pattern verification helper methods
+		#region CouplerDeleteRule class
+		/// <summary>
+		/// Give the ExclusiveOrConstraintCoupler bidirection propagate delete
+		/// behavior, but only if one end is already deleted and the other is not
+		/// </summary>
+		[RuleOn(typeof(ExclusiveOrConstraintCoupler))] // DeleteRule
+		private partial class CouplerDeleteRule : DeleteRule
+		{
+			public override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+				MandatoryConstraint mandatory = link.MandatoryConstraint;
+				ExclusionConstraint exclusion = link.ExclusionConstraint;
+				if (mandatory.IsDeleted && !exclusion.IsDeleted)
+				{
+					exclusion.Delete();
+				}
+				else if (exclusion.IsDeleted && !mandatory.IsDeleted)
+				{
+					mandatory.Delete();
+				}
+			}
+		}
+		#endregion // CouplerDeleteRule class
+		#region CouplerAddRule class
+		/// <summary>
+		/// Verify that the exclusion constraint has role settings compatible
+		/// with the mandatory constraint, reordering constraints as needed
+		/// </summary>
+		[RuleOn(typeof(ExclusiveOrConstraintCoupler))] // AddRule
+		private partial class CouplerAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				((ExclusiveOrConstraintCoupler)e.ModelElement).SynchronizeCoupledRoles(true);
+			}
+		}
+		#endregion // CouplerAddRule class
+		#region RoleAddRule class
+		/// <summary>
+		/// Enforce that any role added to a MandatoryConstraint is also
+		/// added to a coupled ExclusionConstraint.
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
+		private partial class RoleAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				MandatoryConstraint mandatoryConstraint;
+				ExclusionConstraint exclusionConstraint;
+				SetComparisonConstraintRoleSequence comparisonConstraintSequence;
+				if (null != (mandatoryConstraint = sequence as MandatoryConstraint))
+				{
+					if (null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
+					{
+						// We need to add a new sequence with a single role in it to the corresponding exclusion constraint.
+						// Add rules can fire due to either add or insert commands, so we need to find the
+						// correct position in the sequence.
+						Store store = link.Store;
+						comparisonConstraintSequence = new SetComparisonConstraintRoleSequence(store, null);
+						comparisonConstraintSequence.RoleCollection.Add(link.Role);
+						ReadOnlyCollection<ConstraintRoleSequenceHasRole> orderedLinks = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(sequence);
+						int insertionIndex = orderedLinks.IndexOf(link);
+						RuleManager ruleManager = store.RuleManager;
+						ruleManager.DisableRule(typeof(RoleSequenceAddRule));
+						try
+						{
+							if (insertionIndex == (orderedLinks.Count - 1))
+							{
+								exclusionConstraint.RoleSequenceCollection.Add(comparisonConstraintSequence);
+							}
+							else
+							{
+								exclusionConstraint.RoleSequenceCollection.Insert(insertionIndex, comparisonConstraintSequence);
+							}
+						}
+						finally
+						{
+							ruleManager.EnableRule(typeof(RoleSequenceAddRule));
+						}
+					}
+				}
+				else if (null != (comparisonConstraintSequence = sequence as SetComparisonConstraintRoleSequence) &&
+					null != (exclusionConstraint = comparisonConstraintSequence.ExternalConstraint as ExclusionConstraint) &&
+					null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+				{
+					// Note that this will not fire from the code earlier in this routine because
+					// the sequence is populated before it is added to the constraint, so we can
+					// always throw here.
+					ThrowDirectExclusionConstraintEditException();
+				}
+			}
+		}
+		#endregion // RoleAddRule class
+		#region RolePositionChangeRule class
+		/// <summary>
+		/// Enforce that any role moved in a MandatoryConstraint is also
+		/// moved in a coupled ExclusionConstraint.
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerPositionChangeRule
+		private partial class RolePositionChangeRule : RolePlayerPositionChangeRule
+		{
+			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			{
+				// Note that we will never get a position change for a role in a coupled
+				// exclusion constraint because each sequence has exactly one role
+				MandatoryConstraint mandatoryConstraint;
+				ExclusionConstraint exclusionConstraint;
+				if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
+					null != (mandatoryConstraint = e.SourceElement as MandatoryConstraint) &&
+					null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
+				{
+					RuleManager ruleManager = exclusionConstraint.Store.RuleManager;
+					ruleManager.DisableRule(typeof(RoleSequencePositionChangeRule));
+					try
+					{
+						exclusionConstraint.RoleSequenceCollection.Move(e.OldOrdinal, e.NewOrdinal);
+					}
+					finally
+					{
+						ruleManager.EnableRule(typeof(RoleSequencePositionChangeRule));
+					}
+				}
+			}
+		}
+		#endregion // RolePositionChangeRule class
+		#region RoleSequencePositionChangeRule class
+		/// <summary>
+		/// Disallow direct edits to coupled exclusion constraints
+		/// </summary>
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // RolePlayerPositionChangeRule
+		private partial class RoleSequencePositionChangeRule : RolePlayerPositionChangeRule
+		{
+			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			{
+				ExclusionConstraint exclusionConstraint;
+				if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId &&
+					null != (exclusionConstraint = e.SourceElement as ExclusionConstraint) &&
+					null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+				{
+					ThrowDirectExclusionConstraintEditException();
+				}
+			}
+		}
+		#endregion // RoleSequencePositionChangeRule class
+		#region RoleSequenceAddRule class
+		/// <summary>
+		/// Disallow direct edits to coupled exclusion constraints
+		/// </summary>
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
+		private partial class RoleSequenceAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ExclusionConstraint exclusionConstraint = ((SetComparisonConstraintHasRoleSequence)e.ModelElement).ExternalConstraint as ExclusionConstraint;
+				if (null != exclusionConstraint && null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+				{
+					ThrowDirectExclusionConstraintEditException();
+				}
+			}
+		}
+		#endregion // RoleSequenceAddRule class
+		#region RoleDeleteRule class
+		/// <summary>
+		/// Enforce that any role deleted from a MandatoryConstraint is also
+		/// deleted from a coupled ExclusionConstraint.
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
+		private partial class RoleDeletingRule : DeletingRule
+		{
+			private bool myAllowEdit;
+			public override void ElementDeleting(ElementDeletingEventArgs e)
+			{
+				if (myAllowEdit)
+				{
+					return;
+				}
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				MandatoryConstraint mandatoryConstraint;
+				ExclusionConstraint exclusionConstraint;
+				SetComparisonConstraintRoleSequence comparisonConstraintSequence;
+				ExclusiveOrConstraintCoupler coupler;
+				if (null != (comparisonConstraintSequence = sequence as SetComparisonConstraintRoleSequence))
+				{
+					if (null != (exclusionConstraint = comparisonConstraintSequence.ExternalConstraint as ExclusionConstraint) &&
+						!exclusionConstraint.IsDeleting &&
+						null != (coupler = ExclusiveOrConstraintCoupler.GetLinkToExclusiveOrMandatoryConstraint(exclusionConstraint)) &&
+						!coupler.IsDeleting)
+					{
+						// This will handle the exception for the comparison constrant as well, which will
+						// immediately delete these thinks.
+						ThrowDirectExclusionConstraintEditException();
+					}
+				}
+				else if (null != (mandatoryConstraint = sequence as MandatoryConstraint))
+				{
+					if (!mandatoryConstraint.IsDeleting &&
+						null != (coupler = ExclusiveOrConstraintCoupler.GetLinkToExclusiveOrExclusionConstraint(mandatoryConstraint)) &&
+						!coupler.IsDeleting)
+					{
+						myAllowEdit = true;
+						try
+						{
+							// We need to add a new sequence with a single role in it to the corresponding exclusion constraint.
+							// Add rules can fire due to either add or insert commands, so we need to find the
+							// correct position in the sequence.
+							coupler.ExclusionConstraint.RoleSequenceCollection.RemoveAt(ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(sequence).IndexOf(link));
+						}
+						finally
+						{
+							myAllowEdit = false;
+						}
+					}
+				}
+			}
+		}
+		#endregion // RoleDeleteRule class
+		#region MandatoryConstraintChangeRule class
+		/// <summary>
+		/// Synchronize Modality between coupled exclusion and mandatory constraints
+		/// </summary>
+		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
+		private partial class MandatoryConstraintChangeRule : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId)
+				{
+					MandatoryConstraint mandatoryConstraint = e.ModelElement as MandatoryConstraint;
+					if (!mandatoryConstraint.IsDeleted)
+					{
+						ExclusionConstraint exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint;
+						if (exclusionConstraint != null)
+						{
+							exclusionConstraint.Modality = mandatoryConstraint.Modality;
+						}
+					}
+				}
+			}
+		}
+		#endregion // MandatoryConstraintChangeRule class
+		#region ExclusionConstraintChangeRule class
+		/// <summary>
+		/// Synchronize Modality between coupled exclusion and mandatory constraints
+		/// </summary>
+		[RuleOn(typeof(ExclusionConstraint))] // ChangeRule
+		private partial class ExclusionConstraintChangeRule : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ExclusionConstraint.ModalityDomainPropertyId)
+				{
+					ExclusionConstraint exclusionConstraint = e.ModelElement as ExclusionConstraint;
+					if (!exclusionConstraint.IsDeleted)
+					{
+						MandatoryConstraint mandatoryConstraint = exclusionConstraint.ExclusiveOrMandatoryConstraint;
+						if (mandatoryConstraint != null)
+						{
+							mandatoryConstraint.Modality = exclusionConstraint.Modality;
+						}
+					}
+				}
+			}
+		}
+		#endregion // ExclusionConstraintChangeRule class
+	}
+	#endregion // ExlusiveOrConstraintCoupler class
 	#region FrequencyConstraint class
 	public partial class FrequencyConstraint : IModelErrorOwner
 	{

@@ -47,7 +47,34 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ModelElement.IsSimple ? ResourceStrings.SimpleMandatoryConstraint : ResourceStrings.DisjunctiveMandatoryConstraint;
+			MandatoryConstraint mandatoryConstraint = ModelElement;
+			return mandatoryConstraint.IsSimple ?
+				ResourceStrings.SimpleMandatoryConstraint :
+				(mandatoryConstraint.ExclusiveOrExclusionConstraint == null) ? ResourceStrings.DisjunctiveMandatoryConstraint : ResourceStrings.ExclusiveOrConstraint;
+		}
+		/// <summary>
+		/// Modify the display of the Name properties for constraints with an ExclusiveOrCoupler
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection descriptors = base.GetProperties(attributes);
+			ExclusionConstraint exclusionConstraint = ModelElement.ExclusiveOrExclusionConstraint;
+			if (exclusionConstraint != null)
+			{
+				int descriptorCount = descriptors.Count;
+				for (int i = 0; i < descriptorCount; ++i)
+				{
+					ElementPropertyDescriptor currentDescriptor = descriptors[i] as ElementPropertyDescriptor;
+					if (currentDescriptor != null && currentDescriptor.DomainPropertyInfo.Id == MandatoryConstraint.NameDomainPropertyId)
+					{
+						descriptors.RemoveAt(i);
+						descriptors.Add(new CustomDisplayPropertyDescriptor(currentDescriptor, ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName, null, null));
+						descriptors.Add(new CustomDisplayPropertyDescriptor(CreatePropertyDescriptor(exclusionConstraint, currentDescriptor.DomainPropertyInfo, null), ResourceStrings.ExclusiveOrConstraintExclusionConstraintNameDisplayName, null, null));
+						break;
+					}
+				}
+			}
+			return descriptors;
 		}
 	}
 }

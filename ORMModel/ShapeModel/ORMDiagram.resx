@@ -246,6 +246,14 @@
   <data name="DisplayRoleNames.UserDefault">
     <value xml:space="preserve">User Default</value>
   </data>
+  <data name="ExclusiveOrCoupler.TransactionName">
+    <value xml:space="preserve">Combine Exclusive Or Constraint</value>
+    <comment xml:space="preserve">The transaction name used by ExclusiveOrCoupler command. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
+  <data name="ExclusiveOrDecoupler.TransactionName">
+    <value xml:space="preserve">Split Exclusive Or Constraint</value>
+    <comment xml:space="preserve">The transaction name used by ExclusiveOrDecoupler command. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="ExtensionLoadFailure.Message">
     <value xml:space="preserve">ORM Designer extension '{1}' failed to load.{0}{0}{0}----BEGIN EXCEPTION----{0}{0}{2}{0}----END EXCEPTION----{0}{0}{0}Abort  = Allow ORM Designer package load to fail and signal a breakpoint{0}Retry  = Retry loading the extension{0}Ignore = Ignore the extension load failure and continue with the next extension{0}</value>
     <comment xml:space="preserve">The format string for the content of the message shown when a registered extension fails to load. {0} will be System.Environment.NewLine. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling ToString() on the Exception that caused the load failure.</comment>

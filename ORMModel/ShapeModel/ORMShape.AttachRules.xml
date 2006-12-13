@@ -17,6 +17,8 @@
 	</arg:Copyright>
 	<arg:Model class="ORMShapeDomainModel">
 		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeRule"/>
+		<arg:Rule class="ExternalConstraintShape.ExclusiveOrCouplerAdded"/>
+		<arg:Rule class="ExternalConstraintShape.ExclusiveOrCouplerDeleted"/>
 		<arg:Rule class="FactTypeShape.ConstraintDisplayPositionChangeRule"/>
 		<arg:Rule class="FactTypeShape.DerivationRuleChanged"/>
 		<arg:Rule class="FactTypeShape.DerivationRuleAdd"/>

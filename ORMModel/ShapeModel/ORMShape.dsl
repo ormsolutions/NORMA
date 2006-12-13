@@ -445,7 +445,9 @@
 			<ElementTool Name="InclusiveOrConstraint" ToolboxIcon="../Resources/Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp" Caption="Inclusive Or Constraint" Tooltip="New Inclusive Or Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/MandatoryConstraint"/>
 			</ElementTool>
-			<!-- TODO: <ElementTool Name="ExclusiveOrConstraint" ToolboxIcon="../Resources/Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp" Caption="Exclusive Or Constraint" Tooltip="New Exclusive Or Constraint"/>-->
+			<ElementTool Name="ExclusiveOrConstraint" ToolboxIcon="../Resources/Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp" Caption="Exclusive Or Constraint" Tooltip="New Exclusive Or Constraint">
+				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/ExclusiveOrConstraintCoupler"/>
+			</ElementTool>
 			<ElementTool Name="SubsetConstraint" ToolboxIcon="../Resources/Toolbox.SubsetConstraint.Bitmap.Id.bmp" Caption="Subset Constraint" Tooltip="New Subset Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/SubsetConstraint"/>
 			</ElementTool>

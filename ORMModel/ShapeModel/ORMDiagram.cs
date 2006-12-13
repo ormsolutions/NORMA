@@ -209,8 +209,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SetConstraint singleCol = null;
 			ModelNote modelNote = null;
 			ModelElement element = null;
-			bool[] factsContained;
-			int factsRemaining;
+			LinkedElementCollection<FactType> verifyFactTypeList = null;
 			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
 				element = objectType;
@@ -221,61 +220,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (multiCol = (dataObject == null) ? elementToPlace as SetComparisonConstraint : dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
 			{
-				LinkedElementCollection<FactType> factTypeList = multiCol.FactTypeCollection;
-				factsContained = new bool[factTypeList.Count];
-				factsRemaining = factTypeList.Count;
-				FactType fact;
-				foreach (ShapeElement shape in NestedChildShapes)
-				{
-					if (null != (fact = shape.ModelElement as FactType))
-					{
-						int index = factTypeList.IndexOf(fact);
-						if (index != -1)
-						{
-							if (!factsContained[index])
-							{
-								factsContained[index] = true;
-								--factsRemaining;
-								if (factsRemaining == 0)
-								{
-									element = multiCol;
-									break;
-								}
-							}
-						}
-					}
-				}
+				verifyFactTypeList = multiCol.FactTypeCollection;
+				element = multiCol;
 			}
 			else if (null != (singleCol = (dataObject == null) ? elementToPlace as SetConstraint : dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
 			{
-				LinkedElementCollection<FactType> factTypeList = singleCol.FactTypeCollection;
-				factsContained = new bool[factTypeList.Count];
-				factsRemaining = factTypeList.Count;
-				FactType fact;
-				foreach (ShapeElement shape in NestedChildShapes)
-				{
-					if (null != (fact = shape.ModelElement as FactType))
-					{
-						int index = factTypeList.IndexOf(fact);
-						if (index != -1)
-						{
-							if (!factsContained[index])
-							{
-								factsContained[index] = true;
-								--factsRemaining;
-								if (factsRemaining == 0)
-								{
-									element = singleCol;
-									break;
-								}
-							}
-						}
-					}
-				}
+				verifyFactTypeList = singleCol.FactTypeCollection;
+				element = singleCol;
 			}
 			else if (null != (modelNote = (dataObject == null) ? elementToPlace as ModelNote : dataObject.GetData(typeof(ModelNote)) as ModelNote))
 			{
 				element = modelNote;
+			}
+			if (verifyFactTypeList != null)
+			{
+				int factsRemaining = verifyFactTypeList.Count;
+				if (factsRemaining != 0)
+				{
+					ModelElement testElement = element;
+					element = null;
+					bool[] factsContained = new bool[factsRemaining];
+					FactType fact;
+					foreach (ShapeElement shape in NestedChildShapes)
+					{
+						if (null != (fact = shape.ModelElement as FactType))
+						{
+							int index = verifyFactTypeList.IndexOf(fact);
+							if (index != -1)
+							{
+								if (!factsContained[index])
+								{
+									factsContained[index] = true;
+									--factsRemaining;
+									if (factsRemaining == 0)
+									{
+										element = testElement;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 			if (element != null)
 			{
@@ -587,6 +573,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactType factType;
 			ObjectTypePlaysRole objectTypePlaysRole;
 			SetConstraint setConstraint;
+			ExclusionConstraint exclusionConstraint;
 			if (null != (factType = element as FactType))
 			{
 				if (factType is SubtypeFact)
@@ -629,6 +616,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (setConstraint = element as SetConstraint))
 			{
 				return !setConstraint.Constraint.ConstraintIsInternal;
+			}
+			else if (null != (exclusionConstraint = element as ExclusionConstraint))
+			{
+				return exclusionConstraint.ExclusiveOrMandatoryConstraint == null;
 			}
 			else if (element is SetComparisonConstraint ||
 					 element is RoleHasValueConstraint ||
@@ -1460,6 +1451,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected ModelElement ElementDisplayedAs(ModelElement element)
 		{
 			ObjectType objectElement;
+			ExclusionConstraint exclusionConstraint;
 			if (null != (objectElement = element as ObjectType))
 			{
 				if (!ShouldDisplayObjectType(objectElement))
@@ -1484,6 +1476,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 					}
+				}
+			}
+			else if (null != (exclusionConstraint = element as ExclusionConstraint))
+			{
+				MandatoryConstraint mandatoryConstraint = exclusionConstraint.ExclusiveOrMandatoryConstraint;
+				if (mandatoryConstraint != null)
+				{
+					return mandatoryConstraint;
 				}
 			}
 			return null;

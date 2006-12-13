@@ -605,6 +605,9 @@
 	<xs:complexType name="EqualityConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
+	<xs:complexType name="ExclusionConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
 	<xs:complexType name="MandatoryConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
@@ -657,6 +660,7 @@
 		<xs:complexContent>
 			<xs:extension base="SetComparisonConstraint">
 				<xs:sequence>
+					<xs:element name="ExclusiveOrMandatoryConstraint" type="MandatoryConstraintRef" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
@@ -713,6 +717,7 @@
 		<xs:complexContent>
 			<xs:extension base="SetConstraint">
 				<xs:sequence>
+					<xs:element name="ExclusiveOrExclusionConstraint" type="ExclusionConstraintRef" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 				<xs:attribute name="IsSimple" type="xs:boolean" default="false"/>

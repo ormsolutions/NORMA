@@ -2077,6 +2077,38 @@
     <value>Constrained Role Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;FactConstraint&apos; on DomainRelationship &apos;ExternalRoleConstraint&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler</value>
+    <comment>Description for DomainClass &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.DisplayName" xml:space="preserve">
+    <value>Exclusive Or Constraint Coupler</value>
+    <comment>DisplayName for DomainClass &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraint</value>
+    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>ExclusiveOrExclusionConstraint</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusive Or Exclusion Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraint</value>
+    <comment>Description for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.DisplayName" xml:space="preserve">
+    <value>ExclusiveOrMandatoryConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusive Or Mandatory Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence</value>
     <comment>Description for DomainClass &apos;SetComparisonConstraintHasRoleSequence&apos;</comment>

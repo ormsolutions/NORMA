@@ -220,6 +220,14 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusDisplayReverseRoleOrder), 
 						new EventHandler(OnMenuDisplayReverseRoleOrder),
 						ORMDesignerCommandIds.DisplayReverseRoleOrder)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusExclusiveOrCoupler), 
+						new EventHandler(OnMenuExclusiveOrCoupler),
+						ORMDesignerCommandIds.ExclusiveOrCoupler)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusExclusiveOrDecoupler), 
+						new EventHandler(OnMenuExclusiveOrDecoupler),
+						ORMDesignerCommandIds.ExclusiveOrDecoupler)
 						// Alignment Commands
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAlignShapes),
@@ -723,6 +731,38 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuDisplayReverseRoleOrder();
+				}
+			}
+			private void OnStatusExclusiveOrCoupler(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExclusiveOrCoupler);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuExclusiveOrCoupler(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuExclusiveOrCoupler();
+				}
+			}
+			private void OnStatusExclusiveOrDecoupler(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExclusiveOrDecoupler);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuExclusiveOrDecoupler(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuExclusiveOrDecoupler();
 				}
 			}
 			/// <summary>
@@ -1280,6 +1320,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Reverse the current role order
 			/// </summary>
 			public static readonly CommandID DisplayReverseRoleOrder = new CommandID(guidORMDesignerCommandSet, cmdIdDisplayReverseRoleOrder);
+			/// <summary>
+			/// Couple disjunctive mandatory and exclusion constraints
+			/// </summary>
+			public static readonly CommandID ExclusiveOrCoupler = new CommandID(guidORMDesignerCommandSet, cmdIdExclusiveOrCoupler);
+			/// <summary>
+			/// Decouple disjunctive mandatory and exclusion constraints
+			/// </summary>
+			public static readonly CommandID ExclusiveOrDecoupler = new CommandID(guidORMDesignerCommandSet, cmdIdExclusiveOrDecoupler);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -1517,6 +1565,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Reverse the current role order
 			/// </summary>
 			private const int cmdIdDisplayReverseRoleOrder = 0x2926;
+			/// <summary>
+			/// Couple disjunctive mandatory and exclusion constraints
+			/// </summary>
+			private const int cmdIdExclusiveOrCoupler = 0x2927;
+			/// <summary>
+			/// Decouple disjunctive mandatory and exclusion constraints
+			/// </summary>
+			private const int cmdIdExclusiveOrDecoupler = 0x2928;
 			#endregion
 		}
 	}

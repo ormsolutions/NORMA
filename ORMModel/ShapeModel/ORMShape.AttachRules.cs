@@ -35,6 +35,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("DerivationRuleChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("DerivationRuleAdd", BindingFlags.Public | BindingFlags.NonPublic),
@@ -140,6 +142,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class DeleteDanglingConstraintShapeRule
 		{
 			public DeleteDanglingConstraintShapeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExternalConstraintShape
+	{
+		private partial class ExclusiveOrCouplerAdded
+		{
+			public ExclusiveOrCouplerAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExternalConstraintShape
+	{
+		private partial class ExclusiveOrCouplerDeleted
+		{
+			public ExclusiveOrCouplerDeleted()
 			{
 				base.IsEnabled = false;
 			}

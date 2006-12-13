@@ -565,6 +565,14 @@
     <value>New Inclusive Or Constraint</value>
     <comment>Toolbox tooltip text</comment>
   </data>
+  <data name="ExclusiveOrConstraintToolboxItem" xml:space="preserve">
+    <value>Exclusive Or Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ExclusiveOrConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Exclusive Or Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
   <data name="SubsetConstraintToolboxItem" xml:space="preserve">
     <value>Subset Constraint</value>
     <comment>Toolbox item name</comment>
@@ -755,6 +763,10 @@ A DomainClass can be serialized as a moniker only if
   </data>
   <data name="InclusiveOrConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
     <value>..\..\Resources\Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ExclusiveOrConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="SubsetConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">

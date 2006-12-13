@@ -219,6 +219,12 @@
 	<ResourceString name="ObjectifyFactTypeTransactionName" model="Diagram" resourceName="ObjectifyFactType.TransactionName">
 		<comment type="summary">The name given to the transaction used when objectifying a fact type.</comment>
 	</ResourceString>
+	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName">
+		<comment type="summary">The transaction name used by ExclusiveOrCoupler command.</comment>
+	</ResourceString>
+	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName">
+		<comment type="summary">The transaction name used by ExclusiveOrDecoupler command.</comment>
+	</ResourceString>
 	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName">
 		<comment type="summary">The name given to the transaction used when adding a shape element for an existing object.</comment>
 	</ResourceString>
@@ -366,6 +372,9 @@
 	<ResourceString name="ModelExceptionEnforcePreferredIdentifierForEntityType" model="Model" resourceName="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType">
 		<comment type="summary">Exception message when an attempt is made to set\ both a primary identifier and a value type on the same object type.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit">
+		<comment type="summary">Exception message when an attempt is made to directly edit roles on an ExclusionConstraint that participates in an ExclusiveOrCoupler relationship.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionIsMandatoryRequiresAttachedFactType" model="Model" resourceName="ModelException.Role.IsMandatoryRequiresAttachedFactType">
 		<comment type="summary">Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</comment>
 	</ResourceString>
@@ -377,6 +386,9 @@
 	</ResourceString>
 	<ResourceString name="ModelExceptionConstraintEnforceSingleFactForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactForInternalConstraint">
 		<comment type="summary">Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraintRoles" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles">
+		<comment type="summary">Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
 	</ResourceString>
 	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription">
 		<comment type="summary">The description for the default verbalization snippets for the core model.</comment>
@@ -638,6 +650,15 @@
 	</ResourceString>
 	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message">
 		<comment type="summary">Text displayed when the data type of the sample data doesn't match it's set data type.</comment>
+	</ResourceString>
+	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName">
+		<comment type="summary">Text used as the class name, displayed in the properties window.</comment>
+	</ResourceString>
+	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName">
+		<comment type="summary">Text used as the name for Name property of the coupled mandatory constraint, displayed in the properties window.</comment>
+	</ResourceString>
+	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName">
+		<comment type="summary">Text used as the name for Name property of the coupled exclusion constraint, displayed in the properties window.</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
 		<comment type="summary">Pattern showing left- and right-string to use for containing a value range definition.</comment>

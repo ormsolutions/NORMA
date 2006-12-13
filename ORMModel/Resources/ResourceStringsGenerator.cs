@@ -412,6 +412,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifyFactType.TransactionName");
 			}
 		}
+		/// <summary>The transaction name used by ExclusiveOrCoupler command.</summary>
+		public static string ExclusiveOrCouplerTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExclusiveOrCoupler.TransactionName");
+			}
+		}
+		/// <summary>The transaction name used by ExclusiveOrDecoupler command.</summary>
+		public static string ExclusiveOrDecouplerTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExclusiveOrDecoupler.TransactionName");
+			}
+		}
 		/// <summary>The name given to the transaction used when adding a shape element for an existing object.</summary>
 		public static string DropShapeTransactionName
 		{
@@ -804,6 +820,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforcePreferredIdentifierForEntityType");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to directly edit roles on an ExclusionConstraint that participates in an ExclusiveOrCoupler relationship.</summary>
+		public static string ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</summary>
 		public static string ModelExceptionIsMandatoryRequiresAttachedFactType
 		{
@@ -834,6 +858,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceSingleFactForInternalConstraint");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</summary>
+		public static string ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraintRoles
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles");
 			}
 		}
 		/// <summary>The description for the default verbalization snippets for the core model.</summary>
@@ -1530,6 +1562,30 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message");
+			}
+		}
+		/// <summary>Text used as the class name, displayed in the properties window.</summary>
+		public static string ExclusiveOrConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.ClassName");
+			}
+		}
+		/// <summary>Text used as the name for Name property of the coupled mandatory constraint, displayed in the properties window.</summary>
+		public static string ExclusiveOrConstraintMandatoryConstraintNameDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.MandatoryConstraintName.DisplayName");
+			}
+		}
+		/// <summary>Text used as the name for Name property of the coupled exclusion constraint, displayed in the properties window.</summary>
+		public static string ExclusiveOrConstraintExclusionConstraintNameDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.ExclusionConstraintName.DisplayName");
 			}
 		}
 		/// <summary>Pattern showing left- and right-string to use for containing a value range definition.</summary>

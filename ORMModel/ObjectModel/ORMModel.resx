@@ -161,9 +161,17 @@
 	<data name="JoinType.Outer" xml:space="preserve">
     <value>Outer</value>
   </data>
-	<data name="Model.Reading.RoleDeletedText" xml:space="preserve">
-    <value>{{deleted}}</value>
-    <comment>Text used to replace a role place holder when the role is deleted</comment>
+  <data name="ExclusiveOrConstraint.ClassName" xml:space="preserve">
+    <value>ExclusiveOrConstraint</value>
+    <comment>Text used as the class name, displayed in the properties window.</comment>
+  </data>
+  <data name="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName" xml:space="preserve">
+    <value>MandatoryConstraintName</value>
+    <comment>Text used as the name for Name property of the coupled mandatory constraint, displayed in the properties window.</comment>
+  </data>
+  <data name="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName" xml:space="preserve">
+    <value>ExclusionConstraintName</value>
+    <comment>Text used as the name for Name property of the coupled exclusion constraint, displayed in the properties window.</comment>
   </data>
   <data name="ModelContextWindow.WindowTitle" xml:space="preserve">
     <value>ORM Context Window</value>
@@ -293,6 +301,10 @@
     <value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
     <comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
   </data>
+	<data name="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles" xml:space="preserve">
+    <value>An ExclusiveOr coupling between a MandatoryConstraint and ExclusionConstraint requires a single-column exclusion constraint with the same roles as the MandatoryConstraint.</value>
+    <comment>Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
+  </data>
 	<data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
     <value>Reading text is not in a valid format.</value>
     <comment>Thrown when adding a reading to a fact using the AddReading with the reading text to add.</comment>
@@ -320,6 +332,10 @@
 	<data name="ModelException.EntityTypeInstance.InvalidEntityTypeParent">
 		<value xml:space="preserve">Sample entity instances can only be hooked up to an entity.</value>
 		<comment xml:space="preserve">Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.</comment>
+	</data>
+	<data name="ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit">
+		<value xml:space="preserve">Roles on an ExclusionConstraint linked to a MandatoryConstraint with an ExclusiveOrCoupler should be edited indirectly via the MandatoryConstraint.</value>
+		<comment xml:space="preserve">Exception message when an attempt is made to directly edit roles on an ExclusionConstraint that participates in an ExclusiveOrCoupler relationship.</comment>
 	</data>
 	<data name="ModelException.ValueTypeInstance.InvalidValueTypeParent">
 		<value xml:space="preserve">Sample value instances can only be hooked up to a value type.</value>

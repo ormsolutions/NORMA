@@ -4331,6 +4331,265 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ExclusiveOrConstraintCoupler
+	/// Description for Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("f2244a4c-bbe0-463b-9e8b-6a768c5c1469")]
+	public partial class ExclusiveOrConstraintCoupler : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ExclusiveOrConstraintCoupler domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf2244a4c, 0xbbe0, 0x463b, 0x9e, 0x8b, 0x6a, 0x76, 0x8c, 0x5c, 0x14, 0x69);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ExclusiveOrConstraintCoupler link in the same Partition as the given MandatoryConstraint
+		/// </summary>
+		/// <param name="source">MandatoryConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ExclusionConstraint to use as the target of the relationship.</param>
+		public ExclusiveOrConstraintCoupler(MandatoryConstraint source, ExclusionConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ExclusiveOrConstraintCoupler(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ExclusiveOrConstraintCoupler(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ExclusiveOrConstraintCoupler(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ExclusiveOrConstraintCoupler(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region MandatoryConstraint domain role code
+		
+		/// <summary>
+		/// MandatoryConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MandatoryConstraintDomainRoleId = new global::System.Guid(0x5cb84560, 0xb945, 0x4d22, 0xbd, 0x70, 0x52, 0x3d, 0x50, 0x2f, 0xbb, 0x95);
+		
+		/// <summary>
+		/// DomainRole MandatoryConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/MandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/MandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExclusiveOrExclusionConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/MandatoryConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("5cb84560-b945-4d22-bd70-523d502fbb95")]
+		public virtual MandatoryConstraint MandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MandatoryConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, MandatoryConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MandatoryConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExclusiveOrMandatoryConstraint of a ExclusionConstraint
+		/// <summary>
+		/// Gets ExclusiveOrMandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MandatoryConstraint GetExclusiveOrMandatoryConstraint(ExclusionConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ExclusionConstraintDomainRoleId) as MandatoryConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ExclusiveOrMandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetExclusiveOrMandatoryConstraint(ExclusionConstraint element, MandatoryConstraint newMandatoryConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExclusionConstraintDomainRoleId, newMandatoryConstraint);
+		}
+		#endregion
+		#region ExclusionConstraint domain role code
+		
+		/// <summary>
+		/// ExclusionConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExclusionConstraintDomainRoleId = new global::System.Guid(0x6413ee7e, 0xa13f, 0x4330, 0xa4, 0x5e, 0x79, 0x72, 0x7e, 0xa4, 0x9a, 0x30);
+		
+		/// <summary>
+		/// DomainRole ExclusionConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExclusiveOrMandatoryConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("6413ee7e-a13f-4330-a45e-79727ea49a30")]
+		public virtual ExclusionConstraint ExclusionConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ExclusionConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExclusionConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExclusionConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExclusiveOrExclusionConstraint of a MandatoryConstraint
+		/// <summary>
+		/// Gets ExclusiveOrExclusionConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ExclusionConstraint GetExclusiveOrExclusionConstraint(MandatoryConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MandatoryConstraintDomainRoleId) as ExclusionConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ExclusiveOrExclusionConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetExclusiveOrExclusionConstraint(MandatoryConstraint element, ExclusionConstraint newExclusionConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, MandatoryConstraintDomainRoleId, newExclusionConstraint);
+		}
+		#endregion
+		#region MandatoryConstraint link accessor
+		/// <summary>
+		/// Get the ExclusiveOrConstraintCoupler link to a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler GetLinkToExclusiveOrExclusionConstraint (global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint mandatoryConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler>(mandatoryConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MandatoryConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ExclusionConstraint link accessor
+		/// <summary>
+		/// Get the ExclusiveOrConstraintCoupler link to a ExclusionConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler GetLinkToExclusiveOrMandatoryConstraint (global::Neumont.Tools.ORM.ObjectModel.ExclusionConstraint exclusionConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler>(exclusionConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ExclusionConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ExclusiveOrConstraintCoupler instance accessors
+		
+		/// <summary>
+		/// Get any ExclusiveOrConstraintCoupler links between a given MandatoryConstraint and a ExclusionConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler> GetLinks( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint source, global::Neumont.Tools.ORM.ObjectModel.ExclusionConstraint target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler>(source, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler link in links )
+			{
+				if ( target.Equals(link.ExclusionConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ExclusiveOrConstraintCoupler link between a given MandatoryConstraintand a ExclusionConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler GetLink( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint source, global::Neumont.Tools.ORM.ObjectModel.ExclusionConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler>(source, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler link in links )
+			{
+				if ( target.Equals(link.ExclusionConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship SetComparisonConstraintHasRoleSequence
 	/// Description for
 	/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence

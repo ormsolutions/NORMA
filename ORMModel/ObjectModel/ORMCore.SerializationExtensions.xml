@@ -496,7 +496,7 @@
 	<se:Element Class="ConstraintRoleSequenceHasRole" Name="Role" LinkOnly="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ProjectionJoin" Name="ProjectionJoin"/>
 	</se:Element>
-	<se:Element Class="MandatoryConstraint" Override="true">
+	<se:Element Class="MandatoryConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="IsSimple">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -504,6 +504,7 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="ExclusionConstraint" Name="ExclusiveOrExclusionConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
@@ -527,6 +528,7 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ExclusionConstraint" SortChildElements="true" Override="true">
+		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="MandatoryConstraint" Name="ExclusiveOrMandatoryConstraint"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RingConstraint" Override="true">
