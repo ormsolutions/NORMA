@@ -2367,18 +2367,18 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Property processing
 			ProcessChildElements(reader, customModel, element, customElement, createAggregatingLinkCallback);
 		}
-		private static Guid GetDomainObjectIdFromTypeName(string typeName)
+		/// <summary>
+		/// Retrieve DomainRoleInfo for the provided model, relationship name, and role name
+		/// </summary>
+		/// <param name="dataDir">The <see cref="DomainDataDirectory"/> to search</param>
+		/// <param name="modelNamespace">The namespace of the model</param>
+		/// <param name="relationshipName">The name of the relationship</param>
+		/// <param name="roleName">The name of the role</param>
+		/// <returns><see cref="DomainRoleInfo"/>, or null if not found</returns>
+		private static DomainRoleInfo FindDomainRole(DomainDataDirectory dataDir, string modelNamespace, string relationshipName, string roleName)
 		{
-			Type type = Type.GetType(typeName, false, false);
-			if (type != null)
-			{
-				object[] domainObjectIdAttributeArray = type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
-				if (domainObjectIdAttributeArray.Length > 0)
-				{
-					return ((DomainObjectIdAttribute)domainObjectIdAttributeArray[0]).Id;
-				}
-			}
-			return Guid.Empty;
+			DomainRelationshipInfo relationshipInfo = dataDir.FindDomainRelationship(modelNamespace + "." + relationshipName);
+			return (relationshipInfo != null) ? relationshipInfo.FindDomainRole(roleName) : null;
 		}
 		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedDomainModel customModel, ModelElement element, IORMCustomSerializedElement customElement, CreateAggregatingLink createAggregatingLinkCallback)
 		{
@@ -2558,21 +2558,24 @@ namespace Neumont.Tools.ORM.Shell
 							else if (refValue != null)
 							{
 								IORMCustomSerializedDomainModel childModel;
-								if (elementName.IndexOf('.') > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
+								int separatorIndex;
+								if ((separatorIndex = elementName.IndexOf('.')) > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
 								{
 									if (childModel != customModel && customModel != null)
 									{
 										restoreCustomModel = customModel;
 										customModel = childModel;
 									}
-									DomainRoleInfo domainRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(childModel.GetType().Namespace + "." + elementName));
+									string relationshipName = elementName.Substring(0, separatorIndex);
+									string roleName = elementName.Substring(separatorIndex + 1);
+									DomainRoleInfo domainRole = FindDomainRole(dataDir, childModel.GetType().Namespace, relationshipName, roleName);
 									// Fallback on the two standard meta models
 									if (domainRole == null)
 									{
-										domainRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(ModelElement).Namespace + "." + elementName));
+										domainRole = FindDomainRole(dataDir, typeof(ModelElement).Namespace, relationshipName, roleName);
 										if (domainRole == null)
 										{
-											domainRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(Diagram).Namespace + "." + elementName));
+											domainRole = FindDomainRole(dataDir, typeof(Diagram).Namespace, relationshipName, roleName);
 										}
 									}
 									if (domainRole != null)
@@ -2592,21 +2595,24 @@ namespace Neumont.Tools.ORM.Shell
 								// then the ImplemtationClass of the parent node will be in the wrong namespace.
 								// The model elements themselves are more stable, use them.
 								IORMCustomSerializedDomainModel childModel;
-								if (elementName.IndexOf('.') > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
+								int separatorIndex;
+								if ((separatorIndex = elementName.IndexOf('.')) > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
 								{
-									DomainRoleInfo metaRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(childModel.GetType().Namespace + "." + elementName));
+									string relationshipName = elementName.Substring(0, separatorIndex);
+									string roleName = elementName.Substring(separatorIndex + 1);
+									DomainRoleInfo domainRole = FindDomainRole(dataDir, childModel.GetType().Namespace, relationshipName, roleName);
 									// Fallback on the two standard meta models
-									if (metaRole == null)
+									if (domainRole == null)
 									{
-										metaRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(ModelElement).Namespace + "." + elementName));
-										if (metaRole == null)
+										domainRole = FindDomainRole(dataDir, typeof(ModelElement).Namespace, relationshipName, roleName);
+										if (domainRole == null)
 										{
-											metaRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(Diagram).Namespace + "." + elementName));
+											domainRole = FindDomainRole(dataDir, typeof(Diagram).Namespace, relationshipName, roleName);
 										}
 									}
-									if (metaRole != null)
+									if (domainRole != null)
 									{
-										containerOppositeDomainRole = metaRole;
+										containerOppositeDomainRole = domainRole;
 										containerRestoreCustomModel = customModel;
 										customModel = childModel;
 									}
