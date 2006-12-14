@@ -4892,7 +4892,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Give the ExclusiveOrConstraintCoupler bidirection propagate delete
 		/// behavior, but only if one end is already deleted and the other is not
 		/// </summary>
-		[RuleOn(typeof(ExclusiveOrConstraintCoupler))] // DeleteRule
+		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime=TimeToFire.LocalCommit)] // DeleteRule
 		private partial class CouplerDeleteRule : DeleteRule
 		{
 			public override void ElementDeleted(ElementDeletedEventArgs e)

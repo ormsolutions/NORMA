@@ -99,6 +99,9 @@
 	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint">
 		<comment type="summary">The display name used for a disjunctive mandatory constraint</comment>
 	</ResourceString>
+	<ResourceString name="ExclusionConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ExclusionConstraint">
+		<comment type="summary">The display name used for an exclusion constraint</comment>
+	</ResourceString>
 	<ResourceString name="SimpleMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint">
 		<comment type="summary">The display name used for a simple mandatory constraint</comment>
 	</ResourceString>

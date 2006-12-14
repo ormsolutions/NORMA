@@ -691,6 +691,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			protected override string GetRootNamePattern(ModelElement element)
 			{
 				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
+				MandatoryConstraint mandatoryConstraint;
+				ExclusionConstraint exclusionConstraint;
+				if (null != (mandatoryConstraint = element as MandatoryConstraint))
+				{
+					if (mandatoryConstraint.ExclusiveOrExclusionConstraint != null)
+					{
+						// Use the normal class name, not the one modified for the property grid
+						return ResourceStrings.DisjunctiveMandatoryConstraint;
+					}
+				}
+				if (null != (exclusionConstraint = element as ExclusionConstraint))
+				{
+					if (exclusionConstraint.ExclusiveOrMandatoryConstraint != null)
+					{
+						// Use the normal class name, not the one modified for the property grid
+						return ResourceStrings.ExclusionConstraint;
+					}
+				}
 				// UNDONE: How explicit do we want to be on constraint naming? Note that if this is changed, then
 				// we also need to update the ValueRange.DataTypeDeleting rule, which assumes the base implementation.
 				return base.GetRootNamePattern(element);

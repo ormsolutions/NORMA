@@ -161,6 +161,10 @@
 	<data name="JoinType.Outer" xml:space="preserve">
     <value>Outer</value>
   </data>
+	<data name="Model.Reading.RoleDeletedText" xml:space="preserve">  
+    <value>{{deleted}}</value>  
+    <comment>Text used to replace a role place holder when the role is deleted</comment>  
+  </data>
   <data name="ExclusiveOrConstraint.ClassName" xml:space="preserve">
     <value>ExclusiveOrConstraint</value>
     <comment>Text used as the class name, displayed in the properties window.</comment>
