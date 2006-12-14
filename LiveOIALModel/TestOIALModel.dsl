@@ -390,23 +390,6 @@
 			</Target>
 		</DomainRelationship>
 
-		<!--<DomainRelationship Name="InformationTypeHasInformationTypeFormat" Namespace="Neumont.Tools.ORM.TestOIALModel" Id="D70B7396-F7CC-40A2-A062-DE8A6C864B83">
-			<Source>
-				<DomainRole Name="InformationType" PropertyName="InformationTypeFormat" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InformationType" Id="07FBDC19-A33C-4377-BD14-7105A671FD7E">
-					<RolePlayer>
-						<DomainClassMoniker Name="InformationType"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="InformationTypeFormat" PropertyName="InformationType" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InformationTypeFormat" Id="EA0795A4-6811-421D-959F-D09FF082B01A">
-					<RolePlayer>
-						<DomainClassMoniker Name="InformationTypeFormat"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>-->
-
 		<DomainRelationship Name="InformationTypeFormatHasObjectType" Namespace="Neumont.Tools.ORM.TestOIALModel" Id="6256286A-B9A3-45AC-A4DD-6A6C063AE117">
 			<Source>
 				<DomainRole Name="InformationTypeFormat" PropertyName="ValueType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InformationTypeFormat" Id="DF9EA42F-A030-42A5-AC14-822C62AC946E">
