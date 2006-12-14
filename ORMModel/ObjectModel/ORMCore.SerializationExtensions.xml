@@ -458,6 +458,7 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="ImplicationError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="ContradictionError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" RoleName="EqualityOrSubsetImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
@@ -506,6 +507,8 @@
 		</se:Attribute>
 		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="ExclusionConstraint" Name="ExclusiveOrExclusionConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="NotWellModeledSubsetAndMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
@@ -530,6 +533,12 @@
 	<se:Element Class="ExclusionConstraint" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="MandatoryConstraint" Name="ExclusiveOrMandatoryConstraint"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="ExclusionContradictsSubsetError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ExclusionConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="SubsetConstraint" SortChildElements="true" Override="true">
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="ExclusionContradictsSubsetError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="NotWellModeledSubsetAndMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RingConstraint" Override="true">
 		<se:Attribute ID="RingType" Name="Type"/>
@@ -650,14 +659,112 @@
 		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="SetConstraint" Name="SetConstraint"/>
 	</se:Element>
 	<se:Element Class="ContradictionError" Override="true">
-		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="ExclusionContradictsEqualityError" Override="true">
-		<se:Container Name="Constraints">
-			<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint"/>
+		<se:Container Name="ExclusionAndSubsetConstraints">
+			<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError"/>
 		</se:Container>
-		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
+		<se:Container Name="ExclusionAndEqualityConstraints">
+			<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError"/>
+		</se:Container>
+		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" Name="EqualityConstraint">
+			<se:ConditionalName Name="ExclusionConstraint">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="SetComparisonConstraint" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="SetComparisonConstraintHasContradictionError">
+									<plx:nameRef name="elementLink" type="parameter"/>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="ExclusionConstraint"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
+
+		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" Name="SubsetConstraint">
+			<se:ConditionalName Name="ExclusionConstraint">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="SetComparisonConstraint" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="SetComparisonConstraintHasContradictionError">
+									<plx:nameRef name="elementLink" type="parameter"/>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="ExclusionConstraint"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
+		
+		<!--<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint">
+			<se:ConditionalName Name="SubsetConstraint">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="SetComparisonConstraint" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="SetComparisonConstraintHasContradictionError">
+									<plx:nameRef name="elementLink" type="parameter"/>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="SubsetConstraint"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+			<se:ConditionalName Name="EqualityConstraint">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="SetComparisonConstraint" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="SetComparisonConstraintHasContradictionError">
+									<plx:nameRef name="elementLink" type="parameter"/>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="EqualityConstraint"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+			</se:Link>-->
+		</se:Element>
+
+	<se:Element Class="ExclusionContradictsEqualityError" Override="true">
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten" />
 	</se:Element>
+
+	<se:Element Class="ExclusionContradictsSubsetError" Override="true">
+		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten" />
+	</se:Element>
+	
+	<se:Element Class="ExclusionContradictsMandatoryError" Override="true">
+		<se:Container Name="Constraints">
+			<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="MandatoryConstraint"/>
+			<se:Link RelationshipName="ExclusionConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionConstraint"/>
+		</se:Container>
+		<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
+		<se:Link RelationshipName="ExclusionConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionConstraint" Name="ExclusionConstraint"/>
+	</se:Element>
+
+	<se:Element Class="NotWellModeledSubsetAndMandatoryError" Override="true">
+		<se:Container Name="Constraints">
+			<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="MandatoryConstraint"/>
+			<se:Link RelationshipName="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="SubsetConstraint"/>
+		</se:Container>
+		<se:Link RelationshipName="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="SubsetConstraint" Name="SubsetConstraint"/>
+		<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
+	</se:Element>
+	
 	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectType" Name="ObjectType"/>
 	</se:Element>
@@ -689,5 +796,36 @@
 	<se:Element Class="FrequencyConstraintContradictsInternalUniquenessConstraintError" Override="true">
 		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
+	</se:Element>
+	<se:Element Class="EqualityOrSubsetImpliedByMandatoryError" Name="EqualityConstraintImpliedByMandatoryConstraintsError" Override="true">
+		<se:ConditionalName Name="SubsetConstraintImpliedByMandatoryConstraintsError">
+			<plx:binaryOperator type="typeEquality">
+				<plx:left>
+					<plx:callThis name="SetComparisonConstraint" type="property"/>
+				</plx:left>
+				<plx:right>
+					<plx:directTypeReference dataTypeName="SubsetConstraint"/>
+				</plx:right>
+			</plx:binaryOperator>
+		</se:ConditionalName>
+		<se:Link RelationshipName="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" RoleName="SetComparisonConstraint" Name="EqualityConstraint">
+			<se:ConditionalName Name="SubsetConstraint">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="SetComparisonConstraint" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError">
+									<plx:nameRef name="elementLink" type="parameter"/>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="SubsetConstraint"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
+		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
 </se:CustomSerializedElements>

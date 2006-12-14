@@ -315,6 +315,12 @@
 	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text">
 		<comment type="summary">Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorConstraintImplicationEqualityOrSubsetMandatory" model="Model" resourceName="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text">
+		<comment type="summary">Model validation error text when an equality constraint or subset constraint is put on roles that are mandatory.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text">
+		<comment type="summary">Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</comment>
+	</ResourceString>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text">
 		<comment type="summary">Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</comment>
 	</ResourceString>

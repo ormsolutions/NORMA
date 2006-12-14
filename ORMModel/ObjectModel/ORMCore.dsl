@@ -674,6 +674,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="ExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A57EA68-918D-4AE3-AF7F-D9F7CDB5AB34" DisplayName="ExclusionContradictsMandatoryError" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ContradictionError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ExclusionContradictsEqualityError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D8714F74-60B7-48F5-BF7D-88D8736CB22A" DisplayName="ExclusionContradictsEqualityError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
@@ -683,6 +689,12 @@
 		<DomainClass Name="ExclusionContradictsSubsetError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F671FE6D-BA8A-4BF2-AFB6-BE5827996C50" DisplayName="ExclusionContradictsSubsetError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="NotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2DECDC39-E109-4D59-8BF3-046E2CD8584C" DisplayName="NotWellModeledSubsetAndMandatoryError" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
@@ -1251,6 +1263,12 @@
 		<DomainClass Name="ImplicationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78026AEA-19EB-497A-A596-25C929F67AA8" DisplayName="ImplicationError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="EqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="80B1F784-858E-483B-91A5-E55CFEBA44B9" DisplayName="EqualityOrSubsetImpliedByMandatoryError" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ImplicationError"/>
 			</BaseClass>
 		</DomainClass>
 
@@ -1906,7 +1924,7 @@
 
 		<DomainRelationship Name="SetComparisonConstraintHasContradictionError" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A1D4A389-9D19-4921-BD0D-D965B53897E3">
 			<Source>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="ContradictionErrorCollection" Multiplicity="ZeroMany"  PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="61F38936-0F1D-4D08-BF95-75429D108D6E">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="ContradictionError" Multiplicity="ZeroMany"  PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="61F38936-0F1D-4D08-BF95-75429D108D6E">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1920,7 +1938,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		
+
 		<DomainRelationship Name="SetComparisonConstraintHasExclusionContradictsEqualityError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E7E85549-6312-4E65-AD48-4DDF51E8139C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SetComparisonConstraintHasContradictionError"/>
@@ -1960,7 +1978,75 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		
+
+		<DomainRelationship Name="ExclusionConstraintHasExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E638E328-24A9-42C0-BBB1-F1EBC4B6E218">
+			<Source>
+				<DomainRole Name="ExclusionConstraint" PropertyName="ExclusionContradictsMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExclusionConstraint" Id="DAC3FEEB-4C79-46BC-876F-69CEA0DA8E7C">
+					<RolePlayer>
+						<DomainClassMoniker Name="ExclusionConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ExclusionContradictsMandatoryError" PropertyName="ExclusionConstraint" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExclusionContradictsMandatoryError" Id="1D5F486E-469D-42B0-8876-5512CD22E808">
+					<RolePlayer>
+						<DomainClassMoniker Name="ExclusionContradictsMandatoryError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="MandatoryConstraintHasExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6CDDA5A5-C6FE-4E9B-9248-17512F9C891A">
+			<Source>
+				<DomainRole Name="MandatoryConstraint" PropertyName="ExclusionContradictsMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="7687A52F-3510-4D26-861D-589AE3429790">
+					<RolePlayer>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ExclusionContradictsMandatoryError" PropertyName="MandatoryConstraint" Multiplicity="OneMany"  PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExclusionContradictsMandatoryError" Id="65AEAC10-914E-46A1-9C0B-1653F49A1AF3">
+					<RolePlayer>
+						<DomainClassMoniker Name="ExclusionContradictsMandatoryError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4BA72B40-A736-49D4-9FDE-8B07EE4A61A6">
+			<Source>
+				<DomainRole Name="SubsetConstraint" PropertyName="NotWellModeledSubsetAndMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SubsetConstraint" Id="9DC05203-7E4E-485D-9DD8-35E87A7B367A">
+					<RolePlayer>
+						<DomainClassMoniker Name="SubsetConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="NotWellModeledSubsetAndMandatoryError" PropertyName="SubsetConstraint" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NotWellModeledSubsetAndMandatoryError" Id="D48F7913-B297-4D19-833C-811194FAE9FA">
+					<RolePlayer>
+						<DomainClassMoniker Name="NotWellModeledSubsetAndMandatoryError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="475557A9-6E11-4D1C-A5A0-9D06DAED3EE5">
+			<Source>
+				<DomainRole Name="MandatoryConstraint" PropertyName="NotWellModeledSubsetAndMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="7D6BCCE4-5F44-473A-AA5D-3ED9115CD6C6">
+					<RolePlayer>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="NotWellModeledSubsetAndMandatoryError" PropertyName="MandatoryConstraint" Multiplicity="One"  PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NotWellModeledSubsetAndMandatoryError" Id="1D06C86D-F4D2-4D52-94CB-05B0625B5AA0">
+					<RolePlayer>
+						<DomainClassMoniker Name="NotWellModeledSubsetAndMandatoryError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="MandatoryConstraintHasPopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9A93DD53-8683-47F4-9EE7-4F1F244A218E">
 			<Source>
 				<DomainRole Name="MandatoryConstraint" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="AF065878-27B3-456A-9CD4-E1B81DFFAD2D">
@@ -2824,6 +2910,26 @@
 				<DomainRole Name="ImplicationError" PropertyName="SetComparisonConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ImplicationError" Id="DA7F46C4-A975-4DCB-B1DE-1FC779452865">
 					<RolePlayer>
 						<DomainClassMoniker Name="ImplicationError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A7CA6438-CACE-4FCC-B96C-03E1DDCD3152">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="SetComparisonConstraintHasImplicationError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="SetComparisonConstraint" PropertyName="EqualityOrSubsetImpliedByMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="5606E453-D52C-4465-AE97-EF3D75E97245">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetComparisonConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="EqualityOrSubsetImpliedByMandatoryError" PropertyName="SetComparisonConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EqualityOrSubsetImpliedByMandatoryError" Id="6DDF4667-3DD7-4661-9CF2-AA6E3EF782E3">
+					<RolePlayer>
+						<DomainClassMoniker Name="EqualityOrSubsetImpliedByMandatoryError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

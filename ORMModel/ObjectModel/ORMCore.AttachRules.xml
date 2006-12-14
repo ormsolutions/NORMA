@@ -16,6 +16,11 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMCoreDomainModel">
+		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleDeleted"/>
+		<arg:Rule class="ConstraintRoleSequence.SetComparisonConstraintHasRoleDeleting"/>
+		<arg:Rule class="ConstraintRoleSequence.SetConstraintDeleting"/>
+		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleRolePlayerChanged"/>
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.ModalityChangeRule"/>
@@ -73,8 +78,6 @@
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxRule"/>
 		<arg:Rule class="FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule"/>
 		<arg:Rule class="MandatoryConstraint.MandatoryConstraintChangeRule"/>
-		<arg:Rule class="MandatoryConstraint.VerifyImpliedMandatoryRoleAdd"/>
-		<arg:Rule class="MandatoryConstraint.VerifyImpliedMandatoryRoleDeleting"/>
 		<arg:Rule class="ModelError.SynchronizeErrorForOwnerRule"/>
 		<arg:Rule class="ModelError.SynchronizeErrorTextForModelRule"/>
 		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.Modeling"/>
@@ -162,14 +165,7 @@
 		<arg:Rule class="SetComparisonConstraint.ExternalRoleConstraintDeleted"/>
 		<arg:Rule class="SetComparisonConstraint.FactAdded"/>
 		<arg:Rule class="SetComparisonConstraint.FactSetComparisonConstraintAdded"/>
-		<arg:Rule class="SetComparisonConstraint.RemoveSetComparisonConstraintHasContradictionErrorRule"/>
 		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceDeleted"/>
-		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceHasRoleAdded"/>
-		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceHasRoleDeleted"/>
-		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintRoleSequenceHasRoleRolePlayerChanged"/>
-		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintHasRoleSequenceAdded"/>
-		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintHasRoleSequenceDeleted"/>
-		<arg:Rule class="SetComparisonConstraint.SetComparisonConstraintHasRoleSequenceRolePlayerChanged"/>
 		<arg:Rule class="SetConstraint.ConstraintAdded"/>
 		<arg:Rule class="SetConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForAdd"/>

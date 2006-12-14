@@ -685,6 +685,14 @@
     <value>ContradictionError</value>
     <comment>DisplayName for DomainClass &apos;ContradictionError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsMandatoryError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsMandatoryError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsMandatoryError</value>
+    <comment>DisplayName for DomainClass &apos;ExclusionContradictsMandatoryError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ExclusionContradictsEqualityError&apos;</comment>
@@ -700,6 +708,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.DisplayName" xml:space="preserve">
     <value>ExclusionContradictsSubsetError</value>
     <comment>DisplayName for DomainClass &apos;ExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NotWellModeledSubsetAndMandatoryError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;NotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NotWellModeledSubsetAndMandatoryError.DisplayName" xml:space="preserve">
+    <value>NotWellModeledSubsetAndMandatoryError</value>
+    <comment>DisplayName for DomainClass &apos;NotWellModeledSubsetAndMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError.Description" xml:space="preserve">
     <value></value>
@@ -1396,6 +1412,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ImplicationError.DisplayName" xml:space="preserve">
     <value>ImplicationError</value>
     <comment>DisplayName for DomainClass &apos;ImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EqualityOrSubsetImpliedByMandatoryError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;EqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EqualityOrSubsetImpliedByMandatoryError.DisplayName" xml:space="preserve">
+    <value>EqualityOrSubsetImpliedByMandatoryError</value>
+    <comment>DisplayName for DomainClass &apos;EqualityOrSubsetImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PreferredIdentifierRequiresMandatoryError.Description" xml:space="preserve">
     <value></value>
@@ -2382,7 +2406,7 @@
     <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Contradiction Error Collection</value>
+    <value>Contradiction Error</value>
     <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasContradictionError/ContradictionError.Description" xml:space="preserve">
@@ -2460,6 +2484,134 @@
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExclusionContradictsSubsetError/ExclusionContradictsSubsetError.PropertyDisplayName" xml:space="preserve">
     <value>Set Comparison Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ExclusionContradictsSubsetError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExclusionContradictsSubsetError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError</value>
+    <comment>Description for DomainClass &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError.DisplayName" xml:space="preserve">
+    <value>Exclusion Constraint Has Exclusion Contradicts Mandatory Error</value>
+    <comment>DisplayName for DomainClass &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError/ExclusionConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraint</value>
+    <comment>Description for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError/ExclusionConstraint.DisplayName" xml:space="preserve">
+    <value>ExclusionConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError/ExclusionConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusion Contradicts Mandatory Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError/ExclusionContradictsMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionContradictsMandatoryError</value>
+    <comment>Description for DomainRole &apos;ExclusionContradictsMandatoryError&apos; on DomainRelationship &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError/ExclusionContradictsMandatoryError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsMandatoryError</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionContradictsMandatoryError&apos; on DomainRelationship &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraintHasExclusionContradictsMandatoryError/ExclusionContradictsMandatoryError.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusion Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionContradictsMandatoryError&apos; on DomainRelationship &apos;ExclusionConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError</value>
+    <comment>Description for DomainClass &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError.DisplayName" xml:space="preserve">
+    <value>Mandatory Constraint Has Exclusion Contradicts Mandatory Error</value>
+    <comment>DisplayName for DomainClass &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraint</value>
+    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>MandatoryConstraint</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Exclusion Contradicts Mandatory Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError/ExclusionContradictsMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError.ExclusionContradictsMandatoryError</value>
+    <comment>Description for DomainRole &apos;ExclusionContradictsMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError/ExclusionContradictsMandatoryError.DisplayName" xml:space="preserve">
+    <value>ExclusionContradictsMandatoryError</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionContradictsMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasExclusionContradictsMandatoryError/ExclusionContradictsMandatoryError.PropertyDisplayName" xml:space="preserve">
+    <value>Mandatory Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionContradictsMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasExclusionContradictsMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError</value>
+    <comment>Description for DomainClass &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.DisplayName" xml:space="preserve">
+    <value>Subset Constraint Has Not Well Modeled Subset And Mandatory Error</value>
+    <comment>DisplayName for DomainClass &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/SubsetConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.SubsetConstraint</value>
+    <comment>Description for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/SubsetConstraint.DisplayName" xml:space="preserve">
+    <value>SubsetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/SubsetConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Not Well Modeled Subset And Mandatory Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryError</value>
+    <comment>Description for DomainRole &apos;NotWellModeledSubsetAndMandatoryError&apos; on DomainRelationship &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.DisplayName" xml:space="preserve">
+    <value>NotWellModeledSubsetAndMandatoryError</value>
+    <comment>DisplayName for DomainRole &apos;NotWellModeledSubsetAndMandatoryError&apos; on DomainRelationship &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.PropertyDisplayName" xml:space="preserve">
+    <value>Subset Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NotWellModeledSubsetAndMandatoryError&apos; on DomainRelationship &apos;SubsetConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError</value>
+    <comment>Description for DomainClass &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.DisplayName" xml:space="preserve">
+    <value>Mandatory Constraint Has Not Well Modeled Subset And Mandatory Error</value>
+    <comment>DisplayName for DomainClass &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.MandatoryConstraint</value>
+    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>MandatoryConstraint</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Not Well Modeled Subset And Mandatory Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryError</value>
+    <comment>Description for DomainRole &apos;NotWellModeledSubsetAndMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.DisplayName" xml:space="preserve">
+    <value>NotWellModeledSubsetAndMandatoryError</value>
+    <comment>DisplayName for DomainRole &apos;NotWellModeledSubsetAndMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.PropertyDisplayName" xml:space="preserve">
+    <value>Mandatory Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NotWellModeledSubsetAndMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError</value>
@@ -3868,6 +4020,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError/ImplicationError.PropertyDisplayName" xml:space="preserve">
     <value>Set Comparison Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ImplicationError&apos; on DomainRelationship &apos;SetComparisonConstraintHasImplicationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError</value>
+    <comment>Description for DomainClass &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.DisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Has Equality Or Subset Implied By Mandatory Error</value>
+    <comment>DisplayName for DomainClass &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/SetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/SetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>SetComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Equality Or Subset Implied By Mandatory Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryError</value>
+    <comment>Description for DomainRole &apos;EqualityOrSubsetImpliedByMandatoryError&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.DisplayName" xml:space="preserve">
+    <value>EqualityOrSubsetImpliedByMandatoryError</value>
+    <comment>DisplayName for DomainRole &apos;EqualityOrSubsetImpliedByMandatoryError&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError/EqualityOrSubsetImpliedByMandatoryError.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EqualityOrSubsetImpliedByMandatoryError&apos; on DomainRelationship &apos;SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError</value>

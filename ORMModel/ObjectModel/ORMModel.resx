@@ -198,12 +198,20 @@
     <comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory.</comment>
   </data>
 	<data name="ModelError.Constraint.ImplicationError.Text" xml:space="preserve">
-    <value>Constraint '{0}' in model '{1}' is implied by an intersecting constraint.</value>
+    <value>Constraint '{0}' in model '{1}' is implied by the intersecting constraint(s).</value>
     <comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
   </data>
+	<data name="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text" xml:space="preserve">
+    <value>Constraint '{0}' in model '{1}' is implied by intersecting simple mandatory constraints.</value>
+    <comment>Model validation error text when an equality constraint is put on roles that are mandatory.</comment>
+  </data>
 	<data name="ModelError.Constraint.ContradictionError.Text" xml:space="preserve">
-    <value>Constraints '{0}' in model '{1}' are in a state of contradiction.</value>
+    <value>Constraints {0} in model '{1}' are in a state of contradiction.</value>
     <comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</comment>
+  </data>
+	<data name="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text" xml:space="preserve">
+    <value>Subset constraint '{0}' and mandatory constraint '{1}' in model '{2}' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</value>
+    <comment>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</comment>
   </data>
 	<data name="ModelError.Constraint.TooFewRoleSequences.Text" xml:space="preserve">
     <value>Constraint '{0}' does not have enough role sequences.</value>

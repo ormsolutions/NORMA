@@ -231,6 +231,7 @@
 							<xs:selector xpath="se:Link | se:Container/se:Embed | se:Container/se:Container/se:Embed"/>
 							<xs:field xpath="@RelationshipName"/>
 							<xs:field xpath="@RoleName"/>
+							<xs:field xpath="@CreateAsRelationshipName"/>
 						</xs:unique>
 					</xs:element>
 				</xs:choice>

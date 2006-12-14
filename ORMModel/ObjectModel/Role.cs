@@ -216,9 +216,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
 					IConstraint constraint = roleSequence.Constraint;
-					if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
+					if (constraint != null)
 					{
-						return (MandatoryConstraint)constraint;
+						if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
+						{
+							return (MandatoryConstraint)constraint;
+						}
 					}
 				}
 				return null;

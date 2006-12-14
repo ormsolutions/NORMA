@@ -668,6 +668,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.Text");
 			}
 		}
+		/// <summary>Model validation error text when an equality constraint or subset constraint is put on roles that are mandatory.</summary>
+		public static string ModelErrorConstraintImplicationEqualityOrSubsetMandatory
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</summary>
+		public static string ModelErrorNotWellModeledSubsetAndMandatoryError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text");
+			}
+		}
 		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</summary>
 		public static string ModelErrorConstraintContradiction
 		{

@@ -831,8 +831,11 @@
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapError"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
 			<xs:element name="ImplicationError" type="ImplicationError"/>
+			<xs:element name="SubsetConstraintImpliedByMandatoryConstraintsError" type="SubsetConstraintImpliedByMandatoryConstraintsError"/>
+			<xs:element name="EqualityConstraintImpliedByMandatoryConstraintsError" type="EqualityConstraintImpliedByMandatoryConstraintsError"/>
 			<xs:element name="ContradictionError" type="ContradictionError"/>
-			<xs:element name="ExclusionContradictsEqualityError" type="ContradictionError"/>
+			<xs:element name="ExclusionContradictsMandatoryError" type="ExclusionContradictsMandatoryError"/>
+			<xs:element name="NotWellModeledSubsetAndMandatoryError" type="NotWellModeledSubsetAndMandatoryError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
 			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
@@ -840,6 +843,8 @@
 			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueError"/>
 			<xs:element name="PopulationMandatoryError" type="PopulationMandatoryError"/>
 			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessError"/>
+			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityError"/>
+			<xs:element name="ExclusionContradictsSubsetError" type="ExclusionContradictsSubsetError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -1078,14 +1083,103 @@
 		</xs:complexContent>
 	</xs:complexType>
 
+	<xs:complexType name="ExclusionContradictsMandatoryError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+					<xs:sequence>
+						<xs:element name="Constraints">
+							<xs:complexType>
+								<xs:choice minOccurs="2" maxOccurs="unbounded">
+									<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
+									<xs:element name="ExclusionConstraint" type="SetComparisonConstraintRef"/>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>				
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="NotWellModeledSubsetAndMandatoryError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Constraints">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
+								<xs:element name="SubsetConstraint" type="SetComparisonConstraintRef"/>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SubsetConstraintImpliedByMandatoryConstraintsError">
+		<xs:complexContent>
+				<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="SubsetConstraint" type="SetComparisonConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="EqualityConstraintImpliedByMandatoryConstraintsError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="EqualityConstraint" type="SetComparisonConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+
 	<xs:complexType name="ContradictionError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Constraints">
 						<xs:complexType>
-							<xs:choice minOccurs="2" maxOccurs="unbounded">
+							<xs:sequence>
 								<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ExclusionContradictsSubsetError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ExclusionAndSubsetConstraints">
+						<xs:complexType>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="ExclusionConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
+								<xs:element name="SubsetConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ExclusionContradictsEqualityError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ExclusionAndEqualityConstraints">
+						<xs:complexType>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="ExclusionConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
+								<xs:element name="EqualityConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
