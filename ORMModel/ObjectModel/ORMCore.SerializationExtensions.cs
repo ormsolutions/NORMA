@@ -7038,13 +7038,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new ORMCustomSerializedContainerElementInfo[baseInfoCount + 2];
+				ret = new ORMCustomSerializedContainerElementInfo[baseInfoCount + 1];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 2);
+					baseInfo.CopyTo(ret, 1);
 				}
-				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "ExclusionAndSubsetConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
-				ret[1] = new ORMCustomSerializedContainerElementInfo(null, "ExclusionAndEqualityConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
+				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "Constraints", null, ORMCustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId, SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
 				ContradictionError.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -7065,7 +7064,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string name = "SubsetConstraint";
 					if (((SetComparisonConstraintHasContradictionError)elementLink).SetComparisonConstraint is ExclusionConstraint)
 					{
-						name = "ExclusionConstraint";
+						name = "ExclusionConstraintThatContradictsWithSubset";
 					}
 					return new ORMCustomSerializedElementInfo(null, name, null, ORMCustomSerializedElementWriteStyle.Element, null);
 				}
@@ -7074,7 +7073,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string name = "EqualityConstraint";
 					if (((SetComparisonConstraintHasContradictionError)elementLink).SetComparisonConstraint is ExclusionConstraint)
 					{
-						name = "ExclusionConstraint";
+						name = "ExclusionConstraintThatContradictsWithEquality";
 					}
 					return new ORMCustomSerializedElementInfo(null, name, null, ORMCustomSerializedElementWriteStyle.Element, null);
 				}
@@ -7099,11 +7098,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRolesWithExplicitRelationship(SetComparisonConstraintHasExclusionContradictsSubsetError.DomainClassId, SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ExclusionAndSubsetConstraints||SubsetConstraint", match);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ExclusionAndSubsetConstraints||ExclusionConstraint", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Constraints||SubsetConstraint", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Constraints||ExclusionConstraintThatContradictsWithSubset", match);
 				match.InitializeRolesWithExplicitRelationship(SetComparisonConstraintHasExclusionContradictsEqualityError.DomainClassId, SetComparisonConstraintHasContradictionError.SetComparisonConstraintDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ExclusionAndEqualityConstraints||EqualityConstraint", match);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ExclusionAndEqualityConstraints||ExclusionConstraint", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Constraints||EqualityConstraint", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Constraints||ExclusionConstraintThatContradictsWithEquality", match);
 				ContradictionError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;

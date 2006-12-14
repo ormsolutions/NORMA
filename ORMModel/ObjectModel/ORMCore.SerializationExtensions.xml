@@ -659,14 +659,13 @@
 		<se:Link RelationshipName="SetConstraintHasImplicationError" RoleName="SetConstraint" Name="SetConstraint"/>
 	</se:Element>
 	<se:Element Class="ContradictionError" Override="true">
-		<se:Container Name="ExclusionAndSubsetConstraints">
+		<se:Container Name="Constraints">
 			<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError"/>
-		</se:Container>
-		<se:Container Name="ExclusionAndEqualityConstraints">
 			<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError"/>
 		</se:Container>
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" Name="EqualityConstraint">
-			<se:ConditionalName Name="ExclusionConstraint">
+
+			<se:ConditionalName Name="ExclusionConstraintThatContradictsWithEquality">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
 						<plx:callInstance name="SetComparisonConstraint" type="property">
@@ -685,7 +684,7 @@
 		</se:Link>
 
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" Name="SubsetConstraint">
-			<se:ConditionalName Name="ExclusionConstraint">
+			<se:ConditionalName Name="ExclusionConstraintThatContradictsWithSubset">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
 						<plx:callInstance name="SetComparisonConstraint" type="property">
@@ -702,42 +701,8 @@
 				</plx:binaryOperator>
 			</se:ConditionalName>
 		</se:Link>
-		
-		<!--<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint">
-			<se:ConditionalName Name="SubsetConstraint">
-				<plx:binaryOperator type="typeEquality">
-					<plx:left>
-						<plx:callInstance name="SetComparisonConstraint" type="property">
-							<plx:callObject>
-								<plx:cast dataTypeName="SetComparisonConstraintHasContradictionError">
-									<plx:nameRef name="elementLink" type="parameter"/>
-								</plx:cast>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:directTypeReference dataTypeName="SubsetConstraint"/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:ConditionalName>
-			<se:ConditionalName Name="EqualityConstraint">
-				<plx:binaryOperator type="typeEquality">
-					<plx:left>
-						<plx:callInstance name="SetComparisonConstraint" type="property">
-							<plx:callObject>
-								<plx:cast dataTypeName="SetComparisonConstraintHasContradictionError">
-									<plx:nameRef name="elementLink" type="parameter"/>
-								</plx:cast>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:directTypeReference dataTypeName="EqualityConstraint"/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:ConditionalName>
-			</se:Link>-->
-		</se:Element>
+
+	</se:Element>
 
 	<se:Element Class="ExclusionContradictsEqualityError" Override="true">
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten" />

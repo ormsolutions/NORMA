@@ -1158,10 +1158,10 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ExclusionAndSubsetConstraints">
+					<xs:element name="Constraints">
 						<xs:complexType>
 							<xs:choice maxOccurs="unbounded">
-								<xs:element name="ExclusionConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
+								<xs:element name="ExclusionConstraintThatContradictsWithSubset" type="SetComparisonConstraintRef" minOccurs="1"/>
 								<xs:element name="SubsetConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
 							</xs:choice>
 						</xs:complexType>
@@ -1175,10 +1175,10 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ExclusionAndEqualityConstraints">
+					<xs:element name="Constraints">
 						<xs:complexType>
 							<xs:choice maxOccurs="unbounded">
-								<xs:element name="ExclusionConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
+								<xs:element name="ExclusionConstraintThatContradictsWithEquality" type="SetComparisonConstraintRef" minOccurs="1"/>
 								<xs:element name="EqualityConstraint" type="SetComparisonConstraintRef" minOccurs="1"/>
 							</xs:choice>
 						</xs:complexType>
