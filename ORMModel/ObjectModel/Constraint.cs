@@ -5471,7 +5471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (!element.IsDeleted)
 				{
-					if (!element.SynchronizeCoupledRoles(false))
+					if (!element.SynchronizeCoupledRoles(false, false))
 					{
 						element.Delete();
 					}
@@ -5556,8 +5556,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// those of the ExclusionConstraint.
 		/// </summary>
 		/// <param name="throwOnFailure">true to raise an exception on failure</param>
+		/// <param name="rulesEnabled">Rules are enabled. Make sure all enforcing rules are off.</param>
 		/// <returns>true if the synchronization succeeded.</returns>
-		private bool SynchronizeCoupledRoles(bool throwOnFailure)
+		private bool SynchronizeCoupledRoles(bool throwOnFailure, bool rulesEnabled)
 		{
 			LinkedElementCollection<Role> mandatoryRoles = MandatoryConstraint.RoleCollection;
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences = ExclusionConstraint.RoleSequenceCollection;
@@ -5566,34 +5567,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (mandatoryRoles.Count == sequenceCount)
 			{
 				invalidConfiguration = false; // Prove otherwise
-				int sequenceIndex = 0;
-				// n is small here (more than 5 is rare), so I'm not too
-				// concerned about the efficiency of the algorithm.
-				while (sequenceIndex < sequenceCount)
+				Type ruleType = null;
+				try
 				{
-					SetComparisonConstraintRoleSequence exclusionSequence = exclusionSequences[sequenceIndex];
-					LinkedElementCollection<Role> exclusionRoles = exclusionSequence.RoleCollection;
-					if (exclusionRoles.Count != 1)
+					int sequenceIndex = 0;
+					// n is small here (more than 5 is rare), so I'm not too
+					// concerned about the efficiency of the algorithm.
+					while (sequenceIndex < sequenceCount)
 					{
-						invalidConfiguration = true;
-						break;
+						SetComparisonConstraintRoleSequence exclusionSequence = exclusionSequences[sequenceIndex];
+						LinkedElementCollection<Role> exclusionRoles = exclusionSequence.RoleCollection;
+						if (exclusionRoles.Count != 1)
+						{
+							invalidConfiguration = true;
+							break;
+						}
+						int mandatoryIndex = mandatoryRoles.IndexOf(exclusionRoles[0]);
+						if (mandatoryIndex == sequenceIndex)
+						{
+							++sequenceIndex;
+						}
+						else if (mandatoryIndex < sequenceIndex)
+						{
+							// Duplicate role in the exclusion constraint, we've already
+							// see this one.
+							invalidConfiguration = true;
+							break;
+						}
+						else
+						{
+							if (rulesEnabled && ruleType == null)
+							{
+								ruleType = typeof(RoleSequencePositionChangeRule);
+								Store.RuleManager.DisableRule(ruleType);
+							}
+							// Move the sequence. We'll reverify its position later.
+							exclusionSequences.Move(sequenceIndex, mandatoryIndex);
+						}
 					}
-					int mandatoryIndex = mandatoryRoles.IndexOf(exclusionRoles[0]);
-					if (mandatoryIndex == sequenceIndex)
+				}
+				finally
+				{
+					if (ruleType != null)
 					{
-						++sequenceIndex;
-					}
-					else if (mandatoryIndex < sequenceIndex)
-					{
-						// Duplicate role in the exclusion constraint, we've already
-						// see this one.
-						invalidConfiguration = true;
-						break;
-					}
-					else
-					{
-						// Move the sequence. We'll reverify its position later.
-						exclusionSequences.Move(sequenceIndex, mandatoryIndex);
+						Store.RuleManager.EnableRule(ruleType);
 					}
 				}
 			}
@@ -5642,7 +5659,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				((ExclusiveOrConstraintCoupler)e.ModelElement).SynchronizeCoupledRoles(true);
+				((ExclusiveOrConstraintCoupler)e.ModelElement).SynchronizeCoupledRoles(true, true);
 			}
 		}
 		#endregion // CouplerAddRule class
