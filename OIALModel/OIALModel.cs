@@ -772,6 +772,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// is the ObjectType being absorbed; the second Guid is the absorbing object.
 		/// </summary>
 		private SortedDictionary<Guid, Guid> myAbsorbedObjectTypes = null;
+		private SortedDictionary<Guid, MandatoryConstraintModality> myAbsorbedObjectTypeMandatories = null;
 		/// <summary>
 		/// This <see cref="List&lt;Guid&gt;"/> contains the IDs of all the top-level types of the diagrams. Top-level
 		/// types are <see cref="ObjectType"/>s which map to <see cref="ConceptType"/> which are direct children of
@@ -826,7 +827,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			int conceptTypeCount = thisConceptTypeCollection.Count;
 			for (int i = 0; i < conceptTypeCount; ++i)
 			{
-				InformationTypesAndConceptTypeRefs(store, thisConceptTypeCollection[i], true);
+				InformationTypesAndConceptTypeRefs(store, thisConceptTypeCollection[i]);
 			}
 			GenerateExternalConstraints(store, model);
 		}
@@ -905,9 +906,9 @@ namespace Neumont.Tools.ORM.OIALModel
 					RoleMultiplicity secondMultiplicity = secondRole.Multiplicity;
 
 					// If the fact type's multiplicity is one-to-one
-					if (factType.GetInternalConstraintsCount(ConstraintType.InternalUniqueness) == 2)
+					if (GetAlethicInternalConstraintsCount(factType, ConstraintType.InternalUniqueness) == 2)
 					{
-						int mandatoryRoleCount = factType.GetInternalConstraintsCount(ConstraintType.SimpleMandatory);
+						int mandatoryRoleCount = GetAlethicInternalConstraintsCount(factType, ConstraintType.SimpleMandatory);
 						// If only one role is mandatory
 						if (mandatoryRoleCount == 1)
 						{
@@ -915,13 +916,14 @@ namespace Neumont.Tools.ORM.OIALModel
 							// Find the RolePlayer which does not have the mandatory role constraint,
 							// because it usually absorbs the object type that has the mandatory
 							// role constraint
-							nonMandatoryRole = firstRole.IsMandatory ? secondRole : firstRole;
+							nonMandatoryRole = firstRole.IsMandatory && firstRole.MandatoryConstraintModality == ConstraintModality.Alethic ? secondRole : firstRole;
+							Role mandatoryRole = nonMandatoryRole.OppositeRole.Role;
 
 							// If the nonMandatoryRole's RolePlayer has other functional roles
 							// that are not part of the primary identifier, absorb toward that
 							// ObjectType
 							ObjectType rolePlayer = nonMandatoryRole.RolePlayer;
-							ObjectType oppositePlayer = nonMandatoryRole.OppositeRole.Role.RolePlayer;
+							ObjectType oppositePlayer = mandatoryRole.RolePlayer;
 							// If a fact type is detached from its Object Types we do not want to process it.
 							if (rolePlayer == null || oppositePlayer == null)
 							{
@@ -973,8 +975,8 @@ namespace Neumont.Tools.ORM.OIALModel
 								}
 							}
 
-							int firstFunctionalRoleCount = GetFunctionalRoleCount(firstObject.PlayedRoleCollection, firstRole);
-							int secondFunctionalRoleCount = GetFunctionalRoleCount(secondObject.PlayedRoleCollection, secondRole);
+							int firstFunctionalRoleCount = GetFunctionalNonDependentRoleCount(firstObject.PlayedRoleCollection, firstRole);
+							int secondFunctionalRoleCount = GetFunctionalNonDependentRoleCount(secondObject.PlayedRoleCollection, secondRole);
 
 							// Compares the number of the functional roles played by the first
 							// object type to the number of functional roles played by the second
@@ -1008,13 +1010,15 @@ namespace Neumont.Tools.ORM.OIALModel
 		private void ObjectTypeAbsorption(LinkedElementCollection<ObjectType> modelObjectTypes)
 		{
 			// Check if the Dictionary of absorbed ObjectTypes is null; if so, instantiate it.
-			if (myAbsorbedObjectTypes == null)
+			if (myAbsorbedObjectTypes == null || myAbsorbedObjectTypeMandatories == null)
 			{
 				myAbsorbedObjectTypes = new SortedDictionary<Guid, Guid>();
+				myAbsorbedObjectTypeMandatories = new SortedDictionary<Guid, MandatoryConstraintModality>();
 			}
 			else
 			{
 				myAbsorbedObjectTypes.Clear();
+				myAbsorbedObjectTypeMandatories.Clear();
 			}
 			// This Guid is used to store what ObjectType is absorbing the current ObjectType
 			// being checked in the foreach loop
@@ -1022,6 +1026,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			foreach (ObjectType objectType in modelObjectTypes)
 			{
 				absorberGuid = Guid.Empty;
+				MandatoryConstraintModality modality = MandatoryConstraintModality.NotMandatory;
 
 				if (!objectType.IsIndependent)
 				{
@@ -1038,7 +1043,8 @@ namespace Neumont.Tools.ORM.OIALModel
 						// Create a list of all the FactTypes that this current ObjectType plays Roles
 						// in that that ObjectType is functionally dependent on and
 						// must play that role (i.e. there is a mandatory role constraint)
-						List<FactType> mandatoryDirectFactTypes = new List<FactType>();
+						IList<FactType> mandatoryDirectFactTypes = new List<FactType>();
+						//IEnumerable<FactType> mandatoryDirectFactTypes = GetFunctionalRoles(objectType.PlayedRoleCollection, null);
 						foreach (Role role in objectType.PlayedRoleCollection)
 						{
 							FactType roleFactType = role.FactType;
@@ -1058,24 +1064,40 @@ namespace Neumont.Tools.ORM.OIALModel
 							// If any FactType in that list of mandatory direct facts is also a member
 							// of the absorbedFactTypes Dictionary, add that AbsorbedFactType to a new
 							// List of AbsorbedFactTypes
-							List<AbsorbedFactType> currentAbsorbedFactTypes = new List<AbsorbedFactType>();
+							Dictionary<FactType, AbsorbedFactType> currentAbsorbedFactTypes = new Dictionary<FactType, AbsorbedFactType>();
 							foreach (FactType factType in mandatoryDirectFactTypes)
 							{
 								Guid factTypeId = factType.Id;
 								if (myAbsorbedFactTypes.ContainsKey(factTypeId))
 								{
-									currentAbsorbedFactTypes.Add(myAbsorbedFactTypes[factTypeId]);
+									currentAbsorbedFactTypes.Add(factType, myAbsorbedFactTypes[factTypeId]);
 								}
 							}
-							foreach (AbsorbedFactType currentAbsorbedFactType in currentAbsorbedFactTypes)
+							foreach (KeyValuePair<FactType, AbsorbedFactType> kvp in currentAbsorbedFactTypes)
 							{
 								// If the factAbsorptionType is fully and the current object type is not
 								// absorbing itself, record the absorberGuid as the id of the ObjectType
 								// recorded in the AbsorbedFactType object.
+								AbsorbedFactType currentAbsorbedFactType = kvp.Value;
 								Guid absorberId = currentAbsorbedFactType.AbsorberId;
-								if (currentAbsorbedFactType.TypeOfAbsorption == FactAbsorptionType.Fully &&
+								if (currentAbsorbedFactType.AbsorptionType == FactAbsorptionType.Fully &&
 									absorberId != objectType.Id)
 								{
+									FactType factType = kvp.Key;
+									Role firstRole = factType.RoleCollection[0].Role;
+									Role secondRole = factType.RoleCollection[1].Role;
+									if (secondRole.RolePlayer.Id == absorberId)
+									{
+										modality = secondRole.IsMandatory ? secondRole.MandatoryConstraintModality == ConstraintModality.Alethic ? MandatoryConstraintModality.Alethic : MandatoryConstraintModality.Deontic : MandatoryConstraintModality.NotMandatory;
+									}
+									else if (firstRole.RolePlayer.Id == absorberId)
+									{
+										modality = firstRole.IsMandatory ? firstRole.MandatoryConstraintModality == ConstraintModality.Alethic ? MandatoryConstraintModality.Alethic : MandatoryConstraintModality.Deontic : MandatoryConstraintModality.NotMandatory;
+									}
+									else
+									{
+										Debug.Fail("Role player didn't exist.");
+									}
 									absorberGuid = absorberId;
 									break;
 								}
@@ -1087,6 +1109,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				if (absorberGuid != Guid.Empty)
 				{
 					myAbsorbedObjectTypes.Add(objectType.Id, absorberGuid);
+					myAbsorbedObjectTypeMandatories.Add(objectType.Id, modality);
 				}
 			}
 		}
@@ -1134,16 +1157,16 @@ namespace Neumont.Tools.ORM.OIALModel
 								factTypeAbsorptionsAwayFromThisObjectType.Add(absorbedFactType.Key);
 							}
 						}
-						bool isAbsorbed = false;
+						bool isAbsorbed = true;
 
 						// If the id of any of those fact types in the factTypeAbsorptionsAwayFromThisObjectType List
 						// match the id of any of the fact types in this object's functional direct fact types,
 						// then it is not a top-level object type.
 						foreach (FactType factType in functionalRoleFactTypes)
 						{
-							if (factTypeAbsorptionsAwayFromThisObjectType.Contains(factType.Id))
+							if (!factTypeAbsorptionsAwayFromThisObjectType.Contains(factType.Id))
 							{
-								isAbsorbed = true;
+								isAbsorbed = false;
 								break;
 							}
 						}
@@ -1172,10 +1195,10 @@ namespace Neumont.Tools.ORM.OIALModel
 					// No data type can be held for an UnspecifiedDataType
 					//if (!(currentObject.DataType is UnspecifiedDataType))
 					//{
-						InformationTypeFormat itf = new InformationTypeFormat(store,
-							new PropertyAssignment(InformationTypeFormat.NameDomainPropertyId, currentObject.Name));
-						itf.ValueType = currentObject;
-						thisInformationTypeFormats.Add(itf);
+					InformationTypeFormat itf = new InformationTypeFormat(store,
+						new PropertyAssignment(InformationTypeFormat.NameDomainPropertyId, currentObject.Name));
+					itf.ValueType = currentObject;
+					thisInformationTypeFormats.Add(itf);
 					//}
 				}
 			}
@@ -1227,6 +1250,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				int count = conceptTypeAbsorbedConceptTypeCollection.Count;
 				ConceptTypeAbsorbedConceptType conceptTypeAbsorbedConceptType = conceptTypeAbsorbedConceptTypeCollection[count - 1];
 				conceptTypeAbsorbedConceptType.Name = objectType.Name;
+				conceptTypeAbsorbedConceptType.Mandatory = myAbsorbedObjectTypeMandatories[conceptType.ObjectType.Id];
 				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 				ObjectType parentObject = parentConcept.ObjectType;
 				foreach (Role role in playedRoles)
@@ -1248,7 +1272,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// for each <see cref="ConceptType"/>.
 		/// </summary>
 		/// <param name="store">The current store of the <see cref="OIALDomainModel"/></param>
-		private void InformationTypesAndConceptTypeRefs(Store store, ConceptType conceptType, bool isTopLevel)
+		/// <param name="conceptType">The <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/> for which information types
+		/// and concept type refs should be generated.</param>
+		private void InformationTypesAndConceptTypeRefs(Store store, ConceptType conceptType)
 		{
 			ObjectType conceptObjectType = conceptType.ObjectType;
 			Guid objectId = conceptObjectType.Id;
@@ -1320,7 +1346,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					continue;
 				}
 #endif
-				if (roleCount == 2)
+				else if (roleCount == 2)
 				{
 					LinkedElementCollection<ConstraintRoleSequence> constraints = role.ConstraintRoleSequenceCollection;
 					int count = constraints.Count;
@@ -1371,7 +1397,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
 				Guid oppositeRolePlayerId = oppositeRolePlayer.Id;
 				Guid oppositeRolePlayerDesiredParentOrTopLevelTypeId = GetTopLevelId(oppositeRolePlayerId, objectId);
-				IEnumerable<SingleChildConstraint> constraints = GetSingleChildConstraints(oppositeRole, store, isTopLevel);
+				IEnumerable<SingleChildConstraint> constraints = GetSingleChildConstraints(oppositeRole, store);
 				if (oppositeRolePlayerDesiredParentOrTopLevelTypeId.Equals(Guid.Empty))
 				{
 					// Account for role names (if they exist) instead of object type names.
@@ -1415,8 +1441,8 @@ namespace Neumont.Tools.ORM.OIALModel
 						}
 					}
 					Debug.Assert(absorbedConceptType != null, "AbsorbedConceptType cannot be null.");
-					
-					InformationTypesAndConceptTypeRefs(store, absorbedConceptType, false);
+
+					InformationTypesAndConceptTypeRefs(store, absorbedConceptType);
 				}
 				else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
 				{
@@ -1566,31 +1592,34 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				pathNodes.AddLast(oppositeRole);
 				UniquenessConstraint preferredIdentifier = oppositeRolePlayer.PreferredIdentifier;
-				LinkedElementCollection<Role> preferredIdentifierRoles = preferredIdentifier.RoleCollection;
-				int count = preferredIdentifierRoles.Count;
-				bool hasCompositeIdentifier = count > 1;
-				for (int i = 0; i < count; ++i)
+				if (preferredIdentifier != null)
 				{
-					Role playedRole = preferredIdentifierRoles[i];
-					//If it is part of a composite identifier, then we try to use the role name. If there is no role name,
-					// then we concatenate the previous name with the current object type name.
-					if (!isFirst && isPartOfCompositeIdentifier)
+					LinkedElementCollection<Role> preferredIdentifierRoles = preferredIdentifier.RoleCollection;
+					int count = preferredIdentifierRoles.Count;
+					bool hasCompositeIdentifier = count > 1;
+					for (int i = 0; i < count; ++i)
 					{
-						string concatName = oppositeRole.Name;
-						if (!string.IsNullOrEmpty(concatName))
+						Role playedRole = preferredIdentifierRoles[i];
+						//If it is part of a composite identifier, then we try to use the role name. If there is no role name,
+						// then we concatenate the previous name with the current object type name.
+						if (!isFirst && isPartOfCompositeIdentifier)
 						{
-							if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
+							string concatName = oppositeRole.Name;
+							if (!string.IsNullOrEmpty(concatName))
 							{
-								newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
-								forceRoleNames = true;
+								if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
+								{
+									newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
+									forceRoleNames = true;
+								}
+							}
+							else
+							{
+								newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
 							}
 						}
-						else
-						{
-							newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
-						}
+						GetInformationTypesInternal(store, conceptType, playedRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
 					}
-					GetInformationTypesInternal(store, conceptType, playedRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
 				}
 				//LinkedElementCollection<Role> playedRoles = oppositeRolePlayer.PlayedRoleCollection;
 				//int count = playedRoles.Count;
@@ -1632,7 +1661,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				//                    newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
 				//                }
 				//            }
-				            //GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
+				//GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
 				//        }
 				//    }
 				//}
@@ -1646,7 +1675,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="role">The opposite role in the <see cref="ConceptTypeChild"/> relationship.</param>
 		/// <param name="store">The store the current <see cref="OIALModel"/> is attached to.</param>
 		/// <returns>An <see cref="IEnumerable&lt;SingleChildConstraint&gt;"/> to add to the <see cref="ConceptTypeChild"/>.</returns>
-		private IEnumerable<SingleChildConstraint> GetSingleChildConstraints(Role role, Store store, bool isTopLevel)
+		private IEnumerable<SingleChildConstraint> GetSingleChildConstraints(Role role, Store store)
 		{
 			LinkedElementCollection<ConstraintRoleSequence> constraintCollection = role.ConstraintRoleSequenceCollection;
 			int constraintCount = constraintCollection.Count;
@@ -1794,21 +1823,21 @@ namespace Neumont.Tools.ORM.OIALModel
 					}
 					else if (isDisjunctiveMandatoryConstraint)
 					{
-					    childSequenceConstraint = new DisjunctiveMandatoryConstraint(store,
-					        new PropertyAssignment(DisjunctiveMandatoryConstraint.NameDomainPropertyId, constraintName),
-					        new PropertyAssignment(DisjunctiveMandatoryConstraint.ModalityDomainPropertyId, constraintModality));
+						childSequenceConstraint = new DisjunctiveMandatoryConstraint(store,
+							new PropertyAssignment(DisjunctiveMandatoryConstraint.NameDomainPropertyId, constraintName),
+							new PropertyAssignment(DisjunctiveMandatoryConstraint.ModalityDomainPropertyId, constraintModality));
 					}
 					else if (constraint is FrequencyConstraint)
 					{
-					    childSequenceConstraint = new ChildSequenceFrequencyConstraint(store,
-					        new PropertyAssignment(ChildSequenceFrequencyConstraint.NameDomainPropertyId, constraintName),
-					        new PropertyAssignment(ChildSequenceFrequencyConstraint.ModalityDomainPropertyId, constraintModality));
+						childSequenceConstraint = new ChildSequenceFrequencyConstraint(store,
+							new PropertyAssignment(ChildSequenceFrequencyConstraint.NameDomainPropertyId, constraintName),
+							new PropertyAssignment(ChildSequenceFrequencyConstraint.ModalityDomainPropertyId, constraintModality));
 					}
 					else if (constraint is ObjModel.RingConstraint)
 					{
-					    childSequenceConstraint = new RingConstraint(store,
-					        new PropertyAssignment(RingConstraint.NameDomainPropertyId, constraintName),
-					        new PropertyAssignment(RingConstraint.ModalityDomainPropertyId, constraintModality));
+						childSequenceConstraint = new RingConstraint(store,
+							new PropertyAssignment(RingConstraint.NameDomainPropertyId, constraintName),
+							new PropertyAssignment(RingConstraint.ModalityDomainPropertyId, constraintModality));
 					}
 					Debug.Assert(childSequenceConstraint != null);
 					childSequenceConstraint.ChildSequence = minTwoChildrenChildSequence;
@@ -1895,7 +1924,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="unaryFactType">The <see cref="T:Neumont.Tools.ORM.ObjectModel.FactType"/> whose reading order is of interest.</param>
 		/// <returns>Column name</returns>
-		private string GetUnaryReading(FactType unaryFactType)
+		private static string GetUnaryReading(FactType unaryFactType)
 		{
 			if (unaryFactType.RoleCollection.Count != 1)
 			{
@@ -1914,14 +1943,14 @@ namespace Neumont.Tools.ORM.OIALModel
 				for (int i = 0; i < splitReadingCount; ++i)
 				{
 					string currentReadingWord = splitReading[i];
-					string firstChar;
+					char firstChar;
 					if (i == 0)
 					{
-						firstChar = currentReadingWord[0].ToString().ToLower();
+						firstChar = char.ToLower(currentReadingWord[0], CultureInfo.InvariantCulture);
 					}
 					else
 					{
-						firstChar = currentReadingWord[0].ToString().ToUpper();
+						firstChar = char.ToUpper(currentReadingWord[0], CultureInfo.InvariantCulture);
 
 					}
 					splitReading[i] = string.Concat(firstChar, currentReadingWord.Remove(0, 1));
@@ -1931,6 +1960,22 @@ namespace Neumont.Tools.ORM.OIALModel
 			return "thisUnaryFactTypeNeedsAName";
 		}
 #endif
+		private static int GetAlethicInternalConstraintsCount(FactType factType, ConstraintType constraintType)
+		{
+			LinkedElementCollection<SetConstraint> factSetConstraints = factType.SetConstraintCollection;
+			int factSetConstraintCount = factSetConstraints.Count;
+			int retVal = 0;
+
+			for (int i = 0; i < factSetConstraintCount; ++i)
+			{
+				IConstraint constraint = (IConstraint)factSetConstraints[i];
+				if (constraint.ConstraintType == constraintType && constraint.Modality == ConstraintModality.Alethic && constraint.ConstraintIsInternal)
+				{
+					++retVal;
+				}
+			}
+			return retVal;
+		}
 		/// <summary>
 		/// Gets a collection which can iterated over of <see cref="FactType"/> objects for
 		/// a specific <see cref="ObjectType"/>.
@@ -1939,7 +1984,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="startingRole">If the <see cref="ObjectType"/> of interest has a specific <see cref="Role"/> whose
 		/// <see cref="FactType"/> should not be checked, pass it here. Otherwise, pass null.</param>
 		/// <returns>IEnumerable of <see cref="FactType"/> objects</returns>
-		private IEnumerable<FactType> GetFunctionalRoles(LinkedElementCollection<Role> objectTypeRoleCollection, Role startingRole)
+		private static IEnumerable<FactType> GetFunctionalNonDependentRoles(LinkedElementCollection<Role> objectTypeRoleCollection, Role startingRole)
 		{
 			foreach (Role role in objectTypeRoleCollection)
 			{
@@ -1954,7 +1999,89 @@ namespace Neumont.Tools.ORM.OIALModel
 				// If it is a functional role
 				Role oppositeRole = role.OppositeRole.Role;					// CHANGE: Role to RoleBase
 				RoleMultiplicity roleMultiplicity = oppositeRole.Multiplicity;
-				// TODO: Can this really be zero to one?
+
+				if (roleMultiplicity == RoleMultiplicity.ZeroToOne ||
+					roleMultiplicity == RoleMultiplicity.ExactlyOne)
+				{
+					// If there are no constraints in the role-sequence collection, then it is a
+					// functional role. If there are constraints but no uniqueness constraints, it
+					// is a functional role. If there are constraints and one is an internal uniqueness
+					// constraint and it is not primary, then it is a functional role. If there are
+					// constraints and one is an external uniqueness constraint and it is not primary,
+					// then it is a functional role. If there are constraints and one is an internal
+					// uniqueness constraint and another is an external uniqueness constraint and either
+					// one is primary, then it is not a functional role.
+					bool isDependentOrPreferredIdentifier = false;
+					foreach (ConstraintRoleSequence constraintRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+					{
+						IConstraint constraint = constraintRoleSequence.Constraint;
+						ConstraintType constraintType = constraint.ConstraintType;
+						if (constraintType == ConstraintType.InternalUniqueness ||
+							constraintType == ConstraintType.ExternalUniqueness)
+						{
+							isDependentOrPreferredIdentifier = true;
+							break;
+						}
+					}
+					if (!isDependentOrPreferredIdentifier)
+					{
+						yield return roleFactType;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Determines how many functional roles an <see cref="ObjectType"/> participates in
+		/// other than the current <see cref="Role"/> passed to the function.
+		/// </summary>
+		/// <remarks>
+		/// Intended to be a helper method for FactTypeAbsorption algorithm
+		/// </remarks>
+		/// <param name="objectTypeRoleCollection">
+		/// Roles that the object type plays.
+		/// </param>
+		/// <param name="startingRole">
+		/// The <see cref="Role"/> object whose Role Player is of interest. Pass null if no
+		/// role needs to be checked.
+		/// </param>
+		/// <returns>
+		/// An integer with the number of functional roles not part of the primary identifier
+		/// </returns>
+		private static int GetFunctionalNonDependentRoleCount(LinkedElementCollection<Role> objectTypeRoleCollection, Role startingRole)
+		{
+			int retVal = 0;
+			IEnumerator<FactType> iEnumerator = GetFunctionalNonDependentRoles(objectTypeRoleCollection, startingRole).GetEnumerator();
+			// Iterates over the enumerator to count the collection.
+			while (iEnumerator.MoveNext())
+			{
+				++retVal;
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Gets a collection which can iterated over of <see cref="FactType"/> objects for
+		/// a specific <see cref="ObjectType"/>.
+		/// </summary>
+		/// <param name="objectTypeRoleCollection">The PlayedRoleCollection of the <see cref="ObjectType"/> of interest</param>
+		/// <param name="startingRole">If the <see cref="ObjectType"/> of interest has a specific <see cref="Role"/> whose
+		/// <see cref="FactType"/> should not be checked, pass it here. Otherwise, pass null.</param>
+		/// <returns>IEnumerable of <see cref="FactType"/> objects</returns>
+		private static IEnumerable<FactType> GetFunctionalRoles(LinkedElementCollection<Role> objectTypeRoleCollection, Role startingRole)
+		{
+			foreach (Role role in objectTypeRoleCollection)
+			{
+				// If null is passed for the starting role, then although this check will be executed, it will
+				// never reach the continue statement. Also we do not want to interpret any fact types that are
+				// not binarized.
+				FactType roleFactType = role.FactType;
+				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || (roleFactType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(roleFactType.DerivationRuleDisplay)))
+				{
+					continue;
+				}
+				// If it is a functional role
+				Role oppositeRole = role.OppositeRole.Role;					// CHANGE: Role to RoleBase
+				RoleMultiplicity roleMultiplicity = oppositeRole.Multiplicity;
+
 				if (roleMultiplicity == RoleMultiplicity.ZeroToOne ||
 					roleMultiplicity == RoleMultiplicity.ExactlyOne)
 				{
@@ -1977,7 +2104,6 @@ namespace Neumont.Tools.ORM.OIALModel
 							if (constraint.PreferredIdentifierFor != null)
 							{
 								isPreferredIdentifier = true;
-								break;
 							}
 						}
 					}
@@ -1990,16 +2116,13 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 		/// <summary>
 		/// Determines how many functional roles an <see cref="ObjectType"/> participates in
-		/// other than the current <see cref="Role"/> passed to the function. Functional roles
-		/// that are part of the primary identifier for an <see cref="ObjectType"/>, i.e.
-		/// those that have uniqueness constraints (whether internal or external) that
-		/// help identify the <see cref="ObjectType"/>
+		/// other than the current <see cref="Role"/> passed to the function.
 		/// </summary>
 		/// <remarks>
 		/// Intended to be a helper method for FactTypeAbsorption algorithm
 		/// </remarks>
-		/// <param name="objectType">
-		/// The <see cref="ObjectType"/> object whose functional role count is of interest
+		/// <param name="objectTypeRoleCollection">
+		/// Roles that the object type plays.
 		/// </param>
 		/// <param name="startingRole">
 		/// The <see cref="Role"/> object whose Role Player is of interest. Pass null if no
@@ -2008,7 +2131,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <returns>
 		/// An integer with the number of functional roles not part of the primary identifier
 		/// </returns>
-		private int GetFunctionalRoleCount(LinkedElementCollection<Role> objectTypeRoleCollection, Role startingRole)
+		private static int GetFunctionalRoleCount(LinkedElementCollection<Role> objectTypeRoleCollection, Role startingRole)
 		{
 			int retVal = 0;
 			IEnumerator<FactType> iEnumerator = GetFunctionalRoles(objectTypeRoleCollection, startingRole).GetEnumerator();
@@ -2024,7 +2147,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="objectType">The <see cref="ObjectType"/> whose Subtype-status is of interest</param>
 		/// <returns>True if the passed <see cref="ObjectType"/> is a Subtype. Otherwise, false.</returns>
-		private bool IsSubtype(ObjectType objectType)
+		private static bool IsSubtype(ObjectType objectType)
 		{
 			LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 			int playedRoleCount = playedRoles.Count;
@@ -2043,7 +2166,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="objectType">The <see cref="ObjectType"/> whose supertype we are interested in.</param>
 		/// <returns>An <see cref="ObjectType"/> of the first primary supertype if it exist. If not, null.</returns>
-		private ObjectType GetSupertype(ObjectType objectType)
+		private static ObjectType GetSupertype(ObjectType objectType)
 		{
 			LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 			int playedRoleCount = playedRoles.Count;
@@ -2146,7 +2269,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="checkOppositeRole">True if the opposite roles of <paramref name="constraint"/>'s role collection should be checked
 		/// instead of the normal roles. Otherwise, false. An example would be a <example>DisjunctiveMandatoryConstraint</example>.</param>
 		/// <returns>A <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/>.</returns>
-		private List<ConceptTypeChild> GetConceptTypeChildRelationshipsForSetConstraints(LinkedElementCollection<Role> constraintRoleCollection, bool checkOppositeRole)
+		private static List<ConceptTypeChild> GetConceptTypeChildRelationshipsForSetConstraints(LinkedElementCollection<Role> constraintRoleCollection, bool checkOppositeRole)
 		{
 			List<ConceptTypeChild> conceptTypeHasChildCollection = new List<ConceptTypeChild>();
 			// Checking the role collection count is not equal to zero ensures that we have only external constraints (or constraint that
@@ -2191,7 +2314,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			//// will map to external constraint in the co-referenced version of the model). We have checked for this in the calling method.
 			//foreach (SetComparisonConstraintRoleSequence roleSequence in roleSequenceCollection)
 			//{
-				
+
 			//    Role newRole = role;
 			//    if (checkOppositeRole)
 			//    {
@@ -2263,7 +2386,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// Gets the <see cref="FactAbsorptionType"/> of the absorption.
 			/// </summary>
-			public FactAbsorptionType TypeOfAbsorption
+			public FactAbsorptionType AbsorptionType
 			{
 				get { return typeOfAbsorption; }
 			}
@@ -2325,8 +2448,8 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ObjectType nonMandatoryRolePlayer = mandatoryRole.OppositeRole.Role.RolePlayer;
 				ObjectType mandatoryRolePlayer = mandatoryRole.RolePlayer;
-				int nonMandatoryFunctionalRoleCount = GetFunctionalRoleCount(nonMandatoryRolePlayer.PlayedRoleCollection, null);
-				int mandatoryFunctionalRoleCount = GetFunctionalRoleCount(mandatoryRolePlayer.PlayedRoleCollection, null);
+				int nonMandatoryFunctionalRoleCount = GetFunctionalNonDependentRoleCount(nonMandatoryRolePlayer.PlayedRoleCollection, null);
+				int mandatoryFunctionalRoleCount = GetFunctionalNonDependentRoleCount(mandatoryRolePlayer.PlayedRoleCollection, null);
 				if (nonMandatoryFunctionalRoleCount == 0)
 				{
 					// Nothing should be changed. The mandatory role player should have a concept type ref to the non-mandatory role player

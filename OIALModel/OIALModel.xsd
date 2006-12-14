@@ -29,9 +29,9 @@
 	<xs:complexType name="ModelType">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="ORMModel" type="RefType" />
-			<xs:element minOccurs="0" name="ChildSequenceConstraints" type="ChildSequenceConstraintsType" />
 			<xs:element minOccurs="0" name="InformationTypeFormats" type="InformationTypeFormatsType" />
 			<xs:element minOccurs="0" name="ConceptTypes" type="ConceptTypesType" />
+			<xs:element minOccurs="0" name="ChildSequenceConstraints" type="ChildSequenceConstraintsType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
@@ -61,6 +61,7 @@
 		<xs:complexContent>
 			<xs:extension base="MinTwoChildrenChildSequenceConstraintType">
 				<xs:attribute name="IsPreferred" type="xs:boolean" />
+				<xs:attribute name="ShouldIgnore" type="xs:boolean" />
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -180,6 +181,7 @@
 			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
 		</xs:choice>
 		<xs:attributeGroup ref="Id_Name_Group" />
+		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
 	</xs:complexType>
 
 	<!--<xs:complexType name="InformationTypeType">

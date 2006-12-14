@@ -96,6 +96,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainClasses.cs</LastGenOutput>
     </None>
+    <Compile Include="DummyRules.cs" />
     <Compile Include="GeneratedCode\DomainClasses.cs">
       <DependentUpon>DomainClasses.tt</DependentUpon>
       <SubType>Code</SubType>

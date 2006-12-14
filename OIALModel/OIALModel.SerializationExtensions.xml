@@ -22,7 +22,7 @@
 			<se:Namespace Prefix="oial" URI="http://schemas.neumont.edu/ORM/2006-01/OIALModel" SchemaFile="OIALModel.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
-			<se:RootElement Class="OIALModel" Name="Model"/>
+			<!--<se:RootElement Class="OIALModel" Name="Model"/>-->
 		</se:RootElements>
 		<se:OmittedDomainElements>
 			<se:OmitRelationship Class="ChildSequenceConstraintHasChildSequence"/>
@@ -30,16 +30,16 @@
 	</se:DomainModel>
 	<!-- OIALModel -->
 	<se:Element Class="OIALModel" Name="Model" Override="false" SortChildElements="true">
-		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Name"/>
 		<se:Link Name="ORMModel" RelationshipName="OIALModelHasORMModel" RoleName="ORMModel"/>
-		<se:Container Name="ChildSequenceConstraints" WriteStyle="NotWritten">
-			<se:Embed RelationshipName="OIALModelHasChildSequenceConstraint" RoleName="ChildSequenceConstraint"/>
-		</se:Container>
-		<se:Container Name="InformationTypeFormats" WriteStyle="NotWritten">
+		<se:Container Name="InformationTypeFormats">
 			<se:Embed RelationshipName="OIALHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
 		</se:Container>
-		<se:Container Name="ConceptTypes" WriteStyle="NotWritten">
+		<se:Container Name="ConceptTypes">
 			<se:Embed RelationshipName="OIALModelHasConceptType" RoleName="ConceptType"/>
+		</se:Container>
+		<se:Container Name="ChildSequenceConstraints">
+			<se:Embed RelationshipName="OIALModelHasChildSequenceConstraint" RoleName="ChildSequenceConstraint"/>
 		</se:Container>
 	</se:Element>
 	<!-- ChildSequenceConstraints and ChildSequences -->

@@ -76,24 +76,12 @@
 				</ElementMergeDirective>
 			</ElementMergeDirectives>
 		</DomainClass>
-
-		<!--<DomainClass Name="ParentableType" Namespace="Neumont.Tools.ORM.OIALModel" Id="5B25EF27-C3E0-4F71-8230-D155D8279926" DisplayName="ParentableType" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="OIALNamedElement"/>
-			</BaseClass>
-		</DomainClass>-->
 		
 		<DomainClass Name="ConceptType" Namespace="Neumont.Tools.ORM.OIALModel" Id="AC397C05-9E1A-4BED-BFC8-82D3C1DED36D" DisplayName="ConceptType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="OIALNamedElement"/>
 			</BaseClass>
 		</DomainClass>
-
-		<!--<DomainClass Name="InformationType" Namespace="Neumont.Tools.ORM.OIALModel" Id="08BE24C4-C237-4CAC-B7F0-04C4F5E27758" DisplayName="InformationType" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="ParentableType"/>
-			</BaseClass>
-		</DomainClass>-->
 
 		<DomainClass Name="InformationTypeFormat" Namespace="Neumont.Tools.ORM.OIALModel" Id="8D5E029E-4A1A-4AB2-A222-5D727C32F3F5" DisplayName="InformationTypeFormat" Description="">
 			<BaseClass>
@@ -390,7 +378,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<!--<DomainRelationship Name="InformationTypeHasInformationTypeFormat" Namespace="Neumont.Tools.ORM.OIALModel" Id="D70B7396-F7CC-40A2-A062-DE8A6C864B83">
+		<DomainRelationship Name="InformationTypeHasInformationTypeFormat" Namespace="Neumont.Tools.ORM.OIALModel" Id="D70B7396-F7CC-40A2-A062-DE8A6C864B83">
 			<Source>
 				<DomainRole Name="InformationType" PropertyName="InformationTypeFormat" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InformationType" Id="07FBDC19-A33C-4377-BD14-7105A671FD7E">
 					<RolePlayer>
@@ -405,7 +393,7 @@
 					</RolePlayer>
 				</DomainRole>
 			</Target>
-		</DomainRelationship>-->
+		</DomainRelationship>
 
 		<DomainRelationship Name="InformationTypeFormatHasObjectType" Namespace="Neumont.Tools.ORM.OIALModel" Id="837FB0B5-12B6-4432-9785-DDA720D469D6">
 			<Source>
