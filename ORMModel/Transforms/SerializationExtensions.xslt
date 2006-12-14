@@ -1135,6 +1135,31 @@
 									<plx:nameRef name="match"/>
 								</plx:passParam>
 							</plx:callInstance>
+							<xsl:for-each select="se:ConditionalName">
+								<plx:callInstance name="Add">
+									<plx:callObject>
+										<plx:nameRef name="childElementMappings"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:string>
+											<plx:string>||||</plx:string>
+											<plx:string>
+												<xsl:call-template name="ResolveNamespace">
+													<xsl:with-param name="namespaces" select="$namespaces"/>
+													<!-- Use default for prefix parameter -->
+												</xsl:call-template>
+											</plx:string>
+											<plx:string>|</plx:string>
+											<plx:string>
+												<xsl:value-of select="@Name"/>
+											</plx:string>
+										</plx:string>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="match"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:for-each>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:for-each>
