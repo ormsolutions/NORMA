@@ -278,7 +278,7 @@
 		<DomainRelationship Name="TableReferencesConceptType" Namespace="Neumont.Tools.ORM.Views.RelationalView" Id="B286333F-1047-44D1-9459-5735F428913D" AccessModifier="Assembly">
 
 			<Source>
-				<DomainRole Name="Table" PropertyName="ConceptType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Table" Id="1697C628-0BA4-4A2E-9A7A-3BEA6A08FAC1" IsPropertyBrowsable="false">
+				<DomainRole Name="Table" PropertyName="ConceptType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Table" Id="1697C628-0BA4-4A2E-9A7A-3BEA6A08FAC1" IsPropertyBrowsable="false">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>

@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling.Design;
 using System.ComponentModel;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.OIALModel;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -114,8 +115,18 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				TableShape tableShape = shapeElement as TableShape;
 				if (tableShape != null)
 				{
+					ConceptType conceptType = ((Table)tableShape.ModelElement).ConceptType;
+					if (conceptType == null)
+					{
+						continue;
+					}
+					ObjectType conceptObjectType = conceptType.ObjectType;
+					if (conceptObjectType == null)
+					{
+						continue;
+					}
 					writer.WriteStartElement(TableShapeElementName, rvNamespace);
-					writer.WriteAttributeString(ObjectTypeRefAttributeName, ToXml(((Table)tableShape.ModelElement).ConceptType.ObjectType.Id));
+					writer.WriteAttributeString(ObjectTypeRefAttributeName, ToXml(conceptType.ObjectType.Id));
 					writer.WriteAttributeString(LocationAttributeName, typeConverter.ConvertToInvariantString(tableShape.Location));
 					writer.WriteEndElement();
 				}
