@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Reflection;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -111,8 +112,33 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 		private static IORMGenerator LoadGeneratorClass(RegistryKey generatorKey)
 		{
-			// TODO: Implement LoadGeneratorClass using essentially the same code that ORMPackage.LoadExtensionSubStore() uses.
-			return null;
+			string typeName = generatorKey.GetValue("Class", null) as string;
+			string assembly = generatorKey.GetValue("Assembly", null) as string;
+			string codeBase = generatorKey.GetValue("CodeBase", null) as string;
+
+			if (string.IsNullOrEmpty(typeName))
+			{
+				// TODO: Localize message.
+				throw new InvalidOperationException("No 'Class' value was specified.");
+			}
+
+			AssemblyName assemblyName;
+			if (!string.IsNullOrEmpty(assembly))
+			{
+				assemblyName = new AssemblyName(assembly);
+			}
+			else
+			{
+				if (string.IsNullOrEmpty(codeBase))
+				{
+					// TODO: Localize message.
+					throw new InvalidOperationException("Neither an 'Assembly' nor 'CodeBase' value was specified.");
+				}
+				assemblyName = new AssemblyName();
+			}
+			assemblyName.CodeBase = codeBase;
+
+			return (IORMGenerator)Activator.CreateInstance(Assembly.Load(assemblyName).GetType(typeName, true, false));
 		}
 	}
 }
