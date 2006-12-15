@@ -25,7 +25,7 @@ using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class FactType : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, ISurveyNode
+	public partial class SetConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
@@ -54,97 +54,119 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskElementQuestion()
 		{
-			return (int)ElementType.FactType;
+			return (int)ElementType.Constraint;
 		}
 
 		#endregion
 		#region ISurveyNode Members
 		/// <summary>
-		/// returns whether or not this object is editable in a survey tree
+		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
 		/// </summary>
-		bool ISurveyNode.IsSurveyNameEditable
+		protected new object SurveyNodeDataObject
 		{
 			get
 			{
-				return IsSurveyNameEditable;
+				if (Constraint.ConstraintIsInternal)
+				{
+					LinkedElementCollection<FactType> facts = FactTypeCollection;
+					if (facts.Count == 1)
+					{
+						DataObject retVal = new DataObject();
+						retVal.SetData(typeof(FactType), facts[0]);
+						return retVal;
+					}
+					return null;
+				}
+				else
+				{
+					DataObject retVal = new DataObject();
+					retVal.SetData(typeof(SetConstraint), this);
+					return retVal;
+				}
 			}
 		}
-		/// <summary>
-		/// implementation of IsSurveyNameEditable from ISurveyNode
-		/// </summary>
-		protected bool IsSurveyNameEditable
+		object ISurveyNode.SurveyNodeDataObject
 		{
 			get
 			{
-				// UNDONE: 2006-06 DSL Tools port: This seemed to be returning the same value as IsReadOnly, rather than its opposite,
-				// which seemed to be rather backwards. For now, I've changed it to return !IsReadOnly...
-				return !DomainTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
+				return SurveyNodeDataObject;
 			}
+		}
+		#endregion
+	}
+	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, ISurveyNode
+	{
+		#region IAnswerSurveyQuestion<ErrorState> Members
+
+		int IAnswerSurveyQuestion<ErrorState>.AskQuestion()
+		{
+			return AskErrorQuestion();
 		}
 		/// <summary>
-		/// the display name for a survey tree
+		/// returns answer to IAnswerSurveyQuetion for errors
 		/// </summary>
-		string ISurveyNode.SurveyName 
+		/// <returns></returns>
+		protected int AskErrorQuestion()
 		{
-			get
-			{
-				return SurveyName;
-			}
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? ErrorState.HasError : ErrorState.NoError);
+		}
+
+		#endregion
+		#region IAnswerSurveyQuestion<ElementType> Members
+		int IAnswerSurveyQuestion<ElementType>.AskQuestion()
+		{
+			return AskElementQuestion();
 		}
 		/// <summary>
-		/// implementation of SurveyName from ISurveyNode
+		/// implementation of AskQuestion method from IAnswerSurveyQuestion
 		/// </summary>
-		protected string SurveyName //TODO: this might be updated to show the more informative element names (componentName)?
+		/// <returns></returns>
+		protected int AskElementQuestion()
 		{
-			get 
-			{
-				return this.Name;
-			}
+			return (int)ElementType.Constraint;
 		}
-		/// <summary>
-		/// the editable name for a survey tree
-		/// </summary>
-		string ISurveyNode.EditableSurveyName
-		{
-			get
-			{
-				return EditableSurveyName;
-			}
-			set
-			{
-				EditableSurveyName = value;
-			}
-		}
-		/// <summary>
-		/// implementation of EditableSurveyName from ISurveyNode
-		/// </summary>
-		protected string EditableSurveyName
-		{
-			get
-			{
-				return this.Name;
-			}
-			set
-			{
-				this.Name = value;
-			}
-		}
+
+		#endregion
+		#region ISurveyNode Members
 		/// <summary>
 		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
 		/// </summary>
-		protected object SurveyNodeDataObject
+		protected new object SurveyNodeDataObject
 		{
 			get
 			{
-				FactType resolvedFact = this;
-				Objectification objectification;
-				if (null != (objectification = ImpliedByObjectification))
-				{
-					resolvedFact = objectification.NestedFactType;
-				}
 				DataObject retVal = new DataObject();
-				retVal.SetData(typeof(FactType), resolvedFact);
+				retVal.SetData(typeof(SetComparisonConstraint), this);
 				return retVal;
+			}
+		}
+		object ISurveyNode.SurveyNodeDataObject
+		{
+			get
+			{
+				return SurveyNodeDataObject;
+			}
+		}
+		#endregion
+	}
+	public partial class ExclusionConstraint : ISurveyNode
+	{
+		#region ISurveyNode Members
+		/// <summary>
+		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// </summary>
+		protected new object SurveyNodeDataObject
+		{
+			get
+			{
+				MandatoryConstraint mandatoryConstraint = ExclusiveOrMandatoryConstraint;
+				if (mandatoryConstraint != null)
+				{
+					DataObject retVal = new DataObject();
+					retVal.SetData(typeof(SetConstraint), mandatoryConstraint);
+					return retVal;
+				}
+				return base.SurveyNodeDataObject;
 			}
 		}
 		object ISurveyNode.SurveyNodeDataObject

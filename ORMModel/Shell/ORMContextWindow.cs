@@ -338,7 +338,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					continue;
 				}
-				myDiagram.PlaceORMElementOnDiagram(null, (ModelElement)elem, PointD.Empty);
+				myDiagram.PlaceORMElementOnDiagram(null, (ModelElement)elem, PointD.Empty, false);
 			}
 		}
 		/// <summary>

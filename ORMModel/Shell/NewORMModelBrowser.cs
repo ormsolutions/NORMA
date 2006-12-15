@@ -4,6 +4,10 @@ using System.Text;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.Modeling;
+using System.Collections;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -11,18 +15,19 @@ namespace Neumont.Tools.ORM.Shell
 	/// Tool window to contain survey tree control
 	/// </summary>
 	[CLSCompliant(false)]
-	public class NewORMModelBrowser : ORMToolWindow
+	public class NewORMModelBrowser : ORMToolWindow, IORMSelectionContainer
 	{
 		private SurveyTreeControl myTreeControl;
 		/// <summary>
 		/// public constructor
 		/// </summary>
 		/// <param name="serviceProvider"></param>
-		public NewORMModelBrowser(IServiceProvider serviceProvider) : base(serviceProvider)
+		public NewORMModelBrowser(IServiceProvider serviceProvider)
+			: base(serviceProvider)
 		{
-			
 		}
 		#region LoadWindow method
+
 		/// <summary>
 		/// Loads the SurveyTreeControl from the current document
 		/// </summary>
@@ -33,17 +38,65 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myTreeControl = treeControl = new SurveyTreeControl();
 			}
+			
 			ORMDesignerDocData currentDocument = this.CurrentDocument;
 			treeControl.Tree = (currentDocument != null) ? currentDocument.SurveyTree : null;
+			treeControl.TreeControl.SelectionChanged += new EventHandler(Tree_SelectionChanged);
+		}
+
+		private void Tree_SelectionChanged(object sender, EventArgs e)
+		{
+			ICollection newSelection = null;
+			VirtualTreeControl treeControl = myTreeControl.TreeControl;
+			int currentIndex = treeControl.CurrentIndex;
+			if (currentIndex >= 0)
+			{
+				VirtualTreeItemInfo info = treeControl.Tree.GetItemInfo(currentIndex, 0, false);
+				int options = 0;
+				object trackingObject = info.Branch.GetObject(info.Row, 0, ObjectStyle.TrackingObject, ref options);
+				if (trackingObject != null)
+				{
+					newSelection = new object[] { trackingObject };
+				}
+			}
+			SetSelectedComponents(newSelection);
 		}
 		#endregion //LoadWindow method
 		#region ORMToolWindow overrides
+		///// <summary>
+		///// currently unimplemented, all events handled by tree directly
+		///// </summary>
 		/// <summary>
-		/// currently unimplemented, all events handled by tree directly
+		/// Attaches custom <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/>.  This method must be overridden.
 		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		protected override void ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store store, Neumont.Tools.Modeling.ModelingEventManager eventManager, Neumont.Tools.Modeling.EventHandlerAction action)
 		{
+			// Track Currently Executing Events
+			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
+			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 		}
+
+		private void ElementEventsBegunEvent(object sender, ElementEventsBegunEventArgs e)
+		{
+			ITree tree = this.myTreeControl.Tree;
+			if (tree != null)
+			{
+				tree.DelayRedraw = true;
+			}
+		}
+
+		private void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
+		{
+			ITree tree = this.myTreeControl.Tree;
+			if (tree != null)
+			{
+				tree.DelayRedraw = false;
+			}
+		}
+
 		/// <summary>
 		/// called when document current selected document changes
 		/// </summary>
@@ -55,11 +108,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// returns string to be displayed as window title
 		/// </summary>
-		public override string WindowTitle //TODO: LOCALIZE
+		public override string WindowTitle
 		{
 			get
 			{
-				return "NewORMModelBrowser";
+				return ResourceStrings.ModelBrowserWindowTitle;
 			}
 		}
 		/// <summary>

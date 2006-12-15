@@ -23,23 +23,23 @@ using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ORMNamedElement : ISurveyName
+	public partial class ORMNamedElement : ISurveyNode
 	{
-		#region ISurveyName Members
+		#region ISurveyNode Members
 		/// <summary>
 		/// whether or not this object is editable in the survey tree
 		/// </summary>
-		bool ISurveyName.IsEditable
+		bool ISurveyNode.IsSurveyNameEditable
 		{
 			get
 			{
-				return IsEditable;
+				return IsSurveyNameEditable;
 			}
 		}
 		/// <summary>
-		/// implementation of IsEditable from ISurveyName
+		/// implementation of IsSurveyNameEditable from ISurveyNode
 		/// </summary>
-		protected bool IsEditable
+		protected bool IsSurveyNameEditable
 		{
 			get
 			{
@@ -52,7 +52,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// the display name to be used in the survey tree
 		/// </summary>
-		string ISurveyName.SurveyName
+		string ISurveyNode.SurveyName
 		{
 			get
 			{
@@ -60,7 +60,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementation of SurveyName from ISurveyName
+		/// implementation of SurveyName from ISurveyNode
 		/// </summary>
 		protected string SurveyName //TODO: this may need to be updated to return the more descriptive element name (componentName)?
 		{
@@ -72,7 +72,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// editable name to be displayed in the survey tree
 		/// </summary>
-		string ISurveyName.EditableSurveyName
+		string ISurveyNode.EditableSurveyName
 		{
 			get
 			{
@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementatin of EditableSurveyName from ISurveyName
+		/// implementatin of EditableSurveyName from ISurveyNode
 		/// </summary>
 		protected string EditableSurveyName
 		{
@@ -98,6 +98,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
+		/// <summary>
+		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// </summary>
+		protected static object SurveyNodeDataObject
+		{
+			get
+			{
+				return null;
+			}
+		}
+		object ISurveyNode.SurveyNodeDataObject
+		{
+			get
+			{
+				return SurveyNodeDataObject;
+			}
+		}
 		#endregion
 	}
 }

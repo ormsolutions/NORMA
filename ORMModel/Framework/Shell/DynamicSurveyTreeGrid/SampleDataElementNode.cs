@@ -21,157 +21,198 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	/// <summary>
-	/// wrapper for objects to be dispalyed in the Survey Tree
-	/// </summary>
-	public struct SampleDataElementNode : ISurveyName, IEquatable<SampleDataElementNode>
+	public partial class MainList
 	{
 		/// <summary>
-		/// public constructor
+		/// wrapper for objects to be dispalyed in the Survey Tree
 		/// </summary>
-		public SampleDataElementNode(object element)
-			: this(element, 0)
+		public struct SampleDataElementNode : ISurveyNode, IEquatable<SampleDataElementNode>
 		{
-		}
-		/// <summary>
-		/// public constructor
-		/// </summary>
-		public SampleDataElementNode(object element, int index)
-		{
-			if (element == null)
+			/// <summary>
+			/// public constructor
+			/// </summary>
+			public SampleDataElementNode(object element)
+				: this(element, 0)
 			{
-				throw new ArgumentNullException("element");
 			}
-			this.myElement = element;
-			this.myIndex = index;
-			this.myName = element as ISurveyName;
-			this.myNodeData = 0;
-		}
-		private readonly object myElement;
-		private readonly ISurveyName myName;
-		/// <summary>
-		/// returns object wrapped by this node
-		/// </summary>
-		public object Element
-		{
-			get
+			/// <summary>
+			/// public constructor
+			/// </summary>
+			public SampleDataElementNode(object element, int index)
 			{
-				return myElement;
-			}
-		}
-		private int myIndex;
-		/// <summary>
-		/// returns nodes index in container, must be set by container to work
-		/// </summary>
-		public int Index
-		{
-			get 
-			{ 
-				return myIndex; 
-			}
-			set 
-			{
-				myIndex = value;
-			}
-		}
-		private int myNodeData;
-		/// <summary>
-		/// gets or sets the integer that holds the answers to all questions in myNodeCachedQuestions
-		/// </summary>
-		public int NodeData
-		{
-			get
-			{
-				return myNodeData;
-			}
-			set
-			{
-				myNodeData = value;
-			}
-		}
-
-		#region ISurveyName property wrappers
-		/// <summary>
-		/// returns name of the wrapped element
-		/// </summary>
-		public string SurveyName
-		{
-			get
-			{
-				if (myName != null)
+				if (element == null)
 				{
-					return myName.SurveyName;
+					throw new ArgumentNullException("element");
 				}
-				return myElement.ToString();
+				this.myElement = element;
+				this.myName = element as ISurveyNode;
+				this.myNodeData = 0;
 			}
-		}
-		/// <summary>
-		/// for edit mode returns the name the user can change
-		/// </summary>
-		public string EditableSurveyName
-		{
-			get
+			private readonly object myElement;
+			private readonly ISurveyNode myName;
+			/// <summary>
+			/// returns object wrapped by this node
+			/// </summary>
+			public object Element
 			{
-				if (myName != null)
+				get
 				{
-					return myName.EditableSurveyName;
-				}
-				return myElement.ToString();
-			}
-			set
-			{
-				if (myName != null)
-				{
-					myName.EditableSurveyName = value;
+					return myElement;
 				}
 			}
-		}
-		/// <summary>
-		/// returns whether or not this object can be edited.
-		/// </summary>
-		public bool IsEditable
-		{
-			get
+			private int myNodeData;
+			/// <summary>
+			/// gets or sets the integer that holds the answers to all questions in myNodeCachedQuestions
+			/// </summary>
+			public int NodeData
 			{
-				return myName != null && myName.IsEditable;
+				get
+				{
+					return myNodeData;
+				}
+				set
+				{
+					myNodeData = value;
+				}
 			}
-		}
-		#endregion
 
-		#region Infrastructure Methods
+			#region ISurveyNode property wrappers
+			/// <summary>
+			/// returns name of the wrapped element
+			/// </summary>
+			public string SurveyName
+			{
+				get
+				{
+					if (myName != null)
+					{
+						return myName.SurveyName;
+					}
+					return myElement.ToString();
+				}
+			}
+			/// <summary>
+			/// for edit mode returns the name the user can change
+			/// </summary>
+			public string EditableSurveyName
+			{
+				get
+				{
+					if (myName != null)
+					{
+						return myName.EditableSurveyName;
+					}
+					return myElement.ToString();
+				}
+				set
+				{
+					if (myName != null)
+					{
+						myName.EditableSurveyName = value;
+					}
+				}
+			}
+			/// <summary>
+			/// returns whether or not this object can be edited.
+			/// </summary>
+			public bool IsSurveyNameEditable
+			{
+				get
+				{
+					return myName != null && myName.IsSurveyNameEditable;
+				}
+			}
+			/// <summary>
+			/// Returns the data object for this node
+			/// </summary>
+			public object SurveyNodeDataObject
+			{
+				get
+				{
+					return (myName != null) ? myName.SurveyNodeDataObject : null;
+				}
+			}
+			#endregion
 
-		/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
-		public override int GetHashCode()
-		{
-			return ((this.myElement != null) ? this.myElement.GetHashCode() : 0) ^ this.myIndex ^ this.myNodeData; 
-		}
-		/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
-		public override bool Equals(object obj)
-		{
-			return obj is SampleDataElementNode && this.Equals((SampleDataElementNode)obj);
-		}
-		/// <summary>See <see cref="IEquatable{SampleDataElementNode}.Equals"/>.</summary>
-		public bool Equals(SampleDataElementNode other)
-		{
-			return this.myElement == other.myElement && this.myIndex == other.myIndex && this.myNodeData == other.myNodeData;
-		}
-		/// <summary>
-		/// Returns whether <param name="left"/> is equal to <param name="right"/>, based on the
-		/// <see cref="Equals(SampleDataElementNode)"/> method.
-		/// </summary>
-		public static bool operator ==(SampleDataElementNode left, SampleDataElementNode right)
-		{
-			return left.Equals(right);
-		}
-		/// <summary>
-		/// Returns whether <param name="left"/> is not equal to <param name="right"/>, based on the
-		/// <see cref="Equals(SampleDataElementNode)"/> method.
-		/// </summary>
-		public static bool operator !=(SampleDataElementNode left, SampleDataElementNode right)
-		{
-			return !left.Equals(right);
-		}
+			#region Infrastructure Methods
 
-		#endregion // Infrastructure Methods
+			/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
+			public override int GetHashCode()
+			{
+				return ((this.myElement != null) ? this.myElement.GetHashCode() : 0) ^ this.myNodeData;
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				return obj is SampleDataElementNode && this.Equals((SampleDataElementNode)obj);
+			}
+			/// <summary>See <see cref="IEquatable{SampleDataElementNode}.Equals"/>.</summary>
+			public bool Equals(SampleDataElementNode other)
+			{
+				return this.myElement == other.myElement && this.myNodeData == other.myNodeData;
+			}
+			/// <summary>
+			/// Returns whether <param name="left"/> is equal to <param name="right"/>, based on the
+			/// <see cref="Equals(SampleDataElementNode)"/> method.
+			/// </summary>
+			public static bool operator ==(SampleDataElementNode left, SampleDataElementNode right)
+			{
+				return left.Equals(right);
+			}
+			/// <summary>
+			/// Returns whether <param name="left"/> is not equal to <param name="right"/>, based on the
+			/// <see cref="Equals(SampleDataElementNode)"/> method.
+			/// </summary>
+			public static bool operator !=(SampleDataElementNode left, SampleDataElementNode right)
+			{
+				return !left.Equals(right);
+			}
+
+			#endregion // Infrastructure Methods
+			#region InitializeNodes
+			/// <summary>
+			/// cycles through all SampleDataElementNodes in the list and creates their node data based on the answer to this survey's questions
+			/// </summary>
+			/// <param name="nodeList">List of elements to initialize</param>
+			/// <param name="survey">The <see cref="Survey"/>s to initialize the node for</param>
+			/// <returns></returns>
+			public static void InitializeNodes(IList<SampleDataElementNode> nodeList, Survey survey)
+			{
+				int questionCount = survey.Count;
+				int nodeCount = nodeList.Count;
+				for (int i = 0; i < nodeCount; ++i)
+				{
+					SampleDataElementNode currentNode = nodeList[i];
+					int data = 0;
+					object nodeElement = currentNode.Element;
+					for (int j = 0; j < questionCount; ++j)
+					{
+						SurveyQuestion currentQuestion = survey[j];
+						int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
+						data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
+					}
+					currentNode.NodeData = data;
+					nodeList[i] = currentNode;
+				}
+			}
+			/// <summary>
+			/// Processes the nodes.
+			/// </summary>
+			/// <param name="survey">The <see cref="Survey"/>s to initialize the node for</param>
+			public void Initialize(Survey survey)
+			{
+				int data = 0;
+				int questionCount = survey.Count;
+				object nodeElement = Element;
+				for (int i = 0; i < questionCount; ++i)
+				{
+					SurveyQuestion currentQuestion = survey[i];
+					int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
+					data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
+				}
+				NodeData = data;
+			}
+			#endregion // InitializeNodes
+		}
 	}
 }

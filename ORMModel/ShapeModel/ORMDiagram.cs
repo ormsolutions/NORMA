@@ -94,36 +94,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
 		#endregion
-		#region members
-		/// <summary>
-		/// True if processing a drag and drop operation; otherwise false
-		/// </summary>
-		private bool myInDragAndDrop = false;
-		/// <summary>
-		/// The drag and drop undostate
-		/// </summary>
-		private UndoState? myDragDropUndoState;
-		#endregion
-		#region Properties
-		/// <summary>
-		/// Gets a value indicating whether an processing is being done in response to a drag and drop.
-		/// </summary>
-		/// <value><c>true</c> if processing is being done in response to a drag and drop; otherwise, <c>false</c>.</value>
-		[CLSCompliant(false)]
-		public bool InDragAndDrop
-		{
-			get { return myInDragAndDrop; }
-		}
-		/// <summary>
-		/// Gets or sets the state of the drag drop undo.
-		/// </summary>
-		/// <value>The state of the drag drop undo.</value>
-		public UndoState? DragDropUndoState
-		{
-			get { return myDragDropUndoState; }
-			set { myDragDropUndoState = value; }
-		}
-		#endregion
 		#region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
@@ -154,43 +124,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return;
 			}
-			this.myInDragAndDrop = true;
-			try
+			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, true))
 			{
-				Microsoft.VisualStudio.Modeling.UndoManager undoManager = Store.CurrentContext.UndoManager;
-				bool restoreUndoState = false;
-				UndoState originalUndoState = 0;
-				if (myDragDropUndoState.HasValue)
-				{
-					UndoState newUndoState = myDragDropUndoState.Value;
-					originalUndoState = undoManager.UndoState;
-					if (originalUndoState != newUndoState)
-					{
-						restoreUndoState = true;
-						undoManager.UndoState = newUndoState;
-					}
-				}
-				try
-				{
-					if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition))
-					{
-						e.Effect = DragDropEffects.All;
-						e.Handled = true;
-					}
-					base.OnDragDrop(e);
-				}
-				finally
-				{
-					if (restoreUndoState)
-					{
-						undoManager.UndoState = originalUndoState;
-					}
-				}
+				e.Effect = DragDropEffects.All;
+				e.Handled = true;
 			}
-			finally
-			{
-				this.myInDragAndDrop = false;
-			}
+			base.OnDragDrop(e);
 		}
 		/// <summary>
 		/// Place a new shape for an existing element onto this diagram
@@ -198,8 +137,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="dataObject">The dataObject containing the element to place. If this is set, elementToPlace must be null.</param>
 		/// <param name="elementToPlace">The the element to place. If this is set, dataObject must be null.</param>
 		/// <param name="elementPosition">An initial position for the element</param>
+		/// <param name="selectIfNotAdded">Select the object on the diagram if it is already there.</param>
 		/// <returns>true if the element was placed</returns>
-		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition)
+		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, bool selectIfNotAdded)
 		{
 			Debug.Assert((dataObject == null) ^ (elementToPlace == null), "Pass in dataObject or elementToPlace");
 			bool retVal = false;
@@ -266,6 +206,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (element != null)
 			{
 				retVal = true;
+				bool storeChange = false;
 
 				using (Transaction transaction = Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
 				{
@@ -297,7 +238,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (valueConstraintLink != null)
 							{
 								FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
-								//FixUpDiagram(null, valueConstraintLink);
 							}
 
 						}
@@ -362,9 +302,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
 					}
-					transaction.Commit();
+					if (transaction.HasPendingChanges)
+					{
+						transaction.Commit();
+						storeChange = true;
+					}
 				}
-			}
+				if (!storeChange && selectIfNotAdded)
+				{
+					DiagramView selectOnView;
+					ShapeElement shape;
+					if (null != (selectOnView = ActiveDiagramView) &&
+						null != (shape = FindShapeForElement(element)))
+					{
+						selectOnView.Selection.Set(new DiagramItem(shape));
+						selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
+					}
+				}
+			} 
 			return retVal;
 		}
 		/// <summary>

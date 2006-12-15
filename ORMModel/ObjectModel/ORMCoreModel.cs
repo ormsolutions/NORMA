@@ -297,13 +297,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory directory = this.Store.DomainDataDirectory;
+			
+			//Object Type
 			DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
-
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved), action);
+
+			//Fact Type
+			classInfo = directory.FindDomainClass(ModelHasFactType.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemoved), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeAdded), action);
+			//Set Constraint
+			classInfo = directory.FindDomainClass(ModelHasSetConstraint.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetConstraintAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SetConstraintDeleted), action);
+
+			//Set Comparison
+			classInfo = directory.FindDomainClass(ModelHasSetComparisonConstraint.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetComparisonConstraintAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SetComparisonConstraintDeleted), action);
+			//Track name change
+			classInfo = directory.FindDomainClass(ModelElement.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
-			classInfo = directory.FindDomainClass(FactType.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged), action);
 		}
 		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
@@ -335,22 +350,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IVerbalizationSnippetsProvider Implementation
 		#region ISurveyNodeProvider Members
-		IEnumerable<SampleDataElementNode> ISurveyNodeProvider.GetSurveyNodes()
+		IEnumerable<object> ISurveyNodeProvider.GetSurveyNodes()
 		{
 			return this.GetSurveyNodes();
 		}
 		/// <summary>
 		/// Provides an <see cref="IEnumerable{SampleDataElementNode}"/> for the <see cref="SurveyTreeControl"/>.
 		/// </summary>
-		protected IEnumerable<SampleDataElementNode> GetSurveyNodes()
+		protected IEnumerable<object> GetSurveyNodes()
 		{
-			foreach (ModelElement element in this.Store.ElementDirectory.FindElements(FactType.DomainClassId, true))
+			IElementDirectory elementDirectory = Store.ElementDirectory;
+			foreach (FactType element in elementDirectory.FindElements<FactType>(true))
 			{
-				yield return new SampleDataElementNode(element);
+				yield return element;
 			}
-			foreach (ModelElement element in this.Store.ElementDirectory.FindElements(ObjectType.DomainClassId, true))
+			foreach (ObjectType element in elementDirectory.FindElements<ObjectType>(true))
 			{
-				yield return new SampleDataElementNode(element);
+				yield return element;
+			}
+
+			foreach (SetConstraint element in elementDirectory.FindElements<SetConstraint>(true))
+			{
+				yield return element;
+			}
+
+			foreach (SetComparisonConstraint element in elementDirectory.FindElements<SetComparisonConstraint>(true))
+			{
+				yield return element;
 			}
 		}
 		#endregion
@@ -361,12 +387,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		protected void ModelElementAdded(object sender, ElementAddedEventArgs e)
-		{	
+		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementAdded((object)element);
+				ModelHasObjectType link = element as ModelHasObjectType;
+				
+					eventNotify.ElementAdded(link.ObjectType);
+				
 			}
 		}
 		/// <summary>
@@ -380,7 +409,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementDeleted((object)element);
+				ModelHasObjectType link = element as ModelHasObjectType;
+				eventNotify.ElementDeleted(link.ObjectType);
 			}
 		}
 		/// <summary>
@@ -394,8 +424,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
+				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
 				ISurveyQuestionTypeInfo[] effectedQuestions = (this as ISurveyQuestionProvider).GetSurveyQuestionTypeInfo();
-				eventNotify.ElementChanged((object)element, effectedQuestions);
+				eventNotify.ElementChanged(link.ObjectType, effectedQuestions);
 			}
 		}
 		/// <summary>
@@ -409,7 +440,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementRenamed((object)element);
+				eventNotify.ElementRenamed(element);
+			}
+		}
+	
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for FactType Name change events (custom events)
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void FactTypeRemoved(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelHasFactType element = e.ModelElement as ModelHasFactType;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementDeleted(element.FactType);
 			}
 		}
 		/// <summary>
@@ -417,15 +463,76 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected void FactTypeNameChanged(object sender, ElementPropertyChangedEventArgs e)
+		protected void FactTypeAdded(object sender, ElementAddedEventArgs e)
 		{
-			INotifySurveyElementChanged eventNotify = (e.ModelElement.Store as IORMToolServices).NotifySurveyElementChanged;
-			if (eventNotify != null)
+			INotifySurveyElementChanged eventNotify;
+			ModelHasFactType element = e.ModelElement as ModelHasFactType;		
+				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+				{
+					eventNotify.ElementAdded(element.FactType);
+				}
+		}
+		/// <summary>
+		/// Set Constraint added
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void SetConstraintAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelHasSetConstraint element = e.ModelElement as ModelHasSetConstraint;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				//TODO: find a way to get the changed model element off of CustomModelEventArgs or the sender
-				eventNotify.ElementRenamed(sender);
+				eventNotify.ElementAdded(element.SetConstraint);
 			}
 		}
-		#endregion //SurveyEventHandling
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for FactType Name change events (custom events)
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void SetConstraintDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelHasSetConstraint element = e.ModelElement as ModelHasSetConstraint;			
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementDeleted(element.SetConstraint);
+			}
+		}
+
+
+
+		/// <summary>
+		/// Set Comparison Constraint added
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void SetComparisonConstraintAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelHasSetComparisonConstraint element = e.ModelElement as ModelHasSetComparisonConstraint;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded(element.SetComparisonConstraint);
+			}
+		}
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for FactType Name change events (custom events)
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void SetComparisonConstraintDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelHasSetComparisonConstraint element = e.ModelElement as ModelHasSetComparisonConstraint;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementDeleted(element.SetComparisonConstraint);
+			}
+		}		
+
+
+#endregion //SurveyEventHandling
 	}
 }

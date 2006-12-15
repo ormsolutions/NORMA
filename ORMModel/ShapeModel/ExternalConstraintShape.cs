@@ -751,7 +751,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							bounds = diagram.BoundsRules.GetCompliantBounds(shape, bounds);
 							shape.AbsoluteBounds = bounds;
 							bounds.Offset(width, 0);
-							diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location);
+							diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, false);
 						}
 					}
 				}

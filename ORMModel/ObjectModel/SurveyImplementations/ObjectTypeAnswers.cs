@@ -19,10 +19,11 @@ using System.Collections.Generic;
 using System.Text;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
+using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ObjectType : IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<ElementType>
+	public partial class ObjectType : IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<ElementType>, ISurveyNode
 	{
 
 		#region IAnswerSurveyQuestion<ErrorState> Members
@@ -56,6 +57,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return (int)ElementType.ObjectType;
 		}
 
+		#endregion
+		#region ISurveyNode Members
+		/// <summary>
+		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// </summary>
+		protected new object SurveyNodeDataObject
+		{
+			get
+			{
+				DataObject retVal = new DataObject();
+				Objectification objectification;
+				if (null != (objectification = Objectification))
+				{
+					retVal.SetData(typeof(FactType), objectification.NestedFactType);
+				}
+				else
+				{
+					retVal.SetData(typeof(ObjectType), this);
+				}
+				return retVal;
+			}
+		}
+		object ISurveyNode.SurveyNodeDataObject
+		{
+			get
+			{
+				return SurveyNodeDataObject;
+			}
+		}
 		#endregion
 	}
 }

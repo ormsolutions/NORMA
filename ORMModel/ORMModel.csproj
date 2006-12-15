@@ -385,6 +385,7 @@
     <Compile Include="Framework\Design\CustomDisplayPropertyDescriptor.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>

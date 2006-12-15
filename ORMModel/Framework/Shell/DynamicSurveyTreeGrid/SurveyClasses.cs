@@ -16,8 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
@@ -68,44 +66,21 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			myQuestions = new List<SurveyQuestion>();
 			LoadQuestions(questionProviderList);
 		}
-		#region ProcessNodes
-		/// <summary>
-		/// cycles through all SampleDataElementNodes in the list and creates their node data based on the answer to this survey's questions
-		/// </summary>
-		/// <param name="nodeList"></param>
-		/// <returns></returns>
-		public IList<SampleDataElementNode> ProcessNodes(IList<SampleDataElementNode> nodeList)
-		{
-			IList<SampleDataElementNode> retList = nodeList;
-			for (int i = 0; i < nodeList.Count; ++i)
-			{
-				SampleDataElementNode currentNode = retList[i];
-				currentNode.NodeData = 0;
-				for (int j = 0; j < myQuestions.Count; ++j)
-				{
-					SurveyQuestion currentQuestion = myQuestions[j];
-					int currentAnswer = currentQuestion.Question.AskQuestion(currentNode.Element);
-					currentNode.NodeData |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
-				}
-				retList[i] = currentNode;
-			}
-			return retList;
-		}
-		#endregion //ProcessNodes
 		#region LoadQuestions
 		private void LoadQuestions(IEnumerable<ISurveyQuestionProvider> providers)
 		{
 			foreach (ISurveyQuestionProvider provider in providers)
 			{
+				
 				ISurveyQuestionTypeInfo[] currentQuestions = provider.GetSurveyQuestionTypeInfo();
 				for (int i = 0; i < currentQuestions.Length; ++i)
 				{
-					SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestions[i]);
-					currentQuestion.Shift = totalShift;
-					currentQuestion.Mask = GenerateMask(currentQuestion.BitCount, currentQuestion.Shift);
-					currentQuestion.QuestionList = this;
-					totalShift += currentQuestion.BitCount;
-					myQuestions.Add(currentQuestion);
+						SurveyQuestion currentQuestion = new SurveyQuestion((currentQuestions[i]));
+						currentQuestion.Shift = totalShift;
+						currentQuestion.Mask = GenerateMask(currentQuestion.BitCount, currentQuestion.Shift);
+						currentQuestion.QuestionList = this;
+						totalShift += currentQuestion.BitCount;
+						myQuestions.Add(currentQuestion);  				
 				}
 			}
 		}

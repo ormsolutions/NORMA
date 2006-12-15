@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using System.Runtime.InteropServices;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
@@ -67,16 +68,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		int AskQuestion();
 	}
 	#endregion
-	#region ISurveyName
+	#region ISurveyNode
 	/// <summary>
-	/// must be implemented on objects to be displayed on survey tree, used to get their displayable and editable names
+ 	/// must be implemented on objects to be displayed on survey tree, used to get their displayable and editable names
 	/// </summary>
-	public interface ISurveyName
+	public interface ISurveyNode
 	{
 		/// <summary>
 		/// whether or not this objects name is editable
 		/// </summary>
-		bool IsEditable { get; }
+		bool IsSurveyNameEditable { get; }
 		/// <summary>
 		/// the display name for the survey tree
 		/// </summary>
@@ -85,18 +86,22 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// the name that will be displayed in edit mode, may be more complex than display name, is settable
 		/// </summary>
 		string EditableSurveyName { get; set; }
+		/// <summary>
+		/// Get a data object representing the survey node. Used for drag-drop operations.
+		/// </summary>
+		object SurveyNodeDataObject { get;}
 	}
-	#endregion //ISurveyName
+	#endregion //ISurveyNode
 	#region ISurveyNodeProvider
 	/// <summary>
-	/// Interface for a <see cref="DomainModel"/> to provide an <see cref="IEnumerable{SampleDataElementNode}"/> for the <see cref="SurveyTreeControl"/>.
+	/// Interface for a <see cref="DomainModel"/> to provide a list of objects for the <see cref="SurveyTreeControl"/>.
 	/// </summary>
 	public interface ISurveyNodeProvider
 	{
 		/// <summary>
-		/// Retrieve an <see cref="IEnumerable{SampleDataElementNode}"/> for this <see cref="DomainModel"/>.
+		/// Retrieve survey elements for this <see cref="DomainModel"/>.
 		/// </summary>
-		IEnumerable<SampleDataElementNode> GetSurveyNodes();
+		IEnumerable<object> GetSurveyNodes();
 	}
 	#endregion //ISurveyNodeProvider
 	#region INotifySurveyElementChanged

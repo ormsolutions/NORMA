@@ -30,8 +30,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			private sealed class SimpleListShifter : IBranch
 			{
 				private readonly IBranch myBaseBranch;
-				private readonly int myFirstItem;
-				private readonly int myCount;
+				private int myFirstItem;
+				private int myCount;
+				//private BranchModificationEventHandler myModificationEvents;
 
 				/// <summary>
 				/// Shows all elements of the branch from the certain point you 
@@ -42,10 +43,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// <param name="count">Amount That You Want Displayed</param>
 				public SimpleListShifter(IBranch baseBranch, int firstItemIndex, int count)
 				{
+
 					Debug.Assert(baseBranch != null);
 					Debug.Assert(firstItemIndex >= 0);
 					Debug.Assert(firstItemIndex < baseBranch.VisibleItemCount);
-
 					myBaseBranch = baseBranch;
 					myFirstItem = firstItemIndex;
 					myCount = count;
@@ -53,6 +54,27 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					{
 						myCount = myBaseBranch.VisibleItemCount - myFirstItem;
 					}
+
+				}
+				/// <summary>
+				/// Gets or sets the first item of a shifter
+				/// </summary>
+				public int FirstItem
+				{
+					get { return myFirstItem; }
+					set { myFirstItem = value; }
+				}
+				public int Count
+				{
+					get { return myCount; }
+					set { myCount = value; }
+				}
+				/// <summary>
+				/// Returns last item's index
+				/// </summary>
+				public int EndIndex
+				{
+					get { return myFirstItem + myCount - 1; }
 				}
 
 				#region IBranch Members
@@ -80,6 +102,18 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					return myBaseBranch.GetDisplayData(row + myFirstItem, column, requiredData);
 				}
+
+				/// <summary>
+				/// Retrieve an object associated with this branch. See ObjectStyle
+				/// for descriptions of the different object styles that the tree will request.
+				/// </summary>
+				/// <param name="row">Target row</param>
+				/// <param name="column">Target column</param>
+				/// <param name="style">Style of object to retrieve</param>
+				/// <param name="options">Placeholder for setting/returns options. Contents depend on the style.</param>
+				/// <returns>
+				/// An object or null, with the type of the object determined by the style parameter.
+				/// </returns>
 				public object GetObject(int row, int column, ObjectStyle style, ref int options)
 				{
 					return myBaseBranch.GetObject(row + myFirstItem, column, style, ref options);
@@ -106,11 +140,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					add
 					{
-						myBaseBranch.OnBranchModification += value;
+						// Don't need to do anything here. This will always be
+						// a child of a grouper, which will have events attached
+						// to the main list.
+
+						//myBaseBranch.OnBranchModification += value;
 					}
 					remove
 					{
-						myBaseBranch.OnBranchModification -= value;
+						//myBaseBranch.OnBranchModification -= value;
 					}
 				}
 				public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
@@ -222,9 +223,17 @@ namespace Neumont.Tools.ORM.Shell
 		protected override uint CountSelectedObjects()
 		{
 			uint retVal = 0;
-			if (myCurrentORMSelectionContainer != null)
+			IORMSelectionContainer container = myCurrentORMSelectionContainer;
+			if (container != null)
 			{
-				myCurrentORMSelectionContainer.CountObjects((uint)Constants.GETOBJS_SELECTED, out retVal);
+				if (container == this)
+				{
+					retVal = base.CountSelectedObjects();
+				}
+				else
+				{
+					container.CountObjects((uint)Constants.GETOBJS_SELECTED, out retVal);
+				}
 			}
 			return retVal;
 		}
@@ -235,9 +244,17 @@ namespace Neumont.Tools.ORM.Shell
 		protected override uint CountAllObjects()
 		{
 			uint retVal = 0;
-			if (myCurrentORMSelectionContainer != null)
+			IORMSelectionContainer container = myCurrentORMSelectionContainer;
+			if (container != null)
 			{
-				myCurrentORMSelectionContainer.CountObjects((uint)Constants.GETOBJS_ALL, out retVal);
+				if (container == this)
+				{
+					retVal = base.CountAllObjects();
+				}
+				else
+				{
+					container.CountObjects((uint)Constants.GETOBJS_ALL, out retVal);
+				}
 			}
 			return retVal;
 		}
@@ -245,12 +262,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// Passes <see cref="GetSelectedComponents"/> through to <see cref="myCurrentORMSelectionContainer"/>
 		/// casted as a <see cref="ModelingWindowPane"/>.
 		/// </summary>
-		public override System.Collections.ICollection GetSelectedComponents()
+		public override ICollection GetSelectedComponents()
 		{
 			ModelingWindowPane pane = myCurrentORMSelectionContainer as ModelingWindowPane;
 			if (pane != null)
 			{
-				return pane.GetSelectedComponents();
+				return (pane == this) ? base.GetSelectedComponents() : pane.GetSelectedComponents();
 			}
 			return null;
 		}
@@ -261,9 +278,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="objects">An object array to store the objects retrieved from myCurrentORMSelectionContainer.</param>
 		protected override void GetSelectedObjects(uint count, object[] objects)
 		{
-			if (myCurrentORMSelectionContainer != null)
+			IORMSelectionContainer container = myCurrentORMSelectionContainer;
+			if (container != null)
 			{
-				myCurrentORMSelectionContainer.GetObjects((uint)Constants.GETOBJS_SELECTED, count, objects);
+				if (container == this)
+				{
+					base.GetSelectedObjects(count, objects);
+				}
+				else
+				{
+					container.GetObjects((uint)Constants.GETOBJS_SELECTED, count, objects);
+				}
 			}
 		}
 		/// <summary>
@@ -273,9 +298,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="objects">An object array to store the objects retrieved from myCurrentORMSelectionContainer.</param>
 		protected override void GetAllObjects(uint count, object[] objects)
 		{
-			if (myCurrentORMSelectionContainer != null)
+			IORMSelectionContainer container = myCurrentORMSelectionContainer;
+			if (container != null)
 			{
-				myCurrentORMSelectionContainer.GetObjects((uint)Constants.GETOBJS_ALL, count, objects);
+				if (container == this)
+				{
+					base.GetAllObjects(count, objects);
+				}
+				else
+				{
+					container.GetObjects((uint)Constants.GETOBJS_ALL, count, objects);
+				}
 			}
 		}
 		/// <summary>
@@ -286,9 +319,19 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="flags">Unknown</param>
 		protected override void DoSelectObjects(uint count, object[] objects, uint flags)
 		{
-			if (myCurrentORMSelectionContainer != null)
+			IORMSelectionContainer container = myCurrentORMSelectionContainer;
+			if (container != null)
 			{
-				myCurrentORMSelectionContainer.SelectObjects(count, objects, flags);
+				if (container == this)
+				{
+					// UNDONE: The base implementation is empty. Get an easily
+					// supported way of requested model selection.
+					base.DoSelectObjects(count, objects, flags);
+				}
+				else
+				{
+					container.SelectObjects(count, objects, flags);
+				}
 			}
 		}
 		#endregion // ISelectionContainer overrides

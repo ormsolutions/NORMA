@@ -51,6 +51,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		}
 
 		/// <summary>
+		/// Retrieve the <see cref="VirtualTreeControl"/> contained by this control./>
+		/// </summary>
+		public VirtualTreeControl TreeControl
+		{
+			get
+			{
+				return myTreeControl;
+			}
+		}
+
+		/// <summary>
 		/// <see cref="VirtualTreeControl.Tree"/> of <see cref="VirtualTreeControl"/>.
 		/// </summary>
 		public ITree Tree
