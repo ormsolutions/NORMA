@@ -692,21 +692,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
 				MandatoryConstraint mandatoryConstraint;
-				ExclusionConstraint exclusionConstraint;
 				if (null != (mandatoryConstraint = element as MandatoryConstraint))
 				{
 					if (mandatoryConstraint.ExclusiveOrExclusionConstraint != null)
 					{
-						// Use the normal class name, not the one modified for the property grid
+						// Use the normal class name, not the one modified for the property grid.
+						// Note that we let the normal one (ExclusiveOrConstraint) go through
+						// for the exclusion constraint.
 						return ResourceStrings.DisjunctiveMandatoryConstraint;
-					}
-				}
-				if (null != (exclusionConstraint = element as ExclusionConstraint))
-				{
-					if (exclusionConstraint.ExclusiveOrMandatoryConstraint != null)
-					{
-						// Use the normal class name, not the one modified for the property grid
-						return ResourceStrings.ExclusionConstraint;
 					}
 				}
 				// UNDONE: How explicit do we want to be on constraint naming? Note that if this is changed, then

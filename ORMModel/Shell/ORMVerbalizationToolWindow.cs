@@ -440,18 +440,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizeFilterChildren filter, VerbalizationHandler callback, bool isNegative, int indentLevel)
 		{
-			IVerbalize parentVerbalize = element as IVerbalize;
-			if (parentVerbalize == null && indentLevel == 0)
+			IVerbalize parentVerbalize = null;
+			IRedirectVerbalization surrogateRedirect;
+			if (indentLevel == 0 &&
+				null != (surrogateRedirect = element as IRedirectVerbalization) &&
+				null != (parentVerbalize = surrogateRedirect.SurrogateVerbalizer))
 			{
-				IRedirectVerbalization surrogateRedirect = element as IRedirectVerbalization;
-				if (surrogateRedirect != null)
-				{
-					parentVerbalize = surrogateRedirect.SurrogateVerbalizer;
-					if (parentVerbalize != null)
-					{
-						element = parentVerbalize as ModelElement;
-					}
-				}
+				element = parentVerbalize as ModelElement;
+			}
+			else
+			{
+				parentVerbalize = element as IVerbalize;
 			}
 			bool disposeVerbalizer = false;
 			if (filter != null)

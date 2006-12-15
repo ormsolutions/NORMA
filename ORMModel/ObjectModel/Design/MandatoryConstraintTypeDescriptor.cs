@@ -41,7 +41,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			: base(parent, selectedElement)
 		{
 		}
-
+		/// <summary>
+		/// Redirect the displayed component name for an exclusive or constraint
+		/// </summary>
+		public override string GetComponentName()
+		{
+			ExclusionConstraint exclusionConstraint = ModelElement.ExclusiveOrExclusionConstraint;
+			return (exclusionConstraint != null) ? TypeDescriptor.GetComponentName(exclusionConstraint) : base.GetComponentName();
+		}
 		/// <summary>
 		/// Distinguish between disjunctive and simple <see cref="MandatoryConstraint"/>s in the property grid display.
 		/// </summary>

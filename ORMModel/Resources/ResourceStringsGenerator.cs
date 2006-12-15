@@ -92,14 +92,6 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint");
 			}
 		}
-		/// <summary>The display name used for an exclusion constraint</summary>
-		public static string ExclusionConstraint
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ExclusionConstraint");
-			}
-		}
 		/// <summary>The display name used for a simple mandatory constraint</summary>
 		public static string SimpleMandatoryConstraint
 		{

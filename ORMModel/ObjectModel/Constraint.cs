@@ -624,26 +624,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				// We can't verbalize if there are constrained facts without readings or
 				// any constrained roles without role players
-				LinkedElementCollection<FactType> facts = FactTypeCollection;
-				int count = facts.Count;
+				ReadOnlyCollection<FactSetConstraint> factLinks = FactSetConstraint.GetLinksToFactTypeCollection(this);
+				int count = factLinks.Count;
+
+				// Show the reading errors first
 				for (int i = 0; i < count; ++i)
 				{
-					FactTypeRequiresReadingError noReadingError = facts[i].ReadingRequiredError;
+					FactTypeRequiresReadingError noReadingError = factLinks[i].FactType.ReadingRequiredError;
 					if (noReadingError != null)
 					{
 						yield return noReadingError;
 					}
 				}
+
 				if (!(this as IConstraint).ConstraintIsInternal)
 				{
-					LinkedElementCollection<Role> roles = RoleCollection;
-					count = roles.Count;
+					// Show the missing role errors
 					for (int i = 0; i < count; ++i)
 					{
-						RolePlayerRequiredError noRolePlayerError = roles[i].RolePlayerRequiredError;
-						if (noRolePlayerError != null)
+						LinkedElementCollection<ConstraintRoleSequenceHasRole> constrainedRoles = factLinks[i].ConstrainedRoleCollection;
+						int constrainedRoleCount = constrainedRoles.Count;
+						for (int j = 0; j < constrainedRoleCount; ++j)
 						{
-							yield return noRolePlayerError;
+							Role role = constrainedRoles[j].Role;
+							RolePlayerRequiredError noRolePlayerError = role.RolePlayerRequiredError;
+							if (noRolePlayerError != null)
+							{
+								yield return noRolePlayerError;
+							}
 						}
 					}
 				}
@@ -2244,6 +2252,58 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (null != (arityMismatch = ArityMismatchError))
 				{
 					yield return arityMismatch;
+				}
+			}
+			if (filter == ModelErrorUses.BlockVerbalization)
+			{
+				// We can't verbalize if there are constrained facts without readings or
+				// any constrained roles without role players
+				ReadOnlyCollection<FactSetComparisonConstraint> factLinks = FactSetComparisonConstraint.GetLinksToFactTypeCollection(this);
+				int count = factLinks.Count;
+
+				// Show the reading errors first
+				for (int i = 0; i < count; ++i)
+				{
+					FactTypeRequiresReadingError noReadingError = factLinks[i].FactType.ReadingRequiredError;
+					if (noReadingError != null)
+					{
+						yield return noReadingError;
+					}
+				}
+
+				// Show the missing role errors
+				for (int i = 0; i < count; ++i)
+				{
+					LinkedElementCollection<ConstraintRoleSequenceHasRole> constrainedRoles = factLinks[i].ConstrainedRoleCollection;
+					int constrainedRoleCount = constrainedRoles.Count;
+					bool seenErrorRole = false;
+					for (int j = 0; j < constrainedRoleCount; ++j)
+					{
+						Role role = constrainedRoles[j].Role;
+
+						RolePlayerRequiredError noRolePlayerError = role.RolePlayerRequiredError;
+						if (noRolePlayerError != null)
+						{
+							if (seenErrorRole)
+							{
+								// Make sure we don't get a duplicate. This is rare but possible.
+								int k = 0;
+								for (; k < j; ++k)
+								{
+									if (constrainedRoles[k].Role == role)
+									{
+										break;
+									}
+								}
+								if (k != j)
+								{
+									continue;
+								}
+							}
+							seenErrorRole = true;
+							yield return noRolePlayerError;
+						}
+					}
 				}
 			}
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
@@ -5321,7 +5381,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // UniquenessConstraint class
 	#region MandatoryConstraint class
-	public partial class MandatoryConstraint : IModelErrorOwner
+	public partial class MandatoryConstraint : IModelErrorOwner, IRedirectVerbalization
 	{
 		#region IModelErrorOwner Implementation
 		/// <summary>
@@ -5431,7 +5491,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // MandatoryConstraintChangeRule class
 		#endregion // Simple mandatory constraint handling
-
+		#region IRedirectVerbalization Implementation
+		/// <summary>
+		/// Redirect exclusive or verbalization to the exclusion constraint
+		/// </summary>
+		IVerbalize IRedirectVerbalization.SurrogateVerbalizer
+		{
+			get
+			{
+				ExclusionConstraint coupledExclusionConstraint = ExclusiveOrExclusionConstraint;
+				return (coupledExclusionConstraint != null) ? coupledExclusionConstraint : null;
+			}
+		}
+		#endregion // IRedirectVerbalization Implementation
 	}
 	#endregion // MandatoryConstraint class
 	#region ExlusiveOrConstraintCoupler class
