@@ -1,0 +1,11 @@
+This project references external classes that are not and SHOULD NOT be included in the svn repository for the ORM Project. To build this project, you will need to install XmlDiffPatch, located here:
+
+http://download.microsoft.com/download/1/f/1/1f146f9b-2a71-4904-8b91-e2f62d7b64b3/XmlDiffPatch.exe
+
+(If this link does not resolve, Microsoft's XML downloads are located here: http://msdn.microsoft.com/XML/XMLDownloads/default.aspx XMLDiffPatch should be available somewhere on this page.)
+
+Next you will need to go to the install directory for XMLDiffPatch. Navigate to the Samples\XmlDiffView directory. You should now see various *.cs files and a .csproj file.
+
+Add the OperationDescriptor.cs, XmlDiffPathForView.cs, XmlDiffView.cs, XmlDiffViewNodes.cs files in that directory to this project.
+
+You should now be able to build the OIALDiffCustomTool.
