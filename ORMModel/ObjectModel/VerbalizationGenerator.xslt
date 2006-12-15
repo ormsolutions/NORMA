@@ -5046,6 +5046,16 @@
 				<xsl:when test="$ConditionalMatch='IsBinaryLeadReading'">
 					<plx:nameRef name="isBinaryLeadReading"/>
 				</xsl:when>
+				<xsl:when test="$ConditionalMatch='ExclusionIsExclusiveOrConstraint'">
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:callThis name="ExclusiveOrMandatoryConstraint" type="property"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
 				<xsl:when test="$ConditionalMatch='IsIndependent'">
 					<plx:callThis name="IsIndependent" type="property"/>
 				</xsl:when>

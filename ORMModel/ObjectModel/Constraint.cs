@@ -436,7 +436,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
 				SetConstraint constraint = link.SetConstraint;
-				if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal)
+				if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal && constraint.Model != null)
 				{
 					constraint.Delete();
 				}

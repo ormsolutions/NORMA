@@ -410,6 +410,10 @@
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
+				<!-- Exclusive-Or Constraint (Exclusion 6.1.2)-->
+				<!--<ConstrainedRoles columnArity="1">
+					
+				</ConstrainedRoles>-->
 			</Constraint>
 			<!-- Start Uniqueness Constraint-->
 			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint">
@@ -977,27 +981,35 @@
 					</Snippet>
 				</ConstrainedRoles>
 			</Constraint>
+			<!-- 
+				6.1.1: Exclusion constraint but no inclusive-or constraint over the same roles 
+				6.1.2: Exclusion plus Inclusive-or constraint over the same roles
+			-->
 			<Constraint type="ExclusionConstraint" patternGroup="SetComparisonConstraint">
 				<ConstrainedRoles columnArity="1" minConstraintArity="2">
-					<Snippet ref="ExclusionForEachIndentedQuantifier">
-						<IterateSequences listStyle="null" pass="first">
-							<IterateSequenceFacts match="included" listStyle="SimpleLogicalAndList">
-								<RolePlayer/>
-							</IterateSequenceFacts>
-						</IterateSequences>
-						<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
-							<IterateSequenceFacts match="included" listStyle="null">
-								<Fact>
-									<PredicateReplacement match="included">
-										<Snippet ref="DefiniteArticle"/>
-									</PredicateReplacement>
-									<PredicateReplacement>
-										<Snippet ref="ExistentialQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</IterateSequenceFacts>
-						</IterateSequences>
-					</Snippet>
+					<ConditionalSnippet>
+						<Snippet conditionalMatch="ExclusionIsExclusiveOrConstraint" ref="ExclusiveOrForEachIndentedQuantifier"/>
+						<Snippet ref="ExclusionForEachIndentedQuantifier"/>
+						<SnippetReplacements>
+							<IterateSequences listStyle="null" pass="first">
+								<IterateSequenceFacts match="included" listStyle="SimpleLogicalAndList">
+									<RolePlayer/>
+								</IterateSequenceFacts>
+							</IterateSequences>
+							<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
+								<IterateSequenceFacts match="included" listStyle="null">
+									<Fact>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateSequenceFacts>
+							</IterateSequences>
+						</SnippetReplacements>
+					</ConditionalSnippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles columnArity="2" constraintArity="2">
 					<ConditionalSnippet>

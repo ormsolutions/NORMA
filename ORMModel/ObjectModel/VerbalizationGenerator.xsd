@@ -326,6 +326,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ExclusionIsExclusiveOrConstraint">
+				<xs:annotation>
+					<xs:documentation>
+						True if the Exclusion constraint is an Exclusive Or Constraint
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="MinEqualsMax">
 				<xs:annotation>
 					<xs:documentation>

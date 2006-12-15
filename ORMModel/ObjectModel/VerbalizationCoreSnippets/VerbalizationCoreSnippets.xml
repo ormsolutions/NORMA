@@ -24,7 +24,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
 			<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
 			<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}]]></Snippet>
-
+ 
 			<!-- All object type names are wrapped with this style automatically.
 					 The objectType class should not be used in other quantifiers because
 					 it will interfere with hyphen-binding and possible other features. -->
@@ -216,6 +216,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="SemiColonListClose"><![CDATA[.]]></Snippet>
 			<Snippet type="ExclusionForEachIndentedQuantifier" modality="alethic"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
 			<Snippet type="ExclusionForEachIndentedQuantifier" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ExclusiveOrForEachIndentedQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">exactly one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
 			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
 			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[No {0}<span class="quantifier"> the same </span><span class="objectType">{1}</span>]]></Snippet>

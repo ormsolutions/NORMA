@@ -649,6 +649,15 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ExclusiveOrForEachIndentedQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes an exclusive-or constraint.
+							Format alethic: for each {0}, exactly one of the following holds:\n {1}
+							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ExclusionForEachIndentedQuantifier">
 					<xs:annotation>
 						<xs:documentation>

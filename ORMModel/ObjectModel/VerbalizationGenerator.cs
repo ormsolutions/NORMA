@@ -95,6 +95,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ExclusionCombined,
 		/// <summary>The 'ExclusionForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		ExclusionForEachIndentedQuantifier,
+		/// <summary>The 'ExclusiveOrForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
+		ExclusiveOrForEachIndentedQuantifier,
 		/// <summary>The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		ExistentialQuantifier,
 		/// <summary>The 'FactTypeInstanceBlockEnd' simple snippet value.</summary>
@@ -541,6 +543,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
 				@"<span class=""objectType"">{0} </span>{1}",
 				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -712,6 +715,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
 				@"<span class=""objectType"">{0} </span>{1}",
 				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -883,6 +887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
 				@"<span class=""objectType"">{0} </span>{1}",
 				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -1054,6 +1059,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
 				@"<span class=""objectType"">{0} </span>{1}",
 				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -7937,9 +7943,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			VerbalizationHyphenBinder hyphenBinder;
 			if ((columnArity == 1) && (constraintRoleArity >= 2))
 			{
+				CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
+				if (this.ExclusiveOrMandatoryConstraint != null)
+				{
+					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.ExclusiveOrForEachIndentedQuantifier;
+				}
+				else
+				{
+					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.ExclusionForEachIndentedQuantifier;
+				}
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ExclusionForEachIndentedQuantifier, isDeontic, isNegative);
-				string snippet1Replace1 = null;
+				string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
+				string variableSnippet1Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
 					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
@@ -8002,17 +8017,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int currentRoleCount = factRoles.Count;
 						allReadingOrders = currentFact.ReadingOrderCollection;
 						CoreVerbalizationSnippetType listSnippet;
-						snippet1Replace1 = null;
+						variableSnippet1Replace1 = null;
 						bool isFirstAppend = true;
-						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < currentRoleCount; ++snippet1ReplaceFactRoleIter1)
+						for (int variableSnippet1ReplaceFactRoleIter1 = 0; variableSnippet1ReplaceFactRoleIter1 < currentRoleCount; ++variableSnippet1ReplaceFactRoleIter1)
 						{
-							if (snippet1ReplaceFactRoleIter1 == 0)
+							if (variableSnippet1ReplaceFactRoleIter1 == 0)
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
 							}
-							else if (snippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
+							else if (variableSnippet1ReplaceFactRoleIter1 == (currentRoleCount - 1))
 							{
-								if (snippet1ReplaceFactRoleIter1 == 1)
+								if (variableSnippet1ReplaceFactRoleIter1 == 1)
 								{
 									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
 								}
@@ -8025,20 +8040,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
-							if (includedFactRoles.Contains(factRoles[snippet1ReplaceFactRoleIter1].Role))
+							if (includedFactRoles.Contains(factRoles[variableSnippet1ReplaceFactRoleIter1].Role))
 							{
 								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 								{
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[variableSnippet1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
 				}
-				snippet1Replace1 = sbTemp.ToString();
-				string snippet1Replace2 = null;
+				variableSnippet1Replace1 = sbTemp.ToString();
+				string variableSnippet1Replace2 = null;
 				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 				{
 					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
@@ -8120,14 +8135,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						factRoles = currentFact.RoleCollection;
 						int currentRoleCount = factRoles.Count;
 						allReadingOrders = currentFact.ReadingOrderCollection;
-						snippet1Replace2 = null;
+						variableSnippet1Replace2 = null;
 						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-						for (int snippet1ReplaceFactRoleIter2 = 0; snippet1ReplaceFactRoleIter2 < currentRoleCount; ++snippet1ReplaceFactRoleIter2)
+						for (int variableSnippet1ReplaceFactRoleIter2 = 0; variableSnippet1ReplaceFactRoleIter2 < currentRoleCount; ++variableSnippet1ReplaceFactRoleIter2)
 						{
-							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter2];
+							RoleBase currentRole = factRoles[variableSnippet1ReplaceFactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1ReplaceFactRoleIter2], snippet1ReplaceFactRoleIter2);
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][variableSnippet1ReplaceFactRoleIter2], variableSnippet1ReplaceFactRoleIter2);
 							if (includedFactRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -8140,15 +8155,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								roleReplacement = basicReplacement;
 							}
-							roleReplacements[snippet1ReplaceFactRoleIter2] = roleReplacement;
+							roleReplacements[variableSnippet1ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
+						variableSnippet1Replace2 = hyphenBinder.PopulatePredicateText(reading, factRoles, roleReplacements, false);
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(snippet1Replace2);
+						sbTemp.Append(variableSnippet1Replace2);
 					}
 				}
-				snippet1Replace2 = sbTemp.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				variableSnippet1Replace2 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if ((columnArity == 2) && (constraintRoleArity == 2))
 			{
