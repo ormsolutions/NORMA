@@ -69,7 +69,6 @@
 		<xsl:call-template name="ConvertToMySQLQuotation">
 			<xsl:with-param name="name" select="@name"/>
 		</xsl:call-template>
-		<xsl:value-of select="@name"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates>
 			<xsl:with-param name="tableName" select="@name"/>
