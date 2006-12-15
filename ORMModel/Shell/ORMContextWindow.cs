@@ -250,6 +250,25 @@ namespace Neumont.Tools.ORM.Shell
 					break;
 				}
 			}
+			DrawDiagram(refresh, element, hierarchyElement);
+		}
+		private void DrawDiagram(Store store)
+		{
+			if (this.myDiagramView == null)
+			{
+				if (Window == null)
+				{
+					return;
+				}
+			}
+			foreach (ORMModel model in store.ElementDirectory.FindElements<ORMModel>(true))
+			{
+				DrawDiagram(false, model, null);
+				break;
+			}
+		}
+		private void DrawDiagram(bool refresh, ModelElement element, IHierarchyContextEnabled hierarchyElement)
+		{
 			bool storeChange = false;
 			if (hierarchyElement == null && (myDiagram == null || (element != null && (storeChange = (element.Store != myDiagram.Store)))))
 			{
@@ -572,7 +591,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			// empty
+			DrawDiagram(store);
 		}
 		#region ToolWindowProperties
 		/// <summary>

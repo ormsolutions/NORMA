@@ -1594,7 +1594,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (null != (provider = myServiceProvider) &&
 						null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
 				{
-					uiService.ShowError(ex);
+					uiService.ShowDialog(new System.Windows.Forms.ThreadExceptionDialog(ex));
 				}
 			}
 		}
