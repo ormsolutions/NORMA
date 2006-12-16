@@ -133,7 +133,10 @@
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
     <Compile Include="ShapeModel\ModelNoteConnectAction.cs" />
     <Compile Include="ShapeModel\ModelNoteShape.cs" />
-    <Compile Include="Shell\ORMContextWindow.cs" />
+    <Compile Include="Shell\ORMLayoutEngines.cs" />
+    <Compile Include="Shell\LayoutManager.cs" />
+    <Compile Include="Shell\ORMContextWindow.cs">
+    </Compile>
     <Compile Include="Shell\FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="Shell\FactEditor\FactColorizer.cs" />
     <Compile Include="Shell\FactEditor\FactCompletionSet.cs" />
@@ -382,6 +385,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\Diagrams\LayoutEngine.cs" />
     <Compile Include="Framework\Design\CustomDisplayPropertyDescriptor.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
@@ -586,7 +590,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)install.bat" "$(OutputPath)"</PostBuildEvent>
     <PreBuildEvent>"$(SolutionDir)VersionGenerator.exe"</PreBuildEvent>

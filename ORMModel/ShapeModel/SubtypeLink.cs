@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -478,7 +479,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Accessibility Properties
 	}
-	public partial class ORMShapeDomainModel
+	public partial class ORMShapeDomainModel : ILayoutEngineProvider
 	{
 		#region  DisplaySubtypeLinkFixupListener
 		/// <summary>
@@ -532,5 +533,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplaySubtypeLinkFixupListener class
+
+		#region ILayoutEngineProvider
+		/// <summary>
+		/// Returns a list of layout engines provided by the default NORMA installation
+		/// </summary>
+		protected LayoutEngineData[] ProvideLayoutEngineData
+		{
+			get
+			{
+				LayoutEngineData[] retVal = {
+					new LayoutEngineData(typeof(ORMRadialLayoutEngine), new ORMRadialLayoutEngine())
+				};
+				return retVal;
+			}
+		}
+		LayoutEngineData[] ILayoutEngineProvider.ProvideLayoutEngineData()
+		{
+			return ProvideLayoutEngineData;
+		}
+		#endregion
 	}
 }

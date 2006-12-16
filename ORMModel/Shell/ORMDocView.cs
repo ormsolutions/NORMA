@@ -1954,8 +1954,13 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.AutoLayoutTransactionName))
 				{
-					VGRoutingStyle routingStyle = diagram.RoutingStyle;
-					diagram.AutoLayoutShapeElements(shapeElementCollection, routingStyle, placementStyle, routingStyle != VGRoutingStyle.VGRouteNone);
+					LayoutManager bl = new LayoutManager(diagram as ORMDiagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
+					foreach (ShapeElement shape in shapeElementCollection)
+					{
+						bl.AddShape(shape, false);
+					}
+					bl.Layout();
+
 					if (t.HasPendingChanges)
 					{
 						t.Commit();

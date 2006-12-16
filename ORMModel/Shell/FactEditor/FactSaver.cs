@@ -67,9 +67,10 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 
 			if (null != myModel)
 			{
-
 				ORMDesignerDocView docView = (ORMDesignerDocView)myCurrentDocument.DocViews[0];
 				ORMDiagram diagram = docView.CurrentDiagram as ORMDiagram;
+				LayoutManager layoutManager = new LayoutManager(diagram as ORMDiagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
+				List<ModelElement> newlyCreatedElements = new List<ModelElement>();
 
 				// We've got a model, now lets start a transaction to add our fact to the model.
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
@@ -106,6 +107,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					if (startingFact == null)
 					{
 						currentFact = new FactType(store);
+						newlyCreatedElements.Add(currentFact);
 						readOrd = new ReadingOrder(store);
 						// assign the fact to this reading order to setup the reference
 						// between role collectionsreadOrd.FactType = currentFact;
@@ -144,6 +146,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 							currentObject.Name = objectName;
 							currentObject.Model = myModel;
 							newlyCreatedObjects.Add(objectName, currentObject);
+							newlyCreatedElements.Add(currentObject);
 
 							// If the object DOES NOT already exist AND it's a value type
 							if (forceValueType)
@@ -184,6 +187,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 
 							// get a presentation element to work with for determine if the ref mode is expanded or collapsed
 							ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.CurrentDiagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(currentObject);
+							layoutManager.AddShape(objShape, true);
 
 							// convert this object to a entity type if it was a value type and if we are now adding a ref mode
 							if (refModeLength > 0 && currentObjectIsValueType)
@@ -301,6 +305,30 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					// Commit the changes to the model.
 					t.Commit();
 				} // end transaction
+
+				#region Autolayout
+				// Only perform autlayout if new objects have been created AND there are objects
+				// in the modelElements collection.
+				if (newlyCreatedElements.Count > 0)
+				{
+					// Create a new transaction to perform autolayout (You cannot do this inside the same transaction)
+					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
+					{
+						// New stuff for autolayout
+						foreach (ModelElement modelElement in newlyCreatedElements)
+						{
+							ShapeElement shapeElement = diagram.FindShapeForElement(modelElement);
+							if (shapeElement != null)
+							{
+								layoutManager.AddShape(shapeElement, false);
+							}
+						}
+						layoutManager.Layout();
+
+						t.Commit();
+					}
+				}
+				#endregion // Autolayout
 			}
 		}
 	}

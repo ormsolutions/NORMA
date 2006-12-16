@@ -314,7 +314,16 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myDiagram.NestedChildShapes.Clear();
 				myDiagram.AutoPopulateShapes = true;
+				
 				PlaceObject(hierarchyElement);
+				LinkedElementCollection<ShapeElement> collection = myDiagram.NestedChildShapes;
+				LayoutManager bl = new LayoutManager(myDiagram, (myDiagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
+				foreach (ShapeElement shape in collection)
+				{
+					bl.AddShape(shape, false);
+				}
+				bl.Layout();
+
 				myDiagram.AutoPopulateShapes = false;
 				if (t.HasPendingChanges)
 				{

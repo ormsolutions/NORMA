@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						else
 						{
 							// Stop the reading shape from ending up in the wrong place during refmode expansion
-							e.ModelElement.Store.TransactionManager.CurrentTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
+							e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
 							bool fixUpReadings = false;
 							ShapeElement shapeOnDiagram;
 							if (null == (shapeOnDiagram = parentDiagram.FindShapeForElement(factType)))
@@ -189,8 +189,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 
-						parentDiagram.AutoLayoutChildShapes(shapeElements);
+						if (shapeElements.Count > 0)
+						{
+							NodeShape rootShape = e.ModelElement as NodeShape;
+							// Turn off auto placement
+							e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
 
+							// Tell the layout manager to calculate locations for the new elements
+							LayoutManager bl = new LayoutManager(parentDiagram, (parentDiagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
+							foreach (ShapeElement shape in shapeElements.Keys)
+							{
+								if (shape == rootShape)
+								{
+									continue;
+								}
+								// The bool value of shapeElements says whether to position the shape or not.  If not, it's already on the diagram, so don't move it!
+								bl.AddShape(shape, !shapeElements[shape]);
+							}
+							bl.AddShape(rootShape, true);
+							bl.SetRootShape(rootShape);
+							bl.Layout();
+						}
 					}
 				}
 			}//end method

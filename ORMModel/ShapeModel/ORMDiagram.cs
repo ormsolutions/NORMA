@@ -210,11 +210,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				using (Transaction transaction = Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
 				{
-					if (!elementPosition.IsEmpty)
+					bool clearContext;
+					if (clearContext = !elementPosition.IsEmpty)
 					{
 						DropTargetContext.Set(transaction.TopLevelTransaction, Id, elementPosition, null);
 					}
 					FixUpLocalDiagram(null, element);
+					if (clearContext)
+					{
+						DropTargetContext.Remove(transaction.TopLevelTransaction);
+					}
+					DropTargetContext.Remove(transaction.TopLevelTransaction);
 					if (factType != null && factType.RoleCollection != null)
 					{
 						LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
@@ -758,7 +764,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return !AutoPopulateShapes || (Partition != Store.DefaultPartition);
+				return false;	//!AutoPopulateShapes || (Partition != Store.DefaultPartition);
 			}
 		}
 		/// <summary>
@@ -1328,7 +1334,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public override IList FixUpDiagramSelection(ShapeElement newChildShape)
 		{
-			if (DropTargetContext.HasDropTargetContext(Store.TransactionManager.CurrentTransaction))
+			if (DropTargetContext.HasDropTargetContext(Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
 			{
 				return base.FixUpDiagramSelection(newChildShape);
 			}

@@ -31,6 +31,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
 using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
@@ -207,6 +208,19 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					return VerbalizationSnippetsDictionary;
 				}
+			}
+			/// <summary>
+			/// Returns an instance of the specified layout engine type
+			/// </summary>
+			/// <param name="engineType"></param>
+			/// <returns></returns>
+			protected LayoutEngine GetLayoutEngine(Type engineType)
+			{
+				return myServices.GetLayoutEngine(engineType);
+			}
+			LayoutEngine IORMToolServices.GetLayoutEngine(Type engineType)
+			{
+				return GetLayoutEngine(engineType);
 			}
 			/// <summary>
 			/// currently unimplemented as this should only be returned from ORMDocDataServices
@@ -961,6 +975,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
 		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
+		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private IORMPropertyProviderService myPropertyProviderService;
 
@@ -1067,6 +1082,25 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return VerbalizationSnippetsDictionary;
 			}
+		}
+		/// <summary>
+		/// Get an instance of the specified <seealso cref="LayoutEngine"/> type.
+		/// </summary>
+		/// <param name="engineType"></param>
+		/// <returns></returns>
+		protected LayoutEngine GetLayoutEngine(Type engineType)
+		{
+			IDictionary<Type, LayoutEngineData> retVal = myLayoutEngines;
+			if (retVal == null)
+			{
+				retVal = LayoutEngineData.CreateLayoutEngineDictionary(Store);
+				myLayoutEngines = retVal;
+			}
+			return retVal[engineType].Instance;
+		}
+		LayoutEngine IORMToolServices.GetLayoutEngine(Type engineType)
+		{
+			return GetLayoutEngine(engineType);
 		}
 		/// <summary>
 		/// Get the INotifySurveyElementChanged for the SurveyTree of this DocData

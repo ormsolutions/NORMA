@@ -242,7 +242,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// be tested.
 			if (childWasPlaced)
 			{
-				Transaction transaction = Store.TransactionManager.CurrentTransaction;
+				Transaction transaction = Store.TransactionManager.CurrentTransaction.TopLevelTransaction;
 				if (transaction != null &&
 					(DropTargetContext.HasDropTargetContext(transaction) ||
 					transaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes)))
@@ -567,7 +567,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMBaseShape parentShape = e.ModelElement as ORMBaseShape;
 				RectangleD oldBounds = (RectangleD)e.OldValue;
 				if (oldBounds.IsEmpty ||
-					e.ModelElement.Store.TransactionManager.CurrentTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes))
+					e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes))
 				{
 					// Initializing, let normal placement win
 					return;
