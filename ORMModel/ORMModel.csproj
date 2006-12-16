@@ -135,8 +135,7 @@
     <Compile Include="ShapeModel\ModelNoteShape.cs" />
     <Compile Include="Shell\ORMLayoutEngines.cs" />
     <Compile Include="Shell\LayoutManager.cs" />
-    <Compile Include="Shell\ORMContextWindow.cs">
-    </Compile>
+    <Compile Include="Shell\ORMContextWindow.cs" />
     <Compile Include="Shell\FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="Shell\FactEditor\FactColorizer.cs" />
     <Compile Include="Shell\FactEditor\FactCompletionSet.cs" />
@@ -432,8 +431,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
     </Content>
-    <None Include="Plix.xml">
-    </None>
+    <None Include="Plix.xml" />
     <Content Include="ObjectModel\VerbalizationGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>VerbalizationGenerator.cs</LastGenOutput>
@@ -590,6 +588,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)install.bat" "$(OutputPath)"</PostBuildEvent>
     <PreBuildEvent>"$(SolutionDir)VersionGenerator.exe"</PreBuildEvent>
