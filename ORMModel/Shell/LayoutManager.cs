@@ -20,11 +20,12 @@ namespace Neumont.Tools.ORM.Shell
 	#region LayoutManager
 	/// <summary>
 	/// The entry point to laying out shapes on an instance of an <seealso cref="ORMDiagram"/>.
-	/// NodeShapes are added to the layout manager, after which the user calls LayoutManager.Layout,
-	/// specifying the style to use.
+	/// NodeShapes are added to the layout manager, after which the user calls LayoutManager.Layout.
 	/// </summary>
 	public class LayoutManager
 	{
+		private const double MIN_MARGIN = 0.6;
+
 		/// <summary>
 		/// List of <see cref="LayoutShape"/> elements to place on the diagram.
 		/// </summary>
@@ -137,14 +138,13 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			double minX = 0, minY = 0;
-
 			// run the layout of base shapes
 			myLayoutEngine.PerformLayout(root, ref minX, ref minY);
 
 			// shift the graph so that it's all visible
-			if (minX < 0 || minY < 0)
+			if (minX <= 0 || minY <= 0)
 			{
-				Reflow((minX < 0.3) ? -minX : 0, (minY < 0.3) ? -minY : 0);
+				Reflow(-minX, -minY);
 			}
 		}
 
@@ -192,8 +192,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			// leave a left & top margin
 			// (note that DSL has a minimum margin that corresponds roughly to the numbers (in inches) below
-			deltaX += 0.6;
-			deltaY += 0.6;
+			deltaX += MIN_MARGIN;
+			deltaY += MIN_MARGIN;
 
 			foreach (LayoutShape shape in myLayoutShapes)
 			{
