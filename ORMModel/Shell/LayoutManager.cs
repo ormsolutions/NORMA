@@ -166,7 +166,7 @@ namespace Neumont.Tools.ORM.Shell
 				LayoutShape first = null;
 				foreach (LayoutShape layshape in myLayoutShapes)
 				{
-					if (first == null && !(layshape.Shape is FactTypeShape))
+					if (first == null)
 					{
 						first = layshape;
 					}
