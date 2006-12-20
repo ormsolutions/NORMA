@@ -656,10 +656,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Role role;
 				if (null != (role = e.CounterpartRolePlayer as Role))
 				{
+					Partition sourcePartition = e.SourceElement.Partition;
 					foreach (PresentationElement pElem in PresentationViewsSubject.GetPresentation(role.FactType))
 					{
 						FactTypeShape factShape;
-						if (null != (factShape = pElem as FactTypeShape))
+						if (null != (factShape = pElem as FactTypeShape) && factShape.Partition == sourcePartition)
 						{
 							foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
 							{

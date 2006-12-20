@@ -2063,11 +2063,11 @@ firstObject.PreferredIdentifier.FactTypeCollection;
 			/// <summary>
 			/// The <see cref="Guid"/> of the absorber <see cref="ObjectType"/>.
 			/// </summary>
-			private Guid absorberId;
+			private Guid myAbsorberId;
 			/// <summary>
 			/// The type of absorption in the relationship.
 			/// </summary>
-			private FactAbsorptionType typeOfAbsorption;
+			private FactAbsorptionType myTypeOfAbsorption;
 			/// <summary>
 			/// Creates a new instance of this <see cref="AbsorbedFactType"/>
 			/// </summary>
@@ -2076,22 +2076,22 @@ firstObject.PreferredIdentifier.FactTypeCollection;
 			/// to an <see cref="ObjectType"/></param>
 			public AbsorbedFactType(Guid absorberId, FactAbsorptionType typeOfAbsorption)
 			{
-				this.absorberId = absorberId;
-				this.typeOfAbsorption = typeOfAbsorption;
+				myAbsorberId = absorberId;
+				myTypeOfAbsorption = typeOfAbsorption;
 			}
 			/// <summary>
 			/// Gets the <see cref="Guid"/> of the absorber <see cref="ObjectType"/>.
 			/// </summary>
 			public Guid AbsorberId
 			{
-				get { return absorberId; }
+				get { return myAbsorberId; }
 			}
 			/// <summary>
 			/// Gets the <see cref="FactAbsorptionType"/> of the absorption.
 			/// </summary>
 			public FactAbsorptionType AbsorptionType
 			{
-				get { return typeOfAbsorption; }
+				get { return myTypeOfAbsorption; }
 			}
 
 			/// <summary>
@@ -2115,8 +2115,8 @@ firstObject.PreferredIdentifier.FactTypeCollection;
 			/// Otherwise, <see langword="false"/>.</returns>
 			public static bool operator ==(AbsorbedFactType firstAbsorbedFactType, AbsorbedFactType secondAbsorbedFactType)
 			{
-				return firstAbsorbedFactType.absorberId == secondAbsorbedFactType.absorberId &&
-					firstAbsorbedFactType.typeOfAbsorption == secondAbsorbedFactType.typeOfAbsorption;
+				return firstAbsorbedFactType.myAbsorberId == secondAbsorbedFactType.myAbsorberId &&
+					firstAbsorbedFactType.myTypeOfAbsorption == secondAbsorbedFactType.myTypeOfAbsorption;
 			}
 
 			/// <summary>
@@ -2132,8 +2132,15 @@ firstObject.PreferredIdentifier.FactTypeCollection;
 			/// Otherwise, <see langword="false"/>.</returns>
 			public static bool operator !=(AbsorbedFactType firstAbsorbedFactType, AbsorbedFactType secondAbsorbedFactType)
 			{
-				return firstAbsorbedFactType.absorberId != secondAbsorbedFactType.absorberId ||
-					firstAbsorbedFactType.typeOfAbsorption != secondAbsorbedFactType.typeOfAbsorption;
+				return firstAbsorbedFactType.myAbsorberId != secondAbsorbedFactType.myAbsorberId ||
+					firstAbsorbedFactType.myTypeOfAbsorption != secondAbsorbedFactType.myTypeOfAbsorption;
+			}
+			/// <summary>
+			/// Standard override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return myAbsorberId.GetHashCode() ^ myTypeOfAbsorption.GetHashCode(); 				
 			}
 		}
 		#endregion // Corresponding Structures For OIAL Implementation

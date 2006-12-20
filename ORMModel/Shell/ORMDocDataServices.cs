@@ -13,7 +13,9 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-
+// Uncomment the following line to make the TransactionItemChangesPartitionDelegate return an int instead of a boolean.
+// This is useful for tracking which of the current transaction commands are modifying the primary partition. 
+//#define DEBUG_MODIFIED_PARITION_COMMAND
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -299,7 +301,11 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			#region AddUndoUnit filtering
 			#region Dynamic Microsoft.VisualStudio.Modeling.TransactionItem.ChangesPartition implementation
+#if	DEBUG_MODIFIED_PARITION_COMMAND
+			private delegate int TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition);
+#else
 			private delegate bool TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition);
+#endif
 			/// <summary>
 			/// Microsoft.VisualStudio.Modeling.UndoManager has a TopmostUndableTransaction property,
 			/// but not a TopmostRedoableTransaction property. Generate a dynamic method to emulate this functionality.
@@ -348,7 +354,15 @@ namespace Neumont.Tools.ORM.Shell
 				//     }
 				//     return false;
 				// }
-				DynamicMethod dynamicMethod = new DynamicMethod("TransactionItemChangesPartition", typeof(bool), new Type[] { transactionItemType, partitionType }, transactionItemType, true);
+				DynamicMethod dynamicMethod = new DynamicMethod(
+					"TransactionItemChangesPartition",
+#if	DEBUG_MODIFIED_PARITION_COMMAND
+					typeof(int),
+#else
+					typeof(bool),
+#endif
+					new Type[] { transactionItemType, partitionType },
+					transactionItemType, true);
 				// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for more than the required 55 bytes
 				// to avoid a resize to an even larger buffer.
 				ILGenerator il = dynamicMethod.GetILGenerator(64);
@@ -385,7 +399,11 @@ namespace Neumont.Tools.ORM.Shell
 
 				// Have a match, get out
 				il.Emit(OpCodes.Pop); // Pop commands
+#if	DEBUG_MODIFIED_PARITION_COMMAND
+				il.Emit(OpCodes.Ldloc_1); // push i
+#else
 				il.Emit(OpCodes.Ldc_I4_1);
+#endif
 				il.Emit(OpCodes.Ret);
 
 				// Cast failed, pop extra item
@@ -407,7 +425,11 @@ namespace Neumont.Tools.ORM.Shell
 
 				// Return false
 				il.Emit(OpCodes.Pop);
+#if	DEBUG_MODIFIED_PARITION_COMMAND
+				il.Emit(OpCodes.Ldc_I4_M1);
+#else
 				il.Emit(OpCodes.Ldc_I4_0);
+#endif
 				il.Emit(OpCodes.Ret);
 				return (TransactionItemChangesPartitionDelegate)dynamicMethod.CreateDelegate(typeof(TransactionItemChangesPartitionDelegate));
 			}
@@ -500,7 +522,12 @@ namespace Neumont.Tools.ORM.Shell
 			private void UndoItemAddedFilter(object sender, UndoItemEventArgs e)
 			{
 				TransactionItem transactionItem = e.TransactionItem;
+#if DEBUG_MODIFIED_PARITION_COMMAND
+				int changedAt = TransactionItemChangesPartition(transactionItem, transactionItem.Store.DefaultPartition);
+				if (changedAt != -1)
+#else
 				if (TransactionItemChangesPartition(transactionItem, transactionItem.Store.DefaultPartition))
+#endif
 				{
 					myFilteredUndoItemAddedHandler(sender, e);
 				}

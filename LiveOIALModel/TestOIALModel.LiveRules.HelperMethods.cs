@@ -647,10 +647,10 @@ namespace Neumont.Tools.ORM.TestOIALModel
 		{
 			string baseName = pathRole.Name;
 			Store store = model.Store;
-			bool forceRoleNames = true;
+			//bool forceRoleNames = true;
 			if (string.IsNullOrEmpty(baseName))
 			{
-				forceRoleNames = false;
+				//forceRoleNames = false;
 				baseName = informationTypeObjectType.Name;
 			}
 
