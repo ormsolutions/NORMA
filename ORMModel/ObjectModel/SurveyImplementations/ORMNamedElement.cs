@@ -25,10 +25,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ORMNamedElement : ISurveyNode
 	{
-		#region ISurveyNode Members
-		/// <summary>
-		/// whether or not this object is editable in the survey tree
-		/// </summary>
+		#region ISurveyNode Implementation
 		bool ISurveyNode.IsSurveyNameEditable
 		{
 			get
@@ -37,30 +34,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementation of IsSurveyNameEditable from ISurveyNode
+		/// Implements <see cref="ISurveyNode.IsSurveyNameEditable"/>
 		/// </summary>
 		protected bool IsSurveyNameEditable
 		{
 			get
 			{
-				// UNDONE: 2006-06 DSL Tools port: This seemed to be returning the same value as IsReadOnly, rather than its opposite,
-				// which seemed to be rather backwards. For now, I've changed it to return !IsReadOnly...
-				return !DomainTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, ORMNamedElement.NameDomainPropertyId).IsReadOnly;
 			}
 		}
-
-		/// <summary>
-		/// the display name to be used in the survey tree
-		/// </summary>
 		string ISurveyNode.SurveyName
 		{
 			get
 			{
-				return this.Name;
+				return SurveyName;
 			}
 		}
 		/// <summary>
-		/// implementation of SurveyName from ISurveyNode
+		/// Implements <see cref="ISurveyNode.SurveyName"/>
 		/// </summary>
 		protected string SurveyName //TODO: this may need to be updated to return the more descriptive element name (componentName)?
 		{
@@ -69,9 +60,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.Name;
 			}
 		}
-		/// <summary>
-		/// editable name to be displayed in the survey tree
-		/// </summary>
 		string ISurveyNode.EditableSurveyName
 		{
 			get
@@ -84,7 +72,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementatin of EditableSurveyName from ISurveyNode
+		/// Implements <see cref="ISurveyNode.EditableSurveyName"/>
 		/// </summary>
 		protected string EditableSurveyName
 		{
@@ -94,12 +82,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				this.Name = value;
+				DomainTypeDescriptor.CreatePropertyDescriptor(this, ORMNamedElement.NameDomainPropertyId).SetValue(this, value);
 			}
 		}
 
 		/// <summary>
-		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected static object SurveyNodeDataObject
 		{
@@ -115,6 +103,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
-		#endregion
+		#endregion // ISurveyNode Implementation
 	}
 }

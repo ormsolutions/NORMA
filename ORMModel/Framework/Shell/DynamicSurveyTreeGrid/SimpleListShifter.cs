@@ -133,7 +133,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 				{
 					LocateObjectData data = myBaseBranch.LocateObject(obj, style, locateOptions);
-					data.Row -= myFirstItem;
+					if (data.Row >= 0)
+					{
+						data.Row -= myFirstItem;
+					}
 					return data;
 				}
 				public event BranchModificationEventHandler OnBranchModification

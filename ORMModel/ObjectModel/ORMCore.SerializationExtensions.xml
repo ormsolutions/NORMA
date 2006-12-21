@@ -46,6 +46,9 @@
 		</se:Container>
 	</se:Element>
 	<se:Element Class="ORMNamedElement" Override="true"/>
+	<se:Element Class="ModelError" Override="true">
+		<se:Attribute ID="ErrorText" Name="Name"/>
+	</se:Element>
 	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true" Override="true">
 		<se:Container Name="Objects">
 			<se:Embed RelationshipName="ModelHasObjectType" RoleName="ObjectType"/>

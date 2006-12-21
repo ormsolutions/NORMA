@@ -547,7 +547,7 @@ namespace Neumont.Tools.ORM.Shell
 			IORMToolTaskItem taskData = error.TaskData as IORMToolTaskItem;
 			if (taskData != null)
 			{
-				taskData.Text = error.Name;
+				taskData.Text = error.ErrorText;
 			}
 		}
 		#endregion // Error reporting

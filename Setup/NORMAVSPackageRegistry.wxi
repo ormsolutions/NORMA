@@ -115,7 +115,7 @@
 			</Registry>
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMBrowserToolWindow" Type="string"/>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMModelBrowserToolWindow" Type="string"/>
 				<Registry Name="Style" Value="Tabbed" Type="string"/>
 				<Registry Name="Orientation" Value="Right" Type="string"/>
 				<Registry Name="Window" Value="{$(var.VSSolutionExplorerWindowGuid)}" Type="string"/>

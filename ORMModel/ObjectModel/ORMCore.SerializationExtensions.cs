@@ -129,6 +129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap = new Dictionary<string, Guid>();
 				classNameMap.Add("ORMModelElement", ORMModelElement.DomainClassId);
 				classNameMap.Add("ORMNamedElement", ORMNamedElement.DomainClassId);
+				classNameMap.Add("ModelError", ModelError.DomainClassId);
 				classNameMap.Add("ORMModel", ORMModel.DomainClassId);
 				classNameMap.Add("Note", Note.DomainClassId);
 				classNameMap.Add("ModelNote", ModelNote.DomainClassId);
@@ -363,6 +364,70 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // ORMNamedElement serialization
+	#region ModelError serialization
+	partial class ModelError : IORMCustomSerializedElement
+	{
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.PropertyInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == ModelError.ErrorTextDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, "Name", null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
+			return ORMCustomSerializedPropertyInfo.Default;
+		}
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ModelError.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("Name", ModelError.ErrorTextDomainPropertyId);
+				ModelError.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			if (!(customSerializedAttributes.TryGetValue(key, out rVal)))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
+			return rVal;
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+	}
+	#endregion // ModelError serialization
 	#region ORMModel serialization
 	partial class ORMModel : IORMCustomSerializedElement
 	{

@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					"Object '{0}' in model '{1}' needs a meaningful name.",
 					objectType.Name,
 					objectType.Model.Name);
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

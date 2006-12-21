@@ -2058,7 +2058,7 @@ firstObject.PreferredIdentifier.FactTypeCollection;
 		/// <remarks>
 		/// A structure that keeps track of where and how <see cref="FactType"/>s will be absorbed.
 		/// </remarks>
-		private struct AbsorbedFactType
+		private struct AbsorbedFactType : IEquatable<AbsorbedFactType>
 		{
 			/// <summary>
 			/// The <see cref="Guid"/> of the absorber <see cref="ObjectType"/>.
@@ -2135,12 +2135,20 @@ firstObject.PreferredIdentifier.FactTypeCollection;
 				return firstAbsorbedFactType.myAbsorberId != secondAbsorbedFactType.myAbsorberId ||
 					firstAbsorbedFactType.myTypeOfAbsorption != secondAbsorbedFactType.myTypeOfAbsorption;
 			}
-			/// <summary>
-			/// Standard override
-			/// </summary>
+			/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
 			public override int GetHashCode()
 			{
 				return myAbsorberId.GetHashCode() ^ myTypeOfAbsorption.GetHashCode(); 				
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				return obj is AbsorbedFactType && this.Equals((AbsorbedFactType)obj);
+			}
+			/// <summary>See <see cref="IEquatable{AbsorbedFactType}.Equals"/>.</summary>
+			public bool Equals(AbsorbedFactType other)
+			{
+				return this == other;
 			}
 		}
 		#endregion // Corresponding Structures For OIAL Implementation

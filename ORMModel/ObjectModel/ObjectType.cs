@@ -2664,9 +2664,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorEntityTypeRequiresReferenceSchemeMessage, ObjectType.Name, Model.Name);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 
@@ -2706,9 +2706,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeRequiresPrimarySupertypeError, ObjectType.Name, Model.Name);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -2744,7 +2744,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, ObjectType.Name, Model.Name);
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, ObjectType.Name, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes
@@ -2779,7 +2779,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, ObjectType.Name, Model.Name);
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, ObjectType.Name, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes

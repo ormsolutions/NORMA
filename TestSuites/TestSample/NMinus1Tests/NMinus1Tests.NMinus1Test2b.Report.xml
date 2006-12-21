@@ -3,8 +3,6 @@
 	<ValidationErrors name="Before repair">
 		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint7' on fact type 'PersonPlayedSportForCountry' in model 'NewModel' must span at least 2 roles.</ValidationError>
 	</ValidationErrors>
-	<Compare name="stage1" result="pass" />
-	<Compare name="stage2" result="pass" />
 	<ValidationErrors name="After repair" />
 	<Compare result="pass" />
 </TestReport>

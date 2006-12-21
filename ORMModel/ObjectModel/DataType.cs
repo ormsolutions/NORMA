@@ -285,9 +285,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (valueType != null)
 			{
 				string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorValueTypeDataTypeNotSpecifiedMessage, valueType.Name, Model.Name);
-				if (Name != newText)
+				if (ErrorText != newText)
 				{
-					Name = newText;
+					ErrorText = newText;
 				}
 			}
 		}

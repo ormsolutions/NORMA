@@ -150,6 +150,17 @@ namespace Neumont.Tools.ORM.Shell
 			myCtorServiceProvider = serviceProvider;
 		}
 		/// <summary>
+		/// The <see cref="IServiceProvider"/> instance passed to the constraint.
+		/// Provides services without filtering by the tool window.
+		/// </summary>
+		protected IServiceProvider ExternalServiceProvider
+		{
+			get
+			{
+				return myCtorServiceProvider;
+			}
+		}
+		/// <summary>
 		/// Constructs a new ORM tool window, wires selection and document changed events,
 		/// and initializes the CurrentModelElementSelectionContainer to the current DocView.
 		/// </summary>

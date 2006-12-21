@@ -1398,7 +1398,7 @@
 							</xsl:call-template>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callInstance name="Name" type="property">
+							<plx:callInstance name="ErrorText" type="property">
 								<plx:callObject>
 									<plx:nameRef name="error"/>
 								</plx:callObject>

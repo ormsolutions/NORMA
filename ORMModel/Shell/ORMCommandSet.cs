@@ -13,8 +13,6 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-//NOTICE: if you toggle HIDENEWMODELBROWSER on/off make sure to change it on in ORMPackage.cs as well
-//#define HIDENEWMODELBROWSER 
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -160,14 +158,6 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuViewORMModelBrowser),
 						ORMDesignerCommandIds.ViewModelBrowser)
-						,new DynamicStatusMenuCommand(
-					#if !HIDENEWMODELBROWSER
-						new EventHandler(OnStatusStandardWindow),
-					#else
-						delegate(object sender, EventArgs e){(sender as MenuCommand).Visible = false;},
-					#endif
-						new EventHandler(OnMenuViewNewORMModelBrowser),
-						ORMDesignerCommandIds.ViewNewModelBrowser)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAutoLayout),
 						new EventHandler(OnMenuAutoLayout),
@@ -341,19 +331,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			/// <summary>
-			/// Show the ORM Model Browser
+			/// Show the New ORM Model Browser
 			/// </summary>
 			protected void OnMenuViewORMModelBrowser(object sender, EventArgs e)
 			{
-				ORMDesignerPackage.BrowserWindow.Show();
-			}
-
-			/// <summary>
-			/// Show the New ORM Model Browser
-			/// </summary>
-			protected void OnMenuViewNewORMModelBrowser(object sender, EventArgs e)
-			{
-				ORMDesignerPackage.NewORMModelBrowserWindow.Show();
+				ORMDesignerPackage.ORMModelBrowserWindow.Show();
 			}
 
 			/// <summary>
@@ -1222,7 +1204,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The ORM Model Browser Window item on the context menu
 			/// </summary>
-			public static readonly CommandID ViewNewModelBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewNewModelBrowser);
+			public static readonly CommandID ViewOldModelBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewOldModelBrowser);
 			/// <summary>
 			/// The ORM Verbalization Browser toolbar button for positive verbalization
 			/// </summary>
@@ -1383,7 +1365,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The NewORM Model Browser item on the view menu
 			/// </summary>
-			private const int cmdIdViewNewModelBrowser = 0x2899;
+			private const int cmdIdViewOldModelBrowser = 0x2899;
 			/// <summary>
 			/// The ORM Model Browser item on the view menu
 			/// </summary>

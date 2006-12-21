@@ -1227,7 +1227,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -1245,7 +1245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -1295,7 +1295,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -1334,7 +1334,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -1352,7 +1352,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -1536,7 +1536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -1575,7 +1575,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -1593,7 +1593,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -1623,7 +1623,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -2414,7 +2414,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -2432,7 +2432,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -2467,7 +2467,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -2499,7 +2499,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -3486,7 +3486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -3525,7 +3525,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -3543,7 +3543,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -3578,7 +3578,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -3610,7 +3610,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -4832,7 +4832,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -4871,7 +4871,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -4889,7 +4889,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -4925,7 +4925,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -5143,7 +5143,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -5182,7 +5182,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -5200,7 +5200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -5333,7 +5333,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -5372,7 +5372,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -5390,7 +5390,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -5424,7 +5424,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -5456,7 +5456,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -5586,7 +5586,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -5625,7 +5625,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -5643,7 +5643,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -5685,7 +5685,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -5717,7 +5717,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -6789,7 +6789,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -6828,7 +6828,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -6846,7 +6846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -6888,7 +6888,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -6920,7 +6920,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -7769,7 +7769,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -7808,7 +7808,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -7826,7 +7826,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -7868,7 +7868,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -7900,7 +7900,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -8930,7 +8930,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.WriteLine();
 					}
-					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 				}
 				if (!(firstErrorPending))
 				{
@@ -9081,7 +9081,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -9099,7 +9099,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -9175,7 +9175,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -9242,7 +9242,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{
@@ -9260,7 +9260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								writer.WriteLine();
 							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 						}
 						if (!(firstErrorPending))
 						{
@@ -9325,7 +9325,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							writer.WriteLine();
 						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText));
 					}
 					if (!(firstErrorPending))
 					{

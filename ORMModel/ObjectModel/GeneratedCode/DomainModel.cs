@@ -329,6 +329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainMemberInfo(typeof(SetConstraint), "Modality", SetConstraint.ModalityDomainPropertyId, typeof(SetConstraint.ModalityPropertyHandler)),
 				new DomainMemberInfo(typeof(Join), "JoinType", Join.JoinTypeDomainPropertyId, typeof(Join.JoinTypePropertyHandler)),
 				new DomainMemberInfo(typeof(CompatibleRolePlayerTypeError), "Column", CompatibleRolePlayerTypeError.ColumnDomainPropertyId, typeof(CompatibleRolePlayerTypeError.ColumnPropertyHandler)),
+				new DomainMemberInfo(typeof(ModelError), "ErrorText", ModelError.ErrorTextDomainPropertyId, typeof(ModelError.ErrorTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeKind), "FormatString", ReferenceModeKind.FormatStringDomainPropertyId, typeof(ReferenceModeKind.FormatStringPropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeKind), "ReferenceModeType", ReferenceModeKind.ReferenceModeTypeDomainPropertyId, typeof(ReferenceModeKind.ReferenceModeTypePropertyHandler)),
 				new DomainMemberInfo(typeof(CustomReferenceMode), "CustomFormatString", CustomReferenceMode.CustomFormatStringDomainPropertyId, typeof(CustomReferenceMode.CustomFormatStringPropertyHandler)),

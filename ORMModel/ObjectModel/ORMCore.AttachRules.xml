@@ -62,6 +62,9 @@
 		<arg:Rule class="FactType.ModelHasInternalConstraintDeleteRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingDeleteRuleModelValidation"/>
+		<arg:Rule class="FactType.ValidateFactNameForObjectificationAdded"/>
+		<arg:Rule class="FactType.ValidateFactNameForObjectificationDelete"/>
+		<arg:Rule class="FactType.ValidateFactNameForObjectificationRolePlayerChange"/>
 		<arg:Rule class="FactType.ValidateFactNameForObjectTypeNameChange"/>
 		<arg:Rule class="FactType.ValidateFactNameForReadingChange"/>
 		<arg:Rule class="FactType.ValidateFactNameForReadingOrderReorder"/>

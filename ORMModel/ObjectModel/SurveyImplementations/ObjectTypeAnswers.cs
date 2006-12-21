@@ -60,7 +60,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region ISurveyNode Members
 		/// <summary>
-		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject
 		{

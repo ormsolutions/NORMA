@@ -25,14 +25,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	/// <summary>
 	/// Container for <see cref="VirtualTreeControl"/>.
 	/// </summary>
-	public class SurveyTreeControl : UserControl
+	public class SurveyTreeContainer : UserControl
 	{
 		private readonly VirtualTreeControl myTreeControl;
 
 		/// <summary>
-		/// Initializes a new instance of <see cref="SurveyTreeControl"/>.
+		/// Initializes a new instance of <see cref="SurveyTreeContainer"/>.
 		/// </summary>
-		public SurveyTreeControl()
+		public SurveyTreeContainer()
 		{
 			this.myTreeControl = new VirtualTreeControl();
 			this.SuspendLayout();
@@ -46,7 +46,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			// SurveyTreeControl
 			// 
 			this.Controls.Add(this.myTreeControl);
-			this.Name = "SurveyTreeControl";
+			this.Name = "SurveyTreeContainer";
 			this.ResumeLayout(false);
 		}
 

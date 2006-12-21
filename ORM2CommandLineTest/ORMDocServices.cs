@@ -19,6 +19,7 @@ using System.Xml;
 using System.Xml.Xsl;
 using Microsoft.XmlDiffPatch;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
@@ -77,7 +78,6 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return null;
 				}
 			}
-			//TODO: this needs actual implementation for retrieving the INotifySurveyElementChanged implementation
 			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
 			{
 				get
@@ -94,6 +94,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				set
 				{
 				}
+			}
+			LayoutEngine IORMToolServices.GetLayoutEngine(Type engineType)
+			{
+				return null;
 			}
 			#endregion // IORMToolServices Implementation
 			#region IORMFontAndColorService Implementation
@@ -947,7 +951,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				IORMToolTaskItem taskData = error.TaskData as IORMToolTaskItem;
 				if (taskData != null)
 				{
-					taskData.Text = error.Name;
+					taskData.Text = error.ErrorText;
 				}
 			}
 			#endregion //Model Event Manipulation

@@ -431,9 +431,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrder order = reading.ReadingOrder;
 			FactType fact = order.FactType;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesMessage, fact.Name, Model.Name, Reading.Text);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 
@@ -480,9 +480,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrder order = reading.ReadingOrder;
 			FactType fact = order.FactType;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesMessage, fact.Name, Model.Name, Reading.Text);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 

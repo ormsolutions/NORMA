@@ -30,10 +30,11 @@ using System.Security.Permissions;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio;
 
 namespace Neumont.Tools.ORM.Shell
 {
-	public partial class ORMBrowserToolWindow : ModelExplorerToolWindow
+	public partial class ORMModelBrowserToolWindow
 	{
 		private sealed class ORMModelBrowserCommandSet : MarshalByRefObject, IDisposable
 		{
@@ -41,6 +42,7 @@ namespace Neumont.Tools.ORM.Shell
 			private IMonitorSelectionService myMonitorSelection;
 			private IServiceProvider myServiceProvider;
 			private MenuCommand[] myCommands;
+			private static CommandID EditLabelCommandID = new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.EditLabel);
 
 			public ORMModelBrowserCommandSet(IServiceProvider provider, IMenuCommandService menuService)
 			{
@@ -51,7 +53,11 @@ namespace Neumont.Tools.ORM.Shell
 					new DynamicStatusMenuCommand(
 					new EventHandler(OnStatusDelete),
 					new EventHandler(OnMenuDelete),
-					StandardCommands.Delete)};
+					StandardCommands.Delete)
+					,new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusEditLabel),
+					new EventHandler(OnMenuEditLabel),
+					EditLabelCommandID)};
 				#endregion //command array
 				AddCommands(myCommands);
 			}
@@ -87,11 +93,11 @@ namespace Neumont.Tools.ORM.Shell
 					return myMenuService;
 				}
 			}
-			private ORMBrowserToolWindow CurrentToolWindow
+			private ORMModelBrowserToolWindow CurrentToolWindow
 			{
 				get 
 				{
-					return MonitorSelection.CurrentWindow as ORMBrowserToolWindow;
+					return MonitorSelection.CurrentWindow as ORMModelBrowserToolWindow;
 				}
 			}
 			/// <summary>
@@ -123,21 +129,36 @@ namespace Neumont.Tools.ORM.Shell
 				myServiceProvider = null;
 				myCommands = null;
 			}
+			#endregion // IDisposable Members
+			#region Command Handlers
 
 			public void OnStatusDelete(Object sender, EventArgs e)
 			{
 				IMonitorSelectionService service = MonitorSelection;
-				ORMBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, service.CurrentWindow as ORMBrowserToolWindow); 
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, service.CurrentWindow as ORMModelBrowserToolWindow); 
 			}
 			public void OnMenuDelete(Object sender, EventArgs e)
 			{
-				ORMBrowserToolWindow currentWindow = CurrentToolWindow;
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
 				if (currentWindow != null)
 				{
 					currentWindow.OnMenuDelete((sender as OleMenuCommand).Text);
 				}
 			}
-			#endregion
+			public void OnStatusEditLabel(Object sender, EventArgs e)
+			{
+				IMonitorSelectionService service = MonitorSelection;
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.EditLabel, service.CurrentWindow as ORMModelBrowserToolWindow);
+			}
+			public void OnMenuEditLabel(Object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuEditLabel();
+				}
+			}
+			#endregion // Command Handlers
 		}
 	}
 }

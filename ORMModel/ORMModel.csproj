@@ -337,7 +337,6 @@
     </Compile>
     <Compile Include="Shell\ORMExtensionType.cs" />
     <Compile Include="Shell\ORMFontsAndColors.cs" />
-    <Compile Include="Shell\ORMModelBrowser.cs" />
     <Compile Include="Shell\ORMCommandSet.cs" />
     <Compile Include="Shell\ORMDocData.cs" />
     <Compile Include="Shell\ORMDocView.cs" />

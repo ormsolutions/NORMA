@@ -41,11 +41,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ObjectType entityType = (entityTypeInstance != null) ? entityTypeInstance.EntityType : null;
 			string entityName = (entityType != null) ? entityType.Name : "";
 			string modelName = Model.Name;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(ResourceStrings.ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage, entityName, modelName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -72,11 +72,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType factType = (factTypeInstance != null) ? factTypeInstance.FactType : null;
 			string factName = (factType != null) ? factType.Name : "";
 			string modelName = Model.Name;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(ResourceStrings.ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage, factName, modelName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -105,11 +105,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string dataType = (valueType != null) ? valueType.DataType.PortableDataType.ToString() : "";
 			string value = (valueTypeInstance != null) ? valueTypeInstance.Value : "";
 			string modelName = Model.Name;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(ResourceStrings.ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage, value, valueName, modelName, dataType);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -170,11 +170,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			string modelName = Model.Name;
 			string objectTypeName = commonRole.RolePlayer.Name;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = String.Format(formatString, objectTypeName, instanceDisplayString, modelName, typeName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -275,11 +275,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Role role = MandatoryConstraint.RoleCollection[0];
 			string instanceDisplayString = objectInstance.Name;
 			string modelName = Model.Name;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = String.Format(ResourceStrings.ModelErrorModelHasPopulationMandatoryError, role.RolePlayer.Name, instanceDisplayString, modelName, role.FactType.Name);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

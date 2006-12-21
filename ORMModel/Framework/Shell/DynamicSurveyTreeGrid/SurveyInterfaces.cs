@@ -94,7 +94,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	#endregion //ISurveyNode
 	#region ISurveyNodeProvider
 	/// <summary>
-	/// Interface for a <see cref="DomainModel"/> to provide a list of objects for the <see cref="SurveyTreeControl"/>.
+	/// Interface for a <see cref="DomainModel"/> to provide a list of objects for the <see cref="SurveyTreeContainer"/>.
 	/// </summary>
 	public interface ISurveyNodeProvider
 	{
@@ -113,24 +113,24 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// called if an element is added to the containers node provider
 		/// </summary>
-		/// <param name="sender">the object that has been added</param>
-		void ElementAdded(object sender);
+		/// <param name="element">the object that has been added</param>
+		void ElementAdded(object element);
 		/// <summary>
 		/// called if an element in the containers node provider has been changed
 		/// </summary>
-		/// <param name="sender">the object that has been changed</param>
+		/// <param name="element">the object that has been changed</param>
 		/// <param name="questions">array of ISurveyQuestionTypeInfo that could be effected by this change</param>
-		void ElementChanged(object sender, ISurveyQuestionTypeInfo[] questions);
+		void ElementChanged(object element, ISurveyQuestionTypeInfo[] questions);
 		/// <summary>
 		/// called if element is removed from the containers node provider
 		/// </summary>
-		/// <param name="sender">the object that was removed from the node provider</param>
-		void ElementDeleted(object sender);
+		/// <param name="element">the object that was removed from the node provider</param>
+		void ElementDeleted(object element);
 		/// <summary>
 		/// called if an element in the containers node provider has been renamed
 		/// </summary>
-		/// <param name="sender">the object that has been renamed</param>
-		void ElementRenamed(object sender);
+		/// <param name="element">the object that has been renamed</param>
+		void ElementRenamed(object element);
 	}
 	#endregion //INotifySurveyElementChanged
 }

@@ -71,7 +71,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return branch;
 				}
 				#region Adjust Methods
-				#region Delete
+				#region AdjustDelete method
 				/// <summary>
 				/// Adjusts the delete.
 				/// </summary>
@@ -168,9 +168,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return false;
 
 				}
-				#endregion
+				#endregion // AdjustDelete method
 				#region AdjustAdd method
-
 				/// <summary>
 				/// Return true if the calling grouper should show a new header item
 				/// </summary>
@@ -217,7 +216,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								}
 								else
 								{
-									notifyListGrouper.ElementAdded(startIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+									notifyListGrouper.ElementAddedAt(startIndex, modificationEvents, notifyThrough, notifyThroughOffset);
 								}
 							}
 						}
@@ -233,7 +232,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								}
 								else
 								{
-									notifyListGrouper.ElementAdded(index, null, null, 0);
+									notifyListGrouper.ElementAddedAt(index, null, null, 0);
 								}
 							}
 						}
@@ -246,7 +245,61 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return false;
 				}
 				#endregion // AdjustAdd method
-				#endregion
+				#region AdjustRename method
+				public void AdjustRename(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+				{
+					if (modificationEvents != null)
+					{
+						if (Start <= fromIndex && End >= fromIndex)
+						{
+							Debug.Assert(Start <= toIndex && End >= toIndex, "Renaming a survey node should never cause it to switch groups");
+							IBranch branch = myBranch;
+							if (branch != null)
+							{
+								SimpleListShifter shifter;
+								ListGrouper grouper;
+								if (null != (shifter = branch as SimpleListShifter))
+								{
+									fromIndex -= Start;
+									toIndex -= Start;
+									if (fromIndex != toIndex)
+									{
+										if (notifyThrough != null)
+										{
+											modificationEvents(notifyThrough, BranchModificationEventArgs.MoveItem(notifyThrough, fromIndex + notifyThroughOffset, toIndex + notifyThroughOffset));
+										}
+										else
+										{
+											modificationEvents(shifter, BranchModificationEventArgs.MoveItem(shifter, fromIndex, toIndex));
+										}
+									}
+									else
+									{
+										if (notifyThrough != null)
+										{
+											modificationEvents(notifyThrough, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, notifyThrough, fromIndex + notifyThroughOffset, 0, 1)));
+											modificationEvents(notifyThrough, BranchModificationEventArgs.Redraw(false));
+											modificationEvents(notifyThrough, BranchModificationEventArgs.Redraw(true));
+										}
+										else
+										{
+											modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, shifter, fromIndex, 0, 1)));
+											modificationEvents(shifter, BranchModificationEventArgs.Redraw(false));
+											modificationEvents(shifter, BranchModificationEventArgs.Redraw(true));
+										}
+									}
+								}
+								else if (null != (grouper = branch as ListGrouper))
+								{
+									grouper.ElementRenamedAt(fromIndex, toIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+								}
+							}
+
+						}
+					}
+				}
+				#endregion // AdjustRename method
+				#endregion // Adjust Methods
 				#region  Helper Methods
 				private static void HandleSubranch(int index, int adjustIndex, BranchModificationEventHandler modificationEvents, SimpleListShifter notifyListShifter)
 				{
@@ -639,7 +692,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			#endregion
-			#region Element Deleted At
+			#region ElementDeletedAt
 			/// <summary>
 			/// Deletes node at given index and adjusts indices
 			/// </summary>
@@ -699,7 +752,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								{
 									if (notifyThrough != null)
 									{
-										modificationEvents(this, BranchModificationEventArgs.DeleteItems(notifyThrough, notifyThroughOffset + deleteAt, 1));
+										modificationEvents(notifyThrough, BranchModificationEventArgs.DeleteItems(notifyThrough, notifyThroughOffset + deleteAt, 1));
 									}
 									else
 									{
@@ -717,13 +770,25 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					// UNDONE: Handle trailing neutral
 				}
 			}
-			#endregion
-			#region ElementAdded
-			public void ElementAdded(int index, BranchModificationEventHandler ModificationEvents)
+			#endregion // ElementDeletedAt
+			#region ElementAddedAt
+			/// <summary>
+			/// Adds a node at given the index and adjusts indices
+			/// </summary>
+			/// <param name="index">The index of the newly added element</param>
+			/// <param name="modificationEvents">The event handler to notify the tree with</param>
+			public void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents)
 			{
-				ElementAdded(index, ModificationEvents, null, 0);
+				ElementAddedAt(index, modificationEvents, null, 0);
 			}
-			private void ElementAdded(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+			/// <summary>
+			/// Adds a node at given the index and adjusts indices
+			/// </summary>
+			/// <param name="index">The index of the newly added element</param>
+			/// <param name="modificationEvents">The event handler to notify the tree with</param>
+			/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
+			/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
+			private void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 			{
 				int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
 				if (myNeutralOnTop)
@@ -779,7 +844,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								{
 									if (notifyThrough != null)
 									{
-										modificationEvents(this, BranchModificationEventArgs.InsertItems(notifyThrough, notifyThroughOffset + insertAt - 1, 1));
+										modificationEvents(notifyThrough, BranchModificationEventArgs.InsertItems(notifyThrough, notifyThroughOffset + insertAt - 1, 1));
 									}
 									else
 									{
@@ -797,55 +862,47 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					// UNDONE: Handle trailing neutral
 				}
 			}
-			#endregion
-			#region ElemetRenamedAt
+			#endregion // ElementAddedAt
+			#region ElementRenamedAt
 			/// <summary>
 			/// Renames the node at given index and redraws the tree
 			/// </summary>
-			/// <param name="from">From.</param>
-			/// <param name="to">To.</param>
-			/// <param name="myModificationEvents">My modification events.</param>
-			public void ElementRenamedAt(int from, int to, BranchModificationEventHandler myModificationEvents)
+			/// <param name="fromIndex">Original index of the element</param>
+			/// <param name="toIndex">New index of the element. Can be the same as fromIndex</param>
+			/// <param name="modificationEvents">The event handler to notify the tree with</param>
+			public void ElementRenamedAt(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents)
 			{
-				SimpleListShifter shifter = (SimpleListShifter)GetModifiedBranch(from, this);
-					if (from != to)
-					{
-						if (shifter != null)
-						{
-							myModificationEvents(this, BranchModificationEventArgs.MoveItem(shifter, from, to));
-						}
-					}
-					else
-					{
-						if (shifter != null)
-						{
-							myModificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(shifter)));
-						}
-					}
-				
+				ElementRenamedAt(fromIndex, toIndex, modificationEvents, null, 0);
 			}
-			private IBranch GetModifiedBranch(int index, IBranch branch)
+			/// <summary>
+			/// Renames the node at given index and redraws the tree
+			/// </summary>
+			/// <param name="fromIndex">Original index of the element</param>
+			/// <param name="toIndex">New index of the element. Can be the same as fromIndex</param>
+			/// <param name="modificationEvents">The event handler to notify the tree with</param>
+			/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
+			/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
+			public void ElementRenamedAt(int fromIndex, int toIndex, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 			{
-				SimpleListShifter shifter;
-				ListGrouper grouper;
-				if (null != (grouper = branch as ListGrouper))
+				if (modificationEvents != null)
 				{
-					for (int i = 0; i < grouper.mySubBranches.Length; i++)
+					if (myNeutralOnTop)
 					{
-						if (grouper.mySubBranches[i].Start <= index && grouper.mySubBranches[i].End >= index)
-						{
-							IBranch subranch = mySubBranches[i].Branch;
-							return GetModifiedBranch(index, subranch);
-						}
+						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
+					}
+					SubBranchMetaData[] subBranches = mySubBranches;
+					for (int i = 0; i < subBranches.Length; i++)
+					{
+						subBranches[i].AdjustRename(fromIndex, toIndex, modificationEvents, notifyThrough, notifyThroughOffset);
+					}
+					if (!myNeutralOnTop)
+					{
+						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
+						// UNDONE: Handle trailing neutral
 					}
 				}
-				if (null != (shifter = branch as SimpleListShifter))
-				{
-					return shifter;
-				}
-				return null;
 			}
-			#endregion
+			#endregion // ElementRenamedAt
 		}
 
 	}

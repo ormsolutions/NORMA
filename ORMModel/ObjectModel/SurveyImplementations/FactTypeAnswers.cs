@@ -59,9 +59,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#endregion
 		#region ISurveyNode Members
-		/// <summary>
-		/// returns whether or not this object is editable in a survey tree
-		/// </summary>
 		bool ISurveyNode.IsSurveyNameEditable
 		{
 			get
@@ -70,20 +67,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementation of IsSurveyNameEditable from ISurveyNode
+		/// Implements <see cref="ISurveyNode.IsSurveyNameEditable"/>
 		/// </summary>
 		protected bool IsSurveyNameEditable
 		{
 			get
 			{
-				// UNDONE: 2006-06 DSL Tools port: This seemed to be returning the same value as IsReadOnly, rather than its opposite,
-				// which seemed to be rather backwards. For now, I've changed it to return !IsReadOnly...
-				return !DomainTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, FactType.NameDomainPropertyId).IsReadOnly;
 			}
 		}
-		/// <summary>
-		/// the display name for a survey tree
-		/// </summary>
 		string ISurveyNode.SurveyName 
 		{
 			get
@@ -92,18 +84,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementation of SurveyName from ISurveyNode
+		/// Implements <see cref="ISurveyNode.SurveyName"/>
 		/// </summary>
 		protected string SurveyName //TODO: this might be updated to show the more informative element names (componentName)?
 		{
 			get 
 			{
-				return this.Name;
+				string retVal = this.Name;
+				if (string.IsNullOrEmpty(retVal))
+				{
+					// UNDONE: MattCurland: We're getting this during redo scenarios on objectified facts.
+					// This is a bug in the Name propery implementation, which should handle
+					// this transparently. The sequencing here is very tricky because it involves
+					// synchronizing the FactType and ObjectType namds. I don't want to destabilize
+					// that scenario for this case, so I'm just regenerating the name.
+					retVal = GenerateName();
+				}
+				return retVal;
 			}
 		}
-		/// <summary>
-		/// the editable name for a survey tree
-		/// </summary>
 		string ISurveyNode.EditableSurveyName
 		{
 			get
@@ -116,7 +115,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// implementation of EditableSurveyName from ISurveyNode
+		/// Implements <see cref="ISurveyNode.EditableSurveyName"/>
 		/// </summary>
 		protected string EditableSurveyName
 		{
@@ -126,11 +125,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				this.Name = value;
+				DomainTypeDescriptor.CreatePropertyDescriptor(this, FactType.NameDomainPropertyId).SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected object SurveyNodeDataObject
 		{

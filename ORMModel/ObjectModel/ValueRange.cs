@@ -1397,7 +1397,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValueTypeValueConstraint valueDefn;
 			string value = null;
 			string newText = null;
-			string currentText = Name;
+			string currentText = ErrorText;
 			if (null != (roleDefn = defn as RoleValueConstraint))
 			{
 				Role attachedRole = roleDefn.Role;
@@ -1415,7 +1415,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -1447,7 +1447,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValueTypeValueConstraint valueDefn;
 			string value = null;
 			string newText = null;
-			string currentText = Name;
+			string currentText = ErrorText;
 			if (null != (roleDefn = defn as RoleValueConstraint))
 			{
 				Role attachedRole = roleDefn.Role;
@@ -1465,7 +1465,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -1497,7 +1497,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValueTypeValueConstraint valueDefn;
 			string value = null;
 			string newText = null;
-			string currentText = Name;
+			string currentText = ErrorText;
 			if (null != (roleDefn = defn as RoleValueConstraint))
 			{
 				Role attachedRole = roleDefn.Role;
@@ -1515,7 +1515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

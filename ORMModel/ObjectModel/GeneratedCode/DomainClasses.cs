@@ -7956,8 +7956,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
+	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (ErrorText = {errorTextPropertyStorage})")]
 	[DslModeling::DomainObjectId("16df5c5e-83ef-4edc-b54a-56d58d62d982")]
-	public abstract partial class ModelError : ORMNamedElement
+	public abstract partial class ModelError : ORMModelElement
 	{
 		#region Constructors, domain class Id
 	
@@ -7974,6 +7975,95 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: base(partition, propertyAssignments)
 		{
 		}
+		#endregion
+		#region ErrorText domain property code
+		
+		/// <summary>
+		/// ErrorText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ErrorTextDomainPropertyId = new global::System.Guid(0x6a6023e7, 0xac27, 0x4d86, 0xaf, 0xe4, 0x64, 0x28, 0x65, 0x9a, 0x04, 0x8e);
+		
+		/// <summary>
+		/// Storage for ErrorText
+		/// </summary>
+		private global::System.String errorTextPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of ErrorText domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ModelError.ErrorText
+		/// </summary>
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelError/ErrorText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelError/ErrorText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::ElementName]
+		[DslModeling::DomainObjectId("6a6023e7-ac27-4d86-afe4-6428659a048e")]
+		public global::System.String ErrorText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return errorTextPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ErrorTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ModelError.ErrorText domain property.
+		/// </summary>
+		internal sealed partial class ErrorTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelError, global::System.String>
+		{
+			private ErrorTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ModelError.ErrorText domain property value handler.
+			/// </summary>
+			public static readonly ErrorTextPropertyHandler Instance = new ErrorTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ModelError.ErrorText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ErrorTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ModelError element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.errorTextPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ModelError element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.errorTextPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>

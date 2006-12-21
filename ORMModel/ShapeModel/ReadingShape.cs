@@ -559,7 +559,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							roleTranslator[readRoleNum] = string.Format(CultureInfo.InvariantCulture, formatString, replacementField);
 						}
-						retVal = string.Format(CultureInfo.InvariantCulture, readingFormatString, roleTranslator);
+						retVal = string.Format(CultureInfo.InvariantCulture, (readingFormatString == null) ? defaultOrder.ReadingText : readingFormatString, roleTranslator);
 					}
 					if (derivationDecorator != null)
 					{

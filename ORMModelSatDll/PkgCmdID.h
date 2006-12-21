@@ -53,7 +53,6 @@
 #ifdef DEBUG
 #define cmdIdDebugViewStore				0x28FF
 #endif
-#define cmdIdViewNewModelBrowser		0x2899
 #define cmdIdViewModelBrowser			0x2900
 #define cmdIdViewReadingEditor			0x2901
 #define cmdIdViewReferenceModeEditor	0x2902

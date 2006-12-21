@@ -286,7 +286,7 @@ namespace Neumont.Tools.ORM.Shell
 					return ModelingEventManager;
 				}
 			}
-			#endregion // ISafeEventManagerProvider Implementation  
+			#endregion // IModelingEventManagerProvider Implementation  
 		}
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
@@ -1627,7 +1627,7 @@ namespace Neumont.Tools.ORM.Shell
 			return new ORMTaskProvider(this);
 		}
 		#endregion // TaskProvider implementation
-		#region UISafeEventManager class
+		#region UIModelingEventManager class
 		/// <summary>  
 		/// A class to display an exception message without  
 		/// breaking an event loop.  
@@ -1636,7 +1636,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			private IServiceProvider myServiceProvider;
 			/// <summary>  
-			/// Create a new UISafeEventManager  
+			/// Create a new UIModelingEventManager  
 			/// </summary>  
 			public UIModelingEventManager(Store store, IServiceProvider serviceProvider)
 				: base(store)
@@ -1659,6 +1659,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		#endregion // UISafeEventManager class  
+		#endregion // UIModelingEventManager class
 	}
 }

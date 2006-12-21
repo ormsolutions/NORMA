@@ -26,8 +26,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// wrapper for objects to be dispalyed in the Survey Tree
 		/// </summary>
-		public struct SampleDataElementNode : ISurveyNode, IEquatable<SampleDataElementNode>
+		public struct SampleDataElementNode : IEquatable<SampleDataElementNode>
 		{
+			private readonly object myElement;
+			private int myNodeData;
+			private string myDisplayText; // Cache this so it is fast and stable over time
 			/// <summary>
 			/// public constructor
 			/// </summary>
@@ -38,18 +41,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// public constructor
 			/// </summary>
-			public SampleDataElementNode(object element, int index)
+			public SampleDataElementNode(object element, int nodeData)
 			{
 				if (element == null)
 				{
 					throw new ArgumentNullException("element");
 				}
-				this.myElement = element;
-				this.myName = element as ISurveyNode;
-				this.myNodeData = 0;
+				myElement = element;
+				myNodeData = nodeData;
+				ISurveyNode node = element as ISurveyNode;
+				myDisplayText = (node != null) ? node.SurveyName : element.ToString();
 			}
-			private readonly object myElement;
-			private readonly ISurveyNode myName;
 			/// <summary>
 			/// returns object wrapped by this node
 			/// </summary>
@@ -60,7 +62,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return myElement;
 				}
 			}
-			private int myNodeData;
 			/// <summary>
 			/// gets or sets the integer that holds the answers to all questions in myNodeCachedQuestions
 			/// </summary>
@@ -75,7 +76,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					myNodeData = value;
 				}
 			}
-
 			#region ISurveyNode property wrappers
 			/// <summary>
 			/// returns name of the wrapped element
@@ -84,11 +84,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					if (myName != null)
-					{
-						return myName.SurveyName;
-					}
-					return myElement.ToString();
+					return myDisplayText;
 				}
 			}
 			/// <summary>
@@ -98,17 +94,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					if (myName != null)
-					{
-						return myName.EditableSurveyName;
-					}
-					return myElement.ToString();
+					ISurveyNode node = myElement as ISurveyNode;
+					string retVal = (node != null) ? node.EditableSurveyName : null;
+					return (retVal != null) ? retVal : myDisplayText;
 				}
 				set
 				{
-					if (myName != null)
+					ISurveyNode node = myElement as ISurveyNode;
+					if (node != null)
 					{
-						myName.EditableSurveyName = value;
+						node.EditableSurveyName = value;
 					}
 				}
 			}
@@ -119,7 +114,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					return myName != null && myName.IsSurveyNameEditable;
+					ISurveyNode node = myElement as ISurveyNode;
+					return node != null && node.IsSurveyNameEditable;
 				}
 			}
 			/// <summary>
@@ -129,7 +125,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					return (myName != null) ? myName.SurveyNodeDataObject : null;
+					ISurveyNode node = myElement as ISurveyNode;
+					return (node != null) ? node.SurveyNodeDataObject : null;
 				}
 			}
 			#endregion

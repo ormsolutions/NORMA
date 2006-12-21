@@ -60,7 +60,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region ISurveyNode Members
 		/// <summary>
-		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject
 		{
@@ -69,13 +69,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (Constraint.ConstraintIsInternal)
 				{
 					LinkedElementCollection<FactType> facts = FactTypeCollection;
-					if (facts.Count == 1)
-					{
-						DataObject retVal = new DataObject();
-						retVal.SetData(typeof(FactType), facts[0]);
-						return retVal;
-					}
-					return null;
+					return (facts.Count == 1) ? ((ISurveyNode)facts[0]).SurveyNodeDataObject : null;
 				}
 				else
 				{
@@ -129,7 +123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region ISurveyNode Members
 		/// <summary>
-		/// Implements <see cref="ISurveyNode"/>.<see cref="SurveyNodeDataObject"/>
+		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject
 		{

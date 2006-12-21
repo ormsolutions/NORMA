@@ -6413,11 +6413,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Debug.Assert(parent != null);
 			}
 			string parentName = (parent != null) ? parent.Name : string.Empty;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6470,11 +6470,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Debug.Assert(parent != null);
 			}
 			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6526,11 +6526,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			SetComparisonConstraint parent = this.Constraint;
 			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch, parentName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6585,13 +6585,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Debug.Assert(namedParent != null, "Parent must be single column or multi column");
 			string parentName = (namedParent != null) ? namedParent.Name : "";
 			string modelName = this.Model.Name;
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = useColumn ?
 				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError, parentName, modelName, (Column + 1).ToString(CultureInfo.InvariantCulture)) :
 				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetConstraintCompatibleRolePlayerTypeError, parentName, modelName);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6645,11 +6645,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			FrequencyConstraint parent = this.FrequencyConstraint;
 			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintMinMaxError, parentName, Model.Name);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6692,11 +6692,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType fact = this.FactType;
 			string parentName = (parent != null) ? parent.Name : "";
 			string factName = (fact != null) ? fact.Name : "";
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FrequencyConstraintContradictsInternalUniquenessConstraintText, parentName, factName, Model.Name);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6746,11 +6746,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					modelName = model.Name;
 				}
 			}
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, parentName, modelName);
 			if (newText != currentText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 
 		}
@@ -6793,11 +6793,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			EqualityConstraint parent = this.EqualityConstraint;
 			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = Name;
+			string currentText = ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorExternalEqualityImpliedByMandatoryError, parentName, this.Model.Name);
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6839,11 +6839,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			RingConstraint parent = this.RingConstraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = this.Model.Name;
-			string currentText = this.Name;
+			string currentText = this.ErrorText;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.RingConstraintTypeNotSpecifiedError, parentName, modelName);
 			if (currentText != newText)
 			{
-				this.Name = newText;
+				this.ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6902,9 +6902,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplication, errorName, Model.Name);
 
-			if (newText != Name)
+			if (newText != ErrorText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6931,9 +6931,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string errorName = SetComparisonConstraint.Name;
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplicationEqualityOrSubsetMandatory, errorName, Model.Name);
 
-			if (newText != Name)
+			if (newText != ErrorText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -6982,9 +6982,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
 
-			if (newText != Name)
+			if (newText != ErrorText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -7046,9 +7046,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string errorConstraints = sb.ToString();
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
 
-			if (newText != Name)
+			if (newText != ErrorText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>
@@ -7078,9 +7078,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SubsetConstraint.Name, MandatoryConstraint.Name,
 				Model.Name);
 
-			if (newText != Name)
+			if (newText != ErrorText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

@@ -1414,10 +1414,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				modelName = model.Name;
 			}
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePlayerRequiredError, roleName, factName, modelName);
-			string currentText = Name;
+			string currentText = ErrorText;
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

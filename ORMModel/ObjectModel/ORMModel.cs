@@ -1155,10 +1155,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ORMModel model = Model;
 			string modelName = (model != null) ? model.Name : string.Empty;
 			string newText = string.Format(CultureInfo.InvariantCulture, ErrorFormatText, modelName, elementName);
-			string currentText = Name;
+			string currentText = ErrorText;
 			if (currentText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

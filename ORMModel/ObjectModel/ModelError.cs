@@ -336,7 +336,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IORMToolTaskProvider provider = (error.Store as IORMToolServices).TaskProvider;
 			IORMToolTaskItem newTask = provider.CreateTask();
 			newTask.ElementLocator = error as IRepresentModelElements;
-			newTask.Text = error.Name;
+			newTask.Text = error.ErrorText;
 			Debug.Assert(error.TaskData == null);
 			error.TaskData = newTask;
 			provider.AddTask(newTask);

@@ -57,7 +57,6 @@ namespace Neumont.Tools.Modeling.Design
 				return null;
 			}
 			PresentationElement pel;
-			Microsoft.VisualStudio.Modeling.Shell.ModelElementTreeNode treeNode;
 			if (pickAnyElement && instance.GetType().IsArray)
 			{
 				instance = (instance as object[])[0];
@@ -65,10 +64,6 @@ namespace Neumont.Tools.Modeling.Design
 			if (null != (pel = instance as PresentationElement))
 			{
 				instance = pel.ModelElement;
-			}
-			else if (null != (treeNode = instance as Microsoft.VisualStudio.Modeling.Shell.ModelElementTreeNode))
-			{
-				instance = treeNode.ModelElement;
 			}
 			return instance;
 		}

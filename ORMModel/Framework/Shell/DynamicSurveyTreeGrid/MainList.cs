@@ -130,9 +130,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <param name="e"></param>
 		private void RaiseBranchEvent(BranchModificationEventArgs e)
 		{
-			if (myModificationEvents != null)
+			BranchModificationEventHandler handler = myModificationEvents;
+			if (handler != null)
 			{
-				myModificationEvents(this, e);
+				handler(this, e);
 			}
 		}
 
@@ -198,9 +199,27 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				if (retVal == 0)
 				{
 					retVal = String.CompareOrdinal(node1.SurveyName, node2.SurveyName);
-					if (retVal == 0)
+					if (retVal == 0 && node1.Element != node2.Element)
 					{
-						retVal = unchecked(node1.Element.GetHashCode() - node2.Element.GetHashCode());
+						object element1 = node1.Element;
+						object element2 = node2.Element;
+						retVal = unchecked(element1.GetHashCode() - element1.GetHashCode());
+						if (retVal == 0)
+						{
+							// A little overkill, but the whole system breaks down if we
+							// can't get a unique sort
+							Microsoft.VisualStudio.Modeling.ModelElement modelElement1;
+							Microsoft.VisualStudio.Modeling.ModelElement modelElement2;
+							if (null != (modelElement1 = element1 as Microsoft.VisualStudio.Modeling.ModelElement) &&
+								null != (modelElement2 = element2 as Microsoft.VisualStudio.Modeling.ModelElement))
+							{
+								retVal = modelElement1.Id.CompareTo(modelElement2.Id);
+							}
+							else
+							{
+								retVal = -1;
+							}
+						}
 					}
 				}
 				return retVal;
@@ -211,52 +230,77 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 
 		#region IBranch Members
 		/// <summary>
-		/// Returned by IBranch.BeginLabelEdit
+		/// Implements <see cref="IBranch.BeginLabelEdit"/>
 		/// </summary>
-		protected static readonly VirtualTreeLabelEditData BeginLabelEditResult = VirtualTreeLabelEditData.Invalid;
+		protected VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+		{
+			SampleDataElementNode editNode = myNodes[row];
+			if (editNode.IsSurveyNameEditable)
+			{
+				return new VirtualTreeLabelEditData(editNode.EditableSurveyName);
+			}
+			return VirtualTreeLabelEditData.Invalid;
+		}
 		VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 		{
-			return BeginLabelEditResult;
+			return BeginLabelEdit(row, column, activationStyle);
 		}
 
 		/// <summary>
-		/// Returned by IBranch.CommitLabelEdit
+		/// Implements <see cref="IBranch.CommitLabelEdit"/>
 		/// </summary>
-		protected const LabelEditResult CommitLabelEditResult = LabelEditResult.CancelEdit;
+		protected LabelEditResult CommitLabelEdit(int row, int column, string newText)
+		{
+			SampleDataElementNode editNode = myNodes[row];
+			editNode.EditableSurveyName = newText;
+			return LabelEditResult.AcceptEdit;
+		}
 		LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 		{
-			return CommitLabelEditResult;
+			return CommitLabelEdit(row, column, newText);
 		}
 		/// <summary>
-		/// Returned by IBranch.Features
+		/// Implements <see cref="IBranch.Features"/>
 		/// </summary>
-		protected const BranchFeatures FeaturesResult = BranchFeatures.PositionTracking | BranchFeatures.InsertsAndDeletes | BranchFeatures.Expansions;
+		protected static BranchFeatures Features
+		{
+			get
+			{
+				return BranchFeatures.PositionTracking | BranchFeatures.InsertsAndDeletes | BranchFeatures.Expansions | BranchFeatures.ExplicitLabelEdits;
+			}
+		}
 		BranchFeatures IBranch.Features
 		{
 			get
 			{
-				return FeaturesResult;
+				return Features;
 			}
 		}
 		/// <summary>
-		/// Returned by IBranch.GetAccessiblityData
+		/// Implements <see cref="IBranch.GetAccessibilityData"/>
 		/// </summary>
-		protected static readonly VirtualTreeAccessibilityData GetAccessibilityDataResult = VirtualTreeAccessibilityData.Empty;
+		protected static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+		{
+			return VirtualTreeAccessibilityData.Empty;
+		}
 		VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
 		{
-			return GetAccessibilityDataResult;
+			return GetAccessibilityData(row, column);
 		}
 		/// <summary>
-		/// Returned by IBranch.GetDisplayData
+		/// Implements <see cref="IBranch.GetDisplayData"/>
 		/// </summary>
-		protected static readonly VirtualTreeDisplayData GetDisplayDataResult = VirtualTreeDisplayData.Empty;
+		protected static VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+		{
+			return VirtualTreeDisplayData.Empty;
+		}
 		VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 		{
-			return GetDisplayDataResult;
+			return GetDisplayData(row, column, requiredData);
 		}
 
 		/// <summary>
-		/// Implements IBranch.GetObject
+		/// Implements <see cref="IBranch.GetObject"/>
 		/// </summary>
 		protected object GetObject(int row, int column, ObjectStyle style, ref int options)
 		{
@@ -267,7 +311,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			return GetObject(row, column, style, ref options);
 		}
 		/// <summary>
-		/// Implements IBranch.GetText
+		/// Implements <see cref="IBranch.GetText"/>
 		/// </summary>
 		/// <returns>The Display Name Of The Node</returns>
 		protected string GetText(int row, int column)
@@ -279,7 +323,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			return GetText(row, column);
 		}
 		/// <summary>
-		/// Implements IBranch.GetTipText
+		/// Implements <see cref="IBranch.GetTipText"/>
 		/// </summary>
 		/// <returns>Returns The Display Text Of The Node</returns>
 		protected string GetTipText(int row, int column, ToolTipType tipType)
@@ -291,35 +335,42 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			return GetTipText(row, column, tipType);
 		}
 		/// <summary>
-		/// Returned by IBranch.IsExpandable
+		/// Implements <see cref="IBranch.IsExpandable"/>
 		/// </summary>
-		protected const bool IsExpandableResult = false;
+		protected static bool IsExpandable(int row, int column)
+		{
+			return false;
+		}
 		bool IBranch.IsExpandable(int row, int column)
 		{
-			return IsExpandableResult;
+			return IsExpandable(row, column);
 		}
 		/// <summary>
-		/// Implements IBranch.LocateObject
+		/// Implements <see cref="IBranch.LocateObject"/>
 		/// </summary>
 		protected LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 		{
 			if (style == ObjectStyle.TrackingObject)
 			{
-				int nodeIndex = myNodes.IndexOf((SampleDataElementNode)obj);
-				if (nodeIndex >= 0)
+				SampleDataElementNode node;
+				int nodeIndex;
+				if (myDictionary.TryGetValue(obj, out node) &&
+					0 <= (nodeIndex = myNodes.BinarySearch(node, myNodeComparer)))
 				{
-					return new LocateObjectData(nodeIndex, 0, locateOptions);
+					return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
 				}
 			}
-			return new LocateObjectData(VirtualTreeConstant.NullIndex, VirtualTreeConstant.NullIndex, locateOptions);
+			return new LocateObjectData(VirtualTreeConstant.NullIndex, VirtualTreeConstant.NullIndex, 0);
 		}
 		LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 		{
 			return LocateObject(obj, style, locateOptions);
 		}
 
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		event BranchModificationEventHandler IBranch.OnBranchModification
+		/// <summary>
+		/// Implements <see cref="IBranch.OnBranchModification"/>
+		/// </summary>
+		protected event BranchModificationEventHandler OnBranchModification
 		{
 			add
 			{
@@ -343,56 +394,104 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 		}
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, System.Windows.Forms.DragEventArgs args)
+		event BranchModificationEventHandler IBranch.OnBranchModification
 		{
-		}
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		void IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs args, int row, int column)
-		{
-		}
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		void IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs args, int row, int column)
-		{
+			add
+			{
+				OnBranchModification += value;
+			}
+			remove
+			{
+				OnBranchModification -= value;
+			}
 		}
 		/// <summary>
-		/// Returned by IBranch.OnStartDrag
+		/// Implements <see cref="IBranch.OnDragEvent"/>
 		/// </summary>
-		protected static readonly VirtualTreeStartDragData OnStartDragResult = VirtualTreeStartDragData.Empty;
+		protected static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+		{
+		}
+		void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+		{
+			OnDragEvent(sender, row, column, eventType, args);
+		}
+		/// <summary>
+		/// Implements <see cref="IBranch.OnGiveFeedback"/>
+		/// </summary>
+		protected static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+		{
+		}
+		void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+		{
+			OnGiveFeedback(args, row, column);
+		}
+		/// <summary>
+		/// Implements <see cref="IBranch.OnQueryContinueDrag"/>
+		/// </summary>
+		protected static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+		{
+		}
+		void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+		{
+			OnQueryContinueDrag(args, row, column);
+		}
+		/// <summary>
+		/// Implements <see cref="IBranch.OnStartDrag"/>
+		/// </summary>
+		protected VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+		{
+			if (reason == DragReason.DragDrop)
+			{
+				object dataObject = myNodes[row].SurveyNodeDataObject;
+				return (dataObject != null) ? new VirtualTreeStartDragData(dataObject, DragDropEffects.All) : VirtualTreeStartDragData.Empty;
+			}
+			return VirtualTreeStartDragData.Empty;
+		}
 		VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
 		{
-			object dataObject = myNodes[row].SurveyNodeDataObject;
-			return (dataObject != null) ? new VirtualTreeStartDragData(dataObject, DragDropEffects.All) : VirtualTreeStartDragData.Empty;
+			return OnStartDrag(sender, row, column, reason);
 		}
 		/// <summary>
-		/// Returned by IBranch.SynchronizeState
+		/// Implements <see cref="IBranch.SynchronizeState"/>
 		/// </summary>
-		protected const StateRefreshChanges SynchronizeStateResult = StateRefreshChanges.None;
+		protected static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+		{
+			return StateRefreshChanges.None;
+		}
 		StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 		{
-			return SynchronizeStateResult;
+			return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
 		}
 		/// <summary>
-		/// Returned by IBranch.ToggleState
+		/// Implements <see cref="IBranch.ToggleState"/>
 		/// </summary>
-		protected const StateRefreshChanges ToggleStateResult = StateRefreshChanges.None;
+		protected static StateRefreshChanges ToggleState(int row, int column)
+		{
+			return StateRefreshChanges.None;
+		}
 		StateRefreshChanges IBranch.ToggleState(int row, int column)
 		{
-			return ToggleStateResult;
+			return ToggleState(row, column);
 		}
 		/// <summary>
-		/// Returned by IBranch.UpdateCounter
+		/// Returned by <see cref="IBranch.UpdateCounter"/>
 		/// </summary>
-		protected const int UpdateCounterResult = 0;
+		protected static int UpdateCounter
+		{
+			get
+			{
+				return 0;
+			}
+		}
 		int IBranch.UpdateCounter
 		{
 			get
 			{
-				return UpdateCounterResult;
+				return UpdateCounter;
 			}
 		}
 		/// <summary>
-		/// Implements IBranch.VisibleItemCount
+		/// Implements <see cref="IBranch.VisibleItemCount"/>
 		/// </summary>
 		protected int VisibleItemCount
 		{
@@ -411,142 +510,175 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 
 		#endregion
 
-		#region INotifySurveyElementChanged Members
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		void INotifySurveyElementChanged.ElementAdded(object sender)
+		#region INotifySurveyElementChanged Implementation
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementAdded"/>
+		/// </summary>
+		protected void ElementAdded(object element)
 		{
-
-			SampleDataElementNode newNode = new SampleDataElementNode(sender);
-			if (myModificationEvents != null)
+			SampleDataElementNode newNode = new SampleDataElementNode(element);
+			newNode.Initialize(mySurvey);
+			int index;
+			if (myDictionary.ContainsKey(element) ||
+				0 <= (index = myNodes.BinarySearch(newNode, myNodeComparer)))
 			{
-				newNode.Initialize(mySurvey);
-				if (!myDictionary.ContainsKey(newNode.Element))
-				{
-					myDictionary.Add(newNode.Element, newNode);
-				}
-				else
-				{
-					return;
-				}
-				int index = myNodes.BinarySearch(newNode, myNodeComparer);
-				index = ~index;
-				myNodes.Insert(index, newNode);
-				if (myRootGrouper == null)
-				{
-					RaiseBranchEvent(BranchModificationEventArgs.InsertItems(this, index - 1, 1));
-				}
-				else
-				{
-					BranchModificationEventHandler forwardToHandler = myModificationEvents;
-					LinkedList<BranchModificationEventArgs> forwardEvents = null;
-					myRootGrouper.ElementAdded(
-						index,
-						(forwardToHandler == null) ?
-							(BranchModificationEventHandler)null :
-							delegate(object eventSender, BranchModificationEventArgs e)
-							{
-								if (forwardEvents == null)
-								{
-									forwardEvents = new LinkedList<BranchModificationEventArgs>();
-								}
-								forwardEvents.AddLast(e);
-							});
-					if (forwardEvents != null)
-					{
-						foreach (BranchModificationEventArgs args in forwardEvents)
-						{
-							forwardToHandler(this, args);
-						}
-					}
-				}
+				// Don't add a node we already have or one we can't uniquely track
+				return;
 			}
-		}
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		void INotifySurveyElementChanged.ElementChanged(object sender, ISurveyQuestionTypeInfo[] questions)
-		{
-		}
-		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
-		void INotifySurveyElementChanged.ElementDeleted(object sender)
-		{
-			SampleDataElementNode node;
-			if (myModificationEvents != null)
+			index = ~index;
+			myNodes.Insert(index, newNode);
+			myDictionary[element] = newNode;
+			if (myRootGrouper == null)
 			{
-				if (myDictionary.ContainsKey(sender))
-				{
-					node = myDictionary[sender];
-				}
-				else
-				{
-					return;
-				}
-				int index = myNodes.BinarySearch(node, myNodeComparer);
-				if (index >= 0)
-				{
-					myDictionary.Remove(sender);
-					myNodes.RemoveAt(index);
-					if (myRootGrouper != null)
-					{
-						BranchModificationEventHandler forwardToHandler = myModificationEvents;
-						LinkedList<BranchModificationEventArgs> forwardEvents = null;
-						myRootGrouper.ElementDeletedAt(
-							index,
-							(forwardToHandler == null) ?
-								(BranchModificationEventHandler)null :
-								delegate(object eventSender, BranchModificationEventArgs e)
-								{
-									if (forwardEvents == null)
-									{
-										forwardEvents = new LinkedList<BranchModificationEventArgs>();
-									}
-									forwardEvents.AddLast(e);
-								});
-						if (forwardEvents != null)
+				RaiseBranchEvent(BranchModificationEventArgs.InsertItems(this, index - 1, 1));
+			}
+			else
+			{
+				BranchModificationEventHandler forwardToHandler = myModificationEvents;
+				LinkedList<BranchModificationEventArgs> forwardEvents = null;
+				myRootGrouper.ElementAddedAt(
+					index,
+					(forwardToHandler == null) ?
+						(BranchModificationEventHandler)null :
+						delegate(object eventSender, BranchModificationEventArgs e)
 						{
-							foreach (BranchModificationEventArgs args in forwardEvents)
+							if (forwardEvents == null)
 							{
-								forwardToHandler(this, args);
+								forwardEvents = new LinkedList<BranchModificationEventArgs>();
 							}
-						}
-					}
-					else
+							forwardEvents.AddLast(e);
+						});
+				if (forwardEvents != null)
+				{
+					foreach (BranchModificationEventArgs args in forwardEvents)
 					{
-						RaiseBranchEvent(BranchModificationEventArgs.DeleteItems(this, index, 1));
+						forwardToHandler(this, args);
 					}
 				}
 			}
 		}
-		void INotifySurveyElementChanged.ElementRenamed(object sender)
+		void INotifySurveyElementChanged.ElementAdded(object element)
+		{
+			ElementAdded(element);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementChanged"/>
+		/// </summary>
+		/// <param name="element"></param>
+		/// <param name="questions"></param>
+		protected static void ElementChanged(object element, ISurveyQuestionTypeInfo[] questions)
+		{
+		}
+		void INotifySurveyElementChanged.ElementChanged(object element, ISurveyQuestionTypeInfo[] questions)
+		{
+			ElementChanged(element, questions);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted"/>
+		/// </summary>
+		protected void ElementDeleted(object element)
 		{
 			SampleDataElementNode node;
-			int from = 0;
-			int to = 0;
-
-			if (myModificationEvents != null)
+			int index;
+			if (!myDictionary.TryGetValue(element, out node) ||
+				0 > (index = myNodes.BinarySearch(node, myNodeComparer)))
 			{
-				if (myDictionary.ContainsKey(sender))
+				return;
+			}
+			myDictionary.Remove(element);
+			myNodes.RemoveAt(index);
+			if (myRootGrouper != null)
+			{
+				BranchModificationEventHandler forwardToHandler = myModificationEvents;
+				LinkedList<BranchModificationEventArgs> forwardEvents = null;
+				myRootGrouper.ElementDeletedAt(
+					index,
+					(forwardToHandler == null) ?
+						(BranchModificationEventHandler)null :
+						delegate(object eventSender, BranchModificationEventArgs e)
+						{
+							if (forwardEvents == null)
+							{
+								forwardEvents = new LinkedList<BranchModificationEventArgs>();
+							}
+							forwardEvents.AddLast(e);
+						});
+				if (forwardEvents != null)
 				{
-					node = myDictionary[sender];
-				}
-				else
-				{
-					return;
-				}
-				from = myNodes.IndexOf(node);
-				myNodes.Remove(node);
-				to = myNodes.BinarySearch(node, myNodeComparer);
-				to = ~to;
-				myNodes.Insert(to, node);
-				if (from >= 0)
-				{
-					if (myRootGrouper != null)
+					foreach (BranchModificationEventArgs args in forwardEvents)
 					{
-						myRootGrouper.ElementRenamedAt(from, to, myModificationEvents);
+						forwardToHandler(this, args);
 					}
 				}
 			}
+			else
+			{
+				RaiseBranchEvent(BranchModificationEventArgs.DeleteItems(this, index, 1));
+			}
 		}
-
+		void INotifySurveyElementChanged.ElementDeleted(object element)
+		{
+			ElementDeleted(element);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementRenamed"/>
+		/// </summary>
+		protected void ElementRenamed(object element)
+		{
+			SampleDataElementNode node;
+			int fromIndex;
+			if (!myDictionary.TryGetValue(element, out node) ||
+				0 > (fromIndex = myNodes.BinarySearch(node, myNodeComparer)))
+			{
+				return;
+			}
+			SampleDataElementNode newNode = new SampleDataElementNode(element, node.NodeData);
+			int toIndex = myNodes.BinarySearch(newNode, myNodeComparer);
+			int inverseToIndex = ~toIndex;
+			BranchModificationEventHandler modificationEvents = myModificationEvents;
+			if (fromIndex == toIndex || (inverseToIndex >= 0 && (inverseToIndex == fromIndex || (inverseToIndex - fromIndex) == 1)))
+			{
+				myNodes[fromIndex] = newNode;
+				myDictionary[element] = newNode;
+				if (myRootGrouper != null)
+				{
+					myRootGrouper.ElementRenamedAt(fromIndex, fromIndex, modificationEvents);
+				}
+				else if (modificationEvents != null)
+				{
+					modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, fromIndex, 0, 1)));
+					modificationEvents(this, BranchModificationEventArgs.Redraw(false));
+					modificationEvents(this, BranchModificationEventArgs.Redraw(true));
+				}
+			}
+			else if (inverseToIndex >= 0)
+			{
+				myNodes.RemoveAt(fromIndex);
+				if (inverseToIndex > fromIndex)
+				{
+					--inverseToIndex;
+				}
+				myNodes.Insert(inverseToIndex, newNode);
+				myDictionary[element] = newNode;
+				if (myRootGrouper != null)
+				{
+					myRootGrouper.ElementRenamedAt(fromIndex, inverseToIndex, modificationEvents);
+				}
+				else if (modificationEvents != null)
+				{
+					modificationEvents(this, BranchModificationEventArgs.MoveItem(this, fromIndex, inverseToIndex));
+				}
+			}
+			else
+			{
+				Debug.Assert(false);
+			}
+		}
+		void INotifySurveyElementChanged.ElementRenamed(object element)
+		{
+			ElementRenamed(element);
+		}
+		#endregion //INotifySurveyElementChanged Implementation
 	}
-		#endregion //INotifySurveyElementChanged Members
 }
 

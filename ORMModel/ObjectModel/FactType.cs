@@ -1617,19 +1617,100 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string newName = (string)e.NewValue;
 							if (newName.Length != 0)
 							{
-								// Update model errors on the fact
-								foreach (ModelError error in (nestedFact as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
-								{
-									if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
-									{
-										error.GenerateErrorText();
-									}
-								}
+								nestedFact.RegenerateErrorText();
 								nestedFact.OnFactTypeNameChanged();
 							}
 						}
 					}
 				}
+			}
+		}
+		/// <summary>
+		/// Rule helper function to regenerate error text
+		/// </summary>
+		private void RegenerateErrorText()
+		{
+			foreach (ModelError error in GetErrorCollection(ModelErrorUses.None))
+			{
+				if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
+				{
+					error.GenerateErrorText();
+				}
+			}
+		}
+		/// <summary>
+		/// Update the fact type name when an objectification is added
+		/// </summary>
+		[RuleOn(typeof(Objectification), Priority = 1)] // AddRule
+		private partial class ValidateFactNameForObjectificationAdded : AddRule
+		{
+			public static void Process(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
+			{
+				if (nestingObjectType == null)
+				{
+					nestingObjectType = link.NestingType;
+				}
+				if (nestingObjectType.Name.Length != 0)
+				{
+					if (nestedFactType == null)
+					{
+						nestedFactType = link.NestedFactType;
+					}
+					nestedFactType.RegenerateErrorText();
+					nestedFactType.OnFactTypeNameChanged();
+				}
+			}
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as Objectification, null, null);
+			}
+		}
+		/// <summary>
+		/// Update the fact type name when an objectification is deleted
+		/// </summary>
+		[RuleOn(typeof(Objectification), Priority = 1)] // DeleteRule
+		private partial class ValidateFactNameForObjectificationDelete : DeleteRule
+		{
+			public static void Process(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
+			{
+				if (nestedFactType == null)
+				{
+					nestedFactType = link.NestedFactType;
+				}
+				if (nestingObjectType == null)
+				{
+					nestingObjectType = link.NestingType;
+				}
+				if (!nestedFactType.IsDeleted && (nestingObjectType.IsDeleted || nestingObjectType.Name.Length != 0))
+				{
+					nestedFactType.RegenerateErrorText();
+					nestedFactType.OnFactTypeNameChanged();
+				}
+			}
+			public override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				Process(e.ModelElement as Objectification, null, null);
+			}
+		}
+		[RuleOn(typeof(Objectification), Priority = 1)] // RolePlayerChangeRule
+		private sealed partial class ValidateFactNameForObjectificationRolePlayerChange : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				FactType oldFactType = null;
+				ObjectType oldObjectType = null;
+				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
+				{
+					oldObjectType = (ObjectType)e.OldRolePlayer;
+				}
+				else if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
+				{
+					oldFactType = (FactType)e.OldRolePlayer;
+				}
+				Objectification link = e.ElementLink as Objectification;
+				ValidateFactNameForObjectificationDelete.Process(link, oldFactType, oldObjectType);
+				ValidateFactNameForObjectificationAdded.Process(link, null, null);
 			}
 		}
 		#endregion
@@ -2376,9 +2457,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage, FactType.Name, Model.Name);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 
@@ -2423,9 +2504,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage, FactType.Name, Model.Name);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 
@@ -2472,9 +2553,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			UniquenessConstraint iuc = Constraint;
 			FactType factType = iuc.FactTypeCollection[0];
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, iuc.Name, factType.Name, factType.Model.Name, factType.RoleCollection.Count - 1);
-			if (Name != newText)
+			if (ErrorText != newText)
 			{
-				Name = newText;
+				ErrorText = newText;
 			}
 		}
 		/// <summary>

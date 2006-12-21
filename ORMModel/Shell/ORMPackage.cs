@@ -13,8 +13,6 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-//NOTICE: if you toggel HIDENEWMODELBROWSER on/off make sure to change it on in ORMCommandSet.cs as well
-//#define HIDENEWMODELBROWSER
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,10 +63,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMSamplePopulationToolWindow), Style = VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style = VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
-	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
-#if !HIDENEWMODELBROWSER
-	[ProvideToolWindow(typeof(NewORMModelBrowser), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
-#endif
+	[ProvideToolWindow(typeof(ORMModelBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMContextWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
@@ -76,10 +71,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMSamplePopulationToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMVerbalizationToolWindow), ORMDesignerEditorFactory.GuidString)]
-	[ProvideToolWindowVisibility(typeof(ORMBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
-#if !HIDENEWBROWSERWINDOW
-	[ProvideToolWindowVisibility(typeof(NewORMModelBrowser), ORMDesignerEditorFactory.GuidString)]
-#endif
+	[ProvideToolWindowVisibility(typeof(ORMModelBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(1000, 1)]
@@ -295,10 +287,7 @@ namespace Neumont.Tools.ORM.Shell
 				commandSet.Initialize();
 
 				// Create tool windows
-#if !HIDENEWMODELBROWSER
-				AddToolWindow(typeof(NewORMModelBrowser));
-#endif
-				AddToolWindow(typeof(ORMBrowserToolWindow));
+				AddToolWindow(typeof(ORMModelBrowserToolWindow));
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 				AddToolWindow(typeof(ORMSamplePopulationToolWindow));
@@ -602,23 +591,13 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion
 		#region Tool Window properties
 		/// <summary>
-		/// Browser tool window.
+		/// ORMModelBrowserToolWindow singleton
 		/// </summary>
-		public static ORMBrowserToolWindow BrowserWindow
+		public static ORMModelBrowserToolWindow ORMModelBrowserWindow
 		{
 			get
 			{
-				return (ORMBrowserToolWindow)mySingleton.GetToolWindow(typeof(ORMBrowserToolWindow), true);
-			}
-		}
-		/// <summary>
-		/// New ORMBrowser tool window
-		/// </summary>
-		public static NewORMModelBrowser NewORMModelBrowserWindow
-		{
-			get
-			{
-				return (NewORMModelBrowser)mySingleton.GetToolWindow(typeof(NewORMModelBrowser), true);
+				return (ORMModelBrowserToolWindow)mySingleton.GetToolWindow(typeof(ORMModelBrowserToolWindow), true);
 			}
 		}
 

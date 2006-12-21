@@ -33,7 +33,6 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
@@ -47,7 +46,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("2B93A7CC-1F28-4347-8A22-644FB7B92090")]
 	[CLSCompliant(false)]
-	public class ORMContextWindow : ORMToolWindow, MSOLE.IOleCommandTarget
+	public class ORMContextWindow : ORMToolWindow
 	{
 
 		#region Private data members
@@ -338,8 +337,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element.</param>
 		private void PlaceObject(IHierarchyContextEnabled element)
 		{
-			SortedList<IHierarchyContextEnabled, int> elementsToPlace = new SortedList<IHierarchyContextEnabled, int>(HierarchyContextPlacePrioritySortComparer.Instance);
-			elementsToPlace = GetRelatedContextableElements(element, myGenerations);
+			SortedList<IHierarchyContextEnabled, int> elementsToPlace = GetRelatedContextableElements(element, myGenerations);
 			IList<IHierarchyContextEnabled> elements = elementsToPlace.Keys;
 			foreach (IHierarchyContextEnabled elem in elements)
 			{

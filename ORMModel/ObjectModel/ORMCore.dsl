@@ -798,8 +798,22 @@
 
 		<DomainClass Name="ModelError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="16DF5C5E-83EF-4EDC-B54A-56D58D62D982" DisplayName="ModelError" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
-				<DomainClassMoniker Name="ORMNamedElement"/>
+				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="ErrorText" DefaultValue="" DisplayName="ErrorText" IsElementName="true" Id="6A6023E7-AC27-4D86-AFE4-6428659A048E">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 
 		<DomainClass Name="ReferenceModeKind" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7EC5E835-5EEB-4FB1-AA09-9BD6ABA531E1" DisplayName="ReferenceModeKind" Description="">

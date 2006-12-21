@@ -853,6 +853,14 @@
     <value>ModelError</value>
     <comment>DisplayName for DomainClass &apos;ModelError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelError/ErrorText.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelError.ErrorText</value>
+    <comment>Description for DomainProperty &apos;ErrorText&apos; on DomainClass &apos;ModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelError/ErrorText.DisplayName" xml:space="preserve">
+    <value>ErrorText</value>
+    <comment>DisplayName for DomainProperty &apos;ErrorText&apos; on DomainClass &apos;ModelError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ReferenceModeKind&apos;</comment>

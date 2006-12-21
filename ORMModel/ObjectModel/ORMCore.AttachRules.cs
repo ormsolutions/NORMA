@@ -80,6 +80,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(FactType).GetNestedType("ModelHasInternalConstraintDeleteRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ReadingOrderHasReadingAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ReadingOrderHasReadingDeleteRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("ValidateFactNameForObjectificationAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("ValidateFactNameForObjectificationDelete", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("ValidateFactNameForObjectificationRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ValidateFactNameForObjectTypeNameChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ValidateFactNameForReadingChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ValidateFactNameForReadingOrderReorder", BindingFlags.Public | BindingFlags.NonPublic),
@@ -358,9 +361,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[106],
 						customDomainModelTypes[107],
 						customDomainModelTypes[108],
+						customDomainModelTypes[109],
+						customDomainModelTypes[110],
 						customDomainModelTypes[111],
-						customDomainModelTypes[112],
-						customDomainModelTypes[113],
 						customDomainModelTypes[114],
 						customDomainModelTypes[115],
 						customDomainModelTypes[116],
@@ -445,7 +448,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[195],
 						customDomainModelTypes[196],
 						customDomainModelTypes[197],
-						customDomainModelTypes[198]};
+						customDomainModelTypes[198],
+						customDomainModelTypes[199],
+						customDomainModelTypes[200],
+						customDomainModelTypes[201]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -945,6 +951,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class ReadingOrderHasReadingDeleteRuleModelValidation
 		{
 			public ReadingOrderHasReadingDeleteRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForObjectificationAdded
+		{
+			public ValidateFactNameForObjectificationAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForObjectificationDelete
+		{
+			public ValidateFactNameForObjectificationDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForObjectificationRolePlayerChange
+		{
+			public ValidateFactNameForObjectificationRolePlayerChange()
 			{
 				base.IsEnabled = false;
 			}

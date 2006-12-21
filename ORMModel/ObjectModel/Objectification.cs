@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -390,6 +391,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (objectification.IsImplied)
 				{
+					if (nestedFactType == null)
+					{
+						nestedFactType = objectification.NestedFactType;
+					}
+					if (nestingType.IsDeleting)
+					{
+						if (!(nestedFactType.IsDeleting || nestedFactType.IsDeleted))
+						{
+							// If the fact type should still be explicitly objectified, we
+							// have two choices at this point:
+							// 1) Check the pattern here and throw if it is still needed
+							// 2) Check the pattern later and regenerated the implied objectification
+							// Checking the implicit objectification pattern here is difficult due
+							// to the 'deleting' state, and the exception is not technically necessary
+							// given that the objects being lost are auto-generated in the first place.
+							ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
+						}
+					}
 					if (!(nestingType.IsDeleting || nestingType.IsDeleted))
 					{
 						nestingType.Delete();

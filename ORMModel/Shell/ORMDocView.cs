@@ -225,6 +225,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		ExclusiveOrDecoupler = 0x10000000000,
 		/// <summary>
+		/// Support label editing
+		/// </summary>
+		EditLabel = 0x20000000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
@@ -1273,7 +1277,7 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									if (errorIndex == 0)
 									{
-										errorText = error.Name;
+										errorText = error.ErrorText;
 										break;
 									}
 									--errorIndex;
