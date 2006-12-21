@@ -89,7 +89,7 @@
 	<?define NeumontRegRoot="SOFTWARE\Neumont"?>
 	<?define NORMARegRoot="$(var.NeumontRegRoot)\ORM Architect for Visual Studio"?>
 	<?define PLiXRegRoot="$(var.NeumontRegRoot)\PLiX for Visual Studio"?>
-	<?define PLiXMinimumSchemaVersion="2"?>
+	<?define PLiXMinimumSchemaVersion="3"?>
 	<!-- The default target directory for installation (under ProgramFilesFolder). -->
 	<!-- NOTE: This is intentionally not being localized, so that the installation location is constant. -->
 	<?define DefaultCompanyDir="Neumont"?>

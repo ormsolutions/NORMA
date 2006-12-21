@@ -85,7 +85,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
 		protected static Guid[] GetRootElementClasses()
 		{
-			return new Guid[0];
+			return new Guid[]{
+				OIALModel.DomainClassId};
 		}
 		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
@@ -94,6 +95,10 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
+			if ((elementName == "Model") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-01/OIALModel"))
+			{
+				return OIALModel.DomainClassId;
+			}
 			return default(Guid);
 		}
 		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
@@ -163,9 +168,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedContainerElementInfo[3];
-				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
-				ret[1] = new ORMCustomSerializedContainerElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasConceptType.ConceptTypeDomainRoleId);
-				ret[2] = new ORMCustomSerializedContainerElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
+				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.NotWritten, null, OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+				ret[1] = new ORMCustomSerializedContainerElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.NotWritten, null, OIALModelHasConceptType.ConceptTypeDomainRoleId);
+				ret[2] = new ORMCustomSerializedContainerElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.NotWritten, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
 				OIALModel.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -194,7 +199,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			if (domainPropertyInfo.Id == OIALModel.NameDomainPropertyId)
 			{
-				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
@@ -298,25 +303,10 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
-		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
-			Dictionary<string, Guid> customSerializedAttributes = OIALModel.myCustomSerializedAttributes;
-			if (customSerializedAttributes == null)
-			{
-				customSerializedAttributes = new Dictionary<string, Guid>();
-				customSerializedAttributes.Add("Name", OIALModel.NameDomainPropertyId);
-				OIALModel.myCustomSerializedAttributes = customSerializedAttributes;
-			}
-			Guid rVal;
-			string key = attributeName;
-			if (xmlNamespace.Length != 0)
-			{
-				key = string.Concat(xmlNamespace, "|", attributeName);
-			}
-			customSerializedAttributes.TryGetValue(key, out rVal);
-			return rVal;
+			return default(Guid);
 		}
 		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{

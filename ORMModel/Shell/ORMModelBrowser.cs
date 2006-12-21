@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Neumont.Tools.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ShapeModel;
@@ -24,6 +25,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Tool window to contain survey tree control
 	/// </summary>
+	[Guid("DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A")]
 	[CLSCompliant(false)]
 	public partial class ORMModelBrowserToolWindow : ORMToolWindow, IORMSelectionContainer
 	{
