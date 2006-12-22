@@ -382,7 +382,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="minY">A by-ref parameter to return the smallest (possibly negative) Y value used to place a shape on the diagram.</param>
 		public override void PerformLayout(LayoutShape rootshape, ref double minX, ref double minY)
 		{
-			List<double> degrees = GenerateDegrees(0, 360, 1);
+			List<double> degrees = GenerateDegrees(-180, 180, 1);
 
 			rootshape.TargetLocation = new PointD(0, 0);
 			BuildTree(rootshape, null);

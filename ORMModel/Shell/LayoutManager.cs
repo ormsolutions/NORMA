@@ -124,6 +124,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public void Layout()
 		{
+			LayoutShape backupRoot = null;
+			switch (myLayoutShapes.Count)
+			{
+				case 0:
+					return;
+				default:
+					backupRoot = myLayoutShapes[0];
+					break;
+			}
 			myLayoutEngine.LateBind(myDiagram, myLayoutShapes, myShapeResolver);
 			LayoutShape mostrelatives = myLayoutEngine.ResolveReferences(myLayoutShapes);
 			LayoutShape root = null;
@@ -135,6 +144,10 @@ namespace Neumont.Tools.ORM.Shell
 			else
 			{
 				root = GetRoot(mostrelatives);
+			}
+			if (root == null)
+			{
+				root = backupRoot;
 			}
 
 			double minX = 0, minY = 0;
