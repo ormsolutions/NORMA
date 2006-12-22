@@ -10,9 +10,9 @@ SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
 SET DILTransformsDir=%CommonProgramFiles%\Neumont\DIL\Transforms
 SET PLiXDir=%CommonProgramFiles%\Neumont\PLiX
 
-:: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed)
+:: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed).
 :: Note that this method of determining whether a native image already exists is an undocumented hack that is subject to change. It should not be used for anything where reliability matters.
-REG QUERY "HKLM\SOFTWARE\Microsoft\Fusion\NativeImagesIndex\v2.0.50727_32\NI\640d09ef" /s /f "System.Data.SqlXml" 1>NUL 2>&1
+REG QUERY "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\NGENService\Roots\System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /v "Status" 1>NUL 2>&1
 IF ERRORLEVEL 1 (ngen.exe install "System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /nologo /verbose)
 
 :: Install Custom Tool DLL

@@ -59,6 +59,7 @@
 			<!-- OIAL-to-PLiX transforms go here. -->
 			<ComponentRef Id="ORMClassModelSchemasComponent"/>
 			<ComponentRef Id="ORMClassModelTransformsComponent"/>
+			<ComponentRef Id="ORMClassModelPHPTransformsComponent"/>
 			<!--<ComponentRef Id="ORMClassModelTransformsTestFormComponent"/>-->
 		</ComponentGroup>
 		<ComponentGroup Id="XmlSchemaGenerationFeatureComponents">

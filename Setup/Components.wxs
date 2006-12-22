@@ -462,6 +462,122 @@
 								</Registry>
 
 							</Component>
+
+							<Directory Id="ORMCOMMONTRANSFORMSPHPDIR" Name="PHP">
+								<Component Id="ORMClassModelPHPTransformsComponent" Guid="63811A03-EFFD-4991-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+
+									<File Id="PHP_PHPEntities.xslt" Name="PHPEnt.xsl" LongName="PHPEntities.xslt" src="..\XML\OIALtoPLiX\PHP\PHPEntities.xslt"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPEntitiesPLiX">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPEntitiesPLiX"/>
+										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Entities PLiX"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Entities PLiX."/>
+										<Registry Type="string" Name="FileExtension" Value=".Entities.php.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesPLiX"/>
+										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPEntities.xslt]"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<Registry Type="multiString" Name="PrequisiteInputFormats">
+											<RegistryValue>PHPProxiesPLiX</RegistryValue>
+											<RegistryValue>PHPServicesPLiX</RegistryValue>
+											<RegistryValue>PHPDataLayerPLiX</RegistryValue>
+										</Registry>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPEntitiesPLiXtoPHP">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PHPEntitiesPLiXtoPHP"/>
+										<Registry Type="string" Name="DisplayName" Value="PHP Entities PLiX to PHP"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Entities TO PHP."/>
+										<Registry Type="string" Name="FileExtension" Value=".Entities.php"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PHPEntitiesPLiX"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesImplementation"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<Registry Type="multiString" Name="PrequisiteInputFormats">
+											<RegistryValue>PHPProxiesImplementation</RegistryValue>
+											<RegistryValue>PHPServicesImplementation</RegistryValue>
+											<RegistryValue>PHPDataLayerImplementation</RegistryValue>
+										</Registry>
+									</Registry>
+
+									<File Id="PHP_PHPProxies.xslt" Name="PHPProx.xsl" LongName="PHPProxies.xslt" src="..\XML\OIALtoPLiX\PHP\PHPProxies.xslt"
+										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPProxiesPLiX">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPProxiesPLiX"/>
+										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Proxies PLiX"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Proxies PLiX."/>
+										<Registry Type="string" Name="FileExtension" Value=".Proxies.php.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesPLiX"/>
+										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPProxies.xslt]"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPProxiesPLiXtoPHP">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PHPProxiesPLiXtoPHP"/>
+										<Registry Type="string" Name="DisplayName" Value="PHP Proxies PLiX to PHP"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Proxies TO PHP."/>
+										<Registry Type="string" Name="FileExtension" Value=".Proxies.php"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PHPProxiesPLiX"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesImplementation"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</Registry>
+									
+									<File Id="PHP_PHPServices.xslt" Name="PHPServ.xsl" LongName="PHPServices.xslt" src="..\XML\OIALtoPLiX\PHP\PHPServices.xslt"
+										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPServicesPLiX">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPServicesPLiX"/>
+										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Services PLiX"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Services PLiX."/>
+										<Registry Type="string" Name="FileExtension" Value=".Services.php.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPServicesPLiX"/>
+										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPServices.xslt]"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPServicesPLiXtoPHP">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PHPServicesPLiXtoPHP"/>
+										<Registry Type="string" Name="DisplayName" Value="PHP Services PLiX to PHP"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Services TO PHP."/>
+										<Registry Type="string" Name="FileExtension" Value=".Services.php"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PHPServicesPLiX"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPServicesImplementation"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</Registry>
+
+									<File Id="PHP_PHPDataLayer.xslt" Name="PHPDL.xsl" LongName="PHPDataLayer.xslt" src="..\XML\OIALtoPLiX\PHP\PHPDataLayer.xslt"
+										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPDataLayerPLiX">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="OIALtoPHPDataLayerPLiX"/>
+										<Registry Type="string" Name="DisplayName" Value="OIAL to PHP Data Layer PLiX"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms OIAL to PHP Data Layer PLiX."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayer.php.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerPLiX"/>
+										<Registry Type="string" Name="TransformUri" Value="[#PHP_PHPDataLayer.xslt]"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPDataLayerPLiXtoPHP">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PHPDataLayerPLiXtoPHP"/>
+										<Registry Type="string" Name="DisplayName" Value="PHP DataLayer PLiX to PHP"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX Data Layer TO PHP."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayer.php"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PHPDataLayerPLiX"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerImplementation"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
+									</Registry>
+
+								</Component>
+							</Directory>
+
 							<!--<Directory Id="ORMDataLayerTestFormDIR" Name="DtaTstFm" LongName="DataLayerTestForm">
 								<Component Id="ORMClassModelTransformsTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" Name="OIL2DLTF.xsl" LongName="OIALtoPLiX_DataLayerTestForm.xslt" src="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt"
@@ -638,7 +754,19 @@
 									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_Oracle"/>
 									<Registry Type="string" Name="TransformUri" Value="[#DDILtoOracle.xslt]"/>
 								</Registry>
-								
+								<File Id="DDILtoMySQL.xslt" Name="DIL2MySQ.xsl" LongName="DDILtoMySQL.xslt" src="..\XML\DILtoSQL\DDILtoMySQL.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoMySQL">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DDILtoMySQL"/>
+									<Registry Type="string" Name="DisplayName" Value="DDIL to MySQL"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to MySQL-dialect SQL."/>
+									<Registry Type="string" Name="FileExtension" Value=".MySQL.sql"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_MySQL"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DDILtoMySQL.xslt]"/>
+								</Registry>
+
 								<File Id="DomainInliner.xslt" Name="DmnInlnr.xsl" LongName="DomainInliner.xslt" src="..\XML\DILtoSQL\DomainInliner.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 								<File Id="DCILtoDDIL.xslt" Name="DCIL2DDL.xsl" LongName="DCILtoDDIL.xslt" src="..\XML\DILtoSQL\DCILtoDDIL.xslt"

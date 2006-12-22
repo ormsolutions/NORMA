@@ -4,11 +4,13 @@
 :: 1) Copy in all "CALL:_AddXslORMGenerator" lines from Install.bat
 :: 2) Search-and-replace "%ORMTransformsDir%\" with ""
 :: 3) Search-and-replace "%DILTransformsDir%\" with ""
-:: 4) Save this batch file and run it
-:: 5) DO NOT CHECK IN THE CHANGES YOU MAKE TO THIS FILE!
+:: 4) Search-and-replace "%PLiXDir%\" with "[NEUMONTCOMMONFILESDIR]\PLiX\"
+:: 5) Save this batch file and run it
+:: 6) DO NOT CHECK IN THE CHANGES YOU MAKE TO THIS FILE!
 
 
 :: The "CALL:_AddXslORMGenerator" lines go here
+
 
 GOTO:EOF
 
@@ -22,7 +24,10 @@ ECHO 	^<Registry Type="string" Name="DisplayDescription" Value="%~3"/^> >> Outpu
 ECHO 	^<Registry Type="string" Name="FileExtension" Value="%~4"/^> >> Output.WiX.xml
 ECHO 	^<Registry Type="string" Name="SourceInputFormat" Value="%~5"/^> >> Output.WiX.xml
 ECHO 	^<Registry Type="string" Name="ProvidesOutputFormat" Value="%~6"/^> >> Output.WiX.xml
-ECHO 	^<Registry Type="string" Name="TransformUri" Value="[#%~7]"/^> >> Output.WiX.xml
+SET TmpTransformUri=%~7
+IF "%TmpTransformUri:[NEUMONTCOMMONFILESDIR]=%"=="%~7" (SET TmpTransformURI=[#%TmpTransformUri:\=_%]) ELSE (SET TmpTransformUri=%~7)
+ECHO 	^<Registry Type="string" Name="TransformUri" Value="%TmpTransformUri%"/^> >> Output.WiX.xml
+SET TmpTransformUri=
 IF NOT "%~8"=="" (ECHO 	^<Registry Type="string" Name="CustomTool" Value="%~8"/^> >> Output.WiX.xml)
 IF NOT "%~9"=="" (ECHO 	^<Registry Type="integer" Name="GeneratesSupportFile" Value="%~9"/^> >> Output.WiX.xml)
 SHIFT /8
