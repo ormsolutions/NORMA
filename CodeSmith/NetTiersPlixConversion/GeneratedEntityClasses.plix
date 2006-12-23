@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<plx:namespaceImport name="System"/>
+	<plx:namespaceImport name="System.ComponentModel"/>
+	<plx:namespaceImport name="System.Collections"/>
+	<plx:namespaceImport name="System.Xml.Serialization"/>
+	<plx:namespaceImport name="System.Runtime.Serialization"/>
+	<plx:namespace name="VAR_NAMESPACE_VAR">
+		<plx:class name="EntityBaseCore" partial="true" visibility="public">
+		</plx:class>
+	</plx:namespace>
+</plx:root>

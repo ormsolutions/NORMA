@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<plx:namespaceImport name="System"/>
+	<plx:namespaceImport name="System.ComponentModel"/>
+	<plx:namespaceImport name="System.Collections"/>
+	<plx:namespaceImport name="System.Xml.Serialization"/>
+	<plx:namespaceImport name="System.Runtime.Serialization"/>
+	<plx:namespace name="VAR_NAMESPACE_VAR">
+		<plx:class name="EntityBase" visibility="public" modifier="abstract" partial="true">
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System"/>
+			<plx:derivesFromClass dataTypeName="EntityBaseCore" dataTypeQualifier="NetTiersTestModel.Entities"/>
+		</plx:class>
+		<plx:class name="EntityKeyBase" visibility="public" modifier="abstract" partial="true">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>The base object for each database table's unique identifier</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System"/>
+			<plx:derivesFromClass dataTypeName="EntityKeyBaseCore"/>
+		</plx:class>
+		<plx:class name="VAR_ENTITYCLASS_VAR" visibility="public" partial="true">
+			<plx:leadingInfo>
+				<plx:docComment>
+					<summary>An object representation of the 'VAR_ENTITYCLASS_VAR' table.</summary>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System"/>
+			<plx:derivesFromClass dataTypeName="VAR_ENTITYCLASS_VARCore"/>
+			<plx:function name=".construct" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Creates a new &lt;see cref="VAR_ENTITYCLASS_VAR"/&gt; instance.</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:initialize>
+					<plx:callThis accessor="base" name=".implied"/>
+				</plx:initialize>
+			</plx:function>
+		</plx:class>
+	</plx:namespace>
+</plx:root>
