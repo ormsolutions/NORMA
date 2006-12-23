@@ -1,0 +1,18 @@
+Reverse Engineer to DCIL Documentation
+
+Current Architecture:
+
+IDCILSchemaProvider -> Interface representing required methods for DBMS adapters
+
+Interface consists of LoadSchema, LoadTables, LoadColumns, LoadIndexes, LoadForeignKeys, LoadProcedures.
+
+Any piece can be called without the others, but the typical use is for all of them to be used to compile together a full object model.
+
+Currently only one implementation, for SQL Server 2005, but shouldn't take too much work to implement other adapters.
+
+
+DCIL Object Model
+
+DCILSchema, DCILTable, DCILColumn, DCILUniquenessConstraint, DCILReferenceConstraint, DCILDataType
+
+object model representation of the DCIL xml format.  Currently implements IXmlSerializable and supports direct serialization using an XmlSerializer instance to the DCIL format.  Serialization support is shaky at best, some options to look at would be declarative as opposed to direct implementation.  No deserialization is supported at this time.
