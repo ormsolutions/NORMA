@@ -90,10 +90,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool retVal = false;
 				if (sourceShapeElement is ExternalConstraintShape)
 				{
-					if (targetShapeElement is FactTypeShape || targetShapeElement is SubtypeLink)
+					bool isFactTypeShape;
+					if ((isFactTypeShape = targetShapeElement is FactTypeShape) || targetShapeElement is SubtypeLink)
 					{
-						// UNDONE: Constrain this, this is overly generous
-						retVal = true;
+						ExternalConstraintConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).ExternalConstraintConnectAction;
+						if (action != null)
+						{
+							if (action.mySubtypeConnection)
+							{
+								retVal = !isFactTypeShape;
+							}
+							else if (isFactTypeShape || (action.myAllowSubtypeConnection && action.SelectedRoleCollection.Count == 0))
+							{
+								retVal = true;
+							}
+						}
 					}
 					else
 					{
@@ -133,13 +144,76 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (null == constraintRoleSequenceBeingEdited)
 						{
 							LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcConstraint.RoleSequenceCollection;
-							SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(mcConstraint.Store);
-							LinkedElementCollection<Role> roles = roleSequence.RoleCollection;
+							if (action.mySubtypeConnection)
+							{
+								// All editing is done as a single column, add role sequences to the constraint
+								// instead of roles to the sequence
+								Store store = mcConstraint.Store;
+								for (int i = 0; i < rolesCount; ++i)
+								{
+									SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(store);
+									roleSequence.RoleCollection.Add(selectedRoles[i]);
+									roleSequences.Add(roleSequence);
+								}
+							}
+							else
+							{
+								SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(mcConstraint.Store);
+								LinkedElementCollection<Role> roles = roleSequence.RoleCollection;
+								for (int i = 0; i < rolesCount; ++i)
+								{
+									roles.Add(selectedRoles[i]);
+								}
+								roleSequences.Add(roleSequence);
+							}
+						}
+						else if (action.mySubtypeConnection)
+						{
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> existingSequences = mcConstraint.RoleSequenceCollection;
+							int existingSequenceCount = existingSequences.Count;
+							// Pull out removed ones first
+							for (int i = existingSequenceCount - 1; i >= 0; --i)
+							{
+								SetComparisonConstraintRoleSequence existingSequence = existingSequences[i];
+								LinkedElementCollection<Role> sequenceRoles = existingSequence.RoleCollection;
+								if (sequenceRoles.Count != 1 || !selectedRoles.Contains(sequenceRoles[0]))
+								{
+									existingSequences.Remove(existingSequence);
+									--existingSequenceCount;
+								}
+							}
+							Store store = mcConstraint.Store;
 							for (int i = 0; i < rolesCount; ++i)
 							{
-								roles.Add(selectedRoles[i]);
+								Role selectedRole = selectedRoles[i];
+								int existingIndex = -1;
+								for (int j = 0; j < existingSequenceCount; ++j)
+								{
+									if (existingSequences[j].RoleCollection[0] == selectedRole)
+									{
+										existingIndex = j;
+										break;
+									}
+								}
+								if (existingIndex == -1)
+								{
+									SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(store);
+									roleSequence.RoleCollection.Add(selectedRoles[i]);
+									if (i < existingSequenceCount)
+									{
+										existingSequences.Insert(i, roleSequence);
+									}
+									else
+									{
+										existingSequences.Add(roleSequence);
+									}
+									++existingSequenceCount;
+								}
+								else if (existingIndex != i)
+								{
+									existingSequences.Move(existingIndex, i);
+								}
 							}
-							roleSequences.Add(roleSequence);
 						}
 						// Edit the existing role set.
 						else
@@ -222,6 +296,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static Cursor myAllowedCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintAllowed.cur");
 		private static Cursor mySearchingCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintSearching.cur");
 		private ConstraintRoleSequence myConstraintRoleSequence;
+		private bool mySubtypeConnection;
+		private bool myAllowSubtypeConnection;
 		private IList<Role> myInitialSelectedRoles;
 		private IList<Role> mySelectedRoles;
 		private ExternalConstraintShape mySourceShape;
@@ -340,6 +416,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				DiagramItem item = args.DiagramHitTestInfo.HitDiagramItem;
 				ModelElement currentElement = null;
+				bool isSupertypeRole = false;
 				ORMDiagram ormDiagram;
 				foreach (ModelElement elem in item.RepresentedElements)
 				{
@@ -347,6 +424,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					SubtypeLink subtypeLink = currentElement as SubtypeLink;
 					if (subtypeLink != null)
 					{
+						isSupertypeRole = true;
 						currentElement = subtypeLink.AssociatedSubtypeFact.SupertypeRole;
 					}
 					break;
@@ -361,6 +439,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 						base.OnClicked(e);
 						mySourceShape = constraintShape;
 						myActiveConstraint = constraintShape.AssociatedConstraint;
+						switch (myActiveConstraint.ConstraintType)
+						{
+							case ConstraintType.DisjunctiveMandatory:
+							case ConstraintType.Exclusion:
+								myAllowSubtypeConnection = true;
+								break;
+							default:
+								myAllowSubtypeConnection = false;
+								break;
+						}
 						if (null != (ormDiagram = mySourceShape.Diagram as ORMDiagram))
 						{
 							ormDiagram.StickyObject = constraintShape;
@@ -374,6 +462,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					int roleIndex = roles.IndexOf(role);
 					bool forceRedraw = false;
 					int redrawIndexBound = -1;
+					ExternalConstraintShape sourceShape = mySourceShape;
 					if (roleIndex >= 0)
 					{
 						// Only remove a role when the control key is down. Otherwise,
@@ -386,14 +475,42 @@ namespace Neumont.Tools.ORM.ShapeModel
 							forceRedraw = true;
 							roles.RemoveAt(roleIndex);
 							redrawIndexBound = roles.Count;
+							if (roles.Count == 0 && mySubtypeConnection && InitialRoles.Count == 0)
+							{
+								mySubtypeConnection = false;
+							}
 						}
 					}
 					else
 					{
-						forceRedraw = true;
-						roles.Add(role);
+						bool allowAdd = false;
+						if (mySubtypeConnection)
+						{
+							allowAdd = isSupertypeRole;
+						}
+						else if (isSupertypeRole)
+						{
+							if (roles.Count == 0 && InitialRoles.Count == 0 && myAllowSubtypeConnection)
+							{
+								mySubtypeConnection = true;
+								allowAdd = true;
+							}
+						}
+						else
+						{
+							allowAdd = true;
+						}
+						if (allowAdd)
+						{
+							forceRedraw = true;
+							roles.Add(role);
+						}
+						else
+						{
+							sourceShape = null;
+						}
 					}
-					if (mySourceShape != null)
+					if (sourceShape != null)
 					{
 						myPendingOnClickedAction = OnClickedAction.CheckForCommit;
 					}
@@ -470,6 +587,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// so make sure we snapshot the state we need and do all requisite
 			// cleanup before a potential reactivation.
 			ExternalConstraintShape chainOnShape = (myPendingOnClickedAction == OnClickedAction.Complete && !(myInitialSelectedRoles != null && myInitialSelectedRoles.Count != 0)) ? mySourceShape : null;
+			bool editingSubtypeFact = mySubtypeConnection;
 			Reset();
 			if (chainOnShape != null)
 			{
@@ -482,9 +600,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				switch (constraint.ConstraintStorageStyle)
 				{
 					case ConstraintStorageStyle.SetComparisonConstraint:
-						ChainMouseAction(chainOnShape, e.DiagramClientView);
-						break;
-					default:
+						if (!editingSubtypeFact)
+						{
+							IConstraint editConstraint = chainOnShape.AssociatedConstraint;
+							int maximum = ConstraintUtility.RoleSequenceCountMaximum(editConstraint);
+							if (maximum < 0 || ((SetComparisonConstraint)editConstraint).RoleSequenceCollection.Count < maximum)
+							{
+								ChainMouseAction(chainOnShape, e.DiagramClientView);
+							}
+						}
 						break;
 				}
 			}
@@ -519,12 +643,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			mySourceShape = null;
 			myActiveConstraint = null;
 			myPendingOnClickedAction = OnClickedAction.Normal;
+			mySubtypeConnection = false;
+			myAllowSubtypeConnection = false;
 			FactTypeShape.ActiveExternalConstraintConnectAction = null;
 		}
 		/// <summary>
 		/// Get the sequence of currently selected roles.
 		/// </summary>
-		/// <value>IList&lt;Role&gt;</value>
+		/// <value>IList{Role}</value>
 		public IList<Role> SelectedRoleCollection
 		{
 			get
@@ -546,11 +672,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 			set
 			{
 				myConstraintRoleSequence = value;
-				LinkedElementCollection<Role> roleCollection = myConstraintRoleSequence.RoleCollection;
+				LinkedElementCollection<Role> roleCollection = value.RoleCollection;
 				IList<Role> selectedRoleCollection = SelectedRoleCollection;
 				IList<Role> initialRoles = InitialRoles;
+				bool firstRole = true;
 				foreach (Role r in roleCollection)
 				{
+					if (firstRole && r is SupertypeMetaRole)
+					{
+						firstRole = false;
+						mySubtypeConnection = true;
+						SetComparisonConstraintRoleSequence comparisonSequence = value as SetComparisonConstraintRoleSequence;
+						if (comparisonSequence != null)
+						{
+							SetComparisonConstraint constraint = comparisonSequence.ExternalConstraint;
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = constraint.RoleSequenceCollection;
+							int sequenceCount = sequences.Count;
+							for (int i = 0; i < sequenceCount; ++i)
+							{
+								LinkedElementCollection<Role> roles = sequences[i].RoleCollection;
+								if (roles.Count > 0)
+								{
+									Role r1 = roles[0];
+									selectedRoleCollection.Add(r1);
+									initialRoles.Add(r1);
+								}
+							}
+							break;
+						}
+					}
 					selectedRoleCollection.Add(r);
 					initialRoles.Add(r);
 				}

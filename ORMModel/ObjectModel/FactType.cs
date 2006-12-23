@@ -1642,7 +1642,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Update the fact type name when an objectification is added
 		/// </summary>
 		[RuleOn(typeof(Objectification), Priority = 1)] // AddRule
-		private partial class ValidateFactNameForObjectificationAdded : AddRule
+		private sealed partial class ValidateFactNameForObjectificationAdded : AddRule
 		{
 			public static void Process(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
 			{
@@ -1669,7 +1669,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Update the fact type name when an objectification is deleted
 		/// </summary>
 		[RuleOn(typeof(Objectification), Priority = 1)] // DeleteRule
-		private partial class ValidateFactNameForObjectificationDelete : DeleteRule
+		private sealed partial class ValidateFactNameForObjectificationDelete : DeleteRule
 		{
 			public static void Process(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
 			{

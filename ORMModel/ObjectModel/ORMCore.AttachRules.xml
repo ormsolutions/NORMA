@@ -182,6 +182,7 @@
 		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleRolePlayerChanged"/>
+		<arg:Rule class="SubtypeFact.DeleteSubtypeWhenRolePlayerDeleted"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesAddRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesDeleteRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentRolePlayerTypesAddRule"/>
@@ -193,7 +194,7 @@
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintsDeleteRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeRolesAddRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeRolesDeleteRule"/>
-		<arg:Rule class="SubtypeFact.DeleteSubtypeWhenRolePlayerDeleted"/>
+		<arg:Rule class="SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneAddRuleModelConstraintAddValidation"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneAddRuleModelFactAddValidation"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneAddRuleModelValidation"/>

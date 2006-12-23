@@ -745,19 +745,68 @@ namespace Neumont.Tools.ORM.ObjectModel
 			protected sealed override void ProcessElement(SetConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ReadOnlyCollection<ModelHasSetConstraint> links = DomainRoleInfo.GetElementLinks<ModelHasSetConstraint>(element, ModelHasSetConstraint.SetConstraintDomainRoleId);
+				IConstraint constraint = element as IConstraint;
 				int linksCount = links.Count;
 				for (int i = 0; i < linksCount; ++i)
 				{
 					EnsureFactConstraintForRoleSequence(links[i]);
-					ReadOnlyCollection<FactSetConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetConstraint>(element, FactSetConstraint.SetConstraintDomainRoleId);
-					int factLinksCount = factLinks.Count;
+				}
+				ReadOnlyCollection<FactSetConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetConstraint>(element, FactSetConstraint.SetConstraintDomainRoleId);
+				int factLinksCount = factLinks.Count;
+				// Validate subtype constraint patterns before sending additional element added notifications.
+				// The XML schema is current very lax on exclusion constraints on Sub/SupertypeMetaRoles, so
+				// any constraints on any combination of roles/metaroles load successfully. Eliminate any
+				// constraints with patterns that will raise exceptions inside the tool.
+				if (!constraint.ConstraintIsInternal)
+				{
+					bool seenSubtypeFact = false;
+					bool invalidSubtypeConstraint = false;
 					for (int j = 0; j < factLinksCount; ++j)
 					{
-						// Notify that the link was added. Note that we set
-						// addLinks to true here because we expect ExternalRoleConstraint
-						// links to be attached to each FactConstraint
-						notifyAdded.ElementAdded(factLinks[j], true);
+						FactSetConstraint factLink = factLinks[j];
+						if (factLink.FactType is SubtypeFact)
+						{
+							if (!seenSubtypeFact)
+							{
+								if (j > 0)
+								{
+									invalidSubtypeConstraint = true;
+								}
+								seenSubtypeFact = true;
+								if (constraint.ConstraintType != ConstraintType.DisjunctiveMandatory)
+								{
+									invalidSubtypeConstraint = true;
+									break;
+								}
+							}
+							LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks = factLink.ConstrainedRoleCollection;
+							if (roleLinks.Count != 1 || !(roleLinks[0].Role is SupertypeMetaRole))
+							{
+								invalidSubtypeConstraint = true;
+								break;
+							}
+						}
+						else if (seenSubtypeFact)
+						{
+							invalidSubtypeConstraint = true;
+							break;
+						}
 					}
+					if (invalidSubtypeConstraint)
+					{
+						// All of the relationships we're dealing with here have delete
+						// progation set, so we do not need additional rules or code to
+						// remove the elements.
+						element.Delete();
+						return;
+					}
+				}
+				for (int j = 0; j < factLinksCount; ++j)
+				{
+					// Notify that the link was added. Note that we set
+					// addLinks to true here because we expect ExternalRoleConstraint
+					// links to be attached to each FactConstraint
+					notifyAdded.ElementAdded(factLinks[j], true);
 				}
 			}
 		}
@@ -1718,15 +1767,85 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int i = 0; i < linksCount; ++i)
 				{
 					EnsureFactConstraintForRoleSequence(links[i]);
-					ReadOnlyCollection<FactSetComparisonConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
-					int factLinksCount = factLinks.Count;
-					for (int j = 0; j < factLinksCount; ++j)
+				}
+				ReadOnlyCollection<FactSetComparisonConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
+				int factLinksCount = factLinks.Count;
+				// Validate subtype constraint patterns before sending additional element added notifications.
+				// The XML schema is current very lax on exclusion constraints on Sub/SupertypeMetaRoles, so
+				// any constraints on any combination of roles/metaroles load successfully. Eliminate any
+				// constraints with patterns that will raise exceptions inside the tool.
+				bool seenSubtypeFact = false;
+				bool invalidSubtypeConstraint = false;
+				for (int j = 0; j < factLinksCount; ++j)
+				{
+					FactSetComparisonConstraint factLink = factLinks[j];
+					if (factLink.FactType is SubtypeFact)
 					{
-						// Notify that the link was added. Note that we set
-						// addLinks to true here because we expect ExternalRoleConstraint
-						// links to be attached to each FactConstraint
-						notifyAdded.ElementAdded(factLinks[j], true);
+						if (!seenSubtypeFact)
+						{
+							if (j > 0)
+							{
+								invalidSubtypeConstraint = true;
+							}
+							seenSubtypeFact = true;
+							if ((element as IConstraint).ConstraintType != ConstraintType.Exclusion)
+							{
+								invalidSubtypeConstraint = true;
+								break;
+							}
+						}
+						LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks = factLink.ConstrainedRoleCollection;
+						int roleLinksCount = roleLinks.Count;
+						if (roleLinks.Count != 1 || !(roleLinks[0].Role is SupertypeMetaRole))
+						{
+							invalidSubtypeConstraint = true;
+							break;
+						}
 					}
+					else if (seenSubtypeFact)
+					{
+						invalidSubtypeConstraint = true;
+						break;
+					}
+				}
+				if (invalidSubtypeConstraint)
+				{
+					// All of the relationships we're dealing with here have delete
+					// progation set, so we do not need additional rules or code to
+					// remove the elements.
+					element.Delete();
+					return;
+				}
+				else if (seenSubtypeFact)
+				{
+					LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = element.RoleSequenceCollection;
+					if (factLinksCount != sequences.Count)
+					{
+						// All of the roles pass muster, but they are arranged in an
+						// invalid pattern. The exclusion constraint must be single
+						// column to be valid. Break down and rebuild the constraint
+						// using supertype roles from the subtype facts.
+						SubtypeFact[] subtypeFacts = new SubtypeFact[factLinksCount];
+						for (int j = 0; j < factLinksCount; ++j)
+						{
+							subtypeFacts[j] = (SubtypeFact)factLinks[j].FactType;
+						}
+						sequences.Clear();
+						for (int j = 0; j < factLinksCount; ++j)
+						{
+							SetComparisonConstraintRoleSequence sequence = new SetComparisonConstraintRoleSequence(store);
+							sequence.RoleCollection.Add(subtypeFacts[j].SupertypeRole);
+							EnsureFactConstraintForRoleSequence(new SetComparisonConstraintHasRoleSequence(element, sequence));
+						}
+						factLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
+					}
+				}
+				for (int j = 0; j < factLinksCount; ++j)
+				{
+					// Notify that the link was added. Note that we set
+					// addLinks to true here because we expect ExternalRoleConstraint
+					// links to be attached to each FactConstraint
+					notifyAdded.ElementAdded(factLinks[j], true);
 				}
 			}
 		}
@@ -5703,7 +5822,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// behavior, but only if one end is already deleted and the other is not
 		/// </summary>
 		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime=TimeToFire.LocalCommit)] // DeleteRule
-		private partial class CouplerDeleteRule : DeleteRule
+		private sealed partial class CouplerDeleteRule : DeleteRule
 		{
 			public override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -5727,7 +5846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// with the mandatory constraint, reordering constraints as needed
 		/// </summary>
 		[RuleOn(typeof(ExclusiveOrConstraintCoupler))] // AddRule
-		private partial class CouplerAddRule : AddRule
+		private sealed partial class CouplerAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -5741,7 +5860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// added to a coupled ExclusionConstraint.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private partial class RoleAddRule : AddRule
+		private sealed partial class RoleAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -5799,7 +5918,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// moved in a coupled ExclusionConstraint.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerPositionChangeRule
-		private partial class RolePositionChangeRule : RolePlayerPositionChangeRule
+		private sealed partial class RolePositionChangeRule : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -5830,7 +5949,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Disallow direct edits to coupled exclusion constraints
 		/// </summary>
 		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // RolePlayerPositionChangeRule
-		private partial class RoleSequencePositionChangeRule : RolePlayerPositionChangeRule
+		private sealed partial class RoleSequencePositionChangeRule : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -5849,7 +5968,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Disallow direct edits to coupled exclusion constraints
 		/// </summary>
 		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
-		private partial class RoleSequenceAddRule : AddRule
+		private sealed partial class RoleSequenceAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -5867,7 +5986,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// deleted from a coupled ExclusionConstraint.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private partial class RoleDeletingRule : DeletingRule
+		private sealed partial class RoleDeletingRule : DeletingRule
 		{
 			private bool myAllowEdit;
 			public override void ElementDeleting(ElementDeletingEventArgs e)
@@ -5922,7 +6041,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Synchronize Modality between coupled exclusion and mandatory constraints
 		/// </summary>
 		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
-		private partial class MandatoryConstraintChangeRule : ChangeRule
+		private sealed partial class MandatoryConstraintChangeRule : ChangeRule
 		{
 			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -5946,7 +6065,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Synchronize Modality between coupled exclusion and mandatory constraints
 		/// </summary>
 		[RuleOn(typeof(ExclusionConstraint))] // ChangeRule
-		private partial class ExclusionConstraintChangeRule : ChangeRule
+		private sealed partial class ExclusionConstraintChangeRule : ChangeRule
 		{
 			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{

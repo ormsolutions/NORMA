@@ -421,6 +421,22 @@
     <value>A SubtypeFact cannot be a nested fact type</value>
     <comment>Exception message when an attempt is made to nest a SubtypeFact.</comment>
   </data>
+	<data name="ModelException.SubtypeMetaRole.OnlyImplicitConstraintsAllowed" xml:space="preserve">
+    <value>A SubtypeMetaRole cannot only be constrained by implicit single-role uniqueness and mandatory constraints.</value>
+    <comment>Exception message when an attempt is made to constraint a SubtypeMetaRole with a constraint other than the implicit uniqueness and mandatory constraints.</comment>
+  </data>
+	<data name="ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles" xml:space="preserve">
+    <value>A DisjunctiveMandatory constraint on a SubtypeFact must constrain only SubtypeFacts.</value>
+    <comment>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same DisjunctiveMandatory constraint.</comment>
+  </data>
+	<data name="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles" xml:space="preserve">
+    <value>An Exclusion constraint on a SubtypeFact must have a single column and constrain only SubtypeFacts.</value>
+    <comment>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same Exclusion constraint or to constraint SubtypeFacts with a multi-column Exclusion constraint.</comment>
+  </data>
+	<data name="ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints" xml:space="preserve">
+    <value>A SupertypeMetaRole can only be constrained by an implicit single-role uniqueness constraint and single-column Exclusion or DisjunctiveMandatory constraints.</value>
+    <comment>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</comment>
+  </data>
 	<data name="ModelReadingEditor.AllReadingsNodeName" xml:space="preserve">
     <value>All</value>
     <comment>Text to use for the display All readings node in the readings editor tool window.</comment>

@@ -234,6 +234,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape
 	{
+		#region ClickThroughRectangleGeometry
+		private class ClickThroughRectangleGeometry : RectangleShapeGeometry
+		{
+			#region Constructor and singleton
+			/// <summary>
+			/// Singleton ClickThroughRectangleGeometry instance
+			/// </summary>
+			public static readonly ShapeGeometry ShapeGeometry = new ClickThroughRectangleGeometry();
+			/// <summary>
+			/// Protected default constructor. The class should be used
+			/// as a singleton instead of being publicly constructed.
+			/// </summary>
+			protected ClickThroughRectangleGeometry()
+			{
+			}
+			#endregion // Constructor and singleton
+			/// <summary>
+			/// Make sure this shape never interferes with the mouse
+			/// </summary>
+			public override bool DoHitTest(IGeometryHost geometryHost, PointD hitPoint, DiagramHitTestInfo hitTestInfo, bool includeTolerance)
+			{
+				return false;
+			}
+		}
+		#endregion // ClickThroughRectangleGeometry
 		/// <summary>
 		/// Link connector shapes are not selectable
 		/// </summary>
@@ -304,6 +329,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return SizeD.Empty;
+			}
+		}
+		/// <summary>
+		/// Make sure this shape does not interfere with the mouse
+		/// </summary>
+		public override ShapeGeometry ShapeGeometry
+		{
+			get
+			{
+				return ClickThroughRectangleGeometry.ShapeGeometry;
 			}
 		}
 	}

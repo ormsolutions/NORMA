@@ -200,6 +200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SubtypeFact).GetNestedType("DeleteSubtypeWhenRolePlayerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentRolePlayerTypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -211,7 +212,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(SubtypeFact).GetNestedType("LimitSubtypeConstraintsDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("LimitSubtypeRolesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("LimitSubtypeRolesDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(SubtypeFact).GetNestedType("DeleteSubtypeWhenRolePlayerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SubtypeFact).GetNestedType("LimitSubtypeSetComparisonConstraintSequenceAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneAddRuleModelConstraintAddValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneAddRuleModelFactAddValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
@@ -451,7 +452,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[198],
 						customDomainModelTypes[199],
 						customDomainModelTypes[200],
-						customDomainModelTypes[201]};
+						customDomainModelTypes[201],
+						customDomainModelTypes[202]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -2108,6 +2110,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class SubtypeFact
 	{
+		private partial class DeleteSubtypeWhenRolePlayerDeleted
+		{
+			public DeleteSubtypeWhenRolePlayerDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
 		private partial class EnsureConsistentDataTypesAddRule
 		{
 			public EnsureConsistentDataTypesAddRule()
@@ -2218,9 +2230,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class SubtypeFact
 	{
-		private partial class DeleteSubtypeWhenRolePlayerDeleted
+		private partial class LimitSubtypeSetComparisonConstraintSequenceAddRule
 		{
-			public DeleteSubtypeWhenRolePlayerDeleted()
+			public LimitSubtypeSetComparisonConstraintSequenceAddRule()
 			{
 				base.IsEnabled = false;
 			}

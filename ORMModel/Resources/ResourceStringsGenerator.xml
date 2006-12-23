@@ -627,6 +627,18 @@
 	<ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle">
 		<comment type="summary">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints" model="Model" resourceName="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints">
+		<comment type="summary">Exception message when an attempt is made to constraint a SubtypeMetaRole with a constraint other than the implicit uniqueness and mandatory constraints.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles">
+			<comment type="summary">Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same DisjunctiveMandatory constraint.</comment>
+		</ResourceString>
+		<ResourceString name="ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles">
+		<comment type="summary">Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same Exclusion constraint or to constraint SubtypeFacts with a multi-column Exclusion constraint.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints" model="Model" resourceName="ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints">
+		<comment type="summary">Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</comment>
+	</ResourceString>
 	<ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString">
 		<comment type="summary">returns the format string for the display text for reference mode picker</comment>
 	</ResourceString>

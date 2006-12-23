@@ -1500,6 +1500,38 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.Cycle");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to constraint a SubtypeMetaRole with a constraint other than the implicit uniqueness and mandatory constraints.</summary>
+		public static string ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same DisjunctiveMandatory constraint.</summary>
+		public static string ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same Exclusion constraint or to constraint SubtypeFacts with a multi-column Exclusion constraint.</summary>
+		public static string ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</summary>
+		public static string ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints");
+			}
+		}
 		/// <summary>returns the format string for the display text for reference mode picker</summary>
 		public static string ModelReferenceModePickerFormatString
 		{

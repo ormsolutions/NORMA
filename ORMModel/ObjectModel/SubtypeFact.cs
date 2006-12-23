@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -179,6 +180,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeConstraintAndRolePatternFixed);
 		}
+		private static void ThrowInvalidDisjunctiveMandatorySubtypeConstraint()
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles);
+		}
+		private static void ThrowInvalidExclusionSubtypeConstraint()
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles);
+		}
+		private static void ThrowInvalidSubtypeMetaRoleConstraint()
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints);
+		}
+		private static void ThrowInvalidSupertypeMetaRoleConstraint()
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints);
+		}
 		/// <summary>
 		/// Block internal constraints from being added to a subtype
 		/// after it is included in a model.
@@ -290,7 +307,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Block internal constraints from being modified on a subtype.
+		/// Block internal constraints from being modified on a subtype, block
+		/// external constraints from being added to the subtype role, and
+		/// limit external constraints being added to the supertype role
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed partial class LimitSubtypeConstraintRolesAddRule : AddRule
@@ -301,20 +320,188 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint ic = link.ConstraintRoleSequence as SetConstraint;
-				LinkedElementCollection<FactType> facts;
-				if (ic != null &&
-					ic.Constraint.ConstraintIsInternal &&
-					1 == (facts = ic.FactTypeCollection).Count)
+				Role untypedRole = link.Role;
+				SupertypeMetaRole supertypeRole = untypedRole as SupertypeMetaRole;
+				SubtypeMetaRole subtypeRole = (supertypeRole == null) ? untypedRole as SubtypeMetaRole : null;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				IConstraint constraint;
+				if (supertypeRole != null || subtypeRole != null)
 				{
-					SubtypeFact subtypeFact = facts[0] as SubtypeFact;
-					if (subtypeFact != null)
+					SetConstraint ic;
+					SetComparisonConstraintRoleSequence externalSequence;
+					bool invalidConstraintOnSubtypeRole = false;
+					bool invalidConstraintOnSupertypeRole = false;
+					if (null != (ic = sequence as SetConstraint))
 					{
-						if (subtypeFact.Model != null)
+						constraint = ic.Constraint;
+						if (constraint.ConstraintIsInternal)
 						{
-							// Allow before adding to model, not afterwards
-							ThrowPatternModifiedException();
+							SubtypeFact subtypeFact = untypedRole.FactType as SubtypeFact;
+							if (subtypeFact != null && subtypeFact.Model != null)
+							{
+								// Allow before adding to model, not afterwards
+								ThrowPatternModifiedException();
+							}
 						}
+						else if (subtypeRole != null)
+						{
+							invalidConstraintOnSubtypeRole = true;
+						}
+						else if (constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+						{
+							ORMCoreDomainModel.DelayValidateElement(ic, DelayValidateDisjunctiveMandatorySupertypeOnly);
+						}
+						else
+						{
+							invalidConstraintOnSupertypeRole = true;
+						}
+					}
+					else if (subtypeRole != null)
+					{
+						invalidConstraintOnSubtypeRole = true;
+					}
+					else if (null != (externalSequence = sequence as SetComparisonConstraintRoleSequence))
+					{
+						constraint = externalSequence.Constraint;
+						if (constraint != null)
+						{
+							if (constraint.ConstraintType == ConstraintType.Exclusion)
+							{
+								ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
+							}
+							else
+							{
+								invalidConstraintOnSupertypeRole = true;
+							}
+						}
+					}
+					if (invalidConstraintOnSupertypeRole)
+					{
+						ThrowInvalidSupertypeMetaRoleConstraint();
+					}
+					else if (invalidConstraintOnSubtypeRole)
+					{
+						ThrowInvalidSubtypeMetaRoleConstraint();
+					}
+				}
+				else if (null != (constraint = sequence.Constraint))
+				{
+					switch (constraint.ConstraintType)
+					{
+						case ConstraintType.DisjunctiveMandatory:
+							ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateDisjunctiveMandatorySupertypeOnly);
+							break;
+						case ConstraintType.Exclusion:
+							ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
+							break;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Validator callback for mixed disjunctive mandatory constraint type exception
+		/// </summary>
+		private static void DelayValidateDisjunctiveMandatorySupertypeOnly(ModelElement element)
+		{
+			MandatoryConstraint constraint = (MandatoryConstraint)element;
+			if (!constraint.IsDeleted)
+			{
+				LinkedElementCollection<Role> roles = constraint.RoleCollection;
+				bool seenSupertypeMetaRole = false;
+				int roleCount = roles.Count;
+				for (int i = 0; i < roleCount; ++i)
+				{
+					if (roles[i] is SupertypeMetaRole)
+					{
+						if (i > 0 && !seenSupertypeMetaRole)
+						{
+							ThrowInvalidDisjunctiveMandatorySubtypeConstraint();
+						}
+						seenSupertypeMetaRole = true;
+					}
+					else if (seenSupertypeMetaRole)
+					{
+						ThrowInvalidDisjunctiveMandatorySubtypeConstraint();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Validator callback for mixed exclusion constraint type exception
+		/// </summary>
+		private static void DelayValidateExclusionSupertypeOnly(ModelElement element)
+		{
+			ExclusionConstraint constraint = (ExclusionConstraint)element;
+			if (!constraint.IsDeleted)
+			{
+				ReadOnlyCollection<FactConstraint> factConstraints = constraint.FactConstraintCollection;
+				int factConstraintCount = factConstraints.Count;
+				bool seenSupertypeMetaRole = false;
+				for (int i = 0; i < factConstraintCount; ++i)
+				{
+					FactConstraint factConstraint = factConstraints[i];
+					LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks = factConstraint.ConstrainedRoleCollection;
+					int roleLinkCount = roleLinks.Count;
+					for (int j = 0; j < roleLinkCount; ++j)
+					{
+						if (roleLinks[j].Role is SupertypeMetaRole)
+						{
+							if (!seenSupertypeMetaRole && (i > 0 || j > 0))
+							{
+								ThrowInvalidExclusionSubtypeConstraint();
+							}
+							seenSupertypeMetaRole = true;
+						}
+						else if (seenSupertypeMetaRole)
+						{
+							ThrowInvalidExclusionSubtypeConstraint();
+						}
+					}
+				}
+				// Final check to enforce single column uniqueness only
+				if (seenSupertypeMetaRole && factConstraintCount != constraint.RoleSequenceCollection.Count)
+				{
+					ThrowInvalidExclusionSubtypeConstraint();
+				}
+			}
+		}
+		/// <summary>
+		/// Validate subtype external constraint patterns when a role sequence
+		/// is added with preexisting roles
+		/// </summary>
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
+		private sealed partial class LimitSubtypeSetComparisonConstraintSequenceAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+				SetComparisonConstraintRoleSequence sequence = link.RoleSequence;
+				LinkedElementCollection<Role> roles = sequence.RoleCollection;
+				int roleCount = roles.Count;
+				if (roleCount != 0)
+				{
+					SetComparisonConstraint constraint = link.ExternalConstraint;
+					bool isExclusion = constraint is ExclusionConstraint;
+					bool addDelayValidate = false;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Role untypedRole = roles[i];
+						if (untypedRole is SubtypeMetaRole)
+						{
+							ThrowInvalidSubtypeMetaRoleConstraint();
+						}
+						else if (isExclusion)
+						{
+							addDelayValidate = true;
+						}
+						else if (untypedRole is SupertypeMetaRole)
+						{
+							ThrowInvalidSupertypeMetaRoleConstraint();
+						}
+					}
+					if (addDelayValidate)
+					{
+						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateExclusionSupertypeOnly);
 					}
 				}
 			}

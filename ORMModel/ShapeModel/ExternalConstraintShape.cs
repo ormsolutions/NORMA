@@ -556,7 +556,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 					case ConstraintStorageStyle.SetConstraint:
 						connectAction.ConstraintRoleSequenceToEdit = constraint as ConstraintRoleSequence;
 						break;
-					default:
+					case ConstraintStorageStyle.SetComparisonConstraint:
+						int maximum = ConstraintUtility.RoleSequenceCountMaximum(constraint);
+						if (maximum > 0 && ((SetComparisonConstraint)constraint).RoleSequenceCollection.Count >= maximum)
+						{
+							return;
+						}
+						if (constraint.ConstraintType == ConstraintType.Exclusion)
+						{
+							// If this is a subtype connect action already, then give it the first sequence
+							ExclusionConstraint exclusion = (ExclusionConstraint)constraint;
+							foreach (FactType existingFactType in exclusion.FactTypeCollection)
+							{
+								if (existingFactType is SubtypeFact)
+								{
+									connectAction.ConstraintRoleSequenceToEdit = exclusion.RoleSequenceCollection[0];
+									break;
+								}
+							}
+						}
 						break;
 				}
 
