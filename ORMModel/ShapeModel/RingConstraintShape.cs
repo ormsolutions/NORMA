@@ -84,6 +84,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					case RingConstraintType.Undefined:
 						return RingConstraintOuterShape.None;
+					case RingConstraintType.PurelyReflexive:
 					case RingConstraintType.Irreflexive:
 					case RingConstraintType.Acyclic:
 					case RingConstraintType.AcyclicIntransitive:
@@ -171,6 +172,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				case RingConstraintType.Undefined:
 				{
+					break;
+				}
+				case RingConstraintType.PurelyReflexive:
+				{
+					this.DrawLeftDot(g, boundsF);
 					break;
 				}
 				case RingConstraintType.Irreflexive:

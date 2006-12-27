@@ -1443,55 +1443,60 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Undefined.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Undefined = 0,
 		/// <summary>
+		/// PurelyReflexive
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/PurelyReflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		PurelyReflexive = 1,
+		/// <summary>
 		/// Irreflexive
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		Irreflexive = 1,
+		Irreflexive = 2,
 		/// <summary>
 		/// Symmetric
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Symmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		Symmetric = 2,
+		Symmetric = 3,
 		/// <summary>
 		/// Asymmetric
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		Asymmetric = 3,
+		Asymmetric = 4,
 		/// <summary>
 		/// Antisymmetric
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Antisymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		Antisymmetric = 4,
+		Antisymmetric = 5,
 		/// <summary>
 		/// Intransitive
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Intransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		Intransitive = 5,
+		Intransitive = 6,
 		/// <summary>
 		/// Acyclic
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Acyclic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		Acyclic = 6,
+		Acyclic = 7,
 		/// <summary>
 		/// AcyclicIntransitive
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AcyclicIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		AcyclicIntransitive = 7,
+		AcyclicIntransitive = 8,
 		/// <summary>
 		/// AsymmetricIntransitive
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		AsymmetricIntransitive = 8,
+		AsymmetricIntransitive = 9,
 		/// <summary>
 		/// SymmetricIntransitive
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		SymmetricIntransitive = 9,
+		SymmetricIntransitive = 10,
 		/// <summary>
 		/// SymmetricIrreflexive
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		SymmetricIrreflexive = 10,
+		SymmetricIrreflexive = 11,
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel

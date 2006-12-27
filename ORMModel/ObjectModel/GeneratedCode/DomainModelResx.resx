@@ -4893,6 +4893,14 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Undefined&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/PurelyReflexive.DisplayName" xml:space="preserve">
+    <value>PurelyReflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;PurelyReflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/PurelyReflexive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;PurelyReflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.DisplayName" xml:space="preserve">
     <value>Irreflexive</value>
     <comment>Display name for EnumerationLiteral &apos;Irreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>

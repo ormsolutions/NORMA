@@ -748,6 +748,7 @@
 	<xs:simpleType name="RingConstraintType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Undefined"/>
+			<xs:enumeration value="PurelyReflexive"/>
 			<xs:enumeration value="Irreflexive"/>
 			<xs:enumeration value="Acyclic"/>
 			<xs:enumeration value="Intransitive"/>

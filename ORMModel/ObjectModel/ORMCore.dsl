@@ -3510,16 +3510,17 @@
 						</ClrAttribute>
 					</Attributes>
 				</EnumerationLiteral>
-				<EnumerationLiteral Name="Irreflexive" Value="1" Description=""/>
-				<EnumerationLiteral Name="Symmetric" Value="2" Description=""/>
-				<EnumerationLiteral Name="Asymmetric" Value="3" Description=""/>
-				<EnumerationLiteral Name="Antisymmetric" Value="4" Description=""/>
-				<EnumerationLiteral Name="Intransitive" Value="5" Description=""/>
-				<EnumerationLiteral Name="Acyclic" Value="6" Description=""/>
-				<EnumerationLiteral Name="AcyclicIntransitive" Value="7" Description=""/>
-				<EnumerationLiteral Name="AsymmetricIntransitive" Value="8" Description=""/>
-				<EnumerationLiteral Name="SymmetricIntransitive" Value="9" Description=""/>
-				<EnumerationLiteral Name="SymmetricIrreflexive" Value="10" Description=""/>
+				<EnumerationLiteral Name="PurelyReflexive" Value="1" Description=""/>
+				<EnumerationLiteral Name="Irreflexive" Value="2" Description=""/>
+				<EnumerationLiteral Name="Symmetric" Value="3" Description=""/>
+				<EnumerationLiteral Name="Asymmetric" Value="4" Description=""/>
+				<EnumerationLiteral Name="Antisymmetric" Value="5" Description=""/>
+				<EnumerationLiteral Name="Intransitive" Value="6" Description=""/>
+				<EnumerationLiteral Name="Acyclic" Value="7" Description=""/>
+				<EnumerationLiteral Name="AcyclicIntransitive" Value="8" Description=""/>
+				<EnumerationLiteral Name="AsymmetricIntransitive" Value="9" Description=""/>
+				<EnumerationLiteral Name="SymmetricIntransitive" Value="10" Description=""/>
+				<EnumerationLiteral Name="SymmetricIrreflexive" Value="11" Description=""/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">

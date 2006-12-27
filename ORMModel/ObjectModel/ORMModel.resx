@@ -669,6 +669,9 @@
   <data name="RingConstraintType.Undefined" xml:space="preserve">
     <value>Undefined</value>
   </data>
+  <data name="RingConstraintType.PurelyReflexive" xml:space="preserve">
+    <value>Purely Reflexive</value>
+  </data>
   <data name="RingConstraintType.Irreflexive" xml:space="preserve">
     <value>Irreflexive</value>
   </data>
