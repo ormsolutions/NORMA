@@ -333,6 +333,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		/// <summary>
+		/// Return the fact shape this link is attached to. Can return
+		/// either a <see cref="FactTypeShape"/> or a <see cref="SubtypeLink"/>
+		/// </summary>
+		public ShapeElement AssociatedFactTypeShape
+		{
+			get
+			{
+				// The FromShape (as opposed to ToShape) here needs to be in
+				// sync with the code in ConfiguringAsChildOf
+				ShapeElement factShape = FromShape;
+				LinkConnectorShape linkConnector;
+				if (null != (linkConnector = factShape as LinkConnectorShape))
+				{
+					factShape = linkConnector.ParentShape;
+				}
+				return factShape;
+			}
+		}
 		#endregion // ExternalConstraintLink specific
 		#region Dangling constraint shape deletion
 		/// <summary>
@@ -348,16 +367,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ModelElement linkMel;
 				ExternalConstraintShape shape;
 				ModelElement shapeMel;
-				// The FromShape (as opposed to ToShape) here needs to be in
+				// The ToShape (as opposed to FromShape) here needs to be in
 				// sync with the code in ConfiguringAsChildOf
-				if (null != (shape = link.FromShape as ExternalConstraintShape) &&
-					!shape.IsDeleting &&
-					null != (linkMel = link.ModelElement) &&
+				if (null != (linkMel = link.ModelElement) &&
 					!linkMel.IsDeleting &&
+					null != (shape = link.ToShape as ExternalConstraintShape) &&
 					null != (shapeMel = shape.ModelElement) &&
 					!shapeMel.IsDeleting)
 				{
-					shape.Delete();
+					if (!shape.IsDeleting)
+					{
+						shape.Delete();
+					}
+					else
+					{
+						FactTypeShape factTypeShape;
+						FactTypeLinkConnectorShape factTypeLinkConnector;
+						NodeShape fromShape = link.FromShape;
+						if ((null != (factTypeShape = fromShape as FactTypeShape) ||
+							null != (factTypeShape = (null != (factTypeLinkConnector = fromShape as FactTypeLinkConnectorShape)) ? factTypeLinkConnector.ParentShape as FactTypeShape : null)))
+						{
+							SizeD oldSize = factTypeShape.Size;
+							factTypeShape.AutoResize();
+							if (oldSize == factTypeShape.Size)
+							{
+								factTypeShape.InvalidateRequired(true);
+							}
+						}
+					}
 				}
 			}
 		}

@@ -181,8 +181,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 							ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
 							if (externalConstraintShape != null)
 							{
+								SizeD oldSize = externalConstraintShape.Size;
 								externalConstraintShape.AutoResize();
-								externalConstraintShape.InvalidateRequired(true);
+								if (oldSize == externalConstraintShape.Size)
+								{
+									externalConstraintShape.InvalidateRequired(true);
+								}
 							}
 						}
 					}

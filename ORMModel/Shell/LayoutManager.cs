@@ -24,16 +24,10 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	public class LayoutManager
 	{
-		private const double MIN_MARGIN = 0.6;
-
 		/// <summary>
 		/// List of <see cref="LayoutShape"/> elements to place on the diagram.
 		/// </summary>
 		private LayoutShapeList myLayoutShapes = new LayoutShapeList();
-		/// <summary>
-		/// Associative array between a <see cref="NodeShape"/> and its <see cref="LayoutShape"/> container.
-		/// </summary>
-		private NodeShapeToLayoutShapeResolver myShapeResolver = new NodeShapeToLayoutShapeResolver();
 		/// <summary>
 		/// The diagram hosting the shapes.
 		/// </summary>
@@ -72,24 +66,20 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="pinned">Indicates whether the shape is pinned in place or not.  True means the shape is pinned to its current location.</param>
 		public void AddShape(ShapeElement shape, bool pinned)
 		{
-			if (shape as NodeShape == null || shape.ParentShape as ORMDiagram == null)
+			NodeShape ns = shape as NodeShape;
+			if (ns == null || shape.ParentShape as ORMDiagram == null)
 			{
 				return;
 			}
 
-			NodeShape ns = shape as NodeShape;
 			LayoutShapeList list = myLayoutShapes;
-			LayoutShape layshape = null;
+			LayoutShape layshape;
 
 			// If the shape doesn't exist, add it, otherwise simply modify the pinned value.
-			if ((layshape = list.FindByNodeShape(ns)) == null)
+			if (!list.TryGetValue(ns, out layshape))
 			{
 				layshape = new LayoutShape(ns, pinned);
 				list.Add(layshape);
-				if (list == myLayoutShapes)
-				{
-					myShapeResolver.Add(ns, layshape);
-				}
 			}
 			else
 			{
@@ -125,32 +115,30 @@ namespace Neumont.Tools.ORM.Shell
 		public void Layout()
 		{
 			LayoutShape backupRoot = null;
-			switch (myLayoutShapes.Count)
+			LayoutShapeList allShapes = myLayoutShapes;
+			switch (allShapes.Count)
 			{
 				case 0:
 					return;
 				default:
-					backupRoot = myLayoutShapes[0];
+					backupRoot = allShapes[0];
 					break;
 			}
-			myLayoutEngine.LateBind(myDiagram, myLayoutShapes, myShapeResolver);
-			LayoutShape mostrelatives = myLayoutEngine.ResolveReferences(myLayoutShapes);
+			myLayoutEngine.LateBind(myDiagram, allShapes);
+			LayoutShape mostRelatives = myLayoutEngine.ResolveReferences(allShapes);
 			LayoutShape root = null;
 			// If the root shape was set by the user, AND the shape exists in our shape list
-			if (myRootShape != null && myShapeResolver.ContainsKey(myRootShape))
+			if (myRootShape == null || !allShapes.TryGetValue(myRootShape, out root))
 			{
-				root = myShapeResolver[myRootShape];
-			}
-			else
-			{
-				root = GetRoot(mostrelatives);
+				root = GetRoot(mostRelatives);
 			}
 			if (root == null)
 			{
 				root = backupRoot;
 			}
 
-			double minX = 0, minY = 0;
+			double minX = 0;
+			double minY = 0;
 			// run the layout of base shapes
 			myLayoutEngine.PerformLayout(root, ref minX, ref minY);
 
@@ -170,9 +158,9 @@ namespace Neumont.Tools.ORM.Shell
 			myRootShape = shape;
 		}
 
-		private LayoutShape GetRoot(LayoutShape mostrelatives)
+		private LayoutShape GetRoot(LayoutShape mostRelatives)
 		{
-			LayoutShape root = mostrelatives;
+			LayoutShape root = mostRelatives;
 			if (root == null)
 			{
 				// Get the node in the diagram that is not a fact type or external constraint
@@ -203,15 +191,33 @@ namespace Neumont.Tools.ORM.Shell
 
 		private void Reflow(double deltaX, double deltaY)
 		{
-			// leave a left & top margin
-			// (note that DSL has a minimum margin that corresponds roughly to the numbers (in inches) below
-			deltaX += MIN_MARGIN;
-			deltaY += MIN_MARGIN;
+			// Respect the diagram margin
+			Diagram diagram = myDiagram;
+			SizeD margin = diagram.NestedShapesMargin;
+			deltaX += margin.Width;
+			deltaY += margin.Height;
+			bool movedFirstShape = false;
 
 			foreach (LayoutShape shape in myLayoutShapes)
 			{
-				NodeShape ns = shape.Shape;
-				ns.Location = new PointD(ns.Location.X + deltaX, ns.Location.Y + deltaY);
+				if (!shape.Pinned)
+				{
+					NodeShape ns = shape.Shape;
+					RectangleD currentRectangle = ns.AbsoluteBounds;
+					PointD currentLocation = currentRectangle.Location;
+					if (!movedFirstShape)
+					{
+						movedFirstShape = true;
+						currentRectangle.Offset(deltaX, deltaY);
+						PointD currentCenter = currentRectangle.Center;
+						currentCenter.Offset(deltaX, deltaY);
+						RectangleD diagramBounds = diagram.AbsoluteBounds;
+						PointD adjustedLocation = diagram.FindFreeArea(currentCenter.X, currentCenter.Y, currentCenter.X, currentCenter.Y, currentRectangle.Width * 1.3, currentRectangle.Height * 1.3, currentRectangle.Width, currentRectangle.Height, diagramBounds.X, diagramBounds.Y, double.MaxValue, double.MaxValue);
+						deltaX += adjustedLocation.X - currentCenter.X;
+						deltaY += adjustedLocation.Y - currentCenter.Y;
+					}
+					ns.Location = new PointD(currentLocation.X + deltaX, currentLocation.Y + deltaY);
+				}
 			}
 		}
 	}

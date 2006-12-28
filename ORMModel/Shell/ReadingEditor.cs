@@ -737,6 +737,10 @@ namespace Neumont.Tools.ORM.Shell
 		private void PopulateControl()
 		{
 			Debug.Assert(myFact != null);
+			if (myDisplayRoleOrder != null && myDisplayRoleOrder.Count != myFact.RoleCollection.Count)
+			{
+				myDisplayRoleOrder = null;
+			}
 
 			ReadingVirtualTree rvt = null;
 

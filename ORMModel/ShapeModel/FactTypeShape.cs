@@ -670,8 +670,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 									binaryLink.RecalculateRoute();
 								}
 							}
-
-							factShape.InvalidateRequired(true);
+							SizeD oldSize = factShape.Size;
+							factShape.AutoResize();
+							if (oldSize == factShape.Size)
+							{
+								factShape.InvalidateRequired(true);
+							}
 						}
 					}
 				}
@@ -1120,7 +1124,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						if (showConstraint)
 						{
-							ShapeElement constraintShape = diagram.FindShapeForElement((ModelElement)constraintBoxes[i].FactConstraint.Constraint);
+							ShapeElement constraintShape = diagram.FindShapeForElement((ModelElement)constraintBoxes[i].FactConstraint.Constraint, true);
 							if (constraintShape == null)
 							{
 								// This can happen if the constraint is implied. Implied constraints are not displayed.
@@ -3157,42 +3161,65 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeShape factShape = pel as FactTypeShape;
 				if (factShape != null)
 				{
-					bool resize = false;
-					switch (constraint.ConstraintType)
+					factShape.ConstraintShapeSetChanged(constraint, roleChangeOnly);
+				}
+			}
+		}
+		/// <summary>
+		/// The constraint shapes associated with this fact type have changed. Call directly
+		/// if the change happens due to a shape change instead of an underlying model change.
+		/// </summary>
+		/// <param name="constraint">The newly added or removed constraint</param>
+		public void ConstraintShapeSetChanged(IConstraint constraint)
+		{
+			ConstraintShapeSetChanged(constraint, false);
+		}
+		/// <summary>
+		/// The constraint shapes associated with this fact type have changed. Call directly
+		/// if the change happens due to a shape change instead of an underlying model change.
+		/// </summary>
+		/// <param name="constraint">The newly added or removed constraint</param>
+		/// <param name="roleChangeOnly">A role was added or removed</param>
+		private void ConstraintShapeSetChanged(IConstraint constraint, bool roleChangeOnly)
+		{
+			bool resize = false;
+			switch (constraint.ConstraintType)
+			{
+				case ConstraintType.InternalUniqueness:
+					if (roleChangeOnly)
 					{
-						case ConstraintType.InternalUniqueness:
-							if (roleChangeOnly)
-							{
-								resize = factType.RoleCollection.Count == 2;
-							}
-							else
-							{
-								resize = true;
-							}
-							break;
-						case ConstraintType.ExternalUniqueness:
-						case ConstraintType.DisjunctiveMandatory:
-						case ConstraintType.Ring:
-						case ConstraintType.Exclusion:
-						case ConstraintType.Subset:
-						case ConstraintType.Equality:
-						case ConstraintType.Frequency:
-							resize = true;
-							break;
+						resize = AssociatedFactType.RoleCollection.Count == 2;
 					}
-					if (resize)
+					else
 					{
-						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
-						{
-							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-							if (binaryLink != null)
-							{
-								binaryLink.RecalculateRoute();
-							}
-						}
-						factShape.AutoResize();
-						factShape.InvalidateRequired(true);
+						resize = true;
 					}
+					break;
+				case ConstraintType.ExternalUniqueness:
+				case ConstraintType.DisjunctiveMandatory:
+				case ConstraintType.Ring:
+				case ConstraintType.Exclusion:
+				case ConstraintType.Subset:
+				case ConstraintType.Equality:
+				case ConstraintType.Frequency:
+					resize = true;
+					break;
+			}
+			if (resize)
+			{
+				foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(this, LinkConnectsToNode.NodesDomainRoleId))
+				{
+					BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+					if (binaryLink != null)
+					{
+						binaryLink.RecalculateRoute();
+					}
+				}
+				SizeD oldSize = Size;
+				AutoResize();
+				if (oldSize == Size)
+				{
+					InvalidateRequired(true);
 				}
 			}
 		}
@@ -4852,8 +4879,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 									break;
 							}
 						}
+						SizeD oldSize = factTypeShape.Size;
 						factTypeShape.AutoResize();
-						factTypeShape.InvalidateRequired(true);
+						if (oldSize == factTypeShape.Size)
+						{
+							factTypeShape.InvalidateRequired(true);
+						}
 					}
 				}
 			}

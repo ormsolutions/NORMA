@@ -12,7 +12,7 @@ namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMRadialLayoutEngine - actual implementation
 	/// <summary>
-	/// Performs a standard radial layout, starting at <paramref name="rootshape"/>.
+	/// Performs a standard radial layout
 	/// 
 	/// The general logic is fairly simple: the density of a shape is the number of
 	/// shapes that it talks to; higher-density shapes throw their related shapes out
@@ -43,16 +43,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>The shape with the most references in the list (typically treated as the root shape)</returns>
 		public override LayoutShape ResolveReferences(LayoutShapeList list)
 		{
-			LayoutShape mostchildren = null;
+			LayoutShape mostChildren = null;
+			LayoutShapeList allShapes = myLayoutShapes;
 			foreach (LayoutShape layshape in list)
 			{
-				layshape.ResolveReferences(myShapeResolver);
-				if ((mostchildren == null || layshape.Count > mostchildren.Count) && !(layshape.Shape is FactTypeShape) && !(layshape.Shape is ExternalConstraintShape))
+				layshape.ResolveReferences(allShapes);
+				if ((mostChildren == null || layshape.Count > mostChildren.Count) && !(layshape.Shape is FactTypeShape) && !(layshape.Shape is ExternalConstraintShape))
 				{
-					mostchildren = layshape;
+					mostChildren = layshape;
 				}
 			}
-			return mostchildren;
+			return mostChildren;
 		}
 
 		/// <summary>
@@ -157,37 +158,30 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
-		/// Perform operations on <paramref name="shape"/> before it is placed on the diagram
-		/// </summary>
-		/// <param name="shape">A LayoutShape that is being placed on the diagram</param>
-		protected override void PreShapePlacement(LayoutShape shape)
-		{
-			base.PreShapePlacement(shape);
-		}
-
-		/// <summary>
 		/// This method ensures that the role in the related fact type is closest (spatially) to the related object shape.
 		/// </summary>
 		/// <param name="shape">The shape that was most recently placed on the diagram</param>
 		protected override void PostShapePlacement(LayoutShape shape)
 		{
-			if (shape.Parent == null || !(shape.Shape is FactTypeShape))
+			FactTypeShape factShape;
+			LayoutShape parentShape;
+			if (shape.Pinned || null == (parentShape = shape.Parent) || null == (factShape = shape.Shape as FactTypeShape))
 			{
 				return;
 			}
 
-			FactTypeShape factShape = shape.Shape as FactTypeShape;
-			NodeShape objectShape = shape.Parent.Shape;
-			ModelElement objectElement = shape.Parent.Shape.ModelElement;
-			if (objectElement is FactType)
+			NodeShape objectShape = parentShape.Shape;
+			ModelElement objectElement = parentShape.Shape.ModelElement;
+			FactType factElement;
+			if (null != (factElement = objectElement as FactType))
 			{
-				Objectification otherElementObj = (objectElement as FactType).Objectification;
-				if (otherElementObj != null)
+				Objectification objectification = factElement.Objectification;
+				if (objectification != null)
 				{
-					objectElement = otherElementObj.NestingType;
+					objectElement = objectification.NestingType;
 				}
 			}
-			FactType factElement = factShape.ModelElement as FactType;
+			factElement = factShape.ModelElement as FactType;
 			LinkedElementCollection<RoleBase> roles = factShape.GetEditableDisplayRoleOrder();
 
 			// set the index at which the role will be closest to otherLayoutShape

@@ -118,7 +118,15 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					{
 						currentFact = startingFact;
 						readOrd = currentFact.FindMatchingReadingOrder(currentFact.RoleCollection);
-						primaryReading = readOrd.PrimaryReading;
+						if (readOrd != null)
+						{
+							primaryReading = readOrd.PrimaryReading;
+						}
+						else
+						{
+							readOrd = new ReadingOrder(store);
+							readOrd.FactType = currentFact;
+						}
 					}
 
 
@@ -186,8 +194,14 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 							bool currentObjectIsValueType = currentObject.IsValueType;
 
 							// get a presentation element to work with for determine if the ref mode is expanded or collapsed
-							ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.CurrentDiagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(currentObject);
+							ObjectTypeShape objShape = diagram.FindShapeForElement<ObjectTypeShape>(currentObject);
 							layoutManager.AddShape(objShape, true);
+							LinkedElementCollection<Role> playedRoles = currentObject.PlayedRoleCollection;
+							int playedRoleCount = playedRoles.Count;
+							for (int i = 0; i < playedRoleCount; ++i)
+							{
+								layoutManager.AddShape(diagram.FindShapeForElement<FactTypeShape>(playedRoles[i].FactType), true);
+							}
 
 							// convert this object to a entity type if it was a value type and if we are now adding a ref mode
 							if (refModeLength > 0 && currentObjectIsValueType)
@@ -264,7 +278,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					} // end foreach (FactObject o in myParsedFact.FactObjects)
 
 					// If we're creating a new fact, add the reading to the reading collection
-					if (startingFact == null)
+					if (primaryReading == null)
 					{
 						primaryReading = new Reading(store);
 						primaryReading.ReadingOrder = readOrd;

@@ -298,11 +298,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else if (singleCol != null)
 					{
-						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(singleCol, FactSetConstraint.SetConstraintDomainRoleId));
+						FixupRelatedLinks(
+							null,
+							DomainRoleInfo.GetElementLinks<ElementLink>(singleCol, FactSetConstraint.SetConstraintDomainRoleId),
+							delegate(ElementLink link, ShapeElement newShape)
+							{
+								ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
+								if (linkShape != null)
+								{
+									FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
+									if (shape != null)
+									{
+										shape.ConstraintShapeSetChanged(singleCol);
+									}
+								}
+							});
 					}
 					else if (multiCol != null)
 					{
-						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId));
+						FixupRelatedLinks(
+							null,
+							DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId),
+							delegate(ElementLink link, ShapeElement newShape)
+							{
+								ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
+								if (linkShape != null)
+								{
+									FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
+									if (shape != null)
+									{
+										shape.ConstraintShapeSetChanged(multiCol);
+									}
+								}
+							});
 					}
 					else if (modelNote != null)
 					{
@@ -329,16 +357,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return retVal;
 		}
 		/// <summary>
+		/// Callback used with <see cref="FixupRelatedLinks(ModelElement,ReadOnlyCollection{ElementLink},AfterLinkFixup)"/>
+		/// </summary>
+		/// <param name="link">The link that was fixed up</param>
+		/// <param name="newShape">A newly created shape associated with the link</param>
+		private delegate void AfterLinkFixup(ElementLink link, ShapeElement newShape);
+		/// <summary>
 		/// Fixes up the local diagram for each of the links related to the specified ModelElement.
 		/// </summary>
 		/// <param name="droppedOnElement">The dropped on element.</param>
 		/// <param name="links">The links.</param>
 		private void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links)
 		{
+			FixupRelatedLinks(droppedOnElement, links, null);
+		}
+		/// <summary>
+		/// Fixes up the local diagram for each of the links related to the specified ModelElement.
+		/// </summary>
+		/// <param name="droppedOnElement">The dropped on element.</param>
+		/// <param name="links">The links.</param>
+		/// <param name="afterFixup">A callback that fires after link fixup is complete.</param>
+		private void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links, AfterLinkFixup afterFixup)
+		{
 			int linksCount = links.Count;
 			for (int i = 0; i < linksCount; ++i)
 			{
-				FixUpLocalDiagram(droppedOnElement, links[i]);
+				ElementLink link;
+				ShapeElement newChildShape = FixUpLocalDiagram(droppedOnElement, link = links[i]);
+				if (afterFixup != null && newChildShape != null)
+				{
+					afterFixup(link, newChildShape);
+				}
 			}
 		}
 		/// <summary>
@@ -348,7 +397,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="existingParent">An element with a shape on this diagram.
 		/// Pass in null to use the model.</param>
 		/// <param name="newChild">The new element to add.</param>
-		public void FixUpLocalDiagram(ModelElement existingParent, ModelElement newChild)
+		/// <returns>A newly created child shape for the element</returns>
+		public ShapeElement FixUpLocalDiagram(ModelElement existingParent, ModelElement newChild)
 		{
 			ShapeElement parentShape = this;
 			if (existingParent != null && existingParent != ModelElement)
@@ -356,14 +406,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				parentShape = FindShapeForElement(existingParent);
 				if (parentShape == null)
 				{
-					return;
+					return null;
 				}
 			}
 			ShapeElement newChildShape = parentShape.FixUpChildShapes(newChild);
 			if (newChildShape != null && newChildShape.Diagram == this)
 			{
 				FixUpDiagramSelection(newChildShape);
+				return newChildShape;
 			}
+			return null;
 		}
 		# endregion // DragDrop overrides
 		#region Toolbox filter strings
@@ -774,7 +826,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>An existing shape, or null if not found</returns>
 		public ShapeElement FindShapeForElement(ModelElement element)
 		{
-			return FindShapeForElement<ShapeElement>(element);
+			return FindShapeForElement<ShapeElement>(element, false);
+		}
+		/// <summary>
+		/// Locate an existing shape on this diagram corresponding to this element
+		/// </summary>
+		/// <param name="element">The element to search</param>
+		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true.</param>
+		/// <returns>An existing shape, or null if not found</returns>
+		public ShapeElement FindShapeForElement(ModelElement element, bool filterDeleting)
+		{
+			return FindShapeForElement<ShapeElement>(element, filterDeleting);
 		}
 		/// <summary>
 		/// Locate an existing typed shape on this diagram corresponding to this element
@@ -784,12 +846,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>An existing shape, or null if not found</returns>
 		public TShape FindShapeForElement<TShape>(ModelElement element) where TShape : ShapeElement
 		{
-			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
+			return FindShapeForElement<TShape>(element, false);
+		}
+		/// <summary>
+		/// Locate an existing typed shape on this diagram corresponding to this element
+		/// </summary>
+		/// <typeparam name="TShape">The type of the shape to return</typeparam>
+		/// <param name="element">The element to search</param>
+		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true.</param>
+		/// <returns>An existing shape, or null if not found</returns>
+		public TShape FindShapeForElement<TShape>(ModelElement element, bool filterDeleting) where TShape : ShapeElement
+		{
+			if (element != null)
 			{
-				TShape shape = pel as TShape;
-				if (shape != null && shape.Diagram == this)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
 				{
-					return shape;
+					TShape shape = pel as TShape;
+					if (shape != null && shape.Diagram == this && (!filterDeleting || !shape.IsDeleting))
+					{
+						return shape;
+					}
 				}
 			}
 			return null;

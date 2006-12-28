@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 using System.Collections.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -139,10 +140,6 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// List of <see cref="LayoutShape"/> elements to place on the diagram.
 		/// </summary>
 		protected LayoutShapeList myLayoutShapes;
-		/// <summary>
-		/// Associative array between a <see cref="NodeShape"/> and its <see cref="LayoutShape"/> container.
-		/// </summary>
-		protected NodeShapeToLayoutShapeResolver myShapeResolver;
 
 		/// <summary>
 		/// Constructor
@@ -191,7 +188,6 @@ namespace Neumont.Tools.Modeling.Diagrams
 		protected virtual void ClearState()
 		{
 			myLayoutShapes = null;
-			myShapeResolver = null;
 		}
 
 		/// <summary>
@@ -199,26 +195,24 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// </summary>
 		/// <param name="diagram"></param>
 		/// <param name="layoutShapes"></param>
-		/// <param name="shapeResolver"></param>
-		public void LateBind(Diagram diagram, LayoutShapeList layoutShapes, NodeShapeToLayoutShapeResolver shapeResolver)
+		public void LateBind(Diagram diagram, LayoutShapeList layoutShapes)
 		{
 			ClearState();
 
 			myDiagram = diagram;
 			myLayoutShapes = layoutShapes;
-			myShapeResolver = shapeResolver;
 
 			PreLayout();
 		}
 
 		/// <summary>
 		/// The implementer runs the layout algorithm here, setting the NodeShape.Location property for every
-		/// child of <paramref name="rootshape"/> and their descendents.
+		/// child of <paramref name="rootShape"/> and their descendents.
 		/// </summary>
-		/// <param name="rootshape">The element from which all other shapes are placed on the diagram.</param>
+		/// <param name="rootShape">The element from which all other shapes are placed on the diagram.</param>
 		/// <param name="minX">Stores the smallest X value from the layout.  Used to ensure that all shapes are visible after placement.</param>
 		/// <param name="minY">Stores the smallest Y value from the layout.  Used to ensure that all shapes are visible after placement.</param>
-		public virtual void PerformLayout(LayoutShape rootshape, ref double minX, ref double minY)
+		public virtual void PerformLayout(LayoutShape rootShape, ref double minX, ref double minY)
 		{
 			PostLayout();
 		}
@@ -230,16 +224,17 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <returns>The shape with the most references in the list (typically treated as the root shape)</returns>
 		public virtual LayoutShape ResolveReferences(LayoutShapeList list)
 		{
-			LayoutShape mostchildren = null;
+			LayoutShape mostChildren = null;
+			LayoutShapeList allShapes = myLayoutShapes;
 			foreach (LayoutShape layshape in list)
 			{
-				layshape.ResolveReferences(myShapeResolver);
-				if (mostchildren == null || layshape.Count > mostchildren.Count)
+				layshape.ResolveReferences(allShapes);
+				if (mostChildren == null || layshape.Count > mostChildren.Count)
 				{
-					mostchildren = layshape;
+					mostChildren = layshape;
 				}
 			}
-			return mostchildren;
+			return mostChildren;
 		}
 	}
 	#endregion
@@ -303,7 +298,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 
 	#region RadialLayoutEngine - actual implementation
 	/// <summary>
-	/// Performs a standard radial layout, starting at <paramref name="rootshape"/>.
+	/// Performs a standard radial layout, starting at <paramref name="rootShape"/>.
 	/// 
 	/// The general logic is fairly simple: the density of a shape is the number of
 	/// shapes that it talks to; higher-density shapes throw their related shapes out
@@ -377,19 +372,19 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <summary>
 		/// Performs standard radial layout algorithm.
 		/// </summary>
-		/// <param name="rootshape">The shape determined to be the center of the diagram.</param>
+		/// <param name="rootShape">The shape determined to be the center of the diagram.</param>
 		/// <param name="minX">A by-ref parameter to return the smallest (possibly negative) X value used to place a shape on the diagram.</param>
 		/// <param name="minY">A by-ref parameter to return the smallest (possibly negative) Y value used to place a shape on the diagram.</param>
-		public override void PerformLayout(LayoutShape rootshape, ref double minX, ref double minY)
+		public override void PerformLayout(LayoutShape rootShape, ref double minX, ref double minY)
 		{
 			List<double> degrees = GenerateDegrees(-180, 180, 1);
 
-			rootshape.TargetLocation = new PointD(0, 0);
-			BuildTree(rootshape, null);
-			AddShapeToQueue(rootshape);
+			rootShape.TargetLocation = new PointD(0, 0);
+			BuildTree(rootShape, null);
+			AddShapeToQueue(rootShape);
 
-			PlaceShapes(rootshape, ref minX, ref minY, degrees);
-			base.PerformLayout(rootshape, ref minX, ref minY);
+			PlaceShapes(rootShape, ref minX, ref minY, degrees);
+			base.PerformLayout(rootShape, ref minX, ref minY);
 		}
 
 		/// <summary>
@@ -432,12 +427,12 @@ namespace Neumont.Tools.Modeling.Diagrams
 			}
 		}
 
-		private void PlaceShapes(LayoutShape rootshape, ref double minX, ref double minY, List<double> degrees)
+		private void PlaceShapes(LayoutShape rootShape, ref double minX, ref double minY, List<double> degrees)
 		{
 			NodeShape nodeshape = null;
 			LayoutShape shape = null;
-			double originX = rootshape.TargetLocation.X;
-			double originY = rootshape.TargetLocation.Y;
+			double originX = rootShape.TargetLocation.X;
+			double originY = rootShape.TargetLocation.Y;
 			double x = 0;
 			double y = 0;
 
@@ -478,8 +473,8 @@ namespace Neumont.Tools.Modeling.Diagrams
 				// *** Everything from here down relates to child shape placement calculations ***
 
 				// Determine the angles off the current shape that we can place the children
-				List<double> reldegrees;
-				if (shape != rootshape)
+				List<double> relDegrees;
+				if (shape != rootShape)
 				{
 					int spread = (shape.UnplacedCount * 17) % 360;
 					if (spread > 90)
@@ -487,29 +482,29 @@ namespace Neumont.Tools.Modeling.Diagrams
 						// Move this shape out farther so it doesn't interfere as much with other shapes
 						spread = 90;
 					}
-					reldegrees = GenerateDegrees((int)shape.AngleFromParent - spread, (int)shape.AngleFromParent + spread, shape.Depth + 1);
+					relDegrees = GenerateDegrees((int)shape.AngleFromParent - spread, (int)shape.AngleFromParent + spread, shape.Depth + 1);
 				}
 				else
 				{
-					reldegrees = degrees;
+					relDegrees = degrees;
 				}
-				int degidx = 0;
-				// The amount to increment degidx, based on the # of children and the size of the degree spread available
-				int degincrement = (int)Math.Floor((double)reldegrees.Count / shape.UnplacedCount);
+				int degreeIndex = 0;
+				// The amount to increment degreeIndex, based on the # of children and the size of the degree spread available
+				int degreeIndexIncrement = (int)Math.Floor((double)relDegrees.Count / shape.UnplacedCount);
 
 				if (shape.Pinned)
 				{
 					// Remove degrees to avoid already-placed shapes, then retrieve the next most appropriate degree array index.
-					degidx = AvoidPinnedShapes(shape, nodeshape, reldegrees, degidx);
+					degreeIndex = AvoidPinnedShapes(shape, nodeshape, relDegrees, degreeIndex);
 				}
 
-				PlaceChildShapes(x, y, shape, reldegrees, degidx, degincrement);
+				PlaceChildShapes(x, y, shape, relDegrees, degreeIndex, degreeIndexIncrement);
 			}
 		}
 
-		private int AvoidPinnedShapes(LayoutShape shape, NodeShape nodeshape, List<double> reldegrees, int degidx)
+		private int AvoidPinnedShapes(LayoutShape shape, NodeShape nodeshape, List<double> relDegrees, int degreeIndex)
 		{
-			double ydelta, xdelta, angle;
+			PointD shapeLocation = shape.Shape.Location;
 
 			// We did not place the shape, there may be existing children on the map that we don't want to overlap
 			ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(nodeshape, LinkConnectsToNode.NodesDomainRoleId);
@@ -523,28 +518,28 @@ namespace Neumont.Tools.Modeling.Diagrams
 
 				NodeShape relation = (binaryLink.FromShape != nodeshape ? binaryLink.FromShape : binaryLink.ToShape);
 				LayoutShape childShape = null;
-				if (myShapeResolver.TryGetValue(relation, out childShape) && !childShape.Pinned)
+				if (myLayoutShapes.TryGetValue(relation, out childShape) && !childShape.Pinned)
 				{
 					continue;
 				}
 
 				// The child shape is pinned
-				ydelta = relation.Location.Y - shape.Shape.Location.Y;
-				xdelta = relation.Location.X - shape.Shape.Location.X;
-				angle = Math.Atan2(Math.Abs(ydelta), Math.Abs(xdelta)) * (180 / Math.PI);
-				angle %= 90;
+				PointD relationLocation = relation.Location;
+				double yDelta = relationLocation.Y - shapeLocation.Y;
+				double xDelta = relationLocation.X - shapeLocation.X;
+				double angle = (Math.Atan2(Math.Abs(yDelta), Math.Abs(xDelta)) * (180 / Math.PI)) % 90;
 
 				// now adjust the angle based on the quadrant
-				if (ydelta > 0)
+				if (yDelta > 0)
 				{
-					if (xdelta < 0)
+					if (xDelta < 0)
 					{
 						angle = 180 - angle;
 					}
 				}
 				else
 				{
-					if (xdelta > 0)
+					if (xDelta > 0)
 					{
 						angle = 360 - angle;
 					}
@@ -555,26 +550,33 @@ namespace Neumont.Tools.Modeling.Diagrams
 				}
 
 				// Filter out degrees that might overlap this child shape
-				RemoveDegrees(reldegrees, angle - SMALLSPREAD, angle + SMALLSPREAD);
-				if (!FindClosestAngle(reldegrees, angle - 180, ref degidx))
+				RemoveDegrees(relDegrees, angle - SMALLSPREAD, angle + SMALLSPREAD);
+				if (!FindClosestAngle(relDegrees, angle - 180, ref degreeIndex))
 				{
-					throw new Exception("No degrees left to find??");
+					// Not great, but it beats throwing an exception here
+					relDegrees.Add(0d);
+					degreeIndex = 0;
 				}
 			}
-			return degidx;
+			return degreeIndex;
 		}
 
-		private void PlaceChildShapes(double originX, double originY, LayoutShape parent, List<double> reldegrees, int degidx, int degincrement)
+		private void PlaceChildShapes(double originX, double originY, LayoutShape parent, List<double> relDegrees, int degreeIndex, int degreeIndexIncrement)
 		{
-			double reldegree, x, y, childdistmultiplier;
+			double relDegree;
+			double x;
+			double y;
 			// Proportionally stretch the diagram out as more children have to be rendered
-			double distmultiplier = Math.Max(0.9, parent.UnplacedCount / (double)9);
+			double distanceMultiplier = Math.Max(0.9, parent.UnplacedCount / (double)9);
 
-			for (int i = 0; i < parent.RelatedShapes.Count; i++)
+			LayoutShapeList relatedShapes = parent.RelatedShapes;
+			int relatedShapesCount = relatedShapes.Count;
+			int childDepth = parent.Depth + 1;
+			for (int i = 0; i < relatedShapesCount; ++i)
 			{
 				// Get the shape
-				LayoutShape childshape = parent.RelatedShapes[i];
-				if (childshape.Placed)
+				LayoutShape childShape = relatedShapes[i];
+				if (childShape.Placed)
 				{
 					// Already placed, move to the next one
 					continue;
@@ -591,29 +593,28 @@ namespace Neumont.Tools.Modeling.Diagrams
 				 */
 
 				// determine the angle at which this child will be drawn relative to the parent
-				reldegree = reldegrees[degidx];
+				relDegree = relDegrees[degreeIndex];
 				if (parent.Count > 1)
 				{
-					degidx += degincrement;
-					if (degidx >= reldegrees.Count)
+					degreeIndex += degreeIndexIncrement;
+					if (degreeIndex >= relDegrees.Count)
 					{
-						degidx = reldegrees.Count - 1;
+						degreeIndex = relDegrees.Count - 1;
 					}
 				}
 
-				childdistmultiplier = Math.Max(distmultiplier, childshape.Count / 6);
 				// now calculate the position of the child based on the allocated degree and distance multiplier
-				CalculateShapeXY(childshape, parent, originX, originY, childdistmultiplier, reldegree, out x, out y);
+				CalculateShapeXY(childShape, parent, originX, originY, Math.Max(distanceMultiplier, childShape.Count / 6), relDegree, out x, out y);
 
 				// and assign that location to the shape
 				// don't do this inside CalculateShapeXY, since x & y are to be calculated ONLY, not set
-				childshape.TargetLocation = new PointD(x, y);
-				childshape.AngleFromParent = reldegree;
-				childshape.Depth = parent.Depth + 1;
+				childShape.TargetLocation = new PointD(x, y);
+				childShape.AngleFromParent = relDegree;
+				childShape.Depth = childDepth;
 
-				PostShapePlacement(childshape);
+				PostShapePlacement(childShape);
 
-				AddShapeToQueue(childshape);
+				AddShapeToQueue(childShape);
 			}
 		}
 
@@ -624,36 +625,38 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="parent">The <see cref="LayoutShape"/> that is placing the current shape on the diagram.</param>
 		/// <param name="originX">The X coordinate of the parent shape.</param>
 		/// <param name="originY">The Y coordinate of the parent shape.</param>
-		/// <param name="distmultiplier">The recommended distance from originX,originY (at angle <paramref name="angle"/>) to position <paramref name="shape"/>.</param>
+		/// <param name="distanceMultiplier">The recommended distance from originX,originY (at angle <paramref name="angle"/>) to position <paramref name="shape"/>.</param>
 		/// <param name="angle">The angle from originX,originY to position <paramref name="shape"/></param>
 		/// <param name="x">The result of the calculation of x</param>
 		/// <param name="y">The result of the calculation of y</param>
-		protected virtual void CalculateShapeXY(LayoutShape shape, LayoutShape parent, double originX, double originY, double distmultiplier, double angle, out double x, out double y)
+		protected virtual void CalculateShapeXY(LayoutShape shape, LayoutShape parent, double originX, double originY, double distanceMultiplier, double angle, out double x, out double y)
 		{
-			double xOffset, rad, cos, sin, xDelta, yDelta;
-			xOffset = 0;
-			rad = angle * RADIANS;
-			cos = Math.Cos(rad);
-			sin = -Math.Sin(rad);
-			x = cos * distmultiplier;
-			y = sin * distmultiplier;
+			double xOffset = 0;
+			double rad = angle * RADIANS;
+			double cos = Math.Cos(rad);
+			double sin = -Math.Sin(rad);
+			double xDelta;
+			double yDelta;
+			x = cos * distanceMultiplier;
+			y = sin * distanceMultiplier;
 
 			// push the element out to form a more rectangular shape than pure circular
 			xDelta = x * (sin * sin);
 			yDelta = y * (cos * cos) * 0.3;
 
 			// we may need to push the element out to the right or left
+			double testWidth;
 			if (Math.Abs(0 - angle) < 20 || Math.Abs(360 - angle) < 20)
 			{
 				// this "if" needs to be nested to avoid odd conditional outcomes with the else/if below
-				if (parent.Shape.Size.Width > 0.4)
+				if ((testWidth = parent.Shape.Size.Width) > 0.4)
 				{
-					xOffset = Math.Abs(parent.Shape.Size.Width - 0.4);
+					xOffset = Math.Abs(testWidth - 0.4);
 				}
 			}
-			else if (Math.Abs((180 - angle) % 180) < 40 && shape.Shape.Size.Width > 0.4)
+			else if (Math.Abs((180 - angle) % 180) < 40 && (testWidth = shape.Shape.Size.Width) > 0.4)
 			{
-				xOffset = 0.4 - shape.Shape.Size.Width;
+				xOffset = 0.4 - testWidth;
 				if (xOffset > 0)
 				{
 					xOffset = -xOffset;
@@ -670,24 +673,25 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// </summary>
 		/// <param name="angles"></param>
 		/// <param name="target"></param>
-		/// <param name="newindex"></param>
+		/// <param name="newIndex"></param>
 		/// <returns>True if any angle is found; false generally only for zero-length angle list</returns>
-		private bool FindClosestAngle(List<double> angles, double target, ref int newindex)
+		private bool FindClosestAngle(List<double> angles, double target, ref int newIndex)
 		{
-			target = (360 + target) % 360;
-			Nullable<double> mindistance = null;
+			target = NormalizeDegree(target);
+			double minDistance = double.MaxValue;
 
-			for (int i = 0; i < angles.Count; i++)
+			int angleCount = angles.Count;
+			for (int i = 0; i < angleCount; ++i)
 			{
-				double thisdistance = Math.Abs(angles[i] - target);
-				if (mindistance == null || thisdistance < mindistance)
+				double thisDistance = Math.Abs(NormalizeDegree(angles[i]) - target);
+				if (thisDistance < minDistance)
 				{
-					mindistance = thisdistance;
-					newindex = i;
+					minDistance = thisDistance;
+					newIndex = i;
 				}
 			}
 
-			return (mindistance != null);
+			return (minDistance != double.MaxValue);
 		}
 
 		/// <summary>
@@ -703,11 +707,12 @@ namespace Neumont.Tools.Modeling.Diagrams
 			// Start counting at the middle angle.  This ensures that the first element gets the optimal angle out
 			// from the origin.  If we didn't do this, diagrams can end up looking pretty cock-eyed.
 			double angle = ((max - min) / 2) + min;
-			List<double> ret = new List<double>();
+			List<double> ret = new List<double>(count);
+			double angleIncrement = 1 / (double)radius;
 			for (int i = 0; i < count; i++)
 			{
 				ret.Add(angle);
-				angle += 1 / (double)radius;
+				angle += angleIncrement;
 				if (angle > max)
 				{
 					angle = min;
@@ -724,10 +729,19 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="max">The high bound of the angle range to remove</param>
 		private void RemoveDegrees(List<double> list, double min, double max)
 		{
+			min = NormalizeDegree(min);
+			max = NormalizeDegree(max);
+			bool wrappedRange;
+			if (wrappedRange = (max < min))
+			{
+				max += 360.0;
+			}
 			int i = 0;
 			while (i < list.Count)
 			{
-				if (list[i] > min && list[i] < max)
+				double currentDegree = NormalizeDegree(list[i]);
+				if ((currentDegree > min && currentDegree < max) ||
+					(wrappedRange && (currentDegree += 360.0) > min && currentDegree < max))
 				{
 					// This is a potentially expensive move -- in some cases constructing a new list of non-removed degrees is more optimal
 					list.RemoveAt(i);
@@ -737,6 +751,10 @@ namespace Neumont.Tools.Modeling.Diagrams
 					i++;
 				}
 			}
+		}
+		private static double NormalizeDegree(double degree)
+		{
+			return (degree >= 0.0) ? (degree % 360.0) : ((degree % 360.0) + 360.0);
 		}
 
 		/// <summary>
@@ -752,7 +770,8 @@ namespace Neumont.Tools.Modeling.Diagrams
 
 			int idx = 0;
 			List<double> tmp = new List<double>();
-			for (int i = 0; i < degrees.Count; i++)
+			int degreeCount = degrees.Count;
+			for (int i = 0; i < degreeCount; ++i)
 			{
 				if (idx == splitAt)
 				{
@@ -804,29 +823,28 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <summary>
 		/// Performs the grid-based radial layout algorithm.
 		/// </summary>
-		/// <param name="rootshape">The shape determined to be the center of the diagram.</param>
+		/// <param name="rootShape">The shape determined to be the center of the diagram.</param>
 		/// <param name="minX">A by-ref parameter to return the smallest (possibly negative) X value used to place a shape on the diagram.</param>
 		/// <param name="minY">A by-ref parameter to return the smallest (possibly negative) Y value used to place a shape on the diagram.</param>
-		public override void PerformLayout(LayoutShape rootshape, ref double minX, ref double minY)
+		public override void PerformLayout(LayoutShape rootShape, ref double minX, ref double minY)
 		{
 			FindLargestShape();
-			base.PerformLayout(rootshape, ref minX, ref minY);
+			base.PerformLayout(rootShape, ref minX, ref minY);
 		}
 
 		private void FindLargestShape()
 		{
-			double maxwidth = 0;
-			double maxheight = 0;
+			double maxWidth = 0;
+			double maxHeight = 0;
 			foreach (LayoutShape shape in myLayoutShapes)
 			{
-				if (shape.Shape.AbsoluteBounds.Width > maxwidth)
-					maxwidth = shape.Shape.AbsoluteBounds.Width;
-				if (shape.Shape.AbsoluteBounds.Height > maxheight)
-					maxheight = shape.Shape.AbsoluteBounds.Height;
+				RectangleD bounds = shape.Shape.AbsoluteBounds;
+				maxWidth = Math.Max(bounds.Width, maxWidth);
+				maxHeight = Math.Max(bounds.Height, maxHeight);
 			}
-			myLargestShape = new RectangleD(0, 0, maxwidth, maxheight);
-			myXInterval = (Math.Round(myLargestShape.Width * 100) / 100) + 0.3;
-			myYInterval = (Math.Round(myLargestShape.Height * 100) / 100) + 0.3;
+			myLargestShape = new RectangleD(0, 0, maxWidth, maxHeight);
+			myXInterval = (Math.Round(maxWidth * 100) / 100) + 0.3;
+			myYInterval = (Math.Round(maxHeight * 100) / 100) + 0.3;
 		}
 
 		/// <summary>
@@ -852,24 +870,38 @@ namespace Neumont.Tools.Modeling.Diagrams
 			if (delta_x != 0)
 			{
 				if (delta_x > myXInterval / 2)
+				{
 					x += (myXInterval - delta_x) * xsign;
+				}
 				else
+				{
 					x -= delta_x * xsign;
+				}
 			}
 			if (delta_y != 0)
 			{
 				if (delta_y > myYInterval / 2)
+				{
 					y += (myYInterval - delta_y) * ysign;
+				}
 				else
+				{
 					y -= delta_y * ysign;
+				}
 			}
 
 			// snap to grid
+			// UNDONE: This is way too expensive, and not accurate
+			// Key a collection off a point, and use a comparison
+			// routine that accounts for roundoff error to compare
+			// the points. There is no reason to use strings here.
 			string s = x.ToString() + "," + y.ToString();
 			bool ret = !myVisitedPoints.ContainsKey(s);
 			if (!ret)
+			{
 				// the grid location hadn't been encountered before, so add it
 				myVisitedPoints.Add(s, null);
+			}
 
 			return ret;
 		}
@@ -881,52 +913,25 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="parent">The <see cref="LayoutShape"/> that is placing the current shape on the diagram.</param>
 		/// <param name="originX">The X coordinate of the parent shape.</param>
 		/// <param name="originY">The Y coordinate of the parent shape.</param>
-		/// <param name="distmultiplier">The recommended distance from originX,originY (at angle <paramref name="angle"/>) to position <paramref name="shape"/>.</param>
+		/// <param name="distanceMultiplier">The recommended distance from originX,originY (at angle <paramref name="angle"/>) to position <paramref name="shape"/>.</param>
 		/// <param name="angle">The angle from originX,originY to position <paramref name="shape"/></param>
 		/// <param name="x">The result of the calculation of x</param>
 		/// <param name="y">The result of the calculation of y</param>
-		protected override void CalculateShapeXY(LayoutShape shape, LayoutShape parent, double originX, double originY, double distmultiplier, double angle, out double x, out double y)
+		protected override void CalculateShapeXY(LayoutShape shape, LayoutShape parent, double originX, double originY, double distanceMultiplier, double angle, out double x, out double y)
 		{
-			double rad, cos, sin;
-			rad = angle * RADIANS;
-			cos = Math.Cos(rad);
-			sin = -Math.Sin(rad);
-			x = (cos * distmultiplier) + originX;
-			y = (sin * distmultiplier) + originY;
+			double rad = angle * RADIANS;
+			double scaledCos = Math.Cos(rad) * distanceMultiplier;
+			double scaledSin = -Math.Sin(rad) * distanceMultiplier;
+			x = scaledCos + originX;
+			y = scaledSin + originY;
 
 			while (!SnapToGrid(ref x, ref y))
 			{
-				distmultiplier *= 1.2;
-				x = (cos * distmultiplier) + originX;
-				y = (sin * distmultiplier) + originY;
+				scaledCos *= 1.2;
+				scaledSin *= 1.2;
+				x = scaledCos + originX;
+				y = scaledSin + originY;
 			}
-		}
-	}
-	#endregion
-
-	#region DummyLayoutEngine - engine sample
-	/// <summary>
-	/// A sample layout engine template.
-	/// </summary>
-	public class DummyLayoutEngine
-		: LayoutEngine
-	{
-		/// <summary>
-		/// Standard constructor, simply delegates back up the chain.
-		/// </summary>
-		public DummyLayoutEngine()
-		{
-		}
-
-		/// <summary>
-		/// Performs no layout algorithm.
-		/// </summary>
-		/// <param name="rootshape">The shape determined to be the center of the diagram.</param>
-		/// <param name="minX">A by-ref parameter to return the smallest (possibly negative) X value used to place a shape on the diagram.</param>
-		/// <param name="minY">A by-ref parameter to return the smallest (possibly negative) Y value used to place a shape on the diagram.</param>
-		public override void PerformLayout(LayoutShape rootshape, ref double minX, ref double minY)
-		{
-			throw new NotSupportedException("The dummy layout engine is for sample purposes only.");
 		}
 	}
 	#endregion
@@ -941,17 +946,6 @@ namespace Neumont.Tools.Modeling.Diagrams
 	/// </summary>
 	public struct LayoutVector
 	{
-		/// <summary>
-		/// Returns a 0-initialized vector
-		/// </summary>
-		public static LayoutVector Empty
-		{
-			get
-			{
-				return new LayoutVector(0, 0, 0);
-			}
-		}
-
 		/// <summary>
 		/// X coordinate of the origin
 		/// </summary>
@@ -982,6 +976,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 	/// <summary>
 	/// A helper class to encapsulate information about a particular <see cref="NodeShape"/> on the diagram.
 	/// </summary>
+	[DebuggerDisplay("LayoutShape for '{Shape.ModelElement}'")]
 	public class LayoutShape
 	{
 		/// <summary>
@@ -1007,15 +1002,15 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <summary>
 		/// The placement state of the corresponding <see cref="NodeShape"/>.  When true, the shape has been placed by the layout engine (unless Pinned is true).
 		/// </summary>
-		public bool Placed = false;
+		public bool Placed;
 		/// <summary>
 		/// The target location of the <see cref="NodeShape"/>.  Only used during the layout process.
 		/// </summary>
-		public PointD TargetLocation = PointD.Empty;
+		public PointD TargetLocation;
 		/// <summary>
 		/// For non-deterministic layout engines, this vector provides an open-ended mechanism.
 		/// </summary>
-		public LayoutVector TargetVector = LayoutVector.Empty;
+		public LayoutVector TargetVector;
 		/// <summary>
 		/// The LayoutShape that ends up drawing this LayoutShape on the diagram.
 		/// </summary>
@@ -1066,8 +1061,8 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <summary>
 		/// Allows the <see cref="LayoutShape"/> to translate references from <see cref="NodeShape"/> instances to their <see cref="LayoutShape"/> containers.
 		/// </summary>
-		/// <param name="resolver">An instance of <see cref="NodeShapeToLayoutShapeResolver"/></param>
-		public void ResolveReferences(NodeShapeToLayoutShapeResolver resolver)
+		/// <param name="allShapes">An instance of <see cref="LayoutShapeList"/></param>
+		public void ResolveReferences(LayoutShapeList allShapes)
 		{
 			if (RelatedShapes.Count > 0)
 			{
@@ -1084,9 +1079,9 @@ namespace Neumont.Tools.Modeling.Diagrams
 				}
 
 				NodeShape relation = (binaryLink.FromShape != Shape ? binaryLink.FromShape : binaryLink.ToShape);
-				if (resolver.ContainsKey(relation))
+				LayoutShape relative;
+				if (allShapes.TryGetValue(relation, out relative))
 				{
-					LayoutShape relative = resolver[relation];
 					RelatedShapes.Add(relative);
 				}
 			}
@@ -1135,50 +1130,43 @@ namespace Neumont.Tools.Modeling.Diagrams
 				this.Parent.Gather(grandchild);
 			}
 		}
-
-		/// <summary>
-		/// String representation of a <seealso cref="LayoutShape"/>
-		/// </summary>
-		/// <returns>The words "LayoutShape for " followed by the value of the <seealso cref="ModelElement"/> ToString() method.</returns>
-		public override string ToString()
-		{
-			return "LayoutShape for " + (Shape != null ? "'" + Shape.ModelElement.ToString() + "'" : "null");
-		}
 	}
 	#endregion
 	#region Simple helper classes
 	/// <summary>
-	/// Helper class for the layout engine.  Provides references from <see cref="NodeShape"/>s to their <see cref="LayoutShape"/> containers.
+	/// Helper class to find a <see cref="LayoutShape"/> by its contained <see cref="NodeShape"/>
 	/// </summary>
-	public class NodeShapeToLayoutShapeResolver : Dictionary<NodeShape, LayoutShape> { }
-	/// <summary>
-	/// Helper class that contains a method to find a <see cref="LayoutShape"/> by its contained <see cref="NodeShape"/>
-	/// </summary>
-	public class LayoutShapeList : List<LayoutShape>
+	public class LayoutShapeList : KeyedCollection<NodeShape, LayoutShape>
 	{
 		/// <summary>
-		/// Default constructor.  Ensures a minimum capacity of 100 items.
+		/// Default constructor.
 		/// </summary>
 		public LayoutShapeList()
-			: base(100)
+			: base(null, 8)
 		{
 		}
-
 		/// <summary>
-		/// Searches the list for <paramref name="shape"/> within any of the contained <see cref="LayoutShape"/> objects.
+		/// Key the layout shape off the key shape
 		/// </summary>
-		/// <param name="shape"></param>
-		/// <returns></returns>
-		public LayoutShape FindByNodeShape(NodeShape shape)
+		protected override NodeShape GetKeyForItem(LayoutShape item)
 		{
-			foreach (LayoutShape layshape in this)
+			return item.Shape;
+		}
+		/// <summary>
+		/// Searches for a <paramref name="value"/> based on its <paramref name="key"/>
+		/// </summary>
+		/// <param name="key">A <see cref="NodeShape"/> that might be associated with a <see cref="LayoutShape"/></param>
+		/// <param name="value">Returns a <see cref="LayoutShape"/> or <see langword="null"/></param>
+		/// <returns>Returns <see langword="true"/> if the item is found.</returns>
+		public bool TryGetValue(NodeShape key, out LayoutShape value)
+		{
+			if (Contains(key))
 			{
-				if (layshape.Shape == shape)
-				{
-					return layshape;
-				}
+				value = this[key];
+				return true;
 			}
-			return null;
+			value = null;
+			return false;
 		}
 	}
 	#endregion
