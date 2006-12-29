@@ -109,6 +109,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Support automatic appearance updating when multiple presentations are present.
+		/// </summary>
+		public override bool DisplaysMultiplePresentations
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
 		/// Connect lines to the edge of the rectangular shape
 		/// </summary>
 		public override ShapeGeometry ShapeGeometry

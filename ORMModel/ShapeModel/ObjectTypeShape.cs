@@ -52,6 +52,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Support automatic appearance updating when multiple presentations are present.
+		/// </summary>
+		public override bool DisplaysMultiplePresentations
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
 		/// Switch between the standard solid pen and
 		/// a dashed pen depending on the objectification settings
 		/// </summary>

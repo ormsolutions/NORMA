@@ -68,7 +68,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
 	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
-	public partial class ORMDiagram : IProxyDisplayProvider
+	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
 	{
 		#region Constructors
 		/// <summary>Constructor.</summary>
@@ -145,8 +145,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool retVal = false;
 			ObjectType objectType = null;
 			FactType factType = null;
-			SetComparisonConstraint multiCol = null;
-			SetConstraint singleCol = null;
+			SetComparisonConstraint setComparisonConstraint = null;
+			SetConstraint setConstraint = null;
 			ModelNote modelNote = null;
 			ModelElement element = null;
 			LinkedElementCollection<FactType> verifyFactTypeList = null;
@@ -158,15 +158,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				element = factType;
 			}
-			else if (null != (multiCol = (dataObject == null) ? elementToPlace as SetComparisonConstraint : dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
+			else if (null != (setComparisonConstraint = (dataObject == null) ? elementToPlace as SetComparisonConstraint : dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
 			{
-				verifyFactTypeList = multiCol.FactTypeCollection;
-				element = multiCol;
+				verifyFactTypeList = setComparisonConstraint.FactTypeCollection;
+				element = setComparisonConstraint;
 			}
-			else if (null != (singleCol = (dataObject == null) ? elementToPlace as SetConstraint : dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
+			else if (null != (setConstraint = (dataObject == null) ? elementToPlace as SetConstraint : dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
 			{
-				verifyFactTypeList = singleCol.FactTypeCollection;
-				element = singleCol;
+				verifyFactTypeList = setConstraint.FactTypeCollection;
+				element = setConstraint;
 			}
 			else if (null != (modelNote = (dataObject == null) ? elementToPlace as ModelNote : dataObject.GetData(typeof(ModelNote)) as ModelNote))
 			{
@@ -174,32 +174,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			if (verifyFactTypeList != null)
 			{
-				int factsRemaining = verifyFactTypeList.Count;
-				if (factsRemaining != 0)
+				int factCount = verifyFactTypeList.Count;
+				for (int i = 0; i < factCount; ++i)
 				{
-					ModelElement testElement = element;
-					element = null;
-					bool[] factsContained = new bool[factsRemaining];
-					FactType fact;
-					foreach (ShapeElement shape in NestedChildShapes)
+					if (null == FindShapeForElement(verifyFactTypeList[i]))
 					{
-						if (null != (fact = shape.ModelElement as FactType))
-						{
-							int index = verifyFactTypeList.IndexOf(fact);
-							if (index != -1)
-							{
-								if (!factsContained[index])
-								{
-									factsContained[index] = true;
-									--factsRemaining;
-									if (factsRemaining == 0)
-									{
-										element = testElement;
-										break;
-									}
-								}
-							}
-						}
+						element = null;
+						break;
 					}
 				}
 			}
@@ -220,117 +201,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						DropTargetContext.Remove(transaction.TopLevelTransaction);
 					}
-					DropTargetContext.Remove(transaction.TopLevelTransaction);
-					if (factType != null && factType.RoleCollection != null)
+					if (factType != null)
 					{
-						LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
-						for (int i = 0; i < roleCollection.Count; i++)
-						{
-							//Role role = roleBase.Role;
-							Role role = roleCollection[i].Role;
-							// Pick up role players
-							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
-
-							// Pick up attached constraints
-							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
-							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
-
-							// Pick up the role shape
-							FixUpLocalDiagram(factType, role);
-
-							// Get the role value constraint and the link to it.
-							RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
-
-							if (valueConstraintLink != null)
-							{
-								FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
-							}
-
-						}
-						LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
-						if (orders.Count != 0)
-						{
-							FixUpLocalDiagram(factType, orders[0]);
-						}
-						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
-						Objectification objectification = factType.Objectification;
-						if (objectification != null && !objectification.IsImplied)
-						{
-							ObjectType nestingType = objectification.NestingType;
-							FixUpLocalDiagram(factType, nestingType);
-							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
-						}
+						FixupFactType(factType, false);
 					}
 					else if (objectType != null)
 					{
-						ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(objectType, ObjectTypePlaysRole.RolePlayerDomainRoleId);
-						int linksCount = rolePlayerLinks.Count;
-						for (int i = 0; i < linksCount; ++i)
-						{
-							ObjectTypePlaysRole link = rolePlayerLinks[i];
-							Role role = link.PlayedRole;
-							SubtypeMetaRole subRole;
-							SupertypeMetaRole superRole;
-							FactType subtypeFact = null;
-							if (null != (subRole = role as SubtypeMetaRole))
-							{
-								subtypeFact = role.FactType;
-							}
-							else if (null != (superRole = role as SupertypeMetaRole))
-							{
-								subtypeFact = role.FactType;
-							}
-							if (subtypeFact != null)
-							{
-								FixUpLocalDiagram(null, subtypeFact);
-							}
-							else
-							{
-								FixUpLocalDiagram(null, link);
-							}
-						}
-						ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
-						if (valueConstraint != null)
-						{
-							FixUpLocalDiagram(objectType, valueConstraint);
-						}
-						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+						FixupObjectType(objectType, false);
 					}
-					else if (singleCol != null)
+					else if (setConstraint != null)
 					{
-						FixupRelatedLinks(
-							null,
-							DomainRoleInfo.GetElementLinks<ElementLink>(singleCol, FactSetConstraint.SetConstraintDomainRoleId),
-							delegate(ElementLink link, ShapeElement newShape)
-							{
-								ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
-								if (linkShape != null)
-								{
-									FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
-									if (shape != null)
-									{
-										shape.ConstraintShapeSetChanged(singleCol);
-									}
-								}
-							});
+						FixupSetConstraint(setConstraint);
 					}
-					else if (multiCol != null)
+					else if (setComparisonConstraint != null)
 					{
-						FixupRelatedLinks(
-							null,
-							DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId),
-							delegate(ElementLink link, ShapeElement newShape)
-							{
-								ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
-								if (linkShape != null)
-								{
-									FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
-									if (shape != null)
-									{
-										shape.ConstraintShapeSetChanged(multiCol);
-									}
-								}
-							});
+						FixupSetComparisonConstraint(setComparisonConstraint);
 					}
 					else if (modelNote != null)
 					{
@@ -355,6 +240,129 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			} 
 			return retVal;
+		}
+		private void FixupFactType(FactType factType, bool childShapesMerged)
+		{
+			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
+			int roleCount = roleCollection.Count;
+			for (int i = 0; i < roleCount; ++i)
+			{
+				//Role role = roleBase.Role;
+				Role role = roleCollection[i].Role;
+				// Pick up role players
+				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+
+				// Pick up attached constraints
+				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
+				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
+
+				if (!childShapesMerged)
+				{
+					// Pick up the role shape
+					FixUpLocalDiagram(factType, role);
+
+					// Get the role value constraint and the link to it.
+					RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
+
+					if (valueConstraintLink != null)
+					{
+						FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
+					}
+				}
+			}
+			if (!childShapesMerged)
+			{
+				LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
+				if (orders.Count != 0)
+				{
+					FixUpLocalDiagram(factType, orders[0]);
+				}
+			}
+			FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
+			Objectification objectification = factType.Objectification;
+			if (objectification != null && !objectification.IsImplied)
+			{
+				ObjectType nestingType = objectification.NestingType;
+				if (!childShapesMerged)
+				{
+					FixUpLocalDiagram(factType, nestingType);
+				}
+				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+			}
+		}
+		private void FixupObjectType(ObjectType objectType, bool childShapeMerged)
+		{
+			ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(objectType, ObjectTypePlaysRole.RolePlayerDomainRoleId);
+			int linksCount = rolePlayerLinks.Count;
+			for (int i = 0; i < linksCount; ++i)
+			{
+				ObjectTypePlaysRole link = rolePlayerLinks[i];
+				Role role = link.PlayedRole;
+				SubtypeMetaRole subRole;
+				SupertypeMetaRole superRole;
+				FactType subtypeFact = null;
+				if (null != (subRole = role as SubtypeMetaRole))
+				{
+					subtypeFact = role.FactType;
+				}
+				else if (null != (superRole = role as SupertypeMetaRole))
+				{
+					subtypeFact = role.FactType;
+				}
+				if (subtypeFact != null)
+				{
+					FixUpLocalDiagram(null, subtypeFact);
+				}
+				else
+				{
+					FixUpLocalDiagram(null, link);
+				}
+			}
+			if (!childShapeMerged)
+			{
+				ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
+				if (valueConstraint != null)
+				{
+					FixUpLocalDiagram(objectType, valueConstraint);
+				}
+			}
+			FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+		}
+		private void FixupSetConstraint(SetConstraint setConstraint)
+		{
+			FixupRelatedLinks(
+				null,
+				DomainRoleInfo.GetElementLinks<ElementLink>(setConstraint, FactSetConstraint.SetConstraintDomainRoleId),
+				delegate(ElementLink link, ShapeElement newShape)
+				{
+					ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
+					if (linkShape != null)
+					{
+						FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
+						if (shape != null)
+						{
+							shape.ConstraintShapeSetChanged(setConstraint);
+						}
+					}
+				});
+		}
+		private void FixupSetComparisonConstraint(SetComparisonConstraint setComparisonConstraint)
+		{
+			FixupRelatedLinks(
+				null,
+				DomainRoleInfo.GetElementLinks<ElementLink>(setComparisonConstraint, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId),
+				delegate(ElementLink link, ShapeElement newShape)
+				{
+					ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
+					if (linkShape != null)
+					{
+						FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
+						if (shape != null)
+						{
+							shape.ConstraintShapeSetChanged(setComparisonConstraint);
+						}
+					}
+				});
 		}
 		/// <summary>
 		/// Callback used with <see cref="FixupRelatedLinks(ModelElement,ReadOnlyCollection{ElementLink},AfterLinkFixup)"/>
@@ -573,10 +581,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					IServiceProvider serviceProvider;
 					IMonitorSelectionService selectionService;
 					DiagramDocView currentView;
-					if (null == (serviceProvider = (Store as IORMToolServices).ServiceProvider) ||
+					Store store = Store;
+					TransactionManager transactionManager = store.TransactionManager;
+					Guid diagramDropTargetId;
+					if (transactionManager.InTransaction &&
+						((null == (serviceProvider = (store as IORMToolServices).ServiceProvider) ||
 						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
 						null == (currentView = selectionService.CurrentDocumentView as DiagramDocView) ||
-						currentView.CurrentDesigner != activeDiagramView)
+						currentView.CurrentDesigner != activeDiagramView) ||
+						((diagramDropTargetId = DropTargetContext.GetTargetDiagramId(transactionManager.CurrentTransaction.TopLevelTransaction)) != Guid.Empty &&
+						diagramDropTargetId != this.Id)))
 					{
 						return false;
 					}
@@ -1530,6 +1544,337 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ElementDisplayedAs(element);
 		}
 		#endregion // IProxyDisplayProvider Implementation
+		#region IMergeElements implementation
+		/// <summary>
+		/// Implements <see cref="IMergeElements.MergeRelate"/>. Allows
+		/// duplication of shapes across diagrams in the same model.
+		/// </summary>
+		protected new void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
+		{
+			ShapeElement shape = sourceElement as ShapeElement;
+			if (shape != null && shape.ParentShape == null)
+			{
+				NestedChildShapes.Add(shape);
+				MergeRelateShape(shape);
+			}
+		}
+		/// <summary>
+		/// Complete the merge of a top-level shape element into the diagram. Called immediately
+		/// after the <paramref name="shape"/> element is added to the <see cref="ShapeElement.NestedChildShapes"/> collection.
+		/// </summary>
+		/// <param name="shape">The newly merged <see cref="ShapeElement"/></param>
+		protected virtual void MergeRelateShape(ShapeElement shape)
+		{
+			ModelElement element = shape.ModelElement;
+			FactType factType;
+			ObjectType objectType;
+			SetConstraint setConstraint;
+			SetComparisonConstraint setComparisonConstraint;
+			if (null != (factType = element as FactType))
+			{
+				FixupFactType(factType, true);
+			}
+			else if (null != (objectType = element as ObjectType))
+			{
+				FixupObjectType(objectType, true);
+			}
+			else if (null != (setConstraint = element as SetConstraint))
+			{
+				FixupSetConstraint(setConstraint);
+			}
+			else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
+			{
+				FixupSetComparisonConstraint(setComparisonConstraint);
+			}
+		}
+		void IMergeElements.MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
+		{
+			MergeRelate(sourceElement, elementGroup);
+		}
+		/// <summary>
+		/// Make sure that all elements in <paramref name="verifyFactTypes"/>
+		/// have a corresponding shape on the diagram or a pending shape in
+		/// the <paramref name="elementGroupPrototype"/>
+		/// </summary>
+		/// <param name="verifyFactTypes">An <see cref="IList{FactType}"/> to verify</param>
+		/// <param name="elementGroupPrototype">The <see cref="ElementGroupPrototype"/> that is being merged</param>
+		/// <returns><see langword="true"/> if all <see cref="FactType"/>s are accounted for.</returns>
+		private bool VerifyCorrespondingFactTypes(IList<FactType> verifyFactTypes, ElementGroupPrototype elementGroupPrototype)
+		{
+			int factCount = verifyFactTypes.Count;
+			bool searchedPrototypes = elementGroupPrototype == null;
+			FactType[] verifyFactTypes_Editable = null;
+			for (int i = 0; i < factCount; ++i)
+			{
+				FactType verifyFact = verifyFactTypes[i];
+				if (null != verifyFact &&
+					null == FindShapeForElement(verifyFact))
+				{
+					if (searchedPrototypes)
+					{
+						return false;
+					}
+					searchedPrototypes = true;
+					// See which prototype facts are being added. Create an editable list so
+					// we can walk this once only.
+					IElementDirectory elementDirectory = Store.ElementDirectory;
+					ReadOnlyCollection < ProtoElement > rootElements = elementGroupPrototype.RootProtoElements;
+					int rootElementCount = rootElements.Count;
+					for (int j = 0; j < rootElementCount; ++j)
+					{
+						PresentationElement testPel;
+						FactType testFactType;
+						if (null != (testPel = elementDirectory.FindElement(rootElements[j].ElementId) as PresentationElement) &&
+							null != (testFactType = testPel.ModelElement as FactType))
+						{
+							int verifyIndex = verifyFactTypes.IndexOf(testFactType);
+							if (verifyIndex != -1)
+							{
+								if (verifyFactTypes_Editable == null)
+								{
+									verifyFactTypes_Editable = new FactType[factCount];
+									verifyFactTypes.CopyTo(verifyFactTypes_Editable, 0);
+									for (int k = 0; k < i; ++k)
+									{
+										verifyFactTypes_Editable[k] = null;
+									}
+									verifyFactTypes = verifyFactTypes_Editable;
+								}
+								verifyFactTypes_Editable[verifyIndex] = null;
+							}
+						}
+					}
+					if (verifyFactTypes[i] != null)
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		/// <summary>
+		/// Extend CanMerge to allow duplication of shapes across diagrams in the same model
+		/// </summary>
+		protected override bool CanMerge(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
+		{
+			Store store = Store;
+			PresentationElement pel;
+			ModelElement element;
+			object storeId;
+			if (Partition == store.DefaultPartition &&
+				elementGroupPrototype.SourceContext.ContextInfo.TryGetValue("SourceStore", out storeId) &&
+				storeId != null &&
+				(Guid)storeId == store.Id &&
+				null != (pel = store.ElementDirectory.FindElement(rootElement.ElementId) as PresentationElement) &&
+				null != (element = pel.ModelElement) &&
+				null == FindShapeForElement(element) &&
+				ShouldAddShapeForElement(element))
+			{
+				return CanMergeElement(element, elementGroupPrototype);
+			}
+			return base.CanMerge(rootElement, elementGroupPrototype);
+		}
+		/// <summary>
+		/// Provide element-specific testing to determine if an element can be merged or not.
+		/// This provides a stronger test than <see cref="ShouldAddShapeForElement"/>, which does
+		/// not consider pending shapes representing by the <paramref name="elementGroupPrototype"/>
+		/// </summary>
+		/// <param name="element">A <see cref="ModelElement"/> that does not currently have a shape on the
+		/// diagram and has already passed the <see cref="ShouldAddShapeForElement"/> method.</param>
+		/// <param name="elementGroupPrototype">The <see cref="ElementGroupPrototype"/> that is being merged</param>
+		/// <returns><see langword="true"/> to allow merge.</returns>
+		protected virtual bool CanMergeElement(ModelElement element, ElementGroupPrototype elementGroupPrototype)
+		{
+			bool retVal = true;
+			SetConstraint setConstraint;
+			SetComparisonConstraint setComparisonConstraint;
+			if (null != (setConstraint = element as SetConstraint))
+			{
+				retVal = VerifyCorrespondingFactTypes(setConstraint.FactTypeCollection, elementGroupPrototype);
+			}
+			else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
+			{
+				retVal = VerifyCorrespondingFactTypes(setComparisonConstraint.FactTypeCollection, elementGroupPrototype);
+			}
+			return retVal;
+		}
+		[NonSerialized]
+		private ORMDesignerElementOperations myElementOperations;
+		/// <summary>
+		/// Modified element operations to allow duplication of shapes across diagrams
+		/// in the same model.
+		/// </summary>
+		public override DesignSurfaceElementOperations ElementOperations
+		{
+			get
+			{
+				ORMDesignerElementOperations elementOperations = myElementOperations;
+				if (elementOperations == null)
+				{
+					myElementOperations = elementOperations = new ORMDesignerElementOperations(Store);
+				}
+				return elementOperations;
+			}
+		}
+		/// <summary>
+		/// Reconstitute parts of a merged shape that are not duplicated as
+		/// part of the copy closure.
+		/// </summary>
+		/// <param name="mergedShape">The new shape being merged</param>
+		/// <param name="prototypeShape">The shape the new shape is based on</param>
+		protected virtual void ReconstituteMergedShape(PresentationElement mergedShape, PresentationElement prototypeShape)
+		{
+			FactTypeShape factTypeShape;
+			if (null != (factTypeShape = mergedShape as FactTypeShape))
+			{
+				// Role order display is not included in the copy because
+				// of the direct links to the object model. We need to reattach
+				// to existing roles, not create new ones as part of the prototype.
+				FactTypeShape protoFactTypeShape = (FactTypeShape)prototypeShape;
+				LinkedElementCollection<RoleBase> protoDisplayRoles = protoFactTypeShape.RoleDisplayOrderCollection;
+				int displayRoleCount = protoDisplayRoles.Count;
+				if (displayRoleCount != 0)
+				{
+					LinkedElementCollection<RoleBase> displayRoles = factTypeShape.RoleDisplayOrderCollection;
+					for (int j = 0; j < displayRoleCount; ++j)
+					{
+						displayRoles.Add(protoDisplayRoles[j]);
+					}
+				}
+			}
+		}
+		#region ORMDesignerElementOperations class
+		/// <summary>
+		/// Support duplication of shapes across diagrams in the same model
+		/// </summary>
+		protected class ORMDesignerElementOperations : DesignSurfaceElementOperations
+		{
+			/// <summary>
+			/// Create custom operations to allow copying of shapes between
+			/// diagrams in the same model
+			/// </summary>
+			/// <param name="store">The context <see cref="Store"/></param>
+			public ORMDesignerElementOperations(Store store)
+				: base((IServiceProvider)store, store)
+			{
+			}
+			/// <summary>
+			/// Mark all non-parented shape elements as root elements before propagating element group
+			/// </summary>
+			protected override void PropagateElementGroupContextToTransaction(ModelElement targetElement, ElementGroup elementGroup, Transaction t)
+			{
+				ReadOnlyCollection<ModelElement> rootElements = elementGroup.RootElements;
+				ReadOnlyCollection<ModelElement> elements = elementGroup.ModelElements;
+				int elementCount = elements.Count;
+				for (int i = 0; i < elementCount; ++i)
+				{
+					ShapeElement shape = elements[i] as ShapeElement;
+					if (shape != null && shape.ParentShape == null && !rootElements.Contains(shape))
+					{
+						elementGroup.MarkAsRoot(shape);
+					}
+				}
+				base.PropagateElementGroupContextToTransaction(targetElement, elementGroup, t);
+			}
+			/// <summary>
+			/// Presort elements before copying. The element order is persistent through the
+			/// copy operation. Presorting the elements makes merging much easier at the drop target.
+			/// Sorting can be modified by overriding the <see cref="CopyOrderComparer"/> property,
+			/// which uses the <see cref="CompareElementsForCopy"/> method as the default sort.
+			/// </summary>
+			public override void Copy(IDataObject data, ICollection<ModelElement> elements, ClosureType closureType, PointF sourcePosition)
+			{
+				int elementCount = elements.Count;
+				if (elementCount > 1)
+				{
+					Comparison<ModelElement> comparer = CopyOrderComparer;
+					if (comparer != null)
+					{
+						ModelElement[] sortedElements = new ModelElement[elementCount];
+						elements.CopyTo(sortedElements, 0);
+						Array.Sort<ModelElement>(sortedElements, comparer);
+						elements = sortedElements;
+					}
+				}
+				base.Copy(data, elements, closureType, sourcePosition);
+			}
+			/// <summary>
+			/// Use as a compare routine to presort copied elements. Override and
+			/// return null for no sort. The default compare is available in the
+			/// <see cref="CompareElementsForCopy"/> method.
+			/// </summary>
+			protected virtual Comparison<ModelElement> CopyOrderComparer
+			{
+				get
+				{
+					return new Comparison<ModelElement>(CompareElementsForCopy);
+				}
+			}
+			/// <summary>
+			/// Reorder elements so that <see cref="ExternalConstraintShape"/> elements
+			/// are copied last. Used by the <see cref="CopyOrderComparer"/> and <see cref="Copy"/> methods.
+			/// </summary>
+			protected static int CompareElementsForCopy(ModelElement element1, ModelElement element2)
+			{
+				if (element1 == element2)
+				{
+					return 0;
+				}
+				int retVal = 0;
+				ExternalConstraintShape constraintShape1 = element1 as ExternalConstraintShape;
+				ExternalConstraintShape constraintShape2 = element2 as ExternalConstraintShape;
+				if (constraintShape1 == null)
+				{
+					if (constraintShape2 != null)
+					{
+						retVal = -1;
+					}
+				}
+				else if (constraintShape2 == null)
+				{
+					retVal = 1;
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Support shape merging by reattaching model elements to the shapes
+			/// before an attempt is made to merge the shapes into the diagram.
+			/// </summary>
+			protected override void OnElementsReconstituted(MergeElementGroupEventArgs e)
+			{
+				ORMDiagram diagram;
+				Store store;
+				if (null != (diagram = e.TargetElement as ORMDiagram) &&
+					diagram.Partition == (store = diagram.Store).DefaultPartition)
+				{
+					ElementGroup group = e.ElementGroup;
+					ReadOnlyCollection<ModelElement> elements = group.ModelElements;
+					ReadOnlyCollection<ProtoElement> protoElements = e.ElementGroupPrototype.ProtoElements;
+					DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+					IElementDirectory elementDirectory = store.ElementDirectory;
+					DomainClassInfo baseShapeClassInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
+					int elementCount = elements.Count;
+					Debug.Assert(elementCount == protoElements.Count);
+					for (int i = 0; i < elementCount; ++i)
+					{
+						PresentationElement pel;
+						PresentationElement protoShape;
+						ModelElement backingElement;
+						if (null != (pel = elements[i] as PresentationElement) &&
+							null != (protoShape = elementDirectory.FindElement(protoElements[i].ElementId) as PresentationElement) &&
+							null != (backingElement = protoShape.ModelElement))
+						{
+							pel.Associate(backingElement);
+							// Defer to an overridable callback for additional shape-specific fixup
+							diagram.ReconstituteMergedShape(pel, protoShape);
+						}
+					}
+				}
+				base.OnElementsReconstituted(e);
+			}
+		}
+		#endregion // ORMDesignerElementOperations class
+		#endregion // IMergeElements implementation
 	}
 
 	#region ORMDiagramBase class

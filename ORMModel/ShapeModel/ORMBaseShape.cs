@@ -31,6 +31,7 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
+	[DebuggerDisplay("{System.String.Concat(ToString(), \": \",(ModelElement != null) ? ModelElement.ToString() : \"null\")}")]
 	public partial class ORMBaseShape
 	{
 		#region Public token values
@@ -89,7 +90,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Determines if a the model element backing the shape element
 		/// is represented by a shape of the same type elsewhere in the presentation
-		/// layer.
+		/// layer. If a derived shape displays multiple presentations, they should
+		/// also override the <see cref="DisplaysMultiplePresentations"/> property.
 		/// </summary>
 		public static bool ElementHasMultiplePresentations(ShapeElement shapeElement)
 		{
@@ -121,6 +123,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override bool HasShadow
 		{
 			get { return false; }
+		}
+		/// <summary>
+		/// Indicate that the shape changes its display when more
+		/// than one presentation is visible. Derived shapes should
+		/// use the <see cref="ElementHasMultiplePresentations"/> method
+		/// to determine when multiple presentations should be displayed.
+		/// Default is <see langword="false"/>
+		/// </summary>
+		public virtual bool DisplaysMultiplePresentations
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Default to no sides being resizable.
@@ -394,7 +410,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			eventManager.AddOrRemoveHandler(store.DomainDataDirectory.FindDomainClass(ORMBaseShape.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(PropertyChangedEvent), action);
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(PropertyChangedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ShapeAddedEvent), action);
+			classInfo = dataDirectory.FindDomainClass(PresentationViewsSubject.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ShapeDeletedEvent), action);
 		}
 		private static void PropertyChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
@@ -405,6 +426,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					shape.BeforeInvalidate();
 					shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
+				}
+			}
+		}
+		private static void ShapeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ORMBaseShape shape = e.ModelElement as ORMBaseShape;
+			ModelElement backingElement;
+			if (shape.DisplaysMultiplePresentations &&
+				null != (backingElement = shape.ModelElement))
+			{
+				InvalidateRemainingShapes(backingElement, shape);
+			}
+		}
+		private static void ShapeDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			PresentationViewsSubject link = e.ModelElement as PresentationViewsSubject;
+			ORMBaseShape shape;
+			ModelElement backingElement;
+			if (!(backingElement = link.Subject).IsDeleted &&
+				null != (shape = link.Presentation as ORMBaseShape) &&
+				shape.DisplaysMultiplePresentations)
+			{
+				InvalidateRemainingShapes(backingElement, null);
+			}
+		}
+		private static void InvalidateRemainingShapes(ModelElement backingElement, ORMBaseShape ignoreShape)
+		{
+			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(backingElement);
+			int pelCount = pels.Count;
+			if (ignoreShape == null || pelCount > 1)
+			{
+				for (int i = 0; i < pelCount; ++i)
+				{
+					PresentationElement pel = pels[i];
+					ORMBaseShape updateShape;
+					if (pel != ignoreShape &&
+						null != (updateShape = pel as ORMBaseShape))
+					{
+						updateShape.Invalidate();
+					}
 				}
 			}
 		}

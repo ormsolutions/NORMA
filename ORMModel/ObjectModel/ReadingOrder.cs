@@ -87,6 +87,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return null;
 			}
 		}
+		/// <summary>
+		/// Return the string of the <see cref="PrimaryReading"/> if available.
+		/// </summary>
+		public override string ToString()
+		{
+			Reading primary = PrimaryReading;
+			return (primary != null) ? primary.ToString() : base.ToString();
+		}
 		#endregion
 		#region EnforceNoEmptyReadingOrder rule class
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)] // DeleteRule

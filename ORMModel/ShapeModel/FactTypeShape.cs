@@ -2811,6 +2811,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Support automatic appearance updating when multiple presentations are present.
+		/// </summary>
+		public override bool DisplaysMultiplePresentations
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
 		/// Always highlight
 		/// </summary>
 		public override bool HasHighlighting

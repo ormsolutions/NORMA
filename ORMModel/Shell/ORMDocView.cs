@@ -3130,6 +3130,17 @@ namespace Neumont.Tools.ORM.Shell
 						ref logicalView,
 						out pNewWindowFrame));
 					ErrorHandler.ThrowOnFailure(pNewWindowFrame.Show());
+
+					// Activate the same diagram that we currently have selected
+					object pDocView = null;
+					ErrorHandler.ThrowOnFailure(pNewWindowFrame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out pDocView));
+					ORMDesignerDocView newView;
+					Diagram selectDiagram;
+					if (null != (newView = pDocView as ORMDesignerDocView) &&
+						null != (selectDiagram = CurrentDiagram))
+					{
+						newView.ActivateDiagram(selectDiagram);
+					}
 				}
 				finally
 				{

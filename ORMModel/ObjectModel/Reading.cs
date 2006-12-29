@@ -49,7 +49,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] roleNames = new string[roleCount];
 				for (int i = 0; i < roleCount; ++i)
 				{
-					roleNames[i] = roles[i].Role.Name;
+					Role role = roles[i].Role;
+					string name = role.Name;
+					if (name.Length == 0)
+					{
+						ObjectType rolePlayer = role.RolePlayer;
+						if (rolePlayer != null)
+						{
+							name = rolePlayer.Name;
+						}
+					}
+					roleNames[i] = (name.Length != 0) ? name : ("{" + i.ToString(CultureInfo.InvariantCulture) + "}");
 				}
 				return string.Format(CultureInfo.InvariantCulture, this.Text, roleNames);
 			}

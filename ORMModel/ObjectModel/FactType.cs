@@ -1242,8 +1242,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected override void MergeConfigure(ElementGroup elementGroup)
 		{
-			// Do nothing here. The base calls SetUniqueName, but we don't enforce
-			// unique names on the generated FactType name.
+			// Do not forward to the base here. The base calls SetUniqueName,
+			// but we don't enforce unique names on the generated FactType name.
+
+			// If the Objectification is set during merge, then we need to
+			// make sure the names are in sync.
+			ObjectType nestingType = NestingType;
+			if (nestingType != null)
+			{
+				string generatedName = GenerateName();
+				string nestingTypeName = nestingType.Name;
+				if (nestingTypeName.Length == 0 || generatedName == nestingTypeName)
+				{
+					myGeneratedName = generatedName;
+				}
+			}
 		}
 		#endregion // Automatic Name Generation
 		#region Model Validation Rules
