@@ -245,6 +245,10 @@ namespace Neumont.Tools.ORM.Shell
 				offsetAdjustment += replacementLength;
 				sb.Append(replacement);
 			}
+			if (fieldCount == 1)
+			{
+				sb.Append(" ");
+			}
 			FinishInitialize(sb.ToString(), fields, predicateColor, replacementColor);
 		}
 		/// <summary>
@@ -282,11 +286,48 @@ namespace Neumont.Tools.ORM.Shell
 				myLastText = displayText;
 				myLastRtf = Rtf;
 				bool customSelection = false;
-				if (fieldCount == 2)
+				if (fieldCount == 1)
 				{
+					// If there is no front text, then select text after spaces trailing the field
+					LockedField field = fields[0];
+					if (field.Index == 0)
+					{
+						customSelection = true;
+						int fieldLength = field.Length;
+						int fullLength = displayText.Length;
+						int trailingLength = fullLength - fieldLength;
+						if (trailingLength == 0)
+						{
+							Select(fieldLength, 0);
+						}
+						else
+						{
+							int trailingStart = fieldLength;
+							while (trailingStart < fullLength)
+							{
+								if (displayText[trailingStart] != ' ')
+								{
+									break;
+								}
+								++trailingStart;
+							}
+							if (trailingStart == fullLength)
+							{
+								Select(fieldLength + 1, trailingLength - 1);
+							}
+							else
+							{
+								Select(trailingStart, fullLength - trailingStart);
+							}
+						}
+					}
+				}
+				else if (fieldCount >= 2)
+				{
+					// If there is no front text, then select text (without leading/trailing spaces) between the first two fields
 					LockedField leftField = fields[0];
 					LockedField rightField = fields[1];
-					if (leftField.Index == 0 && (rightField.Index + rightField.Length) == displayText.Length)
+					if (leftField.Index == 0)
 					{
 						int middleStart = leftField.Length;
 						int middleLength = rightField.Index - middleStart;
