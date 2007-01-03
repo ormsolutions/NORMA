@@ -469,18 +469,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					foreach (ConceptTypeChild conceptTypeChild in conceptTypeChildCollection)
 					{
 						ConceptType topLevelConceptType = conceptTypeChild.Parent;
-						//while (true)
-						//{
-						//    ConceptType topLevelType = topLevelConceptType.AbsorbingConceptType;
-						//    if (topLevelType != null)
-						//    {
-						//        topLevelConceptType = topLevelType;
-						//    }
-						//    else
-						//    {
-						//        break;
-						//    }
-						//}
 						if (topLevelConceptType == conceptType)
 						{
 							addConstraint = true;
@@ -918,6 +906,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <returns>A <see cref="T:System.String"/> representation of the input string.</returns>
 		private static string CamelCase(string columnName)
 		{
+			if (String.IsNullOrEmpty(columnName))
+			{
+				return columnName;
+			}
 			string[] splitStrings = columnName.Split('_');
 			int count = splitStrings.Length;
 			string firstWord = splitStrings[0];
