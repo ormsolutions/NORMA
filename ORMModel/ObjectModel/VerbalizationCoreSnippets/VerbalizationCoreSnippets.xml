@@ -216,7 +216,8 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="SemiColonListClose"><![CDATA[.]]></Snippet>
 			<Snippet type="ExclusionForEachIndentedQuantifier" modality="alethic"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
 			<Snippet type="ExclusionForEachIndentedQuantifier" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that for each</span> {0}, <span class="quantifier">at most one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
-			<Snippet type="ExclusiveOrForEachIndentedQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">exactly one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ExclusiveOrForEachIndentedQuantifier" modality="alethic"><![CDATA[<span class="quantifier">for each</span> {0}, <span class="quantifier">exactly one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ExclusiveOrForEachIndentedQuantifier" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that for each</span> {0}, <span class="quantifier">exactly one of the following holds:</span><br/><span class="smallIndent">{1}</span>]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
 			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
 			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[No {0}<span class="quantifier"> the same </span><span class="objectType">{1}</span>]]></Snippet>

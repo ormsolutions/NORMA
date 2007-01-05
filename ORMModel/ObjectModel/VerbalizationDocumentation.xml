@@ -459,6 +459,19 @@
       <constraint name="ExclusionConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="ExclusiveOrForEachIndentedQuantifier" replacementCount="2">
+    <statement>
+							Description: Verbalizes an exclusive-or constraint.
+							Format alethic: for each {0}, exactly one of the following holds:\n {1}
+							Format deontic: it is obligatory that for each {0}, at most one of the following holds:\n {1}
+						</statement>
+    <unformattedSnippet>for each {0}, exactly one of the following holds:{1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="ExclusionConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="ExistentialQuantifier" replacementCount="1">
     <statement>
 							Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}
@@ -1803,7 +1816,7 @@
 							Description: Used by the verbalizer to enter a new line.
 							Format: \n
 						</statement>
-    <unformattedSnippet>\n</unformattedSnippet>
+    <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />

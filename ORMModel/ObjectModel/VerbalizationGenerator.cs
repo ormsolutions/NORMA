@@ -715,7 +715,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
 				@"<span class=""objectType"">{0} </span>{1}",
 				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -1059,7 +1059,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"No {0}<span class=""quantifier""> the same </span><span class=""objectType"">{1}</span>",
 				@"<span class=""objectType"">{0} </span>{1}",
 				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">at most one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">it is obligatory that for each</span> {0}, <span class=""quantifier"">exactly one of the following holds:</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">no</span> {0}",
 				"</span>",
 				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
@@ -5652,7 +5652,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			bool isDeontic = false;
+			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			LinkedElementCollection<RoleBase> factRoles = null;
@@ -6855,7 +6855,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			bool isDeontic = false;
+			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			LinkedElementCollection<RoleBase> factRoles = null;
@@ -7835,7 +7835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			bool isDeontic = false;
+			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			LinkedElementCollection<RoleBase> factRoles = null;

@@ -588,7 +588,7 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:choose>
-					<xsl:when test="($isInternal and not($isRoleValue)) or $isSingleColumn">
+					<xsl:when test="($isInternal and not($isRoleValue)) or $isSingleColumn or $isSetComparisonConstraint">
 						<plx:local name="isDeontic" dataTypeName=".boolean">
 							<plx:initialize>
 								<plx:binaryOperator type="equality">
