@@ -466,19 +466,22 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 				if (pane != null)
 				{
 					ICollection selectedObjects = pane.GetSelectedComponents();
-					foreach (object o in selectedObjects)
+					if (selectedObjects != null)
 					{
-						FactType testFact = ORMEditorUtility.ResolveContextFactType(o);
-						// Handle selection of multiple elements as long as
-						// they all resolve to the same fact
-						if (fact == null)
+						foreach (object o in selectedObjects)
 						{
-							fact = testFact;
-						}
-						else if (testFact != fact)
-						{
-							fact = null;
-							break;
+							FactType testFact = ORMEditorUtility.ResolveContextFactType(o);
+							// Handle selection of multiple elements as long as
+							// they all resolve to the same fact
+							if (fact == null)
+							{
+								fact = testFact;
+							}
+							else if (testFact != fact)
+							{
+								fact = null;
+								break;
+							}
 						}
 					}
 				}

@@ -876,6 +876,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceSingleFactForInternalConstraint");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</summary>
+		public static string ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</summary>
 		public static string ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraintRoles
 		{
@@ -2067,6 +2075,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "SetConstraintStickyRole.DisplayOverlapping");
+			}
+		}
+		/// <summary>Text used to display instructions when a load fails due to schema validation issues</summary>
+		public static string SchemaValidationFailureInstructions
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "SchemaValidationFailure.Instructions");
 			}
 		}
 	}

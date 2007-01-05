@@ -198,7 +198,7 @@
     <comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory.</comment>
   </data>
 	<data name="ModelError.Constraint.ImplicationError.Text" xml:space="preserve">
-    <value>Constraint '{0}' in model '{1}' is implied by the intersecting constraint(s).</value>
+    <value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>
     <comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
   </data>
 	<data name="ModelError.Constraint.EqualityOrSubsetImpliedByMandatoryError.Text" xml:space="preserve">
@@ -312,6 +312,10 @@
 	<data name="ModelException.Constraint.EnforceSingleFactForInternalConstraint" xml:space="preserve">
     <value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
     <comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
+  </data>
+	<data name="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange" xml:space="preserve">
+    <value>Direct modification of role players on a ConstraintRoleSequenceHasRole relationship is not supported. As an alternative, first delete the link then add a new one.</value>
+    <comment>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
   </data>
 	<data name="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles" xml:space="preserve">
     <value>An ExclusiveOr coupling between a MandatoryConstraint and ExclusionConstraint requires a single-column exclusion constraint with the same roles as the MandatoryConstraint.</value>
@@ -720,7 +724,11 @@
   <data name="RoleMultiplicity.ZeroToOne" xml:space="preserve">
     <value>0..1</value>
   </data>
-  <data name="Verbalization.SnippetsDefaultDescription" xml:space="preserve">
+	<data name="SchemaValidationFailure.Instructions" xml:space="preserve">  
+    <value>Xml Schema validation of the .ORM file has failed.&#xd;&#xa;You can attempt to open the file without schema validation by reattempting the File/Open command while holding down the shift key.&#xd;&#xa;Detailed exception information:&#xd;&#xa;&#xd;&#xa;{0}</value>
+    <comment>Text used to display instructions when a load fails due to schema validation issues</comment>  
+  </data>
+	<data name="Verbalization.SnippetsDefaultDescription" xml:space="preserve">
     <value>Default Verbalization</value>
     <comment>The description for the default verbalization snippets for the core model.</comment>
   </data>

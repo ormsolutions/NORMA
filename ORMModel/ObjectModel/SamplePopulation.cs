@@ -1642,7 +1642,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangedRule
+		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
+		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
 		private sealed partial class ConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
 		{
 			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -1706,7 +1708,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		[RuleOn(typeof(RoleInstance))] // RolePlayerChangedRule
+		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
+		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
+		[RuleOn(typeof(RoleInstance))] // RolePlayerChangeRule
 		private sealed partial class RoleInstanceRolePlayerChanged : RolePlayerChangeRule
 		{
 			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -2355,7 +2359,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangedRule
+		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
+		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
 		private sealed partial class ConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
 		{
 			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -2448,7 +2454,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // RolePlayerChangedRule
+		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
+		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
+		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // RolePlayerChangeRule
 		private sealed partial class EntityTypeInstanceHasRoleInstanceRolePlayerChanged : RolePlayerChangeRule
 		{
 			public sealed override void  RolePlayerChanged(RolePlayerChangedEventArgs e)

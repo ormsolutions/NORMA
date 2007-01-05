@@ -34,11 +34,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
+						typeof(ConstraintRoleSequence).GetNestedType("BlockRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("SetComparisonConstraintHasRoleDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("SetConstraintDeleting", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("ModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -197,9 +199,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(SetConstraint).GetNestedType("FactAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("FactSetConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("FactSetConstraintDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetConstraint).GetNestedType("ModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetConstraint).GetNestedType("SetConstraintRoleSequenceHasRoleDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("DeleteSubtypeWhenRolePlayerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -365,8 +367,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[109],
 						customDomainModelTypes[110],
 						customDomainModelTypes[111],
-						customDomainModelTypes[114],
-						customDomainModelTypes[115],
+						customDomainModelTypes[112],
+						customDomainModelTypes[113],
 						customDomainModelTypes[116],
 						customDomainModelTypes[117],
 						customDomainModelTypes[118],
@@ -453,7 +455,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[199],
 						customDomainModelTypes[200],
 						customDomainModelTypes[201],
-						customDomainModelTypes[202]};
+						customDomainModelTypes[202],
+						customDomainModelTypes[203],
+						customDomainModelTypes[204]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -500,6 +504,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Initially disable rules
 	public partial class ConstraintRoleSequence
 	{
+		private partial class BlockRolePlayerChange
+		{
+			public BlockRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ConstraintRoleSequence
+	{
 		private partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
@@ -520,6 +534,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class ConstraintRoleSequence
 	{
+		private partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
+		{
+			public ConstraintRoleSequenceHasRoleRolePlayerChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ConstraintRoleSequence
+	{
+		private partial class ModalityChangeRule
+		{
+			public ModalityChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ConstraintRoleSequence
+	{
 		private partial class SetComparisonConstraintHasRoleDeleting
 		{
 			public SetComparisonConstraintHasRoleDeleting()
@@ -533,16 +567,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class SetConstraintDeleting
 		{
 			public SetConstraintDeleting()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ConstraintRoleSequence
-	{
-		private partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
-		{
-			public ConstraintRoleSequenceHasRoleRolePlayerChanged()
 			{
 				base.IsEnabled = false;
 			}
@@ -2080,6 +2104,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class SetConstraint
 	{
+		private partial class ModalityChangeRule
+		{
+			public ModalityChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
 		private partial class SetConstraintRoleSequenceHasRoleAdded
 		{
 			public SetConstraintRoleSequenceHasRoleAdded()
@@ -2090,19 +2124,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class SetConstraint
 	{
-		private partial class SetConstraintRoleSequenceHasRoleDeleted
+		private partial class SetConstraintRoleSequenceHasRoleDeleting
 		{
-			public SetConstraintRoleSequenceHasRoleDeleted()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class SetConstraint
-	{
-		private partial class SetConstraintRoleSequenceHasRoleRolePlayerChanged
-		{
-			public SetConstraintRoleSequenceHasRoleRolePlayerChanged()
+			public SetConstraintRoleSequenceHasRoleDeleting()
 			{
 				base.IsEnabled = false;
 			}

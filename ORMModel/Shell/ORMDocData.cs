@@ -32,6 +32,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.Modeling;
 using EnvDTE;
+using System.Xml.Schema;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -334,7 +335,14 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					fixupManager.AddListener(listener);
 				}
-				(new ORMSerializer(store)).Load(stream, fixupManager);
+				try
+				{
+					(new ORMSerializer(store)).Load(stream, fixupManager);
+				}
+				catch (XmlSchemaValidationException ex)
+				{
+					throw new XmlSchemaValidationException(string.Format(CultureInfo.CurrentCulture, ResourceStrings.SchemaValidationFailureInstructions, ex.Message), ex);
+				}
 			}
 
 			foreach (ORMDiagram diagram in store.ElementDirectory.FindElements<ORMDiagram>(true))

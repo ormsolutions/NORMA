@@ -393,6 +393,9 @@
 	<ResourceString name="ModelExceptionConstraintEnforceSingleFactForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactForInternalConstraint">
 		<comment type="summary">Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange" model="Model" resourceName="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange">
+		<comment type="summary">Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraintRoles" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles">
 		<comment type="summary">Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
 	</ResourceString>
@@ -840,5 +843,8 @@
 	</ResourceString>
 	<ResourceString name="SetConstraintStickyRoleOverlapping" model="Diagram" resourceName="SetConstraintStickyRole.DisplayOverlapping">
 		<comment type="summary">The string to display when role sequences in the active set (multicolumn) constraint overlap on a single role.</comment>
+	</ResourceString>
+	<ResourceString name="SchemaValidationFailureInstructions" model="Model" resourceName="SchemaValidationFailure.Instructions">
+		<comment type="summary">Text used to display instructions when a load fails due to schema validation issues</comment>
 	</ResourceString>
 </ResourceStrings>

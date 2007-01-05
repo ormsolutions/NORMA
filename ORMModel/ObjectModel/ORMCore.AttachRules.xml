@@ -16,11 +16,13 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMCoreDomainModel">
+		<arg:Rule class="ConstraintRoleSequence.BlockRolePlayerChange"/>
 		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleDeleted"/>
+		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleRolePlayerChanged"/>
+		<arg:Rule class="ConstraintRoleSequence.ModalityChangeRule"/>
 		<arg:Rule class="ConstraintRoleSequence.SetComparisonConstraintHasRoleDeleting"/>
 		<arg:Rule class="ConstraintRoleSequence.SetConstraintDeleting"/>
-		<arg:Rule class="ConstraintRoleSequence.ConstraintRoleSequenceHasRoleRolePlayerChanged"/>
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.ModalityChangeRule"/>
@@ -179,9 +181,9 @@
 		<arg:Rule class="SetConstraint.FactAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintDeleted"/>
+		<arg:Rule class="SetConstraint.ModalityChangeRule"/>
 		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleAdded"/>
-		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleDeleted"/>
-		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleRolePlayerChanged"/>
+		<arg:Rule class="SetConstraint.SetConstraintRoleSequenceHasRoleDeleting"/>
 		<arg:Rule class="SubtypeFact.DeleteSubtypeWhenRolePlayerDeleted"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesAddRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesDeleteRule"/>
