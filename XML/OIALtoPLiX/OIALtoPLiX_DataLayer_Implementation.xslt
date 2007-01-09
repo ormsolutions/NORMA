@@ -30,7 +30,10 @@
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
 	<xsl:variable name="ConceptTypes" select="$OIAL//oil:conceptType"/>
-	<xsl:variable name="SprocFree" select="$debugMode"/>
+	<xsl:variable name="SprocFreeFragment">
+		<xsl:apply-templates select="." mode="GetSprocFree"/>
+	</xsl:variable>
+	<xsl:variable name="SprocFree" select="boolean(exsl:node-set($SprocFreeFragment)/node())"/>
 	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties" />
 	<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$OIAL//oil:roleSequenceUniquenessConstraint"/>
 
@@ -42,16 +45,6 @@
 			<plx:namespaceImport name="System.ComponentModel"/>
 			<plx:namespaceImport name="System.Data"/>
 			<plx:namespaceImport name="System.Xml"/>
-			<xsl:if test="$GenerateCodeAnalysisAttributes">
-				<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
-			</xsl:if>
-			<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
-				<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute"/>
-			</xsl:if>
-			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
-			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
-			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
-			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
 			<xsl:choose>
 				<xsl:when test="$DefaultNamespace">
 					<plx:namespace name="{$DefaultNamespace}">
@@ -68,7 +61,9 @@
 			</xsl:choose>
 		</plx:root>
 	</xsl:template>
-	
+	<xsl:template match="*" mode="GetSprocFree">
+		<!-- Leave this empty. Return something non-empty to get SprocFree from another template that imports this one -->
+	</xsl:template>
 	<xsl:template match="oil:model" mode="OIALtoPLiX_DataLayer_Implementation">
 		<xsl:param name="Model" select="."/>
 		<xsl:param name="ModelContextName"/>
@@ -1422,7 +1417,7 @@
 					<xsl:copy-of select="prop:DataType/@*"/>
 					<xsl:copy-of select="prop:DataType/child::*"/>
 					<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
-						<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+						<plx:attribute dataTypeName="AccessedThroughPropertyAttribute" dataTypeQualifier="System.Runtime.CompilerServices">
 							<plx:passParam>
 								<plx:string>
 									<xsl:value-of select="@name"/>

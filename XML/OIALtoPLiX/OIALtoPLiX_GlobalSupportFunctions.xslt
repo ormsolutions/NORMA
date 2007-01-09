@@ -133,7 +133,7 @@
 	</xsl:template>
 
 	<xsl:param name="GeneratedCodeAttributeFragment">
-		<plx:attribute dataTypeName="GeneratedCodeAttribute">
+		<plx:attribute dataTypeName="GeneratedCodeAttribute" dataTypeQualifier="System.CodeDom.Compiler">
 			<plx:passParam>
 				<plx:string>OIALtoPLiX</plx:string>
 			</plx:passParam>
@@ -171,7 +171,7 @@
 		<xsl:param name="scope"/>
 		<xsl:param name="target"/>
 		<xsl:if test="$GenerateCodeAnalysisAttributes">
-			<plx:attribute dataTypeName="SuppressMessageAttribute">
+			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string>
 						<xsl:value-of select="$category"/>

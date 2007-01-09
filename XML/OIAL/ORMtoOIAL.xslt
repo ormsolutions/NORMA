@@ -769,7 +769,7 @@
 								<xsl:variable name="thisRole" select="$fact/orm:FactRoles/child::*[not(@id=$oppositeRolePlayerId)]"/>
 								<xsl:variable name="thisRoleId" select="$thisRole/@id"/>
 								<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
-								<xsl:variable name="oppositeRolePlayerName" select="$oppositeRolePlayer/@Name"/>
+								<xsl:variable name="oppositeRolePlayerName" select="string($oppositeRolePlayer/@Name)"/>
 								<xsl:variable name="oppositeRolePlayerDesiredParentOrTopLevelTypeId">
 									<xsl:call-template name="GetTopLevelTypeId">
 										<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
@@ -1052,6 +1052,7 @@
 		<xsl:param name="ObjectTypeAbsorptions"/>
 		<xsl:param name="TopLevelTypes"/>
 		<xsl:param name="ContainingConceptTypeId"/>
+		<xsl:param name="RoleName" select="''"/>
 		<xsl:param name="RolePlayer"/>
 		<xsl:param name="Mandatory"/>
 		<xsl:param name="SourceRoleRef"/>
@@ -1059,19 +1060,31 @@
 		<xsl:param name="OilConstraints"/>
 		<xsl:param name="IsFirst" select="true()"/>
 		<xsl:param name="OppositeName" select="$BaseName" />
+		<xsl:variable name="rolePlayerName" select="string($RolePlayer/@Name)"/>
+		<xsl:variable name="useRoleNameFragment">
+			<xsl:choose>
+				<xsl:when test="$RoleName">
+					<xsl:value-of select="$RoleName"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$rolePlayerName"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="useRoleName" select="string($useRoleNameFragment)"/>
 		<xsl:variable name="name">
 			<xsl:choose>
 				<xsl:when test="$IsFirst">
 					<xsl:value-of select="$BaseName"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat($BaseName,'_',$RolePlayer/@Name)"/>
+					<xsl:value-of select="concat($BaseName,'_',$rolePlayerName)"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="local-name($RolePlayer)='ValueType'">
-				<oil:informationType name="{$name}" formatRef="{$RolePlayer/@Name}" mandatory="{$Mandatory}" sourceRef="{@id}" sourceRoleRef="{$SourceRoleRef}">
+				<oil:informationType name="{$name}" formatRef="{$rolePlayerName}" mandatory="{$Mandatory}" sourceRef="{@id}" sourceRoleRef="{$SourceRoleRef}">
 					<xsl:copy-of select="$OilConstraints"/>
 					<!-- TODO: Process other constraints here, also... -->
 				</oil:informationType>
@@ -1090,14 +1103,14 @@
 						<xsl:variable name="oppositeName">
 							<xsl:choose>
 								<xsl:when test="not($EnableAssertions) or not($IsFirst)">
-									<xsl:value-of select="concat($RolePlayer/@Name,'_',$OppositeName)"/>
+									<xsl:value-of select="concat($useRoleName,'_',$OppositeName)"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="concat($BaseName,'_',$RolePlayer/@Name)"/>
+									<xsl:value-of select="concat($BaseName,'_',$useRoleName)"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						<oil:conceptTypeRef name="{$name}" target="{$RolePlayer/@Name}" mandatory="{$Mandatory}" sourceRoleRef="{$SourceRoleRef}" oppositeName="{$oppositeName}">
+						<oil:conceptTypeRef name="{$name}" target="{$rolePlayerName}" mandatory="{$Mandatory}" sourceRoleRef="{$SourceRoleRef}" oppositeName="{$oppositeName}">
 							<xsl:copy-of select="$OilConstraints"/>
 							<!-- TODO: Process other constraints here, also... -->
 						</oil:conceptTypeRef>
@@ -1110,7 +1123,7 @@
 										<xsl:value-of select="$BaseName"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat($BaseName,'_',$RolePlayer/@Name)"/>
+										<xsl:value-of select="concat($BaseName,'_',$useRoleName)"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
@@ -1120,19 +1133,19 @@
 										<xsl:value-of select="$OppositeName"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat($RolePlayer/@Name,'_',$OppositeName)"/>
+										<xsl:value-of select="concat($useRoleName,'_',$OppositeName)"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
-							<xsl:variable name="oppositeRolePlayerId" select="orm:FactRoles/child::*[not(orm:RolePlayer/@ref=$RolePlayer/@id)]/orm:RolePlayer/@ref"/>
-							<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
+							<xsl:variable name="oppositeRole" select="orm:FactRoles/child::*[not(orm:RolePlayer/@ref=$RolePlayer/@id)]"/>
 							<xsl:call-template name="GetOilInformationTypesInternal">
 								<xsl:with-param name="Model" select="$Model"/>
 								<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 								<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
 								<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
 								<xsl:with-param name="ContainingConceptTypeId" select="$ContainingConceptTypeId"/>
-								<xsl:with-param name="RolePlayer" select="$oppositeRolePlayer"/>
+								<xsl:with-param name="RoleName" select="string($oppositeRole/@Name)"/>
+								<xsl:with-param name="RolePlayer" select="$ObjectTypeInformation[@id=$oppositeRole/orm:RolePlayer/@ref]"/>
 								<xsl:with-param name="Mandatory" select="$Mandatory"/>
 								<xsl:with-param name="SourceRoleRef" select="$SourceRoleRef"/>
 								<xsl:with-param name="BaseName" select="$newBaseName"/>

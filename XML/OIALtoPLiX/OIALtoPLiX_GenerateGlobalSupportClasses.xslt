@@ -26,13 +26,6 @@
 			<plx:namespaceImport name="System.Collections.ObjectModel"/>
 			<plx:namespaceImport name="System.ComponentModel"/>
 			<plx:namespaceImport name="System.Xml"/>
-			<xsl:if test="$GenerateCodeAnalysisAttributes">
-				<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
-			</xsl:if>
-			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
-			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
-			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
-			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
 			<xsl:call-template name="GenerateGlobalSupportClasses">
 				<xsl:with-param name="StructLayoutAttribute" select="$StructLayoutAttribute"/>
 			</xsl:call-template>
@@ -500,7 +493,7 @@
 
 			</plx:class>
 			<plx:interface visibility="public" name="IPropertyChangeEventArgs">
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
+				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 					<plx:passParam>
 						<plx:string data="Microsoft.Naming"/>
 					</plx:passParam>

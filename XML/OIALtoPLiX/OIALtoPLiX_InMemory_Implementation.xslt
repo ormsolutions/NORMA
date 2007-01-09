@@ -39,16 +39,6 @@
 			<plx:namespaceImport name="System.Collections.ObjectModel"/>
 			<plx:namespaceImport name="System.ComponentModel"/>
 			<plx:namespaceImport name="System.Xml"/>
-			<xsl:if test="$GenerateCodeAnalysisAttributes">
-				<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
-			</xsl:if>
-			<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
-				<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute"/>
-			</xsl:if>
-			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
-			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
-			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
-			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
 			<xsl:choose>
 				<xsl:when test="$DefaultNamespace">
 					<plx:namespace name="{$DefaultNamespace}">
@@ -1626,7 +1616,7 @@
 			<xsl:copy-of select="prop:DataType/@*"/>
 			<xsl:copy-of select="prop:DataType/child::*"/>
 			<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
-				<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
+				<plx:attribute dataTypeName="AccessedThroughPropertyAttribute" dataTypeQualifier="System.Runtime.CompilerServices">
 					<plx:passParam>
 						<plx:string>
 							<xsl:value-of select="@name"/>
