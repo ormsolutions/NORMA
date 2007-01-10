@@ -2993,7 +2993,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				MandatoryConstraint mandatory = null;
 				ExclusionConstraint exclusion = null;
-				foreach (ModelElement mel in GetSelectedComponents())
+				foreach (ModelElement mel in collection)
 				{
 					PresentationElement pel = mel as PresentationElement;
 					IConstraint testConstraint = (pel != null) ? pel.Subject as IConstraint : mel as IConstraint;
@@ -3023,18 +3023,27 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void OnMenuExclusiveOrDecoupler()
 		{
 			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in GetSelectedComponents())
+			// Cache the selected components collection, these actions are modifying it indirectly
+			ICollection selectedComponentsCollection = GetSelectedComponents();
+			int selectedComponentsCount = selectedComponentsCollection.Count;
+			if (selectedComponentsCount > 0)
 			{
-				PresentationElement pel = mel as PresentationElement;
-				MandatoryConstraint constraint = (pel != null) ? pel.Subject as MandatoryConstraint : mel as MandatoryConstraint;
-				if (constraint != null)
+				object[] selectedComponents = new object[selectedComponentsCount];
+				selectedComponentsCollection.CopyTo(selectedComponents, 0);
+				for (int i = 0; i < selectedComponentsCount; ++i)
 				{
-					using (Transaction t = constraint.Store.TransactionManager.BeginTransaction(ResourceStrings.ExclusiveOrDecouplerTransactionName))
+					object mel = selectedComponents[i];
+					PresentationElement pel = mel as PresentationElement;
+					MandatoryConstraint constraint = (pel != null) ? pel.Subject as MandatoryConstraint : mel as MandatoryConstraint;
+					if (constraint != null)
 					{
-						constraint.ExclusiveOrExclusionConstraint = null;
-						if (t.HasPendingChanges)
+						using (Transaction t = constraint.Store.TransactionManager.BeginTransaction(ResourceStrings.ExclusiveOrDecouplerTransactionName))
 						{
-							t.Commit();
+							constraint.ExclusiveOrExclusionConstraint = null;
+							if (t.HasPendingChanges)
+							{
+								t.Commit();
+							}
 						}
 					}
 				}

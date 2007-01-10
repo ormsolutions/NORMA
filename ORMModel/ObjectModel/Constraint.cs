@@ -6183,6 +6183,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return;
 				}
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				if (link.Role.IsDeleting)
+				{
+					return;
+				}
 				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 				MandatoryConstraint mandatoryConstraint;
 				ExclusionConstraint exclusionConstraint;

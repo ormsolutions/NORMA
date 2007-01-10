@@ -438,12 +438,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// Let the click through to the base to officially begin the drag action
 						base.OnClicked(e);
 						mySourceShape = constraintShape;
-						myActiveConstraint = constraintShape.AssociatedConstraint;
-						switch (myActiveConstraint.ConstraintType)
+						IConstraint activeConstraint = constraintShape.AssociatedConstraint;
+						myActiveConstraint = activeConstraint;
+						switch (activeConstraint.ConstraintType)
 						{
 							case ConstraintType.DisjunctiveMandatory:
-							case ConstraintType.Exclusion:
+								// This setting is refined later
 								myAllowSubtypeConnection = true;
+								break;
+							case ConstraintType.Exclusion:
+								ExclusionConstraint exclusion = (ExclusionConstraint)activeConstraint;
+								// If the exclusion constraint is currently attached to any fact types
+								// that are not subtype facts, then we cannot allow a subtype connection.
+								LinkedElementCollection<FactType> exclusionFactTypes = exclusion.FactTypeCollection;
+								myAllowSubtypeConnection = (exclusionFactTypes.Count == 0) ? true : exclusionFactTypes[0] is SubtypeFact;
 								break;
 							default:
 								myAllowSubtypeConnection = false;
