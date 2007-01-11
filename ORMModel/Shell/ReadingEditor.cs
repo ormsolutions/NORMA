@@ -1720,7 +1720,7 @@ namespace Neumont.Tools.ORM.Shell
 					case ObjectStyle.SubItemRootBranch:
 						if (myReadingOrderKeyedCollection.GetRowType(row) == RowType.Committed)
 						{
-							return myReadingOrderKeyedCollection[row].Branch;
+							return myReadingOrderKeyedCollection[row].EnsureBranch();
 						}
 						break;
 					case ObjectStyle.TrackingObject:
@@ -1877,7 +1877,7 @@ namespace Neumont.Tools.ORM.Shell
 			public void AddNewReading(int itemLocation)
 			{
 				ReadingOrderInformation orderInfo = myReadingOrderKeyedCollection[itemLocation];
-				orderInfo.Branch.ShowNewRow(true);
+				orderInfo.EnsureBranch().ShowNewRow(true);
 				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
 				control.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0);
 				control.BeginLabelEdit();
@@ -1905,7 +1905,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				if (location >= 0)
 				{
-					myReadingOrderKeyedCollection[location].Branch.AddReading(reading);
+					myReadingOrderKeyedCollection[location].EnsureBranch().AddReading(reading);
 					if (OnBranchModification != null)
 					{
 						OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
@@ -1930,13 +1930,18 @@ namespace Neumont.Tools.ORM.Shell
 			public void UpdateReading(Reading reading)
 			{
 				ReadingOrderInformation info = new ReadingOrderInformation(this, reading.ReadingOrder);
-				if (!myReadingOrderKeyedCollection.Contains(info.RoleOrder))
+				ReadingOrderKeyedCollection orderCollection = myReadingOrderKeyedCollection;
+				if (!orderCollection.Contains(info.RoleOrder))
 				{
-					myReadingOrderKeyedCollection.Add(info);
+					orderCollection.Add(info);
 				}
-				int row = this.myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
+				int row = orderCollection.IndexOf(orderCollection[info.RoleOrder]);
 				Debug.Assert(row >= 0, "Reading Must exist before it can be updated");
-				myReadingOrderKeyedCollection[row].Branch.UpdateReading(reading);
+				ReadingBranch branch = orderCollection[row].Branch;
+				if (branch != null)
+				{
+					branch.UpdateReading(reading);
+				}
 			}
 			/// <summary>
 			/// Event callback from Changing the Order of  and item in the ReadingOrdersMovableCollectoin: 
@@ -1952,7 +1957,11 @@ namespace Neumont.Tools.ORM.Shell
 					Debug.Assert(currentLocation >= 0, "Cannot Locate Reading");
 					if (currentLocation >= 0)
 					{
-						myReadingOrderKeyedCollection[currentLocation].Branch.ReadingItemOrderChanged(reading);
+						ReadingBranch branch = myReadingOrderKeyedCollection[currentLocation].Branch;
+						if (branch != null)
+						{
+							branch.ReadingItemOrderChanged(reading);
+						}
 					}
 				}
 			}
@@ -1968,7 +1977,11 @@ namespace Neumont.Tools.ORM.Shell
 					int location = this.LocateCollectionItem(order);
 					if (location >= 0)
 					{
-						myReadingOrderKeyedCollection[location].Branch.ItemRemoved(reading);
+						ReadingBranch branch = myReadingOrderKeyedCollection[location].Branch;
+						if (branch != null)
+						{
+							branch.ItemRemoved(reading);
+						}
 					}
 				}
 			}
@@ -1977,14 +1990,22 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public void PromoteSelectedReading(int readingItemLocation, int orderItemLocation)
 			{
-				myReadingOrderKeyedCollection[orderItemLocation].Branch.PromoteItem(readingItemLocation);
+				ReadingBranch branch = myReadingOrderKeyedCollection[orderItemLocation].Branch;
+				if (branch != null)
+				{
+					branch.PromoteItem(readingItemLocation);
+				}
 			}
 			/// <summary>
 			/// Moves the selected Reading Down
 			/// </summary>
 			public void DemoteSelectedReading(int readingItemLocation, int orderItemLocation)
 			{
-				myReadingOrderKeyedCollection[orderItemLocation].Branch.DemoteItem(readingItemLocation);
+				ReadingBranch branch = myReadingOrderKeyedCollection[orderItemLocation].Branch;
+				if (branch != null)
+				{
+					branch.DemoteItem(readingItemLocation);
+				}
 			}
 			#endregion //Reading Branch Methods
 
@@ -2057,7 +2078,11 @@ namespace Neumont.Tools.ORM.Shell
 				if (rowType == RowType.Committed)
 				{
 					VirtualTreeItemInfo readingItem = this.CurrentSelectionInfoReadingBranch();
-					myReadingOrderKeyedCollection[orderItem.Row].Branch.RemoveItem(readingItem.Row);  //Remove selected Row in the ReadingBranch
+					ReadingBranch branch = myReadingOrderKeyedCollection[orderItem.Row].Branch;
+					if (branch != null)
+					{
+						branch.RemoveItem(readingItem.Row);  //Remove selected Row in the ReadingBranch
+					}
 				}
 				else if (rowType == RowType.Uncommitted) //remove the row from the readingOrderBranch
 				{
@@ -2097,9 +2122,10 @@ namespace Neumont.Tools.ORM.Shell
 					int location = this.LocateCollectionItem(order);
 					if (location >= 0) //make sure it was found
 					{
-						if (myReadingOrderKeyedCollection[location].Branch.HasNewRow) //handle bug (m.s. introduced) in Virtual Tree which does not return the correct count when removing a branch
+						ReadingBranch branch = myReadingOrderKeyedCollection[location].Branch;
+						if (branch != null && branch.HasNewRow) //handle bug (m.s. introduced) in Virtual Tree which does not return the correct count when removing a branch
 						{
-							myReadingOrderKeyedCollection[location].Branch.ShowNewRow(false);
+							branch.ShowNewRow(false);
 						}
 						myReadingOrderKeyedCollection.RemoveAt(location);
 						OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
@@ -2145,14 +2171,17 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							retval |= ReadingEditorCommands.DeleteReading;
 							ReadingBranch readingBranch = myReadingOrderKeyedCollection[itemLocation].Branch;
-							if (readingItemInfo.Row > 0 && readingBranch.RowCount > 1)
+							if (readingBranch != null)
 							{
-								retval |= ReadingEditorCommands.PromoteReading;
-							}
+								if (readingItemInfo.Row > 0 && readingBranch.RowCount > 1)
+								{
+									retval |= ReadingEditorCommands.PromoteReading;
+								}
 
-							if (readingItemInfo.Row < readingBranch.RowCount - ((readingBranch.HasNewRow) ? 2 : 1)) //catch if displaying an uncommitted reading and committed readings
-							{
-								retval |= ReadingEditorCommands.DemoteReading;
+								if (readingItemInfo.Row < readingBranch.RowCount - ((readingBranch.HasNewRow) ? 2 : 1)) //catch if displaying an uncommitted reading and committed readings
+								{
+									retval |= ReadingEditorCommands.DemoteReading;
+								}
 							}
 						}
 					}
@@ -2475,23 +2504,34 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 				/// <summary>
-				/// Returns a ReadingBranch for this Order, the ReadingOrder must already exist in the model
+				/// Returns a ReadingBranch for this Order, the ReadingOrder must already exist in the model.
+				/// This will always return a Branch. Use the <see cref="Branch"/> property to get the current
+				/// branch without forcing it to be created.
+				/// </summary>
+				public ReadingBranch EnsureBranch()
+				{
+					ReadingBranch retval = myReadingBranch;
+					if (retval == null)
+					{
+						if (myReadingOrder == null) //obtain new readingOrder to commit a new reading (in readingOrder is non-existent)
+						{
+							myReadingOrder = myParentBranch.Fact.GetReadingOrder(this.myRoleOrder);
+						}
+						myReadingBranch = new ReadingBranch(myParentBranch.Fact, myReadingOrder, this);
+						return myReadingBranch;
+					}
+					return retval;
+				}
+				/// <summary>
+				/// Return the current branch. If the branch has not been created this will
+				/// return <see langword="null"/>. Use the <see cref="EnsureBranch"/> method
+				/// to force the branch to be created.
 				/// </summary>
 				public ReadingBranch Branch
 				{
 					get
 					{
-						ReadingBranch retval = myReadingBranch;
-						if (retval == null)
-						{
-							if (myReadingOrder == null) //obtain new readingOrder to commit a new reading (in readingOrder is non-existent)
-							{
-								myReadingOrder = myParentBranch.Fact.GetReadingOrder(this.myRoleOrder);
-							}
-							myReadingBranch = new ReadingBranch(myParentBranch.Fact, myReadingOrder, this);
-							return myReadingBranch;
-						}
-						return retval;
+						return myReadingBranch;
 					}
 				}
 				/// <summary>
@@ -2651,7 +2691,7 @@ namespace Neumont.Tools.ORM.Shell
 
 					if (branchLocation >= 0 && collection[branchLocation].ReadingOrder != null)
 					{
-						collection[branchLocation].Branch.ShowNewRow(true);
+						collection[branchLocation].EnsureBranch().ShowNewRow(true);
 					}
 					else
 					{
@@ -2987,14 +3027,21 @@ namespace Neumont.Tools.ORM.Shell
 				public void UpdateReading(Reading reading)
 				{
 					int location = myReadings.IndexOf(new ReadingData(null, reading));
-
-					myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, reading.ReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading);
-
-					if (OnBranchModification != null)
+					if (location >= 0)
 					{
-						OnBranchModification(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 0, 1)));
-						OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
-						OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
+						LinkedElementCollection<RoleBase> roles = reading.ReadingOrder.RoleCollection;
+						string[] replacements = myReadingInformation.OrderedReplacementFields;
+						if (roles.Count == replacements.Length)
+						{
+							myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, roles, replacements), reading);
+
+							if (OnBranchModification != null)
+							{
+								OnBranchModification(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 0, 1)));
+								OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
+								OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
+							}
+						}
 					}
 				}
 				/// <summary>

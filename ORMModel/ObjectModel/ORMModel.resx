@@ -162,7 +162,7 @@
     <value>Outer</value>
   </data>
 	<data name="Model.Reading.RoleDeletedText" xml:space="preserve">  
-    <value>{{deleted}}</value>  
+    <value>DELETED</value>  
     <comment>Text used to replace a role place holder when the role is deleted</comment>  
   </data>
   <data name="ExclusiveOrConstraint.ClassName" xml:space="preserve">

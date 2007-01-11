@@ -154,7 +154,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ORMModel).GetNestedType("RemoveDuplicateObjectTypeNameErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingOrderHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingPropertiesChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrder", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrderDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrderRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("FactTypeHasRoleAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingOrder).GetNestedType("ReadingOrderHasRoleDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReferenceMode).GetNestedType("ReferenceModeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -457,7 +458,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[201],
 						customDomainModelTypes[202],
 						customDomainModelTypes[203],
-						customDomainModelTypes[204]};
+						customDomainModelTypes[204],
+						customDomainModelTypes[205]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -1654,9 +1656,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class ReadingOrder
 	{
-		private partial class EnforceNoEmptyReadingOrder
+		private partial class EnforceNoEmptyReadingOrderDeleteRule
 		{
-			public EnforceNoEmptyReadingOrder()
+			public EnforceNoEmptyReadingOrderDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingOrder
+	{
+		private partial class EnforceNoEmptyReadingOrderRolePlayerChange
+		{
+			public EnforceNoEmptyReadingOrderRolePlayerChange()
 			{
 				base.IsEnabled = false;
 			}

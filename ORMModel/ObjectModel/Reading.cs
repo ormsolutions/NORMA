@@ -181,7 +181,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // CustomStorage handlers
 		#region rule classes and helpers
-
+		/// <summary>
+		/// Delay validation callback for <see cref="ValidateRoleCountError"/> method
+		/// </summary>
+		private static void DelayValidateRoleCountError(ModelElement element)
+		{
+			((Reading)element).ValidateRoleCountError(null);
+		}
 		/// <summary>
 		/// Compares number of roles in ReadingOrder ot the place holders in
 		/// the reading and then creates or removes errors as needed.
@@ -194,9 +200,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool removeTooMany = false;
 				TooFewReadingRolesError tooFewError;
 				TooManyReadingRolesError tooManyError;
-				ORMModel theModel = ReadingOrder.FactType.Model;
+				ReadingOrder readingOrder = ReadingOrder;
+				ORMModel theModel = readingOrder.FactType.Model;
 				Store store = Store;
-				int numRoles = ReadingOrder.RoleCollection.Count;
+				LinkedElementCollection<RoleBase> orderRoles = readingOrder.RoleCollection;
+				int numRoles = orderRoles.Count;
+				int deletingCount = 0;
+				for (int i = 0; i < numRoles; ++i)
+				{
+					if (orderRoles[i].IsDeleting)
+					{
+						++deletingCount;
+					}
+				}
+				numRoles -= deletingCount;
 				int numPlaces = Reading.PlaceholderCount(Text);
 
 				if (numRoles == numPlaces)
@@ -208,7 +225,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (numRoles < numPlaces)
 				{
 					removeTooMany = true;
-					if (null == TooFewRolesError)
+					if (null == (tooFewError = TooFewRolesError))
 					{
 						tooFewError = new TooFewReadingRolesError(store);
 						tooFewError.Reading = this;
@@ -219,12 +236,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 							notifyAdded.ElementAdded(tooFewError, true);
 						}
 					}
+					else
+					{
+						tooFewError.GenerateErrorText();
+					}
 				}
 				//too many roles
 				else
 				{
 					removeTooFew = true;
-					if (null == TooManyRolesError)
+					if (null == (tooManyError = TooManyRolesError))
 					{
 						tooManyError = new TooManyReadingRolesError(store);
 						tooManyError.Reading = this;
@@ -234,6 +255,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							notifyAdded.ElementAdded(tooManyError, true);
 						}
+					}
+					else
+					{
+						tooManyError.GenerateErrorText();
 					}
 				}
 
@@ -304,18 +329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						changedReading.ValidateRoleCountError(null);
-
-						TooFewReadingRolesError tooFew;
-						TooManyReadingRolesError tooMany;
-						if (null != (tooFew = changedReading.TooFewRolesError))
-						{
-							tooFew.GenerateErrorText();
-						}
-						if (null != (tooMany = changedReading.TooManyRolesError))
-						{
-							tooMany.GenerateErrorText();
-						}
+						ORMCoreDomainModel.DelayValidateElement(changedReading, DelayValidateRoleCountError);
 					}
 				}
 			}
@@ -328,16 +342,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				if (!link.IsDeleted)
+				ReadingOrder ord = link.ReadingOrder;
+				if (!ord.IsDeleted)
 				{
-					ReadingOrder ord = link.ReadingOrder;
-					if (!ord.IsDeleted)
+					LinkedElementCollection<Reading> readings = ord.ReadingCollection;
+					foreach (Reading read in readings)
 					{
-						LinkedElementCollection<Reading> readings = ord.ReadingCollection;
-						foreach (Reading read in readings)
-						{
-							read.ValidateRoleCountError(null);
-						}
+						ORMCoreDomainModel.DelayValidateElement(read, DelayValidateRoleCountError);
 					}
 				}
 			}
@@ -395,9 +406,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected new static void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
-			// UNDONE: DelayedValidation (Reading)
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRoleCountError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{

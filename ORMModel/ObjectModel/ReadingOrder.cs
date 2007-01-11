@@ -23,6 +23,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
+using System.Collections.ObjectModel;
 
 #endregion
 
@@ -96,9 +97,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return (primary != null) ? primary.ToString() : base.ToString();
 		}
 		#endregion
-		#region EnforceNoEmptyReadingOrder rule class
+		#region EnforceNoEmptyReadingOrderDeleteRule rule class
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)] // DeleteRule
-		private sealed partial class EnforceNoEmptyReadingOrder : DeleteRule
+		private sealed partial class EnforceNoEmptyReadingOrderDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// If the ReadingOrder.ReadingCollection is empty then remove the ReadingOrder
@@ -117,8 +118,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // EnforceNoEmptyReadingOrder rule class
+		#endregion // EnforceNoEmptyReadingOrderDeleteRule rule class
+		#region EnforceNoEmptyReadingOrderRolePlayerChange rule class
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)] // RolePlayerChangeRule
+		private sealed partial class EnforceNoEmptyReadingOrderRolePlayerChange : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ReadingOrderHasReading link = e.ElementLink as ReadingOrderHasReading;
+				if (e.DomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId)
+				{
+					ReadingOrder order = (ReadingOrder)e.OldRolePlayer;
+					if (!order.IsDeleted && order.ReadingCollection.Count == 0)
+					{
+						order.Delete();
+					}
+				}
+			}
+		}
+		#endregion // EnforceNoEmptyReadingOrderRolePlayerChange rule class
 		#region ReadingOrderHasRoleRemoving rule class
+		private static Regex myIndexMapRegex;
+		private static Regex IndexMapRegex
+		{
+			get
+			{
+				Regex regexIndexMap = myIndexMapRegex;
+				if (regexIndexMap == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myIndexMapRegex,
+						new Regex(
+							@"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
+							RegexOptions.Compiled),
+						null);
+					regexIndexMap = myIndexMapRegex;
+				}
+				return regexIndexMap;
+			}
+		}
 		/// <summary>
 		/// Handles the clean up of the readings that the role is involved in by replacing
 		/// the place holder with the text {{deleted}}
@@ -126,8 +164,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(ReadingOrderHasRole))] // DeletingRule
 		private sealed partial class ReadingOrderHasRoleDeleting : DeletingRule
 		{
-			//UNDONE:a role being removed creates the possibility of there being two ReadingOrders with the same Role sequences, they should be merged
-			
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
@@ -140,11 +176,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return;
 				}
 				Debug.Assert(!linkReadingOrder.IsDeleted);
+				FactType factType = linkReadingOrder.FactType;
+				if (factType != null)
+				{
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateReadingOrderCollation);
+				}
 
 				int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);
 				if (pos >= 0)
 				{
-					// UNDONE: This could be done much cleaner with RegEx.Replace and a callback
 					LinkedElementCollection<Reading> readings = linkReadingOrder.ReadingCollection;
 					int numReadings = readings.Count;
 					int roleCount = linkReadingOrder.RoleCollection.Count;
@@ -156,13 +196,89 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							Debug.Assert(!linkReading.IsDeleted);
 							string text = linkReading.Text;
-							text = text.Replace("{" + pos.ToString(CultureInfo.InvariantCulture) + "}", ResourceStrings.ModelReadingRoleDeletedRoleText);
-							for (int i = pos + 1; i < roleCount; ++i)
-							{
-								text = text.Replace(string.Concat("{", i.ToString(CultureInfo.InvariantCulture), "}"), string.Concat("{", (i - 1).ToString(CultureInfo.InvariantCulture), "}"));
-							}
-							linkReading.Text = text;
+							IFormatProvider formatProvider = CultureInfo.InvariantCulture;
+							linkReading.Text = IndexMapRegex.Replace(
+								linkReading.Text,
+								delegate(Match match)
+								{
+									int replaceIndex = int.Parse(match.Groups["ReplaceIndex"].Value, formatProvider);
+									if (replaceIndex == pos)
+									{
+										return ResourceStrings.ModelReadingRoleDeletedRoleText;
+									}
+									else if (replaceIndex > pos)
+									{
+										return "{" + (replaceIndex - 1).ToString(formatProvider) + "}";
+									}
+									return match.Value;
+								});
 							//UNDONE:add entry to task list service to let user know reading text might need some fixup
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Verify that all <see cref="ReadingOrder"/>s have unique <see cref="ReadingOrder.RoleCollection">role collections</see>
+		/// </summary>
+		/// <param name="element">A <see cref="FactType"/></param>
+		private static void DelayValidateReadingOrderCollation(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			FactType factType = (FactType)element;
+			LinkedElementCollection<ReadingOrder> ordersCollection = factType.ReadingOrderCollection;
+			int orderCount = ordersCollection.Count;
+			if (orderCount > 1)
+			{
+				// Get all orders in a collatable form, starting by caching information locally
+				// so it is easily accessed. Note that this will also change the collection we're
+				// iterating so we need to be careful about changes.
+				ReadingOrder[] orders = new ReadingOrder[orderCount];
+				ordersCollection.CopyTo(orders, 0);
+				LinkedElementCollection<RoleBase>[] roleCollections = new LinkedElementCollection<RoleBase>[orderCount];
+				for (int i = 0; i < orderCount; ++i)
+				{
+					roleCollections[i] = orders[i].RoleCollection;
+				}
+
+				// Priority is top down, so we move later readings into a higher reading order
+				for (int i = 0; i < orderCount; ++i)
+				{
+					ReadingOrder currentOrder = orders[i];
+					for (int j = i + 1; j < orderCount; ++j)
+					{
+						ReadingOrder compareToOrder = orders[j];
+						if (compareToOrder != null) // Will be null if it has already been recognized as a duplicate
+						{
+							// These should all have the same count, but it doesn't hurt to be defensive
+							LinkedElementCollection<RoleBase> currentRoles = roleCollections[i];
+							LinkedElementCollection<RoleBase> compareToRoles = roleCollections[j];
+							int roleCount = currentRoles.Count;
+							if (roleCount == compareToRoles.Count)
+							{
+								int k = 0;
+								for (; k < roleCount; ++k)
+								{
+									if (currentRoles[k] != compareToRoles[k])
+									{
+										break;
+									}
+								}
+								if (k == roleCount)
+								{
+									// Order is the same, collate the later readings up to the current order
+									ReadOnlyCollection<ReadingOrderHasReading> readingLinks = ReadingOrderHasReading.GetLinksToReadingCollection(compareToOrder);
+									int readingCount = readingLinks.Count;
+									for (int l = 0; l < readingCount; ++l)
+									{
+										readingLinks[l].ReadingOrder = currentOrder;
+									}
+									orders[j] = null;
+								}
+							}
 						}
 					}
 				}
@@ -180,10 +296,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
 
-			string deletedText = ResourceStrings.ModelReadingRoleDeletedRoleText;
-			// TODO: escape the deletedText for any Regex text, since it's localizable
-			Regex regExDeleted = new Regex(deletedText, RegexOptions.Compiled);
-
 			LinkedElementCollection<ReadingOrder> readingOrders = theFact.ReadingOrderCollection;
 			foreach (ReadingOrder ord in readingOrders)
 			{
@@ -192,23 +304,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					ord.RoleCollection.Add(addedRole);
 					LinkedElementCollection<Reading> readings = ord.ReadingCollection;
-					foreach (Reading read in readings)
+					int readingCount = readings.Count;
+					if (readingCount != 0)
 					{
-						string readingText = read.Text;
-						
-						int pos = readingText.IndexOf(deletedText);
-						string newText;
-						if (pos < 0)
+						string appendText = String.Concat("  {", (roles.Count - 1).ToString(CultureInfo.InvariantCulture), "}");
+						for (int i = 0; i < readingCount; ++i)
 						{
-							newText = String.Concat(readingText, "{", roles.Count - 1, "}");
+							Reading reading = readings[i];
+							reading.Text = reading.Text + appendText;
 						}
-						else
-						{
-							newText = regExDeleted.Replace(readingText, string.Concat("{", roles.Count - 1, "}"), 1);
-						}
-						//UNDONE:add entries to the task list service to let user know the reading might need some correction
-
-						read.Text = newText;
 					}
 				}
 			}

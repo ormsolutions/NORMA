@@ -1438,7 +1438,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Only validates ReadingRequiredError
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading))]
+		[RuleOn(typeof(ReadingOrderHasReading))] // AddRule
 		private sealed partial class ReadingOrderHasReadingAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
