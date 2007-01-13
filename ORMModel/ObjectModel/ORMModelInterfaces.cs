@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.Modeling;
@@ -73,6 +74,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// begin a new transaction at this time.
 		/// </summary>
 		bool CanAddTransaction { get; set;}
+		/// <summary>
+		/// Activate the specified shape on the most appropriate view
+		/// </summary>
+		/// <param name="shape">A <see cref="ShapeElement"/> to activate.</param>
+		/// <returns>Returns <see langword="true"/> if shape activation succeeded.</returns>
+		bool ActivateShape(ShapeElement shape);
 	}
 	#endregion // IORMToolServices interface
 	#region ORMPropertyProvisioning delegate

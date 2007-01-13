@@ -11,6 +11,7 @@ using System.Xml;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 
 
 #endregion
@@ -99,6 +100,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					myLayoutEngines = retVal;
 				}
 				return retVal[engineType].Instance;
+			}
+			bool IORMToolServices.ActivateShape(ShapeElement shape)
+			{
+				return myServices.ActivateShape(shape);
 			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation

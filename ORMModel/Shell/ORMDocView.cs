@@ -229,6 +229,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		EditLabel = 0x20000000000,
 		/// <summary>
+		/// Expand the diagram list for the selected shape
+		/// </summary>
+		DiagramList = 0x40000000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
@@ -1033,6 +1037,14 @@ namespace Neumont.Tools.ORM.Shell
 					toleratedCommands |= ORMDesignerCommands.AlignShapes;
 				}
 			}
+			ORMBaseShape shape;
+			if (null != (shape = (presentationElement as ORMBaseShape)) &&
+				shape.DisplaysMultiplePresentations &&
+				ORMBaseShape.ElementHasMultiplePresentations(shape))
+			{
+				visibleCommands |= ORMDesignerCommands.DiagramList;
+				enabledCommands |= ORMDesignerCommands.DiagramList;
+			}
 			// Turn on standard commands for all selections
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
 			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
@@ -1290,6 +1302,50 @@ namespace Neumont.Tools.ORM.Shell
 							cmd.Visible = true;
 							cmd.Supported = true;
 							cmd.Text = errorText;
+						}
+						else
+						{
+							cmd.Supported = false;
+						}
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.DiagramList)
+				{
+					if (isEnabled)
+					{
+						OleMenuCommand cmd = sender as OleMenuCommand;
+						int diagramIndex = cmd.MatchedCommandId;
+						string diagramName = null;
+						foreach (ModelElement mel in docView.GetSelectedComponents())
+						{
+							ORMBaseShape shape = mel as ORMBaseShape;
+							if (shape != null)
+							{
+								ORMBaseShape.VisitAssociatedShapes(
+									null,
+									shape,
+									delegate(ShapeElement testShape)
+									{
+										if (testShape != shape)
+										{
+											if (diagramIndex == 0)
+											{
+												diagramName = testShape.Diagram.Name;
+												return false;
+											}
+											--diagramIndex;
+										}
+										return true;
+									});
+							}
+							break; // Single-select command
+						}
+						if (diagramName != null)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = diagramName;
 						}
 						else
 						{
@@ -2261,6 +2317,37 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					break;
 				}
+			}
+		}
+		/// <summary>
+		/// Expandable submenu to display associated diagrams
+		/// </summary>
+		/// <param name="diagramIndex">Index of the diagram in the list of diagrams</param>
+		protected virtual void OnMenuDiagramList(int diagramIndex)
+		{
+			foreach (ModelElement mel in GetSelectedComponents())
+			{
+				ORMBaseShape shape = mel as ORMBaseShape;
+				if (shape != null)
+				{
+					ORMBaseShape.VisitAssociatedShapes(
+						null,
+						shape,
+						delegate(ShapeElement testShape)
+						{
+							if (testShape != shape)
+							{
+								if (diagramIndex == 0)
+								{
+									(DocData as IORMToolServices).ActivateShape(testShape);
+									return false;
+								}
+								--diagramIndex;
+							}
+							return true;
+						});
+				}
+				break; // Single-select command
 			}
 		}
 

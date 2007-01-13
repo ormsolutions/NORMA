@@ -22,6 +22,7 @@
 #define menuIdReadingEditorContextMenu	0x0103
 #define menuIdDisplayOrientation		0x0104
 #define menuIdToolWindows				0x0105
+#define menuIdDiagramList				0x0106
 
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
@@ -46,6 +47,7 @@
 #define groupIdDisplayConstraintPosition 0x100F
 #define groupIdDisplayReverseRoleOrder	0x1010
 #define groupIdToolWindows				0x1011
+#define groupIdDiagramListTest			0x1012
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -109,6 +111,11 @@
 #define cmdIdErrorList					0x2A00
 #define cmdIdErrorListEnd				0x2AFF
 // Reserve 2a00 range for errors, start additional commands after
+
+#define cmdIdDiagramList						0x2B00
+#define cmdIdDiagramListEnd						0x2BFF
+// Reserve 2b00 range for diagrams, start additional commands after
+
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs for BitmapResourceStrip.bmp
 #define bmpIdShowNegativeVerbalization		1

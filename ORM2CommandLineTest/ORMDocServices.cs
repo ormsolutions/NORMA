@@ -99,6 +99,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return null;
 			}
+			bool IORMToolServices.ActivateShape(ShapeElement shape)
+			{
+				return false;
+			}
 			#endregion // IORMToolServices Implementation
 			#region IORMFontAndColorService Implementation
 			Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)

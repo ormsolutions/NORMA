@@ -199,7 +199,7 @@
     <comment xml:space="preserve">This text appears on the undo/redo menu when a reading is edited.</comment>
   </data>
   <data name="Command.SwapRoleOrder.Text">
-    <value xml:space="preserve">Swap Role Order</value>
+    <value xml:space="preserve">S&amp;wap Role Order</value>
     <comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
   </data>
   <data name="ConstraintDisplayPosition.Bottom" xml:space="preserve">

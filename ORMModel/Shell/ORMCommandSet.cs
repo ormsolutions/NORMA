@@ -247,6 +247,10 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusErrorList),
 						new EventHandler(OnMenuErrorList),
 						ORMDesignerCommandIds.ErrorList)
+						,new DynamicDiagramCommand(
+						new EventHandler(OnStatusDiagramList),
+						new EventHandler(OnMenuDiagramList),
+						ORMDesignerCommandIds.DiagramList)
 						,new MenuCommand(
 						new EventHandler(OnMenuNewWindow),
 						new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
@@ -888,7 +892,6 @@ namespace Neumont.Tools.ORM.Shell
 					return false;
 				}
 			}
-			//private System.Collections.Generic.IEnumerator<string> strings;
 			/// <summary>
 			/// Status callback
 			/// </summary>
@@ -907,6 +910,47 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuErrorList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			private sealed class DynamicDiagramCommand : DynamicStatusMenuCommand
+			{
+				public DynamicDiagramCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing diagram list
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerCommandIds.DiagramListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusDiagramList(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DiagramList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDiagramList(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			/// <summary>
@@ -1352,6 +1396,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Indicates the number of command ids reserved for reporting errors
 			/// </summary>
 			public const int ErrorListLength = cmdIdErrorListEnd - cmdIdErrorList + 1;
+			/// <summary>
+			/// Available to any element that is displayed on multiple diagrams
+			/// </summary>
+			public static readonly CommandID DiagramList = new CommandID(guidORMDesignerCommandSet, cmdIdDiagramList);
+			/// <summary>
+			/// Indicates the number of command ids reserved for display diagrams
+			/// </summary>
+			public const int DiagramListLength = cmdIdDiagramListEnd - cmdIdDiagramList + 1;
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
@@ -1467,6 +1519,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// The last allowed id for an error list
 			/// </summary>
 			private const int cmdIdErrorListEnd = 0x2aff;
+			/// <summary>
+			/// The context menu item for related diagrams
+			/// </summary>
+			private const int cmdIdDiagramList = 0x2b00;
+			/// <summary>
+			/// The last allowed id for a diagram list
+			/// </summary>
+			private const int cmdIdDiagramListEnd = 0x2bff;
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

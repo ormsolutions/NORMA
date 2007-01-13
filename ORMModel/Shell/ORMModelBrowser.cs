@@ -86,7 +86,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="sender">Menu Command</param>
 		/// <param name="commandFlags">commands that are a part of the menu command</param>
 		/// <param name="currentWindow">the currently selected window</param>
-		protected static void OnStatusCommand(Object sender, ORMDesignerCommands commandFlags, ORMModelBrowserToolWindow currentWindow)
+		protected static void OnStatusCommand(object sender, ORMDesignerCommands commandFlags, ORMModelBrowserToolWindow currentWindow)
 		{
 			MenuCommand command = sender as MenuCommand;
 			Debug.Assert(command != null);
@@ -100,6 +100,40 @@ namespace Neumont.Tools.ORM.Shell
 					if (0 != (commandFlags & (ORMDesignerCommands.Delete)))
 					{
 						currentWindow.SetDeleteCommandText((OleMenuCommand)command);
+					}
+					else if (0 != (commandFlags & (ORMDesignerCommands.DiagramList)))
+					{
+						OleMenuCommand cmd = command as OleMenuCommand;
+						ModelElement element;
+						string diagramName = null;
+						if (null != (element = currentWindow.SelectedNode as ModelElement))
+						{
+							int diagramIndex = cmd.MatchedCommandId;
+							ORMBaseShape.VisitAssociatedShapes(
+								element,
+								null,
+								delegate(ShapeElement testShape)
+								{
+									if (diagramIndex == 0)
+									{
+										diagramName = testShape.Diagram.Name;
+										return false;
+									}
+									--diagramIndex;
+									return true;
+								});
+						}
+						if (diagramName != null)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = diagramName;
+						}
+						else
+						{
+							cmd.Supported = false;
+						}
 					}
 				}
 			}
@@ -153,6 +187,30 @@ namespace Neumont.Tools.ORM.Shell
 			myTreeContainer.TreeControl.BeginLabelEdit();
 		}
 		/// <summary>
+		/// Activate the shape on the selected diagram
+		/// </summary>
+		/// <param name="diagramIndex">The index of the diagram in the diagram list</param>
+		protected virtual void OnMenuDiagramList(int diagramIndex)
+		{
+			ModelElement element;
+			if (null != (element = SelectedNode as ModelElement))
+			{
+				ORMBaseShape.VisitAssociatedShapes(
+					element,
+					null,
+					delegate(ShapeElement shape)
+					{
+						if (diagramIndex == 0)
+						{
+							(shape.Store as IORMToolServices).ActivateShape(shape);
+							return false;
+						}
+						--diagramIndex;
+						return true;
+					});
+			}
+		}
+		/// <summary>
 		/// fires when ORM Browser Tool window has a selection change
 		/// </summary>
 		/// <param name="e"></param>
@@ -180,6 +238,9 @@ namespace Neumont.Tools.ORM.Shell
 							visibleCommands |= ORMDesignerCommands.EditLabel;
 							enabledCommands |= ORMDesignerCommands.EditLabel;
 						}
+						// Do later checking for the DiagramList command
+						visibleCommands |= ORMDesignerCommands.DiagramList;
+						enabledCommands |= ORMDesignerCommands.DiagramList;
 					}
 				}
 			}

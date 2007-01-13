@@ -31,6 +31,8 @@ using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
+using Neumont.Tools.ORM.ShapeModel;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -57,7 +59,12 @@ namespace Neumont.Tools.ORM.Shell
 					,new DynamicStatusMenuCommand(
 					new EventHandler(OnStatusEditLabel),
 					new EventHandler(OnMenuEditLabel),
-					EditLabelCommandID)};
+					EditLabelCommandID)
+					,new DynamicDiagramCommand(
+					new EventHandler(OnStatusDiagramList),
+					new EventHandler(OnMenuDiagramList),
+					ORMDesignerDocView.ORMDesignerCommandIds.DiagramList)
+				};
 				#endregion //command array
 				AddCommands(myCommands);
 			}
@@ -134,8 +141,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			public void OnStatusDelete(Object sender, EventArgs e)
 			{
-				IMonitorSelectionService service = MonitorSelection;
-				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, service.CurrentWindow as ORMModelBrowserToolWindow); 
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, CurrentToolWindow); 
 			}
 			public void OnMenuDelete(Object sender, EventArgs e)
 			{
@@ -147,8 +153,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			public void OnStatusEditLabel(Object sender, EventArgs e)
 			{
-				IMonitorSelectionService service = MonitorSelection;
-				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.EditLabel, service.CurrentWindow as ORMModelBrowserToolWindow);
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.EditLabel, CurrentToolWindow);
 			}
 			public void OnMenuEditLabel(Object sender, EventArgs e)
 			{
@@ -156,6 +161,46 @@ namespace Neumont.Tools.ORM.Shell
 				if (currentWindow != null)
 				{
 					currentWindow.OnMenuEditLabel();
+				}
+			}
+			private sealed class DynamicDiagramCommand : DynamicStatusMenuCommand
+			{
+				public DynamicDiagramCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing diagram list
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.DiagramListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			public void OnStatusDiagramList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.DiagramList, CurrentToolWindow);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			public void OnMenuDiagramList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuDiagramList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			#endregion // Command Handlers

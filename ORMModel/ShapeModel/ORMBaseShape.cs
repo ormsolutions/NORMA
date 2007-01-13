@@ -95,8 +95,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static bool ElementHasMultiplePresentations(ShapeElement shapeElement)
 		{
-			ModelElement modelElement = shapeElement.ModelElement;
-			if (modelElement != null)
+			ModelElement modelElement;
+			if (null != shapeElement &&
+				null != (modelElement = shapeElement.ModelElement))
 			{
 				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelElement);
 				int pelCount = presentationElements.Count;
@@ -115,6 +116,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return false;
+		}
+		/// <summary>
+		/// A callback delegate for the <see cref="VisitAssociatedShapes"/> method
+		/// </summary>
+		/// <param name="shape">The shape element to visit</param>
+		/// <returns>Return <see langword="true"/> to continue iteration</returns>
+		public delegate bool VisitShape(ShapeElement shape);
+		/// <summary>
+		/// Iterate shapes associated with a given element
+		/// </summary>
+		/// <param name="modelElement">The parent element to iterate. Can be <see langword="null"/> if <paramref name="shapeElement"/> is specified.</param>
+		/// <param name="shapeElement">The shape to reference. Can be <see langword="null"/> is <paramref name="modelElement"/> is specified.</param>
+		/// <param name="visitor">A <see cref="VisitShape"/> callback delegate</param>
+		public static void VisitAssociatedShapes(ModelElement modelElement, ShapeElement shapeElement, VisitShape visitor)
+		{
+			if (modelElement == null && shapeElement != null)
+			{
+				modelElement = shapeElement.ModelElement;
+			}
+			if (modelElement != null)
+			{
+				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelElement);
+				int pelCount = presentationElements.Count;
+				if (pelCount != 0)
+				{
+					Partition shapePartition = (shapeElement != null) ? shapeElement.Partition : modelElement.Partition;
+					Type thisType = (shapeElement != null) ? shapeElement.GetType() : typeof(ShapeElement);
+					for (int i = 0; i < pelCount; ++i)
+					{
+						PresentationElement pel = presentationElements[i];
+						if (shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
+						{
+							if (!visitor(pel as ShapeElement))
+							{
+								return;
+							}
+						}
+					}
+				}
+			}
 		}
 		/// <summary>
 		/// Turn off the shadow by default

@@ -267,6 +267,18 @@ namespace Neumont.Tools.ORM.Shell
 					CanAddTransaction = value;
 				}
 			}
+			/// <summary>
+			/// Defer to ActivateShape on the document. Implements
+			/// IORMToolServices.ActivateShape
+			/// </summary>
+			protected bool ActivateShape(ShapeElement shape)
+			{
+				return myServices.ActivateShape(shape);
+			}
+			bool IORMToolServices.ActivateShape(ShapeElement shape)
+			{
+				return ActivateShape(shape);
+			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
 			/// <summary>  
@@ -1148,8 +1160,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Defer to CanAddTransaction on the document. Implements
-		/// IORMToolServices.CanAddTransaction
+		/// Implements <see cref="IORMToolServices.CanAddTransaction"/>
 		/// </summary>
 		protected bool CanAddTransaction
 		{
@@ -1182,6 +1193,140 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				CanAddTransaction = value;
 			}
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.ActivateShape"/>
+		/// </summary>
+		protected bool ActivateShape(ShapeElement shape)
+		{
+			DiagramDocView currentDocView = null;
+			VSDiagramView currentDesigner = null;
+			bool haveCurrentDesigner = false;
+
+			return ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner);
+		}
+		private void GetCurrentDesigner(ref DiagramDocView currentDocView, ref VSDiagramView currentDesigner)
+		{
+			IServiceProvider serviceProvider;
+			IMonitorSelectionService selectionService;
+			DiagramDocView currentView;
+			if (null != (serviceProvider = ServiceProvider) &&
+				null != (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) &&
+				null != (currentView = selectionService.CurrentDocumentView as DiagramDocView) &&
+				currentView.DocData == this)
+			{
+				currentDocView = currentView;
+				currentDesigner = currentDocView.CurrentDesigner;
+			}
+		}
+		private bool ActivateShapeHelper(ShapeElement shape, ref DiagramDocView currentDocView, ref VSDiagramView currentDesigner, ref bool haveCurrentDesigner)
+		{
+			bool retVal = false;
+			if (!haveCurrentDesigner)
+			{
+				haveCurrentDesigner = true;
+				GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+			}
+
+			// Select the correct document, activate it, select the correct tab,
+			// then select the shape.
+			Diagram diagram = shape.Diagram;
+			Debug.Assert(diagram != null); // Checked in first pass through shape elements
+			VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
+			MultiDiagramDocView docView;
+			VSDiagramView selectOnView = null;
+			if (diagramView != null)
+			{
+				if (currentDesigner != null && diagramView == currentDesigner)
+				{
+					selectOnView = diagramView;
+				}
+				else if (null != (docView = diagramView.DocView as MultiDiagramDocView))
+				{
+					selectOnView = diagramView;
+					docView.Show();
+				}
+			}
+			else if (null != (docView = currentDocView as MultiDiagramDocView))
+			{
+				if (docView.ActivateDiagram(diagram))
+				{
+					selectOnView = docView.CurrentDesigner;
+				}
+			}
+			else
+			{
+				// Find an appropriate view to activate
+				#region Walk RunningDocumentTable
+				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+				IEnumRunningDocuments docIter;
+				ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
+				int hrIter;
+				uint[] currentDocs = new uint[1];
+				uint fetched = 0;
+				do
+				{
+					ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
+					if (hrIter == 0)
+					{
+						uint grfRDTFlags;
+						uint dwReadLocks;
+						uint dwEditLocks;
+						string bstrMkDocument;
+						IVsHierarchy pHier;
+						uint itemId;
+						IntPtr punkDocData = IntPtr.Zero;
+						ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
+							currentDocs[0],
+							out grfRDTFlags,
+							out dwReadLocks,
+							out dwEditLocks,
+							out bstrMkDocument,
+							out pHier,
+							out itemId,
+							out punkDocData));
+						try
+						{
+							ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
+							if (this == docData)
+							{
+								IList<ModelingDocView> views = docData.DocViews;
+								int viewCount = views.Count;
+								for (int j = 0; j < viewCount; ++j)
+								{
+									docView = views[j] as MultiDiagramDocView;
+									if (docView != null && docView.ActivateDiagram(diagram))
+									{
+										docView.Show();
+										selectOnView = docView.CurrentDesigner;
+										break;
+									}
+								}
+							}
+						}
+						finally
+						{
+							if (punkDocData != IntPtr.Zero)
+							{
+								Marshal.Release(punkDocData);
+							}
+						}
+					}
+				} while (fetched != 0 && selectOnView == null);
+				#endregion // Walk RunningDocumentTable
+			}
+
+			if (selectOnView != null)
+			{
+				selectOnView.Selection.Set(new DiagramItem(shape));
+				selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
+				retVal = true;
+			}
+			return retVal;
+		}
+		bool IORMToolServices.ActivateShape(ShapeElement shape)
+		{
+			return ActivateShape(shape);
 		}
 		#endregion // IORMToolServices Implementation
 		#region TaskProvider implementation
@@ -1344,17 +1489,7 @@ namespace Neumont.Tools.ORM.Shell
 								if (!haveCurrentDesigner)
 								{
 									haveCurrentDesigner = true;
-									IServiceProvider serviceProvider;
-									IMonitorSelectionService selectionService;
-									DiagramDocView currentView;
-									if (null != (serviceProvider = targetDocData.ServiceProvider) &&
-										null != (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) &&
-										null != (currentView = selectionService.CurrentDocumentView as DiagramDocView) &&
-										currentView.DocData == targetDocData)
-									{
-										currentDocView = currentView;
-										currentDesigner = currentDocView.CurrentDesigner;
-									}
+									targetDocData.GetCurrentDesigner(ref currentDocView, ref currentDesigner);
 								}
 
 								// Get the shapes in priority
@@ -1408,98 +1543,8 @@ namespace Neumont.Tools.ORM.Shell
 										}
 									}
 
-									// Select the correct document, activate it, select the correct tab,
-									// then select the shape.
-									Diagram diagram = shape.Diagram;
-									Debug.Assert(diagram != null); // Checked in first pass through shape elements
-									VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
-									MultiDiagramDocView docView;
-									VSDiagramView selectOnView = null;
-									if (diagramView != null)
+									if (targetDocData.ActivateShapeHelper(shape, ref currentDocView, ref currentDesigner, ref haveCurrentDesigner))
 									{
-										if (currentDesigner != null && diagramView == currentDesigner)
-										{
-											selectOnView = diagramView;
-										}
-										else if (null != (docView = diagramView.DocView as MultiDiagramDocView))
-										{
-											selectOnView = diagramView;
-											docView.Show();
-										}
-									}
-									else if (null != (docView = currentDocView as MultiDiagramDocView))
-									{
-										if (docView.ActivateDiagram(diagram))
-										{
-											selectOnView = docView.CurrentDesigner;
-										}
-									}
-									else
-									{
-										// Walk all the documents and invalidate ORM diagrams if the options have changed
-										#region Walk RunningDocumentTable
-										IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)targetDocData.ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-										IEnumRunningDocuments docIter;
-										ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
-										int hrIter;
-										uint[] currentDocs = new uint[1];
-										uint fetched = 0;
-										do
-										{
-											ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
-											if (hrIter == 0)
-											{
-												uint grfRDTFlags;
-												uint dwReadLocks;
-												uint dwEditLocks;
-												string bstrMkDocument;
-												IVsHierarchy pHier;
-												uint itemId;
-												IntPtr punkDocData = IntPtr.Zero;
-												ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
-													currentDocs[0],
-													out grfRDTFlags,
-													out dwReadLocks,
-													out dwEditLocks,
-													out bstrMkDocument,
-													out pHier,
-													out itemId,
-													out punkDocData));
-												try
-												{
-													ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
-													if (targetDocData == docData)
-													{
-														IList<ModelingDocView> views = docData.DocViews;
-														int viewCount = views.Count;
-														for (int j = 0; j < viewCount; ++j)
-														{
-															docView = views[j] as MultiDiagramDocView;
-															if (docView != null && docView.ActivateDiagram(diagram))
-															{
-																docView.Show();
-																selectOnView = docView.CurrentDesigner;
-																break;
-															}
-														}
-													}
-												}
-												finally
-												{
-													if (punkDocData != IntPtr.Zero)
-													{
-														Marshal.Release(punkDocData);
-													}
-												}
-											}
-										} while (fetched != 0 && selectOnView == null);
-										#endregion // Walk RunningDocumentTable
-									}
-
-									if (selectOnView != null)
-									{
-										selectOnView.Selection.Set(new DiagramItem(shape));
-										selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
 										ModelError error;
 										IModelErrorActivation activator;
 										if (null != (error = locator as ModelError) &
