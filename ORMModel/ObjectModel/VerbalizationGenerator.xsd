@@ -408,6 +408,7 @@
 	<xs:group name="ReplacementElementsGroup">
 		<xs:choice>
 			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 			<xs:element name="ObjectTypeName" type="ObjectTypeNameType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
 			<xs:element name="ReferenceMode" type="ReferenceModeType"/>

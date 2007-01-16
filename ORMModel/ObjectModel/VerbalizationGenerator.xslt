@@ -3909,7 +3909,7 @@
 						</xsl:with-param>
 					</xsl:call-template>
 					<xsl:choose>
-						<xsl:when test="$ContextMatch='included'">
+						<xsl:when test="$ContextMatch='included' or $ContextMatch='setConstraintRoles'">
 							<plx:branch>
 								<plx:condition>
 									<plx:callInstance name="Contains" type="methodCall">

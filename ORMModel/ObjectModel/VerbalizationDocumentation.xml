@@ -223,6 +223,7 @@
     </contains>
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
       <constraint name="SubsetConstraint" />
@@ -327,6 +328,7 @@
     </contains>
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
       <constraint name="EqualityConstraint" />
@@ -343,7 +345,9 @@
       <snippet name="DefiniteArticle" />
       <snippet name="ExistentialQuantifier" />
     </contains>
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="EqualityConstraint" />
     </usedBy>
@@ -424,9 +428,11 @@
 							Description: Used to verbalize an exclusion constraint, on a binary lead reading.
 							Format: No {0} the same {1}
 						</statement>
-    <unformattedSnippet>No {0} the same {1}</unformattedSnippet>
+    <unformattedSnippet>no {0} the same {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="ExclusionConstraint" />
     </usedBy>
@@ -438,7 +444,9 @@
 						</statement>
     <unformattedSnippet>{0} {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="ExclusionConstraint" />
     </usedBy>
@@ -454,7 +462,9 @@
       <snippet name="DefiniteArticle" />
       <snippet name="ExistentialQuantifier" />
     </contains>
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="ExclusionConstraint" />
     </usedBy>
@@ -467,7 +477,9 @@
 						</statement>
     <unformattedSnippet>for each {0}, exactly one of the following holds:{1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="ExclusionConstraint" />
     </usedBy>
@@ -551,7 +563,9 @@
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="OneQuantifier" />
     </contains>
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="EqualityConstraint" />
       <constraint name="MandatoryConstraint" />
@@ -647,9 +661,17 @@
     <contains>
       <snippet name="CombinationAssociation" />
       <snippet name="CombinationIdentifier" />
+      <snippet name="Conditional" />
       <snippet name="DefiniteArticle" />
+      <snippet name="Equality" />
+      <snippet name="EqualityForEachIndentedQuantifier" />
       <snippet name="ExactlyOneQuantifier" />
+      <snippet name="ExclusionBinaryLeadReading" />
+      <snippet name="ExclusionCombined" />
+      <snippet name="ExclusionForEachIndentedQuantifier" />
+      <snippet name="ExclusiveOrForEachIndentedQuantifier" />
       <snippet name="ExistentialQuantifier" />
+      <snippet name="ForEachIndentedQuantifier" />
       <snippet name="IdentityReferenceQuantifier" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
@@ -662,10 +684,13 @@
     </containedIn>
     <usedBy>
       <constraint name="CombinedMandatoryUniqueVerbalizer" />
+      <constraint name="EqualityConstraint" />
+      <constraint name="ExclusionConstraint" />
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="MandatoryConstraint" />
       <constraint name="RingConstraint" />
+      <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>

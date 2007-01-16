@@ -270,10 +270,6 @@
     </Compile>
     <Compile Include="ObjectModel\SubtypeFact.cs" />
     <Compile Include="ObjectModel\ValueRange.cs" />
-    <Compile Include="ObjectModel\VerbalizationGenerator.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
-    </Compile>
     <Compile Include="ObjectModel\Verbalization.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>
@@ -388,6 +384,10 @@
     <Compile Include="Framework\ModelingEventManager.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
+    <Compile Include="ObjectModel\VerbalizationGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
+    </Compile>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>
