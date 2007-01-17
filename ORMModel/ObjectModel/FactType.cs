@@ -744,7 +744,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int roleInstanceCount = roleInstances.Count;
 					for (int j = 0; j < roleInstanceCount; ++j)
 					{
-						yield return roleInstances[j].PopulationUniquenessError;
+						PopulationUniquenessError populationError = roleInstances[j].PopulationUniquenessError;
+						if (populationError != null)
+						{
+							yield return populationError;
+						}
 					}
 				}
 			}
