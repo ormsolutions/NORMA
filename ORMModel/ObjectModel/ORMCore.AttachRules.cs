@@ -45,6 +45,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("ModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierConstraintRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierObjectificationAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -55,6 +56,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasEntityTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasPreferredIdentifierAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasPreferredIdentifierDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasPreferredIdentifierRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("RoleInstanceHasPopulationUniquenessErrorDeleted", BindingFlags.Public | BindingFlags.NonPublic),
@@ -121,6 +125,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Objectification).GetNestedType("ObjectificationDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("ObjectificationRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("PreferredIdentifierDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Objectification).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("RoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("RolePlayerAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("RoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -142,6 +147,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectType).GetNestedType("UnspecifiedDataRoleRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
@@ -227,6 +233,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ValueConstraint).GetNestedType("DataTypeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("ObjectTypeRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("PreferredIdentifierDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("PreferredIdentifierRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("RolePlayerDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("RolePlayerRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -370,12 +377,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[111],
 						customDomainModelTypes[112],
 						customDomainModelTypes[113],
+						customDomainModelTypes[114],
+						customDomainModelTypes[115],
 						customDomainModelTypes[116],
 						customDomainModelTypes[117],
 						customDomainModelTypes[118],
 						customDomainModelTypes[119],
-						customDomainModelTypes[120],
-						customDomainModelTypes[121],
 						customDomainModelTypes[122],
 						customDomainModelTypes[123],
 						customDomainModelTypes[124],
@@ -459,7 +466,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[202],
 						customDomainModelTypes[203],
 						customDomainModelTypes[204],
-						customDomainModelTypes[205]};
+						customDomainModelTypes[205],
+						customDomainModelTypes[206],
+						customDomainModelTypes[207],
+						customDomainModelTypes[208],
+						customDomainModelTypes[209],
+						customDomainModelTypes[210],
+						customDomainModelTypes[211],
+						customDomainModelTypes[212]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -616,6 +630,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class EntityTypeHasPreferredIdentifier
 	{
+		private partial class PreferredIdentifierRolePlayerChangeRule
+		{
+			public PreferredIdentifierRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
 		private partial class TestRemovePreferredIdentifierConstraintRoleAddRule
 		{
 			public TestRemovePreferredIdentifierConstraintRoleAddRule()
@@ -709,6 +733,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class EntityTypeHasEntityTypeInstanceAdded
 		{
 			public EntityTypeHasEntityTypeInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeHasPreferredIdentifierAdded
+		{
+			public EntityTypeHasPreferredIdentifierAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeHasPreferredIdentifierDeleted
+		{
+			public EntityTypeHasPreferredIdentifierDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeHasPreferredIdentifierRolePlayerChanged
+		{
+			public EntityTypeHasPreferredIdentifierRolePlayerChanged()
 			{
 				base.IsEnabled = false;
 			}
@@ -1346,6 +1400,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class Objectification
 	{
+		private partial class PreferredIdentifierRolePlayerChangeRule
+		{
+			public PreferredIdentifierRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
 		private partial class RoleAddRule
 		{
 			public RoleAddRule()
@@ -1549,6 +1613,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class VerifyReferenceSchemeDeleteRule
 		{
 			public VerifyReferenceSchemeDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class VerifyReferenceSchemeRolePlayerChangeRule
+		{
+			public VerifyReferenceSchemeRolePlayerChangeRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -2379,6 +2453,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class PreferredIdentifierDeletingRule
 		{
 			public PreferredIdentifierDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class PreferredIdentifierRolePlayerChangeRule
+		{
+			public PreferredIdentifierRolePlayerChangeRule()
 			{
 				base.IsEnabled = false;
 			}

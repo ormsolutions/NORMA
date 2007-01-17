@@ -776,5 +776,72 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ExclusiveOrCoupler rules
+		#region PreferredIdentifier Shape Redraw rules
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
+		private sealed partial class PreferredIdentifierAddRule : AddRule
+		{
+			public static void Process(EntityTypeHasPreferredIdentifier link, UniquenessConstraint preferredIdentifier)
+			{
+				if (preferredIdentifier == null)
+				{
+					preferredIdentifier = link.PreferredIdentifier;
+				}
+				if (!preferredIdentifier.IsDeleted)
+				{
+					ModelElement element = preferredIdentifier;
+					if (preferredIdentifier.IsInternal)
+					{
+						LinkedElementCollection<FactType> factTypes = preferredIdentifier.FactTypeCollection;
+						if (factTypes.Count == 1)
+						{
+							element = factTypes[0];
+						}
+						else
+						{
+							return;
+						}
+					}
+
+					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
+					int pelCount = pels.Count;
+					for (int i = pelCount - 1; i >= 0; --i)
+					{
+						// ORMBaseShape handles ExternalConstraintShape and FactTypeShape
+						ORMBaseShape shape = pels[i] as ORMBaseShape;
+						if (shape != null)
+						{
+							shape.InvalidateRequired(true);
+						}
+					}
+				}
+			}
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			}
+		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
+		private sealed partial class PreferredIdentifierDeleteRule : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				PreferredIdentifierAddRule.Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			}
+		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
+		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				UniquenessConstraint oldPreferredIdentifier = null;
+				if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId)
+				{
+					oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
+				}
+				PreferredIdentifierAddRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldPreferredIdentifier);
+			}
+		}
+
+		#endregion // PreferredIdentifier Shape Redraw rules
 	}
 }

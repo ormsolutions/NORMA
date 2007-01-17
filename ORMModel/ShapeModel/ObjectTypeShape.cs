@@ -401,14 +401,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed partial class PreferredIdentifierDeleteRule : DeleteRule
 		{
+			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+			{
+				if (objectType == null)
+				{
+					objectType = link.PreferredIdentifierFor;
+				}
+				if (!objectType.IsDeleted)
+				{
+					ResizeAssociatedShapes(objectType);
+				}
+			}
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				ObjectType entityType = link.PreferredIdentifierFor;
-				if (!entityType.IsDeleted)
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			}
+		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
+		private sealed partial class PreferredIdentifierRolePlayerChangeRuleForResize : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ObjectType oldObjectType = null;
+				if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 				{
-					ResizeAssociatedShapes(entityType);
+					oldObjectType = (ObjectType)e.OldRolePlayer;
 				}
+				PreferredIdentifierDeleteRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
 			}
 		}
 		/// <summary>
@@ -496,23 +515,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
 		private sealed partial class PreferredIdentifierAddedRule : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(EntityTypeHasPreferredIdentifier link)
 			{
 				ObjectType rolePlayer;
 				LinkedElementCollection<Role> roles;
-				EntityTypeHasPreferredIdentifier link;
-				UniquenessConstraint constraint;
-				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
-					null != (constraint = link.PreferredIdentifier) &&
-					constraint.IsInternal &&
+				UniquenessConstraint constraint = link.PreferredIdentifier;
+				if (constraint.IsInternal &&
 					1 == (roles = constraint.RoleCollection).Count &&
 					null != (rolePlayer = roles[0].RolePlayer) &&
 					rolePlayer.IsValueType)
 				{
 					EnsureRefModeExpanded(constraint, link.PreferredIdentifierFor);
 				}
-			} //method
-		} //class
+			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier);
+			}
+		}
+		/// <summary>
+		/// Verify that all preconditions hold for adding a primary
+		/// identifier and extend modifiable conditions as needed.
+		/// Defers to <see cref="PreferredIdentifierAddedRule"/>.
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
+		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				PreferredIdentifierAddedRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier);
+			}
+		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed partial class PreferredIdentifierLengthened : AddRule
 		{

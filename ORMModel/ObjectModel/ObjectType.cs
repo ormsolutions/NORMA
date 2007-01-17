@@ -129,7 +129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// A variant on the <see cref="IsValueType"/> property.
 		/// This will return false if the conditions to make this
 		/// a value type are currently being deleted independently
-		/// of the ObjecType itself.
+		/// of the ObjectType itself.
 		/// </summary>
 		public bool IsValueTypeCheckDeleting
 		{
@@ -234,32 +234,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Objectification Property
-		#region PreferredIdentifier Property
-		/// <summary>
-		/// Gets the preferred identifier for this object. The preferred identifier is an UniquenessConstraint.
-		/// </summary>
-		public UniquenessConstraint PreferredIdentifier
-		{
-			// Note that this is all based on spit code. However, the internal and external
-			// uniqueness constraints do not share a useful base class (ORMNamedElement is the
-			// closest and the one used in the model), and the IMS engine needs classes, not
-			// interfaces. Because of this limitation, and the poor code spit for 1-1 relationships
-			// coming from the Phoenix engine (the 1-1 is not properly enforced), we do the normal
-			// code spit by hand.
-			get
-			{
-				return EntityTypeHasPreferredIdentifier.GetPreferredIdentifier(this);
-			}
-			set
-			{
-				// Note that type enforcement is done in the EntityTypeHasPreferredIdentifier.EntityTypeAddedRule
-				// which is guaranteed to run for all object model modifications. We defer validation of the constraint
-				// types to that routine. However, the IConstraint passed in must be an ORMNamedElement, so we
-				// use an exception cast here to do a minimal sanity check before proceeding.
-				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId, EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId, typeof(EntityTypeHasPreferredIdentifier));
-			}
-		}
-		#endregion // PreferredIdentifier Property
 		#region Customize property display
 		/// <summary>
 		/// Return a simple name instead of a name decorated with the type (the
@@ -1814,9 +1788,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
 		private sealed partial class VerifyReferenceSchemeAddRule : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(EntityTypeHasPreferredIdentifier link)
 			{
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType objectType = link.PreferredIdentifierFor;
 				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 				if (!link.PreferredIdentifier.IsInternal)
@@ -1824,22 +1797,57 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier);
+			}
 		}
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeleteRule
 		private sealed partial class VerifyReferenceSchemeDeleteRule : DeleteRule
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType, UniquenessConstraint preferredIdentifier)
 			{
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				ObjectType objectType = link.PreferredIdentifierFor;
+				if (objectType == null)
+				{
+					objectType = link.PreferredIdentifierFor;
+				}
 				if (!objectType.IsDeleted)
 				{
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-					if (!link.PreferredIdentifier.IsInternal)
+					if (preferredIdentifier == null)
+					{
+						preferredIdentifier = link.PreferredIdentifier;
+					}
+					if (!preferredIdentifier.IsInternal)
 					{
 						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 					}
 				}
+			}
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null, null);
+			}
+		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
+		private sealed partial class VerifyReferenceSchemeRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				ObjectType oldObjectType = null;
+				UniquenessConstraint oldPreferredIdentifier = null;
+				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+				{
+					oldObjectType = (ObjectType)e.OldRolePlayer;
+				}
+				else if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+				{
+					oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
+				}
+				EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
+				VerifyReferenceSchemeDeleteRule.Process(link, oldObjectType, oldPreferredIdentifier);
+				VerifyReferenceSchemeAddRule.Process(link);
 			}
 		}
 		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule

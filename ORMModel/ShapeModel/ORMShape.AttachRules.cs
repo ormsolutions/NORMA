@@ -37,6 +37,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("DerivationRuleChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("DerivationRuleAdd", BindingFlags.Public | BindingFlags.NonPublic),
@@ -55,6 +58,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("ObjectTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRolePlayerChangeRuleForResize", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierLengthened", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierShortened", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -162,6 +167,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class ExclusiveOrCouplerDeleted
 		{
 			public ExclusiveOrCouplerDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExternalConstraintShape
+	{
+		private partial class PreferredIdentifierAddRule
+		{
+			public PreferredIdentifierAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExternalConstraintShape
+	{
+		private partial class PreferredIdentifierDeleteRule
+		{
+			public PreferredIdentifierDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ExternalConstraintShape
+	{
+		private partial class PreferredIdentifierRolePlayerChangeRule
+		{
+			public PreferredIdentifierRolePlayerChangeRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -342,6 +377,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class PreferredIdentifierAddedRule
 		{
 			public PreferredIdentifierAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class PreferredIdentifierRolePlayerChangeRule
+		{
+			public PreferredIdentifierRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class PreferredIdentifierRolePlayerChangeRuleForResize
+		{
+			public PreferredIdentifierRolePlayerChangeRuleForResize()
 			{
 				base.IsEnabled = false;
 			}

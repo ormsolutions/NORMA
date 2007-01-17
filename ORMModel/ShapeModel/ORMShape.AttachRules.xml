@@ -19,6 +19,9 @@
 		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeRule"/>
 		<arg:Rule class="ExternalConstraintShape.ExclusiveOrCouplerAdded"/>
 		<arg:Rule class="ExternalConstraintShape.ExclusiveOrCouplerDeleted"/>
+		<arg:Rule class="ExternalConstraintShape.PreferredIdentifierAddRule"/>
+		<arg:Rule class="ExternalConstraintShape.PreferredIdentifierDeleteRule"/>
+		<arg:Rule class="ExternalConstraintShape.PreferredIdentifierRolePlayerChangeRule"/>
 		<arg:Rule class="FactTypeShape.ConstraintDisplayPositionChangeRule"/>
 		<arg:Rule class="FactTypeShape.DerivationRuleChanged"/>
 		<arg:Rule class="FactTypeShape.DerivationRuleAdd"/>
@@ -37,6 +40,8 @@
 		<arg:Rule class="ObjectTypeShape.ObjectTypeShapeChangeRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierAddedRule"/>
+		<arg:Rule class="ObjectTypeShape.PreferredIdentifierRolePlayerChangeRule"/>
+		<arg:Rule class="ObjectTypeShape.PreferredIdentifierRolePlayerChangeRuleForResize"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierLengthened"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierShortened"/>
 		<arg:Rule class="ObjectTypeShape.RolePlayerAddedRule"/>

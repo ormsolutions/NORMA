@@ -921,14 +921,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
 		private sealed partial class EntityTypeHasPreferredIdentifierAdded : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(EntityTypeHasPreferredIdentifier link)
 			{
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType entityType = link.PreferredIdentifierFor;
 				if (!entityType.IsValueType)
 				{
 					entityType.ValueTypeInstanceCollection.Clear();
 				}
+			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier);
 			}
 		}
 
@@ -938,14 +941,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeleteRule
 		private sealed partial class EntityTypeHasPreferredIdentifierDeleted : DeleteRule
 		{
+			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+			{
+				if (objectType == null)
+				{
+					objectType = link.PreferredIdentifierFor;
+				}
+				if (objectType.IsValueType)
+				{
+					objectType.EntityTypeInstanceCollection.Clear();
+				}
+			}
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				ObjectType valueType = link.PreferredIdentifierFor;
-				if (valueType.IsValueType)
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			}
+		}
+
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
+		private sealed partial class EntityTypeHasPreferredIdentifierRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				ObjectType oldObjectType = null;
+				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 				{
-					valueType.EntityTypeInstanceCollection.Clear();
+					oldObjectType = (ObjectType)e.OldRolePlayer;
 				}
+				EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
+				EntityTypeHasPreferredIdentifierDeleted.Process(link, oldObjectType);
+				EntityTypeHasPreferredIdentifierAdded.Process(link);
 			}
 		}
 

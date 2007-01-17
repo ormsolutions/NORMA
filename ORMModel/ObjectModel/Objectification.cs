@@ -194,6 +194,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeletingRule
 		private sealed partial class PreferredIdentifierDeletingRule : DeletingRule
 		{
+			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+			{
+				if (objectType == null)
+				{
+					objectType = link.PreferredIdentifierFor;
+				}
+				Objectification objectification;
+				if (!objectType.IsDeleting &&
+					null != (objectification = objectType.Objectification) &&
+					!objectification.IsDeleting)
+				{
+					ORMCoreDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+				}
+			}
 			public override void  ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectType objectType = (e.ModelElement as EntityTypeHasPreferredIdentifier).PreferredIdentifierFor;
@@ -207,6 +221,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule class
+		#region PreferredIdentifierRolePlayerChangeRule class
+		/// <summary>
+		/// RolePlayerChangeRule corresponding to <see cref="PreferredIdentifierDeletingRule"/>
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
+		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				ObjectType oldObjectType = null;
+				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+				{
+					oldObjectType = (ObjectType)e.OldRolePlayer;
+				}
+				PreferredIdentifierDeletingRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
+			}
+		}
+		#endregion // PreferredIdentifierRolePlayerChangeRule class
 		#region ImpliedObjectificationIsImpliedChangeRule class
 		/// <summary>
 		/// Validates that an objectification that is implied matches the implied objectification pattern.

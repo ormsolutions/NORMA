@@ -765,12 +765,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeletingRule
 		private sealed partial class PreferredIdentifierDeletingRule : DeletingRule
 		{
-			public override void ElementDeleting(ElementDeletingEventArgs e)
+			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
 			{
-
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				ObjectType objectType;
-				if (!(objectType = link.PreferredIdentifierFor).IsDeleting)
+				if (objectType == null)
+				{
+					objectType = link.PreferredIdentifierFor;
+				}
+				if (!objectType.IsDeleting)
 				{
 					Role.WalkDescendedValueRoles(objectType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
@@ -782,8 +783,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 					});
 				}
 			}
+			public override void ElementDeleting(ElementDeletingEventArgs e)
+			{
+
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			}
 		}
 		#endregion // PreferredIdentifierDeletingRule class
+		#region PreferredIdentifierRolePlayerChangeRule class
+		/// <summary>
+		/// RolePlayerChangeRule corresponding to <see cref="PreferredIdentifierDeletingRule"/>
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
+		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				ObjectType oldObjectType = null;
+				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+				{
+					oldObjectType = (ObjectType)e.OldRolePlayer;
+				}
+				PreferredIdentifierDeletingRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
+			}
+		}
+		#endregion // PreferredIdentifierRolePlayerChangeRule class
 		#region PreferredIdentifierRoleAddRule class
 		/// <summary>
 		/// A rule to determine if a role has been added to a constraint

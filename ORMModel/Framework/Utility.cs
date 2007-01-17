@@ -155,7 +155,6 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		#endregion // GetCombinedHashCode methods
-
 		#region RotateRight method
 		/// <summary>
 		/// Returns the result of rotating the bits in the <see cref="Int32"/> value specified by <paramref name="value"/>
@@ -184,79 +183,5 @@ namespace Neumont.Tools.Modeling
 			return unchecked((int)(((uint)value >> places) | ((uint)value << (32 - places))));
 		}
 		#endregion // RotateRight method
-
-		#region SetPropertyValidateOneToOne method
-		/// <summary>
-		/// Sets the role player for a one-to-one relationship while enforcing the one-to-one pattern on both role players.
-		/// </summary>
-		public static void SetPropertyValidateOneToOne(ModelElement sourceRolePlayer, ModelElement newTargetRolePlayer, Guid sourceRoleGuid, Guid targetRoleGuid, Type linkType)
-		{
-			if (sourceRolePlayer == null)
-			{
-				throw new ArgumentNullException("sourceRolePlayer");
-			}
-			Store store = sourceRolePlayer.Store;
-			bool sameTargetRolePlayer = false;
-			DomainRoleInfo sourceRoleInfo = store.DomainDataDirectory.FindDomainRole(sourceRoleGuid);
-			if (linkType == null)
-			{
-				linkType = sourceRoleInfo.DomainRelationship.ImplementationClass;
-			}
-			ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetElementLinks<ElementLink>(sourceRolePlayer, sourceRoleGuid);
-			int linkCount = links.Count;
-			if (linkCount != 0)
-			{
-				for (int i = linkCount - 1; i >= 0; --i)
-				{
-					ElementLink link = links[i];
-					if (!link.IsDeleted)
-					{
-						ModelElement counterpart = sourceRoleInfo.OppositeDomainRole.GetRolePlayer(link);
-						if (counterpart != null && counterpart == newTargetRolePlayer)
-						{
-							sameTargetRolePlayer = true;
-						}
-						else
-						{
-							link.Delete();
-						}
-						// break; // In theory we can break on the first one, but this guarantees that we rip any slop already in the model
-					}
-				}
-			}
-			if (newTargetRolePlayer != null)
-			{
-				// Check the relationship on the other end to enforce 1-1
-				links = DomainRoleInfo.GetElementLinks<ElementLink>(newTargetRolePlayer, targetRoleGuid);
-				linkCount = links.Count;
-				if (linkCount != 0)
-				{
-					for (int i = linkCount - 1; i >= 0; --i)
-					{
-						ElementLink link = links[i];
-						if (!link.IsDeleted)
-						{
-							ModelElement counterpart = sourceRoleInfo.GetRolePlayer(link);
-							if (counterpart != null && counterpart == sourceRolePlayer)
-							{
-								sameTargetRolePlayer = true;
-							}
-							else
-							{
-								link.Delete();
-							}
-							// break; // In theory we can break on the first one, but this guarantees that we rip any slop already in the model
-						}
-					}
-				}
-			}
-			if ((!sameTargetRolePlayer) && (newTargetRolePlayer != null))
-			{
-				store.ElementFactory.CreateElementLink(sourceRoleInfo.DomainRelationship,
-					new RoleAssignment(sourceRoleGuid, sourceRolePlayer),
-					new RoleAssignment(targetRoleGuid, newTargetRolePlayer));
-			}
-		}
-		#endregion // SetPropertyValidateOneToOne method
 	}
 }

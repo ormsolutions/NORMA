@@ -1657,25 +1657,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(Objectification), Priority = 1)] // AddRule
 		private sealed partial class ValidateFactNameForObjectificationAdded : AddRule
 		{
-			public static void Process(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
+			public static void Process(Objectification link)
 			{
-				if (nestingObjectType == null)
-				{
-					nestingObjectType = link.NestingType;
-				}
+				ObjectType nestingObjectType = link.NestingType;
 				if (nestingObjectType.Name.Length != 0)
 				{
-					if (nestedFactType == null)
-					{
-						nestedFactType = link.NestedFactType;
-					}
+					FactType nestedFactType = link.NestedFactType;
 					nestedFactType.RegenerateErrorText();
 					nestedFactType.OnFactTypeNameChanged();
 				}
 			}
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				Process(e.ModelElement as Objectification, null, null);
+				Process(e.ModelElement as Objectification);
 			}
 		}
 		/// <summary>
@@ -1723,7 +1717,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				Objectification link = e.ElementLink as Objectification;
 				ValidateFactNameForObjectificationDelete.Process(link, oldFactType, oldObjectType);
-				ValidateFactNameForObjectificationAdded.Process(link, null, null);
+				ValidateFactNameForObjectificationAdded.Process(link);
 			}
 		}
 		#endregion

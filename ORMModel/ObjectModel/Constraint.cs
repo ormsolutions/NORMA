@@ -4949,14 +4949,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private sealed partial class PreferredIdentifierAddedRule : AddRule
 		{
 			/// <summary>
-			/// Check preconditions on an internal or external
-			/// constraint.
+			/// Check preconditions on an internal or external uniqueness constraint.
 			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(EntityTypeHasPreferredIdentifier link)
 			{
-				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-
 				// Enforce that a preferred identifier is set only for unobjectified
 				// entity types. The other parts of this (don't allow this to be set
 				// for object types with preferred identifiers) is enforced in
@@ -5088,6 +5084,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier);
+			}
 			/// <summary>
 			/// This rule checkes preconditions for adding a primary
 			/// identifier link. Fire it before the link is added
@@ -5102,6 +5102,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // PreferredIdentifierAddedRule class
+		#region PreferredIdentifierRolePlayerChangeRule class
+		/// <summary>
+		/// Verify that all preconditions hold for adding a primary
+		/// identifier and extend modifiable conditions as needed.
+		/// Defers to <see cref="PreferredIdentifierAddedRule"/>.
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
+		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				PreferredIdentifierAddedRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier);
+			}
+		}
+		#endregion // PreferredIdentifierRolePlayerChangeRule class
 		#region ModalityChangeRule class
 		/// <summary>
 		/// Modify preferred identifier status for modality changes
@@ -6678,21 +6693,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region PreferredIdentifierFor implementation
 	public partial class UniquenessConstraint
 	{
-		/// <summary>
-		/// Helper property to share implementation of the PreferredIdentifierFor
-		/// property for the derived uniqueness constraints that expose it publicly.
-		/// </summary>
-		public ObjectType PreferredIdentifierFor
-		{
-			get
-			{
-				return EntityTypeHasPreferredIdentifier.GetPreferredIdentifierFor(this);
-			}
-			set
-			{
-				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId, EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId, typeof(EntityTypeHasPreferredIdentifier));
-			}
-		}
 		ObjectType IConstraint.PreferredIdentifierFor
 		{
 			get

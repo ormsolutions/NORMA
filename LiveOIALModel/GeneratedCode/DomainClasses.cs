@@ -194,7 +194,19 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.OIALModelDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.ORMModelDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.ORMModelDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.OIALModelHasORMModel.OIALModelDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -525,7 +537,19 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.ObjectTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.ObjectTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -619,7 +643,19 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.ValueTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.ValueTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -1063,7 +1099,19 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.SingleChildSequenceConstraintDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.SingleChildSequenceConstraintDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -1601,7 +1649,19 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.SubsetConstraintDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.SubChildSequenceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.SubChildSequenceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSubChildSequence.SubsetConstraintDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -1621,7 +1681,19 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraintDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.SuperChildSequenceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.SuperChildSequenceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.TestOIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraintDomainRoleId, value);
+				}
 			}
 		}
 		#endregion

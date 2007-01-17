@@ -27,6 +27,7 @@
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.ModalityChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule"/>
@@ -37,6 +38,9 @@
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeHasEntityTypeInstanceAdded"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeHasPreferredIdentifierAdded"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeHasPreferredIdentifierDeleted"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeHasPreferredIdentifierRolePlayerChanged"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeleted"/>
 		<arg:Rule class="EntityTypeInstance.RoleInstanceHasPopulationUniquenessErrorDeleted"/>
@@ -103,6 +107,7 @@
 		<arg:Rule class="Objectification.ObjectificationDeletingRule"/>
 		<arg:Rule class="Objectification.ObjectificationRolePlayerChangeRule"/>
 		<arg:Rule class="Objectification.PreferredIdentifierDeletingRule"/>
+		<arg:Rule class="Objectification.PreferredIdentifierRolePlayerChangeRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>
 		<arg:Rule class="Objectification.RoleDeletingRule"/>
@@ -124,6 +129,7 @@
 		<arg:Rule class="ObjectType.UnspecifiedDataRoleRolePlayerChangeRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeDeleteRule"/>
+		<arg:Rule class="ObjectType.VerifyReferenceSchemeRolePlayerChangeRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeDeleteRule"/>
 		<arg:Rule class="ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
@@ -209,6 +215,7 @@
 		<arg:Rule class="ValueConstraint.DataTypeRolePlayerChangeRule"/>
 		<arg:Rule class="ValueConstraint.ObjectTypeRoleAdded"/>
 		<arg:Rule class="ValueConstraint.PreferredIdentifierDeletingRule"/>
+		<arg:Rule class="ValueConstraint.PreferredIdentifierRolePlayerChangeRule"/>
 		<arg:Rule class="ValueConstraint.PreferredIdentifierRoleAddRule"/>
 		<arg:Rule class="ValueConstraint.RolePlayerDeleting"/>
 		<arg:Rule class="ValueConstraint.RolePlayerRolePlayerChangeRule"/>
