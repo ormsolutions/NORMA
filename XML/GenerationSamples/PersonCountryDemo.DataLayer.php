@@ -7,7 +7,7 @@ static class DataAccessBase {
 	}
 	private static function get() {
 		if (params == null) {
-			params = .global::array();
+			params = array();
 			params["host"] = "";
 			params["username"] = "";
 			params["password"] = "";
@@ -32,7 +32,7 @@ class PersonDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new PersonDao();
 		}
 		return instance;
@@ -44,9 +44,9 @@ class PersonDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Person();
 				$tempEntity->setCountry_name($results["Country_Country_name"]);
@@ -66,7 +66,7 @@ class PersonDaoBase {
 		try {
 			$retVal = new Person();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -86,7 +86,7 @@ class PersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Person_id"] = $Person->getPerson_id();
 			$dataArray["Country"] = $Person->getCountry_name();
 			$dataArray["LastName"] = $Person->getLastName();
@@ -103,7 +103,7 @@ class PersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Person_id"] = $Person->getPerson_id();
 			$dataArray["Country"] = $Person->getCountry_name();
 			$dataArray["LastName"] = $Person->getLastName();
@@ -142,7 +142,7 @@ class CountryDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new CountryDao();
 		}
 		return instance;
@@ -154,9 +154,9 @@ class CountryDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Country", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Country();
 				$tempEntity->setRegion_Region_code($results["Region_Region_code"]);
@@ -173,7 +173,7 @@ class CountryDaoBase {
 		try {
 			$retVal = new Country();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Country", "*");
 			$select->where("Country_name = ?", $Country_name);
@@ -190,7 +190,7 @@ class CountryDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Country_name"] = $Country->getCountry_name();
 			$dataArray["Region_Region_code"] = $Country->getRegion_Region_code();
 			$nrRowsAffected = $db->insert("Country", $dataArray);
@@ -204,7 +204,7 @@ class CountryDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Country_name"] = $Country->getCountry_name();
 			$dataArray["Region_Region_code"] = $Country->getRegion_Region_code();
 			$whereClause = $db->quoteInto("Country_name = ?", $Country->getCountry_name());
@@ -234,9 +234,9 @@ class CountryDaoBase {
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Country_name = ?", $Country_name);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Person();
 				$tempEntity->setCountry_name($results["Country_Country_name"]);

@@ -6,12 +6,6 @@
 	<plx:namespaceImport name="System.ComponentModel" />
 	<plx:namespaceImport name="System.Data" />
 	<plx:namespaceImport name="System.Xml" />
-	<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute" />
-	<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute" />
-	<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute" />
-	<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute" />
-	<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind" />
-	<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet" />
 	<plx:namespace name="BlogDemo">
 		<plx:class visibility="public" modifier="sealed" name="BlogDemoContext">
 			<plx:leadingInfo>
@@ -20,7 +14,7 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="BlogDemoContext" />
 			</plx:trailingInfo>
-			<plx:attribute dataTypeName="GeneratedCodeAttribute">
+			<plx:attribute dataTypeName="GeneratedCodeAttribute" dataTypeQualifier="System.CodeDom.Compiler">
 				<plx:passParam>
 					<plx:string>OIALtoPLiX</plx:string>
 				</plx:passParam>
@@ -92,7 +86,7 @@
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="Exception Helpers" />
 				</plx:leadingInfo>
-				<plx:attribute dataTypeName="SuppressMessageAttribute">
+				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 					<plx:passParam>
 						<plx:string>Microsoft.Usage</plx:string>
 					</plx:passParam>
@@ -3113,13 +3107,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_BlogEntry_Id" dataTypeName=".i4">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>BlogEntry_Id</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_BlogEntry_Id" dataTypeName=".i4" />
 				<plx:property visibility="public" modifier="override" name="BlogEntry_Id">
 					<plx:returns dataTypeName=".i4" />
 					<plx:get>
@@ -3363,13 +3351,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_entryTitle" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>entryTitle</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_entryTitle" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="entryTitle">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
@@ -3636,13 +3618,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_entryBody" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>entryBody</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_entryBody" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="entryBody">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
@@ -3909,13 +3885,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_postedDate_MDYValue" dataTypeName=".i4">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>postedDate_MDYValue</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_postedDate_MDYValue" dataTypeName=".i4" />
 				<plx:property visibility="public" modifier="override" name="postedDate_MDYValue">
 					<plx:returns dataTypeName=".i4" />
 					<plx:get>
@@ -7650,13 +7620,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_firstName" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>firstName</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_firstName" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="firstName">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
@@ -7968,13 +7932,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_lastName" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>lastName</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_lastName" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="lastName">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
@@ -8286,13 +8244,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_username" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>username</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_username" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="username">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
@@ -8604,13 +8556,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_password" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>password</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_password" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="password">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
@@ -9400,13 +9346,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_title" dataTypeName=".string">
-					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
-						<plx:passParam>
-							<plx:string>title</plx:string>
-						</plx:passParam>
-					</plx:attribute>
-				</plx:field>
+				<plx:field visibility="private" readOnly="false" name="_title" dataTypeName=".string" />
 				<plx:property visibility="public" modifier="override" name="title">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>

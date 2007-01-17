@@ -1,22 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <oil:model name="BlogDemo" sourceRef="_F434295F-CF9E-4E0A-8EAC-7DBF899336FD" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
-	<DEBUG_INFORMATION>
-		<FactTypeAbsorptions>
-			<AbsorbFactType ref="_DC45E85B-959A-4E8C-8344-268B0B372C82" towards="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" type="factOnly" towardsName="BlogEntry" />
-			<AbsorbFactType ref="_1263E7DB-185B-44CF-AFC0-1D0FE66FABE7" towards="_F1AF1CAB-4BAD-4A43-8712-F5BCDC292550" type="factOnly" towardsName="Date" />
-			<AbsorbFactType ref="_830FA036-7C59-484A-80CF-F4A38C4841E3" towards="_DCA9F048-CDA6-4D87-AEC6-4172CD670DAB" type="factOnly" towardsName="BlogLabel" />
-		</FactTypeAbsorptions>
-		<ObjectTypeAbsorptions>
-			<AbsorbObjectType ref="_FC4B6034-FD2F-48BB-89C1-5E60BCF9E82F" towards="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" refName="BlogComment" towardsName="BlogEntry" />
-			<AbsorbObjectType ref="_DC84D934-1982-4B2B-B9E0-9989407A6135" towards="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" refName="NonCommentEntry" towardsName="BlogEntry" />
-		</ObjectTypeAbsorptions>
-		<TopLevelTypes>
-			<orm:EntityType id="_6E7E0F2F-EAF0-4D19-91CA-71E702D587CC" Name="BlogEntryLabel" IsIndependent="true" _ReferenceMode="" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:EntityType id="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" Name="BlogEntry" _ReferenceMode="Id" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:EntityType id="_3B54939A-BBEE-4561-8D7A-7E2AA0055C32" Name="User" _ReferenceMode="" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:EntityType id="_DCA9F048-CDA6-4D87-AEC6-4172CD670DAB" Name="BlogLabel" _ReferenceMode="Id" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-		</TopLevelTypes>
-	</DEBUG_INFORMATION>
 	<oil:informationTypeFormats>
 		<!--These may change in the future once they are integrated into the core ORM model file.-->
 		<odt:decimalNumber name="BlogEntry_Id" fractionDigits="0" />

@@ -5,11 +5,6 @@
 	<plx:namespaceImport name="System.Collections.ObjectModel" />
 	<plx:namespaceImport name="System.ComponentModel" />
 	<plx:namespaceImport name="System.Xml" />
-	<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute" />
-	<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute" />
-	<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute" />
-	<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind" />
-	<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet" />
 	<plx:namespace name="System">
 		<plx:leadingInfo>
 			<plx:pragma type="region" data="Global Support Classes" />
@@ -17,6 +12,7 @@
 		<plx:trailingInfo>
 			<plx:pragma type="closeRegion" data="Global Support Classes" />
 		</plx:trailingInfo>
+		<plx:pragma type="region" data="Tuples" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="Tuple Support" />
@@ -24,7 +20,7 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Tuple Support" />
 			</plx:trailingInfo>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="ImmutableObjectAttribute" dataTypeQualifier="System.ComponentModel">
 				<plx:passParam>
 					<plx:trueKeyword />
@@ -45,6 +41,9 @@
 					</plx:binaryOperator>
 				</plx:passParam>
 			</plx:attribute>
+			<plx:implementsInterface dataTypeName="IEquatable" dataTypeQualifier="System">
+				<plx:passTypeParam dataTypeName="Tuple" />
+			</plx:implementsInterface>
 			<plx:function visibility="protected" name=".construct" />
 			<plx:function visibility="protected" modifier="static" name="RotateRight">
 				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
@@ -59,48 +58,34 @@
 				<plx:param type="in" name="places" dataTypeName=".i4" />
 				<plx:returns dataTypeName=".i4" />
 				<plx:return>
-					<plx:cast type="exceptionCast" dataTypeName=".i4">
+					<plx:cast type="primitiveUnchecked" dataTypeName=".i4">
 						<plx:binaryOperator type="bitwiseOr">
 							<plx:left>
 								<plx:binaryOperator type="shiftRight">
 									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".u4">
+										<plx:cast type="primitiveUnchecked" dataTypeName=".u4">
 											<plx:nameRef type="parameter" name="value" />
 										</plx:cast>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="bitwiseAnd">
-											<plx:left>
-												<plx:nameRef type="parameter" name="places" />
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="31" />
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:nameRef type="parameter" name="places" />
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:left>
 							<plx:right>
 								<plx:binaryOperator type="shiftLeft">
 									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".u4">
+										<plx:cast type="primitiveUnchecked" dataTypeName=".u4">
 											<plx:nameRef type="parameter" name="value" />
 										</plx:cast>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="bitwiseAnd">
+										<plx:binaryOperator type="subtract">
 											<plx:left>
-												<plx:binaryOperator type="subtract">
-													<plx:left>
-														<plx:value type="i4" data="32" />
-													</plx:left>
-													<plx:right>
-														<plx:nameRef type="parameter" name="places" />
-													</plx:right>
-												</plx:binaryOperator>
+												<plx:value type="i4" data="32" />
 											</plx:left>
 											<plx:right>
-												<plx:value type="i4" data="31" />
+												<plx:nameRef type="parameter" name="places" />
 											</plx:right>
 										</plx:binaryOperator>
 									</plx:right>
@@ -110,6 +95,20 @@
 					</plx:cast>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="abstractOverride" overload="true" name="Equals">
+				<plx:param name="obj" dataTypeName=".object" />
+				<plx:returns dataTypeName=".boolean" />
+			</plx:function>
+			<plx:function visibility="public" modifier="abstract" overload="true" name="Equals">
+				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
+					<plx:passTypeParam dataTypeName="Tuple" />
+				</plx:interfaceMember>
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+			</plx:function>
+			<plx:function visibility="public" modifier="abstractOverride" name="GetHashCode">
+				<plx:returns dataTypeName=".i4" />
+			</plx:function>
 			<plx:function visibility="public" modifier="abstractOverride" overload="true" name="ToString">
 				<plx:returns dataTypeName=".string" />
 			</plx:function>
@@ -118,10 +117,8 @@
 				<plx:returns dataTypeName=".string" />
 			</plx:function>
 		</plx:class>
+		<plx:pragma type="region" data="Binary (2-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Binary (2-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -175,10 +172,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Binary (2-ary) Tuple" />
-			</plx:trailingInfo>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -285,6 +279,21 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -297,25 +306,39 @@
 					<plx:passTypeParam dataTypeName="T2" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -328,10 +351,8 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item2" />
@@ -344,18 +365,12 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -426,44 +441,50 @@
 					<plx:passTypeParam dataTypeName="T2" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -756,10 +777,9 @@
 				</plx:fallbackBranch>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Binary (2-ary) Tuple" />
+		<plx:pragma type="region" data="Ternary (3-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Ternary (3-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -834,9 +854,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Ternary (3-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -845,7 +863,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -987,6 +1004,22 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -1001,25 +1034,39 @@
 					<plx:passTypeParam dataTypeName="T3" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -1032,12 +1079,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -1050,10 +1095,8 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item3" />
@@ -1066,20 +1109,14 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -1173,44 +1210,50 @@
 					<plx:passTypeParam dataTypeName="T3" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -1238,10 +1281,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Ternary (3-ary) Tuple" />
+		<plx:pragma type="region" data="Quaternary (4-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Quaternary (4-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -1337,9 +1379,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Quaternary (4-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -1348,7 +1388,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -1525,6 +1564,23 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -1541,25 +1597,39 @@
 					<plx:passTypeParam dataTypeName="T4" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -1572,12 +1642,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -1590,12 +1658,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -1608,10 +1674,8 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item4" />
@@ -1624,22 +1688,16 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -1756,44 +1814,50 @@
 					<plx:passTypeParam dataTypeName="T4" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -1823,10 +1887,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Quaternary (4-ary) Tuple" />
+		<plx:pragma type="region" data="Quinary (5-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Quinary (5-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -1943,9 +2006,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Quinary (5-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -1954,7 +2015,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -2166,6 +2226,24 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:passTypeParam dataTypeName="T5" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -2184,25 +2262,39 @@
 					<plx:passTypeParam dataTypeName="T5" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -2215,12 +2307,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -2233,12 +2323,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -2251,12 +2339,10 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:binaryOperator type="booleanOr">
-															<plx:left>
-																<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item4" />
@@ -2269,10 +2355,8 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:left>
-															<plx:right>
-																<plx:unaryOperator type="booleanNot">
+																</plx:left>
+																<plx:right>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item5" />
@@ -2285,24 +2369,18 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -2442,44 +2520,50 @@
 					<plx:passTypeParam dataTypeName="T5" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -2511,10 +2595,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Quinary (5-ary) Tuple" />
+		<plx:pragma type="region" data="Senary (6-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Senary (6-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -2652,9 +2735,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Senary (6-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -2663,7 +2744,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -2910,6 +2990,25 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:passTypeParam dataTypeName="T5" />
+								<plx:passTypeParam dataTypeName="T6" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -2930,25 +3029,39 @@
 					<plx:passTypeParam dataTypeName="T6" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -2961,12 +3074,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -2979,12 +3090,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -2997,12 +3106,10 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:binaryOperator type="booleanOr">
-															<plx:left>
-																<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item4" />
@@ -3015,12 +3122,10 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:left>
-															<plx:right>
-																<plx:binaryOperator type="booleanOr">
-																	<plx:left>
-																		<plx:unaryOperator type="booleanNot">
+																</plx:left>
+																<plx:right>
+																	<plx:binaryOperator type="booleanOr">
+																		<plx:left>
 																			<plx:callInstance type="methodCall" name="Equals">
 																				<plx:callObject>
 																					<plx:callThis accessor="this" type="field" name="_item5" />
@@ -3033,10 +3138,8 @@
 																					</plx:callInstance>
 																				</plx:passParam>
 																			</plx:callInstance>
-																		</plx:unaryOperator>
-																	</plx:left>
-																	<plx:right>
-																		<plx:unaryOperator type="booleanNot">
+																		</plx:left>
+																		<plx:right>
 																			<plx:callInstance type="methodCall" name="Equals">
 																				<plx:callObject>
 																					<plx:callThis accessor="this" type="field" name="_item6" />
@@ -3049,26 +3152,20 @@
 																					</plx:callInstance>
 																				</plx:passParam>
 																			</plx:callInstance>
-																		</plx:unaryOperator>
-																	</plx:right>
-																</plx:binaryOperator>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -3231,44 +3328,50 @@
 					<plx:passTypeParam dataTypeName="T6" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -3302,10 +3405,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Senary (6-ary) Tuple" />
+		<plx:pragma type="region" data="Septenary (7-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Septenary (7-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -3464,9 +3566,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Septenary (7-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -3475,7 +3575,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -3757,6 +3856,26 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:passTypeParam dataTypeName="T5" />
+								<plx:passTypeParam dataTypeName="T6" />
+								<plx:passTypeParam dataTypeName="T7" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -3779,25 +3898,39 @@
 					<plx:passTypeParam dataTypeName="T7" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -3810,12 +3943,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -3828,12 +3959,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -3846,12 +3975,10 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:binaryOperator type="booleanOr">
-															<plx:left>
-																<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item4" />
@@ -3864,12 +3991,10 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:left>
-															<plx:right>
-																<plx:binaryOperator type="booleanOr">
-																	<plx:left>
-																		<plx:unaryOperator type="booleanNot">
+																</plx:left>
+																<plx:right>
+																	<plx:binaryOperator type="booleanOr">
+																		<plx:left>
 																			<plx:callInstance type="methodCall" name="Equals">
 																				<plx:callObject>
 																					<plx:callThis accessor="this" type="field" name="_item5" />
@@ -3882,12 +4007,10 @@
 																					</plx:callInstance>
 																				</plx:passParam>
 																			</plx:callInstance>
-																		</plx:unaryOperator>
-																	</plx:left>
-																	<plx:right>
-																		<plx:binaryOperator type="booleanOr">
-																			<plx:left>
-																				<plx:unaryOperator type="booleanNot">
+																		</plx:left>
+																		<plx:right>
+																			<plx:binaryOperator type="booleanOr">
+																				<plx:left>
 																					<plx:callInstance type="methodCall" name="Equals">
 																						<plx:callObject>
 																							<plx:callThis accessor="this" type="field" name="_item6" />
@@ -3900,10 +4023,8 @@
 																							</plx:callInstance>
 																						</plx:passParam>
 																					</plx:callInstance>
-																				</plx:unaryOperator>
-																			</plx:left>
-																			<plx:right>
-																				<plx:unaryOperator type="booleanNot">
+																				</plx:left>
+																				<plx:right>
 																					<plx:callInstance type="methodCall" name="Equals">
 																						<plx:callObject>
 																							<plx:callThis accessor="this" type="field" name="_item7" />
@@ -3916,28 +4037,22 @@
 																							</plx:callInstance>
 																						</plx:passParam>
 																					</plx:callInstance>
-																				</plx:unaryOperator>
-																			</plx:right>
-																		</plx:binaryOperator>
-																	</plx:right>
-																</plx:binaryOperator>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -4123,44 +4238,50 @@
 					<plx:passTypeParam dataTypeName="T7" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -4196,10 +4317,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Septenary (7-ary) Tuple" />
+		<plx:pragma type="region" data="Octonary (8-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Octonary (8-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -4379,9 +4499,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Octonary (8-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -4390,7 +4508,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -4707,6 +4824,27 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:passTypeParam dataTypeName="T5" />
+								<plx:passTypeParam dataTypeName="T6" />
+								<plx:passTypeParam dataTypeName="T7" />
+								<plx:passTypeParam dataTypeName="T8" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -4731,25 +4869,39 @@
 					<plx:passTypeParam dataTypeName="T8" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -4762,12 +4914,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -4780,12 +4930,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -4798,12 +4946,10 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:binaryOperator type="booleanOr">
-															<plx:left>
-																<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item4" />
@@ -4816,12 +4962,10 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:left>
-															<plx:right>
-																<plx:binaryOperator type="booleanOr">
-																	<plx:left>
-																		<plx:unaryOperator type="booleanNot">
+																</plx:left>
+																<plx:right>
+																	<plx:binaryOperator type="booleanOr">
+																		<plx:left>
 																			<plx:callInstance type="methodCall" name="Equals">
 																				<plx:callObject>
 																					<plx:callThis accessor="this" type="field" name="_item5" />
@@ -4834,12 +4978,10 @@
 																					</plx:callInstance>
 																				</plx:passParam>
 																			</plx:callInstance>
-																		</plx:unaryOperator>
-																	</plx:left>
-																	<plx:right>
-																		<plx:binaryOperator type="booleanOr">
-																			<plx:left>
-																				<plx:unaryOperator type="booleanNot">
+																		</plx:left>
+																		<plx:right>
+																			<plx:binaryOperator type="booleanOr">
+																				<plx:left>
 																					<plx:callInstance type="methodCall" name="Equals">
 																						<plx:callObject>
 																							<plx:callThis accessor="this" type="field" name="_item6" />
@@ -4852,12 +4994,10 @@
 																							</plx:callInstance>
 																						</plx:passParam>
 																					</plx:callInstance>
-																				</plx:unaryOperator>
-																			</plx:left>
-																			<plx:right>
-																				<plx:binaryOperator type="booleanOr">
-																					<plx:left>
-																						<plx:unaryOperator type="booleanNot">
+																				</plx:left>
+																				<plx:right>
+																					<plx:binaryOperator type="booleanOr">
+																						<plx:left>
 																							<plx:callInstance type="methodCall" name="Equals">
 																								<plx:callObject>
 																									<plx:callThis accessor="this" type="field" name="_item7" />
@@ -4870,10 +5010,8 @@
 																									</plx:callInstance>
 																								</plx:passParam>
 																							</plx:callInstance>
-																						</plx:unaryOperator>
-																					</plx:left>
-																					<plx:right>
-																						<plx:unaryOperator type="booleanNot">
+																						</plx:left>
+																						<plx:right>
 																							<plx:callInstance type="methodCall" name="Equals">
 																								<plx:callObject>
 																									<plx:callThis accessor="this" type="field" name="_item8" />
@@ -4886,30 +5024,24 @@
 																									</plx:callInstance>
 																								</plx:passParam>
 																							</plx:callInstance>
-																						</plx:unaryOperator>
-																					</plx:right>
-																				</plx:binaryOperator>
-																			</plx:right>
-																		</plx:binaryOperator>
-																	</plx:right>
-																</plx:binaryOperator>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+																						</plx:right>
+																					</plx:binaryOperator>
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -5118,44 +5250,50 @@
 					<plx:passTypeParam dataTypeName="T8" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -5193,10 +5331,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Octonary (8-ary) Tuple" />
+		<plx:pragma type="region" data="Nonary (9-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Nonary (9-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -5397,9 +5534,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Nonary (9-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -5408,7 +5543,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -5760,6 +5894,28 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:passTypeParam dataTypeName="T5" />
+								<plx:passTypeParam dataTypeName="T6" />
+								<plx:passTypeParam dataTypeName="T7" />
+								<plx:passTypeParam dataTypeName="T8" />
+								<plx:passTypeParam dataTypeName="T9" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -5786,25 +5942,39 @@
 					<plx:passTypeParam dataTypeName="T9" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -5817,12 +5987,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -5835,12 +6003,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -5853,12 +6019,10 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:binaryOperator type="booleanOr">
-															<plx:left>
-																<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item4" />
@@ -5871,12 +6035,10 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:left>
-															<plx:right>
-																<plx:binaryOperator type="booleanOr">
-																	<plx:left>
-																		<plx:unaryOperator type="booleanNot">
+																</plx:left>
+																<plx:right>
+																	<plx:binaryOperator type="booleanOr">
+																		<plx:left>
 																			<plx:callInstance type="methodCall" name="Equals">
 																				<plx:callObject>
 																					<plx:callThis accessor="this" type="field" name="_item5" />
@@ -5889,12 +6051,10 @@
 																					</plx:callInstance>
 																				</plx:passParam>
 																			</plx:callInstance>
-																		</plx:unaryOperator>
-																	</plx:left>
-																	<plx:right>
-																		<plx:binaryOperator type="booleanOr">
-																			<plx:left>
-																				<plx:unaryOperator type="booleanNot">
+																		</plx:left>
+																		<plx:right>
+																			<plx:binaryOperator type="booleanOr">
+																				<plx:left>
 																					<plx:callInstance type="methodCall" name="Equals">
 																						<plx:callObject>
 																							<plx:callThis accessor="this" type="field" name="_item6" />
@@ -5907,12 +6067,10 @@
 																							</plx:callInstance>
 																						</plx:passParam>
 																					</plx:callInstance>
-																				</plx:unaryOperator>
-																			</plx:left>
-																			<plx:right>
-																				<plx:binaryOperator type="booleanOr">
-																					<plx:left>
-																						<plx:unaryOperator type="booleanNot">
+																				</plx:left>
+																				<plx:right>
+																					<plx:binaryOperator type="booleanOr">
+																						<plx:left>
 																							<plx:callInstance type="methodCall" name="Equals">
 																								<plx:callObject>
 																									<plx:callThis accessor="this" type="field" name="_item7" />
@@ -5925,12 +6083,10 @@
 																									</plx:callInstance>
 																								</plx:passParam>
 																							</plx:callInstance>
-																						</plx:unaryOperator>
-																					</plx:left>
-																					<plx:right>
-																						<plx:binaryOperator type="booleanOr">
-																							<plx:left>
-																								<plx:unaryOperator type="booleanNot">
+																						</plx:left>
+																						<plx:right>
+																							<plx:binaryOperator type="booleanOr">
+																								<plx:left>
 																									<plx:callInstance type="methodCall" name="Equals">
 																										<plx:callObject>
 																											<plx:callThis accessor="this" type="field" name="_item8" />
@@ -5943,10 +6099,8 @@
 																											</plx:callInstance>
 																										</plx:passParam>
 																									</plx:callInstance>
-																								</plx:unaryOperator>
-																							</plx:left>
-																							<plx:right>
-																								<plx:unaryOperator type="booleanNot">
+																								</plx:left>
+																								<plx:right>
 																									<plx:callInstance type="methodCall" name="Equals">
 																										<plx:callObject>
 																											<plx:callThis accessor="this" type="field" name="_item9" />
@@ -5959,32 +6113,26 @@
 																											</plx:callInstance>
 																										</plx:passParam>
 																									</plx:callInstance>
-																								</plx:unaryOperator>
-																							</plx:right>
-																						</plx:binaryOperator>
-																					</plx:right>
-																				</plx:binaryOperator>
-																			</plx:right>
-																		</plx:binaryOperator>
-																	</plx:right>
-																</plx:binaryOperator>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+																								</plx:right>
+																							</plx:binaryOperator>
+																						</plx:right>
+																					</plx:binaryOperator>
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -6216,44 +6364,50 @@
 					<plx:passTypeParam dataTypeName="T9" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -6293,10 +6447,9 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
+		<plx:pragma type="closeRegion" data="Nonary (9-ary) Tuple" />
+		<plx:pragma type="region" data="Denary (10-ary) Tuple" />
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Denary (10-ary) Tuple" />
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<plx:typeParam name="T1" />
 				<plx:typeParam name="T2" />
@@ -6518,9 +6671,7 @@
 			</plx:function>
 		</plx:class>
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Denary (10-ary) Tuple" />
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 				<plx:passParam>
 					<plx:string data="Microsoft.Design" />
@@ -6529,7 +6680,6 @@
 					<plx:string data="CA1005:AvoidExcessiveParametersOnGenericTypes" />
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System" />
 			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 				<plx:passParam>
 					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
@@ -6916,6 +7066,29 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<plx:passTypeParam dataTypeName="T1" />
+								<plx:passTypeParam dataTypeName="T2" />
+								<plx:passTypeParam dataTypeName="T3" />
+								<plx:passTypeParam dataTypeName="T4" />
+								<plx:passTypeParam dataTypeName="T5" />
+								<plx:passTypeParam dataTypeName="T6" />
+								<plx:passTypeParam dataTypeName="T7" />
+								<plx:passTypeParam dataTypeName="T8" />
+								<plx:passTypeParam dataTypeName="T9" />
+								<plx:passTypeParam dataTypeName="T10" />
+								<plx:nameRef type="parameter" name="other" />
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -6944,25 +7117,39 @@
 					<plx:passTypeParam dataTypeName="T10" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other" />
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword />
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="booleanOr">
-									<plx:left>
-										<plx:unaryOperator type="booleanNot">
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
 											<plx:callInstance type="methodCall" name="Equals">
 												<plx:callObject>
 													<plx:callThis accessor="this" type="field" name="_item1" />
@@ -6975,12 +7162,10 @@
 													</plx:callInstance>
 												</plx:passParam>
 											</plx:callInstance>
-										</plx:unaryOperator>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="booleanOr">
-											<plx:left>
-												<plx:unaryOperator type="booleanNot">
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
 													<plx:callInstance type="methodCall" name="Equals">
 														<plx:callObject>
 															<plx:callThis accessor="this" type="field" name="_item2" />
@@ -6993,12 +7178,10 @@
 															</plx:callInstance>
 														</plx:passParam>
 													</plx:callInstance>
-												</plx:unaryOperator>
-											</plx:left>
-											<plx:right>
-												<plx:binaryOperator type="booleanOr">
-													<plx:left>
-														<plx:unaryOperator type="booleanNot">
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="booleanOr">
+														<plx:left>
 															<plx:callInstance type="methodCall" name="Equals">
 																<plx:callObject>
 																	<plx:callThis accessor="this" type="field" name="_item3" />
@@ -7011,12 +7194,10 @@
 																	</plx:callInstance>
 																</plx:passParam>
 															</plx:callInstance>
-														</plx:unaryOperator>
-													</plx:left>
-													<plx:right>
-														<plx:binaryOperator type="booleanOr">
-															<plx:left>
-																<plx:unaryOperator type="booleanNot">
+														</plx:left>
+														<plx:right>
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
 																	<plx:callInstance type="methodCall" name="Equals">
 																		<plx:callObject>
 																			<plx:callThis accessor="this" type="field" name="_item4" />
@@ -7029,12 +7210,10 @@
 																			</plx:callInstance>
 																		</plx:passParam>
 																	</plx:callInstance>
-																</plx:unaryOperator>
-															</plx:left>
-															<plx:right>
-																<plx:binaryOperator type="booleanOr">
-																	<plx:left>
-																		<plx:unaryOperator type="booleanNot">
+																</plx:left>
+																<plx:right>
+																	<plx:binaryOperator type="booleanOr">
+																		<plx:left>
 																			<plx:callInstance type="methodCall" name="Equals">
 																				<plx:callObject>
 																					<plx:callThis accessor="this" type="field" name="_item5" />
@@ -7047,12 +7226,10 @@
 																					</plx:callInstance>
 																				</plx:passParam>
 																			</plx:callInstance>
-																		</plx:unaryOperator>
-																	</plx:left>
-																	<plx:right>
-																		<plx:binaryOperator type="booleanOr">
-																			<plx:left>
-																				<plx:unaryOperator type="booleanNot">
+																		</plx:left>
+																		<plx:right>
+																			<plx:binaryOperator type="booleanOr">
+																				<plx:left>
 																					<plx:callInstance type="methodCall" name="Equals">
 																						<plx:callObject>
 																							<plx:callThis accessor="this" type="field" name="_item6" />
@@ -7065,12 +7242,10 @@
 																							</plx:callInstance>
 																						</plx:passParam>
 																					</plx:callInstance>
-																				</plx:unaryOperator>
-																			</plx:left>
-																			<plx:right>
-																				<plx:binaryOperator type="booleanOr">
-																					<plx:left>
-																						<plx:unaryOperator type="booleanNot">
+																				</plx:left>
+																				<plx:right>
+																					<plx:binaryOperator type="booleanOr">
+																						<plx:left>
 																							<plx:callInstance type="methodCall" name="Equals">
 																								<plx:callObject>
 																									<plx:callThis accessor="this" type="field" name="_item7" />
@@ -7083,12 +7258,10 @@
 																									</plx:callInstance>
 																								</plx:passParam>
 																							</plx:callInstance>
-																						</plx:unaryOperator>
-																					</plx:left>
-																					<plx:right>
-																						<plx:binaryOperator type="booleanOr">
-																							<plx:left>
-																								<plx:unaryOperator type="booleanNot">
+																						</plx:left>
+																						<plx:right>
+																							<plx:binaryOperator type="booleanOr">
+																								<plx:left>
 																									<plx:callInstance type="methodCall" name="Equals">
 																										<plx:callObject>
 																											<plx:callThis accessor="this" type="field" name="_item8" />
@@ -7101,12 +7274,10 @@
 																											</plx:callInstance>
 																										</plx:passParam>
 																									</plx:callInstance>
-																								</plx:unaryOperator>
-																							</plx:left>
-																							<plx:right>
-																								<plx:binaryOperator type="booleanOr">
-																									<plx:left>
-																										<plx:unaryOperator type="booleanNot">
+																								</plx:left>
+																								<plx:right>
+																									<plx:binaryOperator type="booleanOr">
+																										<plx:left>
 																											<plx:callInstance type="methodCall" name="Equals">
 																												<plx:callObject>
 																													<plx:callThis accessor="this" type="field" name="_item9" />
@@ -7119,10 +7290,8 @@
 																													</plx:callInstance>
 																												</plx:passParam>
 																											</plx:callInstance>
-																										</plx:unaryOperator>
-																									</plx:left>
-																									<plx:right>
-																										<plx:unaryOperator type="booleanNot">
+																										</plx:left>
+																										<plx:right>
 																											<plx:callInstance type="methodCall" name="Equals">
 																												<plx:callObject>
 																													<plx:callThis accessor="this" type="field" name="_item10" />
@@ -7135,34 +7304,28 @@
 																													</plx:callInstance>
 																												</plx:passParam>
 																											</plx:callInstance>
-																										</plx:unaryOperator>
-																									</plx:right>
-																								</plx:binaryOperator>
-																							</plx:right>
-																						</plx:binaryOperator>
-																					</plx:right>
-																				</plx:binaryOperator>
-																			</plx:right>
-																		</plx:binaryOperator>
-																	</plx:right>
-																</plx:binaryOperator>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword />
-					</plx:return>
-				</plx:branch>
-				<plx:return>
-					<plx:trueKeyword />
+																										</plx:right>
+																									</plx:binaryOperator>
+																								</plx:right>
+																							</plx:binaryOperator>
+																						</plx:right>
+																					</plx:binaryOperator>
+																				</plx:right>
+																			</plx:binaryOperator>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:right>
+															</plx:binaryOperator>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="public" modifier="sealedOverride" name="GetHashCode">
@@ -7417,44 +7580,50 @@
 					<plx:passTypeParam dataTypeName="T10" />
 				</plx:param>
 				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1" />
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2" />
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2" />
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1" />
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword />
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
@@ -7496,605 +7665,780 @@
 				</plx:return>
 			</plx:operatorFunction>
 		</plx:class>
-		<plx:class visibility="public" modifier="static" name="EventHandlerUtility">
+		<plx:pragma type="closeRegion" data="Denary (10-ary) Tuple" />
+		<plx:pragma type="closeRegion" data="Tuples" />
+		<plx:namespace name="ComponentModel">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="Property Change Event Support" />
 			</plx:leadingInfo>
-			<plx:function visibility="public" name="InvokeCancelableEventHandler" modifier="static">
-				<plx:typeParam name="TEventArgs">
-					<plx:typeConstraint dataTypeName="CancelEventArgs" />
-				</plx:typeParam>
-				<plx:param name="cancelableEventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="TEventArgs" />
-				</plx:param>
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="TEventArgs" />
-				<plx:returns dataTypeName=".boolean" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef name="cancelableEventHandler" type="parameter" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string data="cancelableEventHandler" />
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef name="e" type="parameter" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string data="e" />
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-					<plx:initialize>
-						<plx:callInstance name="GetInvocationList">
-							<plx:callObject>
-								<plx:nameRef name="cancelableEventHandler" type="parameter" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:loop checkCondition="before">
-					<plx:initializeLoop>
-						<plx:local name="i" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:value data="0" type="i4" />
-							</plx:initialize>
-						</plx:local>
-					</plx:initializeLoop>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
-							<plx:left>
-								<plx:binaryOperator type="lessThan">
-									<plx:left>
-										<plx:nameRef name="i" />
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Length" type="property">
-											<plx:callObject>
-												<plx:nameRef name="invocationList" type="local" />
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<plx:unaryOperator type="booleanNot">
-									<plx:callInstance name="Cancel" type="property">
-										<plx:callObject>
-											<plx:nameRef name="e" type="parameter" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:unaryOperator>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:beforeLoop>
-						<plx:increment type="post">
-							<plx:nameRef name="i" type="local" />
-						</plx:increment>
-					</plx:beforeLoop>
-					<plx:callInstance name="Invoke" type="methodCall">
-						<plx:callObject>
-							<plx:cast dataTypeName="EventHandler">
-								<plx:passTypeParam dataTypeName="TEventArgs" />
-								<plx:callInstance name=".implied" type="arrayIndexer">
-									<plx:callObject>
-										<plx:nameRef name="invocationList" type="local" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:cast>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="sender" type="parameter" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:nameRef name="e" type="parameter" />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:loop>
-				<plx:return>
-					<plx:unaryOperator type="booleanNot">
-						<plx:callInstance name="Cancel" type="property">
-							<plx:callObject>
-								<plx:nameRef name="e" type="parameter" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:unaryOperator>
-				</plx:return>
-			</plx:function>
-			<plx:function visibility="public" name="InvokeEventHandlerAsync" modifier="static">
-				<plx:typeParam name="TEventArgs">
-					<plx:typeConstraint dataTypeName="EventArgs" />
-				</plx:typeParam>
-				<plx:param name="eventHandler" dataTypeName="EventHandler">
-					<plx:passTypeParam dataTypeName="TEventArgs" />
-				</plx:param>
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="TEventArgs" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef name="eventHandler" type="parameter" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string data="eventHandler" />
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-					<plx:initialize>
-						<plx:callInstance name="GetInvocationList" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="eventHandler" type="parameter" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:loop checkCondition="before">
-					<plx:initializeLoop>
-						<plx:local name="i" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:value data="0" type="i4" />
-							</plx:initialize>
-						</plx:local>
-					</plx:initializeLoop>
-					<plx:condition>
-						<plx:binaryOperator type="lessThan">
-							<plx:left>
-								<plx:nameRef name="i" type="local" />
-							</plx:left>
-							<plx:right>
-								<plx:callInstance name="Length" type="property">
-									<plx:callObject>
-										<plx:nameRef name="invocationList" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:beforeLoop>
-						<plx:increment type="post">
-							<plx:nameRef name="i" type="local" />
-						</plx:increment>
-					</plx:beforeLoop>
-					<plx:local name="currentEventHandler" dataTypeName="EventHandler">
-						<plx:passTypeParam dataTypeName="TEventArgs" />
-						<plx:initialize>
-							<plx:cast type="exceptionCast" dataTypeName="EventHandler">
-								<plx:passTypeParam dataTypeName="TEventArgs" />
-								<plx:callInstance name=".implied" type="arrayIndexer">
-									<plx:callObject>
-										<plx:nameRef name="invocationList" type="local" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:cast>
-						</plx:initialize>
-					</plx:local>
-					<plx:callInstance name="BeginInvoke">
-						<plx:callObject>
-							<plx:nameRef name="currentEventHandler" type="local" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="sender" type="parameter" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:nameRef name="e" type="parameter" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew dataTypeName="AsyncCallback">
-								<plx:passParam>
-									<plx:callInstance name="EndInvoke" type="methodReference">
-										<plx:callObject>
-											<plx:nameRef name="currentEventHandler" type="local" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:nullKeyword />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:loop>
-			</plx:function>
-			<plx:function visibility="public" name="InvokeEventHandlerAsync" modifier="static">
-				<plx:param name="eventHandler" dataTypeName="PropertyChangedEventHandler" />
-				<plx:param name="sender" dataTypeName=".object" />
-				<plx:param name="e" dataTypeName="PropertyChangedEventArgs" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef name="eventHandler" type="parameter" />
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string data="eventHandler" />
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-					<plx:initialize>
-						<plx:callInstance name="GetInvocationList" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="eventHandler" type="parameter" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:loop checkCondition="before">
-					<plx:initializeLoop>
-						<plx:local name="i" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:value data="0" type="i4" />
-							</plx:initialize>
-						</plx:local>
-					</plx:initializeLoop>
-					<plx:condition>
-						<plx:binaryOperator type="lessThan">
-							<plx:left>
-								<plx:nameRef name="i" type="local" />
-							</plx:left>
-							<plx:right>
-								<plx:callInstance name="Length" type="property">
-									<plx:callObject>
-										<plx:nameRef name="invocationList" type="local" />
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:beforeLoop>
-						<plx:increment type="post">
-							<plx:nameRef name="i" type="local" />
-						</plx:increment>
-					</plx:beforeLoop>
-					<plx:local name="currentEventHandler" dataTypeName="PropertyChangedEventHandler">
-						<plx:initialize>
-							<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
-								<plx:callInstance name=".implied" type="arrayIndexer">
-									<plx:callObject>
-										<plx:nameRef name="invocationList" type="local" />
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local" />
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:cast>
-						</plx:initialize>
-					</plx:local>
-					<plx:callInstance name="BeginInvoke">
-						<plx:callObject>
-							<plx:nameRef name="currentEventHandler" type="local" />
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef name="sender" type="parameter" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:nameRef name="e" type="parameter" />
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew dataTypeName="AsyncCallback">
-								<plx:passParam>
-									<plx:callInstance name="EndInvoke" type="methodReference">
-										<plx:callObject>
-											<plx:nameRef name="currentEventHandler" type="local" />
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:nullKeyword />
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:loop>
-			</plx:function>
-		</plx:class>
-		<plx:interface visibility="public" name="IPropertyChangeEventArgs">
-			<plx:attribute dataTypeName="SuppressMessageAttribute">
-				<plx:passParam>
-					<plx:string data="Microsoft.Naming" />
-				</plx:passParam>
-				<plx:passParam>
-					<plx:string data="CA1711:IdentifiersShouldNotHaveIncorrectSuffix" />
-				</plx:passParam>
-			</plx:attribute>
-			<plx:typeParam name="TClass" />
-			<plx:typeParam name="TProperty" />
-			<plx:property visibility="public" modifier="abstract" name="Instance">
-				<plx:returns dataTypeName="TClass" />
-				<plx:get />
-			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="OldValue">
-				<plx:returns dataTypeName="TProperty" />
-				<plx:get />
-			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="NewValue">
-				<plx:returns dataTypeName="TProperty" />
-				<plx:get />
-			</plx:property>
-		</plx:interface>
-		<plx:class visibility="public" modifier="sealed" name="PropertyChangingEventArgs">
-			<plx:attribute dataTypeName="Serializable" />
-			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
-				<plx:passParam>
-					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
-				</plx:passParam>
-				<plx:passParam>
-					<plx:binaryOperator type="assignNamed">
-						<plx:left>
-							<plx:nameRef type="namedParameter" name="CharSet" />
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
-						</plx:right>
-					</plx:binaryOperator>
-				</plx:passParam>
-			</plx:attribute>
-			<plx:typeParam name="TClass" />
-			<plx:typeParam name="TProperty" />
-			<plx:derivesFromClass dataTypeName="CancelEventArgs" />
-			<plx:implementsInterface dataTypeName="IPropertyChangeEventArgs">
-				<plx:passTypeParam dataTypeName="TClass" />
-				<plx:passTypeParam dataTypeName="TProperty" />
-			</plx:implementsInterface>
-			<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
-			<plx:field visibility="private" readOnly="true" name="_oldValue" dataTypeName="TProperty" />
-			<plx:field visibility="private" readOnly="true" name="_newValue" dataTypeName="TProperty" />
-			<plx:function visibility="public" name=".construct">
-				<plx:param name="instance" dataTypeName="TClass" />
-				<plx:param name="oldValue" dataTypeName="TProperty" />
-				<plx:param name="newValue" dataTypeName="TProperty" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:nameRef type="parameter" name="instance" />
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string data="instance" />
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_instance" />
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="instance" />
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_oldValue" />
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="oldValue" />
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_newValue" />
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="newValue" />
-					</plx:right>
-				</plx:assign>
-			</plx:function>
-			<plx:property visibility="public" name="Instance">
-				<plx:interfaceMember memberName="Instance" dataTypeName="IPropertyChangeEventArgs">
-					<plx:passTypeParam dataTypeName="TClass" />
-					<plx:passTypeParam dataTypeName="TProperty" />
-				</plx:interfaceMember>
-				<plx:returns dataTypeName="TClass" />
-				<plx:get>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_instance" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:property visibility="public" name="OldValue">
-				<plx:interfaceMember memberName="OldValue" dataTypeName="IPropertyChangeEventArgs">
-					<plx:passTypeParam dataTypeName="TClass" />
-					<plx:passTypeParam dataTypeName="TProperty" />
-				</plx:interfaceMember>
-				<plx:returns dataTypeName="TProperty" />
-				<plx:get>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_oldValue" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:property visibility="public" name="NewValue">
-				<plx:interfaceMember memberName="NewValue" dataTypeName="IPropertyChangeEventArgs">
-					<plx:passTypeParam dataTypeName="TClass" />
-					<plx:passTypeParam dataTypeName="TProperty" />
-				</plx:interfaceMember>
-				<plx:returns dataTypeName="TProperty" />
-				<plx:get>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_newValue" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-		</plx:class>
-		<plx:class visibility="public" modifier="sealed" name="PropertyChangedEventArgs">
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Property Change Event Support" />
 			</plx:trailingInfo>
-			<plx:attribute dataTypeName="Serializable" />
-			<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
-				<plx:passParam>
-					<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
-				</plx:passParam>
-				<plx:passParam>
-					<plx:binaryOperator type="assignNamed">
-						<plx:left>
-							<plx:nameRef type="namedParameter" name="CharSet" />
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
-						</plx:right>
-					</plx:binaryOperator>
-				</plx:passParam>
-			</plx:attribute>
-			<plx:typeParam name="TClass" />
-			<plx:typeParam name="TProperty" />
-			<plx:derivesFromClass dataTypeName="EventArgs" />
-			<plx:implementsInterface dataTypeName="IPropertyChangeEventArgs">
-				<plx:passTypeParam dataTypeName="TClass" />
-				<plx:passTypeParam dataTypeName="TProperty" />
-			</plx:implementsInterface>
-			<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
-			<plx:field visibility="private" readOnly="true" name="_oldValue" dataTypeName="TProperty" />
-			<plx:field visibility="private" readOnly="true" name="_newValue" dataTypeName="TProperty" />
-			<plx:function visibility="public" name=".construct">
-				<plx:param name="instance" dataTypeName="TClass" />
-				<plx:param name="oldValue" dataTypeName="TProperty" />
-				<plx:param name="newValue" dataTypeName="TProperty" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
+			<plx:class visibility="public" modifier="static" name="EventHandlerUtility">
+				<plx:attribute dataTypeName="HostProtectionAttribute" dataTypeQualifier="System.Security.Permissions">
+					<plx:passParam>
+						<plx:callStatic type="field" name="LinkDemand" dataTypeName="SecurityAction" dataTypeQualifier="System.Security.Permissions" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
 							<plx:left>
-								<plx:nameRef type="parameter" name="instance" />
+								<plx:nameRef type="namedParameter" name="SharedState" />
 							</plx:left>
 							<plx:right>
-								<plx:nullKeyword />
+								<plx:trueKeyword />
 							</plx:right>
 						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
+					</plx:passParam>
+				</plx:attribute>
+				<plx:function visibility="public" modifier="static" name="InvokeCancelableEventHandler">
+					<plx:typeParam name="TEventArgs">
+						<plx:typeConstraint dataTypeName="CancelEventArgs" />
+					</plx:typeParam>
+					<plx:param name="cancelableEventHandler" dataTypeName="EventHandler">
+						<plx:passTypeParam dataTypeName="TEventArgs" />
+					</plx:param>
+					<plx:param name="sender" dataTypeName=".object" />
+					<plx:param name="e" dataTypeName="TEventArgs" />
+					<plx:returns dataTypeName=".boolean" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="cancelableEventHandler" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="cancelableEventHandler" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="e" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="e" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance name="GetInvocationList">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="cancelableEventHandler" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop checkCondition="before">
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:nameRef type="local" name="i" />
+										</plx:left>
+										<plx:right>
+											<plx:callInstance type="property" name="Length">
+												<plx:callObject>
+													<plx:nameRef type="local" name="invocationList" />
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:unaryOperator type="booleanNot">
+										<plx:callInstance type="property" name="Cancel">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="e" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:unaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment type="post">
+								<plx:nameRef type="local" name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:callInstance type="methodCall" name="Invoke">
+							<plx:callObject>
+								<plx:cast type="exceptionCast" dataTypeName="EventHandler">
+									<plx:passTypeParam dataTypeName="TEventArgs" />
+									<plx:callInstance type="arrayIndexer" name=".implied">
+										<plx:callObject>
+											<plx:nameRef type="local" name="invocationList" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="local" name="i" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
 							<plx:passParam>
-								<plx:string data="instance" />
+								<plx:nameRef type="parameter" name="sender" />
 							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_instance" />
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="instance" />
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_oldValue" />
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="oldValue" />
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_newValue" />
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="newValue" />
-					</plx:right>
-				</plx:assign>
-			</plx:function>
-			<plx:property visibility="public" name="Instance">
-				<plx:interfaceMember memberName="Instance" dataTypeName="IPropertyChangeEventArgs">
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="e" />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:loop>
+					<plx:return>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance type="property" name="Cancel">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="e" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:return>
+				</plx:function>
+				<plx:function visibility="public" modifier="static" name="InvokeEventHandlerAsync">
+					<plx:typeParam name="TEventArgs">
+						<plx:typeConstraint dataTypeName="EventArgs" />
+					</plx:typeParam>
+					<plx:param name="eventHandler" dataTypeName="EventHandler">
+						<plx:passTypeParam dataTypeName="TEventArgs" />
+					</plx:param>
+					<plx:param name="sender" dataTypeName=".object" />
+					<plx:param name="e" dataTypeName="TEventArgs" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="eventHandler" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="eventHandler" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance type="methodCall" name="GetInvocationList">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="eventHandler" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop checkCondition="before">
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef type="local" name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="property" name="Length">
+										<plx:callObject>
+											<plx:nameRef type="local" name="invocationList" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment type="post">
+								<plx:nameRef type="local" name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local name="currentEventHandler" dataTypeName="EventHandler">
+							<plx:passTypeParam dataTypeName="TEventArgs" />
+							<plx:initialize>
+								<plx:cast type="exceptionCast" dataTypeName="EventHandler">
+									<plx:passTypeParam dataTypeName="TEventArgs" />
+									<plx:callInstance type="arrayIndexer" name=".implied">
+										<plx:callObject>
+											<plx:nameRef type="local" name="invocationList" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="local" name="i" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:initialize>
+						</plx:local>
+						<plx:callInstance type="methodCall" name="BeginInvoke">
+							<plx:callObject>
+								<plx:nameRef type="local" name="currentEventHandler" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="sender" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="e" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew dataTypeName="AsyncCallback">
+									<plx:passParam>
+										<plx:callInstance type="methodReference" name="EndInvoke">
+											<plx:callObject>
+												<plx:nameRef type="local" name="currentEventHandler" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:loop>
+				</plx:function>
+				<plx:function visibility="public" modifier="static" name="InvokeEventHandlerAsync">
+					<plx:typeParam name="TEventArgs">
+						<plx:typeConstraint dataTypeName="PropertyChangedEventArgs" />
+					</plx:typeParam>
+					<plx:param name="eventHandler" dataTypeName="EventHandler">
+						<plx:passTypeParam dataTypeName="TEventArgs" />
+					</plx:param>
+					<plx:param name="sender" dataTypeName=".object" />
+					<plx:param name="e" dataTypeName="TEventArgs" />
+					<plx:param name="secondaryHandler" dataTypeName="PropertyChangedEventHandler" />
+					<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
+						<plx:passMemberTypeParam dataTypeName="TEventArgs" />
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="eventHandler" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="sender" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="e" />
+						</plx:passParam>
+					</plx:callStatic>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="secondaryHandler" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="secondaryHandler" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="sender" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="e" />
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:branch>
+				</plx:function>
+				<plx:function visibility="public" modifier="static" name="InvokeEventHandlerAsync">
+					<plx:param name="eventHandler" dataTypeName="PropertyChangedEventHandler" />
+					<plx:param name="sender" dataTypeName=".object" />
+					<plx:param name="e" dataTypeName="PropertyChangedEventArgs" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="eventHandler" />
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="eventHandler" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:local name="invocationList" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callInstance type="methodCall" name="GetInvocationList">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="eventHandler" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:loop checkCondition="before">
+						<plx:initializeLoop>
+							<plx:local name="i" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0" />
+								</plx:initialize>
+							</plx:local>
+						</plx:initializeLoop>
+						<plx:condition>
+							<plx:binaryOperator type="lessThan">
+								<plx:left>
+									<plx:nameRef type="local" name="i" />
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="property" name="Length">
+										<plx:callObject>
+											<plx:nameRef type="local" name="invocationList" />
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:beforeLoop>
+							<plx:increment type="post">
+								<plx:nameRef type="local" name="i" />
+							</plx:increment>
+						</plx:beforeLoop>
+						<plx:local name="currentEventHandler" dataTypeName="PropertyChangedEventHandler">
+							<plx:initialize>
+								<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
+									<plx:callInstance type="arrayIndexer" name=".implied">
+										<plx:callObject>
+											<plx:nameRef type="local" name="invocationList" />
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="local" name="i" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:initialize>
+						</plx:local>
+						<plx:callInstance type="methodCall" name="BeginInvoke">
+							<plx:callObject>
+								<plx:nameRef type="local" name="currentEventHandler" />
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="sender" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="e" />
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callNew dataTypeName="AsyncCallback">
+									<plx:passParam>
+										<plx:callInstance type="methodReference" name="EndInvoke">
+											<plx:callObject>
+												<plx:nameRef type="local" name="currentEventHandler" />
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword />
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:loop>
+				</plx:function>
+			</plx:class>
+			<plx:interface visibility="public" name="IPropertyChangeEventArgs">
+				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
+					<plx:passParam>
+						<plx:string data="Microsoft.Naming" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="CA1711:IdentifiersShouldNotHaveIncorrectSuffix" />
+					</plx:passParam>
+				</plx:attribute>
+				<plx:typeParam name="TClass" />
+				<plx:typeParam name="TProperty" />
+				<plx:property visibility="public" modifier="abstract" name="Instance">
+					<plx:returns dataTypeName="TClass" />
+					<plx:get />
+				</plx:property>
+				<plx:property visibility="public" modifier="abstract" name="PropertyName">
+					<plx:returns dataTypeName=".string" />
+					<plx:get />
+				</plx:property>
+				<plx:property visibility="public" modifier="abstract" name="OldValue">
+					<plx:returns dataTypeName="TProperty" />
+					<plx:get />
+				</plx:property>
+				<plx:property visibility="public" modifier="abstract" name="NewValue">
+					<plx:returns dataTypeName="TProperty" />
+					<plx:get />
+				</plx:property>
+			</plx:interface>
+			<plx:class visibility="public" name="PropertyChangingEventArgs">
+				<plx:attribute dataTypeName="SerializableAttribute" />
+				<plx:attribute dataTypeName="HostProtectionAttribute" dataTypeQualifier="System.Security.Permissions">
+					<plx:passParam>
+						<plx:callStatic type="field" name="LinkDemand" dataTypeName="SecurityAction" dataTypeQualifier="System.Security.Permissions" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="SharedState" />
+							</plx:left>
+							<plx:right>
+								<plx:trueKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:typeParam name="TClass" />
+				<plx:typeParam name="TProperty" />
+				<plx:derivesFromClass dataTypeName="CancelEventArgs" />
+				<plx:implementsInterface dataTypeName="IPropertyChangeEventArgs">
 					<plx:passTypeParam dataTypeName="TClass" />
 					<plx:passTypeParam dataTypeName="TProperty" />
-				</plx:interfaceMember>
-				<plx:returns dataTypeName="TClass" />
-				<plx:get>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_instance" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:property visibility="public" name="OldValue">
-				<plx:interfaceMember memberName="OldValue" dataTypeName="IPropertyChangeEventArgs">
+				</plx:implementsInterface>
+				<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
+				<plx:field visibility="private" readOnly="true" name="_propertyName" dataTypeName=".string" />
+				<plx:field visibility="private" readOnly="true" name="_oldValue" dataTypeName="TProperty" />
+				<plx:field visibility="private" readOnly="true" name="_newValue" dataTypeName="TProperty" />
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="instance" dataTypeName="TClass" />
+					<plx:param name="propertyName" dataTypeName=".string" />
+					<plx:param name="oldValue" dataTypeName="TProperty" />
+					<plx:param name="newValue" dataTypeName="TProperty" />
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="instance" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="instance" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:callStatic type="methodCall" name="IsNullOrEmpty" dataTypeName=".string">
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="propertyName" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="propertyName" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_instance" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_propertyName" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="propertyName" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_oldValue" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="oldValue" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_newValue" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="newValue" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:property visibility="public" name="Instance">
+					<plx:interfaceMember memberName="Instance" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="TClass" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_instance" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="PropertyName">
+					<plx:interfaceMember memberName="PropertyName" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_propertyName" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="OldValue">
+					<plx:interfaceMember memberName="OldValue" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="TProperty" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_oldValue" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="NewValue">
+					<plx:interfaceMember memberName="NewValue" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="TProperty" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_newValue" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+			</plx:class>
+			<plx:class visibility="public" name="PropertyChangedEventArgs">
+				<plx:attribute dataTypeName="SerializableAttribute" />
+				<plx:attribute dataTypeName="HostProtectionAttribute" dataTypeQualifier="System.Security.Permissions">
+					<plx:passParam>
+						<plx:callStatic type="field" name="LinkDemand" dataTypeName="SecurityAction" dataTypeQualifier="System.Security.Permissions" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="SharedState" />
+							</plx:left>
+							<plx:right>
+								<plx:trueKeyword />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+					<plx:passParam>
+						<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices" />
+					</plx:passParam>
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="CharSet" />
+							</plx:left>
+							<plx:right>
+								<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices" />
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:typeParam name="TClass" />
+				<plx:typeParam name="TProperty" />
+				<plx:derivesFromClass dataTypeName="PropertyChangedEventArgs" />
+				<plx:implementsInterface dataTypeName="IPropertyChangeEventArgs">
 					<plx:passTypeParam dataTypeName="TClass" />
 					<plx:passTypeParam dataTypeName="TProperty" />
-				</plx:interfaceMember>
-				<plx:returns dataTypeName="TProperty" />
-				<plx:get>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_oldValue" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:property visibility="public" name="NewValue">
-				<plx:interfaceMember memberName="NewValue" dataTypeName="IPropertyChangeEventArgs">
-					<plx:passTypeParam dataTypeName="TClass" />
-					<plx:passTypeParam dataTypeName="TProperty" />
-				</plx:interfaceMember>
-				<plx:returns dataTypeName="TProperty" />
-				<plx:get>
-					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_newValue" />
-					</plx:return>
-				</plx:get>
-			</plx:property>
-		</plx:class>
+				</plx:implementsInterface>
+				<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
+				<plx:field visibility="private" readOnly="true" name="_oldValue" dataTypeName="TProperty" />
+				<plx:field visibility="private" readOnly="true" name="_newValue" dataTypeName="TProperty" />
+				<plx:function visibility="public" name=".construct">
+					<plx:param name="instance" dataTypeName="TClass" />
+					<plx:param name="propertyName" dataTypeName=".string" />
+					<plx:param name="oldValue" dataTypeName="TProperty" />
+					<plx:param name="newValue" dataTypeName="TProperty" />
+					<plx:initialize>
+						<plx:callThis accessor="base" type="methodCall" name=".implied">
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="propertyName" />
+							</plx:passParam>
+						</plx:callThis>
+					</plx:initialize>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="instance" />
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword />
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="instance" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:callStatic type="methodCall" name="IsNullOrEmpty" dataTypeName=".string">
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="propertyName" />
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string data="propertyName" />
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_instance" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="instance" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_oldValue" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="oldValue" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_newValue" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="newValue" />
+						</plx:right>
+					</plx:assign>
+				</plx:function>
+				<plx:property visibility="public" name="Instance">
+					<plx:interfaceMember memberName="Instance" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="TClass" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_instance" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" modifier="sealedOverride" name="PropertyName">
+					<plx:interfaceMember memberName="PropertyName" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName=".string" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="base" type="property" name="PropertyName" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="OldValue">
+					<plx:interfaceMember memberName="OldValue" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="TProperty" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_oldValue" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:property visibility="public" name="NewValue">
+					<plx:interfaceMember memberName="NewValue" dataTypeName="IPropertyChangeEventArgs">
+						<plx:passTypeParam dataTypeName="TClass" />
+						<plx:passTypeParam dataTypeName="TProperty" />
+					</plx:interfaceMember>
+					<plx:returns dataTypeName="TProperty" />
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="_newValue" />
+						</plx:return>
+					</plx:get>
+				</plx:property>
+			</plx:class>
+		</plx:namespace>
 	</plx:namespace>
 </plx:root>

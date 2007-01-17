@@ -1,42 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <oil:model name="SampleModel" sourceRef="_AA456D07-4B8E-43CB-9F7B-093F42087891" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
-	<DEBUG_INFORMATION>
-		<FactTypeAbsorptions>
-			<AbsorbFactType ref="_B5B33D03-3336-4100-9339-9C96B7F8F156" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-			<AbsorbFactType ref="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" towards="_CB7A017C-1E94-473C-B4B1-CBD710DE4B7A" type="factOnly" towardsName="Date" />
-			<AbsorbFactType ref="_70E8E5DC-6C5F-4B7B-A2BE-8878A9B6FB0F" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-			<AbsorbFactType ref="_8B053DEF-BA79-4A8F-804F-5561308F69B3" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-			<AbsorbFactType ref="_14CF837F-8CA5-4317-A315-044BA559B422" towards="_779E9788-0C2F-44B6-B958-AEEC22593966" type="factOnly" towardsName="Task" />
-			<AbsorbFactType ref="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" towards="_A6617DBB-19D8-4FCB-A14A-2F237E0D8904" type="factOnly" towardsName="Car" />
-			<AbsorbFactType ref="_78B61C80-E4BE-460B-9714-AFB5F6E88B1E" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-			<AbsorbFactType ref="_C154C7F4-A3B9-443E-9FF5-140C9F8FC56F" towards="_C93BB2C9-7F70-49DE-8295-07997960D5F3" type="factOnly" towardsName="Criterion" />
-			<AbsorbFactType ref="_37A9026B-B1D3-4E75-AB53-AA24A76BAC0D" towards="_65DBE376-74EA-40A8-8753-8A8CA24259C8" type="factOnly" towardsName="Rating" />
-			<AbsorbFactType ref="_5F04E9A2-F8EC-40EA-B7F7-D99D0AAD276B" towards="_437E0803-738F-4314-AD87-C2492305DF10" type="factOnly" towardsName="Nr" />
-			<AbsorbFactType ref="_7EC274AC-89F4-4329-89DB-78437FDD0EAB" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="fully" towardsName="Person" />
-			<AbsorbFactType ref="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" towards="_CA3BAF09-F895-4A2D-A840-E911D8FE157A" type="factOnly" towardsName="DeathCause" />
-			<AbsorbFactType ref="_FF723148-C1AB-4835-84CD-996B28BC4027" towards="_FA76F159-1799-4D93-BA27-0FB3A1853415" type="factOnly" towardsName="Gender" />
-			<AbsorbFactType ref="_71982F2A-0A4F-4313-AAE2-0374B10D4BD5" towards="_B920FB79-BCAF-472D-9D1D-5625E804AEAC" type="factOnly" towardsName="BirthOrder" />
-			<AbsorbFactType ref="_61218547-67E0-4452-A1C7-3635431011B4" towards="_43FB5FA3-F8F2-4600-9C71-00AD765B3BE5" type="factOnly" towardsName="HatTypeStyle" />
-			<AbsorbFactType ref="_2BD0D7D3-0B11-45F9-9D8F-1BA51BB7A138" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-			<AbsorbFactType ref="_F879571B-3B2C-4D83-81D5-A3F22E0B1763" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-			<AbsorbFactType ref="_05B33E84-9567-412A-8ABF-DC395F52C220" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" type="factOnly" towardsName="Person" />
-		</FactTypeAbsorptions>
-		<ObjectTypeAbsorptions>
-			<AbsorbObjectType ref="_DDE8D226-F41E-4524-8BD8-051DDBC37E21" towards="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" refName="NaturalDeath" towardsName="Death" />
-			<AbsorbObjectType ref="_ACEFBB61-F5A3-4B7C-9C33-1AF6FF101637" towards="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" refName="UnnaturalDeath" towardsName="Death" />
-			<AbsorbObjectType ref="_E3BF7F91-1182-4A4F-8C4D-A0331B34E9A4" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" refName="MalePerson" towardsName="Person" />
-			<AbsorbObjectType ref="_B6D73AD6-31DD-4147-AB22-BF6E9D994CBE" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" refName="FemalePerson" towardsName="Person" />
-			<AbsorbObjectType ref="_D15A716E-037F-4263-B4FF-09CAC6B69738" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" refName="ChildPerson" towardsName="Person" />
-			<AbsorbObjectType ref="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" towards="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" refName="Death" towardsName="Person" />
-		</ObjectTypeAbsorptions>
-		<TopLevelTypes>
-			<orm:EntityType id="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" Name="Person" _ReferenceMode="id" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:EntityType id="_779E9788-0C2F-44B6-B958-AEEC22593966" Name="Task" _ReferenceMode="id" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:ValueType id="_D4808010-4C18-442E-A5E4-B69A33A5FA88" Name="ValueType1" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:EntityType id="_824C4C8F-678A-49C5-8B98-0D96C4CB59C8" Name="PersonBoughtCarFromPersonOnDate" _ReferenceMode="" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-			<orm:EntityType id="_5FF87171-44B6-47E0-BBF9-D88E6CD44AEC" Name="Review" _ReferenceMode="" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" />
-		</TopLevelTypes>
-	</DEBUG_INFORMATION>
 	<oil:informationTypeFormats>
 		<!--These may change in the future once they are integrated into the core ORM model file.-->
 		<odt:identity name="Person_id" />
@@ -138,14 +101,6 @@
 		<oil:informationType name="MandatoryUniqueString" formatRef="MandatoryUniqueString" mandatory="alethic" sourceRef="_05B33E84-9567-412A-8ABF-DC395F52C220" sourceRoleRef="_36E5694F-1B3C-495C-ACBF-209DC6C2F4BD">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint67" sourceRef="_DBE5D226-1A64-4D1E-BC02-8E702E7560BC" modality="alethic" isPreferred="false" />
 		</oil:informationType>
-		<oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Person" targetChild="Wife" />
-			</oil:roleSequence>
-			<oil:roleSequence>
-				<oil:typeRef targetConceptType="Person" targetChild="Husband" />
-			</oil:roleSequence>
-		</oil:exclusionConstraint>
 		<oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_F40FEEF1-947A-453D-8B63-C791930EB876" isPreferred="false">
 			<oil:roleSequence>
 				<oil:typeRef targetConceptType="Person" targetChild="FirstName" />
@@ -158,6 +113,14 @@
 				<oil:typeRef targetConceptType="Person" targetChild="Date_YMD" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
+		<oil:exclusionConstraint name="ExclusionConstraint2" modality="alethic" sourceRef="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37">
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Person" targetChild="Wife" />
+			</oil:roleSequence>
+			<oil:roleSequence>
+				<oil:typeRef targetConceptType="Person" targetChild="Husband" />
+			</oil:roleSequence>
+		</oil:exclusionConstraint>
 	</oil:conceptType>
 	<oil:conceptType name="Task" sourceRef="_779E9788-0C2F-44B6-B958-AEEC22593966">
 		<oil:conceptTypeRef name="Person" target="Person" oppositeName="Task" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />

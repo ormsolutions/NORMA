@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -24,7 +24,7 @@
 	<xsl:import href="OIALtoPLiX_GlobalSupportParameters.xslt"/>
 
 
-	
+
 	<xsl:template name="GetLengthValidationCode">
 		<xsl:param name="MinLength"/>
 		<xsl:param name="MaxLength"/>

@@ -3,38 +3,29 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml;
-using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
-using AccessedThroughPropertyAttribute = System.Runtime.CompilerServices.AccessedThroughPropertyAttribute;
-using GeneratedCodeAttribute = System.CodeDom.Compiler.GeneratedCodeAttribute;
-using StructLayoutAttribute = System.Runtime.InteropServices.StructLayoutAttribute;
-using LayoutKind = System.Runtime.InteropServices.LayoutKind;
-using CharSet = System.Runtime.InteropServices.CharSet;
 namespace PersonCountryDemo
 {
 	#region PersonCountryDemoContext
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class PersonCountryDemoContext : IPersonCountryDemoContext
 	{
 		public PersonCountryDemoContext()
 		{
-			Dictionary<Type, object> constraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<Type, object>(1);
-			Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> constraintEnforcementCollectionCallbacksByTypeAndNameDictionary = new Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object>(0);
-			this._ContraintEnforcementCollectionCallbacksByTypeDictionary = constraintEnforcementCollectionCallbacksByTypeDictionary;
-			this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = constraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Country, Person>), new ConstraintEnforcementCollectionCallbacks<Country, Person>(new PotentialCollectionModificationCallback<Country, Person>(this.OnCountryPersonViaCountryCollectionAdding), new CommittedCollectionModificationCallback<Country, Person>(this.OnCountryPersonViaCountryCollectionAdded), null, new CommittedCollectionModificationCallback<Country, Person>(this.OnCountryPersonViaCountryCollectionRemoved)));
-			List<Person> PersonList = new List<Person>();
-			this._PersonList = PersonList;
-			this._PersonReadOnlyCollection = new ReadOnlyCollection<Person>(PersonList);
-			List<Country> CountryList = new List<Country>();
-			this._CountryList = CountryList;
-			this._CountryReadOnlyCollection = new ReadOnlyCollection<Country>(CountryList);
+			Dictionary<RuntimeTypeHandle, object> constraintEnforcementCollectionCallbacksByTypeDictionary = this._ContraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<RuntimeTypeHandle, object>(1, RuntimeTypeHandleEqualityComparer.Instance);
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Country, Person>).TypeHandle, new ConstraintEnforcementCollectionCallbacks<Country, Person>(new PotentialCollectionModificationCallback<Country, Person>(this.OnCountryPersonViaCountryCollectionAdding), new CommittedCollectionModificationCallback<Country, Person>(this.OnCountryPersonViaCountryCollectionAdded), null, new CommittedCollectionModificationCallback<Country, Person>(this.OnCountryPersonViaCountryCollectionRemoved)));
+			this._PersonReadOnlyCollection = new ReadOnlyCollection<Person>(this._PersonList = new List<Person>());
+			this._CountryReadOnlyCollection = new ReadOnlyCollection<Country>(this._CountryList = new List<Country>());
 		}
 		#region Exception Helpers
-		[SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
 		private static ArgumentException GetDifferentContextsException()
 		{
-			return new ArgumentException("All objects in a relationship must be part of the same Context.", "value");
+			return PersonCountryDemoContext.GetDifferentContextsException("value");
+		}
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
+		private static ArgumentException GetDifferentContextsException(string paramName)
+		{
+			return new ArgumentException("All objects in a relationship must be part of the same Context.", paramName);
 		}
 		private static ArgumentException GetConstraintEnforcementFailedException(string paramName)
 		{
@@ -53,9 +44,9 @@ namespace PersonCountryDemo
 		}
 		#endregion // Lookup and External Constraint Enforcement
 		#region ConstraintEnforcementCollection
-		private delegate bool PotentialCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
+		private delegate bool PotentialCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty item)
 			where TClass : class, IHasPersonCountryDemoContext;
-		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
+		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty item)
 			where TClass : class, IHasPersonCountryDemoContext;
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionCallbacks<TClass, TProperty>
@@ -73,115 +64,28 @@ namespace PersonCountryDemo
 			public readonly PotentialCollectionModificationCallback<TClass, TProperty> Removing;
 			public readonly CommittedCollectionModificationCallback<TClass, TProperty> Removed;
 		}
+		private ConstraintEnforcementCollectionCallbacks<TClass, TProperty> GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>()
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			return (ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>).TypeHandle];
+		}
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private struct ConstraintEnforcementCollectionTypeAndPropertyNameKey : IEquatable<ConstraintEnforcementCollectionTypeAndPropertyNameKey>
+		private sealed class RuntimeTypeHandleEqualityComparer : IEqualityComparer<RuntimeTypeHandle>
 		{
-			public ConstraintEnforcementCollectionTypeAndPropertyNameKey(Type type, string name)
+			public static readonly RuntimeTypeHandleEqualityComparer Instance = new RuntimeTypeHandleEqualityComparer();
+			private RuntimeTypeHandleEqualityComparer()
 			{
-				this.Type = type;
-				this.Name = name;
 			}
-			public readonly Type Type;
-			public readonly string Name;
-			public override int GetHashCode()
+			public bool Equals(RuntimeTypeHandle x, RuntimeTypeHandle y)
 			{
-				return this.Type.GetHashCode() ^ this.Name.GetHashCode();
+				return x.Equals(y);
 			}
-			public override bool Equals(object obj)
+			public int GetHashCode(RuntimeTypeHandle obj)
 			{
-				return (obj is ConstraintEnforcementCollectionTypeAndPropertyNameKey) && this.Equals((ConstraintEnforcementCollectionTypeAndPropertyNameKey)obj);
-			}
-			public bool Equals(ConstraintEnforcementCollectionTypeAndPropertyNameKey other)
-			{
-				return this.Type.Equals(other.Type) && this.Name.Equals(other.Name);
-			}
-			public static bool operator ==(ConstraintEnforcementCollectionTypeAndPropertyNameKey left, ConstraintEnforcementCollectionTypeAndPropertyNameKey right)
-			{
-				return left.Equals(right);
-			}
-			public static bool operator !=(ConstraintEnforcementCollectionTypeAndPropertyNameKey left, ConstraintEnforcementCollectionTypeAndPropertyNameKey right)
-			{
-				return !(left.Equals(right));
+				return obj.GetHashCode();
 			}
 		}
-		private readonly Dictionary<Type, object> _ContraintEnforcementCollectionCallbacksByTypeDictionary;
-		private readonly Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> _ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
-		private bool OnAdding<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> adding = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Adding;
-			if (adding != null)
-			{
-				return adding(instance, value);
-			}
-			return true;
-		}
-		private bool OnAdding<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> adding = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Adding;
-			if (adding != null)
-			{
-				return adding(instance, value);
-			}
-			return true;
-		}
-		private void OnAdded<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> added = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Added;
-			if (added != null)
-			{
-				added(instance, value);
-			}
-		}
-		private void OnAdded<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> added = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Added;
-			if (added != null)
-			{
-				added(instance, value);
-			}
-		}
-		private bool OnRemoving<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> removing = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Removing;
-			if (removing != null)
-			{
-				return removing(instance, value);
-			}
-			return true;
-		}
-		private bool OnRemoving<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> removing = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Removing;
-			if (removing != null)
-			{
-				return removing(instance, value);
-			}
-			return true;
-		}
-		private void OnRemoved<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> removed = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Removed;
-			if (removed != null)
-			{
-				removed(instance, value);
-			}
-		}
-		private void OnRemoved<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> removed = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Removed;
-			if (removed != null)
-			{
-				removed(instance, value);
-			}
-		}
+		private readonly Dictionary<RuntimeTypeHandle, object> _ContraintEnforcementCollectionCallbacksByTypeDictionary;
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasPersonCountryDemoContext
@@ -210,10 +114,17 @@ namespace PersonCountryDemo
 				{
 					throw new ArgumentNullException("item");
 				}
-				if (this._instance.Context.OnAdding(this._instance, item))
+				TClass instance = this._instance;
+				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>();
+				PotentialCollectionModificationCallback<TClass, TProperty> adding = callbacks.Adding;
+				if (((object)adding == null) || adding(instance, item))
 				{
 					this._list.Add(item);
-					this._instance.Context.OnAdded(this._instance, item);
+					CommittedCollectionModificationCallback<TClass, TProperty> added = callbacks.Added;
+					if ((object)added != null)
+					{
+						added(instance, item);
+					}
 				}
 			}
 			public bool Remove(TProperty item)
@@ -222,11 +133,18 @@ namespace PersonCountryDemo
 				{
 					throw new ArgumentNullException("item");
 				}
-				if (this._instance.Context.OnRemoving(this._instance, item))
+				TClass instance = this._instance;
+				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>();
+				PotentialCollectionModificationCallback<TClass, TProperty> removing = callbacks.Removing;
+				if (((object)removing == null) || removing(instance, item))
 				{
 					if (this._list.Remove(item))
 					{
-						this._instance.Context.OnRemoved(this._instance, item);
+						CommittedCollectionModificationCallback<TClass, TProperty> removed = callbacks.Removed;
+						if ((object)removed != null)
+						{
+							removed(instance, item);
+						}
 						return true;
 					}
 				}
@@ -234,96 +152,15 @@ namespace PersonCountryDemo
 			}
 			public void Clear()
 			{
-				for (int i = 0; i < this._list.Count; ++i)
+				List<TProperty> list = this._list;
+				for (int i = list.Count - 1; i > 0; --i)
 				{
-					this.Remove(this._list[i]);
+					this.Remove(list[i]);
 				}
 			}
 			public bool Contains(TProperty item)
 			{
-				return this._list.Contains(item);
-			}
-			public void CopyTo(TProperty[] array, int arrayIndex)
-			{
-				this._list.CopyTo(array, arrayIndex);
-			}
-			public int Count
-			{
-				get
-				{
-					return this._list.Count;
-				}
-			}
-			public bool IsReadOnly
-			{
-				get
-				{
-					return false;
-				}
-			}
-		}
-		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty> : ICollection<TProperty>
-			where TClass : class, IHasPersonCountryDemoContext
-		{
-			private readonly TClass _instance;
-			private readonly string _PropertyName;
-			private readonly List<TProperty> _list = new List<TProperty>();
-			public ConstraintEnforcementCollectionWithPropertyName(TClass instance, string propertyName)
-			{
-				this._instance = instance;
-				this._PropertyName = propertyName;
-			}
-			private System.Collections.IEnumerator GetNonGenericEnumerator()
-			{
-				return this.GetEnumerator();
-			}
-			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-			{
-				return this.GetNonGenericEnumerator();
-			}
-			public IEnumerator<TProperty> GetEnumerator()
-			{
-				return this._list.GetEnumerator();
-			}
-			public void Add(TProperty item)
-			{
-				if (item == null)
-				{
-					throw new ArgumentNullException("item");
-				}
-				if (this._instance.Context.OnAdding(this._PropertyName, this._instance, item))
-				{
-					this._list.Add(item);
-					this._instance.Context.OnAdded(this._PropertyName, this._instance, item);
-				}
-			}
-			public bool Remove(TProperty item)
-			{
-				if (item == null)
-				{
-					throw new ArgumentNullException("item");
-				}
-				if (this._instance.Context.OnRemoving(this._PropertyName, this._instance, item))
-				{
-					if (this._list.Remove(item))
-					{
-						this._instance.Context.OnRemoved(this._PropertyName, this._instance, item);
-						return true;
-					}
-				}
-				return false;
-			}
-			public void Clear()
-			{
-				for (int i = 0; i < this._list.Count; ++i)
-				{
-					this.Remove(this._list[i]);
-				}
-			}
-			public bool Contains(TProperty item)
-			{
-				return this._list.Contains(item);
+				return (item != null) && this._list.Contains(item);
 			}
 			public void CopyTo(TProperty[] array, int arrayIndex)
 			{
@@ -382,7 +219,7 @@ namespace PersonCountryDemo
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw PersonCountryDemoContext.GetDifferentContextsException();
 				}
@@ -421,16 +258,15 @@ namespace PersonCountryDemo
 				context._PersonList.Add(this);
 			}
 			private readonly PersonCountryDemoContext _Context;
-			public override PersonCountryDemoContext Context
+			public sealed override PersonCountryDemoContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("LastName")]
 			private string _LastName;
-			public override string LastName
+			public sealed override string LastName
 			{
 				get
 				{
@@ -443,7 +279,7 @@ namespace PersonCountryDemo
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._LastName;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnPersonLastNameChanging(this, value) && base.OnLastNameChanging(value))
 						{
@@ -453,9 +289,8 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughProperty("FirstName")]
 			private string _FirstName;
-			public override string FirstName
+			public sealed override string FirstName
 			{
 				get
 				{
@@ -468,7 +303,7 @@ namespace PersonCountryDemo
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._FirstName;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnPersonFirstNameChanging(this, value) && base.OnFirstNameChanging(value))
 						{
@@ -478,9 +313,8 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughProperty("Title")]
 			private string _Title;
-			public override string Title
+			public sealed override string Title
 			{
 				get
 				{
@@ -499,9 +333,8 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughProperty("Country")]
 			private Country _Country;
-			public override Country Country
+			public sealed override Country Country
 			{
 				get
 				{
@@ -510,7 +343,7 @@ namespace PersonCountryDemo
 				set
 				{
 					Country oldValue = this._Country;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonCountryChanging(this, value) && base.OnCountryChanging(value))
 						{
@@ -542,7 +375,7 @@ namespace PersonCountryDemo
 			Country currentInstance;
 			if (this._CountryCountry_nameDictionary.TryGetValue(newValue, out currentInstance))
 			{
-				if ((object)currentInstance != instance)
+				if ((object)currentInstance != (object)instance)
 				{
 					return false;
 				}
@@ -561,23 +394,23 @@ namespace PersonCountryDemo
 		{
 			return true;
 		}
-		private bool OnCountryPersonViaCountryCollectionAdding(Country instance, Person value)
+		private bool OnCountryPersonViaCountryCollectionAdding(Country instance, Person item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw PersonCountryDemoContext.GetDifferentContextsException();
+				throw PersonCountryDemoContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnCountryPersonViaCountryCollectionAdded(Country instance, Person value)
+		private void OnCountryPersonViaCountryCollectionAdded(Country instance, Person item)
 		{
-			value.Country = instance;
+			item.Country = instance;
 		}
-		private void OnCountryPersonViaCountryCollectionRemoved(Country instance, Person value)
+		private void OnCountryPersonViaCountryCollectionRemoved(Country instance, Person item)
 		{
-			if ((object)value.Country == instance)
+			if ((object)item.Country == (object)instance)
 			{
-				value.Country = null;
+				item.Country = null;
 			}
 		}
 		private readonly List<Country> _CountryList;
@@ -602,16 +435,15 @@ namespace PersonCountryDemo
 				context._CountryList.Add(this);
 			}
 			private readonly PersonCountryDemoContext _Context;
-			public override PersonCountryDemoContext Context
+			public sealed override PersonCountryDemoContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("Country_name")]
 			private string _Country_name;
-			public override string Country_name
+			public sealed override string Country_name
 			{
 				get
 				{
@@ -624,7 +456,7 @@ namespace PersonCountryDemo
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._Country_name;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnCountryCountry_nameChanging(this, value) && base.OnCountry_nameChanging(value))
 						{
@@ -635,9 +467,8 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughProperty("Region_Region_code")]
 			private string _Region_Region_code;
-			public override string Region_Region_code
+			public sealed override string Region_Region_code
 			{
 				get
 				{
@@ -656,9 +487,8 @@ namespace PersonCountryDemo
 					}
 				}
 			}
-			[AccessedThroughProperty("PersonViaCountryCollection")]
 			private readonly IEnumerable<Person> _PersonViaCountryCollection;
-			public override IEnumerable<Person> PersonViaCountryCollection
+			public sealed override IEnumerable<Person> PersonViaCountryCollection
 			{
 				get
 				{

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -19,7 +19,6 @@
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
 	
@@ -137,7 +136,7 @@
 		<xsl:param name="Properties"/>
 		<xsl:param name="ModelContextName"/>
 		<xsl:variable name="className" select="@name"/>
-		<xsl:variable name="eventProperties" select="$Properties[not(@isCollection='true')]"/>
+		<xsl:variable name="eventProperties" select="$Properties[not(@isCollection='true') and not(@isIdentity='true')]"/>
 		<plx:class visibility="public" modifier="abstract" partial="true" name="{$className}">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$className}"/>
@@ -153,141 +152,262 @@
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged"/>
 			<plx:implementsInterface dataTypeName="IHas{$ModelContextName}"/>
 			<plx:function visibility="protected" name=".construct"/>
-			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-			<plx:field visibility="private" name="{$PrivateMemberPrefix}events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
-			<plx:property visibility="private" name="Events">
+
+			<plx:pragma type="region" data="{$className} INotifyPropertyChanged Implementation"/>
+			<xsl:call-template name="GenerateINotifyPropertyChangedImplementation"/>
+			<plx:pragma type="closeRegion" data="{$className} INotifyPropertyChanged Implementation"/>
+
+			<xsl:if test="$eventProperties">
+				<plx:pragma type="region" data="{$className} Property Change Events"/>
 				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
-				<plx:get>
-					<plx:return>
-						<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-						<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-							<plx:nullFallbackOperator>
-								<plx:left>
-									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
-								</plx:left>
-								<plx:right>
+				<plx:field visibility="private" name="{$PrivateMemberPrefix}events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
+				<plx:property visibility="private" name="Events">
+					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+					<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
+					<plx:get>
+						<xsl:choose>
+							<xsl:when test="$SynchronizeEventAddRemove">
+								<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+								<plx:local name="localEvents" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
+								<plx:return>
 									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-										<plx:assign>
+										<plx:nullFallbackOperator>
+											<plx:left>
+												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+												<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef type="local" name="localEvents"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:left>
+											<plx:right>
+												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+												<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:nullFallbackOperator>
+														<plx:left>
+															<plx:callStatic type="methodCall" name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+																<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+																<plx:passMemberTypeParam dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
+																<plx:passParam type="inOut">
+																	<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+																</plx:passParam>
+																<plx:passParam>
+																	<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+																	<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+																		<plx:assign>
+																			<plx:left>
+																				<plx:nameRef type="local" name="localEvents"/>
+																			</plx:left>
+																			<plx:right>
+																				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+																				<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+																					<plx:passParam>
+																						<plx:value type="i4" data="{count($eventProperties) * 2}"/>
+																					</plx:passParam>
+																				</plx:callNew>
+																			</plx:right>
+																		</plx:assign>
+																	</plx:inlineStatement>
+																</plx:passParam>
+																<plx:passParam>
+																	<plx:nullKeyword/>
+																</plx:passParam>
+															</plx:callStatic>
+														</plx:left>
+														<plx:right>
+															<plx:nameRef type="local" name="localEvents"/>
+														</plx:right>
+													</plx:nullFallbackOperator>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:nullFallbackOperator>
+									</plx:inlineStatement>
+								</plx:return>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:return>
+									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+										<plx:nullFallbackOperator>
 											<plx:left>
 												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
 											</plx:left>
 											<plx:right>
 												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-												<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-													<plx:passParam>
-														<plx:value type="i4" data="{count($eventProperties) * 2}"/>
-													</plx:passParam>
-												</plx:callNew>
+												<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:assign>
+														<plx:left>
+															<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+														</plx:left>
+														<plx:right>
+															<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+															<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+																<plx:passParam>
+																	<plx:value type="i4" data="{count($eventProperties) * 2}"/>
+																</plx:passParam>
+															</plx:callNew>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
 											</plx:right>
-										</plx:assign>
+										</plx:nullFallbackOperator>
 									</plx:inlineStatement>
-								</plx:right>
-							</plx:nullFallbackOperator>
-						</plx:inlineStatement>
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<xsl:call-template name="GenerateINotifyPropertyChangedImplementation"/>
+								</plx:return>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:get>
+				</plx:property>
+				<xsl:if test="$SynchronizeEventAddRemove">
+					<xsl:call-template name="GenerateInterlockedDelegateMethod">
+						<xsl:with-param name="MethodName" select="'Combine'"/>
+					</xsl:call-template>
+					<xsl:call-template name="GenerateInterlockedDelegateMethod">
+						<xsl:with-param name="MethodName" select="'Remove'"/>
+					</xsl:call-template>
+				</xsl:if>
+				<xsl:apply-templates select="$eventProperties" mode="GeneratePropertyChangeEvents">
+					<xsl:with-param name="ClassName" select="$className"/>
+				</xsl:apply-templates>
+				<plx:pragma type="closeRegion" data="{$className} Property Change Events"/>
+			</xsl:if>
+
+			<plx:pragma type="region" data="{$className} Abstract Properties"/>
 			<plx:property visibility="public" modifier="abstract" name="Context">
 				<plx:interfaceMember memberName="Context" dataTypeName="IHas{$ModelContextName}"/>
 				<plx:returns dataTypeName="{$ModelContextName}"/>
 				<plx:get/>
 			</plx:property>
-			<xsl:apply-templates select="$eventProperties[not(@isIdentity='true')]" mode="GeneratePropertyChangeEvents">
-				<xsl:with-param name="ClassName" select="$className"/>
-			</xsl:apply-templates>
 			<xsl:apply-templates select="$Properties" mode="GenerateAbstractProperty"/>
+			<plx:pragma type="closeRegion" data="{$className} Abstract Properties"/>
+
+			<plx:pragma type="region" data="{$className} ToString Methods"/>
 			<xsl:call-template name="GenerateToString">
 				<xsl:with-param name="ClassName" select="$className"/>
 				<xsl:with-param name="Properties" select="$Properties"/>
 			</xsl:call-template>
-			<xsl:for-each select="parent::oil:conceptType">
-				<xsl:variable name="parentConceptTypeName" select="@name"/>
-				<!-- Generate an implicit cast operator for the oil:conceptType elements that contain this oil:conceptType -->
-				<xsl:call-template name="GenerateImplicitConversionOperators">
-					<xsl:with-param name="SourceClassName" select="$className"/>
-					<xsl:with-param name="ConversionCallObject">
+			<plx:pragma type="closeRegion" data="{$className} ToString Methods"/>
+
+			<xsl:variable name="parentConceptType" select="parent::oil:conceptType"/>
+			<xsl:if test="$parentConceptType">
+				<xsl:variable name="parentConceptTypeName" select="$parentConceptType/@name"/>
+				<plx:pragma type="region" data="{$className} Parent Support ({$parentConceptTypeName})"/>
+				<xsl:for-each select="$parentConceptType">
+					<xsl:variable name="conversionCallObjectFragment">
 						<plx:nameRef type="parameter" name="{$className}"/>
-					</xsl:with-param>
-				</xsl:call-template>
-				<!-- Generate a virtual property for each of the parent's properties (except for the one for this class, because that would be awkward). -->
-				<xsl:variable name="excludeNames" select="$className | $Properties/@name"/>
-				<xsl:call-template name="GenerateVirtualPropertiesFromParents">
-					<xsl:with-param name="ExcludeNames" select="$excludeNames"/>
-					<xsl:with-param name="AllProperties" select="$AllProperties"/>
-					<xsl:with-param name="ParentProperties" select="$AllProperties[@conceptTypeName=$parentConceptTypeName]/prop:Property[not(@name=$excludeNames)]"/>
-					<xsl:with-param name="PropertyCallObject">
-						<plx:callInstance type="property" name="{$parentConceptTypeName}">
-							<plx:callObject>
-								<plx:thisKeyword/>
-							</plx:callObject>
-						</plx:callInstance>
-					</xsl:with-param>
-				</xsl:call-template>
-			</xsl:for-each>
-			<xsl:for-each select="child::oil:conceptType">
-				<!-- Generate an explicit cast operator for all oil:conceptType elements nested within this oil:conceptType -->
-				<xsl:variable name="childConceptTypeName" select="@name"/>
-				<plx:operatorFunction type="castNarrow">
-					<plx:param dataTypeName="{$className}" name="{$className}"/>
-					<plx:returns dataTypeName="{$childConceptTypeName}"/>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:nameRef type="parameter" name="{$className}"/>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:return>
-							<plx:nullKeyword/>
-						</plx:return>
-					</plx:branch>
-					<plx:alternateBranch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:callInstance type="property" name="{$childConceptTypeName}">
-										<plx:callObject>
-											<plx:nameRef type="parameter" name="{$className}"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:throw>
-							<plx:callNew dataTypeName="InvalidCastException"/>
-						</plx:throw>
-					</plx:alternateBranch>
-					<plx:fallbackBranch>
-						<plx:return>
-							<plx:callInstance type="property" name="{$childConceptTypeName}">
+					</xsl:variable>
+					<!-- Generate an implicit cast operator for the oil:conceptType elements that contain this oil:conceptType -->
+					<xsl:call-template name="GenerateImplicitConversionOperators">
+						<xsl:with-param name="SourceClassName" select="$className"/>
+						<xsl:with-param name="ConversionCallObject" select="exsl:node-set($conversionCallObjectFragment)/child::*"/>
+					</xsl:call-template>
+					<!-- Generate a virtual property for each of the parent's properties (except for the one for this class, because that would be awkward). -->
+					<!-- Also exclude any properties that have the same name as a property in this class. -->
+					<xsl:variable name="excludeNames" select="$className | $Properties/@name"/>
+					<xsl:call-template name="GenerateVirtualPropertiesFromParents">
+						<xsl:with-param name="ExcludeNames" select="$excludeNames"/>
+						<xsl:with-param name="AllProperties" select="$AllProperties"/>
+						<xsl:with-param name="ParentProperties" select="$AllProperties[@conceptTypeName=$parentConceptTypeName]/prop:Property[not(@name=$excludeNames)]"/>
+						<xsl:with-param name="PropertyCallObject">
+							<plx:callInstance type="property" name="{$parentConceptTypeName}">
 								<plx:callObject>
-									<plx:nameRef type="parameter" name="{$className}"/>
+									<plx:thisKeyword/>
 								</plx:callObject>
 							</plx:callInstance>
-						</plx:return>
-					</plx:fallbackBranch>
-				</plx:operatorFunction>
-				<xsl:for-each select="child::oil:conceptType">
-					<xsl:call-template name="GenerateExplicitConversionOperators">
-						<xsl:with-param name="SourceClassName" select="$className"/>
-						<xsl:with-param name="ConversionCallObject">
-							<plx:cast type="exceptionCast" dataTypeName="{$childConceptTypeName}">
-								<plx:nameRef type="parameter" name="{$className}"/>
-							</plx:cast>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:for-each>
-			</xsl:for-each>
+				<plx:pragma type="closeRegion" data="{$className} Parent Support ({$parentConceptTypeName})"/>
+			</xsl:if>
+
+			<xsl:variable name="childConceptTypes" select="child::oil:conceptType"/>
+			<xsl:if test="$childConceptTypes">
+				<xsl:variable name="countChildConceptTypes" select="count($childConceptTypes)"/>
+				<xsl:if test="$countChildConceptTypes > 1">
+					<plx:pragma type="region" data="{$className} Children Support"/>
+				</xsl:if>
+				<xsl:for-each select="child::oil:conceptType">
+					<!-- Generate an explicit cast operator for all oil:conceptType elements nested within this oil:conceptType -->
+					<xsl:variable name="childConceptTypeName" select="@name"/>
+					<plx:pragma type="region" data="{$className} Child Support ({$childConceptTypeName})"/>
+					<plx:operatorFunction type="castNarrow">
+						<plx:param dataTypeName="{$className}" name="{$className}"/>
+						<plx:returns dataTypeName="{$childConceptTypeName}"/>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:nameRef type="parameter" name="{$className}"/>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:return>
+								<plx:nullKeyword/>
+							</plx:return>
+						</plx:branch>
+						<plx:local name="{$childConceptTypeName}" dataTypeName="{$childConceptTypeName}"/>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:inlineStatement dataTypeName="{$childConceptTypeName}">
+												<plx:assign>
+													<plx:left>
+														<plx:nameRef type="local" name="{$childConceptTypeName}"/>
+													</plx:left>
+													<plx:right>
+														<plx:callInstance type="property" name="{$childConceptTypeName}">
+															<plx:callObject>
+																<plx:nameRef type="parameter" name="{$className}"/>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:right>
+												</plx:assign>
+											</plx:inlineStatement>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:throw>
+								<plx:callNew dataTypeName="InvalidCastException"/>
+							</plx:throw>
+						</plx:branch>
+						<plx:return>
+							<plx:nameRef type="local" name="{$childConceptTypeName}"/>
+						</plx:return>
+					</plx:operatorFunction>
+					<!-- Generate an explicit cast operator for for each of the child's children -->
+					<xsl:variable name="conversionCallObjectFragment">
+						<plx:cast type="exceptionCast" dataTypeName="{$childConceptTypeName}">
+							<plx:nameRef type="parameter" name="{$className}"/>
+						</plx:cast>
+					</xsl:variable>
+					<xsl:for-each select="child::oil:conceptType">
+						<xsl:call-template name="GenerateExplicitConversionOperators">
+							<xsl:with-param name="SourceClassName" select="$className"/>
+							<xsl:with-param name="ConversionCallObject" select="exsl:node-set($conversionCallObjectFragment)/child::*"/>
+						</xsl:call-template>
+					</xsl:for-each>
+					<plx:pragma type="closeRegion" data="{$className} Child Support ({$childConceptTypeName})"/>
+				</xsl:for-each>
+				<xsl:if test="$countChildConceptTypes > 1">
+					<plx:pragma type="closeRegion" data="{$className} Children Support"/>
+				</xsl:if>
+			</xsl:if>
 		</plx:class>
 	</xsl:template>
 
@@ -310,7 +430,9 @@
 				<plx:condition>
 					<plx:binaryOperator type="identityEquality">
 						<plx:left>
-							<plx:nameRef type="parameter" name="{$SourceClassName}"/>
+							<plx:cast type="exceptionCast" dataTypeName=".object">
+								<plx:nameRef type="parameter" name="{$SourceClassName}"/>
+							</plx:cast>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
@@ -321,11 +443,9 @@
 					<plx:nullKeyword/>
 				</plx:return>
 			</plx:branch>
-			<plx:fallbackBranch>
-				<plx:return>
-					<xsl:copy-of select="$conversionCode"/>
-				</plx:return>
-			</plx:fallbackBranch>
+			<plx:return>
+				<xsl:copy-of select="$conversionCode"/>
+			</plx:return>
 		</plx:operatorFunction>
 		<xsl:for-each select="parent::oil:conceptType">
 			<xsl:call-template name="GenerateImplicitConversionOperators">
@@ -352,7 +472,9 @@
 				<plx:condition>
 					<plx:binaryOperator type="identityEquality">
 						<plx:left>
-							<plx:nameRef type="parameter" name="{$SourceClassName}"/>
+							<plx:cast type="exceptionCast" dataTypeName=".object">
+								<plx:nameRef type="parameter" name="{$SourceClassName}"/>
+							</plx:cast>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
@@ -363,11 +485,9 @@
 					<plx:nullKeyword/>
 				</plx:return>
 			</plx:branch>
-			<plx:fallbackBranch>
-				<plx:return>
-					<xsl:copy-of select="$conversionCode"/>
-				</plx:return>
-			</plx:fallbackBranch>
+			<plx:return>
+				<xsl:copy-of select="$conversionCode"/>
+			</plx:return>
 		</plx:operatorFunction>
 		<xsl:for-each select="child::oil:conceptType">
 			<xsl:call-template name="GenerateExplicitConversionOperators">
@@ -569,9 +689,65 @@
 		</plx:property>
 	</xsl:template>
 
+	<xsl:template name="GenerateInterlockedDelegateMethod">
+		<xsl:param name="MethodName"/>
+		<plx:function visibility="private" modifier="static" name="InterlockedDelegate{$MethodName}">
+			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next three lines. -->
+			<plx:param type="inOut" name="location" dataTypeName="Delegate" dataTypeQualifier="System"/>
+			<plx:param name="value" dataTypeName="Delegate" dataTypeQualifier="System"/>
+			<plx:local name="currentHandler" dataTypeName="Delegate" dataTypeQualifier="System"/>
+			<plx:loop checkCondition="before">
+				<plx:condition>
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:cast type="exceptionCast" dataTypeName=".object">
+								<plx:callStatic type="methodCall" name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+									<plx:passMemberTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
+									<plx:passParam type="inOut">
+										<plx:nameRef type="parameter" name="location"/>
+									</plx:passParam>
+									<plx:passParam>
+										<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+										<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate" dataTypeQualifier="System">
+											<plx:passParam>
+												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef type="local" name="currentHandler"/>
+														</plx:left>
+														<plx:right>
+															<plx:nameRef type="parameter" name="location"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef type="parameter" name="value"/>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="local" name="currentHandler"/>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:cast>
+						</plx:left>
+						<plx:right>
+							<plx:cast type="exceptionCast" dataTypeName=".object">
+								<plx:nameRef type="local" name="currentHandler"/>
+							</plx:cast>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+			</plx:loop>
+		</plx:function>
+	</xsl:template>
+	
 	<xsl:template match="prop:Property" mode="GeneratePropertyChangeEvents">
 		<xsl:param name="ClassName"/>
-		<xsl:variable name="EventIndex" select="(position()*2)-1"/>
+		<xsl:variable name="EventIndex" select="(position()*2)-2"/>
 		<xsl:call-template name="GeneratePropertyChangeEvent">
 			<xsl:with-param name="ClassName" select="$ClassName"/>
 			<xsl:with-param name="ChangeType" select="'Changing'"/>
@@ -617,53 +793,198 @@
 				</plx:passTypeParam>
 			</plx:passTypeParam>
 			<plx:onAdd>
-				<xsl:call-template name="GetPropertyChangeEventOnAddRemoveCode">
+				<xsl:call-template name="GetPropertyChangeEventOnAddCode">
+					<xsl:with-param name="ClassName" select="$ClassName"/>
 					<xsl:with-param name="EventIndex" select="$EventIndex"/>
-					<xsl:with-param name="MethodName" select="'Combine'"/>
 				</xsl:call-template>
 			</plx:onAdd>
-			<plx:onRemove>
-				<xsl:call-template name="GetPropertyChangeEventOnAddRemoveCode">
+			<plx:onRemove>				
+				<xsl:call-template name="GetPropertyChangeEventOnRemoveCode">
+					<xsl:with-param name="ClassName" select="$ClassName"/>
 					<xsl:with-param name="EventIndex" select="$EventIndex"/>
-					<xsl:with-param name="MethodName" select="'Remove'"/>
 				</xsl:call-template>
 			</plx:onRemove>
 		</plx:event>
 	</xsl:template>
 
-	<xsl:template name="GetPropertyChangeEventOnAddRemoveCode">
+	<xsl:template name="GetPropertyChangeEventOnAddCode">
+		<xsl:param name="ClassName"/>
 		<xsl:param name="EventIndex"/>
-		<xsl:param name="MethodName"/>
-		<plx:assign>
-			<plx:left>
-				<plx:callInstance type="arrayIndexer" name=".implied">
-					<plx:callObject>
-						<plx:callThis accessor="this" type="property" name="Events"/>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:value type="i4" data="{$EventIndex}"/>
-					</plx:passParam>
-				</plx:callInstance>
-			</plx:left>
-			<plx:right>
-				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-				<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate" dataTypeQualifier="System">
-					<plx:passParam>
-						<plx:callInstance type="arrayIndexer" name=".implied">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="property" name="Events"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:value type="i4" data="{$EventIndex}"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:valueKeyword/>
-					</plx:passParam>
-				</plx:callStatic>
-			</plx:right>
-		</plx:assign>
+		<plx:branch>
+			<plx:condition>
+				<plx:binaryOperator type="identityInequality">
+					<plx:left>
+						<plx:cast type="exceptionCast" dataTypeName=".object">
+							<plx:valueKeyword/>
+						</plx:cast>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:condition>
+			<xsl:choose>
+				<xsl:when test="$SynchronizeEventAddRemove">
+					<plx:callStatic type="methodCall" name="InterlockedDelegateCombine" dataTypeName="{$ClassName}">
+						<plx:passParam type="inOut">
+							<plx:callInstance type="arrayIndexer" name=".implied">
+								<plx:callObject>
+									<plx:callThis accessor="this" type="property" name="Events"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value type="i4" data="{$EventIndex}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:valueKeyword/>
+						</plx:passParam>
+					</plx:callStatic>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance type="arrayIndexer" name=".implied">
+								<plx:callObject>
+									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+									<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+										<plx:assign>
+											<plx:left>
+												<plx:nameRef type="local" name="events"/>
+											</plx:left>
+											<plx:right>
+												<plx:callThis accessor="this" type="property" name="Events"/>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value type="i4" data="{$EventIndex}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+							<plx:callStatic type="methodCall" name="Combine" dataTypeName="Delegate" dataTypeQualifier="System">
+								<plx:passParam>
+									<plx:callInstance type="arrayIndexer" name=".implied">
+										<plx:callObject>
+											<plx:nameRef type="local" name="events"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:value type="i4" data="{$EventIndex}"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:valueKeyword/>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:right>
+					</plx:assign>
+				</xsl:otherwise>
+			</xsl:choose>
+		</plx:branch>
+	</xsl:template>
+
+	<xsl:template name="GetPropertyChangeEventOnRemoveCode">
+		<xsl:param name="ClassName"/>
+		<xsl:param name="EventIndex"/>
+		<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+		<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
+		<plx:branch>
+			<plx:condition>
+				<plx:binaryOperator type="booleanAnd">
+					<plx:left>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:valueKeyword/>
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+									<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+										<plx:assign>
+											<plx:left>
+												<plx:nameRef type="local" name="events"/>
+											</plx:left>
+											<plx:right>
+												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:condition>
+			<xsl:choose>
+				<xsl:when test="$SynchronizeEventAddRemove">
+					<plx:callStatic type="methodCall" name="InterlockedDelegateRemove" dataTypeName="{$ClassName}">
+						<plx:passParam type="inOut">
+							<plx:callInstance type="arrayIndexer" name=".implied">
+								<plx:callObject>
+									<plx:nameRef type="local" name="events"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value type="i4" data="{$EventIndex}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:valueKeyword/>
+						</plx:passParam>
+					</plx:callStatic>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance type="arrayIndexer" name=".implied">
+								<plx:callObject>
+									<plx:nameRef type="local" name="events"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value type="i4" data="{$EventIndex}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+							<plx:callStatic type="methodCall" name="Remove" dataTypeName="Delegate" dataTypeQualifier="System">
+								<plx:passParam>
+									<plx:callInstance type="arrayIndexer" name=".implied">
+										<plx:callObject>
+											<plx:nameRef type="local" name="events"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:value type="i4" data="{$EventIndex}"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:valueKeyword/>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:right>
+					</plx:assign>
+				</xsl:otherwise>
+			</xsl:choose>
+		</plx:branch>
 	</xsl:template>
 
 	<xsl:template name="GeneratePropertyChangeEventRaiseMethod">
@@ -689,6 +1010,8 @@
 					</plx:param>
 				</xsl:when>
 			</xsl:choose>
+			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+			<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
 			<plx:local name="eventHandler" dataTypeName="EventHandler">
 				<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
 					<plx:passTypeParam dataTypeName="{$ClassName}"/>
@@ -697,79 +1020,115 @@
 						<xsl:copy-of select="prop:DataType/child::*"/>
 					</plx:passTypeParam>
 				</plx:passTypeParam>
-				<plx:initialize>
-					<plx:cast type="testCast" dataTypeName="EventHandler">
-						<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
-							<plx:passTypeParam dataTypeName="{$ClassName}"/>
-							<plx:passTypeParam>
-								<xsl:copy-of select="prop:DataType/@*"/>
-								<xsl:copy-of select="prop:DataType/child::*"/>
-							</plx:passTypeParam>
-						</plx:passTypeParam>
-						<plx:callInstance type="arrayIndexer" name=".implied">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="property" name="Events"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:value type="i4" data="{$EventIndex}"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:cast>
-				</plx:initialize>
 			</plx:local>
 			<plx:branch>
 				<plx:condition>
-					<plx:binaryOperator type="identityInequality">
+					<plx:binaryOperator type="booleanAnd">
 						<plx:left>
-							<plx:cast type="exceptionCast" dataTypeName=".object">
-								<plx:nameRef type="local" name="eventHandler"/>
-							</plx:cast>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+										<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef type="local" name="events"/>
+												</plx:left>
+												<plx:right>
+													<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:left>
 						<plx:right>
-							<plx:nullKeyword/>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:inlineStatement dataTypeName="EventHandler">
+											<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
+												<plx:passTypeParam dataTypeName="{$ClassName}"/>
+												<plx:passTypeParam>
+													<xsl:copy-of select="prop:DataType/@*"/>
+													<xsl:copy-of select="prop:DataType/child::*"/>
+												</plx:passTypeParam>
+											</plx:passTypeParam>
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef type="local" name="eventHandler"/>
+												</plx:left>
+												<plx:right>
+													<plx:cast type="exceptionCast" dataTypeName="EventHandler">
+														<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
+															<plx:passTypeParam dataTypeName="{$ClassName}"/>
+															<plx:passTypeParam>
+																<xsl:copy-of select="prop:DataType/@*"/>
+																<xsl:copy-of select="prop:DataType/child::*"/>
+															</plx:passTypeParam>
+														</plx:passTypeParam>
+														<plx:callInstance type="arrayIndexer" name=".implied">
+															<plx:callObject>
+																<plx:nameRef type="local" name="events"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:value type="i4" data="{$EventIndex}"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:cast>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
+					
 				</plx:condition>
-				<xsl:variable name="commonCallCode">
-					<plx:passParam>
-						<plx:thisKeyword/>
-					</plx:passParam>
-					<plx:passParam>
-						<xsl:variable name="CurrentValue">
-							<plx:callThis accessor="this" type="property"  name="{@name}"/>
-						</xsl:variable>
-						<plx:callNew dataTypeName="Property{$ChangeType}EventArgs">
-							<plx:passTypeParam dataTypeName="{$ClassName}"/>
-							<plx:passTypeParam>
-								<xsl:copy-of select="prop:DataType/@*"/>
-								<xsl:copy-of select="prop:DataType/child::*"/>
-							</plx:passTypeParam>
-							<plx:passParam>
-								<plx:thisKeyword/>
-							</plx:passParam>
-							<plx:passParam>
-								<xsl:choose>
-									<xsl:when test="$isChanging">
-										<xsl:copy-of select="$CurrentValue"/>
-									</xsl:when>
-									<xsl:when test="$isChanged">
-										<plx:nameRef type="parameter" name="oldValue"/>
-									</xsl:when>
-								</xsl:choose>
-							</plx:passParam>
-							<plx:passParam>
-								<xsl:choose>
-									<xsl:when test="$isChanging">
-										<plx:nameRef type="parameter" name="newValue"/>
-									</xsl:when>
-									<xsl:when test="$isChanged">
-										<xsl:copy-of select="$CurrentValue"/>
-									</xsl:when>
-								</xsl:choose>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:passParam>
+				<xsl:variable name="eventArgsCreationCodeFragment">
+					<plx:callNew dataTypeName="Property{$ChangeType}EventArgs">
+						<plx:passTypeParam dataTypeName="{$ClassName}"/>
+						<plx:passTypeParam>
+							<xsl:copy-of select="prop:DataType/@*"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+						</plx:passTypeParam>
+						<plx:passParam>
+							<plx:thisKeyword/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string data="{@name}"/>
+						</plx:passParam>
+						<plx:passParam>
+							<xsl:choose>
+								<xsl:when test="$isChanging">
+									<plx:callThis accessor="this" type="property" name="{@name}"/>
+								</xsl:when>
+								<xsl:when test="$isChanged">
+									<plx:nameRef type="parameter" name="oldValue"/>
+								</xsl:when>
+							</xsl:choose>
+						</plx:passParam>
+						<plx:passParam>
+							<xsl:choose>
+								<xsl:when test="$isChanging">
+									<plx:nameRef type="parameter" name="newValue"/>
+								</xsl:when>
+								<xsl:when test="$isChanged">
+									<plx:callThis accessor="this" type="property" name="{@name}"/>
+								</xsl:when>
+							</xsl:choose>
+						</plx:passParam>
+					</plx:callNew>
 				</xsl:variable>
+				<xsl:variable name="eventArgsCreationCode" select="exsl:node-set($eventArgsCreationCodeFragment)/child::*"/>
 				<xsl:choose>
 					<xsl:when test="$isChanging">
 						<plx:return>
@@ -784,14 +1143,19 @@
 								<plx:passParam>
 									<plx:nameRef type="local" name="eventHandler"/>
 								</plx:passParam>
-								<xsl:copy-of select="$commonCallCode"/>
+								<plx:passParam>
+									<plx:thisKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<xsl:copy-of select="$eventArgsCreationCode"/>
+								</plx:passParam>
 							</plx:callStatic>
 						</plx:return>
 					</xsl:when>
 					<xsl:when test="$isChanged">
 						<xsl:choose>
 							<xsl:when test="$RaiseEventsAsynchronously">
-								<plx:callStatic name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility" type="methodCall">
+								<plx:callStatic type="methodCall" name="InvokeEventHandlerAsync" dataTypeName="EventHandlerUtility">
 									<plx:passMemberTypeParam dataTypeName="PropertyChangedEventArgs">
 										<plx:passTypeParam dataTypeName="{$ClassName}"/>
 										<plx:passTypeParam>
@@ -802,37 +1166,73 @@
 									<plx:passParam>
 										<plx:nameRef type="local" name="eventHandler"/>
 									</plx:passParam>
-									<xsl:copy-of select="$commonCallCode"/>
+									<plx:passParam>
+										<plx:thisKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<xsl:copy-of select="$eventArgsCreationCode"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+									</plx:passParam>
 								</plx:callStatic>
 							</xsl:when>
 							<xsl:otherwise>
-								<plx:callInstance name="Invoke" type="methodCall">
+								<plx:local name="e" dataTypeName="PropertyChangedEventArgs">
+									<plx:passTypeParam dataTypeName="{$ClassName}"/>
+									<plx:passTypeParam>
+										<xsl:copy-of select="prop:DataType/@*"/>
+										<xsl:copy-of select="prop:DataType/child::*"/>
+									</plx:passTypeParam>
+									<plx:initialize>
+										<xsl:copy-of select="$eventArgsCreationCode"/>
+									</plx:initialize>
+								</plx:local>
+								<plx:callInstance type="delegateCall" name="implied">
 									<plx:callObject>
 										<plx:nameRef type="local" name="eventHandler"/>
 									</plx:callObject>
-									<xsl:copy-of select="$commonCallCode"/>
+									<plx:passParam>
+										<plx:thisKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="local" name="e"/>
+									</plx:passParam>
 								</plx:callInstance>
+								<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
+									<plx:passParam>
+										<plx:nameRef type="local" name="e"/>
+									</plx:passParam>
+								</plx:callThis>
 							</xsl:otherwise>
 						</xsl:choose>
-						<plx:callThis name="OnPropertyChanged" type="methodCall">
-							<plx:passParam>
-								<plx:string data="{@name}"/>
-							</plx:passParam>
-						</plx:callThis>
 					</xsl:when>
 				</xsl:choose>
 			</plx:branch>
-			<xsl:if test="$isChanging">
-				<plx:return>
-					<plx:trueKeyword/>
-				</plx:return>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$isChanging">
+					<plx:return>
+						<plx:trueKeyword/>
+					</plx:return>	
+				</xsl:when>
+				<xsl:when test="$isChanged">
+					<plx:fallbackBranch>
+						<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
+							<plx:passParam>
+								<plx:string data="{@name}"/>
+							</plx:passParam>
+						</plx:callThis>						
+					</plx:fallbackBranch>
+				</xsl:when>
+			</xsl:choose>
 		</plx:function>
 	</xsl:template>
-
+	
 	<xsl:template name="GenerateINotifyPropertyChangedImplementation">
 		<plx:field visibility="private" name="{$PrivateMemberPrefix}propertyChangedEventHandler" dataTypeName="PropertyChangedEventHandler"/>
 		<plx:event visibility="privateInterfaceMember" name="PropertyChanged">
+			<!-- Suppress the 'InterfaceMethodsShouldBeCallableByChildTypes' FxCop warning, since it is not applicable here. -->
+			<!-- Child types call the property-specific notification methods, which in turn raise the INotifyPropertyChanged.PropertyChanged event. -->
 			<xsl:call-template name="GenerateSuppressMessageAttribute">
 				<xsl:with-param name="category" select="'Microsoft.Design'"/>
 				<xsl:with-param name="checkId" select="'CA1033:InterfaceMethodsShouldBeCallableByChildTypes'"/>
@@ -842,59 +1242,34 @@
 			<plx:param name="e" dataTypeName="PropertyChangedEventArgs"/>
 			<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler"/>
 			<plx:onAdd>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
-					</plx:left>
-					<plx:right>
-						<plx:cast type="testCast" dataTypeName="PropertyChangedEventHandler">
-							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-							<plx:callStatic type="methodCall" name="Combine" dataTypeName="Delegate" dataTypeQualifier="System">
-								<plx:passParam>
-									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:valueKeyword/>
-								</plx:passParam>
-							</plx:callStatic>
-						</plx:cast>
-					</plx:right>
-				</plx:assign>
+				<xsl:call-template name="GetINotifyPropertyChangedImplementationEventOnAddRemoveCode">
+					<xsl:with-param name="MethodName" select="'Combine'"/>
+				</xsl:call-template>
 			</plx:onAdd>
 			<plx:onRemove>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
-					</plx:left>
-					<plx:right>
-						<plx:cast type="testCast" dataTypeName="PropertyChangedEventHandler">
-							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-							<plx:callStatic type="methodCall" name="Remove" dataTypeName="Delegate" dataTypeQualifier="System">
-								<plx:passParam>
-									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:valueKeyword/>
-								</plx:passParam>
-							</plx:callStatic>
-						</plx:cast>
-					</plx:right>
-				</plx:assign>
+				<xsl:call-template name="GetINotifyPropertyChangedImplementationEventOnAddRemoveCode">
+					<xsl:with-param name="MethodName" select="'Remove'"/>
+				</xsl:call-template>
 			</plx:onRemove>
 		</plx:event>
-		<plx:function visibility="private" name="OnPropertyChanged">
+		<plx:function visibility="private" overload="{not($RaiseEventsAsynchronously)}" name="OnPropertyChanged">
 			<plx:param name="propertyName" dataTypeName=".string"/>
-			<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
-				<plx:initialize>
-					<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
-				</plx:initialize>
-			</plx:local>
+			<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler"/>
 			<plx:branch>
 				<plx:condition>
 					<plx:binaryOperator type="identityInequality">
 						<plx:left>
 							<plx:cast type="exceptionCast" dataTypeName=".object">
-								<plx:nameRef type="local" name="eventHandler"/>
+								<plx:inlineStatement dataTypeName="PropertyChangedEventHandler">
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef type="local" name="eventHandler"/>
+										</plx:left>
+										<plx:right>
+											<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+										</plx:right>
+									</plx:assign>
+								</plx:inlineStatement>
 							</plx:cast>
 						</plx:left>
 						<plx:right>
@@ -925,7 +1300,7 @@
 						</plx:callStatic>
 					</xsl:when>
 					<xsl:otherwise>
-						<plx:callInstance type="methodCall" name="Invoke">
+						<plx:callInstance type="delegateCall" name=".implied">
 							<plx:callObject>
 								<plx:nameRef type="local" name="eventHandler"/>
 							</plx:callObject>
@@ -935,6 +1310,135 @@
 				</xsl:choose>
 			</plx:branch>
 		</plx:function>
+		<xsl:if test="not($RaiseEventsAsynchronously)">
+			<plx:function visibility="private" overload="true" name="OnPropertyChanged">
+				<plx:param name="e" dataTypeName="PropertyChangedEventArgs"/>
+				<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler"/>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:cast type="exceptionCast" dataTypeName=".object">
+									<plx:inlineStatement dataTypeName="PropertyChangedEventHandler">
+										<plx:assign>
+											<plx:left>
+												<plx:nameRef type="local" name="eventHandler"/>
+											</plx:left>
+											<plx:right>
+												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance type="delegateCall" name=".implied">
+						<plx:callObject>
+							<plx:nameRef type="local" name="eventHandler"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="e"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</plx:function>	
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="GetINotifyPropertyChangedImplementationEventOnAddRemoveCode">
+		<xsl:param name="MethodName"/>
+		<plx:branch>
+			<plx:condition>
+				<plx:binaryOperator type="identityInequality">
+					<plx:left>
+						<plx:cast type="exceptionCast" dataTypeName=".object">
+							<plx:valueKeyword/>
+						</plx:cast>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:condition>
+			<xsl:choose>
+				<xsl:when test="$SynchronizeEventAddRemove">
+					<plx:local name="currentHandler" dataTypeName="PropertyChangedEventHandler"/>
+					<plx:loop checkCondition="before">
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:callStatic type="methodCall" name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+											<plx:passMemberTypeParam dataTypeName="PropertyChangedEventHandler"/>
+											<plx:passParam type="inOut">
+												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
+													<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+													<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate" dataTypeQualifier="System">
+														<plx:passParam>
+															<plx:inlineStatement dataTypeName="PropertyChangedEventHandler">
+																<plx:assign>
+																	<plx:left>
+																		<plx:nameRef type="local" name="currentHandler"/>
+																	</plx:left>
+																	<plx:right>
+																		<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+																	</plx:right>
+																</plx:assign>
+															</plx:inlineStatement>
+														</plx:passParam>
+														<plx:passParam>
+															<plx:valueKeyword/>
+														</plx:passParam>
+													</plx:callStatic>
+												</plx:cast>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef type="local" name="currentHandler"/>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="local" name="currentHandler"/>
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+					</plx:loop>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+						</plx:left>
+						<plx:right>
+							<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
+								<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+								<plx:callStatic type="methodCall" name="Combine" dataTypeName="Delegate" dataTypeQualifier="System">
+									<plx:passParam>
+										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:valueKeyword/>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:cast>
+						</plx:right>
+					</plx:assign>
+				</xsl:otherwise>
+			</xsl:choose>
+		</plx:branch>
 	</xsl:template>
 
 	<xsl:template name="GenerateToString">

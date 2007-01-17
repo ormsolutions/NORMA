@@ -1,13 +1,13 @@
 ﻿<?php
-.global::require_once("Entities.php");
-.global::require_once("DataLayer.php");
+require_once("Entities.php");
+require_once("DataLayer.php");
 class PersonServiceBase {
 	private static $instance;
 	
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new PersonService();
 		}
 		return instance;
@@ -66,7 +66,7 @@ class MalePersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new MalePersonService();
 		}
 		return instance;
@@ -109,7 +109,7 @@ class FemalePersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new FemalePersonService();
 		}
 		return instance;
@@ -152,7 +152,7 @@ class ChildPersonServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new ChildPersonService();
 		}
 		return instance;
@@ -191,7 +191,7 @@ class DeathServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new DeathService();
 		}
 		return instance;
@@ -230,7 +230,7 @@ class NaturalDeathServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new NaturalDeathService();
 		}
 		return instance;
@@ -269,7 +269,7 @@ class UnnaturalDeathServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new UnnaturalDeathService();
 		}
 		return instance;
@@ -308,7 +308,7 @@ class TaskServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new TaskService();
 		}
 		return instance;
@@ -347,7 +347,7 @@ class ValueType1ServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new ValueType1Service();
 		}
 		return instance;
@@ -390,7 +390,7 @@ class PersonBoughtCarFromPersonOnDateServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new PersonBoughtCarFromPersonOnDateService();
 		}
 		return instance;
@@ -429,7 +429,7 @@ class ReviewServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new ReviewService();
 		}
 		return instance;

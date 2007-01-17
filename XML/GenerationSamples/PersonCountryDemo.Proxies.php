@@ -7,7 +7,7 @@ class Person_Country_Country_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(.global::isset($this->value))) {
+		if (!(isset($this->value))) {
 			$this->value = PersonDAO::getInstance()->getSingle($this->ref->getCountry_name());
 		}
 		return $this->value;
@@ -21,7 +21,7 @@ class Country_Country_Person_Proxy {
 		$this->ref = $ref;
 	}
 	public function get() {
-		if (!(.global::isset($this->value))) {
+		if (!(isset($this->value))) {
 			$this->value = CountryDAO::getInstance()->get_Person_Collection_By_Country($this->ref->getCountry_name());
 		}
 		return $this->value;

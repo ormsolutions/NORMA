@@ -1,13 +1,13 @@
 ﻿<?php
-.global::require_once("Entities.php");
-.global::require_once("DataLayer.php");
+require_once("Entities.php");
+require_once("DataLayer.php");
 class PersonServiceBase {
 	private static $instance;
 	
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new PersonService();
 		}
 		return instance;
@@ -46,7 +46,7 @@ class CountryServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new CountryService();
 		}
 		return instance;

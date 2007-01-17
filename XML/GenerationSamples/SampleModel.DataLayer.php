@@ -7,7 +7,7 @@ static class DataAccessBase {
 	}
 	private static function get() {
 		if (params == null) {
-			params = .global::array();
+			params = array();
 			params["host"] = "";
 			params["username"] = "";
 			params["password"] = "";
@@ -32,7 +32,7 @@ class PersonDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new PersonDao();
 		}
 		return instance;
@@ -44,9 +44,9 @@ class PersonDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Person();
 				$tempEntity->setFirstName($results["FirstName"]);
@@ -76,7 +76,7 @@ class PersonDaoBase {
 		try {
 			$retVal = new Person();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -106,7 +106,7 @@ class PersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $Person->getFirstName();
 			$dataArray["Person_id"] = $Person->getPerson_id();
 			$dataArray["Date_YMD"] = $Person->getDate_YMD();
@@ -133,7 +133,7 @@ class PersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $Person->getFirstName();
 			$dataArray["Person_id"] = $Person->getPerson_id();
 			$dataArray["Date_YMD"] = $Person->getDate_YMD();
@@ -176,9 +176,9 @@ class PersonDaoBase {
 			$select = $db->select();
 			$select->from("", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ();
 				$retVal[] = $tempEntity;
@@ -197,9 +197,9 @@ class PersonDaoBase {
 			$select = $db->select();
 			$select->from("Task", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Task();
 				$tempEntity->setPerson_id($results["Person_Person_id"]);
@@ -219,9 +219,9 @@ class PersonDaoBase {
 			$select = $db->select();
 			$select->from("", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ();
 				$retVal[] = $tempEntity;
@@ -240,9 +240,9 @@ class PersonDaoBase {
 			$select = $db->select();
 			$select->from("PersonBoughtCarFromPersonOnDate", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new PersonBoughtCarFromPersonOnDate();
 				$tempEntity->setPerson_id($results["Buyer_Person_id"]);
@@ -265,9 +265,9 @@ class PersonDaoBase {
 			$select = $db->select();
 			$select->from("PersonBoughtCarFromPersonOnDate", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new PersonBoughtCarFromPersonOnDate();
 				$tempEntity->setPerson_id($results["Buyer_Person_id"]);
@@ -296,7 +296,7 @@ class MalePersonDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new MalePersonDao();
 		}
 		return instance;
@@ -308,9 +308,9 @@ class MalePersonDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new MalePerson();
 				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
@@ -340,7 +340,7 @@ class MalePersonDaoBase {
 		try {
 			$retVal = new MalePerson();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -370,7 +370,7 @@ class MalePersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $MalePerson->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $MalePerson->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $MalePerson->getPerson()->getDate_YMD();
@@ -397,7 +397,7 @@ class MalePersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $MalePerson->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $MalePerson->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $MalePerson->getPerson()->getDate_YMD();
@@ -440,9 +440,9 @@ class MalePersonDaoBase {
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ChildPerson();
 				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
@@ -481,7 +481,7 @@ class FemalePersonDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new FemalePersonDao();
 		}
 		return instance;
@@ -493,9 +493,9 @@ class FemalePersonDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new FemalePerson();
 				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
@@ -525,7 +525,7 @@ class FemalePersonDaoBase {
 		try {
 			$retVal = new FemalePerson();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -555,7 +555,7 @@ class FemalePersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $FemalePerson->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $FemalePerson->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $FemalePerson->getPerson()->getDate_YMD();
@@ -582,7 +582,7 @@ class FemalePersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $FemalePerson->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $FemalePerson->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $FemalePerson->getPerson()->getDate_YMD();
@@ -625,9 +625,9 @@ class FemalePersonDaoBase {
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ChildPerson();
 				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
@@ -666,7 +666,7 @@ class ChildPersonDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new ChildPersonDao();
 		}
 		return instance;
@@ -678,9 +678,9 @@ class ChildPersonDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ChildPerson();
 				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
@@ -710,7 +710,7 @@ class ChildPersonDaoBase {
 		try {
 			$retVal = new ChildPerson();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -740,7 +740,7 @@ class ChildPersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $ChildPerson->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $ChildPerson->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $ChildPerson->getPerson()->getDate_YMD();
@@ -768,7 +768,7 @@ class ChildPersonDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $ChildPerson->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $ChildPerson->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $ChildPerson->getPerson()->getDate_YMD();
@@ -818,7 +818,7 @@ class DeathDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new DeathDao();
 		}
 		return instance;
@@ -830,9 +830,9 @@ class DeathDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Death();
 				$tempEntity->getPerson()->setFirstName($results["FirstName"]);
@@ -862,7 +862,7 @@ class DeathDaoBase {
 		try {
 			$retVal = new Death();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -892,7 +892,7 @@ class DeathDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $Death->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $Death->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $Death->getPerson()->getDate_YMD();
@@ -921,7 +921,7 @@ class DeathDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $Death->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $Death->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $Death->getPerson()->getDate_YMD();
@@ -972,7 +972,7 @@ class NaturalDeathDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new NaturalDeathDao();
 		}
 		return instance;
@@ -984,9 +984,9 @@ class NaturalDeathDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new NaturalDeath();
 				$tempEntity->getDeath()->getPerson()->setFirstName($results["FirstName"]);
@@ -1016,7 +1016,7 @@ class NaturalDeathDaoBase {
 		try {
 			$retVal = new NaturalDeath();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -1046,7 +1046,7 @@ class NaturalDeathDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $NaturalDeath->getDeath()->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $NaturalDeath->getDeath()->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getPerson()->getDate_YMD();
@@ -1076,7 +1076,7 @@ class NaturalDeathDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $NaturalDeath->getDeath()->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $NaturalDeath->getDeath()->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $NaturalDeath->getDeath()->getPerson()->getDate_YMD();
@@ -1128,7 +1128,7 @@ class UnnaturalDeathDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new UnnaturalDeathDao();
 		}
 		return instance;
@@ -1140,9 +1140,9 @@ class UnnaturalDeathDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Person", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new UnnaturalDeath();
 				$tempEntity->getDeath()->getPerson()->setFirstName($results["FirstName"]);
@@ -1172,7 +1172,7 @@ class UnnaturalDeathDaoBase {
 		try {
 			$retVal = new UnnaturalDeath();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Person", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -1202,7 +1202,7 @@ class UnnaturalDeathDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $UnnaturalDeath->getDeath()->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $UnnaturalDeath->getDeath()->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getPerson()->getDate_YMD();
@@ -1233,7 +1233,7 @@ class UnnaturalDeathDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["FirstName"] = $UnnaturalDeath->getDeath()->getPerson()->getFirstName();
 			$dataArray["Person_id"] = $UnnaturalDeath->getDeath()->getPerson()->getPerson_id();
 			$dataArray["Date_YMD"] = $UnnaturalDeath->getDeath()->getPerson()->getDate_YMD();
@@ -1286,7 +1286,7 @@ class TaskDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new TaskDao();
 		}
 		return instance;
@@ -1298,9 +1298,9 @@ class TaskDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Task", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Task();
 				$tempEntity->setPerson_id($results["Person_Person_id"]);
@@ -1317,7 +1317,7 @@ class TaskDaoBase {
 		try {
 			$retVal = new Task();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Task", "*");
 			$select->where("Task_id = ?", $Task_id);
@@ -1334,7 +1334,7 @@ class TaskDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Person"] = $Task->getPerson_id();
 			$dataArray["Task_id"] = $Task->getTask_id();
 			$nrRowsAffected = $db->insert("Task", $dataArray);
@@ -1348,7 +1348,7 @@ class TaskDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Person"] = $Task->getPerson_id();
 			$dataArray["Task_id"] = $Task->getTask_id();
 			$whereClause = $db->quoteInto("Task_id = ?", $Task->getTask_id());
@@ -1384,7 +1384,7 @@ class ValueType1DaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new ValueType1Dao();
 		}
 		return instance;
@@ -1396,9 +1396,9 @@ class ValueType1DaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("ValueType1", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ValueType1();
 				$tempEntity->setPerson_id($results["DoesSomethingWithPerson_Person_id"]);
@@ -1415,7 +1415,7 @@ class ValueType1DaoBase {
 		try {
 			$retVal = new ValueType1();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("ValueType1", "*");
 			$select->where("ValueType1Value = ?", $ValueType1Value);
@@ -1432,7 +1432,7 @@ class ValueType1DaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["ValueType1Value"] = $ValueType1->getValueType1Value();
 			$dataArray["DoesSomethingWithPerson"] = $ValueType1->getPerson_id();
 			$nrRowsAffected = $db->insert("ValueType1", $dataArray);
@@ -1446,7 +1446,7 @@ class ValueType1DaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["ValueType1Value"] = $ValueType1->getValueType1Value();
 			$dataArray["DoesSomethingWithPerson"] = $ValueType1->getPerson_id();
 			$whereClause = $db->quoteInto("ValueType1Value = ?", $ValueType1->getValueType1Value());
@@ -1476,9 +1476,9 @@ class ValueType1DaoBase {
 			$select = $db->select();
 			$select->from("", "*");
 			$select->where("ValueType1Value = ?", $ValueType1Value);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new ();
 				$retVal[] = $tempEntity;
@@ -1503,7 +1503,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new PersonBoughtCarFromPersonOnDateDao();
 		}
 		return instance;
@@ -1515,9 +1515,9 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("PersonBoughtCarFromPersonOnDate", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new PersonBoughtCarFromPersonOnDate();
 				$tempEntity->setPerson_id($results["Buyer_Person_id"]);
@@ -1537,7 +1537,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 		try {
 			$retVal = new PersonBoughtCarFromPersonOnDate();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("PersonBoughtCarFromPersonOnDate", "*");
 			$select->where("Person_id = ?", $Person_id);
@@ -1559,7 +1559,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Buyer"] = $PersonBoughtCarFromPersonOnDate->getPerson_id();
 			$dataArray["CarSold_vin"] = $PersonBoughtCarFromPersonOnDate->getCarSold_vin();
 			$dataArray["Seller"] = $PersonBoughtCarFromPersonOnDate->getPerson_id();
@@ -1575,7 +1575,7 @@ class PersonBoughtCarFromPersonOnDateDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Buyer"] = $PersonBoughtCarFromPersonOnDate->getPerson_id();
 			$dataArray["CarSold_vin"] = $PersonBoughtCarFromPersonOnDate->getCarSold_vin();
 			$dataArray["Seller"] = $PersonBoughtCarFromPersonOnDate->getPerson_id();
@@ -1613,7 +1613,7 @@ class ReviewDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new ReviewDao();
 		}
 		return instance;
@@ -1625,9 +1625,9 @@ class ReviewDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("Review", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new Review();
 				$tempEntity->setCar_vin($results["Car_vin"]);
@@ -1646,7 +1646,7 @@ class ReviewDaoBase {
 		try {
 			$retVal = new Review();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("Review", "*");
 			$select->where("Car_vin = ?", $Car_vin);
@@ -1666,7 +1666,7 @@ class ReviewDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Car_vin"] = $Review->getCar_vin();
 			$dataArray["Rating_Nr_Integer"] = $Review->getRating_Nr_Integer();
 			$dataArray["Criterion_Name"] = $Review->getCriterion_Name();
@@ -1681,7 +1681,7 @@ class ReviewDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["Car_vin"] = $Review->getCar_vin();
 			$dataArray["Rating_Nr_Integer"] = $Review->getRating_Nr_Integer();
 			$dataArray["Criterion_Name"] = $Review->getCriterion_Name();

@@ -7,7 +7,7 @@ static class DataAccessBase {
 	}
 	private static function get() {
 		if (params == null) {
-			params = .global::array();
+			params = array();
 			params["host"] = "";
 			params["username"] = "";
 			params["password"] = "";
@@ -32,7 +32,7 @@ class BlogEntryLabelDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new BlogEntryLabelDao();
 		}
 		return instance;
@@ -44,9 +44,9 @@ class BlogEntryLabelDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("BlogEntryLabel", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogEntryLabel();
 				$tempEntity->setBlogEntry_Id($results["blogEntryId_BlogEntry_Id"]);
@@ -64,7 +64,7 @@ class BlogEntryLabelDaoBase {
 		try {
 			$retVal = new BlogEntryLabel();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("BlogEntryLabel", "*");
 			$select->where("BlogEntry_Id = ?", $BlogEntry_Id);
@@ -83,7 +83,7 @@ class BlogEntryLabelDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["blogEntryId"] = $BlogEntryLabel->getBlogEntry_Id();
 			$dataArray["blogLabelId"] = $BlogEntryLabel->getBlogLabel_Id();
 			$nrRowsAffected = $db->insert("BlogEntryLabel", $dataArray);
@@ -97,7 +97,7 @@ class BlogEntryLabelDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["blogEntryId"] = $BlogEntryLabel->getBlogEntry_Id();
 			$dataArray["blogLabelId"] = $BlogEntryLabel->getBlogLabel_Id();
 			$whereClause = $db->quoteInto("BlogEntry_Id = ?", $BlogEntryLabel->getBlogEntry_Id()).$db->quoteInto("BlogLabel_Id = ?", $BlogEntryLabel->getBlogLabel_Id());
@@ -133,7 +133,7 @@ class BlogEntryDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new BlogEntryDao();
 		}
 		return instance;
@@ -145,9 +145,9 @@ class BlogEntryDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogEntry();
 				$tempEntity->setfirstName($results["userId_firstName"]);
@@ -168,7 +168,7 @@ class BlogEntryDaoBase {
 		try {
 			$retVal = new BlogEntry();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
 			$select->where("BlogEntry_Id = ?", $BlogEntry_Id);
@@ -189,7 +189,7 @@ class BlogEntryDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogEntry_Id"] = $BlogEntry->getBlogEntry_Id();
 			$dataArray["entryTitle"] = $BlogEntry->getentryTitle();
 			$dataArray["entryBody"] = $BlogEntry->getentryBody();
@@ -205,7 +205,7 @@ class BlogEntryDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogEntry_Id"] = $BlogEntry->getBlogEntry_Id();
 			$dataArray["entryTitle"] = $BlogEntry->getentryTitle();
 			$dataArray["entryBody"] = $BlogEntry->getentryBody();
@@ -237,9 +237,9 @@ class BlogEntryDaoBase {
 			$select = $db->select();
 			$select->from("BlogEntryLabel", "*");
 			$select->where("BlogEntry_Id = ?", $BlogEntry_Id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogEntryLabel();
 				$tempEntity->setBlogEntry_Id($results["blogEntryId_BlogEntry_Id"]);
@@ -266,7 +266,7 @@ class BlogCommentDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new BlogCommentDao();
 		}
 		return instance;
@@ -278,9 +278,9 @@ class BlogCommentDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogComment();
 				$tempEntity->getBlogEntry()->setfirstName($results["userId_firstName"]);
@@ -301,7 +301,7 @@ class BlogCommentDaoBase {
 		try {
 			$retVal = new BlogComment();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
 			$select->where("BlogEntry_Id = ?", $BlogEntry_Id);
@@ -322,7 +322,7 @@ class BlogCommentDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogEntry_Id"] = $BlogComment->getBlogEntry()->getBlogEntry_Id();
 			$dataArray["entryTitle"] = $BlogComment->getBlogEntry()->getentryTitle();
 			$dataArray["entryBody"] = $BlogComment->getBlogEntry()->getentryBody();
@@ -338,7 +338,7 @@ class BlogCommentDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogEntry_Id"] = $BlogComment->getBlogEntry()->getBlogEntry_Id();
 			$dataArray["entryTitle"] = $BlogComment->getBlogEntry()->getentryTitle();
 			$dataArray["entryBody"] = $BlogComment->getBlogEntry()->getentryBody();
@@ -376,7 +376,7 @@ class NonCommentEntryDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new NonCommentEntryDao();
 		}
 		return instance;
@@ -388,9 +388,9 @@ class NonCommentEntryDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new NonCommentEntry();
 				$tempEntity->getBlogEntry()->setfirstName($results["userId_firstName"]);
@@ -411,7 +411,7 @@ class NonCommentEntryDaoBase {
 		try {
 			$retVal = new NonCommentEntry();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
 			$select->where("BlogEntry_Id = ?", $BlogEntry_Id);
@@ -432,7 +432,7 @@ class NonCommentEntryDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogEntry_Id"] = $NonCommentEntry->getBlogEntry()->getBlogEntry_Id();
 			$dataArray["entryTitle"] = $NonCommentEntry->getBlogEntry()->getentryTitle();
 			$dataArray["entryBody"] = $NonCommentEntry->getBlogEntry()->getentryBody();
@@ -448,7 +448,7 @@ class NonCommentEntryDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogEntry_Id"] = $NonCommentEntry->getBlogEntry()->getBlogEntry_Id();
 			$dataArray["entryTitle"] = $NonCommentEntry->getBlogEntry()->getentryTitle();
 			$dataArray["entryBody"] = $NonCommentEntry->getBlogEntry()->getentryBody();
@@ -480,9 +480,9 @@ class NonCommentEntryDaoBase {
 			$select = $db->select();
 			$select->from("BlogEntry", "*");
 			$select->where("BlogEntry_Id = ?", $BlogEntry_Id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogComment();
 				$tempEntity->getBlogEntry()->setfirstName($results["userId_firstName"]);
@@ -512,7 +512,7 @@ class UserDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new UserDao();
 		}
 		return instance;
@@ -524,9 +524,9 @@ class UserDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("User", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new User();
 				$tempEntity->setfirstName($results["firstName"]);
@@ -546,7 +546,7 @@ class UserDaoBase {
 		try {
 			$retVal = new User();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("User", "*");
 			$select->where("firstName = ?", $firstName);
@@ -567,7 +567,7 @@ class UserDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["firstName"] = $User->getfirstName();
 			$dataArray["lastName"] = $User->getlastName();
 			$dataArray["username"] = $User->getusername();
@@ -583,7 +583,7 @@ class UserDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["firstName"] = $User->getfirstName();
 			$dataArray["lastName"] = $User->getlastName();
 			$dataArray["username"] = $User->getusername();
@@ -616,9 +616,9 @@ class UserDaoBase {
 			$select->from("BlogEntry", "*");
 			$select->where("firstName = ?", $firstName);
 			$select->where("lastName = ?", $lastName);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogEntry();
 				$tempEntity->setfirstName($results["userId_firstName"]);
@@ -648,7 +648,7 @@ class BlogLabelDaoBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset(instance))) {
+		if (!(isset(instance))) {
 			instance = new BlogLabelDao();
 		}
 		return instance;
@@ -660,9 +660,9 @@ class BlogLabelDaoBase {
 			$db = DataAccess::getDataAdapter();
 			$select = $db->select();
 			$select->from("BlogLabel", "*");
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogLabel();
 				$tempEntity->settitle($results["title"]);
@@ -679,7 +679,7 @@ class BlogLabelDaoBase {
 		try {
 			$retVal = new BlogLabel();
 			$db = DataAccess::getDataAdapter();
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$select = $db->select();
 			$select->from("BlogLabel", "*");
 			$select->where("BlogLabel_Id = ?", $BlogLabel_Id);
@@ -696,7 +696,7 @@ class BlogLabelDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogLabel_Id"] = $BlogLabel->getBlogLabel_Id();
 			$dataArray["title"] = $BlogLabel->gettitle();
 			$nrRowsAffected = $db->insert("BlogLabel", $dataArray);
@@ -710,7 +710,7 @@ class BlogLabelDaoBase {
 		$retVal = false;
 		try {
 			$db = DataAccess::getDataAdapter();
-			$dataArray = .global::array();
+			$dataArray = array();
 			$dataArray["BlogLabel_Id"] = $BlogLabel->getBlogLabel_Id();
 			$dataArray["title"] = $BlogLabel->gettitle();
 			$whereClause = $db->quoteInto("BlogLabel_Id = ?", $BlogLabel->getBlogLabel_Id());
@@ -740,9 +740,9 @@ class BlogLabelDaoBase {
 			$select = $db->select();
 			$select->from("BlogEntryLabel", "*");
 			$select->where("BlogLabel_Id = ?", $BlogLabel_Id);
-			$db->setFetchMode(.global::$PDO::FETCH_ASSOC);
+			$db->setFetchMode(PDO::FETCH_ASSOC);
 			$result = $db->fetchPairs($select);
-			$rowCount = .global::count($result);
+			$rowCount = count($result);
 			for ($i = 0; $i < $rowCount; ++$i) {
 				$tempEntity = new BlogEntryLabel();
 				$tempEntity->setBlogEntry_Id($results["blogEntryId_BlogEntry_Id"]);

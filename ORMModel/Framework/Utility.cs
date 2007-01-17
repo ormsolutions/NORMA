@@ -44,7 +44,7 @@ namespace Neumont.Tools.Modeling
 		public static int GetCombinedHashCode(int hashCode1, int hashCode2)
 		{
 			return unchecked((int)((uint)hashCode1 ^
-				(((uint)hashCode2 >> (1 & 31)) | ((uint)hashCode2 << ((32 - 1) & 31)))));
+				(((uint)hashCode2 >> 1) | ((uint)hashCode2 << (32 - 1)))));
 		}
 		/// <summary>
 		/// Combines multiple hash codes (as returned from implementations of <see cref="Object.GetHashCode"/>)
@@ -66,8 +66,8 @@ namespace Neumont.Tools.Modeling
 		public static int GetCombinedHashCode(int hashCode1, int hashCode2, int hashCode3)
 		{
 			return unchecked((int)((uint)hashCode1 ^
-				(((uint)hashCode2 >> (1 & 31)) | ((uint)hashCode2 << ((32 - 1) & 31))) ^
-				(((uint)hashCode3 >> (2 & 31)) | ((uint)hashCode3 << ((32 - 2) & 31)))));
+				(((uint)hashCode2 >> 1) | ((uint)hashCode2 << (32 - 1))) ^
+				(((uint)hashCode3 >> 2) | ((uint)hashCode3 << (32 - 2)))));
 		}
 		/// <summary>
 		/// Combines multiple hash codes (as returned from implementations of <see cref="Object.GetHashCode"/>)
@@ -92,9 +92,9 @@ namespace Neumont.Tools.Modeling
 		public static int GetCombinedHashCode(int hashCode1, int hashCode2, int hashCode3, int hashCode4)
 		{
 			return unchecked((int)((uint)hashCode1 ^
-				(((uint)hashCode2 >> (1 & 31)) | ((uint)hashCode2 << ((32 - 1) & 31))) ^
-				(((uint)hashCode3 >> (2 & 31)) | ((uint)hashCode3 << ((32 - 2) & 31))) ^
-				(((uint)hashCode4 >> (3 & 31)) | ((uint)hashCode4 << ((32 - 3) & 31)))));
+				(((uint)hashCode2 >> 1) | ((uint)hashCode2 << (32 - 1))) ^
+				(((uint)hashCode3 >> 2) | ((uint)hashCode3 << (32 - 2))) ^
+				(((uint)hashCode4 >> 3) | ((uint)hashCode4 << (32 - 3)))));
 		}
 		/// <summary>
 		/// Combines multiple hash codes (as returned from implementations of <see cref="Object.GetHashCode"/>)
@@ -123,10 +123,10 @@ namespace Neumont.Tools.Modeling
 		public static int GetCombinedHashCode(int hashCode1, int hashCode2, int hashCode3, int hashCode4, int hashCode5)
 		{
 			return unchecked((int)((uint)hashCode1 ^
-				(((uint)hashCode2 >> (1 & 31)) | ((uint)hashCode2 << ((32 - 1) & 31))) ^
-				(((uint)hashCode3 >> (2 & 31)) | ((uint)hashCode3 << ((32 - 2) & 31))) ^
-				(((uint)hashCode4 >> (3 & 31)) | ((uint)hashCode4 << ((32 - 3) & 31))) ^
-				(((uint)hashCode5 >> (4 & 31)) | ((uint)hashCode4 << ((32 - 4) & 31)))));
+				(((uint)hashCode2 >> 1) | ((uint)hashCode2 << (32 - 1))) ^
+				(((uint)hashCode3 >> 2) | ((uint)hashCode3 << (32 - 2))) ^
+				(((uint)hashCode4 >> 3) | ((uint)hashCode4 << (32 - 3))) ^
+				(((uint)hashCode5 >> 4) | ((uint)hashCode4 << (32 - 4)))));
 		}
 		/// <summary>
 		/// Combines multiple hash codes (as returned from implementations of <see cref="Object.GetHashCode"/>)
@@ -165,7 +165,7 @@ namespace Neumont.Tools.Modeling
 		/// The <see cref="Int32"/> value for which the bits should be rotated.
 		/// </param>
 		/// <param name="places">
-		/// The <see cref="Int32"/> value specifying the number of places to rotate the bits in <paramref name="value"/> to.
+		/// The <see cref="Int32"/> value specifying the number of places to rotate the bits in <paramref name="value"/>.
 		/// </param>
 		/// <returns>
 		/// The result of rotating the bits in the <see cref="Int32"/> value specified by <paramref name="value"/>
@@ -181,7 +181,7 @@ namespace Neumont.Tools.Modeling
 
 			// The IL that is generated for this method does not actually contain any casts. The casts
 			// below simply instruct the compiler to perform the operations without sign extension.
-			return unchecked((int)(((uint)value >> (places & 31)) | ((uint)value << ((32 - places) & 31))));
+			return unchecked((int)(((uint)value >> places) | ((uint)value << (32 - places))));
 		}
 		#endregion // RotateRight method
 

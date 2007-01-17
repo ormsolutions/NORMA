@@ -33,11 +33,11 @@ CREATE TABLE BlogLabel
 	CONSTRAINT InternalUniquenessConstraint18 PRIMARY KEY(BlogLabel_Id)
 );
 
-ALTER TABLE BlogEntryLabelBlogEntryLabel ADD CONSTRAINT blogEntryId_FK FOREIGN KEY (blogEntryId_BlogEntry_Id)  REFERENCES BlogEntry (BlogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntryLabel ADD CONSTRAINT blogEntryId_FK FOREIGN KEY (blogEntryId_BlogEntry_Id)  REFERENCES BlogEntry (BlogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE BlogEntryLabelBlogEntryLabel ADD CONSTRAINT blogLabelId_FK FOREIGN KEY (blogLabelId_BlogLabel_Id)  REFERENCES BlogLabel (BlogLabel_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntryLabel ADD CONSTRAINT blogLabelId_FK FOREIGN KEY (blogLabelId_BlogLabel_Id)  REFERENCES BlogLabel (BlogLabel_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE BlogEntryBlogEntry ADD CONSTRAINT userId_FK FOREIGN KEY (userId_firstName, userId_lastName)  REFERENCES `User` (firstName, lastName)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntry ADD CONSTRAINT userId_FK FOREIGN KEY (userId_firstName, userId_lastName)  REFERENCES `User` (firstName, lastName)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE BlogEntryBlogEntry ADD CONSTRAINT parentEntryId_FK FOREIGN KEY (parentEntryId_BlogEntry_Id)  REFERENCES BlogEntry (BlogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE BlogEntry ADD CONSTRAINT parentEntryId_FK FOREIGN KEY (parentEntryId_BlogEntry_Id)  REFERENCES BlogEntry (BlogEntry_Id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 

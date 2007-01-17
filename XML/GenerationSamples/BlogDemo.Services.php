@@ -1,13 +1,13 @@
 ﻿<?php
-.global::require_once("Entities.php");
-.global::require_once("DataLayer.php");
+require_once("Entities.php");
+require_once("DataLayer.php");
 class BlogEntryLabelServiceBase {
 	private static $instance;
 	
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new BlogEntryLabelService();
 		}
 		return instance;
@@ -46,7 +46,7 @@ class BlogEntryServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new BlogEntryService();
 		}
 		return instance;
@@ -89,7 +89,7 @@ class BlogCommentServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new BlogCommentService();
 		}
 		return instance;
@@ -128,7 +128,7 @@ class NonCommentEntryServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new NonCommentEntryService();
 		}
 		return instance;
@@ -171,7 +171,7 @@ class UserServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new UserService();
 		}
 		return instance;
@@ -214,7 +214,7 @@ class BlogLabelServiceBase {
 	public function __construct() {
 	}
 	public static function getInstance() {
-		if (!(.global::isset())) {
+		if (!(isset())) {
 			instance = new BlogLabelService();
 		}
 		return instance;

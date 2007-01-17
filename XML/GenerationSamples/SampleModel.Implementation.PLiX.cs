@@ -3,71 +3,45 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml;
-using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
-using AccessedThroughPropertyAttribute = System.Runtime.CompilerServices.AccessedThroughPropertyAttribute;
-using GeneratedCodeAttribute = System.CodeDom.Compiler.GeneratedCodeAttribute;
-using StructLayoutAttribute = System.Runtime.InteropServices.StructLayoutAttribute;
-using LayoutKind = System.Runtime.InteropServices.LayoutKind;
-using CharSet = System.Runtime.InteropServices.CharSet;
 namespace SampleModel
 {
 	#region SampleModelContext
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public sealed class SampleModelContext : ISampleModelContext
 	{
 		public SampleModelContext()
 		{
-			Dictionary<Type, object> constraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<Type, object>(5);
-			Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> constraintEnforcementCollectionCallbacksByTypeAndNameDictionary = new Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object>(2);
-			this._ContraintEnforcementCollectionCallbacksByTypeDictionary = constraintEnforcementCollectionCallbacksByTypeDictionary;
-			this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = constraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, Task>), new ConstraintEnforcementCollectionCallbacks<Person, Task>(new PotentialCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, ValueType1>), new ConstraintEnforcementCollectionCallbacks<Person, ValueType1>(new PotentialCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateViaBuyerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateViaSellerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<MalePerson, ChildPerson>), new ConstraintEnforcementCollectionCallbacks<MalePerson, ChildPerson>(new PotentialCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionAdding), new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionAdded), null, new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<FemalePerson, ChildPerson>), new ConstraintEnforcementCollectionCallbacks<FemalePerson, ChildPerson>(new PotentialCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionAdding), new CommittedCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionAdded), null, new CommittedCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<ValueType1, Person>), new ConstraintEnforcementCollectionCallbacks<ValueType1, Person>(new PotentialCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdding), new CommittedCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdded), null, new CommittedCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionRemoved)));
-			List<Person> PersonList = new List<Person>();
-			this._PersonList = PersonList;
-			this._PersonReadOnlyCollection = new ReadOnlyCollection<Person>(PersonList);
-			List<MalePerson> MalePersonList = new List<MalePerson>();
-			this._MalePersonList = MalePersonList;
-			this._MalePersonReadOnlyCollection = new ReadOnlyCollection<MalePerson>(MalePersonList);
-			List<FemalePerson> FemalePersonList = new List<FemalePerson>();
-			this._FemalePersonList = FemalePersonList;
-			this._FemalePersonReadOnlyCollection = new ReadOnlyCollection<FemalePerson>(FemalePersonList);
-			List<ChildPerson> ChildPersonList = new List<ChildPerson>();
-			this._ChildPersonList = ChildPersonList;
-			this._ChildPersonReadOnlyCollection = new ReadOnlyCollection<ChildPerson>(ChildPersonList);
-			List<Death> DeathList = new List<Death>();
-			this._DeathList = DeathList;
-			this._DeathReadOnlyCollection = new ReadOnlyCollection<Death>(DeathList);
-			List<NaturalDeath> NaturalDeathList = new List<NaturalDeath>();
-			this._NaturalDeathList = NaturalDeathList;
-			this._NaturalDeathReadOnlyCollection = new ReadOnlyCollection<NaturalDeath>(NaturalDeathList);
-			List<UnnaturalDeath> UnnaturalDeathList = new List<UnnaturalDeath>();
-			this._UnnaturalDeathList = UnnaturalDeathList;
-			this._UnnaturalDeathReadOnlyCollection = new ReadOnlyCollection<UnnaturalDeath>(UnnaturalDeathList);
-			List<Task> TaskList = new List<Task>();
-			this._TaskList = TaskList;
-			this._TaskReadOnlyCollection = new ReadOnlyCollection<Task>(TaskList);
-			List<ValueType1> ValueType1List = new List<ValueType1>();
-			this._ValueType1List = ValueType1List;
-			this._ValueType1ReadOnlyCollection = new ReadOnlyCollection<ValueType1>(ValueType1List);
-			List<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateList = new List<PersonBoughtCarFromPersonOnDate>();
-			this._PersonBoughtCarFromPersonOnDateList = PersonBoughtCarFromPersonOnDateList;
-			this._PersonBoughtCarFromPersonOnDateReadOnlyCollection = new ReadOnlyCollection<PersonBoughtCarFromPersonOnDate>(PersonBoughtCarFromPersonOnDateList);
-			List<Review> ReviewList = new List<Review>();
-			this._ReviewList = ReviewList;
-			this._ReviewReadOnlyCollection = new ReadOnlyCollection<Review>(ReviewList);
+			Dictionary<RuntimeTypeHandle, object> constraintEnforcementCollectionCallbacksByTypeDictionary = this._ContraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<RuntimeTypeHandle, object>(5, RuntimeTypeHandleEqualityComparer.Instance);
+			Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> constraintEnforcementCollectionCallbacksByTypeAndNameDictionary = this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = new Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object>(2);
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, Task>).TypeHandle, new ConstraintEnforcementCollectionCallbacks<Person, Task>(new PotentialCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskViaPersonCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, ValueType1>).TypeHandle, new ConstraintEnforcementCollectionCallbacks<Person, ValueType1>(new PotentialCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdding), new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdded), null, new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>).TypeHandle, "PersonBoughtCarFromPersonOnDateViaBuyerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>).TypeHandle, "PersonBoughtCarFromPersonOnDateViaSellerCollection"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<MalePerson, ChildPerson>).TypeHandle, new ConstraintEnforcementCollectionCallbacks<MalePerson, ChildPerson>(new PotentialCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionAdding), new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionAdded), null, new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonViaFatherCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<FemalePerson, ChildPerson>).TypeHandle, new ConstraintEnforcementCollectionCallbacks<FemalePerson, ChildPerson>(new PotentialCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionAdding), new CommittedCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionAdded), null, new CommittedCollectionModificationCallback<FemalePerson, ChildPerson>(this.OnFemalePersonChildPersonViaMotherCollectionRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<ValueType1, Person>).TypeHandle, new ConstraintEnforcementCollectionCallbacks<ValueType1, Person>(new PotentialCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdding), new CommittedCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdded), null, new CommittedCollectionModificationCallback<ValueType1, Person>(this.OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionRemoved)));
+			this._PersonReadOnlyCollection = new ReadOnlyCollection<Person>(this._PersonList = new List<Person>());
+			this._MalePersonReadOnlyCollection = new ReadOnlyCollection<MalePerson>(this._MalePersonList = new List<MalePerson>());
+			this._FemalePersonReadOnlyCollection = new ReadOnlyCollection<FemalePerson>(this._FemalePersonList = new List<FemalePerson>());
+			this._ChildPersonReadOnlyCollection = new ReadOnlyCollection<ChildPerson>(this._ChildPersonList = new List<ChildPerson>());
+			this._DeathReadOnlyCollection = new ReadOnlyCollection<Death>(this._DeathList = new List<Death>());
+			this._NaturalDeathReadOnlyCollection = new ReadOnlyCollection<NaturalDeath>(this._NaturalDeathList = new List<NaturalDeath>());
+			this._UnnaturalDeathReadOnlyCollection = new ReadOnlyCollection<UnnaturalDeath>(this._UnnaturalDeathList = new List<UnnaturalDeath>());
+			this._TaskReadOnlyCollection = new ReadOnlyCollection<Task>(this._TaskList = new List<Task>());
+			this._ValueType1ReadOnlyCollection = new ReadOnlyCollection<ValueType1>(this._ValueType1List = new List<ValueType1>());
+			this._PersonBoughtCarFromPersonOnDateReadOnlyCollection = new ReadOnlyCollection<PersonBoughtCarFromPersonOnDate>(this._PersonBoughtCarFromPersonOnDateList = new List<PersonBoughtCarFromPersonOnDate>());
+			this._ReviewReadOnlyCollection = new ReadOnlyCollection<Review>(this._ReviewList = new List<Review>());
 		}
 		#region Exception Helpers
-		[SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
 		private static ArgumentException GetDifferentContextsException()
 		{
-			return new ArgumentException("All objects in a relationship must be part of the same Context.", "value");
+			return SampleModelContext.GetDifferentContextsException("value");
+		}
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
+		private static ArgumentException GetDifferentContextsException(string paramName)
+		{
+			return new ArgumentException("All objects in a relationship must be part of the same Context.", paramName);
 		}
 		private static ArgumentException GetConstraintEnforcementFailedException(string paramName)
 		{
@@ -91,7 +65,7 @@ namespace SampleModel
 				ChildPerson currentInstance;
 				if (this._InternalUniquenessConstraint49Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -123,7 +97,7 @@ namespace SampleModel
 				Person currentInstance;
 				if (this._ExternalUniquenessConstraint1Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -155,7 +129,7 @@ namespace SampleModel
 				Person currentInstance;
 				if (this._ExternalUniquenessConstraint2Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -187,7 +161,7 @@ namespace SampleModel
 				PersonBoughtCarFromPersonOnDate currentInstance;
 				if (this._InternalUniquenessConstraint23Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -219,7 +193,7 @@ namespace SampleModel
 				PersonBoughtCarFromPersonOnDate currentInstance;
 				if (this._InternalUniquenessConstraint24Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -251,7 +225,7 @@ namespace SampleModel
 				PersonBoughtCarFromPersonOnDate currentInstance;
 				if (this._InternalUniquenessConstraint25Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -283,7 +257,7 @@ namespace SampleModel
 				Review currentInstance;
 				if (this._InternalUniquenessConstraint26Dictionary.TryGetValue(newValue, out currentInstance))
 				{
-					return (object)currentInstance == instance;
+					return (object)currentInstance == (object)instance;
 				}
 			}
 			return true;
@@ -355,9 +329,9 @@ namespace SampleModel
 		}
 		#endregion // Lookup and External Constraint Enforcement
 		#region ConstraintEnforcementCollection
-		private delegate bool PotentialCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
+		private delegate bool PotentialCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty item)
 			where TClass : class, IHasSampleModelContext;
-		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
+		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty item)
 			where TClass : class, IHasSampleModelContext;
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionCallbacks<TClass, TProperty>
@@ -375,115 +349,28 @@ namespace SampleModel
 			public readonly PotentialCollectionModificationCallback<TClass, TProperty> Removing;
 			public readonly CommittedCollectionModificationCallback<TClass, TProperty> Removed;
 		}
+		private ConstraintEnforcementCollectionCallbacks<TClass, TProperty> GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>()
+			where TClass : class, IHasSampleModelContext
+		{
+			return (ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>).TypeHandle];
+		}
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private struct ConstraintEnforcementCollectionTypeAndPropertyNameKey : IEquatable<ConstraintEnforcementCollectionTypeAndPropertyNameKey>
+		private sealed class RuntimeTypeHandleEqualityComparer : IEqualityComparer<RuntimeTypeHandle>
 		{
-			public ConstraintEnforcementCollectionTypeAndPropertyNameKey(Type type, string name)
+			public static readonly RuntimeTypeHandleEqualityComparer Instance = new RuntimeTypeHandleEqualityComparer();
+			private RuntimeTypeHandleEqualityComparer()
 			{
-				this.Type = type;
-				this.Name = name;
 			}
-			public readonly Type Type;
-			public readonly string Name;
-			public override int GetHashCode()
+			public bool Equals(RuntimeTypeHandle x, RuntimeTypeHandle y)
 			{
-				return this.Type.GetHashCode() ^ this.Name.GetHashCode();
+				return x.Equals(y);
 			}
-			public override bool Equals(object obj)
+			public int GetHashCode(RuntimeTypeHandle obj)
 			{
-				return (obj is ConstraintEnforcementCollectionTypeAndPropertyNameKey) && this.Equals((ConstraintEnforcementCollectionTypeAndPropertyNameKey)obj);
-			}
-			public bool Equals(ConstraintEnforcementCollectionTypeAndPropertyNameKey other)
-			{
-				return this.Type.Equals(other.Type) && this.Name.Equals(other.Name);
-			}
-			public static bool operator ==(ConstraintEnforcementCollectionTypeAndPropertyNameKey left, ConstraintEnforcementCollectionTypeAndPropertyNameKey right)
-			{
-				return left.Equals(right);
-			}
-			public static bool operator !=(ConstraintEnforcementCollectionTypeAndPropertyNameKey left, ConstraintEnforcementCollectionTypeAndPropertyNameKey right)
-			{
-				return !(left.Equals(right));
+				return obj.GetHashCode();
 			}
 		}
-		private readonly Dictionary<Type, object> _ContraintEnforcementCollectionCallbacksByTypeDictionary;
-		private readonly Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> _ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
-		private bool OnAdding<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> adding = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Adding;
-			if (adding != null)
-			{
-				return adding(instance, value);
-			}
-			return true;
-		}
-		private bool OnAdding<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> adding = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Adding;
-			if (adding != null)
-			{
-				return adding(instance, value);
-			}
-			return true;
-		}
-		private void OnAdded<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> added = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Added;
-			if (added != null)
-			{
-				added(instance, value);
-			}
-		}
-		private void OnAdded<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> added = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Added;
-			if (added != null)
-			{
-				added(instance, value);
-			}
-		}
-		private bool OnRemoving<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> removing = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Removing;
-			if (removing != null)
-			{
-				return removing(instance, value);
-			}
-			return true;
-		}
-		private bool OnRemoving<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			PotentialCollectionModificationCallback<TClass, TProperty> removing = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Removing;
-			if (removing != null)
-			{
-				return removing(instance, value);
-			}
-			return true;
-		}
-		private void OnRemoved<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> removed = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Removed;
-			if (removed != null)
-			{
-				removed(instance, value);
-			}
-		}
-		private void OnRemoved<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
-			where TClass : class, IHasSampleModelContext
-		{
-			CommittedCollectionModificationCallback<TClass, TProperty> removed = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Removed;
-			if (removed != null)
-			{
-				removed(instance, value);
-			}
-		}
+		private readonly Dictionary<RuntimeTypeHandle, object> _ContraintEnforcementCollectionCallbacksByTypeDictionary;
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasSampleModelContext
@@ -512,10 +399,17 @@ namespace SampleModel
 				{
 					throw new ArgumentNullException("item");
 				}
-				if (this._instance.Context.OnAdding(this._instance, item))
+				TClass instance = this._instance;
+				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>();
+				PotentialCollectionModificationCallback<TClass, TProperty> adding = callbacks.Adding;
+				if (((object)adding == null) || adding(instance, item))
 				{
 					this._list.Add(item);
-					this._instance.Context.OnAdded(this._instance, item);
+					CommittedCollectionModificationCallback<TClass, TProperty> added = callbacks.Added;
+					if ((object)added != null)
+					{
+						added(instance, item);
+					}
 				}
 			}
 			public bool Remove(TProperty item)
@@ -524,11 +418,18 @@ namespace SampleModel
 				{
 					throw new ArgumentNullException("item");
 				}
-				if (this._instance.Context.OnRemoving(this._instance, item))
+				TClass instance = this._instance;
+				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>();
+				PotentialCollectionModificationCallback<TClass, TProperty> removing = callbacks.Removing;
+				if (((object)removing == null) || removing(instance, item))
 				{
 					if (this._list.Remove(item))
 					{
-						this._instance.Context.OnRemoved(this._instance, item);
+						CommittedCollectionModificationCallback<TClass, TProperty> removed = callbacks.Removed;
+						if ((object)removed != null)
+						{
+							removed(instance, item);
+						}
 						return true;
 					}
 				}
@@ -536,14 +437,15 @@ namespace SampleModel
 			}
 			public void Clear()
 			{
-				for (int i = 0; i < this._list.Count; ++i)
+				List<TProperty> list = this._list;
+				for (int i = list.Count - 1; i > 0; --i)
 				{
-					this.Remove(this._list[i]);
+					this.Remove(list[i]);
 				}
 			}
 			public bool Contains(TProperty item)
 			{
-				return this._list.Contains(item);
+				return (item != null) && this._list.Contains(item);
 			}
 			public void CopyTo(TProperty[] array, int arrayIndex)
 			{
@@ -564,17 +466,48 @@ namespace SampleModel
 				}
 			}
 		}
+		private ConstraintEnforcementCollectionCallbacks<TClass, TProperty> GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>(string propertyName)
+			where TClass : class, IHasSampleModelContext
+		{
+			return (ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>).TypeHandle, propertyName)];
+		}
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+		private struct ConstraintEnforcementCollectionTypeAndPropertyNameKey : IEquatable<ConstraintEnforcementCollectionTypeAndPropertyNameKey>
+		{
+			public ConstraintEnforcementCollectionTypeAndPropertyNameKey(RuntimeTypeHandle typeHandle, string name)
+			{
+				this.TypeHandle = typeHandle;
+				this.Name = name;
+			}
+			public readonly RuntimeTypeHandle TypeHandle;
+			public readonly string Name;
+			public override int GetHashCode()
+			{
+				return this.TypeHandle.GetHashCode() ^ this.Name.GetHashCode();
+			}
+			[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2231:OverloadOperatorEqualsOnOverridingValueTypeEquals")]
+			public override bool Equals(object obj)
+			{
+				return (obj is ConstraintEnforcementCollectionTypeAndPropertyNameKey) && this.Equals((ConstraintEnforcementCollectionTypeAndPropertyNameKey)obj);
+			}
+			[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2231:OverloadOperatorEqualsOnOverridingValueTypeEquals")]
+			public bool Equals(ConstraintEnforcementCollectionTypeAndPropertyNameKey other)
+			{
+				return this.TypeHandle.Equals(other.TypeHandle) && this.Name.Equals(other.Name);
+			}
+		}
+		private readonly Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> _ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 		private sealed class ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasSampleModelContext
 		{
 			private readonly TClass _instance;
-			private readonly string _PropertyName;
+			private readonly string _propertyName;
 			private readonly List<TProperty> _list = new List<TProperty>();
 			public ConstraintEnforcementCollectionWithPropertyName(TClass instance, string propertyName)
 			{
 				this._instance = instance;
-				this._PropertyName = propertyName;
+				this._propertyName = propertyName;
 			}
 			private System.Collections.IEnumerator GetNonGenericEnumerator()
 			{
@@ -594,10 +527,17 @@ namespace SampleModel
 				{
 					throw new ArgumentNullException("item");
 				}
-				if (this._instance.Context.OnAdding(this._PropertyName, this._instance, item))
+				TClass instance = this._instance;
+				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>(this._propertyName);
+				PotentialCollectionModificationCallback<TClass, TProperty> adding = callbacks.Adding;
+				if (((object)adding == null) || adding(instance, item))
 				{
 					this._list.Add(item);
-					this._instance.Context.OnAdded(this._PropertyName, this._instance, item);
+					CommittedCollectionModificationCallback<TClass, TProperty> added = callbacks.Added;
+					if ((object)added != null)
+					{
+						added(instance, item);
+					}
 				}
 			}
 			public bool Remove(TProperty item)
@@ -606,11 +546,18 @@ namespace SampleModel
 				{
 					throw new ArgumentNullException("item");
 				}
-				if (this._instance.Context.OnRemoving(this._PropertyName, this._instance, item))
+				TClass instance = this._instance;
+				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>(this._propertyName);
+				PotentialCollectionModificationCallback<TClass, TProperty> removing = callbacks.Removing;
+				if (((object)removing == null) || removing(instance, item))
 				{
 					if (this._list.Remove(item))
 					{
-						this._instance.Context.OnRemoved(this._PropertyName, this._instance, item);
+						CommittedCollectionModificationCallback<TClass, TProperty> removed = callbacks.Removed;
+						if ((object)removed != null)
+						{
+							removed(instance, item);
+						}
 						return true;
 					}
 				}
@@ -618,14 +565,15 @@ namespace SampleModel
 			}
 			public void Clear()
 			{
-				for (int i = 0; i < this._list.Count; ++i)
+				List<TProperty> list = this._list;
+				for (int i = list.Count - 1; i > 0; --i)
 				{
-					this.Remove(this._list[i]);
+					this.Remove(list[i]);
 				}
 			}
 			public bool Contains(TProperty item)
 			{
-				return this._list.Contains(item);
+				return (item != null) && this._list.Contains(item);
 			}
 			public void CopyTo(TProperty[] array, int arrayIndex)
 			{
@@ -741,8 +689,8 @@ namespace SampleModel
 			Tuple<string, int> ExternalUniquenessConstraint2OldValueTuple;
 			if (oldValue.HasValue)
 			{
-				ExternalUniquenessConstraint1OldValueTuple = Tuple.CreateTuple<string, int>(instance.FirstName, oldValue.Value);
-				ExternalUniquenessConstraint2OldValueTuple = Tuple.CreateTuple<string, int>(instance.LastName, oldValue.Value);
+				ExternalUniquenessConstraint1OldValueTuple = Tuple.CreateTuple<string, int>(instance.FirstName, oldValue.GetValueOrDefault());
+				ExternalUniquenessConstraint2OldValueTuple = Tuple.CreateTuple<string, int>(instance.LastName, oldValue.GetValueOrDefault());
 			}
 			else
 			{
@@ -783,7 +731,7 @@ namespace SampleModel
 				Person currentInstance;
 				if (this._PersonOptionalUniqueStringDictionary.TryGetValue(newValue, out currentInstance))
 				{
-					if ((object)currentInstance != instance)
+					if ((object)currentInstance != (object)instance)
 					{
 						return false;
 					}
@@ -815,9 +763,9 @@ namespace SampleModel
 			if (newValue.HasValue)
 			{
 				Person currentInstance;
-				if (this._PersonOwnsCar_vinDictionary.TryGetValue(newValue.Value, out currentInstance))
+				if (this._PersonOwnsCar_vinDictionary.TryGetValue(newValue.GetValueOrDefault(), out currentInstance))
 				{
-					if ((object)currentInstance != instance)
+					if ((object)currentInstance != (object)instance)
 					{
 						return false;
 					}
@@ -829,11 +777,11 @@ namespace SampleModel
 		{
 			if (instance.OwnsCar_vin.HasValue)
 			{
-				this._PersonOwnsCar_vinDictionary.Add(instance.OwnsCar_vin.Value, instance);
+				this._PersonOwnsCar_vinDictionary.Add(instance.OwnsCar_vin.GetValueOrDefault(), instance);
 			}
 			if (oldValue.HasValue)
 			{
-				this._PersonOwnsCar_vinDictionary.Remove(oldValue.Value);
+				this._PersonOwnsCar_vinDictionary.Remove(oldValue.GetValueOrDefault());
 			}
 		}
 		private bool OnPersonGender_Gender_CodeChanging(Person instance, string newValue)
@@ -849,9 +797,9 @@ namespace SampleModel
 			if (newValue.HasValue)
 			{
 				Person currentInstance;
-				if (this._PersonOptionalUniqueDecimalDictionary.TryGetValue(newValue.Value, out currentInstance))
+				if (this._PersonOptionalUniqueDecimalDictionary.TryGetValue(newValue.GetValueOrDefault(), out currentInstance))
 				{
-					if ((object)currentInstance != instance)
+					if ((object)currentInstance != (object)instance)
 					{
 						return false;
 					}
@@ -863,11 +811,11 @@ namespace SampleModel
 		{
 			if (instance.OptionalUniqueDecimal.HasValue)
 			{
-				this._PersonOptionalUniqueDecimalDictionary.Add(instance.OptionalUniqueDecimal.Value, instance);
+				this._PersonOptionalUniqueDecimalDictionary.Add(instance.OptionalUniqueDecimal.GetValueOrDefault(), instance);
 			}
 			if (oldValue.HasValue)
 			{
-				this._PersonOptionalUniqueDecimalDictionary.Remove(oldValue.Value);
+				this._PersonOptionalUniqueDecimalDictionary.Remove(oldValue.GetValueOrDefault());
 			}
 		}
 		private bool OnPersonMandatoryUniqueDecimalChanging(Person instance, decimal newValue)
@@ -875,7 +823,7 @@ namespace SampleModel
 			Person currentInstance;
 			if (this._PersonMandatoryUniqueDecimalDictionary.TryGetValue(newValue, out currentInstance))
 			{
-				if ((object)currentInstance != instance)
+				if ((object)currentInstance != (object)instance)
 				{
 					return false;
 				}
@@ -887,7 +835,7 @@ namespace SampleModel
 			this._PersonMandatoryUniqueDecimalDictionary.Add(instance.MandatoryUniqueDecimal, instance);
 			if (oldValue.HasValue)
 			{
-				this._PersonMandatoryUniqueDecimalDictionary.Remove(oldValue.Value);
+				this._PersonMandatoryUniqueDecimalDictionary.Remove(oldValue.GetValueOrDefault());
 			}
 		}
 		private bool OnPersonMandatoryUniqueStringChanging(Person instance, string newValue)
@@ -895,7 +843,7 @@ namespace SampleModel
 			Person currentInstance;
 			if (this._PersonMandatoryUniqueStringDictionary.TryGetValue(newValue, out currentInstance))
 			{
-				if ((object)currentInstance != instance)
+				if ((object)currentInstance != (object)instance)
 				{
 					return false;
 				}
@@ -914,7 +862,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -936,7 +884,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -958,7 +906,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -980,7 +928,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -1002,7 +950,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -1024,7 +972,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -1046,7 +994,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -1064,80 +1012,80 @@ namespace SampleModel
 				oldValue.Husband = null;
 			}
 		}
-		private bool OnPersonTaskViaPersonCollectionAdding(Person instance, Task value)
+		private bool OnPersonTaskViaPersonCollectionAdding(Person instance, Task item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw SampleModelContext.GetDifferentContextsException();
+				throw SampleModelContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnPersonTaskViaPersonCollectionAdded(Person instance, Task value)
+		private void OnPersonTaskViaPersonCollectionAdded(Person instance, Task item)
 		{
-			value.Person = instance;
+			item.Person = instance;
 		}
-		private void OnPersonTaskViaPersonCollectionRemoved(Person instance, Task value)
+		private void OnPersonTaskViaPersonCollectionRemoved(Person instance, Task item)
 		{
-			if ((object)value.Person == instance)
+			if ((object)item.Person == (object)instance)
 			{
-				value.Person = null;
+				item.Person = null;
 			}
 		}
-		private bool OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdding(Person instance, ValueType1 value)
+		private bool OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdding(Person instance, ValueType1 item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw SampleModelContext.GetDifferentContextsException();
-			}
-			return true;
-		}
-		private void OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdded(Person instance, ValueType1 value)
-		{
-			value.DoesSomethingWithPerson = instance;
-		}
-		private void OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionRemoved(Person instance, ValueType1 value)
-		{
-			if ((object)value.DoesSomethingWithPerson == instance)
-			{
-				value.DoesSomethingWithPerson = null;
-			}
-		}
-		private bool OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
-		{
-			if ((object)this != value.Context)
-			{
-				throw SampleModelContext.GetDifferentContextsException();
+				throw SampleModelContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionAdded(Person instance, ValueType1 item)
 		{
-			value.Buyer = instance;
+			item.DoesSomethingWithPerson = instance;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonValueType1DoesSomethingWithViaDoesSomethingWithPersonCollectionRemoved(Person instance, ValueType1 item)
 		{
-			if ((object)value.Buyer == instance)
+			if ((object)item.DoesSomethingWithPerson == (object)instance)
 			{
-				value.Buyer = null;
+				item.DoesSomethingWithPerson = null;
 			}
 		}
-		private bool OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private bool OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw SampleModelContext.GetDifferentContextsException();
+				throw SampleModelContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate item)
 		{
-			value.Seller = instance;
+			item.Buyer = instance;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaBuyerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate item)
 		{
-			if ((object)value.Seller == instance)
+			if ((object)item.Buyer == (object)instance)
 			{
-				value.Seller = null;
+				item.Buyer = null;
+			}
+		}
+		private bool OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdding(Person instance, PersonBoughtCarFromPersonOnDate item)
+		{
+			if ((object)this != (object)item.Context)
+			{
+				throw SampleModelContext.GetDifferentContextsException("item");
+			}
+			return true;
+		}
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionAdded(Person instance, PersonBoughtCarFromPersonOnDate item)
+		{
+			item.Seller = instance;
+		}
+		private void OnPersonPersonBoughtCarFromPersonOnDateViaSellerCollectionRemoved(Person instance, PersonBoughtCarFromPersonOnDate item)
+		{
+			if ((object)item.Seller == (object)instance)
+			{
+				item.Seller = null;
 			}
 		}
 		private readonly List<Person> _PersonList;
@@ -1175,16 +1123,15 @@ namespace SampleModel
 				context._PersonList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("FirstName")]
 			private string _FirstName;
-			public override string FirstName
+			public sealed override string FirstName
 			{
 				get
 				{
@@ -1197,7 +1144,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._FirstName;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnPersonFirstNameChanging(this, value) && base.OnFirstNameChanging(value))
 						{
@@ -1208,9 +1155,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Date_YMD")]
 			private int _Date_YMD;
-			public override int Date_YMD
+			public sealed override int Date_YMD
 			{
 				get
 				{
@@ -1230,9 +1176,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("LastName")]
 			private string _LastName;
-			public override string LastName
+			public sealed override string LastName
 			{
 				get
 				{
@@ -1245,7 +1190,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._LastName;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnPersonLastNameChanging(this, value) && base.OnLastNameChanging(value))
 						{
@@ -1256,9 +1201,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("OptionalUniqueString")]
 			private string _OptionalUniqueString;
-			public override string OptionalUniqueString
+			public sealed override string OptionalUniqueString
 			{
 				get
 				{
@@ -1278,9 +1222,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("HatType_ColorARGB")]
 			private Nullable<int> _HatType_ColorARGB;
-			public override Nullable<int> HatType_ColorARGB
+			public sealed override Nullable<int> HatType_ColorARGB
 			{
 				get
 				{
@@ -1299,9 +1242,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("HatType_HatTypeStyle_HatTypeStyle_Description")]
 			private string _HatType_HatTypeStyle_HatTypeStyle_Description;
-			public override string HatType_HatTypeStyle_HatTypeStyle_Description
+			public sealed override string HatType_HatTypeStyle_HatTypeStyle_Description
 			{
 				get
 				{
@@ -1320,9 +1262,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("OwnsCar_vin")]
 			private Nullable<int> _OwnsCar_vin;
-			public override Nullable<int> OwnsCar_vin
+			public sealed override Nullable<int> OwnsCar_vin
 			{
 				get
 				{
@@ -1342,9 +1283,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Gender_Gender_Code")]
 			private string _Gender_Gender_Code;
-			public override string Gender_Gender_Code
+			public sealed override string Gender_Gender_Code
 			{
 				get
 				{
@@ -1357,7 +1297,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._Gender_Gender_Code;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnPersonGender_Gender_CodeChanging(this, value) && base.OnGender_Gender_CodeChanging(value))
 						{
@@ -1367,9 +1307,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("hasParents")]
 			private bool _hasParents;
-			public override bool hasParents
+			public sealed override bool hasParents
 			{
 				get
 				{
@@ -1388,9 +1327,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("OptionalUniqueDecimal")]
 			private Nullable<decimal> _OptionalUniqueDecimal;
-			public override Nullable<decimal> OptionalUniqueDecimal
+			public sealed override Nullable<decimal> OptionalUniqueDecimal
 			{
 				get
 				{
@@ -1410,9 +1348,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("MandatoryUniqueDecimal")]
 			private decimal _MandatoryUniqueDecimal;
-			public override decimal MandatoryUniqueDecimal
+			public sealed override decimal MandatoryUniqueDecimal
 			{
 				get
 				{
@@ -1432,9 +1369,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("MandatoryUniqueString")]
 			private string _MandatoryUniqueString;
-			public override string MandatoryUniqueString
+			public sealed override string MandatoryUniqueString
 			{
 				get
 				{
@@ -1447,7 +1383,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._MandatoryUniqueString;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnPersonMandatoryUniqueStringChanging(this, value) && base.OnMandatoryUniqueStringChanging(value))
 						{
@@ -1458,9 +1394,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Husband")]
 			private Person _Husband;
-			public override Person Husband
+			public sealed override Person Husband
 			{
 				get
 				{
@@ -1469,7 +1404,7 @@ namespace SampleModel
 				set
 				{
 					Person oldValue = this._Husband;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonHusbandChanging(this, value) && base.OnHusbandChanging(value))
 						{
@@ -1480,9 +1415,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("ValueType1DoesSomethingElseWith")]
 			private ValueType1 _ValueType1DoesSomethingElseWith;
-			public override ValueType1 ValueType1DoesSomethingElseWith
+			public sealed override ValueType1 ValueType1DoesSomethingElseWith
 			{
 				get
 				{
@@ -1491,7 +1425,7 @@ namespace SampleModel
 				set
 				{
 					ValueType1 oldValue = this._ValueType1DoesSomethingElseWith;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonValueType1DoesSomethingElseWithChanging(this, value) && base.OnValueType1DoesSomethingElseWithChanging(value))
 						{
@@ -1502,9 +1436,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("MalePerson")]
 			private MalePerson _MalePerson;
-			public override MalePerson MalePerson
+			public sealed override MalePerson MalePerson
 			{
 				get
 				{
@@ -1513,7 +1446,7 @@ namespace SampleModel
 				set
 				{
 					MalePerson oldValue = this._MalePerson;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonMalePersonChanging(this, value) && base.OnMalePersonChanging(value))
 						{
@@ -1524,9 +1457,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("FemalePerson")]
 			private FemalePerson _FemalePerson;
-			public override FemalePerson FemalePerson
+			public sealed override FemalePerson FemalePerson
 			{
 				get
 				{
@@ -1535,7 +1467,7 @@ namespace SampleModel
 				set
 				{
 					FemalePerson oldValue = this._FemalePerson;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonFemalePersonChanging(this, value) && base.OnFemalePersonChanging(value))
 						{
@@ -1546,9 +1478,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("ChildPerson")]
 			private ChildPerson _ChildPerson;
-			public override ChildPerson ChildPerson
+			public sealed override ChildPerson ChildPerson
 			{
 				get
 				{
@@ -1557,7 +1488,7 @@ namespace SampleModel
 				set
 				{
 					ChildPerson oldValue = this._ChildPerson;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonChildPersonChanging(this, value) && base.OnChildPersonChanging(value))
 						{
@@ -1568,9 +1499,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Death")]
 			private Death _Death;
-			public override Death Death
+			public sealed override Death Death
 			{
 				get
 				{
@@ -1579,7 +1509,7 @@ namespace SampleModel
 				set
 				{
 					Death oldValue = this._Death;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonDeathChanging(this, value) && base.OnDeathChanging(value))
 						{
@@ -1590,9 +1520,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Wife")]
 			private Person _Wife;
-			public override Person Wife
+			public sealed override Person Wife
 			{
 				get
 				{
@@ -1601,7 +1530,7 @@ namespace SampleModel
 				set
 				{
 					Person oldValue = this._Wife;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonWifeChanging(this, value) && base.OnWifeChanging(value))
 						{
@@ -1612,36 +1541,32 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("TaskViaPersonCollection")]
 			private readonly IEnumerable<Task> _TaskViaPersonCollection;
-			public override IEnumerable<Task> TaskViaPersonCollection
+			public sealed override IEnumerable<Task> TaskViaPersonCollection
 			{
 				get
 				{
 					return this._TaskViaPersonCollection;
 				}
 			}
-			[AccessedThroughProperty("ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection")]
 			private readonly IEnumerable<ValueType1> _ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
-			public override IEnumerable<ValueType1> ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection
+			public sealed override IEnumerable<ValueType1> ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection
 			{
 				get
 				{
 					return this._ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection;
 				}
 			}
-			[AccessedThroughProperty("PersonBoughtCarFromPersonOnDateViaBuyerCollection")]
 			private readonly IEnumerable<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateViaBuyerCollection;
-			public override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
+			public sealed override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaBuyerCollection
 			{
 				get
 				{
 					return this._PersonBoughtCarFromPersonOnDateViaBuyerCollection;
 				}
 			}
-			[AccessedThroughProperty("PersonBoughtCarFromPersonOnDateViaSellerCollection")]
 			private readonly IEnumerable<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateViaSellerCollection;
-			public override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
+			public sealed override IEnumerable<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateViaSellerCollection
 			{
 				get
 				{
@@ -1666,7 +1591,7 @@ namespace SampleModel
 		}
 		private bool OnMalePersonPersonChanging(MalePerson instance, Person newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -1680,23 +1605,23 @@ namespace SampleModel
 				oldValue.MalePerson = null;
 			}
 		}
-		private bool OnMalePersonChildPersonViaFatherCollectionAdding(MalePerson instance, ChildPerson value)
+		private bool OnMalePersonChildPersonViaFatherCollectionAdding(MalePerson instance, ChildPerson item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw SampleModelContext.GetDifferentContextsException();
+				throw SampleModelContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnMalePersonChildPersonViaFatherCollectionAdded(MalePerson instance, ChildPerson value)
+		private void OnMalePersonChildPersonViaFatherCollectionAdded(MalePerson instance, ChildPerson item)
 		{
-			value.Father = instance;
+			item.Father = instance;
 		}
-		private void OnMalePersonChildPersonViaFatherCollectionRemoved(MalePerson instance, ChildPerson value)
+		private void OnMalePersonChildPersonViaFatherCollectionRemoved(MalePerson instance, ChildPerson item)
 		{
-			if ((object)value.Father == instance)
+			if ((object)item.Father == (object)instance)
 			{
-				value.Father = null;
+				item.Father = null;
 			}
 		}
 		private readonly List<MalePerson> _MalePersonList;
@@ -1721,16 +1646,15 @@ namespace SampleModel
 				context._MalePersonList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("Person")]
 			private Person _Person;
-			public override Person Person
+			public sealed override Person Person
 			{
 				get
 				{
@@ -1743,7 +1667,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Person oldValue = this._Person;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnMalePersonPersonChanging(this, value) && base.OnPersonChanging(value))
 						{
@@ -1754,9 +1678,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("ChildPersonViaFatherCollection")]
 			private readonly IEnumerable<ChildPerson> _ChildPersonViaFatherCollection;
-			public override IEnumerable<ChildPerson> ChildPersonViaFatherCollection
+			public sealed override IEnumerable<ChildPerson> ChildPersonViaFatherCollection
 			{
 				get
 				{
@@ -1781,7 +1704,7 @@ namespace SampleModel
 		}
 		private bool OnFemalePersonPersonChanging(FemalePerson instance, Person newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -1795,23 +1718,23 @@ namespace SampleModel
 				oldValue.FemalePerson = null;
 			}
 		}
-		private bool OnFemalePersonChildPersonViaMotherCollectionAdding(FemalePerson instance, ChildPerson value)
+		private bool OnFemalePersonChildPersonViaMotherCollectionAdding(FemalePerson instance, ChildPerson item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw SampleModelContext.GetDifferentContextsException();
+				throw SampleModelContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnFemalePersonChildPersonViaMotherCollectionAdded(FemalePerson instance, ChildPerson value)
+		private void OnFemalePersonChildPersonViaMotherCollectionAdded(FemalePerson instance, ChildPerson item)
 		{
-			value.Mother = instance;
+			item.Mother = instance;
 		}
-		private void OnFemalePersonChildPersonViaMotherCollectionRemoved(FemalePerson instance, ChildPerson value)
+		private void OnFemalePersonChildPersonViaMotherCollectionRemoved(FemalePerson instance, ChildPerson item)
 		{
-			if ((object)value.Mother == instance)
+			if ((object)item.Mother == (object)instance)
 			{
-				value.Mother = null;
+				item.Mother = null;
 			}
 		}
 		private readonly List<FemalePerson> _FemalePersonList;
@@ -1836,16 +1759,15 @@ namespace SampleModel
 				context._FemalePersonList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("Person")]
 			private Person _Person;
-			public override Person Person
+			public sealed override Person Person
 			{
 				get
 				{
@@ -1858,7 +1780,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Person oldValue = this._Person;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnFemalePersonPersonChanging(this, value) && base.OnPersonChanging(value))
 						{
@@ -1869,9 +1791,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("ChildPersonViaMotherCollection")]
 			private readonly IEnumerable<ChildPerson> _ChildPersonViaMotherCollection;
-			public override IEnumerable<ChildPerson> ChildPersonViaMotherCollection
+			public sealed override IEnumerable<ChildPerson> ChildPersonViaMotherCollection
 			{
 				get
 				{
@@ -1930,7 +1851,7 @@ namespace SampleModel
 			Tuple<MalePerson, int, FemalePerson> InternalUniquenessConstraint49OldValueTuple;
 			if (oldValue.HasValue)
 			{
-				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, oldValue.Value, instance.Mother);
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, oldValue.GetValueOrDefault(), instance.Mother);
 			}
 			else
 			{
@@ -1940,7 +1861,7 @@ namespace SampleModel
 		}
 		private bool OnChildPersonFatherChanging(ChildPerson instance, MalePerson newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -1970,7 +1891,7 @@ namespace SampleModel
 		}
 		private bool OnChildPersonMotherChanging(ChildPerson instance, FemalePerson newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -2000,7 +1921,7 @@ namespace SampleModel
 		}
 		private bool OnChildPersonPersonChanging(ChildPerson instance, Person newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -2041,16 +1962,15 @@ namespace SampleModel
 				context._ChildPersonList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("BirthOrder_BirthOrder_Nr")]
 			private int _BirthOrder_BirthOrder_Nr;
-			public override int BirthOrder_BirthOrder_Nr
+			public sealed override int BirthOrder_BirthOrder_Nr
 			{
 				get
 				{
@@ -2070,9 +1990,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Father")]
 			private MalePerson _Father;
-			public override MalePerson Father
+			public sealed override MalePerson Father
 			{
 				get
 				{
@@ -2085,7 +2004,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					MalePerson oldValue = this._Father;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnChildPersonFatherChanging(this, value) && base.OnFatherChanging(value))
 						{
@@ -2096,9 +2015,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Mother")]
 			private FemalePerson _Mother;
-			public override FemalePerson Mother
+			public sealed override FemalePerson Mother
 			{
 				get
 				{
@@ -2111,7 +2029,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					FemalePerson oldValue = this._Mother;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnChildPersonMotherChanging(this, value) && base.OnMotherChanging(value))
 						{
@@ -2122,9 +2040,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Person")]
 			private Person _Person;
-			public override Person Person
+			public sealed override Person Person
 			{
 				get
 				{
@@ -2137,7 +2054,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Person oldValue = this._Person;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnChildPersonPersonChanging(this, value) && base.OnPersonChanging(value))
 						{
@@ -2184,7 +2101,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -2206,7 +2123,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -2226,7 +2143,7 @@ namespace SampleModel
 		}
 		private bool OnDeathPersonChanging(Death instance, Person newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -2262,16 +2179,15 @@ namespace SampleModel
 				context._DeathList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("Date_YMD")]
 			private Nullable<int> _Date_YMD;
-			public override Nullable<int> Date_YMD
+			public sealed override Nullable<int> Date_YMD
 			{
 				get
 				{
@@ -2290,9 +2206,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("DeathCause_DeathCause_Type")]
 			private string _DeathCause_DeathCause_Type;
-			public override string DeathCause_DeathCause_Type
+			public sealed override string DeathCause_DeathCause_Type
 			{
 				get
 				{
@@ -2305,7 +2220,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._DeathCause_DeathCause_Type;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnDeathDeathCause_DeathCause_TypeChanging(this, value) && base.OnDeathCause_DeathCause_TypeChanging(value))
 						{
@@ -2315,9 +2230,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("NaturalDeath")]
 			private NaturalDeath _NaturalDeath;
-			public override NaturalDeath NaturalDeath
+			public sealed override NaturalDeath NaturalDeath
 			{
 				get
 				{
@@ -2326,7 +2240,7 @@ namespace SampleModel
 				set
 				{
 					NaturalDeath oldValue = this._NaturalDeath;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnDeathNaturalDeathChanging(this, value) && base.OnNaturalDeathChanging(value))
 						{
@@ -2337,9 +2251,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("UnnaturalDeath")]
 			private UnnaturalDeath _UnnaturalDeath;
-			public override UnnaturalDeath UnnaturalDeath
+			public sealed override UnnaturalDeath UnnaturalDeath
 			{
 				get
 				{
@@ -2348,7 +2261,7 @@ namespace SampleModel
 				set
 				{
 					UnnaturalDeath oldValue = this._UnnaturalDeath;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnDeathUnnaturalDeathChanging(this, value) && base.OnUnnaturalDeathChanging(value))
 						{
@@ -2359,9 +2272,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Person")]
 			private Person _Person;
-			public override Person Person
+			public sealed override Person Person
 			{
 				get
 				{
@@ -2374,7 +2286,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Person oldValue = this._Person;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnDeathPersonChanging(this, value) && base.OnPersonChanging(value))
 						{
@@ -2411,7 +2323,7 @@ namespace SampleModel
 		}
 		private bool OnNaturalDeathDeathChanging(NaturalDeath instance, Death newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -2447,16 +2359,15 @@ namespace SampleModel
 				context._NaturalDeathList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("isFromProstateCancer")]
 			private bool _isFromProstateCancer;
-			public override bool isFromProstateCancer
+			public sealed override bool isFromProstateCancer
 			{
 				get
 				{
@@ -2475,9 +2386,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Death")]
 			private Death _Death;
-			public override Death Death
+			public sealed override Death Death
 			{
 				get
 				{
@@ -2490,7 +2400,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Death oldValue = this._Death;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnNaturalDeathDeathChanging(this, value) && base.OnDeathChanging(value))
 						{
@@ -2535,7 +2445,7 @@ namespace SampleModel
 		}
 		private bool OnUnnaturalDeathDeathChanging(UnnaturalDeath instance, Death newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -2572,16 +2482,15 @@ namespace SampleModel
 				context._UnnaturalDeathList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("isViolent")]
 			private bool _isViolent;
-			public override bool isViolent
+			public sealed override bool isViolent
 			{
 				get
 				{
@@ -2600,9 +2509,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("isBloody")]
 			private bool _isBloody;
-			public override bool isBloody
+			public sealed override bool isBloody
 			{
 				get
 				{
@@ -2621,9 +2529,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Death")]
 			private Death _Death;
-			public override Death Death
+			public sealed override Death Death
 			{
 				get
 				{
@@ -2636,7 +2543,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Death oldValue = this._Death;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnUnnaturalDeathDeathChanging(this, value) && base.OnDeathChanging(value))
 						{
@@ -2659,7 +2566,7 @@ namespace SampleModel
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -2696,16 +2603,15 @@ namespace SampleModel
 				context._TaskList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("Person")]
 			private Person _Person;
-			public override Person Person
+			public sealed override Person Person
 			{
 				get
 				{
@@ -2714,7 +2620,7 @@ namespace SampleModel
 				set
 				{
 					Person oldValue = this._Person;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnTaskPersonChanging(this, value) && base.OnPersonChanging(value))
 						{
@@ -2742,7 +2648,7 @@ namespace SampleModel
 			ValueType1 currentInstance;
 			if (this._ValueType1ValueType1ValueDictionary.TryGetValue(newValue, out currentInstance))
 			{
-				if ((object)currentInstance != instance)
+				if ((object)currentInstance != (object)instance)
 				{
 					return false;
 				}
@@ -2754,14 +2660,14 @@ namespace SampleModel
 			this._ValueType1ValueType1ValueDictionary.Add(instance.ValueType1Value, instance);
 			if (oldValue.HasValue)
 			{
-				this._ValueType1ValueType1ValueDictionary.Remove(oldValue.Value);
+				this._ValueType1ValueType1ValueDictionary.Remove(oldValue.GetValueOrDefault());
 			}
 		}
 		private bool OnValueType1DoesSomethingWithPersonChanging(ValueType1 instance, Person newValue)
 		{
 			if ((object)newValue != null)
 			{
-				if ((object)this != newValue.Context)
+				if ((object)this != (object)newValue.Context)
 				{
 					throw SampleModelContext.GetDifferentContextsException();
 				}
@@ -2779,23 +2685,23 @@ namespace SampleModel
 				((ICollection<ValueType1>)oldValue.ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection).Remove(instance);
 			}
 		}
-		private bool OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdding(ValueType1 instance, Person value)
+		private bool OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdding(ValueType1 instance, Person item)
 		{
-			if ((object)this != value.Context)
+			if ((object)this != (object)item.Context)
 			{
-				throw SampleModelContext.GetDifferentContextsException();
+				throw SampleModelContext.GetDifferentContextsException("item");
 			}
 			return true;
 		}
-		private void OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdded(ValueType1 instance, Person value)
+		private void OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionAdded(ValueType1 instance, Person item)
 		{
-			value.ValueType1DoesSomethingElseWith = instance;
+			item.ValueType1DoesSomethingElseWith = instance;
 		}
-		private void OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionRemoved(ValueType1 instance, Person value)
+		private void OnValueType1DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollectionRemoved(ValueType1 instance, Person item)
 		{
-			if ((object)value.ValueType1DoesSomethingElseWith == instance)
+			if ((object)item.ValueType1DoesSomethingElseWith == (object)instance)
 			{
-				value.ValueType1DoesSomethingElseWith = null;
+				item.ValueType1DoesSomethingElseWith = null;
 			}
 		}
 		private readonly List<ValueType1> _ValueType1List;
@@ -2820,16 +2726,15 @@ namespace SampleModel
 				context._ValueType1List.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("ValueType1Value")]
 			private int _ValueType1Value;
-			public override int ValueType1Value
+			public sealed override int ValueType1Value
 			{
 				get
 				{
@@ -2849,9 +2754,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("DoesSomethingWithPerson")]
 			private Person _DoesSomethingWithPerson;
-			public override Person DoesSomethingWithPerson
+			public sealed override Person DoesSomethingWithPerson
 			{
 				get
 				{
@@ -2860,7 +2764,7 @@ namespace SampleModel
 				set
 				{
 					Person oldValue = this._DoesSomethingWithPerson;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnValueType1DoesSomethingWithPersonChanging(this, value) && base.OnDoesSomethingWithPersonChanging(value))
 						{
@@ -2871,9 +2775,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection")]
 			private readonly IEnumerable<Person> _DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection;
-			public override IEnumerable<Person> DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection
+			public sealed override IEnumerable<Person> DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection
 			{
 				get
 				{
@@ -2938,9 +2841,9 @@ namespace SampleModel
 			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
 			if (oldValue.HasValue)
 			{
-				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, oldValue.Value, instance.Seller);
-				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, oldValue.Value);
-				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(oldValue.Value, instance.SaleDate_YMD, instance.Buyer);
+				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, oldValue.GetValueOrDefault(), instance.Seller);
+				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, instance.Seller, oldValue.GetValueOrDefault());
+				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(oldValue.GetValueOrDefault(), instance.SaleDate_YMD, instance.Buyer);
 			}
 			else
 			{
@@ -2973,8 +2876,8 @@ namespace SampleModel
 			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
 			if (oldValue.HasValue)
 			{
-				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(oldValue.Value, instance.Seller, instance.CarSold_vin);
-				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, oldValue.Value, instance.Buyer);
+				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(oldValue.GetValueOrDefault(), instance.Seller, instance.CarSold_vin);
+				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, oldValue.GetValueOrDefault(), instance.Buyer);
 			}
 			else
 			{
@@ -2986,7 +2889,7 @@ namespace SampleModel
 		}
 		private bool OnPersonBoughtCarFromPersonOnDateBuyerChanging(PersonBoughtCarFromPersonOnDate instance, Person newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -3024,7 +2927,7 @@ namespace SampleModel
 		}
 		private bool OnPersonBoughtCarFromPersonOnDateSellerChanging(PersonBoughtCarFromPersonOnDate instance, Person newValue)
 		{
-			if ((object)this != newValue.Context)
+			if ((object)this != (object)newValue.Context)
 			{
 				throw SampleModelContext.GetDifferentContextsException();
 			}
@@ -3087,16 +2990,15 @@ namespace SampleModel
 				context._PersonBoughtCarFromPersonOnDateList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("CarSold_vin")]
 			private int _CarSold_vin;
-			public override int CarSold_vin
+			public sealed override int CarSold_vin
 			{
 				get
 				{
@@ -3116,9 +3018,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("SaleDate_YMD")]
 			private int _SaleDate_YMD;
-			public override int SaleDate_YMD
+			public sealed override int SaleDate_YMD
 			{
 				get
 				{
@@ -3138,9 +3039,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Buyer")]
 			private Person _Buyer;
-			public override Person Buyer
+			public sealed override Person Buyer
 			{
 				get
 				{
@@ -3153,7 +3053,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Person oldValue = this._Buyer;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonBoughtCarFromPersonOnDateBuyerChanging(this, value) && base.OnBuyerChanging(value))
 						{
@@ -3164,9 +3064,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Seller")]
 			private Person _Seller;
-			public override Person Seller
+			public sealed override Person Seller
 			{
 				get
 				{
@@ -3179,7 +3078,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					Person oldValue = this._Seller;
-					if ((object)oldValue != value)
+					if ((object)oldValue != (object)value)
 					{
 						if (this._Context.OnPersonBoughtCarFromPersonOnDateSellerChanging(this, value) && base.OnSellerChanging(value))
 						{
@@ -3230,7 +3129,7 @@ namespace SampleModel
 			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
 			if (oldValue.HasValue)
 			{
-				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(oldValue.Value, instance.Criterion_Name);
+				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(oldValue.GetValueOrDefault(), instance.Criterion_Name);
 			}
 			else
 			{
@@ -3290,16 +3189,15 @@ namespace SampleModel
 				context._ReviewList.Add(this);
 			}
 			private readonly SampleModelContext _Context;
-			public override SampleModelContext Context
+			public sealed override SampleModelContext Context
 			{
 				get
 				{
 					return this._Context;
 				}
 			}
-			[AccessedThroughProperty("Car_vin")]
 			private int _Car_vin;
-			public override int Car_vin
+			public sealed override int Car_vin
 			{
 				get
 				{
@@ -3319,9 +3217,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Rating_Nr_Integer")]
 			private int _Rating_Nr_Integer;
-			public override int Rating_Nr_Integer
+			public sealed override int Rating_Nr_Integer
 			{
 				get
 				{
@@ -3340,9 +3237,8 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughProperty("Criterion_Name")]
 			private string _Criterion_Name;
-			public override string Criterion_Name
+			public sealed override string Criterion_Name
 			{
 				get
 				{
@@ -3355,7 +3251,7 @@ namespace SampleModel
 						throw new ArgumentNullException("value");
 					}
 					string oldValue = this._Criterion_Name;
-					if (!(object.Equals(oldValue, value)))
+					if (((object)oldValue != (object)value) && !(value.Equals(oldValue)))
 					{
 						if (this._Context.OnReviewCriterion_NameChanging(this, value) && base.OnCriterion_NameChanging(value))
 						{

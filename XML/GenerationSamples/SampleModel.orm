@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:oial="http://schemas.neumont.edu/ORM/2006-01/OIALModel" xmlns:rvw="http://schemas.neumont.edu/ORM/Views/RelationalView" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_AA456D07-4B8E-43CB-9F7B-093F42087891" Name="SampleModel">
 		<orm:Objects>
 			<orm:EntityType id="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" Name="Person" _ReferenceMode="id">
@@ -2313,16 +2313,6 @@
 			</orm:ImpliedFact>
 		</orm:Facts>
 		<orm:Constraints>
-			<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
-				<orm:RoleSequences>
-					<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29">
-						<orm:Role id="_2B3A2BAB-D843-4E00-8C2B-80D60B70B01E" ref="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6" />
-					</orm:RoleSequence>
-					<orm:RoleSequence id="_6C551D9F-5659-487B-8104-C9A7B39CD535">
-						<orm:Role id="_44F51FF3-53ED-4E5B-9FC2-2DA725EA8D92" ref="_089D0A43-FD48-4580-A6A6-45A6FA189DEA" />
-					</orm:RoleSequence>
-				</orm:RoleSequences>
-			</orm:ExclusionConstraint>
 			<orm:UniquenessConstraint id="_F40FEEF1-947A-453D-8B63-C791930EB876" Name="ExternalUniquenessConstraint1">
 				<orm:RoleSequence>
 					<orm:Role id="_627DE234-1797-4500-B40B-754D5773B03C" ref="_0D9E47FC-891C-45C5-95E6-CEC245F61265" />
@@ -2975,6 +2965,16 @@
 					<orm:Role id="_0438DEFD-D356-4FB5-B650-C1876E5E6B46" ref="_30AB5954-45CE-4694-8F39-9E56ACF49F90" />
 				</orm:RoleSequence>
 			</orm:UniquenessConstraint>
+			<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
+				<orm:RoleSequences>
+					<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29">
+						<orm:Role id="_2B3A2BAB-D843-4E00-8C2B-80D60B70B01E" ref="_9F1F7C52-3E4E-4161-ACB9-E417F8D293A6" />
+					</orm:RoleSequence>
+					<orm:RoleSequence id="_6C551D9F-5659-487B-8104-C9A7B39CD535">
+						<orm:Role id="_44F51FF3-53ED-4E5B-9FC2-2DA725EA8D92" ref="_089D0A43-FD48-4580-A6A6-45A6FA189DEA" />
+					</orm:RoleSequence>
+				</orm:RoleSequences>
+			</orm:ExclusionConstraint>
 		</orm:Constraints>
 		<orm:DataTypes>
 			<orm:VariableLengthTextDataType id="_229A15D5-CDF8-48A0-89A5-010A457F82D8" />
@@ -3426,4 +3426,16 @@
 		</ormDiagram:Shapes>
 		<ormDiagram:Subject ref="_AA456D07-4B8E-43CB-9F7B-093F42087891" />
 	</ormDiagram:ORMDiagram>
+	<oial:Model id="_C2E387AC-0D90-401C-ACFB-B60A669B6067">
+		<oial:ORMModel ref="_AA456D07-4B8E-43CB-9F7B-093F42087891" />
+	</oial:Model>
+	<rvw:RelationalModel id="_C7F27EF9-B8C0-46CF-91A1-6E752DC5196C" DisplayDataTypes="true">
+		<rvw:OIALModel ref="_C2E387AC-0D90-401C-ACFB-B60A669B6067" />
+	</rvw:RelationalModel>
+	<rvw:RelationalDiagram id="_63E95BBE-72EF-4898-9784-D38B2B3A787E" SubjectRef="_C7F27EF9-B8C0-46CF-91A1-6E752DC5196C">
+		<rvw:TableShape ObjectTypeRef="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" Location="0.5, 4.25" />
+		<rvw:TableShape ObjectTypeRef="_779E9788-0C2F-44B6-B958-AEEC22593966" Location="3.5, 2.75" />
+		<rvw:TableShape ObjectTypeRef="_D4808010-4C18-442E-A5E4-B69A33A5FA88" Location="0.5, 2.75" />
+		<rvw:TableShape ObjectTypeRef="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" Location="3.375, 0.5" />
+	</rvw:RelationalDiagram>
 </ormRoot:ORM2>

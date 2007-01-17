@@ -15,5 +15,5 @@ CREATE TABLE Country
 	CONSTRAINT InternalUniquenessConstraint3 PRIMARY KEY(Country_name)
 );
 
-ALTER TABLE PersonPerson ADD CONSTRAINT Country_FK FOREIGN KEY (Country_Country_name)  REFERENCES Country (Country_name)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE Person ADD CONSTRAINT Country_FK FOREIGN KEY (Country_Country_name)  REFERENCES Country (Country_name)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 

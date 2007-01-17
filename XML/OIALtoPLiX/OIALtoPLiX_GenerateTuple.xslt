@@ -56,6 +56,7 @@
 	</xsl:template>
 
 	<xsl:template name="GenerateCommonTuples">
+		<plx:pragma type="region" data="Tuples"/>
 		<xsl:call-template name="GenerateTupleBase"/>
 		<xsl:call-template name="GenerateTuple">
 			<xsl:with-param name="arityNumber" select="2"/>
@@ -84,6 +85,7 @@
 		<xsl:call-template name="GenerateTuple">
 			<xsl:with-param name="arityNumber" select="10"/>
 		</xsl:call-template>
+		<plx:pragma type="closeRegion" data="Tuples"/>
 	</xsl:template>
 
 	<xsl:template name="GenerateTupleBase">
@@ -94,13 +96,16 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Tuple Support"/>
 			</plx:trailingInfo>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System"/>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System"/>
 			<plx:attribute dataTypeName="ImmutableObjectAttribute" dataTypeQualifier="System.ComponentModel">
 				<plx:passParam>
 					<plx:trueKeyword/>
 				</plx:passParam>
 			</plx:attribute>
 			<xsl:copy-of select="$StructLayoutAttribute"/>
+			<plx:implementsInterface dataTypeName="IEquatable" dataTypeQualifier="System">
+				<plx:passTypeParam dataTypeName="Tuple"/>
+			</plx:implementsInterface>
 			<plx:function visibility="protected" name=".construct"/>
 			<plx:function visibility="protected" modifier="static" name="RotateRight">
 				<!-- Suppress the 'OperationsShouldNotOverflow' FxCop warning -->
@@ -116,48 +121,34 @@
 				<plx:param type="in" name="places" dataTypeName=".i4"/>
 				<plx:returns dataTypeName=".i4"/>
 				<plx:return>
-					<plx:cast type="exceptionCast" dataTypeName=".i4">
+					<plx:cast type="primitiveUnchecked" dataTypeName=".i4">
 						<plx:binaryOperator type="bitwiseOr">
 							<plx:left>
 								<plx:binaryOperator type="shiftRight">
 									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".u4">
+										<plx:cast type="primitiveUnchecked" dataTypeName=".u4">
 											<plx:nameRef type="parameter" name="value"/>
 										</plx:cast>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="bitwiseAnd">
-											<plx:left>
-												<plx:nameRef type="parameter" name="places"/>
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="31"/>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:nameRef type="parameter" name="places"/>
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:left>
 							<plx:right>
 								<plx:binaryOperator type="shiftLeft">
 									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".u4">
+										<plx:cast type="primitiveUnchecked" dataTypeName=".u4">
 											<plx:nameRef type="parameter" name="value"/>
 										</plx:cast>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="bitwiseAnd">
+										<plx:binaryOperator type="subtract">
 											<plx:left>
-												<plx:binaryOperator type="subtract">
-													<plx:left>
-														<plx:value type="i4" data="32"/>
-													</plx:left>
-													<plx:right>
-														<plx:nameRef type="parameter" name="places"/>
-													</plx:right>
-												</plx:binaryOperator>
+												<plx:value type="i4" data="32"/>
 											</plx:left>
 											<plx:right>
-												<plx:value type="i4" data="31"/>
+												<plx:nameRef type="parameter" name="places"/>
 											</plx:right>
 										</plx:binaryOperator>
 									</plx:right>
@@ -166,6 +157,20 @@
 						</plx:binaryOperator>
 					</plx:cast>
 				</plx:return>
+			</plx:function>
+			<plx:function visibility="public" modifier="abstractOverride" overload="true" name="Equals">
+				<plx:param name="obj" dataTypeName=".object"/>
+				<plx:returns dataTypeName=".boolean"/>
+			</plx:function>
+			<plx:function visibility="public" modifier="abstract" overload="true" name="Equals">
+				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
+					<plx:passTypeParam dataTypeName="Tuple"/>
+				</plx:interfaceMember>
+				<plx:param name="other" dataTypeName="Tuple"/>
+				<plx:returns dataTypeName=".boolean"/>
+			</plx:function>
+			<plx:function visibility="public" modifier="abstractOverride" name="GetHashCode">
+				<plx:returns dataTypeName=".i4"/>
 			</plx:function>
 			<plx:function visibility="public" modifier="abstractOverride" overload="true" name="ToString">
 				<plx:returns dataTypeName=".string"/>
@@ -309,10 +314,8 @@
 		</xsl:variable>
 		<xsl:variable name="passTypeParams" select="exsl:node-set($passTypeParamsFragment)/child::*"/>
 
+		<plx:pragma type="region" data="{$arityText} Tuple"/>
 		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="{$arityText} Tuple"/>
-			</plx:leadingInfo>
 			<plx:function visibility="public" modifier="static" overload="true" name="CreateTuple">
 				<xsl:copy-of select="$typeParams"/>
 				<xsl:copy-of select="$params"/>
@@ -347,9 +350,7 @@
 		</plx:class>
 
 		<plx:class visibility="public" modifier="sealed" name="Tuple">
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="{$arityText} Tuple"/>
-			</plx:trailingInfo>
+			<plx:attribute dataTypeName="SerializableAttribute" dataTypeQualifier="System"/>
 			<xsl:if test="$arity > 2">
 				<!-- Suppress the 'AvoidExcessiveParametersOnGenericTypes' FxCop warning -->
 				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
@@ -361,7 +362,6 @@
 					</plx:passParam>
 				</plx:attribute>
 			</xsl:if>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System"/>
 			<xsl:copy-of select="$StructLayoutAttribute"/>
 			<xsl:copy-of select="$typeParams"/>
 			<plx:derivesFromClass dataTypeName="Tuple"/>
@@ -453,6 +453,21 @@
 				</plx:return>
 			</plx:function>
 
+			<plx:function visibility="public" modifier="sealedOverride" overload="true" name="Equals">
+				<plx:param name="other" dataTypeName="Tuple"/>
+				<plx:returns dataTypeName=".boolean"/>
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="Equals">
+						<plx:passParam>
+							<plx:cast type="testCast" dataTypeName="Tuple">
+								<xsl:copy-of select="$passTypeParams"/>
+								<plx:nameRef type="parameter" name="other"/>
+							</plx:cast>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
+
 			<plx:function visibility="public" overload="true" name="Equals">
 				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
 					<plx:passTypeParam dataTypeName="Tuple">
@@ -463,38 +478,48 @@
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:param>
 				<plx:returns dataTypeName=".boolean"/>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanOr">
-							<plx:left>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="other"/>
-										</plx:cast>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:left>
-							<plx:right>
-								<xsl:call-template name="GetCompoundCode">
-									<xsl:with-param name="items" select="$items"/>
-									<xsl:with-param name="countItems" select="$arity"/>
-									<xsl:with-param name="currentPosition" select="1"/>
-									<xsl:with-param name="codeChoice" select="'checkEqualityCode'"/>
-									<xsl:with-param name="operator" select="'booleanOr'"/>
-								</xsl:call-template>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:falseKeyword/>
-					</plx:return>
-				</plx:branch>
 				<plx:return>
-					<plx:trueKeyword/>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:thisKeyword/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="other"/>
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="other"/>
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<xsl:call-template name="GetCompoundCode">
+										<xsl:with-param name="items" select="$items"/>
+										<xsl:with-param name="countItems" select="$arity"/>
+										<xsl:with-param name="currentPosition" select="1"/>
+										<xsl:with-param name="codeChoice" select="'checkEqualityCode'"/>
+										<xsl:with-param name="operator" select="'booleanOr'"/>
+									</xsl:call-template>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
 
@@ -569,44 +594,50 @@
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:param>
 				<plx:returns dataTypeName=".boolean"/>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple1"/>
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:return>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="tuple2"/>
-								</plx:cast>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:return>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="tuple1"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="tuple2"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:return>
-				</plx:fallbackBranch>
+				<plx:return>
+					<plx:binaryOperator type="booleanOr">
+						<plx:left>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple1"/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:nameRef type="parameter" name="tuple2"/>
+									</plx:cast>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef type="parameter" name="tuple1"/>
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance type="methodCall" name="Equals">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="tuple1"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef type="parameter" name="tuple2"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:return>
 			</plx:operatorFunction>
 
 			<plx:operatorFunction type="inequality">
@@ -882,6 +913,7 @@
 			</xsl:if>
 			
 		</plx:class>
+		<plx:pragma type="closeRegion" data="{$arityText} Tuple"/>
 	</xsl:template>
 
 	<xsl:template name="GetCompoundCode">
@@ -919,20 +951,18 @@
 					</plx:binaryOperator>
 				</xsl:when>
 				<xsl:when test="$codeChoice='checkEqualityCode'">
-					<plx:unaryOperator type="booleanNot">
-						<plx:callInstance type="methodCall" name="Equals">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$currentItem/@fieldName}"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:callInstance type="field" name="{$currentItem/@fieldName}">
-									<plx:callObject>
-										<plx:nameRef type="parameter" name="other"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:unaryOperator>
+					<plx:callInstance type="methodCall" name="Equals">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="{$currentItem/@fieldName}"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callInstance type="field" name="{$currentItem/@fieldName}">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="other"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:passParam>
+					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">

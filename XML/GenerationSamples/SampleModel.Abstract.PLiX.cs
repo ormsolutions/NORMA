@@ -3,73 +3,101 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml;
-using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
-using AccessedThroughPropertyAttribute = System.Runtime.CompilerServices.AccessedThroughPropertyAttribute;
-using GeneratedCodeAttribute = System.CodeDom.Compiler.GeneratedCodeAttribute;
-using StructLayoutAttribute = System.Runtime.InteropServices.StructLayoutAttribute;
-using LayoutKind = System.Runtime.InteropServices.LayoutKind;
-using CharSet = System.Runtime.InteropServices.CharSet;
 namespace SampleModel
 {
 	#region Person
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Person : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Person()
 		{
 		}
+		#region Person INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // Person INotifyPropertyChanged Implementation
+		#region Person Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[38]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[38], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<Person, string>> FirstNameChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnFirstNameChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, this.FirstName, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "FirstName", this.FirstName, newValue));
 			}
 			return true;
 		}
@@ -77,19 +105,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnFirstNameChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.FirstName));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "FirstName", oldValue, this.FirstName), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("FirstName");
 			}
 		}
@@ -97,19 +136,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnDate_YMDChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Person, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, int>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, int>>(eventHandler, this, new PropertyChangingEventArgs<Person, int>(this, this.Date_YMD, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, int>>(eventHandler, this, new PropertyChangingEventArgs<Person, int>(this, "Date_YMD", this.Date_YMD, newValue));
 			}
 			return true;
 		}
@@ -117,19 +164,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnDate_YMDChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Person, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, int>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, int>>(eventHandler, this, new PropertyChangedEventArgs<Person, int>(this, oldValue, this.Date_YMD));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, int>>(eventHandler, this, new PropertyChangedEventArgs<Person, int>(this, "Date_YMD", oldValue, this.Date_YMD), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Date_YMD");
 			}
 		}
@@ -137,19 +195,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[4], value);
+				}
 			}
 			remove
 			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[4], value);
+				}
 			}
 		}
 		protected bool OnLastNameChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, this.LastName, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "LastName", this.LastName, newValue));
 			}
 			return true;
 		}
@@ -157,19 +223,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[5], value);
+				}
 			}
 			remove
 			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[5], value);
+				}
 			}
 		}
 		protected void OnLastNameChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.LastName));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "LastName", oldValue, this.LastName), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("LastName");
 			}
 		}
@@ -177,19 +254,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[6], value);
+				}
 			}
 			remove
 			{
-				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[6], value);
+				}
 			}
 		}
 		protected bool OnOptionalUniqueStringChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[6]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, this.OptionalUniqueString, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "OptionalUniqueString", this.OptionalUniqueString, newValue));
 			}
 			return true;
 		}
@@ -197,19 +282,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[7], value);
+				}
 			}
 			remove
 			{
-				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[7], value);
+				}
 			}
 		}
 		protected void OnOptionalUniqueStringChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[7]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.OptionalUniqueString));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "OptionalUniqueString", oldValue, this.OptionalUniqueString), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("OptionalUniqueString");
 			}
 		}
@@ -217,19 +313,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[9] = System.Delegate.Combine(this.Events[9], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[8], value);
+				}
 			}
 			remove
 			{
-				this.Events[9] = System.Delegate.Remove(this.Events[9], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[8], value);
+				}
 			}
 		}
 		protected bool OnHatType_ColorARGBChanging(Nullable<int> newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>> eventHandler = this.Events[9] as EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>)events[8]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangingEventArgs<Person, Nullable<int>>(this, this.HatType_ColorARGB, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangingEventArgs<Person, Nullable<int>>(this, "HatType_ColorARGB", this.HatType_ColorARGB, newValue));
 			}
 			return true;
 		}
@@ -237,19 +341,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[10] = System.Delegate.Combine(this.Events[10], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[9], value);
+				}
 			}
 			remove
 			{
-				this.Events[10] = System.Delegate.Remove(this.Events[10], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[9], value);
+				}
 			}
 		}
 		protected void OnHatType_ColorARGBChanged(Nullable<int> oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>> eventHandler = this.Events[10] as EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>>)events[9]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangedEventArgs<Person, Nullable<int>>(this, oldValue, this.HatType_ColorARGB));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangedEventArgs<Person, Nullable<int>>(this, "HatType_ColorARGB", oldValue, this.HatType_ColorARGB), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("HatType_ColorARGB");
 			}
 		}
@@ -257,19 +372,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[11] = System.Delegate.Combine(this.Events[11], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[10], value);
+				}
 			}
 			remove
 			{
-				this.Events[11] = System.Delegate.Remove(this.Events[11], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[10], value);
+				}
 			}
 		}
 		protected bool OnHatType_HatTypeStyle_HatTypeStyle_DescriptionChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[11] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[10]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, this.HatType_HatTypeStyle_HatTypeStyle_Description, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "HatType_HatTypeStyle_HatTypeStyle_Description", this.HatType_HatTypeStyle_HatTypeStyle_Description, newValue));
 			}
 			return true;
 		}
@@ -277,19 +400,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[12] = System.Delegate.Combine(this.Events[12], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[11], value);
+				}
 			}
 			remove
 			{
-				this.Events[12] = System.Delegate.Remove(this.Events[12], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[11], value);
+				}
 			}
 		}
 		protected void OnHatType_HatTypeStyle_HatTypeStyle_DescriptionChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[12] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[11]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.HatType_HatTypeStyle_HatTypeStyle_Description));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "HatType_HatTypeStyle_HatTypeStyle_Description", oldValue, this.HatType_HatTypeStyle_HatTypeStyle_Description), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("HatType_HatTypeStyle_HatTypeStyle_Description");
 			}
 		}
@@ -297,19 +431,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[13] = System.Delegate.Combine(this.Events[13], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[12], value);
+				}
 			}
 			remove
 			{
-				this.Events[13] = System.Delegate.Remove(this.Events[13], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[12], value);
+				}
 			}
 		}
 		protected bool OnOwnsCar_vinChanging(Nullable<int> newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>> eventHandler = this.Events[13] as EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>)events[12]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangingEventArgs<Person, Nullable<int>>(this, this.OwnsCar_vin, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangingEventArgs<Person, Nullable<int>>(this, "OwnsCar_vin", this.OwnsCar_vin, newValue));
 			}
 			return true;
 		}
@@ -317,19 +459,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[14] = System.Delegate.Combine(this.Events[14], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[13], value);
+				}
 			}
 			remove
 			{
-				this.Events[14] = System.Delegate.Remove(this.Events[14], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[13], value);
+				}
 			}
 		}
 		protected void OnOwnsCar_vinChanged(Nullable<int> oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>> eventHandler = this.Events[14] as EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Nullable<int>>>)events[13]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangedEventArgs<Person, Nullable<int>>(this, oldValue, this.OwnsCar_vin));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Nullable<int>>>(eventHandler, this, new PropertyChangedEventArgs<Person, Nullable<int>>(this, "OwnsCar_vin", oldValue, this.OwnsCar_vin), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("OwnsCar_vin");
 			}
 		}
@@ -337,19 +490,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[15] = System.Delegate.Combine(this.Events[15], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[14], value);
+				}
 			}
 			remove
 			{
-				this.Events[15] = System.Delegate.Remove(this.Events[15], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[14], value);
+				}
 			}
 		}
 		protected bool OnGender_Gender_CodeChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[15] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[14]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, this.Gender_Gender_Code, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "Gender_Gender_Code", this.Gender_Gender_Code, newValue));
 			}
 			return true;
 		}
@@ -357,19 +518,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[16] = System.Delegate.Combine(this.Events[16], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[15], value);
+				}
 			}
 			remove
 			{
-				this.Events[16] = System.Delegate.Remove(this.Events[16], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[15], value);
+				}
 			}
 		}
 		protected void OnGender_Gender_CodeChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[16] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[15]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.Gender_Gender_Code));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "Gender_Gender_Code", oldValue, this.Gender_Gender_Code), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Gender_Gender_Code");
 			}
 		}
@@ -377,19 +549,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[17] = System.Delegate.Combine(this.Events[17], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[16], value);
+				}
 			}
 			remove
 			{
-				this.Events[17] = System.Delegate.Remove(this.Events[17], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[16], value);
+				}
 			}
 		}
 		protected bool OnhasParentsChanging(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, bool>> eventHandler = this.Events[17] as EventHandler<PropertyChangingEventArgs<Person, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, bool>>)events[16]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, bool>>(eventHandler, this, new PropertyChangingEventArgs<Person, bool>(this, this.hasParents, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, bool>>(eventHandler, this, new PropertyChangingEventArgs<Person, bool>(this, "hasParents", this.hasParents, newValue));
 			}
 			return true;
 		}
@@ -397,19 +577,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[18] = System.Delegate.Combine(this.Events[18], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[17], value);
+				}
 			}
 			remove
 			{
-				this.Events[18] = System.Delegate.Remove(this.Events[18], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[17], value);
+				}
 			}
 		}
 		protected void OnhasParentsChanged(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, bool>> eventHandler = this.Events[18] as EventHandler<PropertyChangedEventArgs<Person, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, bool>>)events[17]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, bool>>(eventHandler, this, new PropertyChangedEventArgs<Person, bool>(this, oldValue, this.hasParents));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, bool>>(eventHandler, this, new PropertyChangedEventArgs<Person, bool>(this, "hasParents", oldValue, this.hasParents), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("hasParents");
 			}
 		}
@@ -417,19 +608,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[19] = System.Delegate.Combine(this.Events[19], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[18], value);
+				}
 			}
 			remove
 			{
-				this.Events[19] = System.Delegate.Remove(this.Events[19], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[18], value);
+				}
 			}
 		}
 		protected bool OnOptionalUniqueDecimalChanging(Nullable<decimal> newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>> eventHandler = this.Events[19] as EventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>>)events[18]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>>(eventHandler, this, new PropertyChangingEventArgs<Person, Nullable<decimal>>(this, this.OptionalUniqueDecimal, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>>(eventHandler, this, new PropertyChangingEventArgs<Person, Nullable<decimal>>(this, "OptionalUniqueDecimal", this.OptionalUniqueDecimal, newValue));
 			}
 			return true;
 		}
@@ -437,19 +636,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[20] = System.Delegate.Combine(this.Events[20], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[19], value);
+				}
 			}
 			remove
 			{
-				this.Events[20] = System.Delegate.Remove(this.Events[20], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[19], value);
+				}
 			}
 		}
 		protected void OnOptionalUniqueDecimalChanged(Nullable<decimal> oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Nullable<decimal>>> eventHandler = this.Events[20] as EventHandler<PropertyChangedEventArgs<Person, Nullable<decimal>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, Nullable<decimal>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Nullable<decimal>>>)events[19]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Nullable<decimal>>>(eventHandler, this, new PropertyChangedEventArgs<Person, Nullable<decimal>>(this, oldValue, this.OptionalUniqueDecimal));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Nullable<decimal>>>(eventHandler, this, new PropertyChangedEventArgs<Person, Nullable<decimal>>(this, "OptionalUniqueDecimal", oldValue, this.OptionalUniqueDecimal), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("OptionalUniqueDecimal");
 			}
 		}
@@ -457,19 +667,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[21] = System.Delegate.Combine(this.Events[21], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[20], value);
+				}
 			}
 			remove
 			{
-				this.Events[21] = System.Delegate.Remove(this.Events[21], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[20], value);
+				}
 			}
 		}
 		protected bool OnMandatoryUniqueDecimalChanging(decimal newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, decimal>> eventHandler = this.Events[21] as EventHandler<PropertyChangingEventArgs<Person, decimal>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, decimal>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, decimal>>)events[20]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, decimal>>(eventHandler, this, new PropertyChangingEventArgs<Person, decimal>(this, this.MandatoryUniqueDecimal, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, decimal>>(eventHandler, this, new PropertyChangingEventArgs<Person, decimal>(this, "MandatoryUniqueDecimal", this.MandatoryUniqueDecimal, newValue));
 			}
 			return true;
 		}
@@ -477,19 +695,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[22] = System.Delegate.Combine(this.Events[22], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[21], value);
+				}
 			}
 			remove
 			{
-				this.Events[22] = System.Delegate.Remove(this.Events[22], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[21], value);
+				}
 			}
 		}
 		protected void OnMandatoryUniqueDecimalChanged(decimal oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, decimal>> eventHandler = this.Events[22] as EventHandler<PropertyChangedEventArgs<Person, decimal>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, decimal>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, decimal>>)events[21]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, decimal>>(eventHandler, this, new PropertyChangedEventArgs<Person, decimal>(this, oldValue, this.MandatoryUniqueDecimal));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, decimal>>(eventHandler, this, new PropertyChangedEventArgs<Person, decimal>(this, "MandatoryUniqueDecimal", oldValue, this.MandatoryUniqueDecimal), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("MandatoryUniqueDecimal");
 			}
 		}
@@ -497,19 +726,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[23] = System.Delegate.Combine(this.Events[23], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[22], value);
+				}
 			}
 			remove
 			{
-				this.Events[23] = System.Delegate.Remove(this.Events[23], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[22], value);
+				}
 			}
 		}
 		protected bool OnMandatoryUniqueStringChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[23] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, string>>)events[22]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, this.MandatoryUniqueString, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, string>>(eventHandler, this, new PropertyChangingEventArgs<Person, string>(this, "MandatoryUniqueString", this.MandatoryUniqueString, newValue));
 			}
 			return true;
 		}
@@ -517,19 +754,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[24] = System.Delegate.Combine(this.Events[24], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[23], value);
+				}
 			}
 			remove
 			{
-				this.Events[24] = System.Delegate.Remove(this.Events[24], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[23], value);
+				}
 			}
 		}
 		protected void OnMandatoryUniqueStringChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[24] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, string>>)events[23]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.MandatoryUniqueString));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, string>>(eventHandler, this, new PropertyChangedEventArgs<Person, string>(this, "MandatoryUniqueString", oldValue, this.MandatoryUniqueString), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("MandatoryUniqueString");
 			}
 		}
@@ -537,19 +785,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[25] = System.Delegate.Combine(this.Events[25], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[24], value);
+				}
 			}
 			remove
 			{
-				this.Events[25] = System.Delegate.Remove(this.Events[25], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[24], value);
+				}
 			}
 		}
 		protected bool OnHusbandChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Person>> eventHandler = this.Events[25] as EventHandler<PropertyChangingEventArgs<Person, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Person>>)events[24]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Person>>(eventHandler, this, new PropertyChangingEventArgs<Person, Person>(this, this.Husband, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Person>>(eventHandler, this, new PropertyChangingEventArgs<Person, Person>(this, "Husband", this.Husband, newValue));
 			}
 			return true;
 		}
@@ -557,19 +813,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[26] = System.Delegate.Combine(this.Events[26], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[25], value);
+				}
 			}
 			remove
 			{
-				this.Events[26] = System.Delegate.Remove(this.Events[26], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[25], value);
+				}
 			}
 		}
 		protected void OnHusbandChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Person>> eventHandler = this.Events[26] as EventHandler<PropertyChangedEventArgs<Person, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Person>>)events[25]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Person>>(eventHandler, this, new PropertyChangedEventArgs<Person, Person>(this, oldValue, this.Husband));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Person>>(eventHandler, this, new PropertyChangedEventArgs<Person, Person>(this, "Husband", oldValue, this.Husband), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Husband");
 			}
 		}
@@ -577,19 +844,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[27] = System.Delegate.Combine(this.Events[27], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[26], value);
+				}
 			}
 			remove
 			{
-				this.Events[27] = System.Delegate.Remove(this.Events[27], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[26], value);
+				}
 			}
 		}
 		protected bool OnValueType1DoesSomethingElseWithChanging(ValueType1 newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, ValueType1>> eventHandler = this.Events[27] as EventHandler<PropertyChangingEventArgs<Person, ValueType1>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, ValueType1>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, ValueType1>>)events[26]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, ValueType1>>(eventHandler, this, new PropertyChangingEventArgs<Person, ValueType1>(this, this.ValueType1DoesSomethingElseWith, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, ValueType1>>(eventHandler, this, new PropertyChangingEventArgs<Person, ValueType1>(this, "ValueType1DoesSomethingElseWith", this.ValueType1DoesSomethingElseWith, newValue));
 			}
 			return true;
 		}
@@ -597,19 +872,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[28] = System.Delegate.Combine(this.Events[28], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[27], value);
+				}
 			}
 			remove
 			{
-				this.Events[28] = System.Delegate.Remove(this.Events[28], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[27], value);
+				}
 			}
 		}
 		protected void OnValueType1DoesSomethingElseWithChanged(ValueType1 oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, ValueType1>> eventHandler = this.Events[28] as EventHandler<PropertyChangedEventArgs<Person, ValueType1>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, ValueType1>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, ValueType1>>)events[27]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, ValueType1>>(eventHandler, this, new PropertyChangedEventArgs<Person, ValueType1>(this, oldValue, this.ValueType1DoesSomethingElseWith));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, ValueType1>>(eventHandler, this, new PropertyChangedEventArgs<Person, ValueType1>(this, "ValueType1DoesSomethingElseWith", oldValue, this.ValueType1DoesSomethingElseWith), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("ValueType1DoesSomethingElseWith");
 			}
 		}
@@ -617,19 +903,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[29] = System.Delegate.Combine(this.Events[29], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[28], value);
+				}
 			}
 			remove
 			{
-				this.Events[29] = System.Delegate.Remove(this.Events[29], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[28], value);
+				}
 			}
 		}
 		protected bool OnMalePersonChanging(MalePerson newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, MalePerson>> eventHandler = this.Events[29] as EventHandler<PropertyChangingEventArgs<Person, MalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, MalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, MalePerson>>)events[28]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, MalePerson>>(eventHandler, this, new PropertyChangingEventArgs<Person, MalePerson>(this, this.MalePerson, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, MalePerson>>(eventHandler, this, new PropertyChangingEventArgs<Person, MalePerson>(this, "MalePerson", this.MalePerson, newValue));
 			}
 			return true;
 		}
@@ -637,19 +931,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[30] = System.Delegate.Combine(this.Events[30], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[29], value);
+				}
 			}
 			remove
 			{
-				this.Events[30] = System.Delegate.Remove(this.Events[30], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[29], value);
+				}
 			}
 		}
 		protected void OnMalePersonChanged(MalePerson oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, MalePerson>> eventHandler = this.Events[30] as EventHandler<PropertyChangedEventArgs<Person, MalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, MalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, MalePerson>>)events[29]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, MalePerson>>(eventHandler, this, new PropertyChangedEventArgs<Person, MalePerson>(this, oldValue, this.MalePerson));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, MalePerson>>(eventHandler, this, new PropertyChangedEventArgs<Person, MalePerson>(this, "MalePerson", oldValue, this.MalePerson), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("MalePerson");
 			}
 		}
@@ -657,19 +962,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[31] = System.Delegate.Combine(this.Events[31], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[30], value);
+				}
 			}
 			remove
 			{
-				this.Events[31] = System.Delegate.Remove(this.Events[31], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[30], value);
+				}
 			}
 		}
 		protected bool OnFemalePersonChanging(FemalePerson newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, FemalePerson>> eventHandler = this.Events[31] as EventHandler<PropertyChangingEventArgs<Person, FemalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, FemalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, FemalePerson>>)events[30]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, FemalePerson>>(eventHandler, this, new PropertyChangingEventArgs<Person, FemalePerson>(this, this.FemalePerson, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, FemalePerson>>(eventHandler, this, new PropertyChangingEventArgs<Person, FemalePerson>(this, "FemalePerson", this.FemalePerson, newValue));
 			}
 			return true;
 		}
@@ -677,19 +990,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[32] = System.Delegate.Combine(this.Events[32], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[31], value);
+				}
 			}
 			remove
 			{
-				this.Events[32] = System.Delegate.Remove(this.Events[32], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[31], value);
+				}
 			}
 		}
 		protected void OnFemalePersonChanged(FemalePerson oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, FemalePerson>> eventHandler = this.Events[32] as EventHandler<PropertyChangedEventArgs<Person, FemalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, FemalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, FemalePerson>>)events[31]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, FemalePerson>>(eventHandler, this, new PropertyChangedEventArgs<Person, FemalePerson>(this, oldValue, this.FemalePerson));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, FemalePerson>>(eventHandler, this, new PropertyChangedEventArgs<Person, FemalePerson>(this, "FemalePerson", oldValue, this.FemalePerson), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("FemalePerson");
 			}
 		}
@@ -697,19 +1021,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[33] = System.Delegate.Combine(this.Events[33], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[32], value);
+				}
 			}
 			remove
 			{
-				this.Events[33] = System.Delegate.Remove(this.Events[33], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[32], value);
+				}
 			}
 		}
 		protected bool OnChildPersonChanging(ChildPerson newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, ChildPerson>> eventHandler = this.Events[33] as EventHandler<PropertyChangingEventArgs<Person, ChildPerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, ChildPerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, ChildPerson>>)events[32]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, ChildPerson>>(eventHandler, this, new PropertyChangingEventArgs<Person, ChildPerson>(this, this.ChildPerson, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, ChildPerson>>(eventHandler, this, new PropertyChangingEventArgs<Person, ChildPerson>(this, "ChildPerson", this.ChildPerson, newValue));
 			}
 			return true;
 		}
@@ -717,19 +1049,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[34] = System.Delegate.Combine(this.Events[34], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[33], value);
+				}
 			}
 			remove
 			{
-				this.Events[34] = System.Delegate.Remove(this.Events[34], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[33], value);
+				}
 			}
 		}
 		protected void OnChildPersonChanged(ChildPerson oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, ChildPerson>> eventHandler = this.Events[34] as EventHandler<PropertyChangedEventArgs<Person, ChildPerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, ChildPerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, ChildPerson>>)events[33]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, ChildPerson>>(eventHandler, this, new PropertyChangedEventArgs<Person, ChildPerson>(this, oldValue, this.ChildPerson));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, ChildPerson>>(eventHandler, this, new PropertyChangedEventArgs<Person, ChildPerson>(this, "ChildPerson", oldValue, this.ChildPerson), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("ChildPerson");
 			}
 		}
@@ -737,19 +1080,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[35] = System.Delegate.Combine(this.Events[35], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[34], value);
+				}
 			}
 			remove
 			{
-				this.Events[35] = System.Delegate.Remove(this.Events[35], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[34], value);
+				}
 			}
 		}
 		protected bool OnDeathChanging(Death newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Death>> eventHandler = this.Events[35] as EventHandler<PropertyChangingEventArgs<Person, Death>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Death>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Death>>)events[34]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Death>>(eventHandler, this, new PropertyChangingEventArgs<Person, Death>(this, this.Death, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Death>>(eventHandler, this, new PropertyChangingEventArgs<Person, Death>(this, "Death", this.Death, newValue));
 			}
 			return true;
 		}
@@ -757,19 +1108,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[36] = System.Delegate.Combine(this.Events[36], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[35], value);
+				}
 			}
 			remove
 			{
-				this.Events[36] = System.Delegate.Remove(this.Events[36], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[35], value);
+				}
 			}
 		}
 		protected void OnDeathChanged(Death oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Death>> eventHandler = this.Events[36] as EventHandler<PropertyChangedEventArgs<Person, Death>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, Death>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Death>>)events[35]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Death>>(eventHandler, this, new PropertyChangedEventArgs<Person, Death>(this, oldValue, this.Death));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Death>>(eventHandler, this, new PropertyChangedEventArgs<Person, Death>(this, "Death", oldValue, this.Death), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Death");
 			}
 		}
@@ -777,19 +1139,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[37] = System.Delegate.Combine(this.Events[37], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[36], value);
+				}
 			}
 			remove
 			{
-				this.Events[37] = System.Delegate.Remove(this.Events[37], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[36], value);
+				}
 			}
 		}
 		protected bool OnWifeChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Person>> eventHandler = this.Events[37] as EventHandler<PropertyChangingEventArgs<Person, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Person, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Person, Person>>)events[36]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Person>>(eventHandler, this, new PropertyChangingEventArgs<Person, Person>(this, this.Wife, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Person, Person>>(eventHandler, this, new PropertyChangingEventArgs<Person, Person>(this, "Wife", this.Wife, newValue));
 			}
 			return true;
 		}
@@ -797,21 +1167,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[38] = System.Delegate.Combine(this.Events[38], value);
+				if ((object)value != null)
+				{
+					Person.InterlockedDelegateCombine(ref this.Events[37], value);
+				}
 			}
 			remove
 			{
-				this.Events[38] = System.Delegate.Remove(this.Events[38], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Person.InterlockedDelegateRemove(ref events[37], value);
+				}
 			}
 		}
 		protected void OnWifeChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Person>> eventHandler = this.Events[38] as EventHandler<PropertyChangedEventArgs<Person, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Person, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Person, Person>>)events[37]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Person>>(eventHandler, this, new PropertyChangedEventArgs<Person, Person>(this, oldValue, this.Wife));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Person, Person>>(eventHandler, this, new PropertyChangedEventArgs<Person, Person>(this, "Wife", oldValue, this.Wife), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Wife");
 			}
+		}
+		#endregion // Person Property Change Events
+		#region Person Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract string FirstName
@@ -947,6 +1334,8 @@ namespace SampleModel
 		{
 			get;
 		}
+		#endregion // Person Abstract Properties
+		#region Person ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -955,149 +1344,180 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}hasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}Husband = {14},{0}{1}ValueType1DoesSomethingElseWith = {15},{0}{1}MalePerson = {16},{0}{1}FemalePerson = {17},{0}{1}ChildPerson = {18},{0}{1}Death = {19},{0}{1}Wife = {20}{0}}}", Environment.NewLine, @"	", this.FirstName, this.Date_YMD, this.LastName, this.OptionalUniqueString, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.hasParents, this.OptionalUniqueDecimal, this.MandatoryUniqueDecimal, this.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // Person ToString Methods
+		#region Person Children Support
+		#region Person Child Support (MalePerson)
 		public static explicit operator MalePerson(Person Person)
 		{
-			if (Person == null)
+			if ((object)Person == null)
 			{
 				return null;
 			}
-			else if (Person.MalePerson == null)
+			MalePerson MalePerson;
+			if ((object)(MalePerson = Person.MalePerson) == null)
 			{
 				throw new InvalidCastException();
 			}
-			else
-			{
-				return Person.MalePerson;
-			}
+			return MalePerson;
 		}
+		#endregion // Person Child Support (MalePerson)
+		#region Person Child Support (FemalePerson)
 		public static explicit operator FemalePerson(Person Person)
 		{
-			if (Person == null)
+			if ((object)Person == null)
 			{
 				return null;
 			}
-			else if (Person.FemalePerson == null)
+			FemalePerson FemalePerson;
+			if ((object)(FemalePerson = Person.FemalePerson) == null)
 			{
 				throw new InvalidCastException();
 			}
-			else
-			{
-				return Person.FemalePerson;
-			}
+			return FemalePerson;
 		}
+		#endregion // Person Child Support (FemalePerson)
+		#region Person Child Support (ChildPerson)
 		public static explicit operator ChildPerson(Person Person)
 		{
-			if (Person == null)
+			if ((object)Person == null)
 			{
 				return null;
 			}
-			else if (Person.ChildPerson == null)
+			ChildPerson ChildPerson;
+			if ((object)(ChildPerson = Person.ChildPerson) == null)
 			{
 				throw new InvalidCastException();
 			}
-			else
-			{
-				return Person.ChildPerson;
-			}
+			return ChildPerson;
 		}
+		#endregion // Person Child Support (ChildPerson)
+		#region Person Child Support (Death)
 		public static explicit operator Death(Person Person)
 		{
-			if (Person == null)
+			if ((object)Person == null)
 			{
 				return null;
 			}
-			else if (Person.Death == null)
+			Death Death;
+			if ((object)(Death = Person.Death) == null)
 			{
 				throw new InvalidCastException();
 			}
-			else
-			{
-				return Person.Death;
-			}
+			return Death;
 		}
 		public static explicit operator NaturalDeath(Person Person)
 		{
-			if (Person == null)
+			if ((object)Person == null)
 			{
 				return null;
 			}
-			else
-			{
-				return (NaturalDeath)(Death)Person;
-			}
+			return (NaturalDeath)(Death)Person;
 		}
 		public static explicit operator UnnaturalDeath(Person Person)
 		{
-			if (Person == null)
+			if ((object)Person == null)
 			{
 				return null;
 			}
-			else
-			{
-				return (UnnaturalDeath)(Death)Person;
-			}
+			return (UnnaturalDeath)(Death)Person;
 		}
+		#endregion // Person Child Support (Death)
+		#endregion // Person Children Support
 	}
 	#endregion // Person
 	#region MalePerson
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class MalePerson : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected MalePerson()
 		{
 		}
+		#region MalePerson INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // MalePerson INotifyPropertyChanged Implementation
+		#region MalePerson Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[2]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<MalePerson, Person>> PersonChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					MalePerson.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					MalePerson.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnPersonChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<MalePerson, Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<MalePerson, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<MalePerson, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<MalePerson, Person>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<MalePerson, Person>>(eventHandler, this, new PropertyChangingEventArgs<MalePerson, Person>(this, this.Person, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<MalePerson, Person>>(eventHandler, this, new PropertyChangingEventArgs<MalePerson, Person>(this, "Person", this.Person, newValue));
 			}
 			return true;
 		}
@@ -1105,21 +1525,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					MalePerson.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					MalePerson.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnPersonChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<MalePerson, Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<MalePerson, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<MalePerson, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<MalePerson, Person>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<MalePerson, Person>>(eventHandler, this, new PropertyChangedEventArgs<MalePerson, Person>(this, oldValue, this.Person));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<MalePerson, Person>>(eventHandler, this, new PropertyChangedEventArgs<MalePerson, Person>(this, "Person", oldValue, this.Person), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Person");
 			}
+		}
+		#endregion // MalePerson Property Change Events
+		#region MalePerson Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract Person Person
@@ -1132,6 +1569,8 @@ namespace SampleModel
 		{
 			get;
 		}
+		#endregion // MalePerson Abstract Properties
+		#region MalePerson ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -1140,16 +1579,15 @@ namespace SampleModel
 		{
 			return string.Format(provider, "MalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, @"	", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // MalePerson ToString Methods
+		#region MalePerson Parent Support (Person)
 		public static implicit operator Person(MalePerson MalePerson)
 		{
-			if (MalePerson == null)
+			if ((object)MalePerson == null)
 			{
 				return null;
 			}
-			else
-			{
-				return MalePerson.Person;
-			}
+			return MalePerson.Person;
 		}
 		public virtual string FirstName
 		{
@@ -1773,67 +2211,102 @@ namespace SampleModel
 				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
 			}
 		}
+		#endregion // MalePerson Parent Support (Person)
 	}
 	#endregion // MalePerson
 	#region FemalePerson
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class FemalePerson : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected FemalePerson()
 		{
 		}
+		#region FemalePerson INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // FemalePerson INotifyPropertyChanged Implementation
+		#region FemalePerson Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[2]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<FemalePerson, Person>> PersonChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					FemalePerson.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					FemalePerson.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnPersonChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<FemalePerson, Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<FemalePerson, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<FemalePerson, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<FemalePerson, Person>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<FemalePerson, Person>>(eventHandler, this, new PropertyChangingEventArgs<FemalePerson, Person>(this, this.Person, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<FemalePerson, Person>>(eventHandler, this, new PropertyChangingEventArgs<FemalePerson, Person>(this, "Person", this.Person, newValue));
 			}
 			return true;
 		}
@@ -1841,21 +2314,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					FemalePerson.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					FemalePerson.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnPersonChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<FemalePerson, Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<FemalePerson, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<FemalePerson, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<FemalePerson, Person>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<FemalePerson, Person>>(eventHandler, this, new PropertyChangedEventArgs<FemalePerson, Person>(this, oldValue, this.Person));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<FemalePerson, Person>>(eventHandler, this, new PropertyChangedEventArgs<FemalePerson, Person>(this, "Person", oldValue, this.Person), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Person");
 			}
+		}
+		#endregion // FemalePerson Property Change Events
+		#region FemalePerson Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract Person Person
@@ -1868,6 +2358,8 @@ namespace SampleModel
 		{
 			get;
 		}
+		#endregion // FemalePerson Abstract Properties
+		#region FemalePerson ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -1876,16 +2368,15 @@ namespace SampleModel
 		{
 			return string.Format(provider, "FemalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, @"	", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // FemalePerson ToString Methods
+		#region FemalePerson Parent Support (Person)
 		public static implicit operator Person(FemalePerson FemalePerson)
 		{
-			if (FemalePerson == null)
+			if ((object)FemalePerson == null)
 			{
 				return null;
 			}
-			else
-			{
-				return FemalePerson.Person;
-			}
+			return FemalePerson.Person;
 		}
 		public virtual string FirstName
 		{
@@ -2509,67 +3000,102 @@ namespace SampleModel
 				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
 			}
 		}
+		#endregion // FemalePerson Parent Support (Person)
 	}
 	#endregion // FemalePerson
 	#region ChildPerson
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class ChildPerson : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected ChildPerson()
 		{
 		}
+		#region ChildPerson INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // ChildPerson INotifyPropertyChanged Implementation
+		#region ChildPerson Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[8]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[8], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<ChildPerson, int>> BirthOrder_BirthOrder_NrChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnBirthOrder_BirthOrder_NrChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<ChildPerson, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<ChildPerson, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<ChildPerson, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<ChildPerson, int>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, int>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, int>(this, this.BirthOrder_BirthOrder_Nr, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, int>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, int>(this, "BirthOrder_BirthOrder_Nr", this.BirthOrder_BirthOrder_Nr, newValue));
 			}
 			return true;
 		}
@@ -2577,19 +3103,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnBirthOrder_BirthOrder_NrChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<ChildPerson, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<ChildPerson, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<ChildPerson, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<ChildPerson, int>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, int>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, int>(this, oldValue, this.BirthOrder_BirthOrder_Nr));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, int>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, int>(this, "BirthOrder_BirthOrder_Nr", oldValue, this.BirthOrder_BirthOrder_Nr), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("BirthOrder_BirthOrder_Nr");
 			}
 		}
@@ -2597,19 +3134,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnFatherChanging(MalePerson newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<ChildPerson, MalePerson>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<ChildPerson, MalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<ChildPerson, MalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<ChildPerson, MalePerson>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, MalePerson>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, MalePerson>(this, this.Father, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, MalePerson>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, MalePerson>(this, "Father", this.Father, newValue));
 			}
 			return true;
 		}
@@ -2617,19 +3162,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnFatherChanged(MalePerson oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<ChildPerson, MalePerson>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<ChildPerson, MalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<ChildPerson, MalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<ChildPerson, MalePerson>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, MalePerson>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, MalePerson>(this, oldValue, this.Father));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, MalePerson>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, MalePerson>(this, "Father", oldValue, this.Father), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Father");
 			}
 		}
@@ -2637,19 +3193,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[4], value);
+				}
 			}
 			remove
 			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[4], value);
+				}
 			}
 		}
 		protected bool OnMotherChanging(FemalePerson newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<ChildPerson, FemalePerson>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<ChildPerson, FemalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<ChildPerson, FemalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<ChildPerson, FemalePerson>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, FemalePerson>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, FemalePerson>(this, this.Mother, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, FemalePerson>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, FemalePerson>(this, "Mother", this.Mother, newValue));
 			}
 			return true;
 		}
@@ -2657,19 +3221,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[5], value);
+				}
 			}
 			remove
 			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[5], value);
+				}
 			}
 		}
 		protected void OnMotherChanged(FemalePerson oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<ChildPerson, FemalePerson>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<ChildPerson, FemalePerson>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<ChildPerson, FemalePerson>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<ChildPerson, FemalePerson>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, FemalePerson>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, FemalePerson>(this, oldValue, this.Mother));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, FemalePerson>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, FemalePerson>(this, "Mother", oldValue, this.Mother), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Mother");
 			}
 		}
@@ -2677,19 +3252,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[6], value);
+				}
 			}
 			remove
 			{
-				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[6], value);
+				}
 			}
 		}
 		protected bool OnPersonChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<ChildPerson, Person>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<ChildPerson, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<ChildPerson, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<ChildPerson, Person>>)events[6]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, Person>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, Person>(this, this.Person, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ChildPerson, Person>>(eventHandler, this, new PropertyChangingEventArgs<ChildPerson, Person>(this, "Person", this.Person, newValue));
 			}
 			return true;
 		}
@@ -2697,21 +3280,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
+				if ((object)value != null)
+				{
+					ChildPerson.InterlockedDelegateCombine(ref this.Events[7], value);
+				}
 			}
 			remove
 			{
-				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ChildPerson.InterlockedDelegateRemove(ref events[7], value);
+				}
 			}
 		}
 		protected void OnPersonChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<ChildPerson, Person>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<ChildPerson, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<ChildPerson, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<ChildPerson, Person>>)events[7]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, Person>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, Person>(this, oldValue, this.Person));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ChildPerson, Person>>(eventHandler, this, new PropertyChangedEventArgs<ChildPerson, Person>(this, "Person", oldValue, this.Person), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Person");
 			}
+		}
+		#endregion // ChildPerson Property Change Events
+		#region ChildPerson Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract int BirthOrder_BirthOrder_Nr
@@ -2737,6 +3337,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // ChildPerson Abstract Properties
+		#region ChildPerson ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -2745,16 +3347,15 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"ChildPerson{0}{{{0}{1}BirthOrder_BirthOrder_Nr = ""{2}"",{0}{1}Father = {3},{0}{1}Mother = {4},{0}{1}Person = {5}{0}}}", Environment.NewLine, @"	", this.BirthOrder_BirthOrder_Nr, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // ChildPerson ToString Methods
+		#region ChildPerson Parent Support (Person)
 		public static implicit operator Person(ChildPerson ChildPerson)
 		{
-			if (ChildPerson == null)
+			if ((object)ChildPerson == null)
 			{
 				return null;
 			}
-			else
-			{
-				return ChildPerson.Person;
-			}
+			return ChildPerson.Person;
 		}
 		public virtual string FirstName
 		{
@@ -3378,67 +3979,102 @@ namespace SampleModel
 				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
 			}
 		}
+		#endregion // ChildPerson Parent Support (Person)
 	}
 	#endregion // ChildPerson
 	#region Death
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Death : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Death()
 		{
 		}
+		#region Death INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // Death INotifyPropertyChanged Implementation
+		#region Death Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[10]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[10], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<Death, Nullable<int>>> Date_YMDChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnDate_YMDChanging(Nullable<int> newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Death, Nullable<int>>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Death, Nullable<int>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Death, Nullable<int>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Death, Nullable<int>>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, Nullable<int>>>(eventHandler, this, new PropertyChangingEventArgs<Death, Nullable<int>>(this, this.Date_YMD, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, Nullable<int>>>(eventHandler, this, new PropertyChangingEventArgs<Death, Nullable<int>>(this, "Date_YMD", this.Date_YMD, newValue));
 			}
 			return true;
 		}
@@ -3446,19 +4082,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnDate_YMDChanged(Nullable<int> oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Death, Nullable<int>>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Death, Nullable<int>>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Death, Nullable<int>>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Death, Nullable<int>>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, Nullable<int>>>(eventHandler, this, new PropertyChangedEventArgs<Death, Nullable<int>>(this, oldValue, this.Date_YMD));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, Nullable<int>>>(eventHandler, this, new PropertyChangedEventArgs<Death, Nullable<int>>(this, "Date_YMD", oldValue, this.Date_YMD), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Date_YMD");
 			}
 		}
@@ -3466,19 +4113,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnDeathCause_DeathCause_TypeChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Death, string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Death, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Death, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Death, string>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, string>>(eventHandler, this, new PropertyChangingEventArgs<Death, string>(this, this.DeathCause_DeathCause_Type, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, string>>(eventHandler, this, new PropertyChangingEventArgs<Death, string>(this, "DeathCause_DeathCause_Type", this.DeathCause_DeathCause_Type, newValue));
 			}
 			return true;
 		}
@@ -3486,19 +4141,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnDeathCause_DeathCause_TypeChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Death, string>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Death, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Death, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Death, string>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, string>>(eventHandler, this, new PropertyChangedEventArgs<Death, string>(this, oldValue, this.DeathCause_DeathCause_Type));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, string>>(eventHandler, this, new PropertyChangedEventArgs<Death, string>(this, "DeathCause_DeathCause_Type", oldValue, this.DeathCause_DeathCause_Type), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("DeathCause_DeathCause_Type");
 			}
 		}
@@ -3506,19 +4172,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[4], value);
+				}
 			}
 			remove
 			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[4], value);
+				}
 			}
 		}
 		protected bool OnNaturalDeathChanging(NaturalDeath newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Death, NaturalDeath>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<Death, NaturalDeath>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Death, NaturalDeath>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Death, NaturalDeath>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, NaturalDeath>>(eventHandler, this, new PropertyChangingEventArgs<Death, NaturalDeath>(this, this.NaturalDeath, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, NaturalDeath>>(eventHandler, this, new PropertyChangingEventArgs<Death, NaturalDeath>(this, "NaturalDeath", this.NaturalDeath, newValue));
 			}
 			return true;
 		}
@@ -3526,19 +4200,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[5], value);
+				}
 			}
 			remove
 			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[5], value);
+				}
 			}
 		}
 		protected void OnNaturalDeathChanged(NaturalDeath oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Death, NaturalDeath>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<Death, NaturalDeath>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Death, NaturalDeath>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Death, NaturalDeath>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, NaturalDeath>>(eventHandler, this, new PropertyChangedEventArgs<Death, NaturalDeath>(this, oldValue, this.NaturalDeath));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, NaturalDeath>>(eventHandler, this, new PropertyChangedEventArgs<Death, NaturalDeath>(this, "NaturalDeath", oldValue, this.NaturalDeath), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("NaturalDeath");
 			}
 		}
@@ -3546,19 +4231,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[6], value);
+				}
 			}
 			remove
 			{
-				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[6], value);
+				}
 			}
 		}
 		protected bool OnUnnaturalDeathChanging(UnnaturalDeath newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Death, UnnaturalDeath>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<Death, UnnaturalDeath>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Death, UnnaturalDeath>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Death, UnnaturalDeath>>)events[6]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, UnnaturalDeath>>(eventHandler, this, new PropertyChangingEventArgs<Death, UnnaturalDeath>(this, this.UnnaturalDeath, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, UnnaturalDeath>>(eventHandler, this, new PropertyChangingEventArgs<Death, UnnaturalDeath>(this, "UnnaturalDeath", this.UnnaturalDeath, newValue));
 			}
 			return true;
 		}
@@ -3566,19 +4259,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[7], value);
+				}
 			}
 			remove
 			{
-				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[7], value);
+				}
 			}
 		}
 		protected void OnUnnaturalDeathChanged(UnnaturalDeath oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Death, UnnaturalDeath>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<Death, UnnaturalDeath>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Death, UnnaturalDeath>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Death, UnnaturalDeath>>)events[7]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, UnnaturalDeath>>(eventHandler, this, new PropertyChangedEventArgs<Death, UnnaturalDeath>(this, oldValue, this.UnnaturalDeath));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, UnnaturalDeath>>(eventHandler, this, new PropertyChangedEventArgs<Death, UnnaturalDeath>(this, "UnnaturalDeath", oldValue, this.UnnaturalDeath), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("UnnaturalDeath");
 			}
 		}
@@ -3586,19 +4290,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[9] = System.Delegate.Combine(this.Events[9], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[8], value);
+				}
 			}
 			remove
 			{
-				this.Events[9] = System.Delegate.Remove(this.Events[9], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[8], value);
+				}
 			}
 		}
 		protected bool OnPersonChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Death, Person>> eventHandler = this.Events[9] as EventHandler<PropertyChangingEventArgs<Death, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Death, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Death, Person>>)events[8]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, Person>>(eventHandler, this, new PropertyChangingEventArgs<Death, Person>(this, this.Person, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Death, Person>>(eventHandler, this, new PropertyChangingEventArgs<Death, Person>(this, "Person", this.Person, newValue));
 			}
 			return true;
 		}
@@ -3606,21 +4318,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[10] = System.Delegate.Combine(this.Events[10], value);
+				if ((object)value != null)
+				{
+					Death.InterlockedDelegateCombine(ref this.Events[9], value);
+				}
 			}
 			remove
 			{
-				this.Events[10] = System.Delegate.Remove(this.Events[10], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Death.InterlockedDelegateRemove(ref events[9], value);
+				}
 			}
 		}
 		protected void OnPersonChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Death, Person>> eventHandler = this.Events[10] as EventHandler<PropertyChangedEventArgs<Death, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Death, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Death, Person>>)events[9]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, Person>>(eventHandler, this, new PropertyChangedEventArgs<Death, Person>(this, oldValue, this.Person));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Death, Person>>(eventHandler, this, new PropertyChangedEventArgs<Death, Person>(this, "Person", oldValue, this.Person), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Person");
 			}
+		}
+		#endregion // Death Property Change Events
+		#region Death Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, true)]
 		public abstract Nullable<int> Date_YMD
@@ -3652,6 +4381,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // Death Abstract Properties
+		#region Death ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -3660,16 +4391,15 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"Death{0}{{{0}{1}Date_YMD = ""{2}"",{0}{1}DeathCause_DeathCause_Type = ""{3}"",{0}{1}NaturalDeath = {4},{0}{1}UnnaturalDeath = {5},{0}{1}Person = {6}{0}}}", Environment.NewLine, @"	", this.Date_YMD, this.DeathCause_DeathCause_Type, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // Death ToString Methods
+		#region Death Parent Support (Person)
 		public static implicit operator Person(Death Death)
 		{
-			if (Death == null)
+			if ((object)Death == null)
 			{
 				return null;
 			}
-			else
-			{
-				return Death.Person;
-			}
+			return Death.Person;
 		}
 		public virtual string FirstName
 		{
@@ -4260,97 +4990,134 @@ namespace SampleModel
 				return this.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
 			}
 		}
+		#endregion // Death Parent Support (Person)
+		#region Death Children Support
+		#region Death Child Support (NaturalDeath)
 		public static explicit operator NaturalDeath(Death Death)
 		{
-			if (Death == null)
+			if ((object)Death == null)
 			{
 				return null;
 			}
-			else if (Death.NaturalDeath == null)
+			NaturalDeath NaturalDeath;
+			if ((object)(NaturalDeath = Death.NaturalDeath) == null)
 			{
 				throw new InvalidCastException();
 			}
-			else
-			{
-				return Death.NaturalDeath;
-			}
+			return NaturalDeath;
 		}
+		#endregion // Death Child Support (NaturalDeath)
+		#region Death Child Support (UnnaturalDeath)
 		public static explicit operator UnnaturalDeath(Death Death)
 		{
-			if (Death == null)
+			if ((object)Death == null)
 			{
 				return null;
 			}
-			else if (Death.UnnaturalDeath == null)
+			UnnaturalDeath UnnaturalDeath;
+			if ((object)(UnnaturalDeath = Death.UnnaturalDeath) == null)
 			{
 				throw new InvalidCastException();
 			}
-			else
-			{
-				return Death.UnnaturalDeath;
-			}
+			return UnnaturalDeath;
 		}
+		#endregion // Death Child Support (UnnaturalDeath)
+		#endregion // Death Children Support
 	}
 	#endregion // Death
 	#region NaturalDeath
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class NaturalDeath : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected NaturalDeath()
 		{
 		}
+		#region NaturalDeath INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // NaturalDeath INotifyPropertyChanged Implementation
+		#region NaturalDeath Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[4]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>> isFromProstateCancerChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					NaturalDeath.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					NaturalDeath.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnisFromProstateCancerChanging(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<NaturalDeath, bool>>(eventHandler, this, new PropertyChangingEventArgs<NaturalDeath, bool>(this, this.isFromProstateCancer, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<NaturalDeath, bool>>(eventHandler, this, new PropertyChangingEventArgs<NaturalDeath, bool>(this, "isFromProstateCancer", this.isFromProstateCancer, newValue));
 			}
 			return true;
 		}
@@ -4358,19 +5125,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					NaturalDeath.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					NaturalDeath.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnisFromProstateCancerChanged(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<NaturalDeath, bool>>(eventHandler, this, new PropertyChangedEventArgs<NaturalDeath, bool>(this, oldValue, this.isFromProstateCancer));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<NaturalDeath, bool>>(eventHandler, this, new PropertyChangedEventArgs<NaturalDeath, bool>(this, "isFromProstateCancer", oldValue, this.isFromProstateCancer), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("isFromProstateCancer");
 			}
 		}
@@ -4378,19 +5156,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					NaturalDeath.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					NaturalDeath.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnDeathChanging(Death newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<NaturalDeath, Death>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<NaturalDeath, Death>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<NaturalDeath, Death>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<NaturalDeath, Death>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<NaturalDeath, Death>>(eventHandler, this, new PropertyChangingEventArgs<NaturalDeath, Death>(this, this.Death, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<NaturalDeath, Death>>(eventHandler, this, new PropertyChangingEventArgs<NaturalDeath, Death>(this, "Death", this.Death, newValue));
 			}
 			return true;
 		}
@@ -4398,21 +5184,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					NaturalDeath.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					NaturalDeath.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnDeathChanged(Death oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<NaturalDeath, Death>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<NaturalDeath, Death>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<NaturalDeath, Death>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<NaturalDeath, Death>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<NaturalDeath, Death>>(eventHandler, this, new PropertyChangedEventArgs<NaturalDeath, Death>(this, oldValue, this.Death));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<NaturalDeath, Death>>(eventHandler, this, new PropertyChangedEventArgs<NaturalDeath, Death>(this, "Death", oldValue, this.Death), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Death");
 			}
+		}
+		#endregion // NaturalDeath Property Change Events
+		#region NaturalDeath Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract bool isFromProstateCancer
@@ -4426,6 +5229,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // NaturalDeath Abstract Properties
+		#region NaturalDeath ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -4434,27 +5239,23 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"NaturalDeath{0}{{{0}{1}isFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, @"	", this.isFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // NaturalDeath ToString Methods
+		#region NaturalDeath Parent Support (Death)
 		public static implicit operator Death(NaturalDeath NaturalDeath)
 		{
-			if (NaturalDeath == null)
+			if ((object)NaturalDeath == null)
 			{
 				return null;
 			}
-			else
-			{
-				return NaturalDeath.Death;
-			}
+			return NaturalDeath.Death;
 		}
 		public static implicit operator Person(NaturalDeath NaturalDeath)
 		{
-			if (NaturalDeath == null)
+			if ((object)NaturalDeath == null)
 			{
 				return null;
 			}
-			else
-			{
-				return NaturalDeath.Death.Person;
-			}
+			return NaturalDeath.Death.Person;
 		}
 		public virtual Nullable<int> Date_YMD
 		{
@@ -5177,67 +5978,102 @@ namespace SampleModel
 				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
 			}
 		}
+		#endregion // NaturalDeath Parent Support (Death)
 	}
 	#endregion // NaturalDeath
 	#region UnnaturalDeath
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class UnnaturalDeath : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected UnnaturalDeath()
 		{
 		}
+		#region UnnaturalDeath INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // UnnaturalDeath INotifyPropertyChanged Implementation
+		#region UnnaturalDeath Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[6]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[6], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> isViolentChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					UnnaturalDeath.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					UnnaturalDeath.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnisViolentChanging(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangingEventArgs<UnnaturalDeath, bool>(this, this.isViolent, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangingEventArgs<UnnaturalDeath, bool>(this, "isViolent", this.isViolent, newValue));
 			}
 			return true;
 		}
@@ -5245,19 +6081,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					UnnaturalDeath.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					UnnaturalDeath.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnisViolentChanged(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangedEventArgs<UnnaturalDeath, bool>(this, oldValue, this.isViolent));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangedEventArgs<UnnaturalDeath, bool>(this, "isViolent", oldValue, this.isViolent), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("isViolent");
 			}
 		}
@@ -5265,19 +6112,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					UnnaturalDeath.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					UnnaturalDeath.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnisBloodyChanging(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangingEventArgs<UnnaturalDeath, bool>(this, this.isBloody, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangingEventArgs<UnnaturalDeath, bool>(this, "isBloody", this.isBloody, newValue));
 			}
 			return true;
 		}
@@ -5285,19 +6140,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					UnnaturalDeath.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					UnnaturalDeath.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnisBloodyChanged(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangedEventArgs<UnnaturalDeath, bool>(this, oldValue, this.isBloody));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<UnnaturalDeath, bool>>(eventHandler, this, new PropertyChangedEventArgs<UnnaturalDeath, bool>(this, "isBloody", oldValue, this.isBloody), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("isBloody");
 			}
 		}
@@ -5305,19 +6171,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+				if ((object)value != null)
+				{
+					UnnaturalDeath.InterlockedDelegateCombine(ref this.Events[4], value);
+				}
 			}
 			remove
 			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					UnnaturalDeath.InterlockedDelegateRemove(ref events[4], value);
+				}
 			}
 		}
 		protected bool OnDeathChanging(Death newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>>(eventHandler, this, new PropertyChangingEventArgs<UnnaturalDeath, Death>(this, this.Death, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>>(eventHandler, this, new PropertyChangingEventArgs<UnnaturalDeath, Death>(this, "Death", this.Death, newValue));
 			}
 			return true;
 		}
@@ -5325,21 +6199,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+				if ((object)value != null)
+				{
+					UnnaturalDeath.InterlockedDelegateCombine(ref this.Events[5], value);
+				}
 			}
 			remove
 			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					UnnaturalDeath.InterlockedDelegateRemove(ref events[5], value);
+				}
 			}
 		}
 		protected void OnDeathChanged(Death oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Death>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Death>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Death>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Death>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<UnnaturalDeath, Death>>(eventHandler, this, new PropertyChangedEventArgs<UnnaturalDeath, Death>(this, oldValue, this.Death));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<UnnaturalDeath, Death>>(eventHandler, this, new PropertyChangedEventArgs<UnnaturalDeath, Death>(this, "Death", oldValue, this.Death), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Death");
 			}
+		}
+		#endregion // UnnaturalDeath Property Change Events
+		#region UnnaturalDeath Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract bool isViolent
@@ -5359,6 +6250,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // UnnaturalDeath Abstract Properties
+		#region UnnaturalDeath ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -5367,27 +6260,23 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}isViolent = ""{2}"",{0}{1}isBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, @"	", this.isViolent, this.isBloody, "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // UnnaturalDeath ToString Methods
+		#region UnnaturalDeath Parent Support (Death)
 		public static implicit operator Death(UnnaturalDeath UnnaturalDeath)
 		{
-			if (UnnaturalDeath == null)
+			if ((object)UnnaturalDeath == null)
 			{
 				return null;
 			}
-			else
-			{
-				return UnnaturalDeath.Death;
-			}
+			return UnnaturalDeath.Death;
 		}
 		public static implicit operator Person(UnnaturalDeath UnnaturalDeath)
 		{
-			if (UnnaturalDeath == null)
+			if ((object)UnnaturalDeath == null)
 			{
 				return null;
 			}
-			else
-			{
-				return UnnaturalDeath.Death.Person;
-			}
+			return UnnaturalDeath.Death.Person;
 		}
 		public virtual Nullable<int> Date_YMD
 		{
@@ -6110,67 +6999,102 @@ namespace SampleModel
 				return this.Death.Person.PersonBoughtCarFromPersonOnDateViaSellerCollection;
 			}
 		}
+		#endregion // UnnaturalDeath Parent Support (Death)
 	}
 	#endregion // UnnaturalDeath
 	#region Task
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Task : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Task()
 		{
 		}
+		#region Task INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // Task INotifyPropertyChanged Implementation
+		#region Task Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[2]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[2], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<Task, Person>> PersonChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					Task.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Task.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnPersonChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Task, Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Task, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Task, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Task, Person>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Task, Person>>(eventHandler, this, new PropertyChangingEventArgs<Task, Person>(this, this.Person, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Task, Person>>(eventHandler, this, new PropertyChangingEventArgs<Task, Person>(this, "Person", this.Person, newValue));
 			}
 			return true;
 		}
@@ -6178,21 +7102,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					Task.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Task.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnPersonChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Task, Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Task, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Task, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Task, Person>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Task, Person>>(eventHandler, this, new PropertyChangedEventArgs<Task, Person>(this, oldValue, this.Person));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Task, Person>>(eventHandler, this, new PropertyChangedEventArgs<Task, Person>(this, "Person", oldValue, this.Person), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Person");
 			}
+		}
+		#endregion // Task Property Change Events
+		#region Task Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, true)]
 		public abstract Person Person
@@ -6200,6 +7141,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // Task Abstract Properties
+		#region Task ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -6208,67 +7151,102 @@ namespace SampleModel
 		{
 			return string.Format(provider, "Task{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, @"	", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // Task ToString Methods
 	}
 	#endregion // Task
 	#region ValueType1
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class ValueType1 : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected ValueType1()
 		{
 		}
+		#region ValueType1 INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // ValueType1 INotifyPropertyChanged Implementation
+		#region ValueType1 Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[4]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[4], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1, int>> ValueType1ValueChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					ValueType1.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ValueType1.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnValueType1ValueChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<ValueType1, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<ValueType1, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<ValueType1, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<ValueType1, int>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ValueType1, int>>(eventHandler, this, new PropertyChangingEventArgs<ValueType1, int>(this, this.ValueType1Value, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ValueType1, int>>(eventHandler, this, new PropertyChangingEventArgs<ValueType1, int>(this, "ValueType1Value", this.ValueType1Value, newValue));
 			}
 			return true;
 		}
@@ -6276,19 +7254,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					ValueType1.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ValueType1.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnValueType1ValueChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<ValueType1, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<ValueType1, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<ValueType1, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<ValueType1, int>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ValueType1, int>>(eventHandler, this, new PropertyChangedEventArgs<ValueType1, int>(this, oldValue, this.ValueType1Value));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ValueType1, int>>(eventHandler, this, new PropertyChangedEventArgs<ValueType1, int>(this, "ValueType1Value", oldValue, this.ValueType1Value), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("ValueType1Value");
 			}
 		}
@@ -6296,19 +7285,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					ValueType1.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ValueType1.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnDoesSomethingWithPersonChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<ValueType1, Person>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<ValueType1, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<ValueType1, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<ValueType1, Person>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ValueType1, Person>>(eventHandler, this, new PropertyChangingEventArgs<ValueType1, Person>(this, this.DoesSomethingWithPerson, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<ValueType1, Person>>(eventHandler, this, new PropertyChangingEventArgs<ValueType1, Person>(this, "DoesSomethingWithPerson", this.DoesSomethingWithPerson, newValue));
 			}
 			return true;
 		}
@@ -6316,21 +7313,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					ValueType1.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					ValueType1.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnDoesSomethingWithPersonChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<ValueType1, Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<ValueType1, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<ValueType1, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<ValueType1, Person>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ValueType1, Person>>(eventHandler, this, new PropertyChangedEventArgs<ValueType1, Person>(this, oldValue, this.DoesSomethingWithPerson));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<ValueType1, Person>>(eventHandler, this, new PropertyChangedEventArgs<ValueType1, Person>(this, "DoesSomethingWithPerson", oldValue, this.DoesSomethingWithPerson), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("DoesSomethingWithPerson");
 			}
+		}
+		#endregion // ValueType1 Property Change Events
+		#region ValueType1 Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract int ValueType1Value
@@ -6349,6 +7363,8 @@ namespace SampleModel
 		{
 			get;
 		}
+		#endregion // ValueType1 Abstract Properties
+		#region ValueType1 ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -6357,67 +7373,102 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"ValueType1{0}{{{0}{1}ValueType1Value = ""{2}"",{0}{1}DoesSomethingWithPerson = {3}{0}}}", Environment.NewLine, @"	", this.ValueType1Value, "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // ValueType1 ToString Methods
 	}
 	#endregion // ValueType1
 	#region PersonBoughtCarFromPersonOnDate
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class PersonBoughtCarFromPersonOnDate : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected PersonBoughtCarFromPersonOnDate()
 		{
 		}
+		#region PersonBoughtCarFromPersonOnDate INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // PersonBoughtCarFromPersonOnDate INotifyPropertyChanged Implementation
+		#region PersonBoughtCarFromPersonOnDate Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[8]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[8], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> CarSold_vinChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnCarSold_vinChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, this.CarSold_vin, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, "CarSold_vin", this.CarSold_vin, newValue));
 			}
 			return true;
 		}
@@ -6425,19 +7476,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnCarSold_vinChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, oldValue, this.CarSold_vin));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, "CarSold_vin", oldValue, this.CarSold_vin), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("CarSold_vin");
 			}
 		}
@@ -6445,19 +7507,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnSaleDate_YMDChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, this.SaleDate_YMD, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, "SaleDate_YMD", this.SaleDate_YMD, newValue));
 			}
 			return true;
 		}
@@ -6465,19 +7535,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnSaleDate_YMDChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, oldValue, this.SaleDate_YMD));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, int>(this, "SaleDate_YMD", oldValue, this.SaleDate_YMD), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("SaleDate_YMD");
 			}
 		}
@@ -6485,19 +7566,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[4], value);
+				}
 			}
 			remove
 			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[4], value);
+				}
 			}
 		}
 		protected bool OnBuyerChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, this.Buyer, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, "Buyer", this.Buyer, newValue));
 			}
 			return true;
 		}
@@ -6505,19 +7594,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[5], value);
+				}
 			}
 			remove
 			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[5], value);
+				}
 			}
 		}
 		protected void OnBuyerChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, oldValue, this.Buyer));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, "Buyer", oldValue, this.Buyer), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Buyer");
 			}
 		}
@@ -6525,19 +7625,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[6], value);
+				}
 			}
 			remove
 			{
-				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[6], value);
+				}
 			}
 		}
 		protected bool OnSellerChanging(Person newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>)events[6]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, this.Seller, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangingEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, "Seller", this.Seller, newValue));
 			}
 			return true;
 		}
@@ -6545,21 +7653,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
+				if ((object)value != null)
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateCombine(ref this.Events[7], value);
+				}
 			}
 			remove
 			{
-				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					PersonBoughtCarFromPersonOnDate.InterlockedDelegateRemove(ref events[7], value);
+				}
 			}
 		}
 		protected void OnSellerChanged(Person oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>)events[7]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, oldValue, this.Seller));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>>(eventHandler, this, new PropertyChangedEventArgs<PersonBoughtCarFromPersonOnDate, Person>(this, "Seller", oldValue, this.Seller), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Seller");
 			}
+		}
+		#endregion // PersonBoughtCarFromPersonOnDate Property Change Events
+		#region PersonBoughtCarFromPersonOnDate Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract int CarSold_vin
@@ -6585,6 +7710,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // PersonBoughtCarFromPersonOnDate Abstract Properties
+		#region PersonBoughtCarFromPersonOnDate ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -6593,67 +7720,102 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"PersonBoughtCarFromPersonOnDate{0}{{{0}{1}CarSold_vin = ""{2}"",{0}{1}SaleDate_YMD = ""{3}"",{0}{1}Buyer = {4},{0}{1}Seller = {5}{0}}}", Environment.NewLine, @"	", this.CarSold_vin, this.SaleDate_YMD, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
+		#endregion // PersonBoughtCarFromPersonOnDate ToString Methods
 	}
 	#endregion // PersonBoughtCarFromPersonOnDate
 	#region Review
 	[DataObject()]
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
 	public abstract partial class Review : INotifyPropertyChanged, IHasSampleModelContext
 	{
 		protected Review()
 		{
 		}
+		#region Review INotifyPropertyChanged Implementation
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Combine(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+			remove
+			{
+				if ((object)value != null)
+				{
+					PropertyChangedEventHandler currentHandler;
+					while ((object)System.Threading.Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this._propertyChangedEventHandler, (PropertyChangedEventHandler)System.Delegate.Remove(currentHandler = this._propertyChangedEventHandler, value), currentHandler) != (object)currentHandler)
+					{
+					}
+				}
+			}
+		}
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler eventHandler;
+			if ((object)(eventHandler = this._propertyChangedEventHandler) != null)
+			{
+				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion // Review INotifyPropertyChanged Implementation
+		#region Review Property Change Events
 		private System.Delegate[] _events;
 		private System.Delegate[] Events
 		{
 			get
 			{
-				return this._events ?? (this._events = new System.Delegate[6]);
+				System.Delegate[] localEvents;
+				return (localEvents = this._events) ?? (System.Threading.Interlocked.CompareExchange<System.Delegate[]>(ref this._events, localEvents = new System.Delegate[6], null) ?? localEvents);
 			}
 		}
-		private PropertyChangedEventHandler _propertyChangedEventHandler;
-		[SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		private static void InterlockedDelegateCombine(ref System.Delegate location, System.Delegate value)
 		{
-			add
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Combine(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
-			}
-			remove
-			{
-				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
-		private void OnPropertyChanged(string propertyName)
+		private static void InterlockedDelegateRemove(ref System.Delegate location, System.Delegate value)
 		{
-			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
-			if ((object)eventHandler != null)
+			System.Delegate currentHandler;
+			while ((object)System.Threading.Interlocked.CompareExchange<System.Delegate>(ref location, System.Delegate.Remove(currentHandler = location, value), currentHandler) != (object)currentHandler)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync(eventHandler, this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		public abstract SampleModelContext Context
-		{
-			get;
 		}
 		public event EventHandler<PropertyChangingEventArgs<Review, int>> Car_vinChanging
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				if ((object)value != null)
+				{
+					Review.InterlockedDelegateCombine(ref this.Events[0], value);
+				}
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Review.InterlockedDelegateRemove(ref events[0], value);
+				}
 			}
 		}
 		protected bool OnCar_vinChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Review, int>>)events[0]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, this.Car_vin, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, "Car_vin", this.Car_vin, newValue));
 			}
 			return true;
 		}
@@ -6661,19 +7823,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				if ((object)value != null)
+				{
+					Review.InterlockedDelegateCombine(ref this.Events[1], value);
+				}
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Review.InterlockedDelegateRemove(ref events[1], value);
+				}
 			}
 		}
 		protected void OnCar_vinChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Review, int>>)events[1]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, oldValue, this.Car_vin));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, "Car_vin", oldValue, this.Car_vin), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Car_vin");
 			}
 		}
@@ -6681,19 +7854,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				if ((object)value != null)
+				{
+					Review.InterlockedDelegateCombine(ref this.Events[2], value);
+				}
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Review.InterlockedDelegateRemove(ref events[2], value);
+				}
 			}
 		}
 		protected bool OnRating_Nr_IntegerChanging(int newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Review, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Review, int>>)events[2]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, this.Rating_Nr_Integer, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, int>>(eventHandler, this, new PropertyChangingEventArgs<Review, int>(this, "Rating_Nr_Integer", this.Rating_Nr_Integer, newValue));
 			}
 			return true;
 		}
@@ -6701,19 +7882,30 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				if ((object)value != null)
+				{
+					Review.InterlockedDelegateCombine(ref this.Events[3], value);
+				}
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Review.InterlockedDelegateRemove(ref events[3], value);
+				}
 			}
 		}
 		protected void OnRating_Nr_IntegerChanged(int oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Review, int>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Review, int>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Review, int>>)events[3]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, oldValue, this.Rating_Nr_Integer));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, int>>(eventHandler, this, new PropertyChangedEventArgs<Review, int>(this, "Rating_Nr_Integer", oldValue, this.Rating_Nr_Integer), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Rating_Nr_Integer");
 			}
 		}
@@ -6721,19 +7913,27 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
+				if ((object)value != null)
+				{
+					Review.InterlockedDelegateCombine(ref this.Events[4], value);
+				}
 			}
 			remove
 			{
-				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Review.InterlockedDelegateRemove(ref events[4], value);
+				}
 			}
 		}
 		protected bool OnCriterion_NameChanging(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Review, string>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<Review, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangingEventArgs<Review, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Review, string>>)events[4]) != null))
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, string>>(eventHandler, this, new PropertyChangingEventArgs<Review, string>(this, this.Criterion_Name, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Review, string>>(eventHandler, this, new PropertyChangingEventArgs<Review, string>(this, "Criterion_Name", this.Criterion_Name, newValue));
 			}
 			return true;
 		}
@@ -6741,21 +7941,38 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
+				if ((object)value != null)
+				{
+					Review.InterlockedDelegateCombine(ref this.Events[5], value);
+				}
 			}
 			remove
 			{
-				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
+				System.Delegate[] events;
+				if (((object)value != null) && ((object)(events = this._events) != null))
+				{
+					Review.InterlockedDelegateRemove(ref events[5], value);
+				}
 			}
 		}
 		protected void OnCriterion_NameChanged(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Review, string>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<Review, string>>;
-			if ((object)eventHandler != null)
+			System.Delegate[] events;
+			EventHandler<PropertyChangedEventArgs<Review, string>> eventHandler;
+			if (((object)(events = this._events) != null) && ((object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Review, string>>)events[5]) != null))
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, string>>(eventHandler, this, new PropertyChangedEventArgs<Review, string>(this, oldValue, this.Criterion_Name));
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Review, string>>(eventHandler, this, new PropertyChangedEventArgs<Review, string>(this, "Criterion_Name", oldValue, this.Criterion_Name), this._propertyChangedEventHandler);
+			}
+			else
+			{
 				this.OnPropertyChanged("Criterion_Name");
 			}
+		}
+		#endregion // Review Property Change Events
+		#region Review Abstract Properties
+		public abstract SampleModelContext Context
+		{
+			get;
 		}
 		[DataObjectField(false, false, false)]
 		public abstract int Car_vin
@@ -6775,6 +7992,8 @@ namespace SampleModel
 			get;
 			set;
 		}
+		#endregion // Review Abstract Properties
+		#region Review ToString Methods
 		public override string ToString()
 		{
 			return this.ToString(null);
@@ -6783,10 +8002,11 @@ namespace SampleModel
 		{
 			return string.Format(provider, @"Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criterion_Name = ""{4}""{0}}}", Environment.NewLine, @"	", this.Car_vin, this.Rating_Nr_Integer, this.Criterion_Name);
 		}
+		#endregion // Review ToString Methods
 	}
 	#endregion // Review
 	#region IHasSampleModelContext
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface IHasSampleModelContext
 	{
 		SampleModelContext Context
@@ -6796,7 +8016,7 @@ namespace SampleModel
 	}
 	#endregion // IHasSampleModelContext
 	#region ISampleModelContext
-	[GeneratedCode("OIALtoPLiX", "1.0")]
+	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface ISampleModelContext
 	{
 		ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother);

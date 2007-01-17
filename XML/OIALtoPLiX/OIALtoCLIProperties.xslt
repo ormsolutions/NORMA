@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -160,7 +160,7 @@
 					<prop:IdentityField name="{@name}"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" canBeNull="{not(@mandatory='alethic') or $informationTypeFormatMapping/@canBeNull='true'}" isCollection="false" isCustomType="false">
+					<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint[@modality='alethic'])}" canBeNull="{not(@mandatory='alethic') or $informationTypeFormatMapping/@canBeNull='true'}" isCollection="false" isCustomType="false">
 						<xsl:choose>
 							<xsl:when test="not(@mandatory='alethic') and $informationTypeFormatMapping/@canBeNull='false'">
 								<prop:DataType dataTypeName="Nullable">
@@ -180,7 +180,7 @@
 		</xsl:for-each>
 
 		<xsl:for-each select="oil:conceptTypeRef">
-			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{@oppositeName}">
+			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint[@modality='alethic'])}" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{@oppositeName}">
 				<prop:DataType dataTypeName="{@target}"/>
 			</prop:Property>
 		</xsl:for-each>
@@ -195,7 +195,7 @@
 			</prop:Property>
 		</xsl:for-each>
 		<xsl:for-each select="$ConceptTypeRefs[@target=$thisClassName]">
-			<xsl:variable name="isCollection" select="not(boolean(oil:singleRoleUniquenessConstraint))"/>
+			<xsl:variable name="isCollection" select="not(boolean(oil:singleRoleUniquenessConstraint[@modality='alethic']))"/>
 			<xsl:variable name="propertyName">
 				<xsl:choose>
 					<xsl:when test="parent::oil:conceptType/@name = $thisClassName">
