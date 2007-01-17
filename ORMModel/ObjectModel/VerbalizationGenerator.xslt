@@ -6056,7 +6056,7 @@
 													<plx:nameRef name="includedFactRoles"/>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:nameRef name="i"/>
+													<plx:nameRef name="j"/>
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>

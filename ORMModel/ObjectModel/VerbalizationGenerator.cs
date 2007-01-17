@@ -5818,7 +5818,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -5931,7 +5931,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6033,7 +6033,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6060,10 +6060,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							factRoles = currentFact.RoleCollection;
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
-							CoreVerbalizationSnippetType listSnippet;
-							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
 							snippet1Replace1Replace1 = null;
-							bool isFirstAppend = true;
 							RoleBase rolePlayer = null;
 							for (int RoleIter = 0; RoleIter < currentRoleCount; ++RoleIter)
 							{
@@ -6076,7 +6073,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 							}
 							snippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(rolePlayer)];
-							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
 						}
 					}
 					snippet1Replace1Replace1 = sbTemp.ToString();
@@ -6117,7 +6113,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6210,7 +6206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6333,7 +6329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6439,7 +6435,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6561,7 +6557,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6667,7 +6663,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -6977,7 +6973,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7078,7 +7074,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7171,7 +7167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7274,7 +7270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7375,7 +7371,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7463,7 +7459,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7561,7 +7557,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -7680,7 +7676,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -8039,7 +8035,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -8136,7 +8132,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -8222,7 +8218,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -8324,7 +8320,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -8423,7 +8419,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							while (j < i)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
@@ -8523,7 +8519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
@@ -8642,7 +8638,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						while (j < i)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}

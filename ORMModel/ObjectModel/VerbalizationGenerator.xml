@@ -802,7 +802,7 @@
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachIndentedQuantifier">
 									<IterateSequences listStyle="null" pass="first">
-										<IterateSequenceFacts match="included" listStyle="SimpleLogicalAndList" pass="first">
+										<IterateSequenceFacts match="included" listStyle="null" pass="first">
 											<RolePlayer pass="first"/>
 										</IterateSequenceFacts>
 									</IterateSequences>
