@@ -1,0 +1,54 @@
+body
+{
+	font-family: Arial;
+}
+h2, h4
+{
+	font-family: Tahoma;
+}
+p
+{
+	text-indent: 2%;
+}
+.var, span.line
+{
+	color: #2B91AF;
+	font-weight: bold;
+}
+a.var
+{
+	font-size:95%;
+}
+a.var:hover
+{
+	background-color: Black;
+}
+span.line
+{
+	padding-left: 20px;
+	font-size: small;
+}
+span.xpath
+{
+	color: #0000FF;
+}
+ol.lalpha
+{
+	list-style-type: lower-alpha;
+}
+li 
+{
+	line-height: 1.5em;
+}
+span.elem
+{
+	color: #A31515;
+}
+span.attr
+{
+	color: #FF0000;
+}
+span
+{
+	font-weight: bold;
+}
