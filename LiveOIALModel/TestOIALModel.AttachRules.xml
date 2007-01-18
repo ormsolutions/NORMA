@@ -35,6 +35,9 @@
 		<arg:Rule class="LiveOIALModel.MandatoryConstraintRule.MandatoryConstraintAddRule"/>
 		<arg:Rule class="LiveOIALModel.MandatoryConstraintRule.MandatoryConstraintChangeRule"/>
 		<arg:Rule class="LiveOIALModel.MandatoryConstraintRule.MandatoryConstraintDeletingRule"/>
+		<!--<arg:Rule class="LiveOIALModel.UniquenessConstraintRule.UniquenessConstraintAddRule"/>
+		<arg:Rule class="LiveOIALModel.UniquenessConstraintRule.UniquenessConstraintChangeRule"/>
+		<arg:Rule class="LiveOIALModel.UniquenessConstraintRule.UniquenessConstraintDeletingRule"/>-->
 		<arg:Rule class="LiveOIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeAddRule"/>
 		<arg:Rule class="LiveOIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeDeleteRule"/>
 		<arg:Rule class="LiveOIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeAddRule"/>

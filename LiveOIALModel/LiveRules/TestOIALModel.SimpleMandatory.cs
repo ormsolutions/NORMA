@@ -9,11 +9,13 @@ namespace Neumont.Tools.ORM.TestOIALModel
 {
 	public partial class LiveOIALModel
 	{
+		#region Mandatory Constraint Rules
 		/// <summary>
 		/// Encapsulates functions common to handling MandatoryConstraint rules.
 		/// </summary>
 		private sealed partial class MandatoryConstraintRule
 		{
+			#region Add
 			/// <summary>
 			/// Handles changes to the OIAL Model when a
 			/// <see cref="T:Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" /> is added to the ORM Model.
@@ -39,66 +41,6 @@ namespace Neumont.Tools.ORM.TestOIALModel
 					MandatoryConstraint mandatoryRoleConstraint = element as MandatoryConstraint;
 					Debug.Assert(mandatoryRoleConstraint != null, "Element was not of the expected type when executing a rule.");
 					ProcessElementAdded(mandatoryRoleConstraint);
-				}
-			}
-
-			/// <summary>
-			/// Handles changes to the OIAL Model when a
-			/// <see cref="T:Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" /> is deleted from the ORM Model.
-			/// </summary>
-			[RuleOn(typeof(MandatoryConstraint))]
-			private sealed partial class MandatoryConstraintDeletingRule : DeletingRule
-			{
-				/// <summary>
-				/// Processes changes to the OIAL Model when a MandatoryConstraint is deleted from the ORM Model.
-				/// </summary>
-				/// <param name="e"><see cref="T:Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs" /></param>
-				public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-				{
-					// Rule fired twice by two other rules - TODO: Talk to Matt about whether this is supposed to happen.
-					MandatoryConstraint mandatoryRoleConstraint = e.ModelElement as MandatoryConstraint;
-					Debug.Assert(mandatoryRoleConstraint != null, "Element was not of the expected type when executing a rule.");
-					ProcessElementDeleting(mandatoryRoleConstraint, MandatoryConstraintModality.Alethic);
-				}
-			}
-
-			/// <summary>
-			/// Handles changes to the OIAL Model when a
-			/// <see cref="T:Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" /> is changed on the ORM Model.
-			/// </summary>
-			[RuleOn(typeof(MandatoryConstraint))]
-			private sealed partial class MandatoryConstraintChangeRule : ChangeRule
-			{
-				/// <summary>
-				/// Processes changes to the OIAL Model when a MandatoryConstraint is changed on the ORM Model.
-				/// </summary>
-				/// <param name="e"><see cref="T:Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs" /></param>
-				public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-				{
-					MandatoryConstraint mandatoryRoleConstraint = e.ModelElement as MandatoryConstraint;
-					Guid attributeGuid = e.DomainProperty.Id;
-					Debug.Assert(mandatoryRoleConstraint != null, "Element was not of the expected type when executing a rule.");
-
-					if (!mandatoryRoleConstraint.IsSimple)
-					{
-						return;
-					}
-
-					if (attributeGuid == MandatoryConstraint.ModalityDomainPropertyId)
-					{
-						ConstraintModality newModality = (ConstraintModality)e.NewValue;
-
-						if (newModality == ConstraintModality.Alethic)
-						{
-							// Modality was changed from Deontic to Alethic. Simulate Add.
-							ProcessElementAdded(mandatoryRoleConstraint);
-						}
-						else
-						{
-							// Modality was changed from Alethic to Deontic. Simulate Remove.
-							ProcessElementDeleting(mandatoryRoleConstraint, MandatoryConstraintModality.Deontic);
-						}
-					}
 				}
 			}
 
@@ -244,19 +186,32 @@ namespace Neumont.Tools.ORM.TestOIALModel
 							// information types deleted. The rest is the same.
 							if (rolePlayerPreferredIdentifierExists)
 							{
-								absorberId = DoOneToOnePreferredIdentifierAbsorption(rolePlayerPreferredIdentifier,
-									liveOIALModel, store, factType);
+								absorberId = DoOneToOnePreferredIdentifierAbsorption(
+									rolePlayerPreferredIdentifier,
+									liveOIALModel,
+									store,
+									factType);
 							}
 							if (oppositeRolePlayerPreferredIdentifierExists && absorberId == Guid.Empty)
 							{
-								absorberId = DoOneToOnePreferredIdentifierAbsorption(oppositeRolePlayerPreferredIdentifier,
-									liveOIALModel, store, factType);
+								absorberId = DoOneToOnePreferredIdentifierAbsorption(
+									oppositeRolePlayerPreferredIdentifier,
+									liveOIALModel,
+									store,
+									factType);
 							}
 							if (absorberId == Guid.Empty)
 							{
-								absorberId = DoOneToOneAbsorptionForDoubleMandatories(rolePlayer, oppositeRolePlayer, oldAbsorption, liveOIALModel, store,
-									mandatoryConstraintRole, oppositeRole);
+								absorberId = DoOneToOneAbsorptionForDoubleMandatories(
+									rolePlayer,
+									oppositeRolePlayer,
+									oldAbsorption,
+									liveOIALModel,
+									store,
+									mandatoryConstraintRole,
+									oppositeRole);
 							}
+							Debug.Assert(absorberId != Guid.Empty);
 							// Change the absorption type to Fully and the absorbing object type.
 							liveOIALModel.myAbsorbedFactTypes[factType.Id] = new AbsorbedFactType(absorberId, FactAbsorptionType.Fully);
 						}
@@ -271,6 +226,28 @@ namespace Neumont.Tools.ORM.TestOIALModel
 					}
 				}
 			}
+			#endregion // Add
+			#region Deleting
+			/// <summary>
+			/// Handles changes to the OIAL Model when a
+			/// <see cref="T:Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" /> is deleted from the ORM Model.
+			/// </summary>
+			[RuleOn(typeof(MandatoryConstraint))]
+			private sealed partial class MandatoryConstraintDeletingRule : DeletingRule
+			{
+				/// <summary>
+				/// Processes changes to the OIAL Model when a MandatoryConstraint is deleted from the ORM Model.
+				/// </summary>
+				/// <param name="e"><see cref="T:Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs" /></param>
+				public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+				{
+					// Rule fired twice by two other rules - TODO: Talk to Matt about whether this is supposed to happen.
+					MandatoryConstraint mandatoryRoleConstraint = e.ModelElement as MandatoryConstraint;
+					Debug.Assert(mandatoryRoleConstraint != null, "Element was not of the expected type when executing a rule.");
+					ProcessElementDeleting(mandatoryRoleConstraint, MandatoryConstraintModality.Alethic);
+				}
+			}
+
 			/// <summary>
 			/// Processes a <see cref="T:Neumont.Tools.ORM.ObjectModel.MandatoryConstraint"/> that has been removed from the model.
 			/// </summary>
@@ -454,6 +431,49 @@ namespace Neumont.Tools.ORM.TestOIALModel
 					}
 				}
 			}
+			#endregion // Deleting
+			#region Change
+			/// <summary>
+			/// Handles changes to the OIAL Model when a
+			/// <see cref="T:Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" /> is changed on the ORM Model.
+			/// </summary>
+			[RuleOn(typeof(MandatoryConstraint))]
+			private sealed partial class MandatoryConstraintChangeRule : ChangeRule
+			{
+				/// <summary>
+				/// Processes changes to the OIAL Model when a MandatoryConstraint is changed on the ORM Model.
+				/// </summary>
+				/// <param name="e"><see cref="T:Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs" /></param>
+				public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+				{
+					MandatoryConstraint mandatoryRoleConstraint = e.ModelElement as MandatoryConstraint;
+					Guid attributeGuid = e.DomainProperty.Id;
+					Debug.Assert(mandatoryRoleConstraint != null, "Element was not of the expected type when executing a rule.");
+
+					if (!mandatoryRoleConstraint.IsSimple)
+					{
+						return;
+					}
+
+					if (attributeGuid == MandatoryConstraint.ModalityDomainPropertyId)
+					{
+						ConstraintModality newModality = (ConstraintModality)e.NewValue;
+
+						if (newModality == ConstraintModality.Alethic)
+						{
+							// Modality was changed from Deontic to Alethic. Simulate Add.
+							ProcessElementAdded(mandatoryRoleConstraint);
+						}
+						else
+						{
+							// Modality was changed from Alethic to Deontic. Simulate Remove.
+							ProcessElementDeleting(mandatoryRoleConstraint, MandatoryConstraintModality.Deontic);
+						}
+					}
+				}
+			}
+			#endregion
 		}
+		#endregion
 	}
 }
