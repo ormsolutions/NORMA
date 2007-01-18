@@ -153,7 +153,7 @@ namespace Neumont.Tools.ORM.TestOIALModel
 					}
 				}
 			}
-			#endregion // Add
+			#endregion	// Add
 			#region Deleting
 			/// <summary>
 			/// Handles changes to the OIAL Model when a
@@ -162,6 +162,10 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			[RuleOn(typeof(UniquenessConstraint))]
 			private sealed partial class UniquenessConstraintDeletingRule : DeletingRule
 			{
+				private LinkedElementCollection<Role> myConstraintRoleCollection;
+				private Store myStore;
+				private LiveOIALModel myOialModel;
+
 				/// <summary>
 				/// Processes changes to the OIAL Model when a UniquenessConstraint is deleted from the ORM Model.
 				/// </summary>
@@ -171,196 +175,217 @@ namespace Neumont.Tools.ORM.TestOIALModel
 					UniquenessConstraint uniquenessConstraint = e.ModelElement as UniquenessConstraint;
 					Debug.Assert(uniquenessConstraint != null, "Element was not of the expected type when executing a rule.");
 
-					// HACK: The rule is getting called twice per delete.  This keeps us from processing it the seccond time.
+					// HACK: The rule is getting called twice per delete.  This keeps us from processing it the second time.
 					if (uniquenessConstraint.Model != null)
 					{
-						LiveOIALModel oialModel = OIALModelHasORMModel.GetOIALModel(uniquenessConstraint.Model);
-						Store store = oialModel.Store;
+						myOialModel = OIALModelHasORMModel.GetOIALModel(uniquenessConstraint.Model);
+						myStore = myOialModel.Store;
 
-						LinkedElementCollection<Role> constraintRoleCollection = uniquenessConstraint.RoleCollection;
-						int constraintRoleCount = constraintRoleCollection.Count;
+						myConstraintRoleCollection = uniquenessConstraint.RoleCollection;
+						int constraintRoleCount = myConstraintRoleCollection.Count;
 
 						#region Single Role Uniqueness Constraint
 						// If constraint spans a single role...
 						if (constraintRoleCount == 1)
 						{
-							Role role = constraintRoleCollection[0];
-							ObjectType rolePlayer = role.RolePlayer;
-							Guid rolePlayerId = rolePlayer.Id;
-							ConceptType conceptType = ConceptTypeHasObjectType.GetConceptType(rolePlayer);
-
-							FactType factType = role.FactType;
-							int internalUniquenessCount = GetAlethicInternalConstraintsCount(factType, ConstraintType.InternalUniqueness);
-							Guid factTypeId = factType.Id;
-							LinkedElementCollection<RoleBase> factTypeRoleCollection = factType.RoleCollection;
-							int factTypeRoleCount = factTypeRoleCollection.Count;
-
-							#region Binary
-							// If fact type is binary...
-							if (factTypeRoleCount == 2)
-							{
-								Role oppositeRole = role.OppositeRole.Role;
-								ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
-								Guid oppositeRolePlayerId = oppositeRolePlayer.Id;
-								ConceptType oppositeConceptType = ConceptTypeHasObjectType.GetConceptType(oppositeRolePlayer);
-
-								#region One-to-many
-								// If internal uniqueness constraint pattern for fact type is one-to-many...
-								if (internalUniquenessCount == 1)
-								{
-									LinkedElementCollection<ConceptTypeChild> conceptTypeChildren = ConceptTypeChildHasPathRole.GetConceptTypeChild(oppositeRole);
-									int conceptTypeChildCount = conceptTypeChildren.Count;
-
-									// For each potential child...
-									for (int i = conceptTypeChildCount - 1; i >= 0; i--)
-									{
-										ConceptTypeChild conceptTypeChild = conceptTypeChildren[i];
-										ConceptType parent = conceptTypeChild.Parent;
-
-										// If this is the one we're looking for...
-										if (parent == conceptType)
-										{
-											// delete it
-											conceptTypeChild.Delete();
-										}
-									}
-
-									// TODO: delete child sequence constraints
-
-									// TODO: check absorbtion of one-to-one facts played by rolePlayer
-									// REMOVED: ResolveFactTypeAbsorptionsAfterChangingFunctionalRoles(oialModel, conceptType, role);
-								}
-								#endregion // One-to-many
-								#region One-to-one
-								else if (internalUniquenessCount == 2) // ...one-to-one...
-								{
-									AbsorbedFactType absorbtion = oialModel.myAbsorbedFactTypes[factTypeId];
-									Guid absorberId = absorbtion.AbsorberId;
-									FactAbsorptionType absorbtionType = absorbtion.AbsorptionType;
-
-									#region Two Concept Types
-									// If there are two concept types...
-									if (conceptType != null && oppositeConceptType != null)
-									{
-										#region oppositeRolePlayer absorbing (Fact Only)
-										// If oppositeRolePlayer is absorbing factType (fact only)...
-										if (absorberId == oppositeRolePlayerId && absorbtionType == FactAbsorptionType.FactOnly)
-										{
-											// remove ConceptTypeReference to conceptType in oppositeConceptType
-											oppositeConceptType.ReferencedConceptTypeCollection.Remove(conceptType);
-
-											// create ConceptTypeReference to oppositeConceptType in conceptType
-											conceptType.ReferencedConceptTypeCollection.Add(oppositeConceptType);
-										}
-										#endregion // oppositeRolePlayer absorbing (Fact Only)
-										#region rolePlayer absorbing (Fact Only)
-										else if (absorberId == rolePlayerId && absorbtionType == FactAbsorptionType.FactOnly) // ...rolePlayer...(fact only)...
-										{
-											// TODO: remove SingleChildUniquenessConstraint for ConceptTypeReference to conceptType in oppositeConceptType
-										}
-										#endregion // rolePlayer absorbing (Fact Only)
-										#region rolePlayer absorbing (Fully)
-										else if (absorberId == rolePlayerId && absorbtionType == FactAbsorptionType.Fully) // ...rolePlayer...(fully)...
-										{
-											LinkedElementCollection<Role> rolePlayerPlayedRoles = rolePlayer.PlayedRoleCollection;
-											int rolePlayerFunctionRoleCount = GetFunctionalRoleCount(rolePlayerPlayedRoles, role);
-											MandatoryConstraintModality roleMandatoryModality = GetMandatoryModality(role);
-
-											// remove the Absorbed Concept Type of conceptType from oppositeConceptType
-											oppositeConceptType.AbsorbedConceptTypeCollection.Remove(conceptType);
-
-											// If rolePlayer plays other functional roles...
-											if (rolePlayerFunctionRoleCount > 0)
-											{
-												// TODO: keep the Concept Type for A and add a Concept Type Reference to A in B.
-											}
-											else // ...does not play...
-											{
-												// TODO: delete the Concept Type and add an Information Type for A in B.
-											}
-
-											if (roleMandatoryModality == MandatoryConstraintModality.Alethic)
-											{
-												// TODO: set the relationship’s Mandatory value to MandatoryConstraintModality.Alethic.
-											}
-										}
-										#endregion // rolePlayer absorbing (Fully)
-										#region Other
-										else
-										{
-											Debug.Fail("A supposed to be impossible case occured.");
-										}
-										#endregion // Other
-									}
-									#endregion // Two Concept Types
-									#region One Concept Type (Fact Only absorbtion)
-									else if (conceptType != null || oppositeConceptType != null && absorbtionType == FactAbsorptionType.FactOnly) // ...one concept type...(fact only)...
-									{
-										#region rolePlayer absorbing
-										// If rolePlayer is absorbing factType...
-										if (absorberId == rolePlayerId)
-										{
-											Debug.Assert(conceptType == null, "conceptType was expected to be null.");
-
-											// create a Concept Type for oppositeRolePlayer
-											oppositeConceptType = CreateConceptType(oialModel, store, oppositeRolePlayer, null);
-
-											// add a ConceptTypeReference to conceptType in oppositeConceptType
-											oppositeConceptType.ReferencedConceptTypeCollection.Add(conceptType);
-										}
-										#endregion // rolePlayer absorbing
-										#region oppositeRolePlayer absorbing
-										else if (absorberId == oppositeRolePlayerId) // ...oppositeRolePlayer...
-										{
-											Debug.Assert(oppositeConceptType == null, "oppositeConceptType was expected to be null.");
-
-											// TODO: remove SingleChildUniquenessConstraint for the InformationType of rolePlayer in oppositeConceptType.
-										}
-										#endregion // oppositeRolePlayer absorbing
-										#region Other
-										else
-										{
-											Debug.Fail("A one-to-one binary factType is not being absorbed into either role player.");
-										}
-										#endregion // Other
-									}
-									#endregion // One Concept Type (Fact Only absorbtion)
-									#region Other
-									else // ...no concept types...
-									{
-										Debug.Fail("A one to one fact type was not being absorbed.");
-									}
-									#endregion // Other
-
-									// TODO: update model's absorbtion map
-
-									// TODO: check absorbtion of one-to-one facts played by rolePlayer
-									// REMOVED: ResolveFactTypeAbsorptionsAfterChangingFunctionalRoles(oialModel, conceptType, role);
-								}
-								#endregion
-								#region Other
-								else // ...other...
-								{
-									Debug.Fail("The internal uniueness count on a binary fact type is not between 1 and 2.");
-								}
-								#endregion // Other
-							}
-							#endregion // Binary
-							#region Unary
-							else if (factTypeRoleCount == 1) // ...unary...
-							{
-								// Do nothing.
-							}
-							#endregion // Unary
-							#region N-ary
-							else // ...n-ary...
-							{
-								Debug.Fail("It is a model error to have a single role uniqueness constraint on an N-ary fact type.");
-							}
-							#endregion // N-ary
+							ProcessSingleRoleUC();
 						}
 						#endregion // Single Role Uniqueness Constraint
 					}
+				}
+
+				private void ProcessSingleRoleUC()
+				{
+					Role role = myConstraintRoleCollection[0];
+					FactType factType = role.FactType;
+					LinkedElementCollection<RoleBase> factTypeRoleCollection = factType.RoleCollection;
+					int factTypeRoleCount = factTypeRoleCollection.Count;
+
+					#region Binary
+					// If fact type is binary...
+					if (factTypeRoleCount == 2)
+					{
+						ProcessBinarySingleRole(role, factType);
+					}
+					#endregion // Binary
+					#region Unary
+					else if (factTypeRoleCount == 1) // ...unary...
+					{
+						// Do nothing.
+					}
+					#endregion // Unary
+					#region N-ary
+					else // ...n-ary...
+					{
+						Debug.Fail("It is a model error to have a single role uniqueness constraint on an N-ary fact type.");
+					}
+					#endregion // N-ary
+				}
+
+				private void ProcessBinarySingleRole(Role role, FactType factType)
+				{
+					ObjectType rolePlayer = role.RolePlayer;
+					int internalUniquenessCount = GetAlethicInternalConstraintsCount(factType, ConstraintType.InternalUniqueness);
+					Guid rolePlayerId = rolePlayer.Id;
+					ConceptType conceptType = ConceptTypeHasObjectType.GetConceptType(rolePlayer);
+					Guid factTypeId = factType.Id;
+
+					Role oppositeRole = role.OppositeRole.Role;
+					ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
+					Guid oppositeRolePlayerId = oppositeRolePlayer.Id;
+					ConceptType oppositeConceptType = ConceptTypeHasObjectType.GetConceptType(oppositeRolePlayer);
+
+					#region One-to-many
+					// If internal uniqueness constraint pattern for fact type is one-to-many...
+					if (internalUniquenessCount == 1)
+					{
+						ProcessBinaryOneToMany(conceptType, oppositeRole);
+					}
+					#endregion // One-to-many
+					#region One-to-one
+					else if (internalUniquenessCount == 2) // ...one-to-one...
+					{
+						ProcessBinaryOneToOne(role, rolePlayer, rolePlayerId, conceptType, factTypeId, oppositeRolePlayer, oppositeRolePlayerId, oppositeConceptType);
+					}
+					#endregion
+					#region Other
+					else // ...other...
+					{
+						Debug.Fail("The internal uniqueness count on a binary fact type is not between 1 and 2.");
+					}
+					#endregion // Other
+				}
+
+				private void ProcessBinaryOneToOne(Role role, ObjectType rolePlayer, Guid rolePlayerId, ConceptType conceptType, 
+					Guid factTypeId, ObjectType oppositeRolePlayer, Guid oppositeRolePlayerId, ConceptType oppositeConceptType)
+				{
+					AbsorbedFactType absorption = myOialModel.myAbsorbedFactTypes[factTypeId];
+					Guid absorberId = absorption.AbsorberId;
+					FactAbsorptionType absorptionType = absorption.AbsorptionType;
+
+					#region Two Concept Types
+					// If there are two concept types...
+					if (conceptType != null && oppositeConceptType != null)
+					{
+						#region oppositeRolePlayer absorbing (Fact Only)
+						// If oppositeRolePlayer is absorbing factType (fact only)...
+						if (absorberId == oppositeRolePlayerId && absorptionType == FactAbsorptionType.FactOnly)
+						{
+							// remove ConceptTypeReference to conceptType in oppositeConceptType
+							oppositeConceptType.ReferencedConceptTypeCollection.Remove(conceptType);
+
+							// create ConceptTypeReference to oppositeConceptType in conceptType
+							conceptType.ReferencedConceptTypeCollection.Add(oppositeConceptType);
+						}
+						#endregion // oppositeRolePlayer absorbing (Fact Only)
+						#region rolePlayer absorbing (Fact Only)
+						else if (absorberId == rolePlayerId && absorptionType == FactAbsorptionType.FactOnly) // ...rolePlayer...(fact only)...
+						{
+							// TODO: remove SingleChildUniquenessConstraint for ConceptTypeReference to conceptType in oppositeConceptType
+						}
+						#endregion // rolePlayer absorbing (Fact Only)
+						#region rolePlayer absorbing (Fully)
+						else if (absorberId == rolePlayerId && absorptionType == FactAbsorptionType.Fully) // ...rolePlayer...(fully)...
+						{
+							LinkedElementCollection<Role> rolePlayerPlayedRoles = rolePlayer.PlayedRoleCollection;
+							int rolePlayerFunctionRoleCount = GetFunctionalRoleCount(rolePlayerPlayedRoles, role);
+							MandatoryConstraintModality roleMandatoryModality = GetMandatoryModality(role);
+
+							// remove the Absorbed Concept Type of conceptType from oppositeConceptType
+							oppositeConceptType.AbsorbedConceptTypeCollection.Remove(conceptType);
+
+							// If rolePlayer plays other functional roles...
+							if (rolePlayerFunctionRoleCount > 0)
+							{
+								// TODO: keep the Concept Type for A and add a Concept Type Reference to A in B.
+							}
+							else // ...does not play...
+							{
+								// TODO: delete the Concept Type and add an Information Type for A in B.
+							}
+
+							if (roleMandatoryModality == MandatoryConstraintModality.Alethic)
+							{
+								// TODO: set the relationship’s Mandatory value to MandatoryConstraintModality.Alethic.
+							}
+						}
+						#endregion // rolePlayer absorbing (Fully)
+						#region Other
+						else
+						{
+							Debug.Fail("A supposed-to-be impossible case occured.");
+						}
+						#endregion // Other
+					}
+					#endregion // Two Concept Types
+					#region One Concept Type (Fact Only absorbtion)
+					else if (conceptType != null || oppositeConceptType != null && absorptionType == FactAbsorptionType.FactOnly) // ...one concept type...(fact only)...
+					{
+						#region rolePlayer absorbing
+						// If rolePlayer is absorbing factType...
+						if (absorberId == rolePlayerId)
+						{
+							Debug.Assert(conceptType == null, "conceptType was expected to be null.");
+
+							// create a Concept Type for oppositeRolePlayer
+							oppositeConceptType = CreateConceptType(myOialModel, myStore, oppositeRolePlayer, null);
+
+							// add a ConceptTypeReference to conceptType in oppositeConceptType
+							oppositeConceptType.ReferencedConceptTypeCollection.Add(conceptType);
+						}
+						#endregion // rolePlayer absorbing
+						#region oppositeRolePlayer absorbing
+						else if (absorberId == oppositeRolePlayerId) // ...oppositeRolePlayer...
+						{
+							Debug.Assert(oppositeConceptType == null, "oppositeConceptType was expected to be null.");
+
+							// TODO: remove SingleChildUniquenessConstraint for the InformationType of rolePlayer in oppositeConceptType.
+						}
+						#endregion // oppositeRolePlayer absorbing
+						#region Other
+						else
+						{
+							Debug.Fail("A one-to-one binary factType is not being absorbed into either role player.");
+						}
+						#endregion // Other
+					}
+					#endregion // One Concept Type (Fact Only absorbtion)
+					#region Other
+					else // ...no concept types...
+					{
+						Debug.Fail("A one to one fact type was not being absorbed.");
+					}
+					#endregion // Other
+
+					// TODO: update model's absorbtion map
+
+					// TODO: check absorbtion of one-to-one facts played by rolePlayer
+					// REMOVED: ResolveFactTypeAbsorptionsAfterChangingFunctionalRoles(oialModel, conceptType, role);
+				}
+
+				private void ProcessBinaryOneToMany(ConceptType conceptType, Role oppositeRole)
+				{
+					LinkedElementCollection<ConceptTypeChild> conceptTypeChildren = ConceptTypeChildHasPathRole.GetConceptTypeChild(oppositeRole);
+					int conceptTypeChildCount = conceptTypeChildren.Count;
+
+					// For each potential child...
+					for (int i = conceptTypeChildCount - 1; i >= 0; i--)
+					{
+						ConceptTypeChild conceptTypeChild = conceptTypeChildren[i];
+						ConceptType parent = conceptTypeChild.Parent;
+
+						// If this is the one we're looking for...
+						if (parent == conceptType)
+						{
+							// delete it
+							conceptTypeChild.Delete();
+						}
+					}
+
+					// TODO: delete child sequence constraints
+
+					// TODO: check absorbtion of one-to-one facts played by rolePlayer
+					// REMOVED: ResolveFactTypeAbsorptionsAfterChangingFunctionalRoles(oialModel, conceptType, role);
 				}
 			}
 			#endregion // Deleting
@@ -420,7 +445,7 @@ namespace Neumont.Tools.ORM.TestOIALModel
 					}
 				}
 			}
-			#endregion // Change
+			#endregion	// Change
 		}
 		#endregion // Uniqueness Constraint Rules
 	}
