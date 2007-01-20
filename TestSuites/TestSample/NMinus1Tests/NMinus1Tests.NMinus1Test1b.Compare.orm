@@ -40,7 +40,7 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_A5179B80-FDE4-4770-B99F-1E626ABC3EFC" ref="_616B99E0-CF14-4A74-A0CE-285D6E118BD6" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:ObjectifiedType id="_E896CDDA-0597-4592-B20F-CE1C4A0048CF" Name="PersonPlayedSportForCountry" IsIndependent="true" _ReferenceMode="">
+			<orm:ObjectifiedType id="_E896CDDA-0597-4592-B20F-CE1C4A0048CF" Name="PersonPlayedSportForCountry" _ReferenceMode="">
 				<orm:PlayedRoles>
 					<orm:Role ref="_CDE2DACD-FEAB-4046-BFB5-AE421CFD6E95" />
 					<orm:Role ref="_9A3AFC6A-53B1-482A-A6AE-FEBE8986DC97" />

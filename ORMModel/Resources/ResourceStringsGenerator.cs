@@ -828,6 +828,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceRolePlayerNotNestingType");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</summary>
+		public static string ModelExceptionObjectTypeEnforceIsIndependentPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceIsIndependentPattern");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to set\ both a primary identifier and a value type on the same object type.</summary>
 		public static string ModelExceptionEnforcePreferredIdentifierForEntityType
 		{

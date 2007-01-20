@@ -1345,7 +1345,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Get the opposite role of any role. All roles are involed either
+		/// Get the opposite role of any role. All roles are involved either
 		/// in a binary fact or have a proxy role in a binary fact. If a role
 		/// has two opposite roles, then this method will choose the role
 		/// opposite the proxy. Use <see cref="OppositeRoleResolveProxy"/>
@@ -1365,7 +1365,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Get the opposite role of any role. All roles are involed either
+		/// Get the opposite role of any role. All roles are involved either
 		/// in a binary fact or have a proxy role in a binary fact. If a role
 		/// has two opposite roles, then this method will choose the role
 		/// on the non-implied binar fact. Use <see cref="OppositeRoleAlwaysResolveProxy"/>

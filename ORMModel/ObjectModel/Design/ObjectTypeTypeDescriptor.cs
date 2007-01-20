@@ -63,6 +63,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return !objectType.IsValueType;
 			}
+			else if (propertyId.Equals(ObjectType.IsExternalDomainPropertyId))
+			{
+				// UNDONE: Support IsExternal
+				return false;
+			}
 			else
 			{
 				return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
@@ -97,6 +102,18 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			else if (propertyId.Equals(ObjectType.ValueRangeTextDomainPropertyId))
 			{
 				return !(objectType.IsValueType || objectType.HasReferenceMode);
+			}
+			else if (propertyId.Equals(ObjectType.IsIndependentDomainPropertyId))
+			{
+				if (objectType.IsIndependent)
+				{
+					Objectification objectification = objectType.Objectification;
+					return objectification != null && objectification.IsImplied;
+				}
+				else
+				{
+					return !objectType.AllowIsIndependent(false);
+				}
 			}
 			else
 			{

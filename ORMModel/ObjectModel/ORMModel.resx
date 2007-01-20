@@ -365,6 +365,10 @@
     <value>The name '{0}' is already in use in this model.</value>
     <comment>Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>
   </data>
+	<data name="ModelException.ObjectType.EnforceIsIndependentPattern" xml:space="preserve">
+    <value>IsIndependent can only be true on an ObjectType that only participates in mandatory roles relating to its preferred identifier.</value>
+    <comment>Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</comment>
+  </data>
 	<data name="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType" xml:space="preserve">
     <value>An object type with a preferred identifier must be an entity type.</value>
     <comment>Exception message when an attempt is made to set both a primary identifier and a value type on the same object type.</comment>

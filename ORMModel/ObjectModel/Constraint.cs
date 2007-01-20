@@ -1749,7 +1749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// goes away. Note that this rule also affects single column external
 		/// constraints, but we only need to write it once.
 		/// </summary>
-		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 1000)] // DeleteRule
+		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 100)] // DeleteRule
 		private sealed partial class ExternalRoleConstraintDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

@@ -3193,12 +3193,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private void ConstraintShapeSetChanged(IConstraint constraint, bool roleChangeOnly)
 		{
 			bool resize = false;
+			bool redraw = false;
 			switch (constraint.ConstraintType)
 			{
 				case ConstraintType.InternalUniqueness:
 					if (roleChangeOnly)
 					{
 						resize = AssociatedFactType.RoleCollection.Count == 2;
+						redraw = !resize;
 					}
 					else
 					{
@@ -3229,8 +3231,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				AutoResize();
 				if (oldSize == Size)
 				{
-					InvalidateRequired(true);
+					redraw = true;
 				}
+			}
+			if (redraw)
+			{
+				InvalidateRequired(true);
 			}
 		}
 		/// <summary>
@@ -4835,7 +4841,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#region ConstraintDisplayPositionChangeRule class
-		[RuleOn(typeof(FactTypeShape))] // ChangeRule
+		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // ChangeRule
 		private sealed partial class ConstraintDisplayPositionChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4905,7 +4911,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Class to force the external constraint link bars to redraw and/or reposition
 		/// when an external constraint shape is moved.
 		/// </summary>
-		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.LocalCommit)] // ChangeRule
+		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // ChangeRule
 		private sealed partial class ExternalConstraintShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -5013,7 +5019,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Keep relative child elements a fixed distance away from the fact
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
+		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
 		private sealed partial class FactTypeShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

@@ -3158,7 +3158,15 @@ namespace Neumont.Tools.ORM.Shell
 								Debug.Assert(objectification.IsImplied);
 								// Set the objectifying type to not be independent, which breaks the implication pattern and makes
 								// the objectification change to be explicit
-								objectification.NestingType.IsIndependent = false;
+								ObjectType nestingType = objectification.NestingType;
+								if (nestingType.IsIndependent)
+								{
+									nestingType.IsIndependent = false;
+								}
+								else
+								{
+									objectification.IsImplied = false;
+								}
 							}
 							else
 							{

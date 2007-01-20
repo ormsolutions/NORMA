@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
@@ -165,16 +166,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // TransactionRulesFixupHack class
 		#region Delayed Model Validation
+		/// <summary>
+		/// The rule priority where delay validation fires during a local commit.
+		/// Note that rules marked with <see cref="TimeToFire.TopLevelCommit"/> and
+		/// <see cref="TimeToFire.LocalCommit"/> fire at the same time for the top
+		/// level transaction. This value is set below the lowest <see cref="DiagramFixupConstants"/>
+		/// value. Any shape fixup rules should use the DiagramFixupConstants values
+		/// to ensure that shape fixup happens after DelayValidation.
+		/// </summary>
+		public const int DelayValidatRulePriority = 200;
 		private static readonly object DelayedValidationContextKey = new object();
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
-		[RuleOn(typeof(ORMCoreDomainModel), Priority = Int32.MinValue)] // TransactionCommittingRule
-		private sealed partial class DelayValidateElements : TransactionCommittingRule
+		[RuleOn(typeof(DelayValidateSignal), FireTime = TimeToFire.LocalCommit, Priority = DelayValidatRulePriority)] // AddRule
+		private sealed partial class DelayValidateElements : AddRule
 		{
-			public sealed override void TransactionCommitting(TransactionCommitEventArgs e)
+			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				Dictionary<object, object> contextInfo = e.Transaction.Context.ContextInfo;
+				ModelElement element = e.ModelElement;
+				Store store = element.Store;
+				element.Delete();
+				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
 				object validatorsObject;
 				while (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
 				{
@@ -252,7 +265,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Store store = element.Store;
 			Debug.Assert(store.TransactionActive);
-			Dictionary<object, object> contextDictionary = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			Dictionary<object, object> contextDictionary = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
 			object dictionaryObject;
 			Dictionary<ElementValidator, object> dictionary;
 			ElementValidator key = new ElementValidator(element, validation);
@@ -267,6 +280,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else
 			{
 				contextDictionary[DelayedValidationContextKey] = dictionary = new Dictionary<ElementValidator, object>();
+				new DelayValidateSignal(element.Partition);
 			}
 			dictionary[key] = null;
 			return true;

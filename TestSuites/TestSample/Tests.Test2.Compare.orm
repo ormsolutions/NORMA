@@ -34,7 +34,7 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType Length="0" Scale="0" id="_B48FD3C8-9383-4CB3-A0C8-168C46DB4B78" ref="_3180D713-ACCC-443A-89A5-05C745877A14" />
 			</orm:ValueType>
-			<orm:ObjectifiedType IsIndependent="true" Name="EntityType1IsRunningFromEntityType1ToEntityType2EntityType2" _ReferenceMode="" id="_7503C555-EDAE-4D1E-9300-009540EAE44D">
+			<orm:ObjectifiedType Name="EntityType1IsRunningFromEntityType1ToEntityType2EntityType2" _ReferenceMode="" id="_7503C555-EDAE-4D1E-9300-009540EAE44D">
 				<orm:PlayedRoles>
 					<orm:Role ref="_1EB99EC9-ADF5-4513-BEE2-13A39CE0DCA1" />
 					<orm:Role ref="_517AA609-89CD-4B7E-8A2A-70CEDC985BCA" />
@@ -491,6 +491,9 @@
 			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a primary reference scheme." id="_1618AFFA-76DB-4B05-AF1C-94313C912F95">
 				<orm:EntityType ref="_7503C555-EDAE-4D1E-9300-009540EAE44D" />
 			</orm:EntityTypeRequiresReferenceSchemeError>
+			<orm:ImplicationError Name="Constraint 'InternalUniquenessConstraint10' in model 'NewModel' is implied by at least one constraint of the same type attached to a subset of the same roles." id="_32D7FF79-21CE-426E-87ED-EC981EFA7062">
+				<orm:SetConstraint ref="_B7C023F2-E8AD-47AD-937B-DDF9FF0ED4E7" />
+			</orm:ImplicationError>
 		</orm:ModelErrors>
 		<orm:ReferenceModeKinds>
 			<orm:ReferenceModeKind FormatString="{1}" ReferenceModeType="General" id="_D157CD11-B805-4E42-8E21-D82AF1BAAA3D" />

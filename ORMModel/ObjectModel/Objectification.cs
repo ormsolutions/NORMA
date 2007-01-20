@@ -38,12 +38,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
-				if (factType != null)
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint constraint;
+				FactType factType;
+				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					constraint.IsInternal &&
+					null != (factType = link.Role.FactType))
 				{
 					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 					ObjectType nestingType = factType.NestingType;
-					if (nestingType != null && null == nestingType.PreferredIdentifier)
+					if (nestingType != null)
 					{
 						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 					}
@@ -60,7 +64,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint constraint;
+				FactType factType;
+				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					constraint.IsInternal &&
+					null != (factType = link.Role.FactType))
+				{
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				}
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
@@ -89,7 +101,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
+				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+				if (!factType.IsDeleting)
+				{
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+					Objectification objectification;
+					if (null != (objectification = factType.Objectification) &&
+						!objectification.IsDeleting)
+					{
+						ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					}
+
+				}
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule class
@@ -117,15 +140,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (constraint.IsInternal)
 						{
 							ProcessUniquenessConstraintForImpliedObjectification(constraint, false, true);
-							LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
-							if (facts.Count != 0)
-							{
-								ObjectType nestingType = facts[0].NestingType;
-								if (nestingType != null)
-								{
-									ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-								}
-							}
 						}
 					}
 				}
@@ -210,14 +224,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			public override void  ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ObjectType objectType = (e.ModelElement as EntityTypeHasPreferredIdentifier).PreferredIdentifierFor;
-				Objectification objectification;
-				if (!objectType.IsDeleting &&
-					null != (objectification = objectType.Objectification) &&
-					!objectification.IsDeleting)
-				{
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-				}
+				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule class
@@ -283,7 +290,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType nestingType = e.ModelElement as ObjectType;
 					FactType nestedFact = nestingType.NestedFactType;
 					Objectification objectification;
-					if (nestedFact != null && (objectification = nestedFact.Objectification).IsImplied)
+					UniquenessConstraint preferredIdentifier;
+					if (nestedFact != null &&
+						(objectification = nestedFact.Objectification).IsImplied &&
+						null != (preferredIdentifier = nestingType.PreferredIdentifier) &&
+						preferredIdentifier.RoleCollection.Count == nestedFact.RoleCollection.Count)
 					{
 						objectification.IsImplied = false;
 					}
@@ -827,9 +838,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactType factType = facts[i];
 				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
-				if (changingIsInternal)
+				if (verifyPreferredIdentifier)
 				{
-					ObjectType nestingType = facts[0].NestingType;
+					ObjectType nestingType = factType.NestingType;
 					if (nestingType != null)
 					{
 						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
@@ -914,45 +925,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static void CreateObjectificationForFactType(FactType factType, bool isImplied, INotifyElementAdded notifyAdded)
 		{
-			Store store = factType.Store;
-			ObjectType objectifyingType = new ObjectType(store,
-				new PropertyAssignment(ObjectType.NameDomainPropertyId, factType.Name),
-				new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isImplied));
-			new Objectification(store,
-				new RoleAssignment[]
-				{
-					new RoleAssignment(Objectification.NestedFactTypeDomainRoleId, factType),
-					new RoleAssignment(Objectification.NestingTypeDomainRoleId, objectifyingType)
-				},
-				new PropertyAssignment[]
-				{
-					new PropertyAssignment(Objectification.IsImpliedDomainPropertyId, isImplied)
-				});
-			if (notifyAdded == null)
-			{
-				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-				try
-				{
-					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
-					objectifyingType.Model = factType.Model;
-				}
-				finally
-				{
-					contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
-				}
-			}
-			else
-			{
-				objectifyingType.Model = factType.Model;
-				// The true addLinks parameter here will pick up both the Objectification and
-				// the ModelHasObjectType links, so is sufficient to get all of the elements we
-				// created here.
-				notifyAdded.ElementAdded(objectifyingType, true);
-			}
-
 			// If the implied fact has a single internal uniqueness constraint
 			// then automatically use it as the preferred identifier.
+			// We need the preferred identifier to determine whether or not
+			// the IsIndependent property should be set for implied objectifications.
 			UniquenessConstraint preferredConstraint = null;
+			bool isIndependent;
 			if (notifyAdded == null)
 			{
 				foreach (UniquenessConstraint candidateConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
@@ -972,10 +950,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						preferredConstraint = candidateConstraint;
 					}
 				}
-				if (preferredConstraint != null)
-				{
-					objectifyingType.PreferredIdentifier = preferredConstraint;
-				}
+				isIndependent = isImplied && preferredConstraint != null && preferredConstraint.RoleCollection.Count == factType.RoleCollection.Count;
 			}
 			else
 			{
@@ -1017,6 +992,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
+				isIndependent = isImplied && preferredConstraint != null && preferredConstraint.RoleCollection.Count == factRoleCount;
+			}
+			Store store = factType.Store;
+			ObjectType objectifyingType = new ObjectType(store,
+				new PropertyAssignment(ObjectType.NameDomainPropertyId, factType.Name),
+				new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isIndependent));
+			new Objectification(store,
+				new RoleAssignment[]
+				{
+					new RoleAssignment(Objectification.NestedFactTypeDomainRoleId, factType),
+					new RoleAssignment(Objectification.NestingTypeDomainRoleId, objectifyingType)
+				},
+				new PropertyAssignment[]
+				{
+					new PropertyAssignment(Objectification.IsImpliedDomainPropertyId, isImplied)
+				});
+
+			if (notifyAdded == null)
+			{
+				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				try
+				{
+					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+					objectifyingType.Model = factType.Model;
+				}
+				finally
+				{
+					contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+				}
+				if (preferredConstraint != null)
+				{
+					objectifyingType.PreferredIdentifier = preferredConstraint;
+				}
+			}
+			else
+			{
+				objectifyingType.Model = factType.Model;
+				// The true addLinks parameter here will pick up both the Objectification and
+				// the ModelHasObjectType links, so is sufficient to get all of the elements we
+				// created here.
+				notifyAdded.ElementAdded(objectifyingType, true);
 				if (preferredConstraint != null)
 				{
 					notifyAdded.ElementAdded(new EntityTypeHasPreferredIdentifier(objectifyingType, preferredConstraint), false);
@@ -1156,31 +1172,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void DelayProcessObjectifyingTypeForPreferredIdentifier(ModelElement element)
 		{
 			ObjectType objectType;
-			FactType nestedFactType;
+			Objectification objectification;
 			if (null != (objectType = element as ObjectType) &&
 				!objectType.IsDeleted &&
-				null == objectType.PreferredIdentifier &&
-				null != (nestedFactType = objectType.NestedFactType))
+				null != (objectification = objectType.Objectification))
 			{
-				UniquenessConstraint useConstraint = null;
-				foreach (UniquenessConstraint testConstraint in nestedFactType.GetInternalConstraints<UniquenessConstraint>())
+				UniquenessConstraint preferredIdentifier = objectType.PreferredIdentifier;
+				FactType nestedFactType = objectification.NestedFactType;
+				if (preferredIdentifier == null)
 				{
-					if (testConstraint.RoleCollection.Count != 0 && testConstraint.Modality == ConstraintModality.Alethic)
+					UniquenessConstraint useConstraint = null;
+					foreach (UniquenessConstraint testConstraint in nestedFactType.GetInternalConstraints<UniquenessConstraint>())
 					{
-						if (useConstraint == null)
+						if (testConstraint.RoleCollection.Count != 0 && testConstraint.Modality == ConstraintModality.Alethic)
 						{
-							useConstraint = testConstraint;
-						}
-						else
-						{
-							useConstraint = null;
-							break;
+							if (useConstraint == null)
+							{
+								useConstraint = testConstraint;
+							}
+							else
+							{
+								useConstraint = null;
+								break;
+							}
 						}
 					}
+					if (useConstraint != null)
+					{
+						objectType.PreferredIdentifier = useConstraint;
+						preferredIdentifier = useConstraint;
+					}
 				}
-				if (useConstraint != null)
+				if (preferredIdentifier != null &&
+					objectification.IsImplied &&
+					preferredIdentifier.RoleCollection.Count == nestedFactType.RoleCollection.Count)
 				{
-					objectType.PreferredIdentifier = useConstraint;
+					objectType.IsIndependent = true;
 				}
 			}
 		}
@@ -1388,9 +1415,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Verify the implication pattern
 				if (element.IsImplied)
 				{
-					if (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count > factRolesCount || factRolesCount < 2)
+					bool canBeImplied = true;
+					UniquenessConstraint preferredIdentifier;
+					if (factRolesCount < 2 ||
+						nestingType.PlayedRoleCollection.Count > factRolesCount ||
+						(!nestingType.IsIndependent &&
+						(null != (preferredIdentifier = nestingType.PreferredIdentifier) &&
+						preferredIdentifier.RoleCollection.Count == factRolesCount)))
 					{
-						element.IsImplied = false;
+						canBeImplied = false;
 					}
 					else if (factRolesCount == 2)
 					{
@@ -1398,7 +1431,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// The internal constraints may not be attached to the fact yet
 						// as this also happens during deserialization fixup, so get the
 						// constraints from the non-derivable role connections
-						bool canBeImplied = false;
+						canBeImplied = false;
 						for (int i = 0; i < 2 && !canBeImplied; ++i)
 						{
 							Role role = (Role)factRoles[i].Role;
@@ -1414,10 +1447,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 							}
 						}
-						if (!canBeImplied)
-						{
-							element.IsImplied = false;
-						}
+					}
+					if (!canBeImplied)
+					{
+						element.IsImplied = false;
 					}
 				}
 			}

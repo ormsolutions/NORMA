@@ -153,7 +153,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Keep relative child elements a fixed distance away from the fact
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
+		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
 		private sealed partial class LinkChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

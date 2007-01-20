@@ -346,7 +346,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 		#endregion // Customize appearance
 		#region RingConstraintPropertyChangeRule class
-		[RuleOn(typeof(RingConstraint), FireTime = TimeToFire.LocalCommit)] // ChangeRule
+		[RuleOn(typeof(RingConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // ChangeRule
 		private sealed partial class RingConstraintPropertyChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

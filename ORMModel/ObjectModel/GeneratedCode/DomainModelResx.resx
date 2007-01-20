@@ -125,6 +125,14 @@
     <value>ORM Core Domain Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMCore&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DelayValidateSignal.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DelayValidateSignal&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DelayValidateSignal.DisplayName" xml:space="preserve">
+    <value>ORMModelElement</value>
+    <comment>DisplayName for DomainClass &apos;DelayValidateSignal&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElement.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ORMModelElement&apos;</comment>

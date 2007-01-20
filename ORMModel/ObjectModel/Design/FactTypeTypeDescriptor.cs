@@ -61,9 +61,15 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// </summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
-			if (domainProperty.Id.Equals(FactType.DerivationStorageDisplayDomainPropertyId))
+			Guid propertyId = domainProperty.Id;
+			if (propertyId.Equals(FactType.DerivationStorageDisplayDomainPropertyId))
 			{
 				return ModelElement.DerivationRule != null;
+			}
+			else if (propertyId.Equals(FactType.IsExternalDomainPropertyId))
+			{
+				// UNDONE: Support IsExternal
+				return false;
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}

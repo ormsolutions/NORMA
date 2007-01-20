@@ -375,6 +375,9 @@
 	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType">
 		<comment type="summary">Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionObjectTypeEnforceIsIndependentPattern" model="Model" resourceName="ModelException.ObjectType.EnforceIsIndependentPattern">
+		<comment type="summary">Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionEnforcePreferredIdentifierForEntityType" model="Model" resourceName="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType">
 		<comment type="summary">Exception message when an attempt is made to set\ both a primary identifier and a value type on the same object type.</comment>
 	</ResourceString>

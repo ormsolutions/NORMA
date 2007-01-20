@@ -389,7 +389,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Keep relative child elements a fixed distance away from the object type shape
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
+		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
 		private sealed partial class ObjectTypeShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -546,7 +546,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				PreferredIdentifierAddedRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier);
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // AddRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
 		private sealed partial class PreferredIdentifierLengthened : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -565,7 +565,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
 		private sealed partial class PreferredIdentifierShortened : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -623,7 +623,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// An object type can be a preferred identifier. Changing it to a value
 		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // DeleteRule
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
 		private sealed partial class DataTypeDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

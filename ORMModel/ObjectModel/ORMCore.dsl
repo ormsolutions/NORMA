@@ -27,6 +27,8 @@
 
 	<Classes>
 
+		<DomainClass Name="DelayValidateSignal" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C6D39CF7-E8AA-4BE7-AA79-7659FBD32E54" DisplayName="ORMModelElement" InheritanceModifier="Sealed" Description=""/>
+
 		<DomainClass Name="ORMModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">

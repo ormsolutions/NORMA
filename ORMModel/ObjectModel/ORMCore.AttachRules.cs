@@ -134,6 +134,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Objectification).GetNestedType("UniquenessConstraintDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("CheckForIncompatibleRelationshipRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("CheckForIncompatibleRelationshipRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("MandatoryModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("MandatoryRoleAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("MandatoryRoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ModelHasObjectTypeAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
@@ -383,7 +384,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[117],
 						customDomainModelTypes[118],
 						customDomainModelTypes[119],
-						customDomainModelTypes[122],
+						customDomainModelTypes[120],
 						customDomainModelTypes[123],
 						customDomainModelTypes[124],
 						customDomainModelTypes[125],
@@ -473,7 +474,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[209],
 						customDomainModelTypes[210],
 						customDomainModelTypes[211],
-						customDomainModelTypes[212]};
+						customDomainModelTypes[212],
+						customDomainModelTypes[213]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -1483,6 +1485,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class CheckForIncompatibleRelationshipRolePlayerChangeRule
 		{
 			public CheckForIncompatibleRelationshipRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class MandatoryModalityChangeRule
+		{
+			public MandatoryModalityChangeRule()
 			{
 				base.IsEnabled = false;
 			}

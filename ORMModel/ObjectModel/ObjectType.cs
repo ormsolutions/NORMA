@@ -1130,6 +1130,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						objectType.Note = note;
 					}
 				}
+				else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
+				{
+					if ((bool)e.NewValue)
+					{
+						(e.ModelElement as ObjectType).AllowIsIndependent(true);
+					}
+				}
 			}
 			/// <summary>
 			/// Determines if the value type associated with the reference mode pattern needs to be 
@@ -1290,6 +1297,148 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		#endregion // INamedElementDictionaryParent implementation
+		#region IsIndependent Validation
+		/// <summary>
+		/// Verify IsIndependent settings on attached objects when modality changes
+		/// </summary>
+		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
+		private sealed partial class MandatoryModalityChangeRule : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				// Make sure that we retest IsIndependent settings
+				if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId &&
+					((ConstraintModality)e.NewValue) == ConstraintModality.Alethic)
+				{
+					LinkedElementCollection<Role> roles = ((MandatoryConstraint)e.ModelElement).RoleCollection;
+					int roleCount = roles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						ObjectType objectType;
+						if (null != (objectType = roles[i].RolePlayer) &&
+							objectType.IsIndependent)
+						{
+							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies that all facts that should have implied objectifications
+		/// have implied objectifications
+		/// </summary>
+		public static IDeserializationFixupListener IsIndependentFixupListener
+		{
+			get
+			{
+				return new TestRemoveIsIndependentFixupListener();
+			}
+		}
+		/// <summary>
+		/// A fixup listener to clear the IsIndependent setting on all object types in a model
+		/// if they do not meet the IsIndependent requirements (no non-existential mandatory roles).
+		/// </summary>
+		private sealed class TestRemoveIsIndependentFixupListener : DeserializationFixupListener<ORMModel>
+		{
+			/// <summary>
+			/// Create a new SubtypeFactFixupListener
+			/// </summary>
+			public TestRemoveIsIndependentFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateErrors)
+			{
+			}
+			/// <summary>
+			/// Make sure that all contained independent ObjectType elements are allowed to be independent
+			/// </summary>
+			/// <param name="element">An ORMModel instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(ORMModel element, Store store, INotifyElementAdded notifyAdded)
+			{
+				int objectTypeCount;
+				LinkedElementCollection<ObjectType> objectTypes;
+				if (!element.IsDeleted &&
+					0 != (objectTypeCount = (objectTypes = element.ObjectTypeCollection).Count))
+				{
+					for (int i = 0; i < objectTypeCount; ++i)
+					{
+						objectTypes[i].ValidateIsIndependent();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Validation callback to ensure that the IsIndependent property is set correctly
+		/// </summary>
+		/// <param name="element">Element to validate</param>
+		private static void DelayValidateIsIndependent(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				((ObjectType)element).ValidateIsIndependent();
+			}
+		}
+		/// <summary>
+		/// Turn off the <see cref="IsIndependent"/> property if it is not valid
+		/// </summary>
+		private void ValidateIsIndependent()
+		{
+			if (IsIndependent && !AllowIsIndependent(false))
+			{
+				IsIndependent = false;
+			}
+		}
+		/// <summary>
+		/// Test if the <see cref="IsIndependent"/> property can be set to true.
+		/// </summary>
+		/// <param name="throwIfFalse">Set to <see langword="true"/> to throw an exception instead of returning false.</param>
+		/// <returns><see langword="true"/> if <see cref="IsIndependent"/> can be turned on.</returns>
+		public bool AllowIsIndependent(bool throwIfFalse)
+		{
+			bool retVal = true;
+			LinkedElementCollection<Role> preferredIdentifierRoles = null;
+			LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int j = 0; j < playedRoleCount && retVal; ++j)
+			{
+				Role playedRole = playedRoles[j];
+				LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
+				int constraintCount = constraints.Count;
+				for (int k = 0; k < constraintCount; ++k)
+				{
+					if (constraints[k] is MandatoryConstraint)
+					{
+						// The role must be part of a fact type that has a role in the preferred identifier.
+						if (preferredIdentifierRoles == null)
+						{
+							UniquenessConstraint preferredIdentifier = PreferredIdentifier;
+							if (preferredIdentifier == null)
+							{
+								retVal = false;
+								break;
+							}
+							// Note that the current fixup phase occurs well after implicit
+							// FactConstraint elements are added, so the FactTypeCollection is valid.
+							preferredIdentifierRoles = preferredIdentifier.RoleCollection;
+						}
+						RoleBase oppositeRole = playedRole.OppositeRole;
+						if (null == oppositeRole || !preferredIdentifierRoles.Contains(oppositeRole.Role))
+						{
+							retVal = false;
+							break;
+						}
+					}
+				}
+			}
+			if (!retVal && throwIfFalse)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectTypeEnforceIsIndependentPattern);
+			}
+			return retVal;
+		}
+		#endregion // IsIndependent Validation
 		#region DataTypeNotSpecifiedError retrieval and validation
 		/// <summary>
 		/// Returns an error object if the data type is the unspecified data
@@ -1814,6 +1963,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!objectType.IsDeleted)
 				{
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 					if (preferredIdentifier == null)
 					{
 						preferredIdentifier = link.PreferredIdentifier;
@@ -1890,12 +2040,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				Role role = link.PlayedRole;
+				ObjectType rolePlayer = role.RolePlayer;
+				ORMCoreDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
 				if (role is SubtypeMetaRole)
 				{
 					ObjectType objectType = link.RolePlayer;
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
-					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+					WalkSubtypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
 						ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
 						ValidateAttachedConstraintColumnCompatibility(type);
@@ -1904,7 +2056,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (role is SupertypeMetaRole)
 				{
-					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+					WalkSupertypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
 						if (depth != 0)
 						{
@@ -2021,12 +2173,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							break;
 						}
+						ObjectType objectType = link.Role.RolePlayer;
+						if (objectType != null && objectType.IsIndependent)
+						{
+							// We may need to turn off IsIndependent if it is set
+							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+						}
 						LinkedElementCollection<Role> roles = sequence.RoleCollection;
 						int roleCount = roles.Count;
 						for (int i = 0; i < roleCount; ++i)
 						{
 							Role role = roles[i];
-							ObjectType objectType;
 							UniquenessConstraint pid;
 							if (null != (objectType = role.RolePlayer) &&
 								null != (pid = objectType.PreferredIdentifier) &&
@@ -2053,6 +2210,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				IConstraint constraint = (IConstraint)sequence;
 				ConstraintType constraintType = constraint.ConstraintType;
+				ObjectType objectType;
 				switch (constraintType)
 				{
 					case ConstraintType.SimpleMandatory:
@@ -2066,7 +2224,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						for (int i = 0; i < roleCount; ++i)
 						{
 							Role role = roles[i];
-							ObjectType objectType;
 							UniquenessConstraint pid;
 							if (null != (objectType = role.RolePlayer) &&
 								!objectType.IsDeleting &&
@@ -2077,6 +2234,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 							}
+						}
+						break;
+					case ConstraintType.InternalUniqueness:
+						if (constraint.Modality != ConstraintModality.Alethic)
+						{
+							break;
+						}
+						objectType = constraint.PreferredIdentifierFor;
+						if (objectType != null && objectType.IsIndependent)
+						{
+							// We may need to turn off IsIndependent if it is set
+							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 						}
 						break;
 				}
@@ -2317,6 +2486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValidateObjectTypeRequiresPrimarySupertypeError(notifyAdded);
 			ValidatePreferredIdentifierRequiresMandatoryError(notifyAdded);
 			ValidateCompatibleSupertypesError(notifyAdded);
+			ValidateIsIndependent();
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -2332,6 +2502,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 			ORMCoreDomainModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
 			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleSupertypesError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateIsIndependent);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
