@@ -1006,25 +1006,23 @@
 							<Snippet ref="ExclusiveOrForEachIndentedQuantifier" conditionalMatch="ExclusionIsExclusiveOrConstraint"/>
 							<Snippet ref="ExclusionForEachIndentedQuantifier"/>
 							<SnippetReplacements>
-								<ConditionalReplacement>
-									<IterateSequences listStyle="null" pass="first">
-										<IterateSequenceFacts match="included" listStyle="SimpleLogicalAndList">
-											<RolePlayer/>
-										</IterateSequenceFacts>
-									</IterateSequences>
-									<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
-										<IterateSequenceFacts match="included" listStyle="null">
-											<Fact>
-												<PredicateReplacement match="included">
-													<Snippet ref="DefiniteArticle"/>
-												</PredicateReplacement>
-												<PredicateReplacement>
-													<Snippet ref="ExistentialQuantifier"/>
-												</PredicateReplacement>
-											</Fact>
-										</IterateSequenceFacts>
-									</IterateSequences>
-								</ConditionalReplacement>
+								<IterateSequences listStyle="null" pass="first">
+									<IterateSequenceFacts match="included" listStyle="SimpleLogicalAndList">
+										<RolePlayer/>
+									</IterateSequenceFacts>
+								</IterateSequences>
+								<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
+									<IterateSequenceFacts match="included" listStyle="null">
+										<Fact>
+											<PredicateReplacement match="included">
+												<Snippet ref="DefiniteArticle"/>
+											</PredicateReplacement>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateSequenceFacts>
+								</IterateSequences>
 							</SnippetReplacements>
 						</ConditionalSnippet>
 					</Snippet>
