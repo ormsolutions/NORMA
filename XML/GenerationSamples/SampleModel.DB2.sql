@@ -129,201 +129,223 @@ AS
 
 CREATE PROCEDURE SampleModel.UpdatePersonFirstName
 (
+	old_Person_id BIGINT , 
 	FirstName CHARACTER VARYING(64) 
 )
 AS
 	UPDATE SampleModel.Person
 SET FirstName = FirstName
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonDate_YMD
 (
+	old_Person_id BIGINT , 
 	Date_YMD BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET Date_YMD = Date_YMD
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonLastName
 (
+	old_Person_id BIGINT , 
 	LastName CHARACTER VARYING(64) 
 )
 AS
 	UPDATE SampleModel.Person
 SET LastName = LastName
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnOptnlUnqStrng
 (
+	old_Person_id BIGINT , 
 	OptionalUniqueString CHARACTER(11) 
 )
 AS
 	UPDATE SampleModel.Person
 SET OptionalUniqueString = OptionalUniqueString
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonHatType_ColorARGB
 (
+	old_Person_id BIGINT , 
 	HatType_ColorARGB BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET HatType_ColorARGB = HatType_ColorARGB
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonHTHTSHTSD
 (
+	old_Person_id BIGINT , 
 	HTHTSHTSD CHARACTER VARYING(256) 
 )
 AS
 	UPDATE SampleModel.Person
 SET HTHTSHTSD = HTHTSHTSD
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonOwnsCar_vin
 (
+	old_Person_id BIGINT , 
 	OwnsCar_vin BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET OwnsCar_vin = OwnsCar_vin
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonGender_Gender_Code
 (
+	old_Person_id BIGINT , 
 	Gender_Gender_Code CHARACTER(1) 
 )
 AS
 	UPDATE SampleModel.Person
 SET Gender_Gender_Code = Gender_Gender_Code
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonhasParents
 (
+	old_Person_id BIGINT , 
 	hasParents CHARACTER(1) FOR BIT DATA 
 )
 AS
 	UPDATE SampleModel.Person
 SET hasParents = hasParents
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnOptnlUnqDcml
 (
+	old_Person_id BIGINT , 
 	OptionalUniqueDecimal DECIMAL(9) 
 )
 AS
 	UPDATE SampleModel.Person
 SET OptionalUniqueDecimal = OptionalUniqueDecimal
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnMndtryUnqDcml
 (
+	old_Person_id BIGINT , 
 	MandatoryUniqueDecimal DECIMAL(9) 
 )
 AS
 	UPDATE SampleModel.Person
 SET MandatoryUniqueDecimal = MandatoryUniqueDecimal
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnMndtryUnqStrng
 (
+	old_Person_id BIGINT , 
 	MandatoryUniqueString CHARACTER(11) 
 )
 AS
 	UPDATE SampleModel.Person
 SET MandatoryUniqueString = MandatoryUniqueString
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonHusband_Person_id
 (
+	old_Person_id BIGINT , 
 	Husband_Person_id BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET Husband_Person_id = Husband_Person_id
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UPVT1DSEWVT1V
 (
+	old_Person_id BIGINT , 
 	VlTyp1DsSmthngElsWth_VlTyp1Vl BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET VlTyp1DsSmthngElsWth_VlTyp1Vl = VlTyp1DsSmthngElsWth_VlTyp1Vl
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UPCPBOBON
 (
+	old_Person_id BIGINT , 
 	ChldPrsn_BrthOrdr_BrthOrdr_Nr BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET ChldPrsn_BrthOrdr_BrthOrdr_Nr = ChldPrsn_BrthOrdr_BrthOrdr_Nr
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonFather_Person_id
 (
+	old_Person_id BIGINT , 
 	Father_Person_id BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET Father_Person_id = Father_Person_id
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonMother_Person_id
 (
+	old_Person_id BIGINT , 
 	Mother_Person_id BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET Mother_Person_id = Mother_Person_id
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdatePersonDeath_Date_YMD
 (
+	old_Person_id BIGINT , 
 	Death_Date_YMD BIGINT 
 )
 AS
 	UPDATE SampleModel.Person
 SET Death_Date_YMD = Death_Date_YMD
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnDth_DthCs_DthCs_Typ
 (
+	old_Person_id BIGINT , 
 	Dth_DthCs_DthCs_Typ CHARACTER VARYING(14) 
 )
 AS
 	UPDATE SampleModel.Person
 SET Dth_DthCs_DthCs_Typ = Dth_DthCs_DthCs_Typ
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UPDNDFPC
 (
+	old_Person_id BIGINT , 
 	Dth_NtrlDth_sFrmPrsttCncr CHARACTER(1) FOR BIT DATA 
 )
 AS
 	UPDATE SampleModel.Person
 SET Dth_NtrlDth_sFrmPrsttCncr = Dth_NtrlDth_sFrmPrsttCncr
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnDth_UnntrlDth_sVlnt
 (
+	old_Person_id BIGINT , 
 	Death_UnnaturalDeath_isViolent CHARACTER(1) FOR BIT DATA 
 )
 AS
 	UPDATE SampleModel.Person
 SET Death_UnnaturalDeath_isViolent = Death_UnnaturalDeath_isViolent
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.UpdtPrsnDth_UnntrlDth_sBldy
 (
+	old_Person_id BIGINT , 
 	Death_UnnaturalDeath_isBloody CHARACTER(1) FOR BIT DATA 
 )
 AS
 	UPDATE SampleModel.Person
 SET Death_UnnaturalDeath_isBloody = Death_UnnaturalDeath_isBloody
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE SampleModel.InsertTask
 (
@@ -344,12 +366,13 @@ AS
 
 CREATE PROCEDURE SampleModel.UpdateTaskPerson_Person_id
 (
+	old_Task_id BIGINT , 
 	Person_Person_id BIGINT 
 )
 AS
 	UPDATE SampleModel.Task
 SET Person_Person_id = Person_Person_id
-	WHERE Task_id = Task_id;
+	WHERE Task_id = old_Task_id;
 
 CREATE PROCEDURE SampleModel.InsertValueType1
 (
@@ -370,21 +393,23 @@ AS
 
 CREATE PROCEDURE SampleModel.UpdtVlTyp1VlTyp1Vl
 (
+	old_ValueType1Value BIGINT , 
 	ValueType1Value BIGINT 
 )
 AS
 	UPDATE SampleModel.ValueType1
 SET ValueType1Value = ValueType1Value
-	WHERE ValueType1Value = ValueType1Value;
+	WHERE ValueType1Value = old_ValueType1Value;
 
 CREATE PROCEDURE SampleModel.UVT1DSWPP
 (
+	old_ValueType1Value BIGINT , 
 	DsSmthngWthPrsn_Prsn_d BIGINT 
 )
 AS
 	UPDATE SampleModel.ValueType1
 SET DsSmthngWthPrsn_Prsn_d = DsSmthngWthPrsn_Prsn_d
-	WHERE ValueType1Value = ValueType1Value;
+	WHERE ValueType1Value = old_ValueType1Value;
 
 CREATE PROCEDURE SampleModel.InsrtPrsnBghtCrFrmPrsnOnDt
 (
@@ -411,47 +436,59 @@ Seller_Person_id = Seller_Person_id;
 
 CREATE PROCEDURE SampleModel.UPBCFPODCS
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	CarSold_vin BIGINT 
 )
 AS
 	UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
 SET CarSold_vin = CarSold_vin
-	WHERE Buyer_Person_id = Buyer_Person_id AND 
-CarSold_vin = CarSold_vin AND 
-Seller_Person_id = Seller_Person_id;
+	WHERE Buyer_Person_id = old_Buyer_Person_id AND 
+CarSold_vin = old_CarSold_vin AND 
+Seller_Person_id = old_Seller_Person_id;
 
 CREATE PROCEDURE SampleModel.UPBCFPODSDYMD
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	SaleDate_YMD BIGINT 
 )
 AS
 	UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
 SET SaleDate_YMD = SaleDate_YMD
-	WHERE Buyer_Person_id = Buyer_Person_id AND 
-CarSold_vin = CarSold_vin AND 
-Seller_Person_id = Seller_Person_id;
+	WHERE Buyer_Person_id = old_Buyer_Person_id AND 
+CarSold_vin = old_CarSold_vin AND 
+Seller_Person_id = old_Seller_Person_id;
 
 CREATE PROCEDURE SampleModel.UPBCFPODBP
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	Buyer_Person_id BIGINT 
 )
 AS
 	UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
 SET Buyer_Person_id = Buyer_Person_id
-	WHERE Buyer_Person_id = Buyer_Person_id AND 
-CarSold_vin = CarSold_vin AND 
-Seller_Person_id = Seller_Person_id;
+	WHERE Buyer_Person_id = old_Buyer_Person_id AND 
+CarSold_vin = old_CarSold_vin AND 
+Seller_Person_id = old_Seller_Person_id;
 
 CREATE PROCEDURE SampleModel.UPBCFPODSP
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	Seller_Person_id BIGINT 
 )
 AS
 	UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
 SET Seller_Person_id = Seller_Person_id
-	WHERE Buyer_Person_id = Buyer_Person_id AND 
-CarSold_vin = CarSold_vin AND 
-Seller_Person_id = Seller_Person_id;
+	WHERE Buyer_Person_id = old_Buyer_Person_id AND 
+CarSold_vin = old_CarSold_vin AND 
+Seller_Person_id = old_Seller_Person_id;
 
 CREATE PROCEDURE SampleModel.InsertReview
 (
@@ -475,32 +512,38 @@ Criterion_Name = Criterion_Name;
 
 CREATE PROCEDURE SampleModel.UpdateReviewCar_vin
 (
+	old_Car_vin BIGINT , 
+	old_Criterion_Name CHARACTER VARYING(64) , 
 	Car_vin BIGINT 
 )
 AS
 	UPDATE SampleModel.Review
 SET Car_vin = Car_vin
-	WHERE Car_vin = Car_vin AND 
-Criterion_Name = Criterion_Name;
+	WHERE Car_vin = old_Car_vin AND 
+Criterion_Name = old_Criterion_Name;
 
 CREATE PROCEDURE SampleModel.UpdateReviewRating_Nr_Integer
 (
+	old_Car_vin BIGINT , 
+	old_Criterion_Name CHARACTER VARYING(64) , 
 	Rating_Nr_Integer BIGINT 
 )
 AS
 	UPDATE SampleModel.Review
 SET Rating_Nr_Integer = Rating_Nr_Integer
-	WHERE Car_vin = Car_vin AND 
-Criterion_Name = Criterion_Name;
+	WHERE Car_vin = old_Car_vin AND 
+Criterion_Name = old_Criterion_Name;
 
 CREATE PROCEDURE SampleModel.UpdateReviewCriterion_Name
 (
+	old_Car_vin BIGINT , 
+	old_Criterion_Name CHARACTER VARYING(64) , 
 	Criterion_Name CHARACTER VARYING(64) 
 )
 AS
 	UPDATE SampleModel.Review
 SET Criterion_Name = Criterion_Name
-	WHERE Car_vin = Car_vin AND 
-Criterion_Name = Criterion_Name;
+	WHERE Car_vin = old_Car_vin AND 
+Criterion_Name = old_Criterion_Name;
 COMMIT;
 

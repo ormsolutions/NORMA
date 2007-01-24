@@ -143,245 +143,267 @@ AS
 
 CREATE FUNCTION SampleModel.UpdatePersonFirstName
 (
+	old_Person_id BIGINT , 
 	FirstName CHARACTER VARYING(64) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET FirstName = FirstName
-	WHERE Person_id = $';
+SET FirstName = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonDate_YMD
 (
+	old_Person_id BIGINT , 
 	Date_YMD BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Date_YMD = Date_YMD
-	WHERE Person_id = $';
+SET Date_YMD = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonLastName
 (
+	old_Person_id BIGINT , 
 	LastName CHARACTER VARYING(64) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET LastName = LastName
-	WHERE Person_id = $';
+SET LastName = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnOptnlUnqStrng
 (
+	old_Person_id BIGINT , 
 	OptionalUniqueString CHARACTER(11) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET OptionalUniqueString = OptionalUniqueString
-	WHERE Person_id = $';
+SET OptionalUniqueString = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonHatType_ColorARGB
 (
+	old_Person_id BIGINT , 
 	HatType_ColorARGB BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET HatType_ColorARGB = HatType_ColorARGB
-	WHERE Person_id = $';
+SET HatType_ColorARGB = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonHTHTSHTSD
 (
+	old_Person_id BIGINT , 
 	HTHTSHTSD CHARACTER VARYING(256) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET HTHTSHTSD = HTHTSHTSD
-	WHERE Person_id = $';
+SET HTHTSHTSD = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonOwnsCar_vin
 (
+	old_Person_id BIGINT , 
 	OwnsCar_vin BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET OwnsCar_vin = OwnsCar_vin
-	WHERE Person_id = $';
+SET OwnsCar_vin = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonGender_Gender_Code
 (
+	old_Person_id BIGINT , 
 	Gender_Gender_Code CHARACTER(1) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Gender_Gender_Code = Gender_Gender_Code
-	WHERE Person_id = $';
+SET Gender_Gender_Code = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonhasParents
 (
+	old_Person_id BIGINT , 
 	hasParents BOOLEAN 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET hasParents = hasParents
-	WHERE Person_id = $';
+SET hasParents = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnOptnlUnqDcml
 (
+	old_Person_id BIGINT , 
 	OptionalUniqueDecimal DECIMAL(9) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET OptionalUniqueDecimal = OptionalUniqueDecimal
-	WHERE Person_id = $';
+SET OptionalUniqueDecimal = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnMndtryUnqDcml
 (
+	old_Person_id BIGINT , 
 	MandatoryUniqueDecimal DECIMAL(9) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET MandatoryUniqueDecimal = MandatoryUniqueDecimal
-	WHERE Person_id = $';
+SET MandatoryUniqueDecimal = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnMndtryUnqStrng
 (
+	old_Person_id BIGINT , 
 	MandatoryUniqueString CHARACTER(11) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET MandatoryUniqueString = MandatoryUniqueString
-	WHERE Person_id = $';
+SET MandatoryUniqueString = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonHusband_Person_id
 (
+	old_Person_id BIGINT , 
 	Husband_Person_id BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Husband_Person_id = Husband_Person_id
-	WHERE Person_id = $';
+SET Husband_Person_id = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UPVT1DSEWVT1V
 (
+	old_Person_id BIGINT , 
 	VlTyp1DsSmthngElsWth_VlTyp1Vl BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET VlTyp1DsSmthngElsWth_VlTyp1Vl = VlTyp1DsSmthngElsWth_VlTyp1Vl
-	WHERE Person_id = $';
+SET VlTyp1DsSmthngElsWth_VlTyp1Vl = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UPCPBOBON
 (
+	old_Person_id BIGINT , 
 	ChldPrsn_BrthOrdr_BrthOrdr_Nr BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET ChldPrsn_BrthOrdr_BrthOrdr_Nr = ChldPrsn_BrthOrdr_BrthOrdr_Nr
-	WHERE Person_id = $';
+SET ChldPrsn_BrthOrdr_BrthOrdr_Nr = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonFather_Person_id
 (
+	old_Person_id BIGINT , 
 	Father_Person_id BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Father_Person_id = Father_Person_id
-	WHERE Person_id = $';
+SET Father_Person_id = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonMother_Person_id
 (
+	old_Person_id BIGINT , 
 	Mother_Person_id BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Mother_Person_id = Mother_Person_id
-	WHERE Person_id = $';
+SET Mother_Person_id = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdatePersonDeath_Date_YMD
 (
+	old_Person_id BIGINT , 
 	Death_Date_YMD BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Death_Date_YMD = Death_Date_YMD
-	WHERE Person_id = $';
+SET Death_Date_YMD = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnDth_DthCs_DthCs_Typ
 (
+	old_Person_id BIGINT , 
 	Dth_DthCs_DthCs_Typ CHARACTER VARYING(14) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Dth_DthCs_DthCs_Typ = Dth_DthCs_DthCs_Typ
-	WHERE Person_id = $';
+SET Dth_DthCs_DthCs_Typ = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UPDNDFPC
 (
+	old_Person_id BIGINT , 
 	Dth_NtrlDth_sFrmPrsttCncr BOOLEAN 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Dth_NtrlDth_sFrmPrsttCncr = Dth_NtrlDth_sFrmPrsttCncr
-	WHERE Person_id = $';
+SET Dth_NtrlDth_sFrmPrsttCncr = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnDth_UnntrlDth_sVlnt
 (
+	old_Person_id BIGINT , 
 	Death_UnnaturalDeath_isViolent BOOLEAN 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Death_UnnaturalDeath_isViolent = Death_UnnaturalDeath_isViolent
-	WHERE Person_id = $';
+SET Death_UnnaturalDeath_isViolent = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.UpdtPrsnDth_UnntrlDth_sBldy
 (
+	old_Person_id BIGINT , 
 	Death_UnnaturalDeath_isBloody BOOLEAN 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Person
-SET Death_UnnaturalDeath_isBloody = Death_UnnaturalDeath_isBloody
-	WHERE Person_id = $';
+SET Death_UnnaturalDeath_isBloody = $2
+	WHERE Person_id = $1';
 
 CREATE FUNCTION SampleModel.InsertTask
 (
@@ -406,14 +428,15 @@ AS
 
 CREATE FUNCTION SampleModel.UpdateTaskPerson_Person_id
 (
+	old_Task_id BIGINT , 
 	Person_Person_id BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Task
-SET Person_Person_id = Person_Person_id
-	WHERE Task_id = $';
+SET Person_Person_id = $2
+	WHERE Task_id = $1';
 
 CREATE FUNCTION SampleModel.InsertValueType1
 (
@@ -438,25 +461,27 @@ AS
 
 CREATE FUNCTION SampleModel.UpdtVlTyp1VlTyp1Vl
 (
+	old_ValueType1Value BIGINT , 
 	ValueType1Value BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.ValueType1
-SET ValueType1Value = ValueType1Value
+SET ValueType1Value = $2
 	WHERE ValueType1Value = $1';
 
 CREATE FUNCTION SampleModel.UVT1DSWPP
 (
+	old_ValueType1Value BIGINT , 
 	DsSmthngWthPrsn_Prsn_d BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.ValueType1
-SET DsSmthngWthPrsn_Prsn_d = DsSmthngWthPrsn_Prsn_d
-	WHERE ValueType1Value = $';
+SET DsSmthngWthPrsn_Prsn_d = $2
+	WHERE ValueType1Value = $1';
 
 CREATE FUNCTION SampleModel.InsrtPrsnBghtCrFrmPrsnOnDt
 (
@@ -487,55 +512,67 @@ Seller_Person_id = $3';
 
 CREATE FUNCTION SampleModel.UPBCFPODCS
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	CarSold_vin BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
-SET CarSold_vin = CarSold_vin
-	WHERE Buyer_Person_id = $ AND 
-CarSold_vin = $1 AND 
-Seller_Person_id = $';
+SET CarSold_vin = $4
+	WHERE Buyer_Person_id = $1 AND 
+CarSold_vin = $2 AND 
+Seller_Person_id = $3';
 
 CREATE FUNCTION SampleModel.UPBCFPODSDYMD
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	SaleDate_YMD BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
-SET SaleDate_YMD = SaleDate_YMD
-	WHERE Buyer_Person_id = $ AND 
-CarSold_vin = $ AND 
-Seller_Person_id = $';
+SET SaleDate_YMD = $4
+	WHERE Buyer_Person_id = $1 AND 
+CarSold_vin = $2 AND 
+Seller_Person_id = $3';
 
 CREATE FUNCTION SampleModel.UPBCFPODBP
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	Buyer_Person_id BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
-SET Buyer_Person_id = Buyer_Person_id
+SET Buyer_Person_id = $4
 	WHERE Buyer_Person_id = $1 AND 
-CarSold_vin = $ AND 
-Seller_Person_id = $';
+CarSold_vin = $2 AND 
+Seller_Person_id = $3';
 
 CREATE FUNCTION SampleModel.UPBCFPODSP
 (
+	old_Buyer_Person_id BIGINT , 
+	old_CarSold_vin BIGINT , 
+	old_Seller_Person_id BIGINT , 
 	Seller_Person_id BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.PrsnBghtCrFrmPrsnOnDt
-SET Seller_Person_id = Seller_Person_id
-	WHERE Buyer_Person_id = $ AND 
-CarSold_vin = $ AND 
-Seller_Person_id = $1';
+SET Seller_Person_id = $4
+	WHERE Buyer_Person_id = $1 AND 
+CarSold_vin = $2 AND 
+Seller_Person_id = $3';
 
 CREATE FUNCTION SampleModel.InsertReview
 (
@@ -563,38 +600,44 @@ Criterion_Name = $2';
 
 CREATE FUNCTION SampleModel.UpdateReviewCar_vin
 (
+	old_Car_vin BIGINT , 
+	old_Criterion_Name CHARACTER VARYING(64) , 
 	Car_vin BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Review
-SET Car_vin = Car_vin
+SET Car_vin = $3
 	WHERE Car_vin = $1 AND 
-Criterion_Name = $';
+Criterion_Name = $2';
 
 CREATE FUNCTION SampleModel.UpdateReviewRating_Nr_Integer
 (
+	old_Car_vin BIGINT , 
+	old_Criterion_Name CHARACTER VARYING(64) , 
 	Rating_Nr_Integer BIGINT 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Review
-SET Rating_Nr_Integer = Rating_Nr_Integer
-	WHERE Car_vin = $ AND 
-Criterion_Name = $';
+SET Rating_Nr_Integer = $3
+	WHERE Car_vin = $1 AND 
+Criterion_Name = $2';
 
 CREATE FUNCTION SampleModel.UpdateReviewCriterion_Name
 (
+	old_Car_vin BIGINT , 
+	old_Criterion_Name CHARACTER VARYING(64) , 
 	Criterion_Name CHARACTER VARYING(64) 
 )
 RETURNS VOID
 LANGUAGE SQL
 AS
 	'UPDATE SampleModel.Review
-SET Criterion_Name = Criterion_Name
-	WHERE Car_vin = $ AND 
-Criterion_Name = $1';
+SET Criterion_Name = $3
+	WHERE Car_vin = $1 AND 
+Criterion_Name = $2';
 COMMIT WORK;
 

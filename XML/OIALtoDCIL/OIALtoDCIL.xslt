@@ -594,6 +594,12 @@
 
 		<xsl:for-each select="$Table/dcl:column[not(@isIdentity='true')]">
 			<dcl:procedure name="{dsf:makeValidIdentifier(concat('Update',../@name,@name))}" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="{../@name}" oilColumnRef="{@name}">
+				<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
+					<dcl:parameter mode="IN" name="{dsf:makeValidIdentifier(concat('old_',@name))}">
+						<xsl:copy-of select="dcl:predefinedDataType"/>
+						<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+					</dcl:parameter>
+				</xsl:for-each>
 				<dcl:parameter mode="IN" name="{@name}">
 					<xsl:copy-of select="dcl:predefinedDataType"/>
 					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
@@ -612,16 +618,18 @@
 										<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
 											<dep:comparisonPredicate operator="equals">
 												<dep:columnReference name="{@name}"/>
-												<dep:sqlParameterReference name="{@name}"/>
+												<dep:sqlParameterReference name="{dsf:makeValidIdentifier(concat('old_',@name))}"/>
 											</dep:comparisonPredicate>
 										</xsl:for-each>
 									</dep:and>
 								</xsl:when>
 								<xsl:when test="count($preferredIdentifierColumns/child::*) = 1">
-									<dep:comparisonPredicate operator="equals">
-										<dep:columnReference name="{$preferredIdentifierColumns/dcl:column/@name}"/>
-										<dep:sqlParameterReference name="{$preferredIdentifierColumns/dcl:column/@name}"/>
-									</dep:comparisonPredicate>
+									<xsl:for-each select="$preferredIdentifierColumns/dcl:column">
+										<dep:comparisonPredicate operator="equals">
+											<dep:columnReference name="{@name}"/>
+											<dep:sqlParameterReference name="{dsf:makeValidIdentifier(concat('old_',@name))}"/>
+										</dep:comparisonPredicate>
+									</xsl:for-each>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:message terminate="yes">

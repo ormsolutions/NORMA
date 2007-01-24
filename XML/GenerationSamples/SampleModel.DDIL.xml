@@ -613,6 +613,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonFirstName" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="FirstName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 		</ddl:sqlParameterDeclaration>
@@ -626,7 +629,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -634,6 +637,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonDate_YMD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Date_YMD" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -647,7 +653,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -655,6 +661,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonLastName" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="LastName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 		</ddl:sqlParameterDeclaration>
@@ -668,7 +677,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -676,6 +685,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnOptnlUnqStrng" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="OptionalUniqueString" mode="IN">
 			<ddt:characterString type="CHARACTER" length="11" />
 		</ddl:sqlParameterDeclaration>
@@ -689,7 +701,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -697,6 +709,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonHatType_ColorARGB" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="HatType_ColorARGB" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -710,7 +725,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -718,6 +733,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonHTHTSHTSD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="HTHTSHTSD" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="256" />
 		</ddl:sqlParameterDeclaration>
@@ -731,7 +749,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -739,6 +757,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonOwnsCar_vin" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="OwnsCar_vin" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -752,7 +773,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -760,6 +781,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonGender_Gender_Code" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Gender_Gender_Code" mode="IN">
 			<ddt:characterString type="CHARACTER" length="1" />
 		</ddl:sqlParameterDeclaration>
@@ -773,7 +797,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -781,6 +805,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonhasParents" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="hasParents" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
@@ -794,7 +821,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -802,6 +829,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnOptnlUnqDcml" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="OptionalUniqueDecimal" mode="IN">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
 		</ddl:sqlParameterDeclaration>
@@ -815,7 +845,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -823,6 +853,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnMndtryUnqDcml" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="MandatoryUniqueDecimal" mode="IN">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
 		</ddl:sqlParameterDeclaration>
@@ -836,7 +869,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -844,6 +877,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnMndtryUnqStrng" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="MandatoryUniqueString" mode="IN">
 			<ddt:characterString type="CHARACTER" length="11" />
 		</ddl:sqlParameterDeclaration>
@@ -857,7 +893,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -865,6 +901,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonHusband_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Husband_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -878,7 +917,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -886,6 +925,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPVT1DSEWVT1V" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="VlTyp1DsSmthngElsWth_VlTyp1Vl" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -899,7 +941,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -907,6 +949,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPCPBOBON" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="ChldPrsn_BrthOrdr_BrthOrdr_Nr" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -920,7 +965,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -928,6 +973,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonFather_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Father_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -941,7 +989,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -949,6 +997,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonMother_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Mother_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -962,7 +1013,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -970,6 +1021,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonDeath_Date_YMD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Death_Date_YMD" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -983,7 +1037,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -991,6 +1045,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnDth_DthCs_DthCs_Typ" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Dth_DthCs_DthCs_Typ" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="14" />
 		</ddl:sqlParameterDeclaration>
@@ -1004,7 +1061,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1012,6 +1069,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPDNDFPC" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Dth_NtrlDth_sFrmPrsttCncr" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
@@ -1025,7 +1085,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1033,6 +1093,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnDth_UnntrlDth_sVlnt" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Death_UnnaturalDeath_isViolent" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
@@ -1046,7 +1109,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1054,6 +1117,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnDth_UnntrlDth_sBldy" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Death_UnnaturalDeath_isBloody" mode="IN">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:sqlParameterDeclaration>
@@ -1067,7 +1133,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1110,6 +1176,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdateTaskPerson_Person_id" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Task_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Person_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1123,7 +1192,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Task_id" />
-							<dep:sqlParameterReference name="Task_id" />
+							<dep:sqlParameterReference name="old_Task_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1166,6 +1235,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtVlTyp1VlTyp1Vl" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_ValueType1Value" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="ValueType1Value" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1179,7 +1251,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="ValueType1Value" />
-							<dep:sqlParameterReference name="ValueType1Value" />
+							<dep:sqlParameterReference name="old_ValueType1Value" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1187,6 +1259,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UVT1DSWPP" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_ValueType1Value" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="DsSmthngWthPrsn_Prsn_d" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1200,7 +1275,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="ValueType1Value" />
-							<dep:sqlParameterReference name="ValueType1Value" />
+							<dep:sqlParameterReference name="old_ValueType1Value" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -1269,6 +1344,15 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPBCFPODCS" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="CarSold_vin" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1283,15 +1367,15 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Buyer_Person_id" />
-								<dep:sqlParameterReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="old_Buyer_Person_id" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="CarSold_vin" />
-								<dep:sqlParameterReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="old_CarSold_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Seller_Person_id" />
-								<dep:sqlParameterReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="old_Seller_Person_id" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -1300,6 +1384,15 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPBCFPODSDYMD" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="SaleDate_YMD" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1314,15 +1407,15 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Buyer_Person_id" />
-								<dep:sqlParameterReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="old_Buyer_Person_id" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="CarSold_vin" />
-								<dep:sqlParameterReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="old_CarSold_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Seller_Person_id" />
-								<dep:sqlParameterReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="old_Seller_Person_id" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -1331,6 +1424,15 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPBCFPODBP" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Buyer_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1345,15 +1447,15 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Buyer_Person_id" />
-								<dep:sqlParameterReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="old_Buyer_Person_id" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="CarSold_vin" />
-								<dep:sqlParameterReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="old_CarSold_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Seller_Person_id" />
-								<dep:sqlParameterReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="old_Seller_Person_id" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -1362,6 +1464,15 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UPBCFPODSP" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Buyer_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_CarSold_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Seller_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Seller_Person_id" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1376,15 +1487,15 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Buyer_Person_id" />
-								<dep:sqlParameterReference name="Buyer_Person_id" />
+								<dep:sqlParameterReference name="old_Buyer_Person_id" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="CarSold_vin" />
-								<dep:sqlParameterReference name="CarSold_vin" />
+								<dep:sqlParameterReference name="old_CarSold_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Seller_Person_id" />
-								<dep:sqlParameterReference name="Seller_Person_id" />
+								<dep:sqlParameterReference name="old_Seller_Person_id" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -1442,6 +1553,12 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdateReviewCar_vin" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Car_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Criterion_Name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Car_vin" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1456,11 +1573,11 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Car_vin" />
-								<dep:sqlParameterReference name="Car_vin" />
+								<dep:sqlParameterReference name="old_Car_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Criterion_Name" />
-								<dep:sqlParameterReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="old_Criterion_Name" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -1469,6 +1586,12 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdateReviewRating_Nr_Integer" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Car_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Criterion_Name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Rating_Nr_Integer" mode="IN">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:sqlParameterDeclaration>
@@ -1483,11 +1606,11 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Car_vin" />
-								<dep:sqlParameterReference name="Car_vin" />
+								<dep:sqlParameterReference name="old_Car_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Criterion_Name" />
-								<dep:sqlParameterReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="old_Criterion_Name" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>
@@ -1496,6 +1619,12 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdateReviewCriterion_Name" schema="SampleModel">
+		<ddl:sqlParameterDeclaration name="old_Car_vin" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
+		<ddl:sqlParameterDeclaration name="old_Criterion_Name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Criterion_Name" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 		</ddl:sqlParameterDeclaration>
@@ -1510,11 +1639,11 @@
 						<dep:and>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Car_vin" />
-								<dep:sqlParameterReference name="Car_vin" />
+								<dep:sqlParameterReference name="old_Car_vin" />
 							</dep:comparisonPredicate>
 							<dep:comparisonPredicate operator="equals">
 								<dep:columnReference name="Criterion_Name" />
-								<dep:sqlParameterReference name="Criterion_Name" />
+								<dep:sqlParameterReference name="old_Criterion_Name" />
 							</dep:comparisonPredicate>
 						</dep:and>
 					</dml:searchCondition>

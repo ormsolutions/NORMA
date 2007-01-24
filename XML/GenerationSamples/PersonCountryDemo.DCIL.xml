@@ -101,6 +101,9 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonLastName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="LastName">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="LastName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:parameter>
@@ -113,13 +116,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonFirstName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="FirstName">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="FirstName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:parameter>
@@ -132,13 +138,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonTitle" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Title">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Title">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="4" />
 		</dcl:parameter>
@@ -151,13 +160,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnCntry_Cntry_nm" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Country_Country_name">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Country_Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
@@ -170,7 +182,7 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
@@ -219,6 +231,9 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdateCountryCountry_name" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Country" oilColumnRef="Country_name">
+		<dcl:parameter mode="IN" name="old_Country_name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Country_name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
 		</dcl:parameter>
@@ -231,13 +246,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Country_name" />
-						<dep:sqlParameterReference name="Country_name" />
+						<dep:sqlParameterReference name="old_Country_name" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtCntryRgn_Rgn_cd" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Country" oilColumnRef="Region_Region_code">
+		<dcl:parameter mode="IN" name="old_Country_name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Region_Region_code">
 			<dcl:predefinedDataType name="CHARACTER" length="8" />
 		</dcl:parameter>
@@ -250,7 +268,7 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Country_name" />
-						<dep:sqlParameterReference name="Country_name" />
+						<dep:sqlParameterReference name="old_Country_name" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>

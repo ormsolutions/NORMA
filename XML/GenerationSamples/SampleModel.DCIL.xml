@@ -329,6 +329,9 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonFirstName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="FirstName">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="FirstName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
@@ -341,13 +344,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonDate_YMD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Date_YMD">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Date_YMD">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -360,13 +366,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonLastName" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="LastName">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="LastName">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
@@ -379,13 +388,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnOptnlUnqStrng" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="OptionalUniqueString">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="OptionalUniqueString">
 			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:parameter>
@@ -398,13 +410,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonHatType_ColorARGB" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="HatType_ColorARGB">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="HatType_ColorARGB">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -417,13 +432,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonHTHTSHTSD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="HTHTSHTSD">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="HTHTSHTSD">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="256" />
 		</dcl:parameter>
@@ -436,13 +454,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonOwnsCar_vin" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="OwnsCar_vin">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="OwnsCar_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -455,13 +476,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonGender_Gender_Code" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Gender_Gender_Code">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Gender_Gender_Code">
 			<dcl:predefinedDataType name="CHARACTER" length="1" />
 		</dcl:parameter>
@@ -474,13 +498,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonhasParents" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="hasParents">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="hasParents">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
@@ -493,13 +520,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnOptnlUnqDcml" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="OptionalUniqueDecimal">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="OptionalUniqueDecimal">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:parameter>
@@ -512,13 +542,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnMndtryUnqDcml" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="MandatoryUniqueDecimal">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="MandatoryUniqueDecimal">
 			<dcl:predefinedDataType name="DECIMAL" precision="9" />
 		</dcl:parameter>
@@ -531,13 +564,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnMndtryUnqStrng" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="MandatoryUniqueString">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="MandatoryUniqueString">
 			<dcl:predefinedDataType name="CHARACTER" length="11" />
 		</dcl:parameter>
@@ -550,13 +586,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonHusband_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Husband_Person_id">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Husband_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -569,13 +608,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPVT1DSEWVT1V" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="VlTyp1DsSmthngElsWth_VlTyp1Vl">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="VlTyp1DsSmthngElsWth_VlTyp1Vl">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -588,13 +630,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPCPBOBON" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="ChldPrsn_BrthOrdr_BrthOrdr_Nr">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="ChldPrsn_BrthOrdr_BrthOrdr_Nr">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -607,13 +652,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonFather_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Father_Person_id">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Father_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -626,13 +674,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonMother_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Mother_Person_id">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Mother_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -645,13 +696,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdatePersonDeath_Date_YMD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Death_Date_YMD">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Death_Date_YMD">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -664,13 +718,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnDth_DthCs_DthCs_Typ" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Dth_DthCs_DthCs_Typ">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Dth_DthCs_DthCs_Typ">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="14" />
 		</dcl:parameter>
@@ -683,13 +740,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPDNDFPC" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Dth_NtrlDth_sFrmPrsttCncr">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Dth_NtrlDth_sFrmPrsttCncr">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
@@ -702,13 +762,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnDth_UnntrlDth_sVlnt" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Death_UnnaturalDeath_isViolent">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Death_UnnaturalDeath_isViolent">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
@@ -721,13 +784,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtPrsnDth_UnntrlDth_sBldy" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Person" oilColumnRef="Death_UnnaturalDeath_isBloody">
+		<dcl:parameter mode="IN" name="old_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Death_UnnaturalDeath_isBloody">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:parameter>
@@ -740,7 +806,7 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Person_id" />
-						<dep:sqlParameterReference name="Person_id" />
+						<dep:sqlParameterReference name="old_Person_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
@@ -792,6 +858,9 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdateTaskPerson_Person_id" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Task" oilColumnRef="Person_Person_id">
+		<dcl:parameter mode="IN" name="old_Task_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Person_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -804,7 +873,7 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="Task_id" />
-						<dep:sqlParameterReference name="Task_id" />
+						<dep:sqlParameterReference name="old_Task_id" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
@@ -856,6 +925,9 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdtVlTyp1VlTyp1Vl" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="ValueType1" oilColumnRef="ValueType1Value">
+		<dcl:parameter mode="IN" name="old_ValueType1Value">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="ValueType1Value">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -868,13 +940,16 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="ValueType1Value" />
-						<dep:sqlParameterReference name="ValueType1Value" />
+						<dep:sqlParameterReference name="old_ValueType1Value" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UVT1DSWPP" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="ValueType1" oilColumnRef="DsSmthngWthPrsn_Prsn_d">
+		<dcl:parameter mode="IN" name="old_ValueType1Value">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="DsSmthngWthPrsn_Prsn_d">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -887,7 +962,7 @@
 				<dml:searchCondition>
 					<dep:comparisonPredicate operator="equals">
 						<dep:columnReference name="ValueType1Value" />
-						<dep:sqlParameterReference name="ValueType1Value" />
+						<dep:sqlParameterReference name="old_ValueType1Value" />
 					</dep:comparisonPredicate>
 				</dml:searchCondition>
 			</dml:whereClause>
@@ -986,6 +1061,15 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPBCFPODCS" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="CarSold_vin">
+		<dcl:parameter mode="IN" name="old_Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="CarSold_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -999,15 +1083,15 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Buyer_Person_id" />
-							<dep:sqlParameterReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="old_Buyer_Person_id" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="CarSold_vin" />
-							<dep:sqlParameterReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="old_CarSold_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Seller_Person_id" />
-							<dep:sqlParameterReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="old_Seller_Person_id" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
@@ -1015,6 +1099,15 @@
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPBCFPODSDYMD" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="SaleDate_YMD">
+		<dcl:parameter mode="IN" name="old_Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="SaleDate_YMD">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -1028,15 +1121,15 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Buyer_Person_id" />
-							<dep:sqlParameterReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="old_Buyer_Person_id" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="CarSold_vin" />
-							<dep:sqlParameterReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="old_CarSold_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Seller_Person_id" />
-							<dep:sqlParameterReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="old_Seller_Person_id" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
@@ -1044,6 +1137,15 @@
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPBCFPODBP" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="Buyer_Person_id">
+		<dcl:parameter mode="IN" name="old_Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Buyer_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -1057,15 +1159,15 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Buyer_Person_id" />
-							<dep:sqlParameterReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="old_Buyer_Person_id" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="CarSold_vin" />
-							<dep:sqlParameterReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="old_CarSold_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Seller_Person_id" />
-							<dep:sqlParameterReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="old_Seller_Person_id" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
@@ -1073,6 +1175,15 @@
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UPBCFPODSP" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="PrsnBghtCrFrmPrsnOnDt" oilColumnRef="Seller_Person_id">
+		<dcl:parameter mode="IN" name="old_Buyer_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_CarSold_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Seller_Person_id">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Seller_Person_id">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -1086,15 +1197,15 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Buyer_Person_id" />
-							<dep:sqlParameterReference name="Buyer_Person_id" />
+							<dep:sqlParameterReference name="old_Buyer_Person_id" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="CarSold_vin" />
-							<dep:sqlParameterReference name="CarSold_vin" />
+							<dep:sqlParameterReference name="old_CarSold_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Seller_Person_id" />
-							<dep:sqlParameterReference name="Seller_Person_id" />
+							<dep:sqlParameterReference name="old_Seller_Person_id" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
@@ -1162,6 +1273,12 @@
 		</dml:deleteStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdateReviewCar_vin" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review" oilColumnRef="Car_vin">
+		<dcl:parameter mode="IN" name="old_Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Car_vin">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -1175,11 +1292,11 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Car_vin" />
-							<dep:sqlParameterReference name="Car_vin" />
+							<dep:sqlParameterReference name="old_Car_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Criterion_Name" />
-							<dep:sqlParameterReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="old_Criterion_Name" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
@@ -1187,6 +1304,12 @@
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdateReviewRating_Nr_Integer" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review" oilColumnRef="Rating_Nr_Integer">
+		<dcl:parameter mode="IN" name="old_Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Rating_Nr_Integer">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:parameter>
@@ -1200,11 +1323,11 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Car_vin" />
-							<dep:sqlParameterReference name="Car_vin" />
+							<dep:sqlParameterReference name="old_Car_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Criterion_Name" />
-							<dep:sqlParameterReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="old_Criterion_Name" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>
@@ -1212,6 +1335,12 @@
 		</dml:updateStatement>
 	</dcl:procedure>
 	<dcl:procedure name="UpdateReviewCriterion_Name" sqlDataAccessIndication="MODIFIES SQL DATA" oilRefName="Review" oilColumnRef="Criterion_Name">
+		<dcl:parameter mode="IN" name="old_Car_vin">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:parameter>
+		<dcl:parameter mode="IN" name="old_Criterion_Name">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
+		</dcl:parameter>
 		<dcl:parameter mode="IN" name="Criterion_Name">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:parameter>
@@ -1225,11 +1354,11 @@
 					<dep:and>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Car_vin" />
-							<dep:sqlParameterReference name="Car_vin" />
+							<dep:sqlParameterReference name="old_Car_vin" />
 						</dep:comparisonPredicate>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Criterion_Name" />
-							<dep:sqlParameterReference name="Criterion_Name" />
+							<dep:sqlParameterReference name="old_Criterion_Name" />
 						</dep:comparisonPredicate>
 					</dep:and>
 				</dml:searchCondition>

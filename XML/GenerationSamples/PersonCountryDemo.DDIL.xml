@@ -161,6 +161,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonLastName" schema="PersonCountryDemo">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="LastName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 		</ddl:sqlParameterDeclaration>
@@ -174,7 +177,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -182,6 +185,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonFirstName" schema="PersonCountryDemo">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="FirstName" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 		</ddl:sqlParameterDeclaration>
@@ -195,7 +201,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -203,6 +209,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdatePersonTitle" schema="PersonCountryDemo">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Title" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="4" />
 		</ddl:sqlParameterDeclaration>
@@ -216,7 +225,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -224,6 +233,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtPrsnCntry_Cntry_nm" schema="PersonCountryDemo">
+		<ddl:sqlParameterDeclaration name="old_Person_id" mode="IN">
+			<ddt:exactNumeric type="BIGINT" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Country_Country_name" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:sqlParameterDeclaration>
@@ -237,7 +249,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Person_id" />
-							<dep:sqlParameterReference name="Person_id" />
+							<dep:sqlParameterReference name="old_Person_id" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -280,6 +292,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdateCountryCountry_name" schema="PersonCountryDemo">
+		<ddl:sqlParameterDeclaration name="old_Country_name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Country_name" mode="IN">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
 		</ddl:sqlParameterDeclaration>
@@ -293,7 +308,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Country_name" />
-							<dep:sqlParameterReference name="Country_name" />
+							<dep:sqlParameterReference name="old_Country_name" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>
@@ -301,6 +316,9 @@
 		</ddl:sqlRoutineSpec>
 	</ddl:sqlInvokedProcedure>
 	<ddl:sqlInvokedProcedure name="UpdtCntryRgn_Rgn_cd" schema="PersonCountryDemo">
+		<ddl:sqlParameterDeclaration name="old_Country_name" mode="IN">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:sqlParameterDeclaration>
 		<ddl:sqlParameterDeclaration name="Region_Region_code" mode="IN">
 			<ddt:characterString type="CHARACTER" length="8" />
 		</ddl:sqlParameterDeclaration>
@@ -314,7 +332,7 @@
 					<dml:searchCondition>
 						<dep:comparisonPredicate operator="equals">
 							<dep:columnReference name="Country_name" />
-							<dep:sqlParameterReference name="Country_name" />
+							<dep:sqlParameterReference name="old_Country_name" />
 						</dep:comparisonPredicate>
 					</dml:searchCondition>
 				</dml:whereClause>

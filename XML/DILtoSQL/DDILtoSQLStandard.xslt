@@ -806,12 +806,11 @@
 				<xsl:text>, </xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:value-of select="ddl:column/@name"/>
+		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$setClauseEqualsOperator" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="dep:sqlParameterReference/@name"/>
-
+		<xsl:apply-templates select="child::*[2]"/>
 	</xsl:template>
 
 	<xsl:template match="dml:fromConstructor">

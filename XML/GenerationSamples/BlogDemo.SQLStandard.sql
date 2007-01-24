@@ -71,23 +71,27 @@ blogLabelId_BlogLabel_Id = blogLabelId_BlogLabel_Id;
 
 CREATE PROCEDURE BlogDemo.UBELEIBEI
 (
+	old_blogEntryId_BlogEntry_Id BIGINT , 
+	old_blogLabelId_BlogLabel_Id BIGINT , 
 	blogEntryId_BlogEntry_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntryLabel
 SET blogEntryId_BlogEntry_Id = blogEntryId_BlogEntry_Id
-	WHERE blogEntryId_BlogEntry_Id = blogEntryId_BlogEntry_Id AND 
-blogLabelId_BlogLabel_Id = blogLabelId_BlogLabel_Id;
+	WHERE blogEntryId_BlogEntry_Id = old_blogEntryId_BlogEntry_Id AND 
+blogLabelId_BlogLabel_Id = old_blogLabelId_BlogLabel_Id;
 
 CREATE PROCEDURE BlogDemo.UBELLIBLI
 (
+	old_blogEntryId_BlogEntry_Id BIGINT , 
+	old_blogLabelId_BlogLabel_Id BIGINT , 
 	blogLabelId_BlogLabel_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntryLabel
 SET blogLabelId_BlogLabel_Id = blogLabelId_BlogLabel_Id
-	WHERE blogEntryId_BlogEntry_Id = blogEntryId_BlogEntry_Id AND 
-blogLabelId_BlogLabel_Id = blogLabelId_BlogLabel_Id;
+	WHERE blogEntryId_BlogEntry_Id = old_blogEntryId_BlogEntry_Id AND 
+blogLabelId_BlogLabel_Id = old_blogLabelId_BlogLabel_Id;
 
 CREATE PROCEDURE BlogDemo.InsertBlogEntry
 (
@@ -113,66 +117,73 @@ AS
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryBlogEntry_Id
 (
+	old_BlogEntry_Id BIGINT , 
 	BlogEntry_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET BlogEntry_Id = BlogEntry_Id
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryentryTitle
 (
+	old_BlogEntry_Id BIGINT , 
 	entryTitle CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET entryTitle = entryTitle
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryentryBody
 (
+	old_BlogEntry_Id BIGINT , 
 	entryBody CHARACTER VARYING() 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET entryBody = entryBody
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.UpdtBlgEntrypstdDt_MDYVl
 (
+	old_BlogEntry_Id BIGINT , 
 	postedDate_MDYValue BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET postedDate_MDYValue = postedDate_MDYValue
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.UpdtBlgEntrysrId_frstNm
 (
+	old_BlogEntry_Id BIGINT , 
 	userId_firstName CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET userId_firstName = userId_firstName
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryuserId_lastName
 (
+	old_BlogEntry_Id BIGINT , 
 	userId_lastName CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET userId_lastName = userId_lastName
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.UBEEIBEI
 (
+	old_BlogEntry_Id BIGINT , 
 	parentEntryId_BlogEntry_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
 SET parentEntryId_BlogEntry_Id = parentEntryId_BlogEntry_Id
-	WHERE BlogEntry_Id = BlogEntry_Id;
+	WHERE BlogEntry_Id = old_BlogEntry_Id;
 
 CREATE PROCEDURE BlogDemo.InsertUser
 (
@@ -197,43 +208,51 @@ lastName = lastName;
 
 CREATE PROCEDURE BlogDemo."Update""User""firstName"
 (
+	old_firstName CHARACTER VARYING(30) , 
+	old_lastName CHARACTER VARYING(30) , 
 	firstName CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo."User"
 SET firstName = firstName
-	WHERE firstName = firstName AND 
-lastName = lastName;
+	WHERE firstName = old_firstName AND 
+lastName = old_lastName;
 
 CREATE PROCEDURE BlogDemo."Update""User""lastName"
 (
+	old_firstName CHARACTER VARYING(30) , 
+	old_lastName CHARACTER VARYING(30) , 
 	lastName CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo."User"
 SET lastName = lastName
-	WHERE firstName = firstName AND 
-lastName = lastName;
+	WHERE firstName = old_firstName AND 
+lastName = old_lastName;
 
 CREATE PROCEDURE BlogDemo."Update""User""username"
 (
+	old_firstName CHARACTER VARYING(30) , 
+	old_lastName CHARACTER VARYING(30) , 
 	username CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo."User"
 SET username = username
-	WHERE firstName = firstName AND 
-lastName = lastName;
+	WHERE firstName = old_firstName AND 
+lastName = old_lastName;
 
 CREATE PROCEDURE BlogDemo."Update""User""password"
 (
+	old_firstName CHARACTER VARYING(30) , 
+	old_lastName CHARACTER VARYING(30) , 
 	password CHARACTER(32) 
 )
 AS
 	UPDATE BlogDemo."User"
 SET password = password
-	WHERE firstName = firstName AND 
-lastName = lastName;
+	WHERE firstName = old_firstName AND 
+lastName = old_lastName;
 
 CREATE PROCEDURE BlogDemo.InsertBlogLabel
 (
@@ -254,11 +273,12 @@ AS
 
 CREATE PROCEDURE BlogDemo.UpdateBlogLabeltitle
 (
+	old_BlogLabel_Id BIGINT , 
 	title CHARACTER VARYING() 
 )
 AS
 	UPDATE BlogDemo.BlogLabel
 SET title = title
-	WHERE BlogLabel_Id = BlogLabel_Id;
+	WHERE BlogLabel_Id = old_BlogLabel_Id;
 COMMIT WORK;
 

@@ -42,39 +42,43 @@ AS
 
 CREATE PROCEDURE PersonCountryDemo.UpdatePersonLastName
 (
+	old_Person_id NUMBER(38) , 
 	LastName CHARACTER VARYING(30) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
 SET LastName = LastName
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE PersonCountryDemo.UpdatePersonFirstName
 (
+	old_Person_id NUMBER(38) , 
 	FirstName CHARACTER VARYING(30) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
 SET FirstName = FirstName
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE PersonCountryDemo.UpdatePersonTitle
 (
+	old_Person_id NUMBER(38) , 
 	Title CHARACTER VARYING(4) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
 SET Title = Title
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE PersonCountryDemo.UpdtPrsnCntry_Cntry_nm
 (
+	old_Person_id NUMBER(38) , 
 	Country_Country_name CHARACTER VARYING(20) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
 SET Country_Country_name = Country_Country_name
-	WHERE Person_id = Person_id;
+	WHERE Person_id = old_Person_id;
 
 CREATE PROCEDURE PersonCountryDemo.InsertCountry
 (
@@ -95,20 +99,22 @@ AS
 
 CREATE PROCEDURE PersonCountryDemo.UpdateCountryCountry_name
 (
+	old_Country_name CHARACTER VARYING(20) , 
 	Country_name CHARACTER VARYING(20) 
 )
 AS
 	UPDATE PersonCountryDemo.Country
 SET Country_name = Country_name
-	WHERE Country_name = Country_name;
+	WHERE Country_name = old_Country_name;
 
 CREATE PROCEDURE PersonCountryDemo.UpdtCntryRgn_Rgn_cd
 (
+	old_Country_name CHARACTER VARYING(20) , 
 	Region_Region_code CHARACTER(8) 
 )
 AS
 	UPDATE PersonCountryDemo.Country
 SET Region_Region_code = Region_Region_code
-	WHERE Country_name = Country_name;
+	WHERE Country_name = old_Country_name;
 COMMIT WORK;
 

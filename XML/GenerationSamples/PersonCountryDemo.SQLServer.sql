@@ -55,45 +55,49 @@ GO
 
 CREATE PROCEDURE PersonCountryDemo.UpdatePersonLastName
 (
+	@old_Person_id BIGINT , 
 	@LastName NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
-SET LastName = LastName
-	WHERE Person_id = @Person_id
+SET LastName = @LastName
+	WHERE Person_id = @old_Person_id
 GO
 
 
 CREATE PROCEDURE PersonCountryDemo.UpdatePersonFirstName
 (
+	@old_Person_id BIGINT , 
 	@FirstName NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
-SET FirstName = FirstName
-	WHERE Person_id = @Person_id
+SET FirstName = @FirstName
+	WHERE Person_id = @old_Person_id
 GO
 
 
 CREATE PROCEDURE PersonCountryDemo.UpdatePersonTitle
 (
+	@old_Person_id BIGINT , 
 	@Title NATIONAL CHARACTER VARYING(4) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
-SET Title = Title
-	WHERE Person_id = @Person_id
+SET Title = @Title
+	WHERE Person_id = @old_Person_id
 GO
 
 
 CREATE PROCEDURE PersonCountryDemo.UpdtPrsnCntry_Cntry_nm
 (
+	@old_Person_id BIGINT , 
 	@Country_Country_name NATIONAL CHARACTER VARYING(20) 
 )
 AS
 	UPDATE PersonCountryDemo.Person
-SET Country_Country_name = Country_Country_name
-	WHERE Person_id = @Person_id
+SET Country_Country_name = @Country_Country_name
+	WHERE Person_id = @old_Person_id
 GO
 
 
@@ -120,23 +124,25 @@ GO
 
 CREATE PROCEDURE PersonCountryDemo.UpdateCountryCountry_name
 (
+	@old_Country_name NATIONAL CHARACTER VARYING(20) , 
 	@Country_name NATIONAL CHARACTER VARYING(20) 
 )
 AS
 	UPDATE PersonCountryDemo.Country
-SET Country_name = Country_name
-	WHERE Country_name = @Country_name
+SET Country_name = @Country_name
+	WHERE Country_name = @old_Country_name
 GO
 
 
 CREATE PROCEDURE PersonCountryDemo.UpdtCntryRgn_Rgn_cd
 (
+	@old_Country_name NATIONAL CHARACTER VARYING(20) , 
 	@Region_Region_code NATIONAL CHARACTER(8) 
 )
 AS
 	UPDATE PersonCountryDemo.Country
-SET Region_Region_code = Region_Region_code
-	WHERE Country_name = @Country_name
+SET Region_Region_code = @Region_Region_code
+	WHERE Country_name = @old_Country_name
 GO
 
 

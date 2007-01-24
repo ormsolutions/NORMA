@@ -88,25 +88,29 @@ GO
 
 CREATE PROCEDURE BlogDemo.UBELEIBEI
 (
+	@old_blogEntryId_BlogEntry_Id BIGINT , 
+	@old_blogLabelId_BlogLabel_Id BIGINT , 
 	@blogEntryId_BlogEntry_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntryLabel
-SET blogEntryId_BlogEntry_Id = blogEntryId_BlogEntry_Id
-	WHERE blogEntryId_BlogEntry_Id = @blogEntryId_BlogEntry_Id AND 
-blogLabelId_BlogLabel_Id = @blogLabelId_BlogLabel_Id
+SET blogEntryId_BlogEntry_Id = @blogEntryId_BlogEntry_Id
+	WHERE blogEntryId_BlogEntry_Id = @old_blogEntryId_BlogEntry_Id AND 
+blogLabelId_BlogLabel_Id = @old_blogLabelId_BlogLabel_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UBELLIBLI
 (
+	@old_blogEntryId_BlogEntry_Id BIGINT , 
+	@old_blogLabelId_BlogLabel_Id BIGINT , 
 	@blogLabelId_BlogLabel_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntryLabel
-SET blogLabelId_BlogLabel_Id = blogLabelId_BlogLabel_Id
-	WHERE blogEntryId_BlogEntry_Id = @blogEntryId_BlogEntry_Id AND 
-blogLabelId_BlogLabel_Id = @blogLabelId_BlogLabel_Id
+SET blogLabelId_BlogLabel_Id = @blogLabelId_BlogLabel_Id
+	WHERE blogEntryId_BlogEntry_Id = @old_blogEntryId_BlogEntry_Id AND 
+blogLabelId_BlogLabel_Id = @old_blogLabelId_BlogLabel_Id
 GO
 
 
@@ -138,78 +142,85 @@ GO
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryBlogEntry_Id
 (
+	@old_BlogEntry_Id BIGINT , 
 	@BlogEntry_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET BlogEntry_Id = BlogEntry_Id
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET BlogEntry_Id = @BlogEntry_Id
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryentryTitle
 (
+	@old_BlogEntry_Id BIGINT , 
 	@entryTitle NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET entryTitle = entryTitle
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET entryTitle = @entryTitle
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryentryBody
 (
+	@old_BlogEntry_Id BIGINT , 
 	@entryBody NATIONAL CHARACTER VARYING() 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET entryBody = entryBody
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET entryBody = @entryBody
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UpdtBlgEntrypstdDt_MDYVl
 (
+	@old_BlogEntry_Id BIGINT , 
 	@postedDate_MDYValue BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET postedDate_MDYValue = postedDate_MDYValue
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET postedDate_MDYValue = @postedDate_MDYValue
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UpdtBlgEntrysrId_frstNm
 (
+	@old_BlogEntry_Id BIGINT , 
 	@userId_firstName NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET userId_firstName = userId_firstName
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET userId_firstName = @userId_firstName
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UpdateBlogEntryuserId_lastName
 (
+	@old_BlogEntry_Id BIGINT , 
 	@userId_lastName NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET userId_lastName = userId_lastName
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET userId_lastName = @userId_lastName
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
 CREATE PROCEDURE BlogDemo.UBEEIBEI
 (
+	@old_BlogEntry_Id BIGINT , 
 	@parentEntryId_BlogEntry_Id BIGINT 
 )
 AS
 	UPDATE BlogDemo.BlogEntry
-SET parentEntryId_BlogEntry_Id = parentEntryId_BlogEntry_Id
-	WHERE BlogEntry_Id = @BlogEntry_Id
+SET parentEntryId_BlogEntry_Id = @parentEntryId_BlogEntry_Id
+	WHERE BlogEntry_Id = @old_BlogEntry_Id
 GO
 
 
@@ -240,49 +251,57 @@ GO
 
 CREATE PROCEDURE BlogDemo."Update""User""firstName"
 (
+	@old_firstName NATIONAL CHARACTER VARYING(30) , 
+	@old_lastName NATIONAL CHARACTER VARYING(30) , 
 	@firstName NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo."User"
-SET firstName = firstName
-	WHERE firstName = @firstName AND 
-lastName = @lastName
+SET firstName = @firstName
+	WHERE firstName = @old_firstName AND 
+lastName = @old_lastName
 GO
 
 
 CREATE PROCEDURE BlogDemo."Update""User""lastName"
 (
+	@old_firstName NATIONAL CHARACTER VARYING(30) , 
+	@old_lastName NATIONAL CHARACTER VARYING(30) , 
 	@lastName NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo."User"
-SET lastName = lastName
-	WHERE firstName = @firstName AND 
-lastName = @lastName
+SET lastName = @lastName
+	WHERE firstName = @old_firstName AND 
+lastName = @old_lastName
 GO
 
 
 CREATE PROCEDURE BlogDemo."Update""User""username"
 (
+	@old_firstName NATIONAL CHARACTER VARYING(30) , 
+	@old_lastName NATIONAL CHARACTER VARYING(30) , 
 	@username NATIONAL CHARACTER VARYING(30) 
 )
 AS
 	UPDATE BlogDemo."User"
-SET username = username
-	WHERE firstName = @firstName AND 
-lastName = @lastName
+SET username = @username
+	WHERE firstName = @old_firstName AND 
+lastName = @old_lastName
 GO
 
 
 CREATE PROCEDURE BlogDemo."Update""User""password"
 (
+	@old_firstName NATIONAL CHARACTER VARYING(30) , 
+	@old_lastName NATIONAL CHARACTER VARYING(30) , 
 	@password NATIONAL CHARACTER(32) 
 )
 AS
 	UPDATE BlogDemo."User"
-SET password = password
-	WHERE firstName = @firstName AND 
-lastName = @lastName
+SET password = @password
+	WHERE firstName = @old_firstName AND 
+lastName = @old_lastName
 GO
 
 
@@ -309,12 +328,13 @@ GO
 
 CREATE PROCEDURE BlogDemo.UpdateBlogLabeltitle
 (
+	@old_BlogLabel_Id BIGINT , 
 	@title NATIONAL CHARACTER VARYING() 
 )
 AS
 	UPDATE BlogDemo.BlogLabel
-SET title = title
-	WHERE BlogLabel_Id = @BlogLabel_Id
+SET title = @title
+	WHERE BlogLabel_Id = @old_BlogLabel_Id
 GO
 
 
