@@ -311,6 +311,20 @@
 					<xs:documentation>True if the current role player has a reference scheme</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="IsPositive">
+				<xs:annotation>
+					<xs:documentation>
+						Matches if creating a positive verbalization.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsNegative">
+				<xs:annotation>
+					<xs:documentation>
+						Matches if creating a negative verbalization.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="IsSingleValue">
 				<xs:annotation>
 					<xs:documentation>
@@ -428,6 +442,8 @@
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
 			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
+			<xs:element name="SubtypeName" type="SubtypeNameType"/>
+			<xs:element name="SupertypeName" type="SupertypeNameType"/>
 			<xs:element name="ValueRangeValueTypeName" type="ValueRangeValueTypeNameType"/>
 		</xs:choice>
 	</xs:group>
@@ -670,6 +686,20 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="SubtypeNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of the sub type role player.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="SupertypeNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of the sub type role player.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="NoteTextType">
 		<xs:annotation>
 			<xs:documentation>
@@ -729,6 +759,17 @@
 	</xs:complexType>
 	<xs:complexType name="FactConstructType">
 		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
+	</xs:complexType>
+	<xs:complexType name="SubtypeConstructType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the full verbalization for a subtype fact, i.e, Man is a subtype of Person.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="NoteConstructType">
 		<xs:annotation>
@@ -992,6 +1033,7 @@
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="FactType" type="FactConstructType"/>
+							<xs:element name="SubtypeFact" type="SubtypeConstructType"/>
 							<xs:element name="Constraints" type="ConstraintsConstructType"/>
 							<xs:element name="SampleInstances" type="SampleInstancesConstructType"/>
 							<xs:element name="ObjectType" type="ObjectConstructType" />

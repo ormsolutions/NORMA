@@ -185,7 +185,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public virtual void OnSubFieldMouseHover(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
 		{
 		}
-		// UNDONE: 2006-06 DSL Tools port: This used to be inherited from ShapeElement.
 		/// <summary>
 		/// Translate OnSubFieldMouseMove events into OnSubFieldMouseEnter and OnSubFieldMouseMove
 		/// events

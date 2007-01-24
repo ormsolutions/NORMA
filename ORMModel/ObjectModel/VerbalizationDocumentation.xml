@@ -1141,6 +1141,7 @@
     <containedIn>
       <snippet name="IndependentVerbalization" />
       <snippet name="ObjectifiesFactTypeVerbalization" />
+      <snippet name="SubtypeMetaReading" />
     </containedIn>
     <usedBy>
       <constraint name="ValueTypeValueConstraint" />
@@ -1582,6 +1583,18 @@
       <constraint name="RoleValueConstraint" />
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
+  </snippet>
+  <snippet name="SubtypeMetaReading" replacementCount="2">
+    <statement>
+							Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
+							Format: {0} is a subtype of {1}
+						</statement>
+    <unformattedSnippet>Each {0} is an instance of {1}</unformattedSnippet>
+    <contains>
+      <snippet name="ObjectType" />
+    </contains>
+    <containedIn />
+    <usedBy />
   </snippet>
   <snippet name="TextInstanceValue" replacementCount="1">
     <statement>

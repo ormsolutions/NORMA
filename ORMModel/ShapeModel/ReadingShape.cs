@@ -326,7 +326,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (remainingOrders.Count != 0)
 					{
 						LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-						Reading newReading = FactType.GetMatchingReading(remainingOrders, oldOrder, roles[0], null, false, false, roles, true);
+						Reading newReading = factType.GetMatchingReading(remainingOrders, oldOrder, roles[0], null, false, false, roles, true) as Reading;
 						if (newReading != null)
 						{
 							ReadingOrder newOrder = newReading.ReadingOrder;

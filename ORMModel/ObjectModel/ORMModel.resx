@@ -498,7 +498,7 @@
     <comment>Text used as the header row for the primary readings in the reading editor for a role selection on an objectified fact type.</comment>
   </data>
 	<data name="ModelReadingEditor.UnsupportedSelectionText" xml:space="preserve">
-    <value>Select an item related to a Fact</value>
+    <value>Select an item related to a FactType</value>
     <comment>Text to place in the reading editor when the document view currently has an unsupported selection.</comment>
   </data>
 	<data name="ModelReadingEditor.WindowTitle" xml:space="preserve">
@@ -622,15 +622,19 @@
     <value>{0}-&gt;{1}</value>
     <comment>String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
   </data>
-	<data name="SubtypeFact.PredicateInverseReading" xml:space="preserve">
-    <value>{0} is a supertype of {1}</value>
-    <comment>The inverse reading for the predicate created by creating a sub type relationship.</comment>
+  <data name="SubtypeFact.ElementNameFormat" xml:space="preserve">
+    <value>{0}IsASubtypeOf{1}</value>
+    <comment>The format string for the generated name of a subtype relationship. The {0} replacement field is used for the subtype element name; {1} for the supertype.</comment>
   </data>
-	<data name="SubtypeFact.PredicateReading" xml:space="preserve">
-    <value>{0} is a subtype of {1}</value>
-    <comment>The reading for the forward predicate created by creating a subtype relationship.</comment>
+  <data name="SubtypeFact.PredicateInverseReading" xml:space="preserve">
+    <value>{0} is {1}</value>
+    <comment>The inverse instance reading for the predicate created by creating a sub type relationship.</comment>
   </data>
-	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
+  <data name="SubtypeFact.PredicateReading" xml:space="preserve">
+    <value>{0} is {1}</value>
+    <comment>The instance reading for the forward predicate created by creating a subtype relationship.</comment>
+  </data>
+  <data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
     <value>Maximum value for constraint '{0}' in model '{1}' cannot be less than the minimum value.</value>
     <comment>The frequency constraint minimum must be less than or equal to the maximum</comment>
   </data>

@@ -21,7 +21,7 @@
 	exclude-result-prefixes="cvg">
 	
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
-	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 	<xsl:preserve-space elements="cvg:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 <xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
@@ -327,7 +327,7 @@
 						</plx:initialize>
 					</plx:local>
 					<!--<plx:local name="readingOrder" dataTypeName="ReadingOrder"/>-->
-					<plx:local name="reading" dataTypeName="Reading"/>
+					<plx:local name="reading" dataTypeName="IReading"/>
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 					<plx:local name="instanceRoles" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="FactTypeRoleInstance"/>
@@ -423,6 +423,11 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
+				<plx:local name="parentFact" dataTypeName="FactType">
+					<plx:initialize>
+						<plx:thisKeyword/>
+					</plx:initialize>
+				</plx:local>
 				<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
 					<plx:passTypeParam dataTypeName="ReadingOrder"/>
 					<plx:initialize>
@@ -435,13 +440,59 @@
 					</plx:initialize>
 				</plx:local>
 				<!--<plx:local name="readingOrder" dataTypeName="ReadingOrder"/>-->
-				<plx:local name="reading" dataTypeName="Reading"/>
+				<plx:local name="reading" dataTypeName="IReading"/>
 				<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				<xsl:call-template name="PopulateBasicRoleReplacements"/>
 				<xsl:variable name="factMockup">
 					<cvg:Fact/>
 				</xsl:variable>
 				<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
+					<xsl:with-param name="TopLevel" select="true()"/>
+				</xsl:apply-templates>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+				</xsl:call-template>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</xsl:template>
+	<xsl:template match="cvg:SubtypeFact" mode="GenerateClasses">
+		<plx:class name="SubtypeFact" visibility="public" partial="true">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="SubtypeFact verbalization"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="SubtypeFact verbalization"/>
+			</plx:trailingInfo>
+			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<plx:function name="GetVerbalization" visibility="protected" replacesName="true">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>IVerbalize.GetVerbalization implementation</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
+				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+				</plx:param>
+				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="isNegative" dataTypeName=".boolean"/>
+				<plx:returns dataTypeName=".boolean"/>
+
+				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
+				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<xsl:apply-templates select="child::cvg:*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
 				<xsl:call-template name="CheckErrorConditions">
@@ -637,9 +688,7 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<!-- UNDONE: Forcing the issue for RingConstraint, the requirements for this are too hard
-					 to test and we will probably need this as the data for RingConstraint is filled in -->
-				<xsl:if test="not($isValueTypeValueConstraint or ($isSingleColumn and @type='RingConstraint'))">
+				<xsl:if test="not($isValueTypeValueConstraint)">
 					<plx:local name="parentFact" dataTypeName="FactType">
 						<xsl:choose>
 							<xsl:when test="$isInternal and not($isRoleValue)">
@@ -993,20 +1042,16 @@
 							</plx:local>
 							<plx:branch>
 								<plx:condition>
-									<plx:binaryOperator type="equality">
+									<plx:binaryOperator type="identityInequality">
 										<plx:left>
-											<plx:callInstance name="Count" type="property">
+											<plx:callInstance name="ReadingRequiredError" type="property">
 												<plx:callObject>
-													<plx:callInstance name="ReadingOrderCollection" type="property">
-														<plx:callObject>
-															<plx:nameRef name="currentFact"/>
-														</plx:callObject>
-													</plx:callInstance>
+													<plx:nameRef name="currentFact"/>
 												</plx:callObject>
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:value type="i4" data="0"/>
+											<plx:nullKeyword/>
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:condition>
@@ -1120,9 +1165,9 @@
 								</plx:initialize>
 							</plx:local>
 						</xsl:if>
-						<plx:local name="allConstraintRoleReadings" dataTypeName="Reading" dataTypeIsSimpleArray="true">
+						<plx:local name="allConstraintRoleReadings" dataTypeName="IReading" dataTypeIsSimpleArray="true">
 							<plx:initialize>
-								<plx:callNew dataTypeName="Reading" dataTypeIsSimpleArray="true">
+								<plx:callNew dataTypeName="IReading" dataTypeIsSimpleArray="true">
 									<plx:passParam>
 										<plx:nameRef name="constraintRoleArity"/>
 									</plx:passParam>
@@ -1154,7 +1199,7 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="descendant::cvg:Fact">
-					<plx:local name="reading" dataTypeName="Reading"/>
+					<plx:local name="reading" dataTypeName="IReading"/>
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				</xsl:if>
 				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint">
@@ -2570,19 +2615,27 @@
 		<xsl:if test="$PatternGroup='InternalSetConstraint'">
 			<plx:assign>
 				<plx:left>
+					<plx:nameRef name="parentFact"/>
+				</plx:left>
+				<plx:right>
+					<plx:callInstance name=".implied" type="indexerCall">
+						<plx:callObject>
+							<plx:nameRef name="allFacts"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:value data="0" type="i4"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:right>
+			</plx:assign>
+			<plx:assign>
+				<plx:left>
 					<plx:nameRef name="allReadingOrders"/>
 				</plx:left>
 				<plx:right>
 					<plx:callInstance name="ReadingOrderCollection" type="property">
 						<plx:callObject>
-							<plx:callInstance name=".implied" type="indexerCall">
-								<plx:callObject>
-									<plx:nameRef name="allFacts"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:value data="0" type="i4"/>
-								</plx:passParam>
-							</plx:callInstance>
+							<plx:nameRef name="parentFact"/>
 						</plx:callObject>
 					</plx:callInstance>
 				</plx:right>
@@ -2600,6 +2653,7 @@
 		<xsl:param name="VariablePrefix" select="'snippet'"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:call-template name="PopulateReading">
 			<xsl:with-param name="ReadingChoice" select="@match"/>
@@ -2609,6 +2663,7 @@
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 			<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 			<xsl:with-param name="TopLevel" select="$TopLevel"/>
@@ -2618,6 +2673,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:for-each select="cvg:ReadingChoice">
 			<xsl:if test="position()=1">
@@ -2625,6 +2681,7 @@
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 					<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
+					<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:call-template>
 			</xsl:if>
@@ -2633,6 +2690,7 @@
 	<xsl:template name="ProcessConditionalReadingChoice">
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="VariableDecorator" select="'1'"/>
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="Match" select="string(@match)"/>
@@ -2752,6 +2810,7 @@
 					<xsl:call-template name="PopulateReading">
 						<xsl:with-param name="ReadingChoice" select="$singleMatch"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 					</xsl:call-template>
 					<plx:branch>
 						<plx:condition>
@@ -2801,6 +2860,7 @@
 					<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 						<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 						<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+						<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 						<xsl:with-param name="TopLevel" select="$TopLevel"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 					</xsl:apply-templates>
@@ -2812,6 +2872,7 @@
 								<xsl:call-template name="ProcessConditionalReadingChoice">
 									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 									<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+									<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 									<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
 									<xsl:with-param name="TopLevel" select="$TopLevel"/>
 									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
@@ -2826,6 +2887,7 @@
 				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 					<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+					<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:apply-templates>
@@ -2837,6 +2899,7 @@
 						<xsl:call-template name="PopulateReading">
 							<xsl:with-param name="ReadingChoice" select="$Match"/>
 							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+							<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 						</xsl:call-template>
 						<plx:branch>
 							<plx:condition>
@@ -2853,6 +2916,7 @@
 							<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 								<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 							</xsl:apply-templates>
@@ -2864,6 +2928,7 @@
 										<xsl:call-template name="ProcessConditionalReadingChoice">
 											<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 											<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+											<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 											<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
 											<xsl:with-param name="TopLevel" select="$TopLevel"/>
 											<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
@@ -2877,6 +2942,7 @@
 						<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 							<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 							<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+							<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 							<xsl:with-param name="TopLevel" select="$TopLevel"/>
 							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						</xsl:apply-templates>
@@ -2918,6 +2984,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:variable name="SnippetTypeVariable" select="concat($VariablePrefix, 'SnippetType', $VariableDecorator)"/>
 		<xsl:variable name="conditionFragment">
@@ -3048,11 +3115,11 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="reading1" dataTypeName="Reading">
+					<plx:local name="reading1" dataTypeName="IReading">
 						<plx:initialize>
 							<plx:callInstance name="GetMatchingReading" type="methodCall">
 								<plx:callObject>
-									<plx:nameRef name="FactType"/>
+									<plx:nameRef name="parentFact"/>
 								</plx:callObject>
 								<plx:passParam>
 									<plx:nameRef name="readingOrders1"/>
@@ -3284,23 +3351,31 @@
 						</plx:beforeLoop>
 						<plx:assign>
 							<plx:left>
+								<plx:nameRef name="parentFact"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="FactType" type="property">
+									<plx:callObject>
+										<plx:callInstance name=".implied" type="indexerCall">
+											<plx:callObject>
+												<plx:nameRef name="factRoles" />
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="FactIter1"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
 								<plx:nameRef name="allReadingOrders"/>
 							</plx:left>
 							<plx:right>
 								<plx:callInstance name="ReadingOrderCollection" type="property">
 									<plx:callObject>
-										<plx:callInstance name="FactType" type="property">
-											<plx:callObject>
-												<plx:callInstance name=".implied" type="indexerCall">
-													<plx:callObject>
-														<plx:nameRef name="factRoles" />
-													</plx:callObject>
-													<plx:passParam>
-														<plx:nameRef name="FactIter1"/>
-													</plx:passParam>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
+										<plx:nameRef name="parentFact"/>
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:right>
@@ -3310,7 +3385,10 @@
 								<plx:nameRef name="reading"/>
 							</plx:left>
 							<plx:right>
-								<plx:callStatic name="GetMatchingReading" dataTypeName="FactType">
+								<plx:callInstance name="GetMatchingReading">
+									<plx:callObject>
+										<plx:nameRef name="parentFact"/>
+									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="allReadingOrders"/>
 									</plx:passParam>
@@ -3342,7 +3420,7 @@
 									<plx:passParam>
 										<plx:trueKeyword/>
 									</plx:passParam>
-							</plx:callStatic>
+								</plx:callInstance>
 							</plx:right>
 						</plx:assign>
 						<plx:branch>
@@ -3382,6 +3460,7 @@
 			<xsl:with-param name="TopLevel" select="$TopLevel"/>
 			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="ReplacementContents" select="cvg:SnippetReplacements/child::*"/>
 			<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
@@ -3476,6 +3555,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:for-each select="*">
 			<xsl:if test="position()=1">
@@ -3485,6 +3565,7 @@
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 					<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+					<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:call-template>
 			</xsl:if>
@@ -3497,6 +3578,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:param name="fallback" select="false()"/>
 		<xsl:variable name="conditionFragment">
@@ -3517,6 +3599,7 @@
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 								<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="ConditionalMatch" select="''"/>
 							</xsl:apply-templates>
@@ -3530,6 +3613,7 @@
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 								<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="ConditionalMatch" select="''"/>
 							</xsl:apply-templates>
@@ -3550,6 +3634,7 @@
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 								<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="ConditionalMatch" select="''"/>
 							</xsl:apply-templates>
@@ -3561,6 +3646,7 @@
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 								<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="ConditionalMatch" select="''"/>
 								<xsl:with-param name="fallback" select="true()"/>
@@ -3590,7 +3676,7 @@
 				<plx:nullKeyword/>
 			</plx:initialize>
 		</plx:local>
-		<plx:local name="reading" dataTypeName="Reading">
+		<plx:local name="reading" dataTypeName="IReading">
 			<plx:initialize>
 				<plx:nullKeyword/>
 			</plx:initialize>
@@ -3598,7 +3684,7 @@
 		<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 		<xsl:choose>
 			<xsl:when test="$NestedFact">
-				<plx:local name="nested" dataTypeName="FactType">
+				<plx:local name="parentFact" dataTypeName="FactType">
 					<plx:initialize>
 						<plx:callThis name="NestedFactType" type="property"/>
 					</plx:initialize>
@@ -3610,7 +3696,7 @@
 					<plx:right>
 						<plx:callInstance name="RoleCollection" type="property">
 							<plx:callObject>
-								<plx:nameRef name="nested"/>
+								<plx:nameRef name="parentFact"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:right>
@@ -3634,7 +3720,7 @@
 					<plx:right>
 						<plx:callInstance name="ReadingOrderCollection" type="property">
 							<plx:callObject>
-								<plx:nameRef name="nested"/>
+								<plx:nameRef name="parentFact"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:right>
@@ -3655,6 +3741,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:param name="ReplacementContents" select="child::*"/>
 		<xsl:param name="SnippetTypeVariable" select="''"/>
@@ -3716,6 +3803,7 @@
 				<xsl:with-param name="VariableDecorator" select="position()"/>
 				<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 				<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+				<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
@@ -3825,6 +3913,38 @@
 			</plx:left>
 			<plx:right>
 					<plx:callThis name="Name" type="property" />
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:SubtypeName" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'subtypeNameText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="Name" type="property">
+					<plx:callObject>
+						<plx:callThis name="Subtype" type="property"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:SupertypeName" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'supertypeNameText'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="Name" type="property">
+					<plx:callObject>
+						<plx:callThis name="Supertype" type="property"/>
+					</plx:callObject>
+				</plx:callInstance>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -4111,7 +4231,10 @@
 							<plx:nameRef name="reading" type="local"/>
 						</plx:left>
 						<plx:right>
-							<plx:callStatic dataTypeName="FactType" name="GetMatchingReading">
+							<plx:callInstance name="GetMatchingReading">
+								<plx:callObject>
+									<plx:nameRef name="currentFact"/>
+								</plx:callObject>
 								<plx:passParam>
 									<plx:nameRef name="allReadingOrders"/>
 								</plx:passParam>
@@ -4136,7 +4259,7 @@
 								<plx:passParam>
 									<plx:falseKeyword/>
 								</plx:passParam>
-							</plx:callStatic>
+							</plx:callInstance>
 						</plx:right>
 					</plx:assign>
 					<plx:branch>
@@ -4400,6 +4523,7 @@
 		<xsl:param name="FirstPassVariable"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:if test="$TopLevel">
 			<xsl:choose>
@@ -4426,6 +4550,7 @@
 		<xsl:call-template name="PopulateReading">
 			<xsl:with-param name="ReadingChoice" select="@readingChoice"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="ConditionalReadingOrderIndex">
 				<xsl:if test="$IteratorContext='setConstraintRoles'">
 					<xsl:value-of select="concat($RoleIterVariablePart,$VariableDecorator)"/>
@@ -4559,6 +4684,7 @@
 												<xsl:with-param name="Match" select="@match"/>
 												<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 												<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+												<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 												<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 												<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 												<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -4576,6 +4702,7 @@
 															<xsl:with-param name="Match" select="@match"/>
 															<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 															<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+															<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 															<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 															<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 															<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -4987,7 +5114,7 @@
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="ConditionalMatchCondition">
-		<xsl:variable name="ConditionalMatch" select="@conditionalMatch"/>
+		<xsl:variable name="ConditionalMatch" select="string(@conditionalMatch)"/>
 		<xsl:if test="string-length($ConditionalMatch)">
 			<xsl:choose>
 				<xsl:when test="$ConditionalMatch='IsPersonal'">
@@ -5055,6 +5182,14 @@
 							<plx:nullKeyword/>
 						</plx:right>
 					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='IsNegative'">
+					<plx:nameRef name="isNegative"/>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='IsPositive'">
+					<plx:unaryOperator type="booleanNot">
+						<plx:nameRef name="isNegative"/>
+					</plx:unaryOperator>
 				</xsl:when>
 				<xsl:when test="$ConditionalMatch='IsIndependent'">
 					<plx:callThis name="IsIndependent" type="property"/>
@@ -5617,6 +5752,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ListStyle" select="@listStyle"/>
@@ -5628,6 +5764,7 @@
 			<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 			<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
 			<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="ListStyle" select="$ListStyle"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="SequenceIterator" select="$SequenceIterator"/>
@@ -5639,6 +5776,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ListStyle" select="@listStyle"/>
@@ -5733,6 +5871,7 @@
 						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 						<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
 						<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+						<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						<xsl:with-param name="SequenceIterator" select="$IteratorVarName"/>
 						<xsl:with-param name="ParentListStyle" select="$ListStyle"/>
@@ -5746,6 +5885,7 @@
 						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 						<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
 						<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+						<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						<xsl:with-param name="SequenceIterator" select="$IteratorVarName"/>
 						<xsl:with-param name="ParentListStyle" select="$ListStyle"/>
@@ -5775,6 +5915,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ListStyle" select="@listStyle"/>
@@ -5805,6 +5946,7 @@
 			<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
 			<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
 			<xsl:with-param name="ListStyle" select="$ListStyle"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:call-template>
 	</xsl:template>
@@ -5812,6 +5954,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ListStyle" select="@listStyle"/>
@@ -5823,6 +5966,7 @@
 			<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
 			<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
 			<xsl:with-param name="ListStyle" select="$ListStyle"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:call-template>
 	</xsl:template>
@@ -5831,6 +5975,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'FactIter'"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ConditionalMatch" select="'null'"/>
@@ -6125,6 +6270,7 @@
 					<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
 					<xsl:with-param name="ListStyle" select="$ListStyle"/>
 					<xsl:with-param name="ParentListStyle" select="$ParentListStyle"/>
+					<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 					<xsl:with-param name="SequenceIterator" select="$SequenceIterator"/>
 					<xsl:with-param name="ConditionalMatch" select="$ConditionalMatch"/>
@@ -6139,6 +6285,7 @@
 					<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
 					<xsl:with-param name="ListStyle" select="$ListStyle"/>
 					<xsl:with-param name="ParentListStyle" select="$ParentListStyle"/>
+					<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 					<xsl:with-param name="SequenceIterator" select="$SequenceIterator"/>
 				</xsl:call-template>
@@ -6157,10 +6304,12 @@
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="SequenceIterator" select="false()"/>
 		<xsl:param name="ParentListStyle" select="'null'"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<!-- Other parameters should be forwarded to IterateRolesConstraintVerbalizationBody -->
 
 		<!-- Normalize the match data -->
 		<xsl:variable name="iterateFacts" select="boolean(self::cvg:IterateFacts)"/>
+		<xsl:variable name="iterateSequenceFacts" select="boolean(self::cvg:IterateSequenceFacts)"/>
 		<xsl:variable name="contextMatchFragment">
 			<xsl:choose>
 				<xsl:when test="$iterateFacts">
@@ -6175,9 +6324,20 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="contextMatch" select="string($contextMatchFragment)"/>
+		<xsl:variable name="forwardReadingFactTypeVariableNameFragment">
+			<xsl:choose>
+				<xsl:when test="$iterateSequenceFacts">
+					<xsl:text>currentFact</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$ReadingFactTypeVariableName"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="forwardReadingFactTypeVariableName" select="string($forwardReadingFactTypeVariableNameFragment)"/>
 		<xsl:variable name="iterVarNameFragment">
 			<xsl:choose>
-				<xsl:when test="$iterateFacts or boolean(self::cvg:IterateSequenceFacts)">
+				<xsl:when test="$iterateFacts or $iterateSequenceFacts">
 					<xsl:value-of select="concat($FactIterVariablePart,$VariableDecorator)"/>
 				</xsl:when>
 				<xsl:when test="$IteratorContext">
@@ -6212,7 +6372,7 @@
 		</xsl:if>
 		<xsl:if test="0=string-length($CompositeCount) and not($IteratorContext)">
 			<xsl:choose>
-				<xsl:when test="boolean(self::cvg:IterateSequenceFacts) and (not($ListStyle='null') or not(child::*/@listStyle='null'))">
+				<xsl:when test="$iterateSequenceFacts and (not($ListStyle='null') or not(child::*/@listStyle='null'))">
 					<xsl:call-template name="EnsureTempStringBuilder">
 						<xsl:with-param name="BypassLengthReset" select="true()"/>
 						<xsl:with-param name="IteratorVariableName" select="$SequenceIterator"/>
@@ -6273,6 +6433,7 @@
 					<xsl:apply-templates select="." mode="CompositeOrFilteredListCount">
 						<xsl:with-param name="TotalCountCollectorVariable" select="$filteredCountVarName"/>
 						<xsl:with-param name="IteratorVariableName" select="$filteredIterVarName"/>
+						<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 						<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -6352,7 +6513,7 @@
 					<plx:nameRef name="{$iterVarName}"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<xsl:if test="boolean(self::cvg:IterateSequenceFacts)">
+			<xsl:if test="$iterateSequenceFacts">
 				<plx:local dataTypeName="FactType" name="currentFact">
 					<plx:initialize>
 						<plx:callInstance name=".implied" type="indexerCall">
@@ -6473,7 +6634,7 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="reading" dataTypeName="Reading">
+					<plx:local name="reading" dataTypeName="IReading">
 						<plx:initialize>
 							<plx:nullKeyword/>
 						</plx:initialize>
@@ -6600,7 +6761,7 @@
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:choose>
-							<xsl:when test="not(boolean(self::cvg:IterateSequenceFacts))">
+							<xsl:when test="not($iterateSequenceFacts)">
 								<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
 									<xsl:with-param name="TopLevel" select="$TopLevel"/>
 									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -6611,6 +6772,7 @@
 									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+									<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 									<!-- Forwarded local parameters -->
 									<xsl:with-param name="contextMatch" select="$contextMatch"/>
 									<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -6618,7 +6780,7 @@
 									<xsl:with-param name="byPassList" select="not($ParentListStyle='null')"/>
 								</xsl:call-template>
 							</xsl:when>
-							<xsl:when test="boolean(self::cvg:IterateSequenceFacts) and not($ListStyle='null')">
+							<xsl:when test="$iterateSequenceFacts and not($ListStyle='null')">
 								<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
 									<xsl:with-param name="TopLevel" select="$TopLevel"/>
 									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -6629,6 +6791,7 @@
 									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+									<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 									<!-- Forwarded local parameters -->
 									<xsl:with-param name="contextMatch" select="$contextMatch"/>
 									<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -6647,6 +6810,7 @@
 									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+									<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 									<!-- Forwarded local parameters -->
 									<xsl:with-param name="contextMatch" select="$contextMatch"/>
 									<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -6676,7 +6840,7 @@
 						<xsl:call-template name="PopulateBasicRoleReplacements"/>
 					</xsl:if>
 					<xsl:choose>
-						<xsl:when test="not(boolean(self::cvg:IterateSequenceFacts))">
+						<xsl:when test="not($iterateSequenceFacts)">
 							<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -6687,6 +6851,7 @@
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 								<!-- Forwarded local parameters -->
 								<xsl:with-param name="contextMatch" select="$contextMatch"/>
 								<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -6694,7 +6859,7 @@
 								<xsl:with-param name="byPassList" select="not($ParentListStyle='null')"/>
 							</xsl:call-template>
 						</xsl:when>
-						<xsl:when test="boolean(self::cvg:IterateSequenceFacts) and not($ListStyle='null')">
+						<xsl:when test="$iterateSequenceFacts and not($ListStyle='null')">
 							<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -6705,6 +6870,7 @@
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 								<!-- Forwarded local parameters -->
 								<xsl:with-param name="contextMatch" select="$contextMatch"/>
 								<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -6723,6 +6889,7 @@
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 								<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="ReadingFactTypeVariableName" select="$forwardReadingFactTypeVariableName"/>
 								<!-- Forwarded local parameters -->
 								<xsl:with-param name="contextMatch" select="$contextMatch"/>
 								<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -6786,7 +6953,7 @@
 					</plx:passParam>
 				</plx:callStatic>
 			</xsl:when>
-			<xsl:when test="0=string-length($CompositeIterator) and not(boolean(self::cvg:IterateSequenceFacts))">
+			<xsl:when test="0=string-length($CompositeIterator) and not($iterateSequenceFacts)">
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
@@ -7135,6 +7302,7 @@
 		<xsl:param name="PatternGroup"/>
 		<xsl:param name="FirstPassVariable"/>
 		<xsl:param name="IteratorContext"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<!-- Forwarded local parameters -->
 		<xsl:param name="contextMatch"/>
 		<xsl:param name="iterVarName"/>
@@ -7193,6 +7361,7 @@
 					<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 					<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
+					<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 				</xsl:call-template>
 					<plx:callInstance name="Append">
 						<plx:callObject>
@@ -7243,6 +7412,7 @@
 						<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 						<xsl:with-param name="IteratorContext" select="$contextMatch"/>
 						<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
+						<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
 						<xsl:with-param name="ContextMatch" select="$contextMatch"/>
@@ -7561,6 +7731,7 @@
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'list'"/>
 		<xsl:param name="IteratorContext" select="''"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:if test="$TopLevel">
 			<xsl:choose>
@@ -7600,6 +7771,7 @@
 		<xsl:apply-templates select="child::*" mode="CompositeOrFilteredListCount">
 			<xsl:with-param name="TotalCountCollectorVariable" select="$compositeCountVarName"/>
 			<xsl:with-param name="IteratorVariableName" select="$iteratorVarName"/>
+			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -7630,6 +7802,7 @@
 				<xsl:with-param name="VariableDecorator" select="position()"/>
 				<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 				<xsl:with-param name="IteratorVariableName" select="$iteratorVarName"/>
+				<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 				<xsl:with-param name="CompositeCount" select="$compositeCountVarName"/>
 				<xsl:with-param name="CompositeIterator" select="$iteratorVarName"/>
 				<xsl:with-param name="ListStyle" select="$ListStyle"/>
@@ -8138,6 +8311,7 @@
 		<!-- Support readings for {Context, {Prefer|Require}[Non][Primary]LeadReading[NoFrontText], null} ReadingChoice values -->
 		<xsl:param name="ReadingChoice"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ReadingFactTypeVariableName" select="''"/>
 		<xsl:param name="ConditionalLoop" select="boolean(self::cvg:ReadingChoice)"/>
 		<xsl:param name="ConditionalReadingOrderIndex"/>
 		<xsl:choose>
@@ -8184,7 +8358,16 @@
 						<plx:nameRef name="reading"/>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="GetMatchingReading" dataTypeName="FactType">
+						<plx:callInstance name="GetMatchingReading">
+							<plx:callObject>
+								<plx:nameRef name="parentFact">
+									<xsl:if test="string($ReadingFactTypeVariableName)">
+										<xsl:attribute name="name">
+											<xsl:value-of select="$ReadingFactTypeVariableName"/>
+										</xsl:attribute>
+									</xsl:if>
+								</plx:nameRef>
+							</plx:callObject>
 							<plx:passParam>
 								<!-- The readingOrders param-->
 								<plx:nameRef name="allReadingOrders"/>
@@ -8283,7 +8466,7 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</plx:passParam>
-						</plx:callStatic>
+						</plx:callInstance>
 					</plx:right>
 				</plx:assign>
 				<xsl:if test="not($ConditionalLoop) or not($PatternGroup='SetConstraint' or $PatternGroup='SetComparisonConstraint')">

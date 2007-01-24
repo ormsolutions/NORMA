@@ -1503,6 +1503,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			ObjectType objectElement;
 			ExclusionConstraint exclusionConstraint;
+			SetConstraint setConstraint;
 			if (null != (objectElement = element as ObjectType))
 			{
 				if (!ShouldDisplayObjectType(objectElement))
@@ -1535,6 +1536,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (mandatoryConstraint != null)
 				{
 					return mandatoryConstraint;
+				}
+			}
+			else if (null != (setConstraint = element as SetConstraint))
+			{
+				// Internal constraints are displayed with the FactType
+				LinkedElementCollection<FactType> factTypes;
+				if ((setConstraint as IConstraint).ConstraintIsInternal &&
+					1 == (factTypes = setConstraint.FactTypeCollection).Count)
+				{
+					return factTypes[0];
 				}
 			}
 			return null;

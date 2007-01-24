@@ -340,20 +340,12 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
 			}
 		}
-		/// <summary>The base name used to create a name for a new FactType. This is a format string with {0} being the placeholder for the number placement.</summary>
-		public static string FactTypeDefaultNamePattern
+		/// <summary>The format string for the generated name of a subtype relationship. The {0} replacement field is used for the subtype element name; {1} for the supertype.</summary>
+		public static string SubtypeFactElementNameFormat
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern");
-			}
-		}
-		/// <summary>The base name used to create a name for a new SubtypeFact. This is a format string with {0} being the placeholder for the number placement.</summary>
-		public static string SubtypeFactDefaultNamePattern
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.ElementNameFormat");
 			}
 		}
 		/// <summary>The inverse reading for the predicate created by creating a sub type relationship.</summary>

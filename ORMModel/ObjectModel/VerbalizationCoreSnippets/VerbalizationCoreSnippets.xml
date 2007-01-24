@@ -135,6 +135,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="SimpleLogicalAndListSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleLogicalAndListFinalSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleLogicalAndListClose"><![CDATA[]]></Snippet>
+			<Snippet type="SubtypeMetaReading"><![CDATA[<span class="quantifier">Each </span>{0} <span class="quantifier">is an instance of</span> {1}]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>

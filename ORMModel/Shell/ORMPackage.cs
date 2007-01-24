@@ -428,18 +428,6 @@ namespace Neumont.Tools.ORM.Shell
 				baseFilters.CopyTo(newFilters, 0);
 				newFilters[baseFilterCount] = attribute;
 				itemBase.Filter = newFilters;
-				// UNDONE: 2006-06 DSL Tools port: Why was this recreating the ModelingToolboxItem rather than just setting Filter?
-				/*items[itemIndex] = new ModelingToolboxItem(
-					itemBase.Id,
-					itemBase.Position,
-					itemBase.DisplayName ?? String.Empty,
-					itemBase.Bitmap,
-					itemBase.TabNameId,
-					itemBase.TabName ?? String.Empty,
-					itemBase.ContextSensitiveHelpKeyword ?? String.Empty,
-					itemBase.Description,
-					itemBase.Prototype,
-					newFilters);*/
 			}
 		}
 		#endregion // Base overrides

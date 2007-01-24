@@ -252,9 +252,6 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactType" xml:space="preserve">
     <value>FactType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern" xml:space="preserve">
-    <value>FactType{0}</value>
-  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.IsExternal" xml:space="preserve">
     <value>IsExternal</value>
   </data>
@@ -367,13 +364,10 @@
     <value>SubsetConstraint</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact" xml:space="preserve">
-    <value>Subtype</value>
+    <value>SubtypeRelationship</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimary" xml:space="preserve">
     <value>IsPrimary</value>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern" xml:space="preserve">
-    <value>Subtype{0}</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern" xml:space="preserve">
     <value>[{0}]</value>

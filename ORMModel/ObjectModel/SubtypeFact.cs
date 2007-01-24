@@ -26,7 +26,7 @@ using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class SubtypeFact
+	public partial class SubtypeFact : IVerbalizeCustomChildren
 	{
 		#region Create functions
 		/// <summary>
@@ -124,6 +124,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Accessor functions
+		#region Implicit Reading Support
+		/// <summary>
+		/// Indicate that a SubtypeFact always has implicit readings
+		/// </summary>
+		public override bool HasImplicitReadings
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Provide a generated element name for a subtype fact
+		/// </summary>
+		protected override string GenerateImplicitName()
+		{
+			return string.Format(CultureInfo.CurrentCulture, ResourceStrings.SubtypeFactElementNameFormat, Subtype.Name, Supertype.Name);
+		}
+		/// <summary>
+		/// Provide an implicit reading for a subtype fact
+		/// </summary>
+		/// <param name="leadRole">The role that should begin the reading</param>
+		/// <returns>An appropriate reading</returns>
+		protected override IReading GetImplicitReading(RoleBase leadRole)
+		{
+			LinkedElementCollection<RoleBase> roles = RoleCollection;
+			if (roles.Count == 2) // Sanity check
+			{
+				IList<RoleBase> order = null;
+				if (roles[0] == leadRole)
+				{
+					order = roles;
+				}
+				else if (roles[1] == leadRole)
+				{
+					order = new RoleBase[] { leadRole, roles[0] };
+				}
+				if (order != null)
+				{
+					return new ImplicitReading(leadRole is SubtypeMetaRole ? ResourceStrings.SubtypeFactPredicateReading : ResourceStrings.SubtypeFactPredicateInverseReading, order);
+				}
+			}
+			return null;
+		}
+		#endregion // Implicit Reading Support
 		#region Initialize pattern rules
 		/// <summary>
 		/// A rule to create a subtype-style FactType with all
@@ -151,27 +196,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Add injection constraints
 				superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
 				subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
-
-				// Add forward reading
-				LinkedElementCollection<ReadingOrder> readingOrders = fact.ReadingOrderCollection;
-				ReadingOrder order = new ReadingOrder(store);
-				readingOrders.Add(order);
-				roles = order.RoleCollection;
-				roles.Add(subTypeMetaRole);
-				roles.Add(superTypeMetaRole);
-				Reading reading = new Reading(store);
-				order.ReadingCollection.Add(reading);
-				reading.Text = ResourceStrings.SubtypeFactPredicateReading;
-				
-				// Add inverse reading
-				order = new ReadingOrder(store);
-				readingOrders.Add(order);
-				roles = order.RoleCollection;
-				roles.Add(superTypeMetaRole);
-				roles.Add(subTypeMetaRole);
-				reading = new Reading(store);
-				order.ReadingCollection.Add(reading);
-				reading.Text = ResourceStrings.SubtypeFactPredicateInverseReading;
 			}
 		}
 		#endregion Initialize pattern rules
@@ -747,6 +771,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
+					// UNDONE: We can still save explicit readings, but we won't
+					// be able to load these in later file formats. Get rid of any serialized readings.
+					element.ReadingOrderCollection.Clear();
+
 					// Note that rules aren't on, so we can read the Multiplicity properties,
 					// but we can't set them. All changes must be made explicitly.
 					if (superTypeMetaRole.Multiplicity != RoleMultiplicity.ExactlyOne)
@@ -846,5 +874,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion Deserialization Fixup
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides
+		/// implementation in <see cref="FactType"/>
+		/// </summary>
+		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
+		{
+			yield break;
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
+		{
+			return GetCustomChildVerbalizations(isNegative);
+		}
+		#endregion // IVerbalizeCustomChildren Implementation
 	}
 }

@@ -336,7 +336,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Customize property display
 		#region MergeContext functions
-		// UNDONE: 2006-06 DSL Tools port: Is this needed any more? (It used to be named "CanAddChildElement")
 		/// <summary>
 		/// Support adding root elements and constraints directly to the design surface
 		/// </summary>
@@ -369,15 +368,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			UniquenessConstraint internalConstraint;
 			if (null != (internalConstraint = sourceElement as UniquenessConstraint))
 			{
-				ORMModel model;
 				if (internalConstraint.IsInternal)
 				{
 					internalConstraint.FactTypeCollection.Add(this);
-				}
-				else if (null != (model = Model))
-				{
-					// UNDONE: 2006-06 DSL Tools port: MergeRelate is protected and can't be called from here. It is just commented out for now.
-					//model.MergeRelate(sourceElement, elementGroup);
 				}
 			}
 		}
@@ -604,7 +597,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // FactTypeChangeRule class
-		#region IModelErrorOwner Members
+		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the error associated with the fact.
 		/// </summary>
@@ -791,7 +784,90 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DelayValidateErrors();
 		}
-		#endregion
+		#endregion // IModelErrorOwner Implementation
+		#region Virtual methods for implicit reading support
+		/// <summary>
+		/// Allow fact types to have implicit readings without using the ReadingCollection
+		/// </summary>
+		public virtual bool HasImplicitReadings
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Generate the implicit name for this FactType. Called only
+		/// if the <see cref="HasImplicitReadings"/> property returns
+		/// <see langword="true"/>
+		/// </summary>
+		/// <returns>An empty string</returns>
+		protected virtual string GenerateImplicitName()
+		{
+			Debug.Fail("GenerateImplicitName must be overridden if HasImplicitReadings is overridden to return true.");
+			return "";
+		}
+		/// <summary>
+		/// Generate an implicit reading for the specified lead role. Called only
+		/// if the <see cref="HasImplicitReadings"/> property returns <see langword="true"/>
+		/// </summary>
+		/// <param name="leadRole">The role that should begin the reading</param>
+		/// <returns><see cref="IReading"/></returns>
+		protected virtual IReading GetImplicitReading(RoleBase leadRole)
+		{
+			Debug.Fail("GetImplicitReading must be overridden if HasImplicitReadings is overridden to return true.");
+			return null;
+		}
+		#region ImplicitReading class
+		/// <summary>
+		/// A helper class used to add implicit readings. Can be used to
+		/// implement <see cref="GetImplicitReading"/>.
+		/// </summary>
+		protected sealed class ImplicitReading : IReading
+		{
+			#region Member Variables
+			private string myReadingText;
+			private IList<RoleBase> myRoleCollection;
+			#endregion // Member Variables
+			#region Constructors
+			/// <summary>
+			/// Create a new implicit reading
+			/// </summary>
+			/// <param name="readingText">The reading format string</param>
+			/// <param name="roleOrder">The role order to use.</param>
+			public ImplicitReading(string readingText, IList<RoleBase> roleOrder)
+			{
+				myRoleCollection = roleOrder;
+				myReadingText = readingText;
+			}
+			#endregion // Constructors
+			#region IReading Implementation
+			string IReading.Text
+			{
+				get
+				{
+					return myReadingText;
+				}
+			}
+
+			IList<RoleBase> IReading.RoleCollection
+			{
+				get
+				{
+					return myRoleCollection;
+				}
+			}
+			bool IReading.IsEditable
+			{
+				get
+				{
+					return false;
+				}
+			}
+			#endregion //IReading Implementation
+		}
+		#endregion // ImplicitReading class
+		#endregion // Virtual methods for implicit reading support
 		#region Validation Methods
 		/// <summary>
 		/// Validator callback for FactTypeRequiresReadingError
@@ -804,18 +880,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleted)
 			{
-				bool hasError = true;
-				Store theStore = Store;
-				ORMModel theModel = Model;
-				LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
-				if (readingOrders.Count > 0)
+				// UNDONE: On the next format change these errors should not
+				// be allowed to load or the readings to be created, so we don't have
+				// to look for readings or the reading required error if HasImplicitReadings is true.
+				bool hasError = !HasImplicitReadings;
+				if (hasError)
 				{
-					foreach (ReadingOrder order in readingOrders)
+					LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
+					if (readingOrders.Count > 0)
 					{
-						if (order.ReadingCollection.Count > 0)
+						foreach (ReadingOrder order in readingOrders)
 						{
-							hasError = false;
-							break;
+							if (order.ReadingCollection.Count > 0)
+							{
+								hasError = false;
+								break;
+							}
 						}
 					}
 				}
@@ -825,9 +905,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noReadingError == null)
 					{
-						noReadingError = new FactTypeRequiresReadingError(theStore);
+						noReadingError = new FactTypeRequiresReadingError(Store);
 						noReadingError.FactType = this;
-						noReadingError.Model = theModel;
+						noReadingError.Model = Model;
 						noReadingError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1165,6 +1245,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string retVal = "";
 			if (!IsDeleted)
 			{
+				if (HasImplicitReadings)
+				{
+					return GenerateImplicitName();
+				}
 				// Grab the first reading with no errors from the first reading order
 				// Note that the first reading in the first reading order is considered
 				// to be the default reading order

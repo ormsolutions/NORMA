@@ -1085,6 +1085,14 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="SubtypeMetaReading">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
+							Format: {0} is a subtype of {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

@@ -192,11 +192,8 @@
 	<ResourceString name="ValueTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
 		<comment type="summary">The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
 	</ResourceString>
-	<ResourceString name="FactTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern">
-		<comment type="summary">The base name used to create a name for a new FactType. This is a format string with {0} being the placeholder for the number placement.</comment>
-	</ResourceString>
-	<ResourceString name="SubtypeFactDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern">
-		<comment type="summary">The base name used to create a name for a new SubtypeFact. This is a format string with {0} being the placeholder for the number placement.</comment>
+	<ResourceString name="SubtypeFactElementNameFormat" model="Model" resourceName="SubtypeFact.ElementNameFormat">
+		<comment type="summary">The format string for the generated name of a subtype relationship. The {0} replacement field is used for the subtype element name; {1} for the supertype.</comment>
 	</ResourceString>
 	<ResourceString name="SubtypeFactPredicateInverseReading" model="Model" resourceName="SubtypeFact.PredicateInverseReading">
 		<comment type="summary">The inverse reading for the predicate created by creating a sub type relationship.</comment>

@@ -453,7 +453,7 @@ namespace Neumont.Tools.ORM.Shell
 				parentVerbalize = element as IVerbalize;
 			}
 			bool disposeVerbalizer = false;
-			if (filter != null)
+			if (filter != null && parentVerbalize != null)
 			{
 				CustomChildVerbalizer filterResult = filter.FilterChildVerbalizer(parentVerbalize, isNegative);
 				parentVerbalize = filterResult.Instance;

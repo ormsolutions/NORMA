@@ -20,7 +20,7 @@
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="ve">
 
-	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
 	<!-- This file is designed as an include in VerbalizationGenerator.xslt. The CustomToolNamespace,
 			 VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in

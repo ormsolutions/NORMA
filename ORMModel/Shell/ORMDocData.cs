@@ -360,10 +360,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="fileName"></param>
 		protected override void Save(string fileName)
 		{
-			// UNDONE: 2006-06 DSL Tools port: Synchronize() method doesn't appear to exist any more.
-			// sync the model to any artifacts.
-			//Synchronize();
-
 			// Save it first to a memory stream, so that the user doesn't lose their original copy
 			// if something goes wrong while serializing.
 			using (MemoryStream memoryStream = new MemoryStream(1024 * 1024))

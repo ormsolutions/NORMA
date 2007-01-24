@@ -354,7 +354,7 @@
     <comment>Description for DomainClass &apos;SubtypeFact&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DisplayName" xml:space="preserve">
-    <value>Subtype</value>
+    <value>SubtypeRelationship</value>
     <comment>DisplayName for DomainClass &apos;SubtypeFact&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact/IsPrimary.Description" xml:space="preserve">

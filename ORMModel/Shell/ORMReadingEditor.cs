@@ -202,6 +202,12 @@ namespace Neumont.Tools.ORM.Shell
 						secondaryFact = null;
 					}
 				}
+				if (theFact != null && theFact.HasImplicitReadings)
+				{
+					theFact = null;
+					secondaryFact = null;
+				}
+
 				ActiveFactType activeFact = EditingFactType;
 
 				FactType currentFact = activeFact.FactType;

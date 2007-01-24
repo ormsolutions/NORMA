@@ -25,8 +25,30 @@ using System.Globalization;
 using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	/// <summary>
+	/// An abstract form of a <see cref="Reading"/> element. Designed
+	/// to allow pseudo-readings that are not stored with the model, such
+	/// as the "is" reading used by a <see cref="SubtypeFact"/>
+	/// </summary>
+	public interface IReading
+	{
+		/// <summary>
+		/// The reading text with replacement fields corresponding
+		/// to the order in the <see cref="RoleCollection"/>
+		/// </summary>
+		string Text { get;}
+		/// <summary>
+		/// An order list of <see cref="RoleBase"/> elements associated
+		/// with the reading.
+		/// </summary>
+		IList<RoleBase> RoleCollection { get;}
+		/// <summary>
+		/// Return true if the reading text is editable
+		/// </summary>
+		bool IsEditable { get;}
+	}
 	#region Reading class
-	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner
+	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner, IReading
 	{
 		#region Base overrides
 		/// <summary>
@@ -334,7 +356,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion
+		#endregion // ReadingPropertiesChanged rule class
 		#region ReadingOrderHasRoleRemoved rule class
 		[RuleOn(typeof(ReadingOrderHasRole))] // DeleteRule
 		private sealed partial class ReadingOrderHasRoleDeleted : DeleteRule
@@ -353,7 +375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion
+		#endregion // ReadingOrderHasRoleRemoved rule class
 		#endregion // rule classes and helpers
 		#region IModelErrorOwner implementation
 		/// <summary>
@@ -436,13 +458,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region IReading Implementation
+		/// <summary>
+		/// Implements <see cref="IReading.RoleCollection"/>
+		/// </summary>
+		protected IList<RoleBase> RoleCollection
+		{
+			get
+			{
+				ReadingOrder order = ReadingOrder;
+				return (order != null) ? order.RoleCollection : null;
+			}
+		}
+		IList<RoleBase> IReading.RoleCollection
+		{
+			get
+			{
+				return RoleCollection;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IReading.IsEditable"/>. Always returns <see langword="true"/>
+		/// </summary>
+		public static bool IsEditable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		bool IReading.IsEditable
+		{
+			get
+			{
+				return IsEditable;
+			}
+		}
+		#endregion // IReading Implementation
 	}
 	#endregion // Reading class
 	#region TooFewReadingRolesError class
 	public partial class TooFewReadingRolesError : IRepresentModelElements
 	{
 		#region overrides
-
 		/// <summary>
 		/// Creates the error text.
 		/// </summary>
@@ -469,7 +527,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		#endregion
+		#endregion // overrides
 		#region IRepresentModelElements Members
 		/// <summary>
 		/// The reading the error belongs to
@@ -491,7 +549,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooManyReadingRolesError : IRepresentModelElements
 	{
 		#region overrides
-
 		/// <summary>
 		/// Creates the error text.
 		/// </summary>
@@ -518,8 +575,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		#endregion
-		#region IRepresentModelElements Members
+		#endregion // overrides
+		#region IRepresentModelElements Implementation
 		/// <summary>
 		/// The Reading the error belongs too.
 		/// </summary>
@@ -532,8 +589,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return GetRepresentedElements();
 		}
-
-		#endregion
+		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // TooManyReadingRolesError class
 }
