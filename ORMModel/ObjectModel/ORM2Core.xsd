@@ -754,7 +754,7 @@
 			<xs:enumeration value="Intransitive"/>
 			<xs:enumeration value="Symmetric"/>
 			<xs:enumeration value="Asymmetric"/>
-			<xs:enumeration value="AntiSymmetric"/>
+			<xs:enumeration value="Antisymmetric"/>
 			<xs:enumeration value="AcyclicIntransitive"/>
 			<xs:enumeration value="SymmetricIrreflexive"/>
 			<xs:enumeration value="SymmetricIntransitive"/>

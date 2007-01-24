@@ -695,8 +695,8 @@
   <data name="RingConstraintType.Asymmetric" xml:space="preserve">
     <value>Asymmetric</value>
   </data>
-  <data name="RingConstraintType.AntiSymmetric" xml:space="preserve">
-    <value>AntiSymmetric</value>
+  <data name="RingConstraintType.Antisymmetric" xml:space="preserve">
+    <value>Antisymmetric</value>
   </data>
   <data name="RingConstraintType.AcyclicIntransitive" xml:space="preserve">
     <value>Acyclic and Intransitive</value>
