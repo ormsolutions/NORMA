@@ -155,8 +155,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Called after successful deserialization to enable
 		/// rules that were initially disabled.
 		/// </summary>
-		/// <param name="ruleManager">Rule manager from the owning store.</param>
-		void EnableRulesAfterDeserialization(RuleManager ruleManager);
+		/// <param name="store">The <see cref="Store"/> that loaded the rules. Enable rules using the <see cref="Store.RuleManager">RuleManager</see> from the store.</param>
+		void EnableRulesAfterDeserialization(Store store);
 	}
 	#endregion // IDomainModelEnablesRulesAfterDeserialization interface
 }

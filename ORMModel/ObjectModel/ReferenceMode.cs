@@ -397,7 +397,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Make sure that every added reference mode has a valid
 		/// reference mode kind. Default to general.
 		/// </summary>
-		[RuleOn(typeof(ModelHasReferenceMode), FireTime = TimeToFire.LocalCommit)] // AddRule
+		[RuleOn(typeof(ModelHasReferenceMode), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
 		private sealed partial class ReferenceModeAddedRule : AddRule
 		{
 			/// <summary>

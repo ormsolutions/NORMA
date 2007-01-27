@@ -49,6 +49,13 @@
 			<BaseClass>
 				<DomainClassMoniker Name="OIALNamedElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="Regenerating" DefaultValue="" DisplayName="Regenerating" Id="10A9B32F-ABBA-44AE-9AE1-2FFA4C08E360" Description="Property is temporarily set to true when the model is regenerating. Add an inline change rule listening for a change to true on this property to receiving regenerating notifications.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<ElementMergeDirectives>
 				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
 					<Index>

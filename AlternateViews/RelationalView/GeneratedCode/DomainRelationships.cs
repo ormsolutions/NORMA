@@ -1115,7 +1115,19 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.TableReferencesTableDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.ForeignKeyDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.ForeignKeyDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.TableReferencesTableDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -1513,7 +1525,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("1697c628-0ba4-4a2e-9a7a-3bea6a08fac1")]
 		public virtual Table Table
 		{

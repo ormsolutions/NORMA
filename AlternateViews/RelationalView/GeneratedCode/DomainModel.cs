@@ -406,6 +406,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.ConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.TableDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.TableReferencesTableDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.TableDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.RelationalModelDomainRoleId, true);
 			#endregion
 		}

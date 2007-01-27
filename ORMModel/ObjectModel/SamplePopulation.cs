@@ -642,7 +642,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to ensure complete population of its roles.  If the FactTypeRoleInstance
 		/// removed was the last one, remove the FactTypeInstance.
 		/// </summary>
-		[RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class FactTypeInstanceHasRoleInstanceDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

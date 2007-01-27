@@ -403,7 +403,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Rule that fires when a constraint has a RoleSequence Removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
 		{
 			/// <summary>
@@ -1749,7 +1749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// goes away. Note that this rule also affects single column external
 		/// constraints, but we only need to write it once.
 		/// </summary>
-		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 100)] // DeleteRule
+		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority + 100)] // DeleteRule
 		private sealed partial class ExternalRoleConstraintDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1770,7 +1770,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule that fires when a set comparison constraint has a role seqeuence removed.
 		/// The constraint itself is removed when the last sequence is removed.
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class SetComparisonConstraintRoleSequenceDeleted : DeleteRule
 		{
 			/// <summary>
@@ -4295,7 +4295,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Check to see if mandatory constraints are implied by equality when adding an equality
 		/// constraint.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // AddRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
 		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			/// <summary>
@@ -6023,7 +6023,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Give the ExclusiveOrConstraintCoupler bidirection propagate delete
 		/// behavior, but only if one end is already deleted and the other is not
 		/// </summary>
-		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime=TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class CouplerDeleteRule : DeleteRule
 		{
 			public override void ElementDeleted(ElementDeletedEventArgs e)

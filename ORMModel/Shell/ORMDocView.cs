@@ -398,29 +398,17 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 				Type relationalDiagramType = null;
-				Type relationalShapeModelType = null;
-				Type relationalFixUpDiagram = null;
-				Type relationalCompartmentItemAddRule = null;
-				Type relationalCompartmentItemChangeRule = null;
 				foreach (System.Reflection.Assembly assembly in assemblies)
 				{
 					if (assembly.FullName.StartsWith("Neumont.Tools.ORM.Views.RelationalView"))
 					{
 						relationalDiagramType = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram");
-						relationalShapeModelType = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel");
-						relationalFixUpDiagram = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram");
-						relationalCompartmentItemAddRule = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule");
-						relationalCompartmentItemChangeRule = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.CompartmentItemChangeRule");
 						break;
 					}
 				}
-				Debug.Assert(relationalDiagramType != null && relationalShapeModelType != null && relationalFixUpDiagram != null && relationalCompartmentItemAddRule != null);
+				Debug.Assert(relationalDiagramType != null);
 				Diagram diagram = (Diagram)Activator.CreateInstance(relationalDiagramType, store);
 				diagram.Associate((ModelElement)models[0]);
-				relationalShapeModelType.GetMethod("EnableDiagramRules", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public).Invoke(null, new object[] { store });
-				store.RuleManager.DisableRule(relationalFixUpDiagram);
-				store.RuleManager.DisableRule(relationalCompartmentItemAddRule);
-				store.RuleManager.DisableRule(relationalCompartmentItemChangeRule);
 				t.Commit();
 			}
 			((IDisposable)sender).Dispose();

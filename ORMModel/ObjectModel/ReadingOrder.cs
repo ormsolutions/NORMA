@@ -98,7 +98,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region EnforceNoEmptyReadingOrderDeleteRule rule class
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class EnforceNoEmptyReadingOrderDeleteRule : DeleteRule
 		{
 			/// <summary>
@@ -120,7 +120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // EnforceNoEmptyReadingOrderDeleteRule rule class
 		#region EnforceNoEmptyReadingOrderRolePlayerChange rule class
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)] // RolePlayerChangeRule
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // RolePlayerChangeRule
 		private sealed partial class EnforceNoEmptyReadingOrderRolePlayerChange : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)

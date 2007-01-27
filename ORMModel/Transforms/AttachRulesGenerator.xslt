@@ -42,8 +42,10 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
-		<xsl:variable name="disabledRules" select="arg:Rule[not(@alwaysOn='true' or @alwaysOn='1')]"/>
-		<xsl:variable name="allReflectedTypes" select="arg:*"/>
+		<xsl:variable name="allReflectedRuleTypes" select="arg:Rule"/>
+		<xsl:variable name="disabledRules" select="$allReflectedRuleTypes[not(@alwaysOn='true' or @alwaysOn='1')]"/>
+		<xsl:variable name="allReflectedOtherTypes" select="arg:*[not(self::arg:Rule)]"/>
+		<xsl:variable name="enableDiagramRules" select="@enableDiagramRules='true' or @enabledDiagramRules='1'"/>
 		<plx:namespace name="{$namespaceName}">
 			<xsl:variable name="copyright" select="parent::arg:Rules/arg:Copyright"/>
 			<xsl:if test="$copyright">
@@ -67,7 +69,7 @@
 				<plx:trailingInfo>
 					<plx:pragma type="closeRegion" data="Attach rules to {@class} model"/>
 				</plx:trailingInfo>
-				<xsl:if test="$disabledRules">
+				<xsl:if test="$disabledRules or $enableDiagramRules">
 					<plx:implementsInterface dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 				</xsl:if>
 				<plx:field visibility="private" static="true" name="myCustomDomainModelTypes" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
@@ -102,7 +104,16 @@
 									<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
 										<plx:arrayInitializer>
 											<xsl:variable name="contextClass" select="@class"/>
-											<xsl:for-each select="$allReflectedTypes">
+											<!-- Reflect rules first -->
+											<xsl:for-each select="$allReflectedRuleTypes">
+												<xsl:call-template name="GenerateTypeOf">
+													<xsl:with-param name="className" select="@class"/>
+													<xsl:with-param name="namespace" select="@namespace"/>
+													<xsl:with-param name="contextClass" select="$contextClass"/>
+													<xsl:with-param name="contextNamespace" select="$namespaceName"/>
+												</xsl:call-template>
+											</xsl:for-each>
+											<xsl:for-each select="$allReflectedOtherTypes">
 												<xsl:call-template name="GenerateTypeOf">
 													<xsl:with-param name="className" select="@class"/>
 													<xsl:with-param name="namespace" select="@namespace"/>
@@ -151,7 +162,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<xsl:if test="$disabledRules and (count($allReflectedTypes)!=count($disabledRules))">
+				<xsl:if test="$disabledRules and (count($allReflectedRuleTypes)!=count($disabledRules))">
 					<!-- If the counts are the same, then all rules are disabled and we don't need
 					a second array. Otherwise, build a second array from the first. -->
 					<plx:field visibility="private" static="true" name="myInitiallyDisabledRuleTypes" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
@@ -186,8 +197,8 @@
 									<plx:right>
 										<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
 											<plx:arrayInitializer>
-												<xsl:for-each select="$allReflectedTypes">
-													<!-- We already have this set in disabledRules, but we need the position values from the allReflectedTypes set, so refilter -->
+												<xsl:for-each select="$allReflectedRuleTypes">
+													<!-- We already have this set in disabledRules, but we need the position values from the allReflectedRuleTypes set, so refilter -->
 													<xsl:if test="not(@alwaysOn='true' or @alwaysOn='1')">
 														<plx:callInstance name=".implied" type="arrayIndexer">
 															<plx:callObject>
@@ -305,7 +316,7 @@
 						</plx:return>
 					</plx:fallbackBranch>
 				</plx:function>
-				<xsl:if test="$disabledRules">
+				<xsl:if test="$disabledRules or $enableDiagramRules">
 					<plx:function name="EnableRulesAfterDeserialization" visibility="protected">
 						<plx:leadingInfo>
 							<plx:docComment>
@@ -313,67 +324,76 @@
 							</plx:docComment>
 						</plx:leadingInfo>
 						<plx:interfaceMember dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" memberName="EnableRulesAfterDeserialization"/>
-						<plx:param name="ruleManager" dataTypeName="RuleManager" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
-						<plx:local name="disabledRuleTypes" dataTypeName="Type" dataTypeIsSimpleArray="true">
-							<plx:initialize>
-								<plx:callStatic type="property" name="CustomDomainModelTypes" dataTypeName="{@class}">
-									<xsl:if test="count($allReflectedTypes)!=count($disabledRules)">
-										<!-- Only use the cached types if all of the types are rules and all are disabled -->
-										<xsl:attribute name="name">
-											<xsl:text>InitiallyDisabledRuleTypes</xsl:text>
-										</xsl:attribute>
-									</xsl:if>
-								</plx:callStatic>
-							</plx:initialize>
-						</plx:local>
-						<plx:local name="count" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:callInstance name="Length" type="property">
-									<plx:callObject>
-										<plx:nameRef name="disabledRuleTypes"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:initialize>
-						</plx:local>
-						<plx:loop>
-							<plx:initializeLoop>
-								<plx:local name="i" dataTypeName=".i4">
-									<plx:initialize>
-										<plx:value data="0" type="i4"/>
-									</plx:initialize>
-								</plx:local>
-							</plx:initializeLoop>
-							<plx:condition>
-								<plx:binaryOperator type="lessThan">
-									<plx:left>
-										<plx:nameRef name="i"/>
-									</plx:left>
-									<plx:right>
-										<plx:nameRef name="count"/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:beforeLoop>
-								<plx:increment>
-									<plx:nameRef name="i"/>
-								</plx:increment>
-							</plx:beforeLoop>
-							<plx:callInstance name="EnableRule">
-								<plx:callObject>
-									<plx:nameRef name="ruleManager" type="parameter"/>
-								</plx:callObject>
+						<plx:param name="store" dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
+						<xsl:if test="$enableDiagramRules">
+							<plx:callStatic name="EnableDiagramRules" dataTypeName="{@class}">
 								<plx:passParam>
-									<plx:callInstance name=".implied" type="arrayIndexer">
-										<plx:callObject>
-											<plx:nameRef name="disabledRuleTypes"/>
-										</plx:callObject>
-										<plx:passParam>
-											<plx:nameRef name="i"/>
-										</plx:passParam>
-									</plx:callInstance>
+									<plx:nameRef name="store" type="parameter"/>
 								</plx:passParam>
-							</plx:callInstance>
-						</plx:loop>
+							</plx:callStatic>
+						</xsl:if>
+						<xsl:if test="$disabledRules">
+							<plx:local name="ruleManager" dataTypeName="RuleManager" dataTypeQualifier="Microsoft.VisualStudio.Modeling">
+								<plx:initialize>
+									<plx:callInstance name="RuleManager" type="property">
+										<plx:callObject>
+											<plx:nameRef name="store" type="parameter"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<plx:local name="disabledRuleTypes" dataTypeName="Type" dataTypeIsSimpleArray="true">
+								<plx:initialize>
+									<plx:callStatic type="property" name="CustomDomainModelTypes" dataTypeName="{@class}">
+										<xsl:if test="count($allReflectedRuleTypes)!=count($disabledRules)">
+											<!-- Only use the cached types if all of the types are rules and all are disabled -->
+											<xsl:attribute name="name">
+												<xsl:text>InitiallyDisabledRuleTypes</xsl:text>
+											</xsl:attribute>
+										</xsl:if>
+									</plx:callStatic>
+								</plx:initialize>
+							</plx:local>
+							<plx:loop>
+								<plx:initializeLoop>
+									<plx:local name="i" dataTypeName=".i4">
+										<plx:initialize>
+											<plx:value data="0" type="i4"/>
+										</plx:initialize>
+									</plx:local>
+								</plx:initializeLoop>
+								<plx:condition>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:nameRef name="i"/>
+										</plx:left>
+										<plx:right>
+											<plx:value type="i4" data="{count($disabledRules)}"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:beforeLoop>
+									<plx:increment>
+										<plx:nameRef name="i"/>
+									</plx:increment>
+								</plx:beforeLoop>
+								<plx:callInstance name="EnableRule">
+									<plx:callObject>
+										<plx:nameRef name="ruleManager"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callInstance name=".implied" type="arrayIndexer">
+											<plx:callObject>
+												<plx:nameRef name="disabledRuleTypes"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="i"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:loop>
+						</xsl:if>
 					</plx:function>
 				</xsl:if>
 			</plx:class>
@@ -513,12 +533,7 @@
 		<xsl:param name="remainingName" select="normalize-space(translate(@class, '+.', '  '))"/>
 		<xsl:param name="firstPart" select="true()"/>
 		<xsl:variable name="publicPart" select="substring-before($remainingName, ' ')"/>
-		<plx:class name="{$remainingName}" visibility="private" partial="true">
-			<xsl:if test="$firstPart">
-				<xsl:attribute name="visibility">
-					<xsl:text>public</xsl:text>
-				</xsl:attribute>
-			</xsl:if>
+		<plx:class name="{$remainingName}" visibility="deferToPartial" partial="true">
 			<xsl:if test="$publicPart">
 				<xsl:attribute name="name">
 					<xsl:value-of select="$publicPart"/>

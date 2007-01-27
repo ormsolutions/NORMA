@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -20,7 +20,7 @@
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="ve">
 
-	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 
 	<!-- This file is designed as an include in VerbalizationGenerator.xslt. The CustomToolNamespace,
 			 VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in

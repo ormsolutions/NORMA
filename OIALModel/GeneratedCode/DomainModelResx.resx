@@ -149,6 +149,14 @@
     <value>OIALModel</value>
     <comment>DisplayName for DomainClass &apos;OIALModel&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.OIALModel.OIALModel/Regenerating.Description" xml:space="preserve">
+    <value>Property is temporarily set to true when the model is regenerating. Add an inline change rule listening for a change to true on this property to receiving regenerating notifications.</value>
+    <comment>Description for DomainProperty &apos;Regenerating&apos; on DomainClass &apos;OIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.OIALModel.OIALModel/Regenerating.DisplayName" xml:space="preserve">
+    <value>Regenerating</value>
+    <comment>DisplayName for DomainProperty &apos;Regenerating&apos; on DomainClass &apos;OIALModel&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.OIALModel.ConceptType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ConceptType&apos;</comment>

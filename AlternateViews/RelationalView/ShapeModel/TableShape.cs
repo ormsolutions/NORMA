@@ -103,37 +103,38 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return NodeSides.None;
 			}
 		}
-	}
-	/// <summary>
-	/// A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> that disallows selection and focus of the element.
-	/// </summary>
-	internal class TableTextField : TextField
-	{
 		/// <summary>
-		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is selectable.
+		/// A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> that disallows selection and focus of the element.
 		/// </summary>
-		/// <param name="parentShape">parentShape</param>
-		/// <returns><see langword="false" />.</returns>
-		public override bool GetSelectable(ShapeElement parentShape)
+		private class TableTextField : TextField
 		{
-			return false;
-		}
-		/// <summary>
-		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is focusable.
-		/// </summary>
-		/// <param name="parentShape">parentShape</param>
-		/// <returns><see langword="false" />.</returns>
-		public override bool GetFocusable(ShapeElement parentShape)
-		{
-			return false;
-		}
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> class.	
-		/// </summary>
-		/// <param name="fieldName">The name of the field.</param>
-		public TableTextField(string fieldName) : base(fieldName)
-		{
+			/// <summary>
+			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is selectable.
+			/// </summary>
+			/// <param name="parentShape">parentShape</param>
+			/// <returns><see langword="false" />.</returns>
+			public override bool GetSelectable(ShapeElement parentShape)
+			{
+				return false;
+			}
+			/// <summary>
+			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is focusable.
+			/// </summary>
+			/// <param name="parentShape">parentShape</param>
+			/// <returns><see langword="false" />.</returns>
+			public override bool GetFocusable(ShapeElement parentShape)
+			{
+				return false;
+			}
+			/// <summary>
+			/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> class.	
+			/// </summary>
+			/// <param name="fieldName">The name of the field.</param>
+			public TableTextField(string fieldName)
+				: base(fieldName)
+			{
 
+			}
 		}
 	}
 }

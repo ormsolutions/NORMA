@@ -179,6 +179,95 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
+		#region Regenerating domain property code
+		
+		/// <summary>
+		/// Regenerating domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid RegeneratingDomainPropertyId = new global::System.Guid(0x10a9b32f, 0xabba, 0x44ae, 0x9a, 0xe1, 0x2f, 0xfa, 0x4c, 0x08, 0xe3, 0x60);
+		
+		/// <summary>
+		/// Storage for Regenerating
+		/// </summary>
+		private global::System.Boolean regeneratingPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of Regenerating domain property.
+		/// Property is temporarily set to true when the model is regenerating. Add an
+		/// inline change rule listening for a change to true on this property to receiving
+		/// regenerating notifications.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALModel/Regenerating.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALModel/Regenerating.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("10a9b32f-abba-44ae-9ae1-2ffa4c08e360")]
+		public global::System.Boolean Regenerating
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return regeneratingPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				RegeneratingPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the OIALModel.Regenerating domain property.
+		/// </summary>
+		internal sealed partial class RegeneratingPropertyHandler : DslModeling::DomainPropertyValueHandler<OIALModel, global::System.Boolean>
+		{
+			private RegeneratingPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the OIALModel.Regenerating domain property value handler.
+			/// </summary>
+			public static readonly RegeneratingPropertyHandler Instance = new RegeneratingPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the OIALModel.Regenerating domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return RegeneratingDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(OIALModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.regeneratingPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(OIALModel element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.regeneratingPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ORMModel opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ORMModel.

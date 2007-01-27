@@ -201,6 +201,10 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
+			if (domainPropertyInfo.Id == OIALModel.RegeneratingDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
 		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)

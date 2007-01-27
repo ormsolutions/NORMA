@@ -70,27 +70,27 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
-		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = OIALDomainModel.CustomDomainModelTypes;
-			int count = disabledRuleTypes.Length;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0; i < 7; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			this.EnableRulesAfterDeserialization(ruleManager);
+			this.EnableRulesAfterDeserialization(store);
 		}
 	}
 	#endregion // Attach rules to OIALDomainModel model
 	#region Initially disable rules
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class MandatoryConstraintRule
+		partial class MandatoryConstraintRule
 		{
-			private partial class MandatoryConstraintAddRule
+			partial class MandatoryConstraintAddRule
 			{
 				public MandatoryConstraintAddRule()
 				{
@@ -99,11 +99,11 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 	}
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class MandatoryConstraintRule
+		partial class MandatoryConstraintRule
 		{
-			private partial class MandatoryConstraintChangeRule
+			partial class MandatoryConstraintChangeRule
 			{
 				public MandatoryConstraintChangeRule()
 				{
@@ -112,11 +112,11 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 	}
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class MandatoryConstraintRule
+		partial class MandatoryConstraintRule
 		{
-			private partial class MandatoryConstraintDeletingRule
+			partial class MandatoryConstraintDeletingRule
 			{
 				public MandatoryConstraintDeletingRule()
 				{
@@ -125,11 +125,11 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 	}
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class OIALModelHasConceptTypeAddRule
+			partial class OIALModelHasConceptTypeAddRule
 			{
 				public OIALModelHasConceptTypeAddRule()
 				{
@@ -138,11 +138,11 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 	}
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class OIALModelHasConceptTypeDeleteRule
+			partial class OIALModelHasConceptTypeDeleteRule
 			{
 				public OIALModelHasConceptTypeDeleteRule()
 				{
@@ -151,11 +151,11 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 	}
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class ConceptTypeAbsorbedConceptTypeAddRule
+			partial class ConceptTypeAbsorbedConceptTypeAddRule
 			{
 				public ConceptTypeAbsorbedConceptTypeAddRule()
 				{
@@ -164,11 +164,11 @@ namespace Neumont.Tools.ORM.TestOIALModel
 			}
 		}
 	}
-	public partial class LiveOIALModel
+	partial class LiveOIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class ConceptTypeAbsorbedConceptTypeDeleteRule
+			partial class ConceptTypeAbsorbedConceptTypeDeleteRule
 			{
 				public ConceptTypeAbsorbedConceptTypeDeleteRule()
 				{

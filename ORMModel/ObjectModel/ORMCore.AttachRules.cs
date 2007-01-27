@@ -504,25 +504,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
-		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.InitiallyDisabledRuleTypes;
-			int count = disabledRuleTypes.Length;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0; i < 212; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			this.EnableRulesAfterDeserialization(ruleManager);
+			this.EnableRulesAfterDeserialization(store);
 		}
 	}
 	#endregion // Attach rules to ORMCoreDomainModel model
 	#region Initially disable rules
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class BlockRolePlayerChange
+		partial class BlockRolePlayerChange
 		{
 			public BlockRolePlayerChange()
 			{
@@ -530,9 +530,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class ConstraintRoleSequenceHasRoleAdded
+		partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
 			{
@@ -540,9 +540,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class ConstraintRoleSequenceHasRoleDeleted
+		partial class ConstraintRoleSequenceHasRoleDeleted
 		{
 			public ConstraintRoleSequenceHasRoleDeleted()
 			{
@@ -550,9 +550,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
+		partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
 		{
 			public ConstraintRoleSequenceHasRoleRolePlayerChanged()
 			{
@@ -560,9 +560,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class ModalityChangeRule
+		partial class ModalityChangeRule
 		{
 			public ModalityChangeRule()
 			{
@@ -570,9 +570,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class SetComparisonConstraintHasRoleDeleting
+		partial class SetComparisonConstraintHasRoleDeleting
 		{
 			public SetComparisonConstraintHasRoleDeleting()
 			{
@@ -580,9 +580,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintRoleSequence
+	partial class ConstraintRoleSequence
 	{
-		private partial class SetConstraintDeleting
+		partial class SetConstraintDeleting
 		{
 			public SetConstraintDeleting()
 			{
@@ -590,9 +590,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ConstraintUtility
+	partial class ConstraintUtility
 	{
-		private partial class ConstraintRoleSequenceHasRoleDeleted
+		partial class ConstraintRoleSequenceHasRoleDeleted
 		{
 			public ConstraintRoleSequenceHasRoleDeleted()
 			{
@@ -600,9 +600,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class CustomReferenceMode
+	partial class CustomReferenceMode
 	{
-		private partial class CustomReferenceModeChangeRule
+		partial class CustomReferenceModeChangeRule
 		{
 			public CustomReferenceModeChangeRule()
 			{
@@ -610,9 +610,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class ModalityChangeRule
+		partial class ModalityChangeRule
 		{
 			public ModalityChangeRule()
 			{
@@ -620,9 +620,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class PreferredIdentifierAddedRule
+		partial class PreferredIdentifierAddedRule
 		{
 			public PreferredIdentifierAddedRule()
 			{
@@ -630,9 +630,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class PreferredIdentifierRolePlayerChangeRule
+		partial class PreferredIdentifierRolePlayerChangeRule
 		{
 			public PreferredIdentifierRolePlayerChangeRule()
 			{
@@ -640,9 +640,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class TestRemovePreferredIdentifierConstraintRoleAddRule
+		partial class TestRemovePreferredIdentifierConstraintRoleAddRule
 		{
 			public TestRemovePreferredIdentifierConstraintRoleAddRule()
 			{
@@ -650,9 +650,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class TestRemovePreferredIdentifierObjectificationAddRule
+		partial class TestRemovePreferredIdentifierObjectificationAddRule
 		{
 			public TestRemovePreferredIdentifierObjectificationAddRule()
 			{
@@ -660,9 +660,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule
+		partial class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule
 		{
 			public TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule()
 			{
@@ -670,9 +670,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class TestRemovePreferredIdentifierRoleAddRule
+		partial class TestRemovePreferredIdentifierRoleAddRule
 		{
 			public TestRemovePreferredIdentifierRoleAddRule()
 			{
@@ -680,9 +680,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class TestRemovePreferredIdentifierDeletingRule
+		partial class TestRemovePreferredIdentifierDeletingRule
 		{
 			public TestRemovePreferredIdentifierDeletingRule()
 			{
@@ -690,9 +690,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeHasPreferredIdentifier
+	partial class EntityTypeHasPreferredIdentifier
 	{
-		private partial class TestRemovePreferredIdentifierRolePlayerChangeRule
+		partial class TestRemovePreferredIdentifierRolePlayerChangeRule
 		{
 			public TestRemovePreferredIdentifierRolePlayerChangeRule()
 			{
@@ -700,9 +700,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeInstanceDeleting
+		partial class EntityTypeInstanceDeleting
 		{
 			public EntityTypeInstanceDeleting()
 			{
@@ -710,9 +710,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class ConstraintRoleSequenceHasRoleAdded
+		partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
 			{
@@ -720,9 +720,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class ConstraintRoleSequenceHasRoleDeleted
+		partial class ConstraintRoleSequenceHasRoleDeleted
 		{
 			public ConstraintRoleSequenceHasRoleDeleted()
 			{
@@ -730,9 +730,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeHasEntityTypeInstanceAdded
+		partial class EntityTypeHasEntityTypeInstanceAdded
 		{
 			public EntityTypeHasEntityTypeInstanceAdded()
 			{
@@ -740,9 +740,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeHasPreferredIdentifierAdded
+		partial class EntityTypeHasPreferredIdentifierAdded
 		{
 			public EntityTypeHasPreferredIdentifierAdded()
 			{
@@ -750,9 +750,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeHasPreferredIdentifierDeleted
+		partial class EntityTypeHasPreferredIdentifierDeleted
 		{
 			public EntityTypeHasPreferredIdentifierDeleted()
 			{
@@ -760,9 +760,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeHasPreferredIdentifierRolePlayerChanged
+		partial class EntityTypeHasPreferredIdentifierRolePlayerChanged
 		{
 			public EntityTypeHasPreferredIdentifierRolePlayerChanged()
 			{
@@ -770,9 +770,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeInstanceHasRoleInstanceAdded
+		partial class EntityTypeInstanceHasRoleInstanceAdded
 		{
 			public EntityTypeInstanceHasRoleInstanceAdded()
 			{
@@ -780,9 +780,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class EntityTypeInstanceHasRoleInstanceDeleted
+		partial class EntityTypeInstanceHasRoleInstanceDeleted
 		{
 			public EntityTypeInstanceHasRoleInstanceDeleted()
 			{
@@ -790,9 +790,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EntityTypeInstance
+	partial class EntityTypeInstance
 	{
-		private partial class RoleInstanceHasPopulationUniquenessErrorDeleted
+		partial class RoleInstanceHasPopulationUniquenessErrorDeleted
 		{
 			public RoleInstanceHasPopulationUniquenessErrorDeleted()
 			{
@@ -800,9 +800,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EqualityConstraint
+	partial class EqualityConstraint
 	{
-		private partial class ConstraintRoleSequenceHasRoleAdded
+		partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
 			{
@@ -810,9 +810,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class EqualityConstraint
+	partial class EqualityConstraint
 	{
-		private partial class ConstraintRoleSequenceHasRoleDeleting
+		partial class ConstraintRoleSequenceHasRoleDeleting
 		{
 			public ConstraintRoleSequenceHasRoleDeleting()
 			{
@@ -820,9 +820,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class CouplerAddRule
+		partial class CouplerAddRule
 		{
 			public CouplerAddRule()
 			{
@@ -830,9 +830,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class CouplerDeleteRule
+		partial class CouplerDeleteRule
 		{
 			public CouplerDeleteRule()
 			{
@@ -840,9 +840,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class ExclusionConstraintChangeRule
+		partial class ExclusionConstraintChangeRule
 		{
 			public ExclusionConstraintChangeRule()
 			{
@@ -850,9 +850,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class MandatoryConstraintChangeRule
+		partial class MandatoryConstraintChangeRule
 		{
 			public MandatoryConstraintChangeRule()
 			{
@@ -860,9 +860,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class RoleAddRule
+		partial class RoleAddRule
 		{
 			public RoleAddRule()
 			{
@@ -870,9 +870,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class RoleDeletingRule
+		partial class RoleDeletingRule
 		{
 			public RoleDeletingRule()
 			{
@@ -880,9 +880,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class RolePositionChangeRule
+		partial class RolePositionChangeRule
 		{
 			public RolePositionChangeRule()
 			{
@@ -890,9 +890,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class RoleSequenceAddRule
+		partial class RoleSequenceAddRule
 		{
 			public RoleSequenceAddRule()
 			{
@@ -900,9 +900,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ExclusiveOrConstraintCoupler
+	partial class ExclusiveOrConstraintCoupler
 	{
-		private partial class RoleSequencePositionChangeRule
+		partial class RoleSequencePositionChangeRule
 		{
 			public RoleSequencePositionChangeRule()
 			{
@@ -910,9 +910,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class FactTypeChangeRule
+		partial class FactTypeChangeRule
 		{
 			public FactTypeChangeRule()
 			{
@@ -920,9 +920,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class FactTypeHasReadingOrderAddRuleModelValidation
+		partial class FactTypeHasReadingOrderAddRuleModelValidation
 		{
 			public FactTypeHasReadingOrderAddRuleModelValidation()
 			{
@@ -930,9 +930,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class FactTypeHasReadingOrderDeleteRuleModelValidation
+		partial class FactTypeHasReadingOrderDeleteRuleModelValidation
 		{
 			public FactTypeHasReadingOrderDeleteRuleModelValidation()
 			{
@@ -940,9 +940,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class FactTypeHasRoleAddRule
+		partial class FactTypeHasRoleAddRule
 		{
 			public FactTypeHasRoleAddRule()
 			{
@@ -950,9 +950,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class FactTypeHasRoleDeleteRule
+		partial class FactTypeHasRoleDeleteRule
 		{
 			public FactTypeHasRoleDeleteRule()
 			{
@@ -960,9 +960,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class InternalConstraintCollectionHasConstraintAddedRule
+		partial class InternalConstraintCollectionHasConstraintAddedRule
 		{
 			public InternalConstraintCollectionHasConstraintAddedRule()
 			{
@@ -970,9 +970,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class InternalConstraintCollectionHasConstraintDeleteRule
+		partial class InternalConstraintCollectionHasConstraintDeleteRule
 		{
 			public InternalConstraintCollectionHasConstraintDeleteRule()
 			{
@@ -980,9 +980,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class InternalUniquenessConstraintChangeRule
+		partial class InternalUniquenessConstraintChangeRule
 		{
 			public InternalUniquenessConstraintChangeRule()
 			{
@@ -990,9 +990,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ModelHasFactTypeAddRuleModelValidation
+		partial class ModelHasFactTypeAddRuleModelValidation
 		{
 			public ModelHasFactTypeAddRuleModelValidation()
 			{
@@ -1000,9 +1000,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ModelHasInternalConstraintAddRuleModelValidation
+		partial class ModelHasInternalConstraintAddRuleModelValidation
 		{
 			public ModelHasInternalConstraintAddRuleModelValidation()
 			{
@@ -1010,9 +1010,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ModelHasInternalConstraintDeleteRuleModelValidation
+		partial class ModelHasInternalConstraintDeleteRuleModelValidation
 		{
 			public ModelHasInternalConstraintDeleteRuleModelValidation()
 			{
@@ -1020,9 +1020,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ReadingOrderHasReadingAddRuleModelValidation
+		partial class ReadingOrderHasReadingAddRuleModelValidation
 		{
 			public ReadingOrderHasReadingAddRuleModelValidation()
 			{
@@ -1030,9 +1030,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ReadingOrderHasReadingDeleteRuleModelValidation
+		partial class ReadingOrderHasReadingDeleteRuleModelValidation
 		{
 			public ReadingOrderHasReadingDeleteRuleModelValidation()
 			{
@@ -1040,9 +1040,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForObjectificationAdded
+		partial class ValidateFactNameForObjectificationAdded
 		{
 			public ValidateFactNameForObjectificationAdded()
 			{
@@ -1050,9 +1050,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForObjectificationDelete
+		partial class ValidateFactNameForObjectificationDelete
 		{
 			public ValidateFactNameForObjectificationDelete()
 			{
@@ -1060,9 +1060,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForObjectificationRolePlayerChange
+		partial class ValidateFactNameForObjectificationRolePlayerChange
 		{
 			public ValidateFactNameForObjectificationRolePlayerChange()
 			{
@@ -1070,9 +1070,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForObjectTypeNameChange
+		partial class ValidateFactNameForObjectTypeNameChange
 		{
 			public ValidateFactNameForObjectTypeNameChange()
 			{
@@ -1080,9 +1080,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForReadingChange
+		partial class ValidateFactNameForReadingChange
 		{
 			public ValidateFactNameForReadingChange()
 			{
@@ -1090,9 +1090,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForReadingOrderReorder
+		partial class ValidateFactNameForReadingOrderReorder
 		{
 			public ValidateFactNameForReadingOrderReorder()
 			{
@@ -1100,9 +1100,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForReadingReorder
+		partial class ValidateFactNameForReadingReorder
 		{
 			public ValidateFactNameForReadingReorder()
 			{
@@ -1110,9 +1110,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForRolePlayerAdded
+		partial class ValidateFactNameForRolePlayerAdded
 		{
 			public ValidateFactNameForRolePlayerAdded()
 			{
@@ -1120,9 +1120,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForRolePlayerDelete
+		partial class ValidateFactNameForRolePlayerDelete
 		{
 			public ValidateFactNameForRolePlayerDelete()
 			{
@@ -1130,9 +1130,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactType
+	partial class FactType
 	{
-		private partial class ValidateFactNameForRolePlayerRolePlayerChange
+		partial class ValidateFactNameForRolePlayerRolePlayerChange
 		{
 			public ValidateFactNameForRolePlayerRolePlayerChange()
 			{
@@ -1140,9 +1140,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactTypeDerivationExpression
+	partial class FactTypeDerivationExpression
 	{
-		private partial class FactTypeDerivationExpressionChangeRule
+		partial class FactTypeDerivationExpressionChangeRule
 		{
 			public FactTypeDerivationExpressionChangeRule()
 			{
@@ -1150,9 +1150,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactTypeInstance
+	partial class FactTypeInstance
 	{
-		private partial class FactTypeHasRoleAdded
+		partial class FactTypeHasRoleAdded
 		{
 			public FactTypeHasRoleAdded()
 			{
@@ -1160,9 +1160,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactTypeInstance
+	partial class FactTypeInstance
 	{
-		private partial class FactTypeHasRoleDeleted
+		partial class FactTypeHasRoleDeleted
 		{
 			public FactTypeHasRoleDeleted()
 			{
@@ -1170,9 +1170,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactTypeInstance
+	partial class FactTypeInstance
 	{
-		private partial class FactTypeHasFactTypeInstanceAdded
+		partial class FactTypeHasFactTypeInstanceAdded
 		{
 			public FactTypeHasFactTypeInstanceAdded()
 			{
@@ -1180,9 +1180,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactTypeInstance
+	partial class FactTypeInstance
 	{
-		private partial class FactTypeInstanceHasRoleInstanceAdded
+		partial class FactTypeInstanceHasRoleInstanceAdded
 		{
 			public FactTypeInstanceHasRoleInstanceAdded()
 			{
@@ -1190,9 +1190,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FactTypeInstance
+	partial class FactTypeInstance
 	{
-		private partial class FactTypeInstanceHasRoleInstanceDeleted
+		partial class FactTypeInstanceHasRoleInstanceDeleted
 		{
 			public FactTypeInstanceHasRoleInstanceDeleted()
 			{
@@ -1200,9 +1200,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FrequencyConstraint
+	partial class FrequencyConstraint
 	{
-		private partial class FrequencyConstraintMinMaxRule
+		partial class FrequencyConstraintMinMaxRule
 		{
 			public FrequencyConstraintMinMaxRule()
 			{
@@ -1210,9 +1210,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class FrequencyConstraint
+	partial class FrequencyConstraint
 	{
-		private partial class RemoveContradictionErrorsWithFactTypeRule
+		partial class RemoveContradictionErrorsWithFactTypeRule
 		{
 			public RemoveContradictionErrorsWithFactTypeRule()
 			{
@@ -1220,9 +1220,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class MandatoryConstraint
+	partial class MandatoryConstraint
 	{
-		private partial class MandatoryConstraintChangeRule
+		partial class MandatoryConstraintChangeRule
 		{
 			public MandatoryConstraintChangeRule()
 			{
@@ -1230,9 +1230,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ModelError
+	partial class ModelError
 	{
-		private partial class SynchronizeErrorForOwnerRule
+		partial class SynchronizeErrorForOwnerRule
 		{
 			public SynchronizeErrorForOwnerRule()
 			{
@@ -1240,9 +1240,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ModelError
+	partial class ModelError
 	{
-		private partial class SynchronizeErrorTextForModelRule
+		partial class SynchronizeErrorTextForModelRule
 		{
 			public SynchronizeErrorTextForModelRule()
 			{
@@ -1250,9 +1250,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Note
+	partial class Note
 	{
-		private partial class NoteChangeRule
+		partial class NoteChangeRule
 		{
 			public NoteChangeRule()
 			{
@@ -1260,9 +1260,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedFactTypeAddRule
+		partial class ImpliedFactTypeAddRule
 		{
 			public ImpliedFactTypeAddRule()
 			{
@@ -1270,9 +1270,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
+		partial class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
 		{
 			public ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule()
 			{
@@ -1280,9 +1280,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
+		partial class ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
 		{
 			public ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule()
 			{
@@ -1290,9 +1290,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationFactTypeHasRoleAddRule
+		partial class ImpliedObjectificationFactTypeHasRoleAddRule
 		{
 			public ImpliedObjectificationFactTypeHasRoleAddRule()
 			{
@@ -1300,9 +1300,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationFactTypeHasRoleDeletingRule
+		partial class ImpliedObjectificationFactTypeHasRoleDeletingRule
 		{
 			public ImpliedObjectificationFactTypeHasRoleDeletingRule()
 			{
@@ -1310,9 +1310,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationIsImpliedChangeRule
+		partial class ImpliedObjectificationIsImpliedChangeRule
 		{
 			public ImpliedObjectificationIsImpliedChangeRule()
 			{
@@ -1320,9 +1320,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
+		partial class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
 		{
 			public ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule()
 			{
@@ -1330,9 +1330,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
+		partial class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
 		{
 			public ImpliedObjectificationObjectifyingTypePlaysRoleAddRule()
 			{
@@ -1340,9 +1340,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ImpliedObjectificationUniquenessConstraintChangeRule
+		partial class ImpliedObjectificationUniquenessConstraintChangeRule
 		{
 			public ImpliedObjectificationUniquenessConstraintChangeRule()
 			{
@@ -1350,9 +1350,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class InternalConstraintChangeRule
+		partial class InternalConstraintChangeRule
 		{
 			public InternalConstraintChangeRule()
 			{
@@ -1360,9 +1360,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ObjectificationAddRule
+		partial class ObjectificationAddRule
 		{
 			public ObjectificationAddRule()
 			{
@@ -1370,9 +1370,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ObjectificationDeletingRule
+		partial class ObjectificationDeletingRule
 		{
 			public ObjectificationDeletingRule()
 			{
@@ -1380,9 +1380,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class ObjectificationRolePlayerChangeRule
+		partial class ObjectificationRolePlayerChangeRule
 		{
 			public ObjectificationRolePlayerChangeRule()
 			{
@@ -1390,9 +1390,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class PreferredIdentifierDeletingRule
+		partial class PreferredIdentifierDeletingRule
 		{
 			public PreferredIdentifierDeletingRule()
 			{
@@ -1400,9 +1400,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class PreferredIdentifierRolePlayerChangeRule
+		partial class PreferredIdentifierRolePlayerChangeRule
 		{
 			public PreferredIdentifierRolePlayerChangeRule()
 			{
@@ -1410,9 +1410,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class RoleAddRule
+		partial class RoleAddRule
 		{
 			public RoleAddRule()
 			{
@@ -1420,9 +1420,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class RolePlayerAddRule
+		partial class RolePlayerAddRule
 		{
 			public RolePlayerAddRule()
 			{
@@ -1430,9 +1430,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class RoleDeletingRule
+		partial class RoleDeletingRule
 		{
 			public RoleDeletingRule()
 			{
@@ -1440,9 +1440,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class RolePlayerDeletingRule
+		partial class RolePlayerDeletingRule
 		{
 			public RolePlayerDeletingRule()
 			{
@@ -1450,9 +1450,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class UniquenessConstraintAddRule
+		partial class UniquenessConstraintAddRule
 		{
 			public UniquenessConstraintAddRule()
 			{
@@ -1460,9 +1460,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Objectification
+	partial class Objectification
 	{
-		private partial class UniquenessConstraintDeletingRule
+		partial class UniquenessConstraintDeletingRule
 		{
 			public UniquenessConstraintDeletingRule()
 			{
@@ -1470,9 +1470,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class CheckForIncompatibleRelationshipRule
+		partial class CheckForIncompatibleRelationshipRule
 		{
 			public CheckForIncompatibleRelationshipRule()
 			{
@@ -1480,9 +1480,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class CheckForIncompatibleRelationshipRolePlayerChangeRule
+		partial class CheckForIncompatibleRelationshipRolePlayerChangeRule
 		{
 			public CheckForIncompatibleRelationshipRolePlayerChangeRule()
 			{
@@ -1490,9 +1490,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class MandatoryModalityChangeRule
+		partial class MandatoryModalityChangeRule
 		{
 			public MandatoryModalityChangeRule()
 			{
@@ -1500,9 +1500,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class MandatoryRoleAddedRule
+		partial class MandatoryRoleAddedRule
 		{
 			public MandatoryRoleAddedRule()
 			{
@@ -1510,9 +1510,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class MandatoryRoleDeletingRule
+		partial class MandatoryRoleDeletingRule
 		{
 			public MandatoryRoleDeletingRule()
 			{
@@ -1520,9 +1520,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class ModelHasObjectTypeAddRuleModelValidation
+		partial class ModelHasObjectTypeAddRuleModelValidation
 		{
 			public ModelHasObjectTypeAddRuleModelValidation()
 			{
@@ -1530,9 +1530,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class ObjectTypeChangeRule
+		partial class ObjectTypeChangeRule
 		{
 			public ObjectTypeChangeRule()
 			{
@@ -1540,9 +1540,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class ObjectTypeDeleteRule
+		partial class ObjectTypeDeleteRule
 		{
 			public ObjectTypeDeleteRule()
 			{
@@ -1550,9 +1550,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class SubtypeFactChangeRule
+		partial class SubtypeFactChangeRule
 		{
 			public SubtypeFactChangeRule()
 			{
@@ -1560,9 +1560,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class SupertypeAddedRule
+		partial class SupertypeAddedRule
 		{
 			public SupertypeAddedRule()
 			{
@@ -1570,9 +1570,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class SupertypeDeleteRule
+		partial class SupertypeDeleteRule
 		{
 			public SupertypeDeleteRule()
 			{
@@ -1580,9 +1580,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class SupertypeDeletingRule
+		partial class SupertypeDeletingRule
 		{
 			public SupertypeDeletingRule()
 			{
@@ -1590,9 +1590,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class UnspecifiedDataTypeAddRule
+		partial class UnspecifiedDataTypeAddRule
 		{
 			public UnspecifiedDataTypeAddRule()
 			{
@@ -1600,9 +1600,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class UnspecifiedDataRoleRolePlayerChangeRule
+		partial class UnspecifiedDataRoleRolePlayerChangeRule
 		{
 			public UnspecifiedDataRoleRolePlayerChangeRule()
 			{
@@ -1610,9 +1610,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class VerifyReferenceSchemeAddRule
+		partial class VerifyReferenceSchemeAddRule
 		{
 			public VerifyReferenceSchemeAddRule()
 			{
@@ -1620,9 +1620,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class VerifyReferenceSchemeDeleteRule
+		partial class VerifyReferenceSchemeDeleteRule
 		{
 			public VerifyReferenceSchemeDeleteRule()
 			{
@@ -1630,9 +1630,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class VerifyReferenceSchemeRolePlayerChangeRule
+		partial class VerifyReferenceSchemeRolePlayerChangeRule
 		{
 			public VerifyReferenceSchemeRolePlayerChangeRule()
 			{
@@ -1640,9 +1640,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class VerifyValueTypeHasDataTypeAddRule
+		partial class VerifyValueTypeHasDataTypeAddRule
 		{
 			public VerifyValueTypeHasDataTypeAddRule()
 			{
@@ -1650,9 +1650,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectType
+	partial class ObjectType
 	{
-		private partial class VerifyValueTypeHasDataTypeDeleteRule
+		partial class VerifyValueTypeHasDataTypeDeleteRule
 		{
 			public VerifyValueTypeHasDataTypeDeleteRule()
 			{
@@ -1660,9 +1660,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectTypeInstance
+	partial class ObjectTypeInstance
 	{
-		private partial class EntityTypeInstanceHasRoleInstanceAdded
+		partial class EntityTypeInstanceHasRoleInstanceAdded
 		{
 			public EntityTypeInstanceHasRoleInstanceAdded()
 			{
@@ -1670,9 +1670,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectTypeInstance
+	partial class ObjectTypeInstance
 	{
-		private partial class EntityTypeInstanceHasRoleInstanceDeleted
+		partial class EntityTypeInstanceHasRoleInstanceDeleted
 		{
 			public EntityTypeInstanceHasRoleInstanceDeleted()
 			{
@@ -1680,9 +1680,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectTypeInstance
+	partial class ObjectTypeInstance
 	{
-		private partial class EntityTypeInstanceHasRoleInstanceRolePlayerChanged
+		partial class EntityTypeInstanceHasRoleInstanceRolePlayerChanged
 		{
 			public EntityTypeInstanceHasRoleInstanceRolePlayerChanged()
 			{
@@ -1690,9 +1690,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ObjectTypeInstance
+	partial class ObjectTypeInstance
 	{
-		private partial class ValueTypeInstanceValueChanged
+		partial class ValueTypeInstanceValueChanged
 		{
 			public ValueTypeInstanceValueChanged()
 			{
@@ -1700,9 +1700,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ORMModel
+	partial class ORMModel
 	{
-		private partial class RemoveDuplicateConstraintNameErrorRule
+		partial class RemoveDuplicateConstraintNameErrorRule
 		{
 			public RemoveDuplicateConstraintNameErrorRule()
 			{
@@ -1710,9 +1710,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ORMModel
+	partial class ORMModel
 	{
-		private partial class RemoveDuplicateObjectTypeNameErrorRule
+		partial class RemoveDuplicateObjectTypeNameErrorRule
 		{
 			public RemoveDuplicateObjectTypeNameErrorRule()
 			{
@@ -1720,9 +1720,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Reading
+	partial class Reading
 	{
-		private partial class ReadingOrderHasRoleDeleted
+		partial class ReadingOrderHasRoleDeleted
 		{
 			public ReadingOrderHasRoleDeleted()
 			{
@@ -1730,9 +1730,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Reading
+	partial class Reading
 	{
-		private partial class ReadingPropertiesChanged
+		partial class ReadingPropertiesChanged
 		{
 			public ReadingPropertiesChanged()
 			{
@@ -1740,9 +1740,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReadingOrder
+	partial class ReadingOrder
 	{
-		private partial class EnforceNoEmptyReadingOrderDeleteRule
+		partial class EnforceNoEmptyReadingOrderDeleteRule
 		{
 			public EnforceNoEmptyReadingOrderDeleteRule()
 			{
@@ -1750,9 +1750,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReadingOrder
+	partial class ReadingOrder
 	{
-		private partial class EnforceNoEmptyReadingOrderRolePlayerChange
+		partial class EnforceNoEmptyReadingOrderRolePlayerChange
 		{
 			public EnforceNoEmptyReadingOrderRolePlayerChange()
 			{
@@ -1760,9 +1760,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReadingOrder
+	partial class ReadingOrder
 	{
-		private partial class FactTypeHasRoleAddedRule
+		partial class FactTypeHasRoleAddedRule
 		{
 			public FactTypeHasRoleAddedRule()
 			{
@@ -1770,9 +1770,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReadingOrder
+	partial class ReadingOrder
 	{
-		private partial class ReadingOrderHasRoleDeleting
+		partial class ReadingOrderHasRoleDeleting
 		{
 			public ReadingOrderHasRoleDeleting()
 			{
@@ -1780,9 +1780,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReferenceMode
+	partial class ReferenceMode
 	{
-		private partial class ReferenceModeAddedRule
+		partial class ReferenceModeAddedRule
 		{
 			public ReferenceModeAddedRule()
 			{
@@ -1790,9 +1790,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReferenceMode
+	partial class ReferenceMode
 	{
-		private partial class ReferenceModeChangeRule
+		partial class ReferenceModeChangeRule
 		{
 			public ReferenceModeChangeRule()
 			{
@@ -1800,9 +1800,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReferenceModeHasReferenceModeKind
+	partial class ReferenceModeHasReferenceModeKind
 	{
-		private partial class ReferenceModeHasReferenceModeKindChangeRule
+		partial class ReferenceModeHasReferenceModeKindChangeRule
 		{
 			public ReferenceModeHasReferenceModeKindChangeRule()
 			{
@@ -1810,9 +1810,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReferenceModeHasReferenceModeKind
+	partial class ReferenceModeHasReferenceModeKind
 	{
-		private partial class ReferenceModeHasReferenceModeKindDeletingRule
+		partial class ReferenceModeHasReferenceModeKindDeletingRule
 		{
 			public ReferenceModeHasReferenceModeKindDeletingRule()
 			{
@@ -1820,9 +1820,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ReferenceModeKind
+	partial class ReferenceModeKind
 	{
-		private partial class ReferenceModeKindChangeRule
+		partial class ReferenceModeKindChangeRule
 		{
 			public ReferenceModeKindChangeRule()
 			{
@@ -1830,9 +1830,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class RingConstraint
+	partial class RingConstraint
 	{
-		private partial class RingConstraintTypeChangeRule
+		partial class RingConstraintTypeChangeRule
 		{
 			public RingConstraintTypeChangeRule()
 			{
@@ -1840,9 +1840,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RoleChangeRule
+		partial class RoleChangeRule
 		{
 			public RoleChangeRule()
 			{
@@ -1850,9 +1850,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RolePlayerRequiredAddRule
+		partial class RolePlayerRequiredAddRule
 		{
 			public RolePlayerRequiredAddRule()
 			{
@@ -1860,9 +1860,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RolePlayerRequiredForNewRoleAddRule
+		partial class RolePlayerRequiredForNewRoleAddRule
 		{
 			public RolePlayerRequiredForNewRoleAddRule()
 			{
@@ -1870,9 +1870,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RolePlayerRequiredDeleteRule
+		partial class RolePlayerRequiredDeleteRule
 		{
 			public RolePlayerRequiredDeleteRule()
 			{
@@ -1880,9 +1880,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class UpdatedRolePlayerRequiredErrorsDeleteRule
+		partial class UpdatedRolePlayerRequiredErrorsDeleteRule
 		{
 			public UpdatedRolePlayerRequiredErrorsDeleteRule()
 			{
@@ -1890,9 +1890,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class ConstraintRoleSequenceHasRoleAdded
+		partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
 			{
@@ -1900,9 +1900,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class ConstraintRoleSequenceHasRoleDeleted
+		partial class ConstraintRoleSequenceHasRoleDeleted
 		{
 			public ConstraintRoleSequenceHasRoleDeleted()
 			{
@@ -1910,9 +1910,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
+		partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
 		{
 			public ConstraintRoleSequenceHasRoleRolePlayerChanged()
 			{
@@ -1920,9 +1920,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RoleInstanceAdded
+		partial class RoleInstanceAdded
 		{
 			public RoleInstanceAdded()
 			{
@@ -1930,9 +1930,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RoleInstanceDeleted
+		partial class RoleInstanceDeleted
 		{
 			public RoleInstanceDeleted()
 			{
@@ -1940,9 +1940,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class Role
+	partial class Role
 	{
-		private partial class RoleInstanceRolePlayerChanged
+		partial class RoleInstanceRolePlayerChanged
 		{
 			public RoleInstanceRolePlayerChanged()
 			{
@@ -1950,9 +1950,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class ConstraintHasRoleSequenceAdded
+		partial class ConstraintHasRoleSequenceAdded
 		{
 			public ConstraintHasRoleSequenceAdded()
 			{
@@ -1960,9 +1960,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class ConstraintRoleSequenceHasRoleAdded
+		partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
 			{
@@ -1970,9 +1970,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceCardinalityForAdd
+		partial class EnforceRoleSequenceCardinalityForAdd
 		{
 			public EnforceRoleSequenceCardinalityForAdd()
 			{
@@ -1980,9 +1980,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceCardinalityForConstraintAdd
+		partial class EnforceRoleSequenceCardinalityForConstraintAdd
 		{
 			public EnforceRoleSequenceCardinalityForConstraintAdd()
 			{
@@ -1990,9 +1990,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceCardinalityForDelete
+		partial class EnforceRoleSequenceCardinalityForDelete
 		{
 			public EnforceRoleSequenceCardinalityForDelete()
 			{
@@ -2000,9 +2000,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForAdd
+		partial class EnforceRoleSequenceValidityForAdd
 		{
 			public EnforceRoleSequenceValidityForAdd()
 			{
@@ -2010,9 +2010,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForDelete
+		partial class EnforceRoleSequenceValidityForDelete
 		{
 			public EnforceRoleSequenceValidityForDelete()
 			{
@@ -2020,9 +2020,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForReorder
+		partial class EnforceRoleSequenceValidityForReorder
 		{
 			public EnforceRoleSequenceValidityForReorder()
 			{
@@ -2030,9 +2030,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForRolePlayerAdd
+		partial class EnforceRoleSequenceValidityForRolePlayerAdd
 		{
 			public EnforceRoleSequenceValidityForRolePlayerAdd()
 			{
@@ -2040,9 +2040,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForRolePlayerDelete
+		partial class EnforceRoleSequenceValidityForRolePlayerDelete
 		{
 			public EnforceRoleSequenceValidityForRolePlayerDelete()
 			{
@@ -2050,9 +2050,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange
+		partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange
 		{
 			public EnforceRoleSequenceValidityForRolePlayerRolePlayerChange()
 			{
@@ -2060,9 +2060,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class ExternalRoleConstraintDeleted
+		partial class ExternalRoleConstraintDeleted
 		{
 			public ExternalRoleConstraintDeleted()
 			{
@@ -2070,9 +2070,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class FactAdded
+		partial class FactAdded
 		{
 			public FactAdded()
 			{
@@ -2080,9 +2080,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class FactSetComparisonConstraintAdded
+		partial class FactSetComparisonConstraintAdded
 		{
 			public FactSetComparisonConstraintAdded()
 			{
@@ -2090,9 +2090,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetComparisonConstraint
+	partial class SetComparisonConstraint
 	{
-		private partial class SetComparisonConstraintRoleSequenceDeleted
+		partial class SetComparisonConstraintRoleSequenceDeleted
 		{
 			public SetComparisonConstraintRoleSequenceDeleted()
 			{
@@ -2100,9 +2100,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class ConstraintAdded
+		partial class ConstraintAdded
 		{
 			public ConstraintAdded()
 			{
@@ -2110,9 +2110,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class ConstraintRoleSequenceHasRoleAdded
+		partial class ConstraintRoleSequenceHasRoleAdded
 		{
 			public ConstraintRoleSequenceHasRoleAdded()
 			{
@@ -2120,9 +2120,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForAdd
+		partial class EnforceRoleSequenceValidityForAdd
 		{
 			public EnforceRoleSequenceValidityForAdd()
 			{
@@ -2130,9 +2130,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForDelete
+		partial class EnforceRoleSequenceValidityForDelete
 		{
 			public EnforceRoleSequenceValidityForDelete()
 			{
@@ -2140,9 +2140,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForRolePlayerAdd
+		partial class EnforceRoleSequenceValidityForRolePlayerAdd
 		{
 			public EnforceRoleSequenceValidityForRolePlayerAdd()
 			{
@@ -2150,9 +2150,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForRolePlayerDelete
+		partial class EnforceRoleSequenceValidityForRolePlayerDelete
 		{
 			public EnforceRoleSequenceValidityForRolePlayerDelete()
 			{
@@ -2160,9 +2160,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange
+		partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange
 		{
 			public EnforceRoleSequenceValidityForRolePlayerRolePlayerChange()
 			{
@@ -2170,9 +2170,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class FactAdded
+		partial class FactAdded
 		{
 			public FactAdded()
 			{
@@ -2180,9 +2180,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class FactSetConstraintAdded
+		partial class FactSetConstraintAdded
 		{
 			public FactSetConstraintAdded()
 			{
@@ -2190,9 +2190,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class FactSetConstraintDeleted
+		partial class FactSetConstraintDeleted
 		{
 			public FactSetConstraintDeleted()
 			{
@@ -2200,9 +2200,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class ModalityChangeRule
+		partial class ModalityChangeRule
 		{
 			public ModalityChangeRule()
 			{
@@ -2210,9 +2210,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class SetConstraintRoleSequenceHasRoleAdded
+		partial class SetConstraintRoleSequenceHasRoleAdded
 		{
 			public SetConstraintRoleSequenceHasRoleAdded()
 			{
@@ -2220,9 +2220,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SetConstraint
+	partial class SetConstraint
 	{
-		private partial class SetConstraintRoleSequenceHasRoleDeleting
+		partial class SetConstraintRoleSequenceHasRoleDeleting
 		{
 			public SetConstraintRoleSequenceHasRoleDeleting()
 			{
@@ -2230,9 +2230,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class DeleteSubtypeWhenRolePlayerDeleted
+		partial class DeleteSubtypeWhenRolePlayerDeleted
 		{
 			public DeleteSubtypeWhenRolePlayerDeleted()
 			{
@@ -2240,9 +2240,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class EnsureConsistentDataTypesAddRule
+		partial class EnsureConsistentDataTypesAddRule
 		{
 			public EnsureConsistentDataTypesAddRule()
 			{
@@ -2250,9 +2250,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class EnsureConsistentDataTypesDeleteRule
+		partial class EnsureConsistentDataTypesDeleteRule
 		{
 			public EnsureConsistentDataTypesDeleteRule()
 			{
@@ -2260,9 +2260,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class EnsureConsistentRolePlayerTypesAddRule
+		partial class EnsureConsistentRolePlayerTypesAddRule
 		{
 			public EnsureConsistentRolePlayerTypesAddRule()
 			{
@@ -2270,9 +2270,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class InitializeSubtypeAddRule
+		partial class InitializeSubtypeAddRule
 		{
 			public InitializeSubtypeAddRule()
 			{
@@ -2280,9 +2280,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeConstraintChangeRule
+		partial class LimitSubtypeConstraintChangeRule
 		{
 			public LimitSubtypeConstraintChangeRule()
 			{
@@ -2290,9 +2290,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeConstraintRolesAddRule
+		partial class LimitSubtypeConstraintRolesAddRule
 		{
 			public LimitSubtypeConstraintRolesAddRule()
 			{
@@ -2300,9 +2300,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeConstraintRolesDeleteRule
+		partial class LimitSubtypeConstraintRolesDeleteRule
 		{
 			public LimitSubtypeConstraintRolesDeleteRule()
 			{
@@ -2310,9 +2310,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeConstraintsAddRule
+		partial class LimitSubtypeConstraintsAddRule
 		{
 			public LimitSubtypeConstraintsAddRule()
 			{
@@ -2320,9 +2320,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeConstraintsDeleteRule
+		partial class LimitSubtypeConstraintsDeleteRule
 		{
 			public LimitSubtypeConstraintsDeleteRule()
 			{
@@ -2330,9 +2330,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeRolesAddRule
+		partial class LimitSubtypeRolesAddRule
 		{
 			public LimitSubtypeRolesAddRule()
 			{
@@ -2340,9 +2340,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeRolesDeleteRule
+		partial class LimitSubtypeRolesDeleteRule
 		{
 			public LimitSubtypeRolesDeleteRule()
 			{
@@ -2350,9 +2350,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class SubtypeFact
+	partial class SubtypeFact
 	{
-		private partial class LimitSubtypeSetComparisonConstraintSequenceAddRule
+		partial class LimitSubtypeSetComparisonConstraintSequenceAddRule
 		{
 			public LimitSubtypeSetComparisonConstraintSequenceAddRule()
 			{
@@ -2360,9 +2360,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class UniquenessConstraint
+	partial class UniquenessConstraint
 	{
-		private partial class NMinusOneAddRuleModelConstraintAddValidation
+		partial class NMinusOneAddRuleModelConstraintAddValidation
 		{
 			public NMinusOneAddRuleModelConstraintAddValidation()
 			{
@@ -2370,9 +2370,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class UniquenessConstraint
+	partial class UniquenessConstraint
 	{
-		private partial class NMinusOneAddRuleModelFactAddValidation
+		partial class NMinusOneAddRuleModelFactAddValidation
 		{
 			public NMinusOneAddRuleModelFactAddValidation()
 			{
@@ -2380,9 +2380,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class UniquenessConstraint
+	partial class UniquenessConstraint
 	{
-		private partial class NMinusOneAddRuleModelValidation
+		partial class NMinusOneAddRuleModelValidation
 		{
 			public NMinusOneAddRuleModelValidation()
 			{
@@ -2390,9 +2390,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class UniquenessConstraint
+	partial class UniquenessConstraint
 	{
-		private partial class NMinusOneDeleteRuleModelConstraintDeleteValidation
+		partial class NMinusOneDeleteRuleModelConstraintDeleteValidation
 		{
 			public NMinusOneDeleteRuleModelConstraintDeleteValidation()
 			{
@@ -2400,9 +2400,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class UniquenessConstraint
+	partial class UniquenessConstraint
 	{
-		private partial class NMinusOneDeleteRuleModelFactDeleteValidation
+		partial class NMinusOneDeleteRuleModelFactDeleteValidation
 		{
 			public NMinusOneDeleteRuleModelFactDeleteValidation()
 			{
@@ -2410,9 +2410,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class UniquenessConstraint
+	partial class UniquenessConstraint
 	{
-		private partial class UniquenessConstraintChangeRule
+		partial class UniquenessConstraintChangeRule
 		{
 			public UniquenessConstraintChangeRule()
 			{
@@ -2420,9 +2420,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class DataTypeChangeRule
+		partial class DataTypeChangeRule
 		{
 			public DataTypeChangeRule()
 			{
@@ -2430,9 +2430,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class DataTypeDeletingRule
+		partial class DataTypeDeletingRule
 		{
 			public DataTypeDeletingRule()
 			{
@@ -2440,9 +2440,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class DataTypeRolePlayerChangeRule
+		partial class DataTypeRolePlayerChangeRule
 		{
 			public DataTypeRolePlayerChangeRule()
 			{
@@ -2450,9 +2450,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class ObjectTypeRoleAdded
+		partial class ObjectTypeRoleAdded
 		{
 			public ObjectTypeRoleAdded()
 			{
@@ -2460,9 +2460,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class PreferredIdentifierDeletingRule
+		partial class PreferredIdentifierDeletingRule
 		{
 			public PreferredIdentifierDeletingRule()
 			{
@@ -2470,9 +2470,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class PreferredIdentifierRolePlayerChangeRule
+		partial class PreferredIdentifierRolePlayerChangeRule
 		{
 			public PreferredIdentifierRolePlayerChangeRule()
 			{
@@ -2480,9 +2480,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class PreferredIdentifierRoleAddRule
+		partial class PreferredIdentifierRoleAddRule
 		{
 			public PreferredIdentifierRoleAddRule()
 			{
@@ -2490,9 +2490,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class RolePlayerDeleting
+		partial class RolePlayerDeleting
 		{
 			public RolePlayerDeleting()
 			{
@@ -2500,9 +2500,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class RolePlayerRolePlayerChangeRule
+		partial class RolePlayerRolePlayerChangeRule
 		{
 			public RolePlayerRolePlayerChangeRule()
 			{
@@ -2510,9 +2510,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class RoleValueConstraintAdded
+		partial class RoleValueConstraintAdded
 		{
 			public RoleValueConstraintAdded()
 			{
@@ -2520,9 +2520,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class ValueConstraintAddRule
+		partial class ValueConstraintAddRule
 		{
 			public ValueConstraintAddRule()
 			{
@@ -2530,9 +2530,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class ValueConstraintChangeRule
+		partial class ValueConstraintChangeRule
 		{
 			public ValueConstraintChangeRule()
 			{
@@ -2540,9 +2540,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class ValueRangeAdded
+		partial class ValueRangeAdded
 		{
 			public ValueRangeAdded()
 			{
@@ -2550,9 +2550,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueConstraint
+	partial class ValueConstraint
 	{
-		private partial class ValueRangeChangeRule
+		partial class ValueRangeChangeRule
 		{
 			public ValueRangeChangeRule()
 			{
@@ -2560,9 +2560,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueRange
+	partial class ValueRange
 	{
-		private partial class ValueRangeChangeRule
+		partial class ValueRangeChangeRule
 		{
 			public ValueRangeChangeRule()
 			{
@@ -2570,9 +2570,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueTypeInstance
+	partial class ValueTypeInstance
 	{
-		private partial class ValueTypeHasDataTypeAdded
+		partial class ValueTypeHasDataTypeAdded
 		{
 			public ValueTypeHasDataTypeAdded()
 			{
@@ -2580,9 +2580,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueTypeInstance
+	partial class ValueTypeInstance
 	{
-		private partial class ValueTypeHasDataTypeRolePlayerChange
+		partial class ValueTypeHasDataTypeRolePlayerChange
 		{
 			public ValueTypeHasDataTypeRolePlayerChange()
 			{
@@ -2590,9 +2590,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueTypeInstance
+	partial class ValueTypeInstance
 	{
-		private partial class ValueTypeInstanceValueChanged
+		partial class ValueTypeInstanceValueChanged
 		{
 			public ValueTypeInstanceValueChanged()
 			{
@@ -2600,9 +2600,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	public partial class ValueTypeInstance
+	partial class ValueTypeInstance
 	{
-		private partial class ValueTypeHasValueTypeInstanceAdded
+		partial class ValueTypeHasValueTypeInstanceAdded
 		{
 			public ValueTypeHasValueTypeInstanceAdded()
 			{
@@ -2615,9 +2615,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.Modeling
 {
 	#region Initially disable rules
-	public partial class NamedElementDictionary
+	partial class NamedElementDictionary
 	{
-		private partial class ElementLinkAddedRule
+		partial class ElementLinkAddedRule
 		{
 			public ElementLinkAddedRule()
 			{
@@ -2625,9 +2625,9 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 	}
-	public partial class NamedElementDictionary
+	partial class NamedElementDictionary
 	{
-		private partial class ElementLinkDeleteRule
+		partial class ElementLinkDeleteRule
 		{
 			public ElementLinkDeleteRule()
 			{
@@ -2635,9 +2635,9 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 	}
-	public partial class NamedElementDictionary
+	partial class NamedElementDictionary
 	{
-		private partial class NamedElementChangedRule
+		partial class NamedElementChangedRule
 		{
 			public NamedElementChangedRule()
 			{

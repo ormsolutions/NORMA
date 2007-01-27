@@ -174,12 +174,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// value. Any shape fixup rules should use the DiagramFixupConstants values
 		/// to ensure that shape fixup happens after DelayValidation.
 		/// </summary>
-		public const int DelayValidatRulePriority = 200;
+		public const int DelayValidateRulePriority = -200;
+		/// <summary>
+		/// A rule priority for <see cref="TimeToFire.TopLevelCommit"/> and <see cref="TimeToFire.LocalCommit"/>
+		/// rules to run at if they must run prior to delay validation. See <see cref="DelayValidateRulePriority"/>
+		/// for additional information.
+		/// </summary>
+		public const int BeforeDelayValidateRulePriority = DelayValidateRulePriority - 500;
 		private static readonly object DelayedValidationContextKey = new object();
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
-		[RuleOn(typeof(DelayValidateSignal), FireTime = TimeToFire.LocalCommit, Priority = DelayValidatRulePriority)] // AddRule
+		[RuleOn(typeof(DelayValidateSignal), FireTime = TimeToFire.LocalCommit, Priority = DelayValidateRulePriority)] // AddRule
 		private sealed partial class DelayValidateElements : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -189,20 +195,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 				element.Delete();
 				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
 				object validatorsObject;
-				while (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
+				if (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
 				{
 					Dictionary<ElementValidator, object> validators = (Dictionary<ElementValidator, object>)validatorsObject;
-					contextInfo.Remove(DelayedValidationContextKey);
-					foreach (ElementValidator key in validators.Keys)
+					Dictionary<ElementValidator, object>.KeyCollection currentKeys = validators.Keys;
+					Dictionary<ElementValidator, object> sideEffectValidators = new Dictionary<ElementValidator, object>();
+					contextInfo[DelayedValidationContextKey] = sideEffectValidators;
+					int keyCount = currentKeys.Count;
+					if (keyCount == 0)
 					{
-						key.Validate();
+						contextInfo.Remove(DelayedValidationContextKey);
+						validators = null;
+					}
+					else
+					{
+						IComparer<ElementValidator> comparer = new ElementValidatorOrderComparer(store);
+						// Update the validation context key to keep us in this loop
+						contextInfo[DelayedValidationContextKey] = sideEffectValidators;
+						// Sort the validators based on domain model priority
+						List<ElementValidator> sortedValidators = new List<ElementValidator>(currentKeys);
+						sortedValidators.Sort(comparer);
+						while (keyCount != 0)
+						{
+							--keyCount;
+							ElementValidator key = sortedValidators[keyCount];
+							key.Validate();
+							validators.Remove(key);
+							sortedValidators.RemoveAt(keyCount);
+							if (sideEffectValidators.Count != 0)
+							{
+								// Additional validators were added as side effects. Move them
+								// into the current sorted set.
+								foreach (ElementValidator newValidator in sideEffectValidators.Keys)
+								{
+									if (!validators.ContainsKey(newValidator))
+									{
+										validators[newValidator] = null;
+										int insertIndex = sortedValidators.BinarySearch(newValidator, comparer);
+										sortedValidators.Insert((insertIndex < 0) ? ~insertIndex : insertIndex, newValidator);
+									}
+								}
+								sideEffectValidators.Clear();
+							}
+							keyCount = sortedValidators.Count;
+						}
+						contextInfo.Remove(DelayedValidationContextKey);
 					}
 				}
 			}
 		}
 		/// <summary>
+		/// A comparer used to sort ElementValidator elements by model priority.
+		/// Note that the sort happens in reverse priority to enable pulling
+		/// the highest priority items off the end of a list.
+		/// </summary>
+		private sealed class ElementValidatorOrderComparer : IComparer<ElementValidator>
+		{
+			private IList<DomainModel> myDomainModels;
+			public ElementValidatorOrderComparer(Store store)
+			{
+				// Get the ordered domain models. Note that this list is
+				// in dependency order even if the domain models are not
+				// provided in depedency order, so we can use it directly.
+				ICollection<DomainModel> domainModelsCollection = store.DomainModels;
+				int domainModelCount = domainModelsCollection.Count;
+				DomainModel[] domainModelsArray = new DomainModel[domainModelCount];
+				domainModelsCollection.CopyTo(domainModelsArray, 0);
+				myDomainModels = domainModelsArray;
+			}
+			#region IComparable<ElementValidator> Implementation
+			public int Compare(ElementValidator validator1, ElementValidator validator2)
+			{
+				DomainModel model1 = validator1.DomainModel;
+				DomainModel model2 = validator2.DomainModel;
+				if (model1 == model2)
+				{
+					return 0;
+				}
+				else if (myDomainModels.IndexOf(model1) < myDomainModels.IndexOf(model2))
+				{
+					// This would be -1 for forward order, reverse order here
+					return 1;
+				}
+				return -1;
+			}
+			#endregion // IComparable<ElementValidator> Implementation
+		}
+		/// <summary>
 		/// A structure to use for <see cref="ModelElement"/> validation.
 		/// </summary>
+		[DebuggerDisplay("{(Validation!=null) ? System.String.Concat(Validation.Method.DeclaringType.FullName, \".\", Validation.Method.Name, \" (\", Element.ToString(),\")\") : GetType().Name}")]
 		private struct ElementValidator : IEquatable<ElementValidator>
 		{
 			/// <summary>
@@ -219,6 +301,70 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public void Validate()
 			{
 				this.Validation(this.Element);
+			}
+			#region RuntimeMethodHandleEqualityComparer class
+			/// <summary>
+			/// <see cref="RuntimeTypeHandle"/> has a strongly-typed <c>Equals</c> method (<see cref="RuntimeTypeHandle.Equals(RuntimeTypeHandle)"/>),
+			/// but does not implement <see cref="IEquatable{RuntimeTypeHandle}"/>. Therefore, we use this <see cref="IEqualityComparer{RuntimeTypeHandle}"/>
+			/// implementation (which defers to that method) in order to avoid boxing.
+			/// </summary>
+			private sealed class RuntimeMethodHandleEqualityComparer : IEqualityComparer<RuntimeMethodHandle>
+			{
+				private RuntimeMethodHandleEqualityComparer()
+					: base()
+				{
+				}
+				public static readonly RuntimeMethodHandleEqualityComparer Instance = new RuntimeMethodHandleEqualityComparer();
+				public bool Equals(RuntimeMethodHandle x, RuntimeMethodHandle y)
+				{
+					return x.Equals(y);
+				}
+				public int GetHashCode(RuntimeMethodHandle obj)
+				{
+					return obj.GetHashCode();
+				}
+			}
+			#endregion // RuntimeMethodHandleEqualityComparer class
+			private static Dictionary<RuntimeMethodHandle, Guid> myMethodToDomainModelMap = new Dictionary<RuntimeMethodHandle, Guid>(RuntimeMethodHandleEqualityComparer.Instance);
+			/// <summary>
+			/// Get the domain model associated with this validator
+			/// </summary>
+			public DomainModel DomainModel
+			{
+				get
+				{
+					DomainModel retVal = null;
+					MethodInfo method = Validation.Method;
+					RuntimeMethodHandle methodHandle = method.MethodHandle;
+					Guid domainModelId;
+					Store store = Element.Store;
+					if (myMethodToDomainModelMap.TryGetValue(methodHandle, out domainModelId))
+					{
+						retVal = store.GetDomainModel(domainModelId);
+					}
+					else
+					{
+						Type declaringType = method.DeclaringType;
+						while (declaringType != null)
+						{
+							object[] idAttributes = declaringType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+							if (idAttributes.Length != 0)
+							{
+								DomainClassInfo classInfo = store.DomainDataDirectory.FindDomainClass(((DomainObjectIdAttribute)idAttributes[0]).Id);
+								if (classInfo != null)
+								{
+									domainModelId = classInfo.DomainModel.Id;
+									retVal = store.GetDomainModel(domainModelId);
+									myMethodToDomainModelMap[methodHandle] = domainModelId;
+									break;
+								}
+							}
+							declaringType = declaringType.DeclaringType;
+						}
+						Debug.Assert(retVal != null, "Cannot find DomainModel for delay validation function: " + method.DeclaringType.FullName + "." + method.Name);
+					}
+					return retVal;
+				}
 			}
 			/// <summary>
 			/// The <see cref="ModelElement"/> to validate.
@@ -265,6 +411,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Store store = element.Store;
 			Debug.Assert(store.TransactionActive);
+#if DEBUG
+			if (validation.Target != null)
+			{
+				Debug.Fail(validation.Target.GetType().FullName + " registered non-static DelayValidate function: " + validation.Method.Name + ". The DelayValidation pattern should only need static functions.");
+			}
+#endif // DEBUG
+
 			Dictionary<object, object> contextDictionary = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
 			object dictionaryObject;
 			Dictionary<ElementValidator, object> dictionary;

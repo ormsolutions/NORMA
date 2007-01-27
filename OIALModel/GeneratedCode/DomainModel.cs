@@ -116,6 +116,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			return new DomainMemberInfo[]
 			{
 				new DomainMemberInfo(typeof(OIALNamedElement), "Name", OIALNamedElement.NameDomainPropertyId, typeof(OIALNamedElement.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(OIALModel), "Regenerating", OIALModel.RegeneratingDomainPropertyId, typeof(OIALModel.RegeneratingPropertyHandler)),
 				new DomainMemberInfo(typeof(Constraint), "Modality", Constraint.ModalityDomainPropertyId, typeof(Constraint.ModalityPropertyHandler)),
 				new DomainMemberInfo(typeof(SingleChildUniquenessConstraint), "IsPreferred", SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, typeof(SingleChildUniquenessConstraint.IsPreferredPropertyHandler)),
 				new DomainMemberInfo(typeof(ChildSequenceUniquenessConstraint), "ShouldIgnore", ChildSequenceUniquenessConstraint.ShouldIgnoreDomainPropertyId, typeof(ChildSequenceUniquenessConstraint.ShouldIgnorePropertyHandler)),

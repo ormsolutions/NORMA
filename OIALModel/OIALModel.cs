@@ -30,58 +30,6 @@ using ObjModel = Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
-	#region OIALRegenerationEventArgs Class
-	/// <summary>
-	/// Provides data for the <see cref="E:Neumont.Tools.ORM.OIALModel.OIALModel.OIALRegenerating" /> event.
-	/// </summary>
-	public class OIALRegenerationEventArgs : ModelingEventArgs
-	{
-		/// <summary>
-		/// Specifies the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> that raised the event.
-		/// </summary>
-		private readonly OIALModel myOIALModel;
-		/// <summary>
-		/// Specifies the <see cref="T:Microsoft.VisualStudio.Modeling.Transaction"/> in which the event was raised.
-		/// </summary>
-		private readonly Transaction myTransaction;
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel.OIALRegenerationEventArgs" /> class.	
-		/// </summary>
-		public OIALRegenerationEventArgs(OIALModel oialModel, Transaction transaction)
-		{
-			if (oialModel == null)
-			{
-				throw new ArgumentNullException("oialModel");
-			}
-			if (transaction == null)
-			{
-				throw new ArgumentNullException("transaction");
-			}
-			this.myOIALModel = oialModel;
-			this.myTransaction = transaction;
-		}
-		/// <summary>
-		/// Gets the <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> that raised the event.
-		/// </summary>
-		public OIALModel OIALModel
-		{
-			get
-			{
-				return this.myOIALModel;
-			}
-		}
-		/// <summary>
-		/// Gets the <see cref="T:Microsoft.VisualStudio.Modeling.Transaction"/> in which the event was raised.
-		/// </summary>
-		public Transaction Transaction
-		{
-			get
-			{
-				return this.myTransaction;
-			}
-		}
-	}
-	#endregion // OIALRegenerationEventArgs Class
 	#region OIALModel Rules and Validation
 	public partial class OIALModel
 	{
@@ -425,24 +373,6 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// This rule listens for when a FactType is changed.
-		/// </summary>
-		[RuleOn(typeof(FactType))] // ChangeRule
-		private sealed partial class FactTypeChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// When a FactType is changed we DelayValidate the Model.
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				ORMModel model = (e.ModelElement as FactType).Model;
-				if (model != null)
-				{
-					ORMCoreDomainModel.DelayValidateElement(model, DelayValidateModel);
-				}
-			}
-		}
-		/// <summary>
 		/// This model listens for when A SetConstraint is added to the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
@@ -783,11 +713,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		private bool myUnariesExist = false;
 #endif
 		/// <summary>
-		/// Raised when this <see cref="OIALModel"/> is about to regenerate itself.
-		/// </summary>
-		public event EventHandler<OIALRegenerationEventArgs> OIALRegenerating;
-
-		/// <summary>
 		/// Processes the current ORM Model by determining which facts and objects
 		/// should be noted by this <see cref="PrimaryElementTracker"/>
 		/// </summary>
@@ -795,11 +720,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		private void ProcessModelForTopLevelTypes()
 		{
 			Store store = this.Store;
-			EventHandler<OIALRegenerationEventArgs> oialRegenerating = this.OIALRegenerating;
-			if ((object)oialRegenerating != null)
-			{
-				oialRegenerating(this, new OIALRegenerationEventArgs(this, store.TransactionManager.CurrentTransaction));
-			}
+			this.Regenerating = true;
+			this.Regenerating = false;
 
 			// Clears the OIALModel previous to re-processing.
 			LinkedElementCollection<ConceptType> thisConceptTypeCollection = ConceptTypeCollection;

@@ -298,7 +298,19 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.RelationalModelDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.OIALModelDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.OIALModelDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.RelationalModelDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -419,7 +431,19 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.TableDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.ConceptTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.ConceptTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.TableDomainRoleId, value);
+				}
 			}
 		}
 		#endregion

@@ -960,7 +960,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region RolePlayer validation rules
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // AddRule
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
 		private sealed partial class RolePlayerRequiredAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)

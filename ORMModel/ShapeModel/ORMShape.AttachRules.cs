@@ -126,25 +126,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
-		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			int count = disabledRuleTypes.Length;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0; i < 63; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			this.EnableRulesAfterDeserialization(ruleManager);
+			this.EnableRulesAfterDeserialization(store);
 		}
 	}
 	#endregion // Attach rules to ORMShapeDomainModel model
 	#region Initially disable rules
-	public partial class ExternalConstraintLink
+	partial class ExternalConstraintLink
 	{
-		private partial class DeleteDanglingConstraintShapeRule
+		partial class DeleteDanglingConstraintShapeRule
 		{
 			public DeleteDanglingConstraintShapeRule()
 			{
@@ -152,9 +152,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ExternalConstraintShape
+	partial class ExternalConstraintShape
 	{
-		private partial class ExclusiveOrCouplerAdded
+		partial class ExclusiveOrCouplerAdded
 		{
 			public ExclusiveOrCouplerAdded()
 			{
@@ -162,9 +162,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ExternalConstraintShape
+	partial class ExternalConstraintShape
 	{
-		private partial class ExclusiveOrCouplerDeleted
+		partial class ExclusiveOrCouplerDeleted
 		{
 			public ExclusiveOrCouplerDeleted()
 			{
@@ -172,9 +172,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ExternalConstraintShape
+	partial class ExternalConstraintShape
 	{
-		private partial class PreferredIdentifierAddRule
+		partial class PreferredIdentifierAddRule
 		{
 			public PreferredIdentifierAddRule()
 			{
@@ -182,9 +182,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ExternalConstraintShape
+	partial class ExternalConstraintShape
 	{
-		private partial class PreferredIdentifierDeleteRule
+		partial class PreferredIdentifierDeleteRule
 		{
 			public PreferredIdentifierDeleteRule()
 			{
@@ -192,9 +192,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ExternalConstraintShape
+	partial class ExternalConstraintShape
 	{
-		private partial class PreferredIdentifierRolePlayerChangeRule
+		partial class PreferredIdentifierRolePlayerChangeRule
 		{
 			public PreferredIdentifierRolePlayerChangeRule()
 			{
@@ -202,9 +202,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class ConstraintDisplayPositionChangeRule
+		partial class ConstraintDisplayPositionChangeRule
 		{
 			public ConstraintDisplayPositionChangeRule()
 			{
@@ -212,9 +212,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class DerivationRuleChanged
+		partial class DerivationRuleChanged
 		{
 			public DerivationRuleChanged()
 			{
@@ -222,9 +222,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class DerivationRuleAdd
+		partial class DerivationRuleAdd
 		{
 			public DerivationRuleAdd()
 			{
@@ -232,9 +232,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class DerivationRuleDelete
+		partial class DerivationRuleDelete
 		{
 			public DerivationRuleDelete()
 			{
@@ -242,9 +242,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class ExternalConstraintShapeChangeRule
+		partial class ExternalConstraintShapeChangeRule
 		{
 			public ExternalConstraintShapeChangeRule()
 			{
@@ -252,9 +252,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class FactTypeShapeChangeRule
+		partial class FactTypeShapeChangeRule
 		{
 			public FactTypeShapeChangeRule()
 			{
@@ -262,9 +262,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class ObjectificationIsImpliedChangeRule
+		partial class ObjectificationIsImpliedChangeRule
 		{
 			public ObjectificationIsImpliedChangeRule()
 			{
@@ -272,9 +272,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class ObjectificationRolePlayerChangeRule
+		partial class ObjectificationRolePlayerChangeRule
 		{
 			public ObjectificationRolePlayerChangeRule()
 			{
@@ -282,9 +282,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class RoleDisplayOrderChanged
+		partial class RoleDisplayOrderChanged
 		{
 			public RoleDisplayOrderChanged()
 			{
@@ -292,9 +292,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class SwitchFromNestedFact
+		partial class SwitchFromNestedFact
 		{
 			public SwitchFromNestedFact()
 			{
@@ -302,9 +302,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FactTypeShape
+	partial class FactTypeShape
 	{
-		private partial class SwitchToNestedFact
+		partial class SwitchToNestedFact
 		{
 			public SwitchToNestedFact()
 			{
@@ -312,9 +312,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class FrequencyConstraintShape
+	partial class FrequencyConstraintShape
 	{
-		private partial class FrequencyConstraintPropertyChangeRule
+		partial class FrequencyConstraintPropertyChangeRule
 		{
 			public FrequencyConstraintPropertyChangeRule()
 			{
@@ -322,9 +322,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ModelNoteShape
+	partial class ModelNoteShape
 	{
-		private partial class NoteChangeRule
+		partial class NoteChangeRule
 		{
 			public NoteChangeRule()
 			{
@@ -332,9 +332,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class DataTypeAddedRule
+		partial class DataTypeAddedRule
 		{
 			public DataTypeAddedRule()
 			{
@@ -342,9 +342,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class DataTypeDeleteRule
+		partial class DataTypeDeleteRule
 		{
 			public DataTypeDeleteRule()
 			{
@@ -352,9 +352,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class ObjectTypeShapeChangeRule
+		partial class ObjectTypeShapeChangeRule
 		{
 			public ObjectTypeShapeChangeRule()
 			{
@@ -362,9 +362,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class PreferredIdentifierDeleteRule
+		partial class PreferredIdentifierDeleteRule
 		{
 			public PreferredIdentifierDeleteRule()
 			{
@@ -372,9 +372,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class PreferredIdentifierAddedRule
+		partial class PreferredIdentifierAddedRule
 		{
 			public PreferredIdentifierAddedRule()
 			{
@@ -382,9 +382,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class PreferredIdentifierRolePlayerChangeRule
+		partial class PreferredIdentifierRolePlayerChangeRule
 		{
 			public PreferredIdentifierRolePlayerChangeRule()
 			{
@@ -392,9 +392,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class PreferredIdentifierRolePlayerChangeRuleForResize
+		partial class PreferredIdentifierRolePlayerChangeRuleForResize
 		{
 			public PreferredIdentifierRolePlayerChangeRuleForResize()
 			{
@@ -402,9 +402,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class PreferredIdentifierLengthened
+		partial class PreferredIdentifierLengthened
 		{
 			public PreferredIdentifierLengthened()
 			{
@@ -412,9 +412,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class PreferredIdentifierShortened
+		partial class PreferredIdentifierShortened
 		{
 			public PreferredIdentifierShortened()
 			{
@@ -422,9 +422,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class RolePlayerAddedRule
+		partial class RolePlayerAddedRule
 		{
 			public RolePlayerAddedRule()
 			{
@@ -432,9 +432,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class RolePlayerDeleteRule
+		partial class RolePlayerDeleteRule
 		{
 			public RolePlayerDeleteRule()
 			{
@@ -442,9 +442,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ObjectTypeShape
+	partial class ObjectTypeShape
 	{
-		private partial class ShapeChangeRule
+		partial class ShapeChangeRule
 		{
 			public ShapeChangeRule()
 			{
@@ -452,9 +452,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMBaseBinaryLinkShape
+	partial class ORMBaseBinaryLinkShape
 	{
-		private partial class LinkChangeRule
+		partial class LinkChangeRule
 		{
 			public LinkChangeRule()
 			{
@@ -462,9 +462,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMBaseShape
+	partial class ORMBaseShape
 	{
-		private partial class ModelErrorAdded
+		partial class ModelErrorAdded
 		{
 			public ModelErrorAdded()
 			{
@@ -472,9 +472,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMBaseShape
+	partial class ORMBaseShape
 	{
-		private partial class ModelErrorDeleting
+		partial class ModelErrorDeleting
 		{
 			public ModelErrorDeleting()
 			{
@@ -482,9 +482,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ConstraintRoleSequenceRoleAdded
+		partial class ConstraintRoleSequenceRoleAdded
 		{
 			public ConstraintRoleSequenceRoleAdded()
 			{
@@ -492,9 +492,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ConstraintRoleSequenceRoleDeleted
+		partial class ConstraintRoleSequenceRoleDeleted
 		{
 			public ConstraintRoleSequenceRoleDeleted()
 			{
@@ -502,9 +502,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class FactConstraintAdded
+		partial class FactConstraintAdded
 		{
 			public FactConstraintAdded()
 			{
@@ -512,9 +512,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class FactConstraintDeleted
+		partial class FactConstraintDeleted
 		{
 			public FactConstraintDeleted()
 			{
@@ -522,9 +522,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ExternalRoleConstraintDeleted
+		partial class ExternalRoleConstraintDeleted
 		{
 			public ExternalRoleConstraintDeleted()
 			{
@@ -532,9 +532,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class FactTypedAdded
+		partial class FactTypedAdded
 		{
 			public FactTypedAdded()
 			{
@@ -542,9 +542,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class FactTypeShapeChanged
+		partial class FactTypeShapeChanged
 		{
 			public FactTypeShapeChanged()
 			{
@@ -552,9 +552,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ModelNoteAdded
+		partial class ModelNoteAdded
 		{
 			public ModelNoteAdded()
 			{
@@ -562,9 +562,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ModelNoteReferenceAdded
+		partial class ModelNoteReferenceAdded
 		{
 			public ModelNoteReferenceAdded()
 			{
@@ -572,9 +572,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ObjectTypedAdded
+		partial class ObjectTypedAdded
 		{
 			public ObjectTypedAdded()
 			{
@@ -582,9 +582,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ObjectTypePlaysRoleAdded
+		partial class ObjectTypePlaysRoleAdded
 		{
 			public ObjectTypePlaysRoleAdded()
 			{
@@ -592,9 +592,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ObjectTypePlaysRoleRolePlayerChange
+		partial class ObjectTypePlaysRoleRolePlayerChange
 		{
 			public ObjectTypePlaysRoleRolePlayerChange()
 			{
@@ -602,9 +602,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ObjectTypeShapeChangeRule
+		partial class ObjectTypeShapeChangeRule
 		{
 			public ObjectTypeShapeChangeRule()
 			{
@@ -612,9 +612,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ReadingOrderAdded
+		partial class ReadingOrderAdded
 		{
 			public ReadingOrderAdded()
 			{
@@ -622,9 +622,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class RoleAdded
+		partial class RoleAdded
 		{
 			public RoleAdded()
 			{
@@ -632,9 +632,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class RoleChange
+		partial class RoleChange
 		{
 			public RoleChange()
 			{
@@ -642,9 +642,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class RoleDeleted
+		partial class RoleDeleted
 		{
 			public RoleDeleted()
 			{
@@ -652,9 +652,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class RoleValueConstraintAdded
+		partial class RoleValueConstraintAdded
 		{
 			public RoleValueConstraintAdded()
 			{
@@ -662,9 +662,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class SetComparisonConstraintAdded
+		partial class SetComparisonConstraintAdded
 		{
 			public SetComparisonConstraintAdded()
 			{
@@ -672,9 +672,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class SetConstraintAdded
+		partial class SetConstraintAdded
 		{
 			public SetConstraintAdded()
 			{
@@ -682,9 +682,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ORMShapeDomainModel
+	partial class ORMShapeDomainModel
 	{
-		private partial class ValueTypeValueConstraintAdded
+		partial class ValueTypeValueConstraintAdded
 		{
 			public ValueTypeValueConstraintAdded()
 			{
@@ -692,9 +692,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ReadingShape
+	partial class ReadingShape
 	{
-		private partial class DisplayOrientationChanged
+		partial class DisplayOrientationChanged
 		{
 			public DisplayOrientationChanged()
 			{
@@ -702,9 +702,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ReadingShape
+	partial class ReadingShape
 	{
-		private partial class ReadingOrderDeleted
+		partial class ReadingOrderDeleted
 		{
 			public ReadingOrderDeleted()
 			{
@@ -712,9 +712,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ReadingShape
+	partial class ReadingShape
 	{
-		private partial class ReadingPositionChanged
+		partial class ReadingPositionChanged
 		{
 			public ReadingPositionChanged()
 			{
@@ -722,9 +722,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ReadingShape
+	partial class ReadingShape
 	{
-		private partial class ReadingTextChanged
+		partial class ReadingTextChanged
 		{
 			public ReadingTextChanged()
 			{
@@ -732,9 +732,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ReadingShape
+	partial class ReadingShape
 	{
-		private partial class RoleDisplayOrderAdded
+		partial class RoleDisplayOrderAdded
 		{
 			public RoleDisplayOrderAdded()
 			{
@@ -742,9 +742,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ReadingShape
+	partial class ReadingShape
 	{
-		private partial class RoleDisplayOrderPositionChanged
+		partial class RoleDisplayOrderPositionChanged
 		{
 			public RoleDisplayOrderPositionChanged()
 			{
@@ -752,9 +752,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class RingConstraintShape
+	partial class RingConstraintShape
 	{
-		private partial class RingConstraintPropertyChangeRule
+		partial class RingConstraintPropertyChangeRule
 		{
 			public RingConstraintPropertyChangeRule()
 			{
@@ -762,9 +762,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	public partial class ValueConstraintShape
+	partial class ValueConstraintShape
 	{
-		private partial class ValueConstraintTextChanged
+		partial class ValueConstraintTextChanged
 		{
 			public ValueConstraintTextChanged()
 			{

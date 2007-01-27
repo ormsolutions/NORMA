@@ -66,32 +66,32 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			}
 		}
 		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
-		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ExtensionDomainModel.CustomDomainModelTypes;
-			int count = disabledRuleTypes.Length;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0; i < 3; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			this.EnableRulesAfterDeserialization(ruleManager);
+			this.EnableRulesAfterDeserialization(store);
 		}
 	}
 	#endregion // Attach rules to ExtensionDomainModel model
 	#region Initially disable rules
-	public partial class ExtensionAddRule
+	partial class ExtensionAddRule
 	{
 		public ExtensionAddRule()
 		{
 			base.IsEnabled = false;
 		}
 	}
-	public partial class ObjectTypeRequiresMeaningfulNameError
+	partial class ObjectTypeRequiresMeaningfulNameError
 	{
-		private partial class ExtensionObjectTypeAddRule
+		partial class ExtensionObjectTypeAddRule
 		{
 			public ExtensionObjectTypeAddRule()
 			{
@@ -99,9 +99,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			}
 		}
 	}
-	public partial class ObjectTypeRequiresMeaningfulNameError
+	partial class ObjectTypeRequiresMeaningfulNameError
 	{
-		private partial class ExtensionObjectTypeChangeRule
+		partial class ExtensionObjectTypeChangeRule
 		{
 			public ExtensionObjectTypeChangeRule()
 			{

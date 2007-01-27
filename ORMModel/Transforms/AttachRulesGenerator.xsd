@@ -60,6 +60,11 @@
 				<xs:documentation>(optional) The namespace of the meta model. The default namespace is based on the location of the xml file in the project and can be modified with the 'Custom Tool Namespace' value in the property grid.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="enableDiagramRules" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>(default: false) The DSLTools generators produce a static function called EnableDiagramRules. This function is called by the DSL-produced DocData, but only for the one model known to the DocData, and only if the DSL-generated package files are used. Set this property to true to call this function at the appropriate time.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="ReflectedType" type="ReflectedTypeType"/>
 	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>

@@ -2308,13 +2308,12 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				t.Commit();
 			}
-			RuleManager ruleManager = myStore.RuleManager;
 			foreach (DomainModel loadedModel in domainModels)
 			{
 				IDomainModelEnablesRulesAfterDeserialization enableRules = loadedModel as IDomainModelEnablesRulesAfterDeserialization;
 				if (enableRules != null)
 				{
-					enableRules.EnableRulesAfterDeserialization(ruleManager);
+					enableRules.EnableRulesAfterDeserialization(myStore);
 				}
 			}
 		}

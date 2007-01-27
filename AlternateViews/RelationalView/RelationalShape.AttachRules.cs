@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	#region Attach rules to RelationalShapeDomainModel model
-	partial class RelationalShapeDomainModel
+	partial class RelationalShapeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -34,12 +34,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
-						typeof(RelationalModel).GetNestedType("DelayedFixUpDiagram", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RelationalModel).GetNestedType("DelayedCompartmentItemAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("DelayedOIALModelAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("DelayedConceptTypeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RelationalModel).GetNestedType("DelayedForeignKeyItemAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("DelayedRelationalDiagramAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RelationalModel).GetNestedType("OIALModelRegenerating", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalModel).GetNestedType("TableShapeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RelationalDiagram).GetNestedType("NameChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ColumnElementListCompartment)};
@@ -49,12 +47,24 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return retVal;
 			}
 		}
-		/// <summary>
-		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
-		/// </summary>
-		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
-		/// 
-		/// </seealso>
+		private static Type[] myInitiallyDisabledRuleTypes;
+		private static Type[] InitiallyDisabledRuleTypes
+		{
+			get
+			{
+				Type[] retVal = RelationalShapeDomainModel.myInitiallyDisabledRuleTypes;
+				if (retVal == null)
+				{
+					Type[] customDomainModelTypes = RelationalShapeDomainModel.CustomDomainModelTypes;
+					retVal = new Type[]{
+						customDomainModelTypes[5]};
+					RelationalShapeDomainModel.myInitiallyDisabledRuleTypes = retVal;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
 			if (Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems)
@@ -75,6 +85,33 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return retVal;
 			}
 		}
+		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			RelationalShapeDomainModel.EnableDiagramRules(store);
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
+			Type[] disabledRuleTypes = RelationalShapeDomainModel.InitiallyDisabledRuleTypes;
+			for (int i = 0; i < 1; ++i)
+			{
+				ruleManager.EnableRule(disabledRuleTypes[i]);
+			}
+		}
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			this.EnableRulesAfterDeserialization(store);
+		}
 	}
 	#endregion // Attach rules to RelationalShapeDomainModel model
+	#region Initially disable rules
+	partial class RelationalDiagram
+	{
+		partial class NameChangeRule
+		{
+			public NameChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	#endregion // Initially disable rules
 }

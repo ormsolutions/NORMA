@@ -15,16 +15,13 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="RelationalShapeDomainModel">
-		<arg:Rule class="RelationalModel.DelayedFixUpDiagram" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.DelayedCompartmentItemAddRule" alwaysOn="true"/>
+	<arg:Model class="RelationalShapeDomainModel" enableDiagramRules="true">
 		<arg:Rule class="RelationalModel.DelayedOIALModelAddedRule" alwaysOn="true"/>
 		<arg:Rule class="RelationalModel.DelayedConceptTypeAddedRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalModel.DelayedForeignKeyItemAddRule" alwaysOn="true"/>
 		<arg:Rule class="RelationalModel.DelayedRelationalDiagramAddRule" alwaysOn="true"/>
-		<!--<arg:Rule class="RelationalModel.RelationalDiagramDeleteRule" alwaysOn="true"/>-->
+		<arg:Rule class="RelationalModel.OIALModelRegenerating" alwaysOn="true"/>
 		<arg:Rule class="RelationalModel.TableShapeAddRule" alwaysOn="true"/>
-		<arg:Rule class="RelationalDiagram.NameChangeRule" alwaysOn="true"/>
+		<arg:Rule class="RelationalDiagram.NameChangeRule"/>
 		<!-- This is not really a rule, but an element that we want to add to the directory. -->
 		<arg:ReflectedType class="ColumnElementListCompartment"/>
 	</arg:Model>

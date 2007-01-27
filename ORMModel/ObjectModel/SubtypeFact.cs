@@ -251,7 +251,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block internal constraints from being removed from a subtype
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(FactSetConstraint), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class LimitSubtypeConstraintsDeleteRule : DeleteRule
 		{
 			/// <summary>
@@ -310,7 +310,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block roles from being removed from a subtype
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class LimitSubtypeRolesDeleteRule : DeleteRule
 		{
 			/// <summary>
@@ -534,7 +534,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block roles from being removed from subtype constraints
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class LimitSubtypeConstraintRolesDeleteRule : DeleteRule
 		{
 			/// <summary>
@@ -611,7 +611,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure that a role player deletion on a subtype results in a deletion
 		/// of the subtype itself.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
 		private sealed partial class DeleteSubtypeWhenRolePlayerDeleted : DeleteRule
 		{
 			/// <summary>
@@ -641,7 +641,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure consistent types (EntityType or ValueType) for role
 		/// players in a subtyping relationship
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // AddRule
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
 		private sealed partial class EnsureConsistentRolePlayerTypesAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)

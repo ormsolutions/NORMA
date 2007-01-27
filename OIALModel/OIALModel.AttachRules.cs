@@ -41,7 +41,6 @@ namespace Neumont.Tools.ORM.OIALModel
 						typeof(OIALModel).GetNestedType("ObjectTypePlaysRoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasFactTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasFactTypeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("FactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -83,25 +82,25 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
-		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
+			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = OIALDomainModel.CustomDomainModelTypes;
-			int count = disabledRuleTypes.Length;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0; i < 19; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			this.EnableRulesAfterDeserialization(ruleManager);
+			this.EnableRulesAfterDeserialization(store);
 		}
 	}
 	#endregion // Attach rules to OIALDomainModel model
 	#region Initially disable rules
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ModelHasObjectTypeAddRule
+		partial class ModelHasObjectTypeAddRule
 		{
 			public ModelHasObjectTypeAddRule()
 			{
@@ -109,9 +108,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ModelHasObjectTypeDeletingRule
+		partial class ModelHasObjectTypeDeletingRule
 		{
 			public ModelHasObjectTypeDeletingRule()
 			{
@@ -119,9 +118,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ObjectTypeChangeRule
+		partial class ObjectTypeChangeRule
 		{
 			public ObjectTypeChangeRule()
 			{
@@ -129,9 +128,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ObjectTypePlaysRoleAddRule
+		partial class ObjectTypePlaysRoleAddRule
 		{
 			public ObjectTypePlaysRoleAddRule()
 			{
@@ -139,9 +138,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ObjectTypePlaysRoleDeletingRule
+		partial class ObjectTypePlaysRoleDeletingRule
 		{
 			public ObjectTypePlaysRoleDeletingRule()
 			{
@@ -149,9 +148,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ModelHasFactTypeAddRule
+		partial class ModelHasFactTypeAddRule
 		{
 			public ModelHasFactTypeAddRule()
 			{
@@ -159,9 +158,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ModelHasFactTypeDeletingRule
+		partial class ModelHasFactTypeDeletingRule
 		{
 			public ModelHasFactTypeDeletingRule()
 			{
@@ -169,19 +168,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class FactTypeChangeRule
-		{
-			public FactTypeChangeRule()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class OIALModel
-	{
-		private partial class ModelHasSetConstraintAddRule
+		partial class ModelHasSetConstraintAddRule
 		{
 			public ModelHasSetConstraintAddRule()
 			{
@@ -189,9 +178,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ModelHasSetConstraintChangeRule
+		partial class ModelHasSetConstraintChangeRule
 		{
 			public ModelHasSetConstraintChangeRule()
 			{
@@ -199,9 +188,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ModelHasSetConstraintDeletingRule
+		partial class ModelHasSetConstraintDeletingRule
 		{
 			public ModelHasSetConstraintDeletingRule()
 			{
@@ -209,9 +198,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ConstraintRoleSequenceHasRoleAddRule
+		partial class ConstraintRoleSequenceHasRoleAddRule
 		{
 			public ConstraintRoleSequenceHasRoleAddRule()
 			{
@@ -219,9 +208,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class ConstraintRoleSequenceHasRoleDeletingRule
+		partial class ConstraintRoleSequenceHasRoleDeletingRule
 		{
 			public ConstraintRoleSequenceHasRoleDeletingRule()
 			{
@@ -229,9 +218,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class UniquenessConstraintChangeRule
+		partial class UniquenessConstraintChangeRule
 		{
 			public UniquenessConstraintChangeRule()
 			{
@@ -239,9 +228,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class MandatoryConstraintChangeRule
+		partial class MandatoryConstraintChangeRule
 		{
 			public MandatoryConstraintChangeRule()
 			{
@@ -249,9 +238,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class RoleBaseChangeRule
+		partial class RoleBaseChangeRule
 		{
 			public RoleBaseChangeRule()
 			{
@@ -259,11 +248,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class OIALModelHasConceptTypeAddRule
+			partial class OIALModelHasConceptTypeAddRule
 			{
 				public OIALModelHasConceptTypeAddRule()
 				{
@@ -272,11 +261,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class OIALModelHasConceptTypeDeleteRule
+			partial class OIALModelHasConceptTypeDeleteRule
 			{
 				public OIALModelHasConceptTypeDeleteRule()
 				{
@@ -285,11 +274,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class ConceptTypeAbsorbedConceptTypeAddRule
+			partial class ConceptTypeAbsorbedConceptTypeAddRule
 			{
 				public ConceptTypeAbsorbedConceptTypeAddRule()
 				{
@@ -298,11 +287,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	public partial class OIALModel
+	partial class OIALModel
 	{
-		private partial class CheckConceptTypeParentExclusiveMandatory
+		partial class CheckConceptTypeParentExclusiveMandatory
 		{
-			private partial class ConceptTypeAbsorbedConceptTypeDeleteRule
+			partial class ConceptTypeAbsorbedConceptTypeDeleteRule
 			{
 				public ConceptTypeAbsorbedConceptTypeDeleteRule()
 				{

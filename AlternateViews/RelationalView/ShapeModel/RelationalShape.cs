@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.OIALModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -36,94 +37,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	{		
 		#region Validation Rules
 		/// <summary>
-		/// Overrides the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> for delayed validation.
-		/// </summary>
-		[RuleOn(typeof(Table))]
-		private sealed partial class DelayedFixUpDiagram : AddRule
-		{
-			/// <summary>
-			/// Holds a instance of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram"/>.
-			/// </summary>
-			private static readonly FixUpDiagram FixUpDiagram = new FixUpDiagram();
-			/// <summary>
-			/// Notifies the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram"/> that an
-			/// element has been added after a call to <see cref="M:Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElement"/>.
-			/// </summary>
-			/// <param name="e">ElementAddedEventArgs</param>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ModelElement childElement = e.ModelElement;
-				if (childElement is Table)
-				{
-					ORMCoreDomainModel.DelayValidateElement(childElement,
-						delegate(ModelElement target)
-						{
-							FixUpDiagram.ElementAdded(e);
-						}
-					);
-				}
-			}
-		}
-		/// <summary>
-		/// Overrides the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> for delayed validation.
-		/// </summary>
-		[RuleOn(typeof(TableHasColumn))]
-		private sealed partial class DelayedCompartmentItemAddRule : AddRule
-		{
-			/// <summary>
-			/// Holds a instance of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/>.
-			/// </summary>
-			private static readonly CompartmentItemAddRule CompartmentItemAddRule = new CompartmentItemAddRule();
-			/// <summary>
-			/// Notifies the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> that an
-			/// element has been added after a call to <see cref="M:Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElement"/>.
-			/// </summary>
-			/// <param name="e">ElementAddedEventArgs</param>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ModelElement childElement = e.ModelElement;
-				TableHasColumn tableColumn = childElement as TableHasColumn;
-				if (tableColumn != null)
-				{
-					ORMCoreDomainModel.DelayValidateElement(childElement,
-						delegate(ModelElement target)
-						{
-							CompartmentItemAddRule.ElementAdded(e);
-						}
-					);
-				}
-			}
-		}
-		/// <summary>
-		/// Overrides the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/> for delayed validation.
-		/// </summary>
-		[RuleOn(typeof(TableReferencesTable))]
-		private sealed partial class DelayedForeignKeyItemAddRule : AddRule
-		{
-			/// <summary>
-			/// Holds a instance of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule"/>.
-			/// </summary>
-			private static readonly FixUpDiagram FixUpDiagram = new FixUpDiagram();
-			/// <summary>
-			/// Notifies the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram"/> that an
-			/// element has been added after a call to <see cref="M:Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElement"/>.
-			/// </summary>
-			/// <param name="e">ElementAddedEventArgs</param>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				TableReferencesTable tableRef = e.ModelElement as TableReferencesTable;
-				if (tableRef != null)
-				{
-					ORMCoreDomainModel.DelayValidateElement(tableRef,
-						delegate(ModelElement target)
-						{
-							FixUpDiagram.ElementAdded(e);
-						}
-					);
-				}
-			}
-		}
-		/// <summary>
 		/// Generates the tables when the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/> has been added to the model.
 		/// </summary>
 		[RuleOn(typeof(RelationalDiagram))] // AddRule
@@ -131,19 +44,15 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				RelationalDiagram relDiagram = e.ModelElement as RelationalDiagram;
-				if (relDiagram != null)
+				ORMCoreDomainModel.DelayValidateElement(e.ModelElement, DelayGenerateDiagramTables);
+			}
+			private static void DelayGenerateDiagramTables(ModelElement element)
+			{
+				RelationalDiagram relDiagram = (RelationalDiagram)element;
+				RelationalModel relModel = relDiagram.ModelElement as RelationalModel;
+				if (relModel != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(relDiagram,
-						delegate(ModelElement target)
-						{
-							RelationalModel relModel = relDiagram.ModelElement as RelationalModel;
-							if (relModel != null)
-							{
-								relModel.GenerateTables(relModel.OIALModel);
-							}
-						}
-					);
+					relModel.GenerateTables(relModel.OIALModel);
 				}
 			}
 		}
@@ -170,7 +79,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			/// to <see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/> after a delay.
 			/// </summary>
 			/// <param name="element"><see cref="T:Neumont.Tools.ORM.OIALModel.OIALModel"/>.</param>
-			private void AddRelationalModel(ModelElement element)
+			private static void AddRelationalModel(ModelElement element)
 			{
 				OIALModel.OIALModel oialModel = element as OIALModel.OIALModel;
 				if (oialModel != null && RelationalModelHasOIALModel.GetRelationalModel(oialModel) == null)
@@ -189,11 +98,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		private sealed partial class DelayedConceptTypeAddedRule : AddRule
 		{
 			/// <summary>
-			/// Denotes whether the <see cref="E:Neumont.Tools.ORM.OIALModel.OIALModel.OIALRegenerating"/> event has
-			/// been subscribed to.
-			/// </summary>
-			private bool myRegisteredRegeneratingHandler;
-			/// <summary>
 			/// Delay validates the call to re-generate all the tables in the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel"/>.
 			/// </summary>
 			/// <param name="e">ElementAddedEventArgs</param>
@@ -202,7 +106,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				ModelElement childElement = e.ModelElement;
 				if (childElement is OIALModelHasConceptType)
 				{
-					ORMCoreDomainModel.DelayValidateElement(childElement, AddTables);
+					ORMCoreDomainModel.DelayValidateElement(childElement, DelayedAddTables);
 				}
 			}
 			/// <summary>
@@ -210,7 +114,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			/// <see cref="RelationalModel"/>.
 			/// </summary>
 			/// <param name="element">ConceptType</param>
-			private void AddTables(ModelElement element)
+			private static void DelayedAddTables(ModelElement element)
 			{
 				OIALModelHasConceptType link = element as OIALModelHasConceptType;
 				OIALModel.OIALModel oialModel = link.Model;
@@ -220,42 +124,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					relationalModel = new RelationalModel(oialModel.Store);
 					relationalModel.OIALModel = oialModel;
-				}
-				if (!myRegisteredRegeneratingHandler)
-				{
-					oialModel.OIALRegenerating += delegate(object sender, OIALRegenerationEventArgs e)
-					{
-						Transaction transaction = e.Transaction.TopLevelTransaction;
-						Dictionary<object, object> contextInfo = transaction.Context.ContextInfo;
-						object positionDictionaryObject;
-						Dictionary<ObjectType, PointD> positionDictionary;
-						if (!contextInfo.TryGetValue(TablePositionDictionaryKey, out positionDictionaryObject) || (positionDictionary = positionDictionaryObject as Dictionary<ObjectType, PointD>) == null)
-						{
-							contextInfo[TablePositionDictionaryKey] = positionDictionary = new Dictionary<ObjectType, PointD>();
-						}
-						foreach (Table table in relationalModel.TableCollection)
-						{
-							LinkedElementCollection<PresentationElement> tableShapes = PresentationViewsSubject.GetPresentation(table);
-							int tableShapesCount = tableShapes.Count;
-							ConceptType conceptType = table.ConceptType;
-							if (conceptType == null)
-							{
-								continue;
-							}
-							if (tableShapesCount > 0)
-							{
-								// If the object type has been deleted we may not have deleted the concept type yet.
-								ObjectType objectType = conceptType.ObjectType;
-								if (objectType != null)
-								{
-									positionDictionary.Add(objectType, ((NodeShape)tableShapes[0]).Location);
-									Debug.Assert(tableShapesCount == 1);
-								}
-							}
-						}
-
-					};
-					myRegisteredRegeneratingHandler = true;
 				}
 				LinkedElementCollection<PresentationElement> presentationElement = PresentationViewsSubject.GetPresentation(relationalModel);
 				if (presentationElement.Count != 0 && ++ConceptTypeCount == oialModel.ConceptTypeCollection.Count)
@@ -269,10 +137,55 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// A key that references a dictionary of table positions in the current transaction context.
 		/// </summary>
 		public static readonly object TablePositionDictionaryKey = new object();
+		[RuleOn(typeof(OIALModel.OIALModel))]
+		private sealed partial class OIALModelRegenerating : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == Neumont.Tools.ORM.OIALModel.OIALModel.RegeneratingDomainPropertyId && (bool)e.NewValue)
+				{
+					OIALModel.OIALModel oialModel = (OIALModel.OIALModel)e.ModelElement;
+					RelationalModel relationalModel = RelationalModelHasOIALModel.GetRelationalModel(oialModel);
+					// Create a new relational model if there is no RelationalModel currently associated with the OIALModel.
+					if (relationalModel == null)
+					{
+						return;
+					}
+					Transaction transaction = oialModel.Store.TransactionManager.CurrentTransaction.TopLevelTransaction;
+					Dictionary<object, object> contextInfo = transaction.Context.ContextInfo;
+					object positionDictionaryObject;
+					Dictionary<ObjectType, PointD> positionDictionary;
+					if (!contextInfo.TryGetValue(TablePositionDictionaryKey, out positionDictionaryObject) || (positionDictionary = positionDictionaryObject as Dictionary<ObjectType, PointD>) == null)
+					{
+						contextInfo[TablePositionDictionaryKey] = positionDictionary = new Dictionary<ObjectType, PointD>();
+					}
+					foreach (Table table in relationalModel.TableCollection)
+					{
+						LinkedElementCollection<PresentationElement> tableShapes = PresentationViewsSubject.GetPresentation(table);
+						int tableShapesCount = tableShapes.Count;
+						ConceptType conceptType = table.ConceptType;
+						if (conceptType == null)
+						{
+							continue;
+						}
+						if (tableShapesCount > 0)
+						{
+							// If the object type has been deleted we may not have deleted the concept type yet.
+							ObjectType objectType = conceptType.ObjectType;
+							if (objectType != null)
+							{
+								positionDictionary.Add(objectType, ((NodeShape)tableShapes[0]).Location);
+								Debug.Assert(tableShapesCount == 1);
+							}
+						}
+					}
+				}
+			}
+		}
 		/// <summary>
 		/// Handles the storage of table positions.
 		/// </summary>
-		[RuleOn(typeof(TableShape))] // AddRule
+		[RuleOn(typeof(TableShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority + 1)] // AddRule
 		private sealed partial class TableShapeAddRule : AddRule
 		{
 			/// <summary>
@@ -284,7 +197,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				ModelElement modelElement = e.ModelElement;
 				if (modelElement is TableShape)
 				{
-					ORMCoreDomainModel.DelayValidateElement(modelElement, ProcessTableShape);
+					ProcessTableShape(modelElement);
 				}
 			}
 			/// <summary>
@@ -292,7 +205,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			/// transaction context.
 			/// </summary>
 			/// <param name="modelElement">The <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> to be validated.</param>
-			private void ProcessTableShape(ModelElement modelElement)
+			private static void ProcessTableShape(ModelElement modelElement)
 			{
 				TableShape tableShape = modelElement as TableShape;
 				if (tableShape != null)
@@ -1075,7 +988,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// Disallows changing the name of the Relational Diagram
 		/// </summary>
 		[RuleOn(typeof(RelationalDiagram))]
-		private sealed class NameChangeRule : ChangeRule
+		private sealed partial class NameChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
@@ -1094,5 +1007,30 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				}
 			}
 		}
+	}
+	internal partial class RelationalShapeDomainModel : IORMModelEventSubscriber
+	{
+		#region IORMModelEventSubscriber Implementation
+		/// <summary>
+		/// Hack implementation to turn on the FixupDiagram rules before the model loads.
+		/// Normally this would be done with a coordinated fixup listener. However, we
+		/// have no control over the DSL-generated FixupDiagram rule without jumping through
+		/// a lot of hoops, so we do it here, which fires after the rules are created and
+		/// before the model loads.
+		/// </summary>
+		void IORMModelEventSubscriber.ManagePreLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			if (action == EventHandlerAction.Add)
+			{
+				Store.RuleManager.EnableRule(typeof(FixUpDiagram));
+			}
+		}
+		void IORMModelEventSubscriber.ManagePostLoadModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+		}
+		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
+		{
+		}
+		#endregion // IORMModelEventSubscriber Implementation
 	}
 }

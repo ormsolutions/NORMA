@@ -23,7 +23,6 @@
 		<arg:Rule class="OIALModel.ObjectTypePlaysRoleDeletingRule"/>
 		<arg:Rule class="OIALModel.ModelHasFactTypeAddRule"/>
 		<arg:Rule class="OIALModel.ModelHasFactTypeDeletingRule"/>
-		<arg:Rule class="OIALModel.FactTypeChangeRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintAddRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintDeletingRule"/>

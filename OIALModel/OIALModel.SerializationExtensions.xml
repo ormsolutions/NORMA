@@ -31,6 +31,7 @@
 	<!-- OIALModel -->
 	<se:Element Class="OIALModel" Name="Model" Override="false" SortChildElements="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Regenerating" WriteStyle="NotWritten"/>
 		<se:Link Name="ORMModel" RelationshipName="OIALModelHasORMModel" RoleName="ORMModel"/>
 		<se:Container Name="InformationTypeFormats" WriteStyle="NotWritten">
 			<se:Embed RelationshipName="OIALHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
@@ -45,6 +46,7 @@
 	<!-- Non-production form of Model element. We need the less explicit form for loading existing models. -->
 	<!--<se:Element Class="OIALModel" Name="Model" Override="false" SortChildElements="true">
 		<se:Attribute ID="Name"/>
+		<se:Attribute ID="Regenerating" WriteStyle="NotWritten"/>
 		<se:Link Name="ORMModel" RelationshipName="OIALModelHasORMModel" RoleName="ORMModel"/>
 		<se:Container Name="InformationTypeFormats">
 			<se:Embed RelationshipName="OIALHasInformationTypeFormat" RoleName="InformationTypeFormat"/>

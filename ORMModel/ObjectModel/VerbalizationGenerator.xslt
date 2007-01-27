@@ -21,7 +21,7 @@
 	exclude-result-prefixes="cvg">
 	
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
-	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:preserve-space elements="cvg:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 <xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
