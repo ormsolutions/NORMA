@@ -117,34 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="diffProgram" xml:space="preserve">
-    <value>C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\Bin\WinDiff.exe</value>
-    <comment>program used to compare two files. Passes in the two files as parameters.</comment>
-  </data>
   <data name="FailReportMessageText" xml:space="preserve">
-    <value>Embedded Report File {0}.{1}.Report.xml Not Found. </value>
-  </data>
-  <data name="MissingReportBaseline" xml:space="preserve">
-    <value>failReportMissingBaseline</value>
-  </data>
-  <data name="projectPath" xml:space="preserve">
-    <value>C:\ORM2\TestSuites</value>
-    <comment>the base path to the project</comment>
-  </data>
-  <data name="ReportDiffgram" xml:space="preserve">
-    <value>failReportDiffgram</value>
-  </data>
-  <data name="solution" xml:space="preserve">
-    <value>C:\ORM2\TestSuites\TestSample\TestSample.sln</value>
-    <comment>The test solution</comment>
-  </data>
-  <data name="testEnv" xml:space="preserve">
-    <value>VisualStudio.DTE.8.0</value>
-  </data>
-  <data name="testEnvMonikerDisplayNameStart" xml:space="preserve">
-    <value>!VisualStudio.DTE.8.0:</value>
-  </data>
-  <data name="TestPassed" xml:space="preserve">
-    <value>pass</value>
+    <value>Embedded report file '{0}.{1}.Report.xml' not found.</value>
   </data>
 </root>

@@ -61,83 +61,11 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\Bin\WinDiff.exe.
-        /// </summary>
-        internal static string diffProgram {
-            get {
-                return ResourceManager.GetString("diffProgram", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Embedded Report File {0}.{1}.Report.xml Not Found. .
+        ///   Looks up a localized string similar to Embedded report file &apos;{0}.{1}.Report.xml&apos; not found..
         /// </summary>
         internal static string FailReportMessageText {
             get {
                 return ResourceManager.GetString("FailReportMessageText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to failReportMissingBaseline.
-        /// </summary>
-        internal static string MissingReportBaseline {
-            get {
-                return ResourceManager.GetString("MissingReportBaseline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to C:\ORM2\TestSuites.
-        /// </summary>
-        internal static string projectPath {
-            get {
-                return ResourceManager.GetString("projectPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to failReportDiffgram.
-        /// </summary>
-        internal static string ReportDiffgram {
-            get {
-                return ResourceManager.GetString("ReportDiffgram", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to C:\ORM2\TestSuites\TestSample\TestSample.sln.
-        /// </summary>
-        internal static string solution {
-            get {
-                return ResourceManager.GetString("solution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to VisualStudio.DTE.8.0.
-        /// </summary>
-        internal static string testEnv {
-            get {
-                return ResourceManager.GetString("testEnv", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !VisualStudio.DTE.8.0:.
-        /// </summary>
-        internal static string testEnvMonikerDisplayNameStart {
-            get {
-                return ResourceManager.GetString("testEnvMonikerDisplayNameStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pass.
-        /// </summary>
-        internal static string TestPassed {
-            get {
-                return ResourceManager.GetString("TestPassed", resourceCulture);
             }
         }
     }

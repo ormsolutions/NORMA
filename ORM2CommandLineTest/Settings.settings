@@ -2,41 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Neumont.Tools.ORM.SDK.TestReportViewer" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="diffProgram" Type="System.String" Scope="Application">
+    <Setting Name="DiffProgram" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\Bin\WinDiff.exe</Value>
     </Setting>
-    <Setting Name="FailReportMessageText" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Embedded Report File {0}.{1}.Report.xml Not Found. </Value>
+    <Setting Name="DllMapping" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MissingReportBaseline" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">failReportMissingBaseline</Value>
-    </Setting>
-    <Setting Name="projectPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\ORM2\TestSuites</Value>
-    </Setting>
-    <Setting Name="ReportDiffgram" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">failReportDiffgram</Value>
-    </Setting>
-    <Setting Name="solution" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\ORM2\TestSuites\TestSample\TestSample.sln</Value>
-    </Setting>
-    <Setting Name="testEnv" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">VisualStudio.DTE.8.0</Value>
-    </Setting>
-    <Setting Name="testEnvMonikerDisplayNameStart" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">!VisualStudio.DTE.8.0:</Value>
-    </Setting>
-    <Setting Name="TestPassed" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">pass</Value>
-    </Setting>
-    <Setting Name="SettingLocation" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\ORM2\ORM2CommandLineTest\Settings.settings</Value>
-    </Setting>
-    <Setting Name="DllMapping" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">;NotA\Real.dll|C:\temp\fake.sln;TestSample\TestSample.dll|C:\ORM2\TestSuites\TestSample\TestSample.sln;TestSample\Extra Text\Default.dll|C:\Orm2\DefaultSolution.sln;TestSample\TestSample.dll|C:\ORM2\ORM2CommandLineTest\ORM2CommandLineTest.sln;</Value>
-    </Setting>
-    <Setting Name="AppConfigLocation" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\ORM2\ORM2CommandLineTest\App.config</Value>
+    <Setting Name="VisualStudioVersion" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">8.0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -32,8 +32,9 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 	{
 		#region private variables
 		private string[] args;
-		public const string SchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuite";
-		public const string ReportSchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuiteReport";
+		private const string MissingReportBaseline = "failReportMissingBaseline";
+		private const string ReportDiffgram = "failReportDiffgram";
+		private const string TestPassed = "pass";
 		private string myBaseDirectory;
 		IList<ReportSuite> myReportSuites;
 		private TestInfo myTestInfo;
@@ -323,7 +324,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			FileInfo reportFileInfo = new FileInfo(reportFile);
 			if (reportFileInfo.Exists)
 			{
-				myBaseDirectory = reportFileInfo.DirectoryName;
+				myBaseDirectory = reportFileInfo.DirectoryName + "\\";
 				this.myReportSuites = ReportSuite.LoadReportSuitesFile(reportFile);
 				SetTreeNodes(myReportSuites);
 			}
@@ -348,14 +349,14 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 
 					ReportAssembly reportAssembly = GetReportAssembly(myTestInfo);
 					string nodeText = e.Node.Text;
-					if (result == Settings.Default.TestPassed)
+					if (result == TestPassed)
 					{
 					}
-					else if (result == Settings.Default.MissingReportBaseline)
+					else if (result == MissingReportBaseline)
 					{
 						tbLeft.Text = FindMissingReport(reportAssembly, myTestInfo);
 					}
-					else if (result == Settings.Default.ReportDiffgram)
+					else if (result == ReportDiffgram)
 					{
 						tbLeft.Text = GetExpectedText(myTestInfo, reportAssembly, nodeText);
 
@@ -388,9 +389,9 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 					}
 					ReportAssembly reportAssembly = GetReportAssembly(myTestInfo);
 					//get the expected report
-					if (myTestInfo.Result == Settings.Default.MissingReportBaseline)
+					if (myTestInfo.Result == MissingReportBaseline)
 					{
-						tbLeft.Text = string.Format(Settings.Default.FailReportMessageText, myTestInfo.TestClassName, myTestInfo.TestName);
+						tbLeft.Text = string.Format(ResourceStrings.FailReportMessageText, myTestInfo.TestClassName, myTestInfo.TestName);
 					}
 					else if (myTestInfo.Result == "pass")
 					{
@@ -555,13 +556,13 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			IList<TreeNode> retval = new List<TreeNode>();
 			string result = testInfo.Result;
 
-			if (result == Settings.Default.MissingReportBaseline)
+			if (result == MissingReportBaseline)
 			{
 				TreeNode reportNode = new TreeNode("Report.xml");
 				reportNode.Name = "missingBaseline";
 				retval.Add(reportNode);
 			}
-			else if (result == Settings.Default.ReportDiffgram)
+			else if (result == ReportDiffgram)
 			{
 				ReportAssembly reportAssembly = GetReportAssembly(testInfo);
 
@@ -657,7 +658,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 							writerSettings.IndentChars = "\t";
 							StringReader innerreader = new StringReader(test.Content);
 
-							if (result == "failReportDiffgram")
+							if (result == ReportDiffgram)
 							{
 								XmlPatch patcher = new XmlPatch();
 								using (Stream stream = assembly.GetManifestResourceStream(baseResourceName + ".Report.xml"))
@@ -926,7 +927,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			ProcessStartInfo startInfo = proc.StartInfo;
 
 
-			string programToShellTo = Settings.Default.diffProgram;
+			string programToShellTo = Settings.Default.DiffProgram;
 			//@"C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\Bin\WinDiff.exe";
 			startInfo.FileName = programToShellTo;
 			startInfo.Arguments = string.Format(@"""{0}"" ""{1}""", baselineFile, resultFile);
@@ -952,191 +953,242 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			
 			string extension = currentNode.Text;
 			myTestInfo.Initialize(myReportSuites, currentNode.Parent);
-			string newText = ((Button)sender).Name.Contains("Left") ? tbLeft.Text : tbRight.Text;
+			string newText = ((object)sender == btnLeft) ? tbLeft.Text : tbRight.Text;
 			if (newText.Length < 2)
 			{
 				MessageBox.Show("Textbox cannot be empty.");
 				return;
 			}
 			
-			string tempPath = Path.GetTempFileName();
-			File.WriteAllText(tempPath, newText, Encoding.UTF8);
+			string assemblyLocation = myBaseDirectory + myTestInfo.AssemblyLocation;
+			string solution = LookupSolution(assemblyLocation);
 
-			string projectPath = Settings.Default.projectPath;   //@"C:\ORM2\TestSuites";
+			Project project = null;
+			string targetOuputFile = (new FileInfo(assemblyLocation)).Name;
+			string rootNamespace = "";
+			string projectDirectory = "";
+			DTE2 dte = null;
+			while (project == null)
+			{
+				if (solution.Length == 0 || !File.Exists(solution))
+				{
+					solution = MapAssemblyToSolution(assemblyLocation, solution, true);
+					if (solution.Length == 0)
+					{
+						return;
+					}
+				}
 
-			string testNameSpace = myTestInfo.TestNamespace;
+				dte = FindDTEInstance(solution);
+				if (dte == null)
+				{
+					dte = Activator.CreateInstance(Type.GetTypeFromProgID("VisualStudio.DTE." + Settings.Default.VisualStudioVersion)) as DTE2;
+					dte.MainWindow.Visible = true;
+					dte.Solution.Open(solution);
+				}
+				// Guid.Empty.ToString("B") creates 32 digits separated by hyphens, enclosed in brackets: 
+				//{00000000-0000-0000-0000-000000000000} 
+
+				if (!dte.Solution.IsOpen)
+				{
+					return;
+				}
+
+				// Find the appropriate project in the solution from the assembly path
+				foreach (Project testProject in dte.Solution.Projects)
+				{
+					Properties properties = testProject.Properties;
+					if (properties != null)
+					{
+						try
+						{
+							if (0 == string.Compare((string)properties.Item("OutputFileName").Value, targetOuputFile, StringComparison.OrdinalIgnoreCase))
+							{
+								rootNamespace = (string)properties.Item("RootNamespace").Value;
+								projectDirectory = (string)properties.Item("FullPath").Value;
+								project = testProject;
+								break;
+							}
+						}
+						catch (ArgumentException)
+						{
+							// Swallow it
+						}
+					}
+				}
+				if (project == null)
+				{
+					MapAssemblyToSolution(assemblyLocation, "", false);
+					solution = "";
+				}
+			}
+
+			string fileDirectory = myTestInfo.TestNamespace;
+			int rootNamespaceLength = rootNamespace.Length;
+			if (rootNamespaceLength != 0)
+			{
+				int directoryLength = fileDirectory.Length;
+				if (directoryLength == rootNamespaceLength)
+				{
+					fileDirectory = "";
+				}
+				else if (directoryLength > (rootNamespaceLength + 1) &&
+					fileDirectory[rootNamespaceLength] == '.' &&
+					fileDirectory.StartsWith(rootNamespace))
+				{
+					fileDirectory = fileDirectory.Substring(rootNamespaceLength + 1);
+				}
+			}
+			fileDirectory = fileDirectory.Replace('.', '\\');
 			string testClassName = myTestInfo.TestClassName;
 			string testName = myTestInfo.TestName;
 
 			string fileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}", testClassName, testName, extension);
-			string filepath = string.Format(CultureInfo.InvariantCulture, @"{0}\{1}", testNameSpace.Replace('.', '\\'), fileName);
+			string filePath = (fileDirectory.Length == 0) ?
+				string.Format(CultureInfo.InvariantCulture, @"{0}{1}", projectDirectory, fileName) :
+				string.Format(CultureInfo.InvariantCulture, @"{0}{1}\{2}", projectDirectory, fileDirectory, fileName);
 
-			filepath = projectPath + '\\' + filepath;  // TODO: add ability to open with a relative path, eliminating this line.
-
-			string assemblyLocation = myTestInfo.AssemblyLocation;
-			string solution = LookupSolution(assemblyLocation);
-
-			#region missing solution
-			if (solution == "")
+			bool documentUpdated = false;
+			Document doc = null;
+			if (dte.ItemOperations.IsFileOpen(filePath, Guid.Empty.ToString("B")))
 			{
-				//request solution for the given assembly from the user
-				solutionFileDialog.Title = "Solution file for " + assemblyLocation;
-				if (solutionFileDialog.ShowDialog() == DialogResult.OK)
+				doc = dte.Documents.Item(filePath);
+				TextDocument textDoc = doc.Object("TextDocument") as TextDocument;
+				if (textDoc != null)
 				{
-					string oldmap = Settings.Default.DllMapping;
-
-					//determine if the AssemblyLocation is present in the string in the config file.
-					//If it is, update its matching value. If it is not, aapend it.
-					string map = Settings.Default.DllMapping;
-					string newmap;
-					if (map.Contains(';' + assemblyLocation + '|'))
-					{
-						newmap = map.Replace(';' + assemblyLocation + '|', ';' + assemblyLocation + '|' + solutionFileDialog.FileName + ';');
-					}
-					else
-					{
-
-						newmap = oldmap + assemblyLocation + '|' + solutionFileDialog.FileName + ';';
-					}
-					string settingsLocation = Settings.Default.SettingLocation; //C:\ORM2\ORM2CommandLineTest\Settings.settings
-					XmlDocument settingsdoc = new XmlDocument();
-					settingsdoc.Load(settingsLocation);
-					XPathNavigator nav = settingsdoc.CreateNavigator();
-					XmlNamespaceManager namespaceManager = new XmlNamespaceManager(new NameTable());
-					namespaceManager.AddNamespace("p", "http://schemas.microsoft.com/VisualStudio/2004/01/settings");
-					XPathNavigator valueNavigator = nav.SelectSingleNode("/p:SettingsFile/p:Settings/p:Setting[@Name='DllMapping']/p:Value", namespaceManager);
-					if (valueNavigator != null)
-					{
-						valueNavigator.InnerXml = newmap;
-						settingsdoc.Save(settingsLocation);
-					}
-
-					string appLocation = Settings.Default.AppConfigLocation;   // C:\ORM2\ORM2CommandLineTest\App.config
-					XmlDocument appdoc = new XmlDocument();
-					appdoc.Load(appLocation);
-					XPathNavigator appnav = appdoc.CreateNavigator();
-					//XmlNamespaceManager namespaceManager = new XmlNamespaceManager(new NameTable());
-					//namespaceManager.AddNamespace("a", "namespace")
-					XPathNavigator appValueNav = appnav.SelectSingleNode("/configuration/applicationSettings/Neumont.Tools.ORM.SDK.TestReportViewer.Settings/setting[@name='DllMapping']/value");
-					if (appValueNav != null)
-					{
-						appValueNav.InnerXml = newmap;
-						appdoc.Save(appLocation);
-					}
+					textDoc.StartPoint.CreateEditPoint().ReplaceText(textDoc.EndPoint, newText, 0);
+					documentUpdated = true;
 				}
 			}
-			#endregion //missing solution
-			
-			DTE2 dte = findDTEInstance(solution);
-			if (dte == null)
-			{
-				dte = Activator.CreateInstance(Type.GetTypeFromProgID(Settings.Default.testEnv)) as DTE2;
-				dte.MainWindow.Visible = true;
-				dte.Solution.Open(solution);
-			}
-			// Guid.Empty.ToString("B") creates 32 digits separated by hyphens, enclosed in brackets: 
-			//{00000000-0000-0000-0000-000000000000} 
 
-			Project p = null;
-			Document doc = null;
-			//C:\ORM2\TestSuites\TestSample\FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1a.Compare.orm
-
-			if (dte.ItemOperations.IsFileOpen(filepath, Guid.Empty.ToString("B")))
+			if (ProjectContains(project.ProjectItems, fileName))
 			{
-				doc = dte.Documents.Item(filepath);
-				ProjectItem projItem = doc.ProjectItem;
-				ProjectItems projItems = projItem.ProjectItems;
-				if (projItems == null)
+				// the project does contain the item.
+				if (documentUpdated)
 				{
-					p = dte.Solution.Projects.Item(1);
+					doc.Save("");
+				}
+				else if (doc != null)
+				{
+					doc.Close(vsSaveChanges.vsSaveChangesNo);
 				}
 				else
 				{
-					p = doc.ProjectItem.ProjectItems.ContainingProject;
+					File.WriteAllText(filePath, newText, Encoding.UTF8);
 				}
-				doc.Close(vsSaveChanges.vsSaveChangesNo);
 			}
 			else
 			{
-				p = dte.Solution.Projects.Item(1);
-			}
-			Debug.Assert(p != null, "Unable to load properties for project item.");
-			foreach (EnvDTE.Property prop in p.Properties)
-			{
-				if (prop.Name == "OutputFileName")
+				if (doc != null)
 				{
-					if ((string)prop.Value != "TestSample.dll")
-					{
-						Debug.Assert(false, "Property OutputFileName is not TestSample.dll");
-					}
+					doc.Close(documentUpdated ? vsSaveChanges.vsSaveChangesYes : vsSaveChanges.vsSaveChangesNo);
 				}
-
-			}
-
-			if (ProjectContains(p.ProjectItems, fileName))
-			{
-				// the project does contain the item. 
-				dte.ItemOperations.OpenFile(tempPath, Guid.Empty.ToString("B"));
-				dte.ActiveDocument.Save(filepath);
-
-			}
-			else
-			{
 				//the file is not listed as part of the project or is not in the expacted namespace and must be added.
-
-				AddFileToProject(p.ProjectItems, filepath, tempPath, testNameSpace);
+				AddFileToProject(project.ProjectItems, filePath, fileDirectory, newText);
 			}
 
 			//clear out the correct tree node, to prevent this method running again against this same node.
 			TreeNodeFixup(currentNode);
-			MessageBox.Show("Updated. (results will not show until tests are run again.)");
 			return;
 		}
 
 
 		#region replace baseline file helper methods
+		private string MapAssemblyToSolution(string assemblyLocation, string solution, bool interactive)
+		{
+			if (interactive && solution.Length == 0 || !File.Exists(solution))
+			{
+				//request solution for the given assembly from the user
+				solutionFileDialog.Title = "Solution file for " + assemblyLocation;
+				if (solutionFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					solution = solutionFileDialog.FileName;
+				}
+				else
+				{
+					solution = "";
+				}
+			}
+			string oldMap = Settings.Default.DllMapping;
+			string newMap = null;
+			string lookupKey = ';' + assemblyLocation + '|';
+			int assemblyIndex = oldMap.IndexOf(lookupKey);
+			if (assemblyIndex == -1)
+			{
+				if (!string.IsNullOrEmpty(solution))
+				{
+					if (string.IsNullOrEmpty(oldMap))
+					{
+						newMap = lookupKey + solution + ';';
+					}
+					else
+					{
+						newMap = oldMap + assemblyLocation + "|" + solution + ';';
+					}
+				}
+			}
+			else
+			{
+				int trailingSemiColon = oldMap.IndexOf(';', assemblyIndex + lookupKey.Length);
+				if (trailingSemiColon == -1)
+				{
+					// Shouldn't happen, abandon anything after this point
+					newMap = oldMap.Substring(0, assemblyIndex + lookupKey.Length) + solution + ';';
+				}
+				else
+				{
+					newMap = oldMap.Substring(0, assemblyIndex + lookupKey.Length) + solution + oldMap.Substring(trailingSemiColon);
+				}
+			}
+			if (newMap != null)
+			{
+				Settings.Default.DllMapping = newMap;
+				Settings.Default.Save();
+			}
+			return solution;
+		}
 		#region solution lookup functions
 		private static string LookupSolution(string assemblyLocation)
 		{
 			string map = Settings.Default.DllMapping;
 			string solution = map.Substring(map.IndexOf(';' + assemblyLocation + '|')+1);
+			if (solution.Length == 0)
+			{
+				return "";
+			}
 			solution = solution.Remove(solution.IndexOf(';'));
 			return solution.Substring(solution.IndexOf('|') +1 );
 		}
 		#endregion //solution lookup function
-		private static bool AddFileToProject(ProjectItems items, string filepath, string source, string fileNamespace)
+		private static void AddFileToProject(ProjectItems items, string filePath, string subDirectories, string fileText)
 		{
 			//ProjectItem destination = items.Item(0);
-			string[] directory = fileNamespace.Split('.');
-			int depth = directory.Length;
-			// directory[0] will be the name of the project within the solution.
-			// therefore, 'count' will start at 1.
-			int count = 1;
-			//If the namespace does not specify a subdirectory, e.g. TestSample.NMinus1Tests,
-			//depth will be 1.
-			ProjectItem currentItem = null;
-			while (count <= depth)
+			string[] directories = subDirectories.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+			int depth = directories.Length;
+			for (int i = 0; i < depth && items != null; ++i)
 			{
-				if (count == depth)
-				{
-					Debug.Assert(currentItem != null, "Project item not found.");
-					currentItem.DTE.ItemOperations.OpenFile(source, Guid.Empty.ToString("B"));
-					currentItem.DTE.ActiveDocument.Save(filepath);
-					ProjectItem newItem = currentItem.ProjectItems.AddFromFile(filepath);
-					newItem.Properties.Item("BuildAction").Value = 3;   // 3 == VSLangProj.prjBuildAction.prjBuildActionEmbeddedResource
-					return true;
-				}
+				// This assumes the directory is there. If it is not, then
+				// the guidelines for creating test libraries were not followed
+				string directoryName = directories[i];
+				ProjectItems nextItems = null;
 				foreach (ProjectItem testItem in items)
 				{
-					if (directory[count] == testItem.Name)
+					if (testItem.Name == directoryName)
 					{
-						currentItem = testItem;
+						nextItems = testItem.ProjectItems;
 						break;
 					}
 				}
-				count++;
+				items = nextItems;
 			}
-			return false;
+			if (items != null)
+			{
+				File.WriteAllText(filePath, fileText, Encoding.UTF8);
+				ProjectItem newItem = items.AddFromFile(filePath);
+				Properties properties = newItem.Properties;
+				properties.Item("BuildAction").Value = 3;   // 3 == VSLangProj.prjBuildAction.prjBuildActionEmbeddedResource
+				properties.Item("CustomTool").Value = "";
+			}
 		}
 		private static bool ProjectContains(ProjectItems items, string fileName)
 		{
@@ -1146,7 +1198,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				{
 					return true;
 				}
-				if(ProjectContains(testItem.ProjectItems, fileName))
+				if (ProjectContains(testItem.ProjectItems, fileName))
 				{
 					return true;
 				}
@@ -1162,21 +1214,24 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 		private static extern int CreateBindCtx(
 			int reserved,
 			out IBindCtx pbc);
-		private DTE2 findDTEInstance(string fullName)
+		private DTE2 FindDTEInstance(string fullName)
 		{
 			foreach (DTE2 dte in EnumerateRunningDTEInstances())
 			{
-				Solution soln = dte.Solution;
-				if (soln.IsOpen)
+				if (dte.Mode != vsIDEMode.vsIDEModeDebug)
 				{
-					Debug.WriteLine(soln.FullName);
-					if (soln.FullName == fullName)
+					Solution soln = dte.Solution;
+					if (soln.IsOpen)
 					{
-						return dte;
+						Debug.WriteLine(soln.FullName);
+						if (soln.FullName == fullName)
+						{
+							return dte;
+						}
 					}
 				}
 			}
-			//not founhd, return null
+			//not found, return null
 			return null;
 		}
 		private static IEnumerable<DTE2> EnumerateRunningDTEInstances()
@@ -1189,6 +1244,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			rot.EnumRunning(out enumMoniker);
 			IMoniker[] moniker = new IMoniker[1];
 			int hrEnum = 0;
+			string targetMoniker = "!VisualStudio.DTE." + Settings.Default.VisualStudioVersion + ":";
 			for (; ; )
 			{
 				hrEnum = enumMoniker.Next(1, moniker, IntPtr.Zero);
@@ -1202,7 +1258,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 				if (displayName != null)
 				{
 
-					if (displayName.StartsWith(Settings.Default.testEnvMonikerDisplayNameStart))
+					if (displayName.StartsWith(targetMoniker))
 					{
 						object objDTE = null;
 						if (0 == rot.GetObject(moniker[0], out objDTE) &&
@@ -1445,22 +1501,21 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.openToolStripMenuItem.Text = "&Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// clearToolStripMenuItem
 			// 
 			this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-			this.clearToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+			this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.clearToolStripMenuItem.Text = "&Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
 			// 
 			// reportSuiteFileDialog
 			// 
-			this.reportSuiteFileDialog.FileName = "SampleSuites.Report.xml";
-			this.reportSuiteFileDialog.Filter = "Report File|*Report.xml|Xml Files|*.xml|All files|*.*";
-			this.reportSuiteFileDialog.InitialDirectory = "C:\\ORM2\\TestSuites";
+			this.reportSuiteFileDialog.DefaultExt = "Report.xml";
+			this.reportSuiteFileDialog.Filter = "Report File|*.Report.xml|Xml Files|*.xml|All files|*.*";
 			// 
 			// splitContainerOuter
 			// 
