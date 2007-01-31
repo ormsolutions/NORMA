@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="DMSchemaTypes" 
+                  elementFormDefault="qualified"
+                  xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      Data Model Types Definition
+      Copyright (c) Microsoft Corp. All rights reserved.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:import namespace="http://schemas.microsoft.com/ado/2006/04/codegeneration" schemaLocation="CodeGenerationSchema.xsd" />
+
+  <xs:element name="Schema" type="TSchema"/>
+  <xs:complexType name="TSchema">
+    <xs:sequence>
+      <xs:group ref="GSchemaStartElements" minOccurs="0" maxOccurs="1"/>
+      <xs:group ref="GSchemaBodyElements" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="Namespace" type="TQualifiedName" use="required" />
+    <xs:attribute name="Alias" type="TSimpleIdentifier" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:group name="GSchemaStartElements">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <!--<xs:element name="Using" type="TUsing" minOccurs="0" maxOccurs="unbounded" />-->
+    </xs:sequence>
+  </xs:group>
+
+  <xs:group name="GSchemaBodyElements">
+    <xs:choice>
+      <xs:element name="Association" type="TAssociation" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="ComplexType" type="TComplexType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Containment" type="TContainment" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="EntityType" type="TEntityType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="EnumerationType" type="TEnumerationType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:group>
+
+  <!-- EDM SimpleType instances for use by EDM Instance documents-->
+  <xs:simpleType name="EDMSimpleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Binary"/>
+      <xs:enumeration value="Boolean"/>
+      <xs:enumeration value="Byte"/>
+      <xs:enumeration value="DateTime"/>
+      <xs:enumeration value="Decimal"/>
+      <xs:enumeration value="Double"/>
+      <xs:enumeration value="Float"/>
+      <xs:enumeration value="Guid"/>
+      <xs:enumeration value="Int16"/>
+      <xs:enumeration value="Int32"/>
+      <xs:enumeration value="Int64"/>
+      <xs:enumeration value="String"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TMax">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="max"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Facets for Primitive types -->
+  <xs:simpleType name="TMaxLengthFacet">
+    <xs:union memberTypes="TMax xs:nonNegativeInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TIsFixedLengthFacet">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TKindFacet">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UTC"/>
+      <xs:enumeration value="Local"/>
+      <xs:enumeration value="Unspecified"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TIsPreserveSecondsFacet">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TPrecisionFacet">
+    <xs:restriction base="xs:nonNegativeInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TScaleFacet">
+    <xs:restriction base="xs:nonNegativeInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TIsUnicodeFacet">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TCollationFacet">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <!--
+        types at all levels
+    -->
+  <xs:complexType name="TDocumentation" mixed="true">
+    <xs:annotation>
+      <xs:documentation>The Documentation element is used to provide documentation of comments on the contents of the XML file.  It is valid under Schema, Type, Index and Relationship elements.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Summary" type="TText" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LongDescription" type="TText" minOccurs="0" maxOccurs="1" />
+      <xs:element name="SampleValue" type="TXmlOrText" minOccurs="0" maxOccurs="unbounded" />
+      <!-- <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" /> -->
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" namespace="##other" />
+  </xs:complexType>
+
+  <xs:complexType name="TText" mixed="true">
+    <xs:sequence>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" namespace="##other" />
+  </xs:complexType>
+
+  <xs:complexType name="TXmlOrText" mixed="true">
+    <xs:annotation>
+      <xs:documentation>This type allows pretty much any content</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="skip" namespace="##any" />
+  </xs:complexType>
+  <!-- 
+        types of the top level elements 
+    -->
+  <xs:complexType name="TUsing">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Namespace" type="TQualifiedName" use="required" />
+    <xs:attribute name="Alias" type="TSimpleIdentifier" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="TAssociation">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:element name="End" type="TAssociationEnd" minOccurs="2" maxOccurs="2"/>
+      <xs:element name="ReferentialConstraint" type="TConstraint" minOccurs="0" maxOccurs="1" />
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+    <!--<xs:attribute name="Identifying" type="xs:boolean" use="optional" default="false" />-->
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="TComplexType">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Property" type="TComplexTypeProperty" minOccurs="0" maxOccurs="unbounded" />
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="TDerivableTypeAttributes" />
+    <xs:attribute ref="cg:Access" use="optional" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="TContainment">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Parent" type="TContainmentParent" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Child" type="TContainmentChild" minOccurs="1" maxOccurs="1" />
+      <xs:element name="ReferentialConstraint" type="TConstraint" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="TSimpleIdentifier" use="required"/>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <xs:complexType name="TContainmentParent">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Type" type="TQualifiedName" use="required" />
+    <xs:attribute name="Role" type="TSimpleIdentifier" use="optional" />
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <xs:complexType name="TContainmentChild">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Type" type="TQualifiedName" use="required" />
+    <xs:attribute name="Role" type="TSimpleIdentifier" use="optional" />
+    <xs:attribute name="PluralRole" type="TSimpleIdentifier" use="optional" />
+    <xs:attribute name="Multiplicity" type="TMultiplicity" use="required"/>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <xs:complexType name="TConstraint">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="FromRole" type="TSimpleIdentifier" use="required" />
+    <xs:attribute name="ToRole" type="TSimpleIdentifier" use="required" />
+    <xs:attribute name="ToProperty" type="TKey" use="required" />
+    <xs:attribute name="FromProperty" type="TKey" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <xs:complexType name="TNavigationProperty">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+    <xs:attribute name="Relationship" type="TQualifiedName" use ="required" />
+    <xs:attribute name="ToRole" type ="TSimpleIdentifier" use="required" />
+    <xs:attribute name="FromRole" type ="TSimpleIdentifier" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="TEntityType">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:group ref="GEntityElements" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="TDerivableTypeAttributes" />
+    <xs:attribute name="Key" type="TKey" use="optional" />
+    <xs:attribute ref="cg:Access" use="optional" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+
+  <xs:group name="GEntityElements">
+    <xs:choice>
+      <xs:element name="Property" type="TEntityProperty"  minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="NavigationProperty" type="TNavigationProperty"  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="GEmptyElementExtensibility">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="TEnumerationType">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:element name="EnumerationMember" type="TEnumerationMember"  minOccurs="1" maxOccurs="unbounded"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="TTypeAttributes" />
+    <xs:attribute ref="cg:Access" use="optional" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <!-- 
+        base types  
+    -->
+  <xs:complexType name="TAssociationEnd">
+    <xs:sequence>
+      <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+      <xs:group ref="TOperations" minOccurs="0" maxOccurs="unbounded" />
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="Type" type="TQualifiedName" use="required" />
+    <xs:attribute name="Role" type="TSimpleIdentifier" use="optional" />
+    <xs:attribute name="PluralRole" type="TSimpleIdentifier" use="optional" />
+    <xs:attribute name="Multiplicity" type="TMultiplicity" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:group name="TOperations">
+    <xs:choice>
+      <xs:element name="OnDelete" type="TOnAction" maxOccurs="1" minOccurs="0" />
+      <xs:element name="OnCopy" type="TOnAction" maxOccurs="1" minOccurs="0" />
+      <xs:element name="OnSecure" type="TOnAction" maxOccurs="1" minOccurs="0" />
+      <xs:element name="OnLock" type="TOnAction" maxOccurs="1" minOccurs="0" />
+      <xs:element name="OnSerialize" type="TOnAction" maxOccurs="1" minOccurs="0" />
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="TOnAction">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Action" type="TAction" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="TEntityProperty">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="TCommonPropertyAttributes"/>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="TComplexTypeProperty">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="TCommonPropertyAttributes"/>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <xs:attributeGroup name="TCommonPropertyAttributes">
+    <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+    <xs:attribute name="Type" type="TPropertyType" use="required" />
+    <xs:attribute name="Nullable" type="xs:boolean" default="true" use="optional" />
+    <xs:attribute name="Default" type="xs:string" use="optional" />
+
+    <!-- Start Facets -->
+    <xs:attribute name="MaxLength" type="TMaxLengthFacet" use="optional" />
+    <xs:attribute name="FixedLength" type="TIsFixedLengthFacet" use="optional" />
+    <xs:attribute name="Precision" type="TPrecisionFacet" use="optional" />
+    <xs:attribute name="Scale" type="TScaleFacet" use="optional" />
+    <xs:attribute name="DateTimeKind" type="TKindFacet" use="optional" />
+    <xs:attribute name="Unicode" type="TIsUnicodeFacet" use="optional" />
+    <xs:attribute name="Collation" type="TCollationFacet" use="optional" />
+    <xs:attribute name="PreserveSeconds" type="TIsPreserveSecondsFacet" use="optional"/>
+    <!--End Facets -->
+    <xs:attribute ref="cg:Setter" use="optional"/>
+    <xs:attribute ref="cg:Getter" use="optional"/>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="TTypeAttributes">
+    <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+    <!-- not in wave 4 -->
+    <!--<xs:attribute name="FriendSchemas" type="TNameList" use="optional" />-->
+    <!--<xs:attribute name="Visibility" type="TVisibility" use="optional" />-->
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="TDerivableTypeAttributes">
+    <xs:attributeGroup ref="TTypeAttributes" />
+    <xs:attribute name="BaseType" type="TQualifiedName" use="optional" />
+    <!-- not in wave 4 -->
+    <!--<xs:attribute name="Sealed" type="TSealed" use="optional" default="false" />-->
+  </xs:attributeGroup>
+
+  <xs:complexType name="TEnumerationMember">
+    <xs:sequence>
+      <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+
+  <!-- 
+    general  (more or less) purpose simple types 
+    -->
+
+  <xs:simpleType name="TQualifiedName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TSimpleIdentifier">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TPropertyType">
+    <xs:union memberTypes="EDMSimpleType TQualifiedName">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:pattern value="[A-Za-z][_0-9A-Za-z]{0,}(\.[A-Za-z][_0-9A-Za-z]{0,}){0,}" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <!--<xs:simpleType name="TVisibility">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="AllSchemas" />
+            <xs:enumeration value="FriendSchemas" />
+        </xs:restriction>
+    </xs:simpleType>-->
+
+
+  <xs:simpleType name="TAction">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Cascade" />
+      <xs:enumeration value="Restrict" />
+      <xs:enumeration value="RemoveAssociation" />
+      <xs:enumeration value="CascadeToAssociationEntity" />
+      <xs:enumeration value="None" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TSealed">
+    <xs:union memberTypes="xs:boolean ">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="FriendSchemas" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="TMultiplicity">
+    <xs:union memberTypes="xs:positiveInteger ">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="*" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:pattern value="[0-9]{1,}\.\.(([1-9][0-9]{0,})|\*)" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="TNameList">
+    <xs:list itemType="TQualifiedName" />
+  </xs:simpleType>
+
+  <xs:simpleType name="TKey">
+    <xs:union memberTypes="TNameList TKeyTypes">
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="TKeyTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="(SYSTEMGENERATED)" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

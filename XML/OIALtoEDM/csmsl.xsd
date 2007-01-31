@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<!-- XSD for CS( CDM <-> Storage ) space mapping. -->
+<xs:schema xmlns:tns="urn:schemas-microsoft-com:windows:storage:mapping:CS" attributeFormDefault="unqualified" elementFormDefault="qualified" 
+           targetNamespace="urn:schemas-microsoft-com:windows:storage:mapping:CS" xmlns:csmsl="urn:schemas-microsoft-com:windows:storage:mapping:CS" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      Common Data Model Schema Definition Language.
+      Copyright (c) Microsoft Corp. All rights reserved.
+    </xs:documentation>
+  </xs:annotation>
+  
+  <!-- Root Level element for CS Mapping -->
+  <xs:element name="Mapping" type="csmsl:TMapping"/>
+
+  <!-- Type of Root level mapping elements-->
+  <xs:complexType name="TMapping">
+    <!-- Top level Mapping element can have Alias elements followed by 
+         EntityContainer Mapping element-->
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Alias" type="csmsl:TAlias"/>
+      <!-- we will allow multiple EntityContainerMappings to be mapped per MSL File.-->
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EntityContainerMapping" type="csmsl:TEntityContainerMapping"/>
+    </xs:sequence>
+    <!-- Space represents the space that the mapping occurs. For CS Mapping
+         it always has to be "C-S"-->
+    <xs:attribute ref="tns:Space" use="required" fixed="C-S" />
+    <xs:attribute ref="tns:ShouldDefaultUnspecifiedMaps" use="optional" />
+  </xs:complexType>
+
+  <!-- Type for Alias Element-->
+  <xs:complexType name="TAlias">
+    <xs:attribute ref="tns:Key" use="required" />
+    <xs:attribute ref="tns:Value" use="required" />
+  </xs:complexType>
+
+  <!-- Type for EntityContainerMapping Element-->
+  <xs:complexType name="TEntityContainerMapping">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element minOccurs="0" name="EntitySetMapping" type="csmsl:TEntitySetMapping"/>
+        <xs:element minOccurs="0" name="AssociationSetMapping" type="csmsl:TAssociationSetMapping"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute ref="tns:CdmEntityContainer" use="required" />
+    <xs:attribute ref="tns:StorageEntityContainer" use="required" />
+  </xs:complexType>
+
+  <!-- Type for EntitySet Mapping element-->
+  <xs:complexType name="TEntitySetMapping">
+    <xs:choice>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="EntityTypeMapping" type="csmsl:TEntityTypeMapping" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element name="TableMappingFragment" type="csmsl:TTableMappingFragment" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:choice>
+      <xs:group ref="csmsl:TPropertyGroup"/>
+    </xs:choice>
+    <xs:attribute ref="tns:Name" use="required" />
+    <xs:attribute ref="tns:TypeName" use="optional" />
+    <xs:attribute ref="tns:TableName" use="optional" />
+  </xs:complexType>
+
+  <!-- Type for AssociationSetMapping element-->
+  <xs:complexType name="TAssociationSetMapping">
+   <xs:choice maxOccurs="unbounded">
+        <xs:sequence>
+            <xs:element name="EndProperty" type="csmsl:TEndProperty" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="Condition" type="csmsl:TCondition" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+   </xs:choice>
+    <xs:attribute ref="tns:Name" use="required" />
+    <xs:attribute ref="tns:TypeName" use="required" />
+    <xs:attribute ref="tns:TableName" use="required" />
+  </xs:complexType>
+
+  <!-- Type for EntityTypeMapping element-->
+  <xs:complexType name="TEntityTypeMapping">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TableMappingFragment"  type="csmsl:TTableMappingFragment"/>
+    </xs:sequence>
+    <xs:attribute ref="tns:TypeName" use="required" />
+  </xs:complexType>
+
+  <!-- Type for TableMappingFragment Element-->
+  <xs:complexType name="TTableMappingFragment">
+    <xs:group ref="csmsl:TPropertyGroup" minOccurs="1" maxOccurs="1"/>
+    <xs:attribute ref="tns:TableName" use="required" />
+  </xs:complexType>
+
+  <!-- Grouping these elements so that they can be reused
+       These elements represent the property group
+       that can either directly reside unser EntitySet, EntityType
+       or TableMappingFragment-->
+  <xs:group name="TPropertyGroup">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element minOccurs="0" name="ComplexProperty" type="csmsl:TComplexProperty"/>
+        <xs:element minOccurs="0" name="ScalarProperty" type="csmsl:TScalarProperty"/>
+        <xs:element minOccurs="0" name="Condition" type="csmsl:TCondition"/>
+        <xs:element minOccurs="0" name="CollectionProperty" type="csmsl:TCollectionProperty"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- Type for Condition Element-->
+  <xs:complexType name="TCondition">
+    <xs:attribute ref="tns:Value" use="optional" />
+    <xs:attribute ref="tns:Name" use="optional" />
+    <xs:attribute ref="tns:ColumnName" use="optional" />
+    <xs:attribute ref="tns:IsNull" use="optional" />
+  </xs:complexType>
+
+  <!-- Type for End Property Elements in Association Maps -->
+  <xs:complexType name="TEndProperty">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="ScalarProperty" type="csmsl:TScalarProperty"/>
+    </xs:sequence>
+    <xs:attribute ref="tns:Name" use="required" />
+  </xs:complexType>
+
+  <!-- Type for Complex Property Map elements-->
+  <xs:complexType name="TComplexProperty">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="ScalarProperty" type="csmsl:TScalarProperty"/>
+        <xs:element name="ComplexProperty" type="csmsl:TComplexProperty"/>
+        <xs:element name="CollectionProperty" type="csmsl:TCollectionProperty"/>
+        <xs:element name="ComplexTypeMapping" type="csmsl:TComplexTypeMapping"/>
+        <xs:element name="Condition" type="csmsl:TCondition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute ref="tns:Name" use="required" />
+    <xs:attribute ref="tns:TypeName" use="optional" />
+    <xs:attribute ref="tns:IsPartial" use="optional" />
+  </xs:complexType>
+
+  <!-- Type for Complex Element in a collection Map elements-->
+  <xs:complexType name="TComplexElement">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="ScalarProperty" type="csmsl:TScalarProperty"/>
+        <xs:element name="ComplexProperty" type="csmsl:TComplexProperty"/>
+        <xs:element name="CollectionProperty" type="csmsl:TCollectionProperty"/>
+        <xs:element name="ComplexTypeMapping" type="csmsl:TComplexTypeMapping"/>
+        <xs:element name="Condition" type="csmsl:TCondition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute ref="tns:TypeName" use="optional" />
+    <xs:attribute ref="tns:IsPartial" use="optional" />
+  </xs:complexType>
+
+  <!-- Type for Complex Type mapping element-->
+  <xs:complexType name="TComplexTypeMapping">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="ScalarProperty" type="csmsl:TScalarProperty"/>
+        <xs:element name="ComplexProperty" type="csmsl:TComplexProperty"/>
+        <xs:element name="CollectionProperty" type="csmsl:TCollectionProperty"/>
+        <xs:element name="Condition" type="csmsl:TCondition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute ref="tns:TypeName" use="optional" />
+    <xs:attribute ref="tns:IsPartial" use="optional" />
+  </xs:complexType>
+  
+  <!-- Type for ScalarProperty Element-->
+  <xs:complexType name="TScalarProperty">
+    <xs:attribute ref="tns:Name" use="required" />
+    <xs:attribute ref="tns:ColumnName" use="required" />
+  </xs:complexType>
+
+  <!-- Type for CollectionProperty Element-->
+  <xs:complexType name="TCollectionProperty">
+    <xs:sequence maxOccurs="1" minOccurs="1">
+      <xs:element name="CollectionMember" type="csmsl:TCollectionMember"/>
+    </xs:sequence>
+    <xs:attribute ref="tns:Name" use="required" />
+    <xs:attribute ref="tns:IsPartial" use="optional" />
+  </xs:complexType>
+
+  <!-- Type for CollectionMember Element-->
+  <xs:complexType name="TCollectionMember">
+    <xs:choice maxOccurs="1" minOccurs="1">
+      <xs:element name="ComplexProperty" type="csmsl:TComplexElement"/>
+      <xs:element name="ScalarProperty" type="csmsl:TScalarProperty"/>
+    </xs:choice>
+    <xs:attribute ref="tns:TypeName" use="optional" />
+    <xs:attribute ref="tns:IsPartial" use="optional" />
+    <xs:attribute ref="tns:Name" use="optional" />
+  </xs:complexType>
+
+  <!--Definition for SimpleIdentifier
+      This is the same definition that is being used in the CSDL XSD
+      -->
+  <xs:simpleType name="TSimpleIdentifier">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-Za-z][_0-9A-Za-z]{0,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!--Definition for QualifiedName. QualifiedName is SimpleIdentifiers with '.'
+      allowed. This is the same definition that is being used in the CSDL XSD
+      -->
+  <xs:simpleType name="TQualifiedName">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-Za-z][_0-9A-Za-z]{0,}(\.[A-Za-z][_0-9A-Za-z]{0,}){0,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!-- Type fopr Space or Type Attribute -->
+  <xs:simpleType name="TSpace">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="C-S" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Definitions for various attributes used in CS MSL file.-->
+  <xs:attribute name="Key" type="csmsl:TSimpleIdentifier" />
+  <xs:attribute name="Value" type="xs:string" />
+  <xs:attribute name="CdmEntityContainer" type="csmsl:TQualifiedName" />
+  <xs:attribute name="StorageEntityContainer" type="xs:string" />
+  <xs:attribute name="Name" type="csmsl:TSimpleIdentifier" />
+  <xs:attribute name="TypeName" type="xs:string" />
+  <xs:attribute name="TableName" type="xs:string" />
+  <xs:attribute name="ColumnName" type="xs:string" />
+  <xs:attribute name="IsPartial" type="xs:boolean" />
+  <xs:attribute name="ShouldDefaultUnspecifiedMaps" type="xs:boolean" />
+  <xs:attribute name="IsNull" type="xs:boolean" />
+  <xs:attribute name="Space" type="csmsl:TSpace" />
+</xs:schema>

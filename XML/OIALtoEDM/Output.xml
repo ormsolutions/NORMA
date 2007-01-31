@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edm:Schema Namespace="PersonCountryDemo" Alias="PersonCountryDemoAlias" xmlns:edm="http://schemas.microsoft.com/ado/2006/04/edm" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:exsl="http://exslt.org/common">
+  <edm:EnumerationType Name="Title">
+    <edm:EnumerationMember Name="Dr" />
+    <edm:EnumerationMember Name="Prof" />
+    <edm:EnumerationMember Name="Mr" />
+    <edm:EnumerationMember Name="Mrs" />
+    <edm:EnumerationMember Name="Miss" />
+    <edm:EnumerationMember Name="Ms" />
+  </edm:EnumerationType>
+  <edm:EntityType Name="Person" Key="Person_id">
+    <edm:Property Name="Person_id" Type="Guid" Nullable="false" />
+    <edm:Property Name="LastName" Type="String" MaxLength="30" Nullable="false" />
+    <edm:Property Name="FirstName" Type="String" MaxLength="30" Nullable="false" />
+    <edm:Property Name="Title" Type="String" MaxLength="4" Nullable="true" />
+  </edm:EntityType>
+  <edm:EntityType Name="Country" Key="Country_name">
+    <edm:Property Name="Country_name" Type="String" MaxLength="20" Nullable="false" />
+  </edm:EntityType>
+  <edm:Association Name="CountryPerson">
+    <edm:End Type="Person" Multiplicity="0..*" />
+    <edm:End Type="Country" Multiplicity="0..1" />
+  </edm:Association>
+</edm:Schema>

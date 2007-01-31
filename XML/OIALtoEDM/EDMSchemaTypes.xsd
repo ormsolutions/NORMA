@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="EntityContainer" 
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:redefine id="DMSchemaTypes" schemaLocation="DMSchemaTypes.xsd" >
+        <xs:group name="GSchemaBodyElements">
+            <xs:choice>
+                <xs:group ref="GSchemaBodyElements" />
+                <xs:element ref="EntityContainer" minOccurs="1" maxOccurs="1"/>
+            </xs:choice>
+        </xs:group>
+    </xs:redefine>    
+
+    <xs:element name="EntityContainer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+                <xs:choice minOccurs="0"  maxOccurs="unbounded">
+                    <xs:element name="EntitySet">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+                            </xs:sequence>
+                            <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+                            <xs:attribute name="EntityType" type="TQualifiedName" use="required" />
+                            <xs:anyAttribute processContents="lax" namespace="##other" />
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="AssociationSet">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="End" minOccurs="0" maxOccurs="2">
+                                    <!-- 1. The number of Ends has to match with ones defined in AssociationType 
+                                         2. Value for attribute Name should match the defined ones and EntitySet should be of the 
+                                            defined Entity Type in AssociationType 
+                                    -->
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+                                        </xs:sequence>
+                                        <xs:attribute name="Role" type="TSimpleIdentifier" use="optional" />
+                                        <xs:attribute name="EntitySet" type="TSimpleIdentifier" use="required" />
+                                    </xs:complexType>
+                                </xs:element>
+                                <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+                            </xs:sequence>
+                            <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+                            <xs:attribute name="Association" type="TQualifiedName" use="required" />
+                            <xs:anyAttribute namespace="##other" processContents="lax" />
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="ContainmentSet">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="Parent" minOccurs="0" maxOccurs="1">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+                                        </xs:sequence>
+                                        <xs:attribute name="EntitySet" type="TSimpleIdentifier" use="required" />
+                                        <xs:anyAttribute namespace="##other" processContents="lax" />
+                                    </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Child" minOccurs="0" maxOccurs="1">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:group ref="GEmptyElementExtensibility" minOccurs="0" maxOccurs="1"/>
+                                        </xs:sequence>
+                                        <xs:attribute name="EntitySet" type="TSimpleIdentifier" use="required" />
+                                        <xs:anyAttribute namespace="##other" processContents="lax" />
+                                    </xs:complexType>
+                                </xs:element>
+                                <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+                            </xs:sequence>
+                            <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+                            <xs:attribute name="Containment" type="TQualifiedName" use="required" />
+                            <xs:anyAttribute namespace="##other" processContents="lax" />
+                        </xs:complexType>
+                    </xs:element>
+
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="Name" type="TSimpleIdentifier" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+

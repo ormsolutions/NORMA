@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:edm="http://schemas.microsoft.com/ado/2006/04/edm/ssdl"
+           targetNamespace="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+    <xs:annotation>
+        <xs:documentation xml:lang="en">
+            Common Data Model Schema Definition Language.
+            Copyright (c) Microsoft Corp. All rights reserved.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:include id="SSDLSchemaTypes" schemaLocation="SSDLSchemaTypes.xsd"/>
+</xs:schema>

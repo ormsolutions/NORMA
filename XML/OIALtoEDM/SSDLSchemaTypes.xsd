@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="SSDLSchemaTypes" 
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:redefine id="EDMSchemaTypes" schemaLocation="EDMSchemaTypes.xsd">
+        <xs:group name="GSchemaBodyElements">
+            <xs:choice>
+                <xs:group ref="GSchemaBodyElements" />
+                <xs:element name="Function" type="TFunction" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:group>
+        <xs:attributeGroup name="TCommonPropertyAttributes">
+            <xs:attributeGroup ref="TCommonPropertyAttributes"/>
+            <xs:attribute name="StoreGeneratedPattern" type="TStoreGeneratedPattern" use="optional"/>
+        </xs:attributeGroup>
+    </xs:redefine>
+
+    <xs:simpleType name="TStoreGeneratedPattern">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="none" />
+            <xs:enumeration value="identity" />
+            <xs:enumeration value="computed" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- All new content -->
+    <xs:complexType name="TFunction">
+        <xs:sequence>
+            <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+            <xs:element name ="Parameter" type="TParameter" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" use="required" />
+        <xs:attribute name="ReturnType" type="TFunctionType" use="optional" />
+        <xs:attribute name="Aggregate" type="xs:boolean" use="optional" />
+        <xs:attribute name="BuiltIn" type="xs:boolean" use="optional" />
+        <xs:attribute name="StoreFunctionName" type="xs:string" use="optional" />
+        <xs:anyAttribute namespace="##other" processContents="lax" />
+    </xs:complexType>
+
+    <xs:complexType name="TParameter">
+        <xs:sequence>
+            <xs:element name="Documentation" type="TDocumentation" minOccurs="0" maxOccurs="1" />
+            <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" use="required" />
+        <xs:attribute name="Type" type="TFunctionType" use="required" />
+        <xs:attribute name="Mode" type="TParameterMode" use="optional" />
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+    </xs:complexType>
+
+    <xs:simpleType name="TParameterMode">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="in" />
+            <xs:enumeration value="out" />
+            <xs:enumeration value="inout" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TFunctionType">
+        <xs:union memberTypes="TQualifiedName">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:pattern value="Collection\([^ \t]{1,}(\.[^ \t]{1,}){0,}\)"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+</xs:schema>
+

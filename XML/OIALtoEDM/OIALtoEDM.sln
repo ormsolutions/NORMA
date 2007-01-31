@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OIALtoEDM", "OIALtoEDM.csproj", "{6974D0BE-0C77-4D1E-A93C-497AC60188C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6974D0BE-0C77-4D1E-A93C-497AC60188C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6974D0BE-0C77-4D1E-A93C-497AC60188C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
