@@ -2047,7 +2047,9 @@ namespace Neumont.Tools.ORM.Shell
 			ICollection components;
 			int selectionCount;
 			NodeShape matchShape = PrimarySelectedShape;
+			Diagram diagram;
 			if (null != matchShape &&
+				null != (diagram = matchShape.ParentShape as Diagram) &&
 				null != (components = GetSelectedComponents()) &&
 				(selectionCount = components.Count) > 1)
 			{
@@ -2083,14 +2085,23 @@ namespace Neumont.Tools.ORM.Shell
 					default:
 						return;
 				}
-				using (Transaction t = matchShape.Store.TransactionManager.BeginTransaction(ResourceStrings.AlignShapesTransactionName))
+				double xAdjust = 0d;
+				double yAdjust = 0d;
+				bool boundsAdjustment = false;
+				BoundsRules boundsRules = diagram.BoundsRules;
+				if (boundsRules != null)
 				{
+					// Do this as a two pass algorithm. The first time through the shapes
+					// determines if moving the shape will pull it outside of the accepted
+					// diagram bounds. If this is the case, we need to adjust the location
+					// of all of the shapes (including the 'matchShape') by sufficient distance
+					// to get all of the shapes in bounds.
 					foreach (object component in components)
 					{
 						NodeShape shape = component as NodeShape;
 						if (shape != null &&
 							shape != matchShape &&
-							shape.ParentShape is Diagram)
+							(object)shape.ParentShape == diagram)
 						{
 							RectangleD bounds = shape.AbsoluteBounds;
 							PointD newLocation = bounds.Location;
@@ -2115,8 +2126,65 @@ namespace Neumont.Tools.ORM.Shell
 									newLocation = new PointD(alignTo - ((null == (factShape = shape as FactTypeShape)) ? (bounds.Width / 2) : factShape.RolesCenter.X), bounds.Top);
 									break;
 							}
+							bounds.Location = newLocation;
+							PointD adjustedLocation = boundsRules.GetCompliantBounds(shape, bounds).Location;
+							if (adjustedLocation != newLocation)
+							{
+								boundsAdjustment = true;
+								double testAdjust = adjustedLocation.X - newLocation.X;
+								if (Math.Abs(xAdjust) < Math.Abs(testAdjust))
+								{
+									xAdjust = testAdjust;
+								}
+								testAdjust = adjustedLocation.Y - newLocation.Y;
+								if (Math.Abs(yAdjust) < Math.Abs(testAdjust))
+								{
+									yAdjust = testAdjust;
+								}
+							}
+						}
+					}
+				}
+				using (Transaction t = matchShape.Store.TransactionManager.BeginTransaction(ResourceStrings.AlignShapesTransactionName))
+				{
+					foreach (object component in components)
+					{
+						NodeShape shape = component as NodeShape;
+						if (shape != null &&
+							shape != matchShape &&
+							(object)shape.ParentShape == diagram)
+						{
+							RectangleD bounds = shape.AbsoluteBounds;
+							PointD newLocation = bounds.Location;
+							switch (commandId)
+							{
+								case 1: // AlignBottom
+									newLocation = new PointD(bounds.Left, alignTo + yAdjust - bounds.Height);
+									break;
+								case 2: // AlignHorizontalCenters
+									newLocation = new PointD(bounds.Left, alignTo + yAdjust - ((null == (factShape = shape as FactTypeShape)) ? (bounds.Height / 2) : factShape.RolesCenter.Y));
+									break;
+								case 3: // AlignLeft
+									newLocation = new PointD(alignTo + xAdjust, bounds.Top);
+									break;
+								case 4: // AlignRight
+									newLocation = new PointD(alignTo + xAdjust - bounds.Width, bounds.Top);
+									break;
+								case 6: // AlignTop
+									newLocation = new PointD(bounds.Left, alignTo + yAdjust);
+									break;
+								case 7: // AlignVerticalCenters
+									newLocation = new PointD(alignTo + xAdjust - ((null == (factShape = shape as FactTypeShape)) ? (bounds.Width / 2) : factShape.RolesCenter.X), bounds.Top);
+									break;
+							}
 							shape.Location = newLocation;
 						}
+					}
+					if (boundsAdjustment)
+					{
+						PointD newLocation = matchShape.Location;
+						newLocation.Offset(xAdjust, yAdjust);
+						matchShape.Location = newLocation;
 					}
 					if (t.HasPendingChanges)
 					{

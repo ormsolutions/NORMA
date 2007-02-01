@@ -30,10 +30,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region Create functions
 		/// <summary>
-		/// Set the derived type as a subtype of the base type
+		/// Create a subtyping relationship between two objects
 		/// </summary>
-		/// <param name="subtype">The object type to use as the subtype (base type)</param>
-		/// <param name="supertype">The object type to use as the supertype (derived type)</param>
+		/// <param name="subtype">The object type to use as the subtype</param>
+		/// <param name="supertype">The object type to use as the supertype</param>
 		/// <returns>Subtype object</returns>
 		public static SubtypeFact Create(ObjectType subtype, ObjectType supertype)
 		{
