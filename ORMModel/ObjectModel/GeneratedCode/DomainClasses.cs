@@ -2573,6 +2573,98 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region GeneratedName domain property code
+		
+		/// <summary>
+		/// GeneratedName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid GeneratedNameDomainPropertyId = new global::System.Guid(0xf6fc3149, 0x2ed8, 0x458d, 0xa2, 0x9c, 0xfd, 0x64, 0x0a, 0x81, 0x0a, 0x79);
+		
+		/// <summary>
+		/// Gets or sets the value of GeneratedName domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.GeneratedName
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/GeneratedName.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/GeneratedName.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("f6fc3149-2ed8-458d-a29c-fd640a810a79")]
+		private global::System.String GeneratedName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GeneratedNamePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				GeneratedNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactType.GeneratedName domain property.
+		/// </summary>
+		internal sealed partial class GeneratedNamePropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
+		{
+			private GeneratedNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactType.GeneratedName domain property value handler.
+			/// </summary>
+			public static readonly GeneratedNamePropertyHandler Instance = new GeneratedNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactType.GeneratedName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return GeneratedNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(FactType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for GeneratedName because its Kind is
+				// set to CustomStorage. Please provide the GetGeneratedNameValue()
+				// method on the domain class.
+				return element.GetGeneratedNameValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for GeneratedName because its Kind is
+					// set to CustomStorage. Please provide the SetGeneratedNameValue()
+					// method on the domain class.
+					element.SetGeneratedNameValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region NameChanged domain property code
 		
 		/// <summary>

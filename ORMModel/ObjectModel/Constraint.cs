@@ -5843,7 +5843,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Fixup listener implementation. Properly initializes the myGeneratedName field
+		/// Fixup listener implementation. Ensures compatibility between linked
+		/// exclusion and mandatory constraints
 		/// </summary>
 		private sealed class ExclusiveOrPatternFixupListener : DeserializationFixupListener<ExclusiveOrConstraintCoupler>
 		{

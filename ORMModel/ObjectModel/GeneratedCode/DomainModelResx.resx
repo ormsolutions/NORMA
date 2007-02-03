@@ -317,6 +317,14 @@
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType/GeneratedName.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.GeneratedName</value>
+    <comment>Description for DomainProperty &apos;GeneratedName&apos; on DomainClass &apos;FactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType/GeneratedName.DisplayName" xml:space="preserve">
+    <value>GeneratedName</value>
+    <comment>DisplayName for DomainProperty &apos;GeneratedName&apos; on DomainClass &apos;FactType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NameChanged.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.NameChanged</value>
     <comment>Description for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactType&apos;</comment>

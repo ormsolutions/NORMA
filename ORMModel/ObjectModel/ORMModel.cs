@@ -455,7 +455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (null != (objectificationLink = objectType.Objectification) &&
 					null != (nestedFact = objectificationLink.NestedFactType))
 				{
-					return nestedFact.GeneratedName;
+					return nestedFact.DefaultName;
 				}
 				return null;
 			}

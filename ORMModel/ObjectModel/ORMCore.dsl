@@ -294,6 +294,11 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="GeneratedName" DefaultValue="" DisplayName="GeneratedName" IsElementName="false" Id="F6FC3149-2ED8-458D-A29C-FD640A810A79" IsBrowsable="false" Kind="CustomStorage" GetterAccessModifier="Private" SetterAccessModifier="Private">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="NameChanged" DefaultValue="" DisplayName="NameChanged" Id="20A75B4B-69D4-4D1B-BEB5-9B0D66FDB1F3" IsBrowsable="false" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int64"/>

@@ -305,6 +305,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new DomainMemberInfo(typeof(FactType), "IsExternal", FactType.IsExternalDomainPropertyId, typeof(FactType.IsExternalPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "NoteText", FactType.NoteTextDomainPropertyId, typeof(FactType.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "Name", FactType.NameDomainPropertyId, typeof(FactType.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(FactType), "GeneratedName", FactType.GeneratedNameDomainPropertyId, typeof(FactType.GeneratedNamePropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "NameChanged", FactType.NameChangedDomainPropertyId, typeof(FactType.NameChangedPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "NestingTypeDisplay", FactType.NestingTypeDisplayDomainPropertyId, typeof(FactType.NestingTypeDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "DerivationRuleDisplay", FactType.DerivationRuleDisplayDomainPropertyId, typeof(FactType.DerivationRuleDisplayPropertyHandler)),

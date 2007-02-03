@@ -394,18 +394,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void SetNameValue(string newValue)
 		{
-			UndoManager undoManager;
-			if ((newValue != null && newValue.Length == 0) ||
-					((undoManager = Store.UndoManager).InUndo || undoManager.InRedo))
+			// Handled by FactTypeChangeRule
+		}
+		private void SetGeneratedNameValue(string newValue)
+		{
+			Debug.Assert(Store.InUndoRedoOrRollback, "Call GeneratedNamePropertyHandler.SetGeneratedName directly to modify myGeneratedName field.");
+			if (Store.InUndoRedoOrRollback)
 			{
 				// We only set this in undo/redo scenarios so that the initial
 				// change on a writable property comes indirectly from the objectifying
-				// type changing its name. Anywhere that sets the Name property to
-				// put a change in the transaction log needs to set myGeneratedName independently
-				// after this call.
+				// type changing its name.
 				myGeneratedName = newValue;
 			}
-			// Remainder handled by FactTypeChangeRule
 		}
 		private ObjectType GetNestingTypeDisplayValue()
 		{
@@ -429,6 +429,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private string GetNameValue()
 		{
+			return GetGeneratedNameValue();
+		}
+		private string GetGeneratedNameValue()
+		{
 			Objectification objectification;
 			ObjectType nestingType;
 			Store store = Store;
@@ -438,7 +442,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if ((objectification = Objectification) != null && (nestingType = objectification.NestingType) != null)
 			{
-				// Use the name from the nesting type
 				return nestingType.Name;
 			}
 			else if (!store.TransactionManager.InTransaction)
@@ -449,12 +452,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else
 			{
 				string generatedName = myGeneratedName;
-				if ((object)generatedName != null && generatedName.Length == 0)
+				if (string.IsNullOrEmpty(generatedName))
 				{
-					// The == null here is a hack. Use myGeneratedName = null before calling to skip setting this during a transaction
-					return myGeneratedName = GenerateName();
+					generatedName = GenerateName();
+					GeneratedNamePropertyHandler.SetGeneratedName(this, "", generatedName);
 				}
-				return generatedName ?? String.Empty;
+				return generatedName;
 			}
 		}
 		private void OnFactTypeNameChanged()
@@ -585,13 +588,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == FactType.NameDomainPropertyId)
 				{
-					FactType factType = e.ModelElement as FactType;
-					Objectification objectificationLink;
-					ObjectType nestingType;
-					if (null != (objectificationLink = factType.Objectification) &&
-						null != (nestingType = objectificationLink.NestingType))
+					Debug.Assert(e.ChangeSource == ChangeSource.Normal, "The FactType.Name property should not be set directly from a rule. FactType and its nested class should set the GeneratedName property instead.");
+					if (e.ChangeSource == ChangeSource.Normal) // Ignore changes from rules and other sources
 					{
-						nestingType.Name = (string)e.NewValue;
+						FactType factType = e.ModelElement as FactType;
+						Objectification objectificationLink;
+						ObjectType nestingType;
+						if (null != (objectificationLink = factType.Objectification) &&
+							null != (nestingType = objectificationLink.NestingType))
+						{
+							nestingType.Name = (string)e.NewValue;
+						}
 					}
 				}
 			}
@@ -1137,30 +1144,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (nestingType.Name == oldGeneratedName)
 						{
 							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-							RuleManager ruleManager = store.RuleManager;
-							bool ruleDisabled = false;
 							try
 							{
 								// Force a change in the transaction log so that we can
 								// update the generated name as needed
-								ruleManager.DisableRule(typeof(FactTypeChangeRule));
-								ruleDisabled = true;
-								if (string.IsNullOrEmpty(oldGeneratedName))
-								{
-									factType.myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
-								}
-								factType.Name = newGeneratedName;
-								factType.myGeneratedName = newGeneratedName; // See notes in SetNameValue on setting myGeneratedName
+								GeneratedNamePropertyHandler.SetGeneratedName(factType, oldGeneratedName, newGeneratedName);
 								contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
 								nestingType.Name = newGeneratedName;
 							}
 							finally
 							{
 								contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
-								if (ruleDisabled)
-								{
-									ruleManager.EnableRule(typeof(FactTypeChangeRule));
-								}
 							}
 						}
 						else
@@ -1195,28 +1189,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								else
 								{
-									RuleManager ruleManager = store.RuleManager;
-									bool ruleDisabled = false;
-									try
-									{
-										// Force a change in the transaction log so that we can
-										// update the generated name as needed
-										ruleManager.DisableRule(typeof(FactTypeChangeRule));
-										ruleDisabled = true;
-										if (string.IsNullOrEmpty(oldGeneratedName))
-										{
-											factType.myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
-										}
-										factType.Name = newGeneratedName;
-										factType.myGeneratedName = newGeneratedName; // See notes in SetNameValue on setting myGeneratedName
-									}
-									finally
-									{
-										if (ruleDisabled)
-										{
-											ruleManager.EnableRule(typeof(FactTypeChangeRule));
-										}
-									}
+									// Force a change in the transaction log so that we can
+									// update the generated name as needed
+									GeneratedNamePropertyHandler.SetGeneratedName(factType, oldGeneratedName, newGeneratedName);
 								}
 							}
 							error.GenerateErrorText();
@@ -1228,13 +1203,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Name did not change, but no one cared, add a simple entry to the transaction log
 					if (!string.IsNullOrEmpty(oldGeneratedName))
 					{
-						factType.Name = "";
+						GeneratedNamePropertyHandler.ClearGeneratedName(factType, oldGeneratedName);
 					}
 				}
 				if (raiseEvent)
 				{
 					factType.OnFactTypeNameChanged();
 				}
+			}
+		}
+		partial class GeneratedNamePropertyHandler
+		{
+			/// <summary>
+			/// Clear the generated name modification to the transaction log
+			/// without reading the current name, which forces it to regenerated
+			/// </summary>
+			/// <param name="factType">The <see cref="FactType"/> to modify</param>
+			/// <param name="oldGeneratedName">The old generated name to record</param>
+			public static void ClearGeneratedName(FactType factType, string oldGeneratedName)
+			{
+				SetGeneratedName(factType, oldGeneratedName, "");
+			}
+			/// <summary>
+			/// Add a generated name modification to the transaction log
+			/// without reading the current name, which forces it to regenerated
+			/// </summary>
+			/// <param name="factType">The <see cref="FactType"/> to modify</param>
+			/// <param name="oldGeneratedName">The old generated name</param>
+			/// <param name="newGeneratedName">The new generated name</param>
+			public static void SetGeneratedName(FactType factType, string oldGeneratedName, string newGeneratedName)
+			{
+				factType.myGeneratedName = newGeneratedName;
+				Instance.ValueChanged(factType, oldGeneratedName, newGeneratedName);
 			}
 		}
 		/// <summary>
@@ -1301,7 +1301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The auto-generated name for this fact type. Based on the
 		/// first reading in the first reading order.
 		/// </summary>
-		public string GeneratedName
+		public string DefaultName
 		{
 			get
 			{
@@ -1313,8 +1313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (Store.TransactionManager.InTransaction)
 						{
-							myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
-							Name = retVal;
+							GeneratedNamePropertyHandler.SetGeneratedName(this, "", retVal);
 						}
 						else
 						{
@@ -1718,6 +1717,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string newName = (string)e.NewValue;
 							if (newName.Length != 0)
 							{
+								string generatedName = nestedFact.myGeneratedName;
+								if (!string.IsNullOrEmpty(generatedName) &&
+									(object)newName != (object)generatedName)
+								{
+									GeneratedNamePropertyHandler.ClearGeneratedName(nestedFact, generatedName);
+								}
 								nestedFact.RegenerateErrorText();
 								nestedFact.OnFactTypeNameChanged();
 							}

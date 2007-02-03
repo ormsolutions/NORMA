@@ -230,7 +230,7 @@
     <comment>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</comment>
   </data>
 	<data name="ModelError.FactType.RequiresReading.Message" xml:space="preserve">
-    <value>At least one reading is required for fact '{0}' in model '{1}'.</value>
+    <value>At least one reading is required for fact type '{0}' in model '{1}'.</value>
     <comment>Text displayed in the text of the FactTypeRequiresReadingError</comment>
   </data>
 	<data name="ModelError.Model.DuplicateConstraintNames.Text" xml:space="preserve">

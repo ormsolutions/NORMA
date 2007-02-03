@@ -598,7 +598,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			if (!element.IsDeleted && null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				eventNotify.ElementRenamed(element);
 			}
