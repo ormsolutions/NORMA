@@ -176,30 +176,33 @@ namespace Neumont.Tools.ORM.Shell
 				ICollection selectedObjects = base.GetSelectedComponents();
 				FactType theFact = null;
 				FactType secondaryFact = null;
-				foreach (object o in selectedObjects)
+				if (selectedObjects != null)
 				{
-					FactType testFact = ORMEditorUtility.ResolveContextFactType(o);
-					// Handle selection of multiple elements as long as
-					// they all resolve to the same fact
-					if (theFact == null)
+					foreach (object o in selectedObjects)
 					{
-						theFact = testFact;
-						Role testImpliedRole;
-						RoleProxy proxy;
-						if (null != (testImpliedRole = o as Role) &&
-							null != (proxy = testImpliedRole.Proxy))
+						FactType testFact = ORMEditorUtility.ResolveContextFactType(o);
+						// Handle selection of multiple elements as long as
+						// they all resolve to the same fact
+						if (theFact == null)
 						{
-							secondaryFact = proxy.FactType;
+							theFact = testFact;
+							Role testImpliedRole;
+							RoleProxy proxy;
+							if (null != (testImpliedRole = o as Role) &&
+								null != (proxy = testImpliedRole.Proxy))
+							{
+								secondaryFact = proxy.FactType;
+							}
 						}
-					}
-					else if (testFact != theFact)
-					{
-						theFact = null;
-						break;
-					}
-					else
-					{
-						secondaryFact = null;
+						else if (testFact != theFact)
+						{
+							theFact = null;
+							break;
+						}
+						else
+						{
+							secondaryFact = null;
+						}
 					}
 				}
 				if (theFact != null && theFact.HasImplicitReadings)

@@ -183,9 +183,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		public override void UpdateSize()
 		{
 			base.UpdateSize();
+			SizeD baseSize = Size;
+			double height = baseSize.Height;
+			double width = baseSize.Width;
 			ListField listField = ListField;
 			int count = this.GetItemCount(listField);
-			double height = Size.Height;
 			TableShape tableShape = ParentShape as TableShape;
 
 			string tableName = tableShape.AccessibleName;
@@ -193,16 +195,17 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			Font defaultFont = styleSet.GetFont(listField.NormalFontId);
 			Font alternateFont = styleSet.GetFont(listField.AlternateFontId);
 			Font tableNameFont = tableShape.StyleSet.GetFont(new StyleSetResourceId(string.Empty, "ShapeTextBold10"));
+			bool increasedWidth = false;
 
 			using (Graphics g = Graphics.FromHwnd(GetDesktopWindow()))
 			{
-				float tableNameWidth = g.MeasureString(tableName + TableOffsetString, tableNameFont, int.MaxValue, DefaultStringFormat).Width;
+				double tableNameWidth = (double)g.MeasureString(tableName + TableOffsetString, tableNameFont, int.MaxValue, DefaultStringFormat).Width;
 
 				// Changes the width if the current width is less than the width of the table name.
-				if (base.Size.Width < tableNameWidth)
+				if (width < tableNameWidth)
 				{
-					base.AbsoluteBounds = new RectangleD(AbsoluteBounds.Location, new SizeD(tableNameWidth, height));
-					tableShape.AbsoluteBounds = new RectangleD(tableShape.AbsoluteBounds.Location, new SizeD(tableNameWidth, tableShape.Size.Height));
+					width = tableNameWidth;
+					increasedWidth = true;
 				}
 				// Iterates through the column list to check the widths of the column names.
 				for (int i = 0; i < count; ++i)
@@ -213,18 +216,30 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					string text = itemDrawInfo.Text;
 
 					// Gets the size of the column name in the context of the compartment
-					SizeF stringSize = g.MeasureString(text + ColumnOffsetString, isMandatory ? alternateFont : defaultFont, int.MaxValue, DefaultStringFormat);
-					double width = Convert.ToDouble(stringSize.Width);
+					double stringWidth = (double)g.MeasureString(text + ColumnOffsetString, isMandatory ? alternateFont : defaultFont, int.MaxValue, DefaultStringFormat).Width;
 
 					// Changes the width if the current width is less than the width of the column name.
-					if (base.Size.Width < width)
+					if (width < stringWidth)
 					{
-						double offset = (tableShape.AbsoluteBounds.Width - AbsoluteBounds.Size.Width);
-						base.AbsoluteBounds = new RectangleD(AbsoluteBounds.Location, new SizeD(width, height));
-						tableShape.AbsoluteBounds = new RectangleD(tableShape.AbsoluteBounds.Location, new SizeD(width + offset, tableShape.Size.Height));
+						width = stringWidth;
+						increasedWidth = true;
 					}
 				}
 			}
+			SizeD newSize = new SizeD();
+			newSize.Width = width;
+			newSize.Height = height;
+			if (newSize != baseSize)
+			{
+				Size = newSize;
+			}
+			newSize = tableShape.Size;
+			if (increasedWidth)
+			{
+				newSize.Width = width;
+			}
+			newSize.Height += height;
+			tableShape.Size = newSize;
 		}
 		/// <summary>
 		/// Disallows expanding and collapsing of the compartment.

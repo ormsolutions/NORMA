@@ -592,7 +592,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer
 					string fakepassPath = GetFakeReportPassPath(testInfo, reportAssembly);
 					using (XmlReader fakepassReader = XmlReader.Create(fakepassPath, readerSettings))
 					{
-						using (XmlWriter disposableWriter = XmlWriter.Create(@"C:\deleteme.xml"))
+						using (XmlWriter disposableWriter = XmlWriter.Create(Path.GetTempFileName()))
 						{
 							XmlDiff diff = new XmlDiff(XmlDiffOptions.IgnoreXmlDecl);
 							if (!diff.Compare(fakepassReader, reportReader, disposableWriter))

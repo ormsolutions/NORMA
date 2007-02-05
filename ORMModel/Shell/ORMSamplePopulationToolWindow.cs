@@ -152,7 +152,7 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			ICollection selectedObjects;
-			if (CurrentORMSelectionContainer != null && (selectedObjects = base.GetSelectedComponents()).Count == 1)
+			if (CurrentORMSelectionContainer != null && (null != (selectedObjects = base.GetSelectedComponents())) && selectedObjects.Count == 1)
 			{
 				foreach (object selectedObject in selectedObjects)
 				{

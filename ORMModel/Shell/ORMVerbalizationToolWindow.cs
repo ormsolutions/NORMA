@@ -297,23 +297,26 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					verbalized.Clear();
 				}
-				foreach (ModelElement melIter in selectedObjects)
+				if (selectedObjects != null)
 				{
-					ModelElement mel = melIter;
-					PresentationElement pel = mel as PresentationElement;
-					if (pel != null)
+					foreach (ModelElement melIter in selectedObjects)
 					{
-						mel = pel.ModelElement;
-					}
-					if (mel != null && !mel.IsDeleted)
-					{
-						if (snippetsDictionary == null)
+						ModelElement mel = melIter;
+						PresentationElement pel = mel as PresentationElement;
+						if (pel != null)
 						{
-							snippetsDictionary = (mel.Store as IORMToolServices).VerbalizationSnippetsDictionary;
-							snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
-							myStringWriter.NewLine = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerNewLine);
+							mel = pel.ModelElement;
 						}
-						VerbalizeElement(mel, snippetsDictionary, verbalized, showNegative, myStringWriter, ref firstCallPending);
+						if (mel != null && !mel.IsDeleted)
+						{
+							if (snippetsDictionary == null)
+							{
+								snippetsDictionary = (mel.Store as IORMToolServices).VerbalizationSnippetsDictionary;
+								snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+								myStringWriter.NewLine = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerNewLine);
+							}
+							VerbalizeElement(mel, snippetsDictionary, verbalized, showNegative, myStringWriter, ref firstCallPending);
+						}
 					}
 				}
 				if (!firstCallPending)

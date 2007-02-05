@@ -189,12 +189,15 @@ namespace Neumont.Tools.ORM.Shell
 			{
 
 				ICollection objects = base.GetSelectedComponents();
-				foreach (object o in objects)
+				if (objects != null)
 				{
-					INoteOwner owner = EditorUtility.ResolveContextInstance(o, false) as INoteOwner;	// and if they are an INoteOwner,
-					if (owner != null)
+					foreach (object o in objects)
 					{
-						selectedTypes.Add(owner);	// add them to the list of selected owners.
+						INoteOwner owner = EditorUtility.ResolveContextInstance(o, false) as INoteOwner;	// and if they are an INoteOwner,
+						if (owner != null)
+						{
+							selectedTypes.Add(owner);	// add them to the list of selected owners.
+						}
 					}
 				}
 			}
