@@ -236,7 +236,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			newSize = tableShape.Size;
 			if (increasedWidth)
 			{
-				newSize.Width = width;
+				newSize.Width = width + .16; // Tweak a little wider, based on margins established on other shape files, imperically sufficient
 			}
 			newSize.Height += height;
 			tableShape.Size = newSize;
