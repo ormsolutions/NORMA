@@ -75,7 +75,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(1000, 1)]
-	[ProvideToolboxItems(1, true)]
+	[ProvideToolboxItems(ThisAssembly.Revision, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[DefaultRegistryRoot(@"SOFTWARE\Microsoft\VisualStudio\8.0Exp")]
 	[PackageRegistration(UseManagedResourcesOnly=false, RegisterUsing=RegistrationMethod.CodeBase, SatellitePath=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\")]

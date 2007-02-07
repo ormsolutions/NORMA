@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -30,7 +30,7 @@
 				<Registry Name="DllName" Value="Neumont.Tools.ORMUI.dll" Type="string"/>
 			</Registry>
 			<Registry Key="ToolBox">
-				<Registry Name="Default Items" Value="1" Type="integer"/>
+				<Registry Name="Default Items" Value="$(var.Revision)" Type="integer"/>
 				<Registry Name="Formats" Value="Microsoft.VisualStudio.Modeling.ElementGroupPrototype" Type="string"/>
 				<Registry Name="NeedsCallbackAfterReset" Value="1" Type="integer"/>
 			</Registry>
