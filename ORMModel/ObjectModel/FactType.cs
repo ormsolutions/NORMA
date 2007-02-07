@@ -398,7 +398,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void SetGeneratedNameValue(string newValue)
 		{
-			Debug.Assert(Store.InUndoRedoOrRollback, "Call GeneratedNamePropertyHandler.SetGeneratedName directly to modify myGeneratedName field.");
+			Debug.Assert(Store.InUndoRedoOrRollback || (Store.TransactionActive && Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ElementGroupPrototype.CreatingKey)), "Call GeneratedNamePropertyHandler.SetGeneratedName directly to modify myGeneratedName field.");
 			if (Store.InUndoRedoOrRollback)
 			{
 				// We only set this in undo/redo scenarios so that the initial

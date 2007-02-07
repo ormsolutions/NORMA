@@ -6018,7 +6018,7 @@
 					</plx:binaryOperator>
 				</plx:condition>
 				<plx:beforeLoop>
-					<plx:increment type="post">
+					<plx:increment>
 						<plx:nameRef name="i"/>
 					</plx:increment>
 				</plx:beforeLoop>
@@ -6054,6 +6054,11 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="j"/>
+						</plx:increment>
+					</plx:beforeLoop>
 					<plx:branch>
 						<plx:condition>
 							<plx:binaryOperator type="identityEquality">
@@ -6068,7 +6073,7 @@
 													<plx:nameRef name="includedFactRoles"/>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:nameRef name="i"/>
+													<plx:nameRef name="j"/>
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:callObject>
@@ -6078,9 +6083,6 @@
 						</plx:condition>
 						<plx:break/>
 					</plx:branch>
-					<plx:increment type="post">
-						<plx:nameRef name="j"/>
-					</plx:increment>
 				</plx:loop>
 				<plx:branch>
 					<plx:condition>
@@ -6093,7 +6095,7 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:increment type="post">
+					<plx:increment>
 						<plx:nameRef name="currentSequenceFactCount"/>
 					</plx:increment>
 				</plx:branch>
@@ -6151,7 +6153,7 @@
 					</plx:binaryOperator>
 				</plx:condition>
 				<plx:beforeLoop>
-					<plx:increment type="post">
+					<plx:increment>
 						<plx:nameRef name="i"/>
 					</plx:increment>
 				</plx:beforeLoop>
@@ -6187,6 +6189,11 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="j"/>
+						</plx:increment>
+					</plx:beforeLoop>
 					<plx:branch>
 						<plx:condition>
 							<plx:binaryOperator type="identityEquality">
@@ -6211,9 +6218,6 @@
 						</plx:condition>
 						<plx:break/>
 					</plx:branch>
-					<plx:increment type="post">
-						<plx:nameRef name="j"/>
-					</plx:increment>
 				</plx:loop>
 				<plx:branch>
 					<plx:condition>
@@ -6241,7 +6245,7 @@
 							<plx:nameRef name="currentFact"/>
 						</plx:right>
 					</plx:assign>
-					<plx:increment type="post">
+					<plx:increment>
 						<plx:nameRef name="currentSequenceFactCount"/>
 					</plx:increment>
 				</plx:branch>

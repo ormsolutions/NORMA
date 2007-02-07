@@ -690,6 +690,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				Neumont.Tools.ORM.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
 			}
+			/// <summary>
+			/// Redirect all editing to the reading editor until we get the inplace editing with locked
+			/// replacement fields live inline in the document.
+			/// </summary>
+			public override void OnKeyPress(DiagramKeyPressEventArgs e)
+			{
+				// UNDONE: This is a flagrant reflector ripoff of Microsoft.VisualStudio.Modeling.Diagrams.TextField.OnKeyPress
+				// and Microsoft.VisualStudio.Modeling.Diagrams.ShapeField.OnKeyPress required because
+				// a third EditValue function is not virtual.
+				if (this.IsNavigationKey(e.KeyChar))
+				{
+					e.Handled = true;
+				}
+				else if (((e.KeyChar != '\r')) && (((char.IsLetterOrDigit(e.KeyChar) || char.IsNumber(e.KeyChar)) || (char.IsPunctuation(e.KeyChar) || char.IsSeparator(e.KeyChar))) || (char.IsSymbol(e.KeyChar) || char.IsWhiteSpace(e.KeyChar))))
+				{
+					e.Handled = true;
+					// UNDONE: Consider moving forwarding the key press to the reading editor
+					// Probably not worth the trouble given that this will all go away when
+					// we get in-place activation working.
+					System.Media.SystemSounds.Beep.Play();
+				}
+				else if (e.TargetItem == null)
+				{
+					e.Handled = false;
+				}
+			}
 		}
 		#endregion // nested class ReadingAutoSizeTextField
 		#region DirectionIndicatorField class

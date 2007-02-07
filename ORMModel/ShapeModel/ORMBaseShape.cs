@@ -695,15 +695,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (childShape != null)
 							{
 								RectangleD childBounds = childShape.AbsoluteBounds;
-								if (checkX && (childBounds.Left > (newBounds.Right - xChange)))
+								if (checkX)
 								{
-									change.X = xChange;
-									changeBounds = true;
+									double newRight = newBounds.Right - xChange;
+									double childLeft = childBounds.Left;
+									if (childLeft > newRight || // Completely to the right
+										(childBounds.Right > newRight && childLeft > newBounds.Left)) // Straddles right edge
+									{
+										change.X = xChange;
+										changeBounds = true;
+									}
 								}
-								if (checkY && (childBounds.Top > (newBounds.Bottom - yChange)))
+								if (checkY)
 								{
-									change.Y = yChange;
-									changeBounds = true;
+									double newBottom = newBounds.Bottom - yChange;
+									double childTop = childBounds.Top;
+									if (childTop > newBottom || // Completely below
+										(childBounds.Bottom > newBottom && childTop > newBounds.Top)) // Straddles bottom edge
+									{
+										change.Y = yChange;
+										changeBounds = true;
+									}
 								}
 								if (changeBounds)
 								{

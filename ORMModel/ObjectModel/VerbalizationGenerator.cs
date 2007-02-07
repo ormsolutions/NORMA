@@ -1933,43 +1933,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2046,43 +2044,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2148,43 +2144,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2228,43 +2222,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2321,43 +2313,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2444,43 +2434,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2550,43 +2538,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2672,43 +2658,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -2778,43 +2762,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -7064,43 +7046,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7165,43 +7145,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7258,43 +7236,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7361,43 +7337,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7462,43 +7436,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7550,43 +7522,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7648,43 +7618,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -7767,43 +7735,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -8062,43 +8028,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -8181,43 +8145,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -8335,43 +8297,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -8432,43 +8392,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -8518,43 +8476,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -8620,43 +8576,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -8719,43 +8673,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[i].FactType)
+								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFacts = new FactType[currentSequenceFactCount];
 						currentSequenceFactCount = 0;
 						// Building the unique fact list.
-						for (int i = 0; i < roleArity; i++)
+						for (int i = 0; i < roleArity; ++i)
 						{
 							FactType currentFact = includedFactRoles[i].FactType;
 							int j = 0;
-							while (j < i)
+							for (; j < i; ++j)
 							{
 								if (currentFact == includedFactRoles[j].FactType)
 								{
 									break;
 								}
-								j++;
 							}
 							if (j == i)
 							{
 								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								currentSequenceFactCount++;
+								++currentSequenceFactCount;
 							}
 						}
 						factArity = currentSequenceFacts.Length;
@@ -8819,43 +8771,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
@@ -8938,43 +8888,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[i].FactType)
+							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFacts = new FactType[currentSequenceFactCount];
 					currentSequenceFactCount = 0;
 					// Building the unique fact list.
-					for (int i = 0; i < roleArity; i++)
+					for (int i = 0; i < roleArity; ++i)
 					{
 						FactType currentFact = includedFactRoles[i].FactType;
 						int j = 0;
-						while (j < i)
+						for (; j < i; ++j)
 						{
 							if (currentFact == includedFactRoles[j].FactType)
 							{
 								break;
 							}
-							j++;
 						}
 						if (j == i)
 						{
 							currentSequenceFacts[currentSequenceFactCount] = currentFact;
-							currentSequenceFactCount++;
+							++currentSequenceFactCount;
 						}
 					}
 					factArity = currentSequenceFacts.Length;
