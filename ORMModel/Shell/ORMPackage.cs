@@ -75,7 +75,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(1000, 1)]
-	[ProvideToolboxItems(ThisAssembly.Revision, true)]
+	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[DefaultRegistryRoot(@"SOFTWARE\Microsoft\VisualStudio\8.0Exp")]
 	[PackageRegistration(UseManagedResourcesOnly=false, RegisterUsing=RegistrationMethod.CodeBase, SatellitePath=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\")]
@@ -96,6 +96,7 @@ namespace Neumont.Tools.ORM.Shell
 		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
+		private const string REGISTRYVALUE_TOOLBOXREVISION = "ToolboxRevision";
 		#endregion
 
 		#region Member variables
@@ -277,14 +278,11 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (!SetupMode)
 			{
-				IServiceContainer service = (IServiceContainer)this;
-				myFontAndColorService = new ORMDesignerFontsAndColors(this);
-				service.AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService, true);
-				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
+				((IServiceContainer)this).AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService = new ORMDesignerFontsAndColors(this), true);
+				((IServiceContainer)this).AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 
 				// setup commands
-				CommandSet commandSet = myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
-				commandSet.Initialize();
+				(myCommandSet = ORMDesignerDocView.CreateCommandSet(this)).Initialize(); ;
 
 				// Create tool windows
 				AddToolWindow(typeof(ORMModelBrowserToolWindow));
@@ -299,27 +297,96 @@ namespace Neumont.Tools.ORM.Shell
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
 
-				IVsAppCommandLine vsAppCommandLine = (IVsAppCommandLine)base.GetService(typeof(IVsAppCommandLine));
-				int present;
-				string optionValue;
-				if (vsAppCommandLine == null || ErrorHandler.Failed(vsAppCommandLine.GetOption("RootSuffix", out present, out optionValue)) || !Convert.ToBoolean(present))
-				{
-					// If we can't obtain the IVsAppCommandLine service, or our call to it fails, or no root suffix was specified, try looking at our registry root.
-					IVsShell vsShell = (IVsShell)base.GetService(typeof(SVsShell));
-					object registryRootObject;
-					if (vsShell == null || ErrorHandler.Failed(vsShell.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out registryRootObject)) || ((string)registryRootObject).EndsWith("EXP", StringComparison.OrdinalIgnoreCase))
-					{
-						// If we can't get the registry root, or if it says we are running in the experimental hive, call SetupDynamicToolbox.
-						base.SetupDynamicToolbox();
-					}
-				}
-				else if (string.Equals(optionValue, "EXP", StringComparison.OrdinalIgnoreCase))
-				{
-					// If a root suffix was specified as a command line parameter and that root suffix is "Exp", call SetupDynamicToolbox.
-					base.SetupDynamicToolbox();
-				}
+				InitializeToolbox();
 			}
 
+		}
+		/// <summary>
+		/// Checks if the toolbox needs to be initialized, and if so, calls <see cref="ModelingPackage.SetupDynamicToolbox"/>.
+		/// </summary>
+		private void InitializeToolbox()
+		{
+			IVsAppCommandLine vsAppCommandLine = (IVsAppCommandLine)base.GetService(typeof(IVsAppCommandLine));
+			int present;
+			string optionValue;
+			if (vsAppCommandLine == null || ErrorHandler.Failed(vsAppCommandLine.GetOption("RootSuffix", out present, out optionValue)) || !Convert.ToBoolean(present))
+			{
+				// If we can't obtain the IVsAppCommandLine service, or our call to it fails, or no root suffix was specified, try looking at our registry root.
+				IVsShell vsShell = (IVsShell)base.GetService(typeof(SVsShell));
+				object registryRootObject;
+				if (vsShell == null || ErrorHandler.Failed(vsShell.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out registryRootObject)) || ((string)registryRootObject).EndsWith("EXP", StringComparison.OrdinalIgnoreCase))
+				{
+					// If we can't get the registry root, or if it says we are running in the experimental hive, call SetupDynamicToolbox.
+					base.SetupDynamicToolbox();
+				}
+				else
+				{
+					// Get the current revision number, defaulting to 0 if something goes wrong.
+					int currentRevision = 0;
+					object[] customAttributes = typeof(ORMDesignerPackage).Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
+					for (int i = 0; i < customAttributes.Length; i++)
+					{
+						AssemblyFileVersionAttribute fileVersion = customAttributes[i] as AssemblyFileVersionAttribute;
+						if (fileVersion != null)
+						{
+							currentRevision = new Version(fileVersion.Version).Revision;
+							break;
+						}
+					}
+
+					RegistryKey userRegistryRoot = null;
+					RegistryKey packageRegistryRoot = null;
+					try
+					{
+						userRegistryRoot = this.UserRegistryRoot;
+						packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
+
+						// Lookup the recorded toolbox revision, and check whether it matches the current revision.
+						int? toolboxRevision = packageRegistryRoot.GetValue(REGISTRYVALUE_TOOLBOXREVISION, null) as int?;
+						if (toolboxRevision.HasValue && toolboxRevision.GetValueOrDefault() == currentRevision)
+						{
+							// If the toolbox is already from this exact revision, don't do anything.
+							return;
+						}
+
+						// Since the toolbox has either not been set up before, or is from an older or newer revision, call SetupDynamicToolbox.
+						// This might not be necessary if it is from a newer revision, but we do it anyway to be safe.
+						base.SetupDynamicToolbox();
+
+						packageRegistryRoot.Close();
+						try
+						{
+							// If a exception were to occur right here, Close() could get called twice for packageRegistryRoot, but that wouldn't actually hurt anything.
+							packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
+
+							// Record the current revision in the registry.
+							packageRegistryRoot.SetValue(REGISTRYVALUE_TOOLBOXREVISION, currentRevision, RegistryValueKind.DWord);
+						}
+						catch (System.Security.SecurityException ex)
+						{
+							Debug.Fail("A security exception occurred while trying to write the current toolbox format revision number to the user registry. " +
+								"You can safely continue execution of the program.", ex.ToString());
+							// Swallow the exception, since it won't actually cause a problem. The next time the package is loaded, we'll just initialize the toolbox again.
+						}
+					}
+					finally
+					{
+						if (userRegistryRoot != null)
+						{
+							if (packageRegistryRoot != null)
+							{
+								packageRegistryRoot.Close();
+							}
+							userRegistryRoot.Close();
+						}
+					}
+				}
+			}
+			else if (!string.IsNullOrEmpty(optionValue))
+			{
+				// If any non-empty root suffix was specified as a command line parameter, call SetupDynamicToolbox.
+				base.SetupDynamicToolbox();
+			}
 		}
 		/// <summary>
 		/// This is called by the package base class when our package gets unloaded.
@@ -365,9 +432,8 @@ namespace Neumont.Tools.ORM.Shell
 			// much easier than trying to maintain all of the filter strings at the ims level,
 			// which would require elements with different filter string sets to be placed on different
 			// ims elements.
-			int itemCount = items.Count;
-			Dictionary<string, int> itemIndexDictionary = new Dictionary<string, int>(itemCount);
-			for (int i = 0; i < itemCount; i++)
+			Dictionary<string, int> itemIndexDictionary = new Dictionary<string, int>(items.Count);
+			for (int i = 0; i < items.Count; i++)
 			{
 				itemIndexDictionary[items[i].Id] = i;
 			}
@@ -391,7 +457,7 @@ namespace Neumont.Tools.ORM.Shell
 			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxModelNoteItemId, attribute);
 
 			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramExternalConstraintFilterString, ToolboxItemFilterType.Allow);
-			string[] itemIds = {
+			string[] itemIds = new string[] {
 				ResourceStrings.ToolboxEqualityConstraintItemId,
 				ResourceStrings.ToolboxExclusionConstraintItemId,
 				ResourceStrings.ToolboxExclusiveOrConstraintItemId,
@@ -401,8 +467,7 @@ namespace Neumont.Tools.ORM.Shell
 				ResourceStrings.ToolboxSubsetConstraintItemId,
 				ResourceStrings.ToolboxFrequencyConstraintItemId
 			};
-			int idCount = itemIds.Length;
-			for (int i = 0; i < idCount; ++i)
+			for (int i = 0; i < itemIds.Length; ++i)
 			{
 				AddFilterAttribute(items, itemIndexDictionary, itemIds[i], attribute);
 			}
@@ -537,7 +602,7 @@ namespace Neumont.Tools.ORM.Shell
 		[Obsolete("Visual Studio 2005 no longer calls this method.", true)]
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
 		{
-			pIdBmp = (uint)UIntPtr.Zero;
+			pIdBmp = 0;
 			return VSConstants.E_NOTIMPL;
 		}
 
@@ -563,7 +628,7 @@ namespace Neumont.Tools.ORM.Shell
 		int IVsInstalledProduct.ProductID(out string pbstrPID)
 		{
 			pbstrPID = null;
-			object[] customAttributes = Assembly.GetExecutingAssembly().GetCustomAttributes(false);
+			object[] customAttributes = typeof(ORMDesignerPackage).Assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
 			for (int i = 0; i < customAttributes.Length; i++)
 			{
 				AssemblyInformationalVersionAttribute informationalVersion = customAttributes[i] as AssemblyInformationalVersionAttribute;

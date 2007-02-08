@@ -87,13 +87,6 @@ namespace Neumont.Tools.ORM.SDK
 					writer.Write("[assembly: System.Resources.SatelliteContractVersion(");
 					writer.Write(quotedProductVersion);
 					writer.WriteLine(")]");
-					writer.WriteLine();
-					writer.WriteLine("internal static class ThisAssembly");
-					writer.WriteLine("{");
-					writer.Write("\tinternal const short Revision = ");
-					writer.Write(revision);
-					writer.WriteLine(";");
-					writer.WriteLine("}");
 				}
 				Console.WriteLine(statusPrefix + "Generated Version.cs.");
 			}
@@ -119,7 +112,6 @@ namespace Neumont.Tools.ORM.SDK
 					writer.WriteProcessingInstruction("define", string.Format("ProductVersion=\"{0}\"", unquotedFileVersion));
 					writer.WriteProcessingInstruction("define", string.Format("VersionGuidSuffix=\"$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits){0:d2}{1:d4}{2:d4}\"", Config.MinorVersion, build, revision));
 					writer.WriteProcessingInstruction("define", "ReleaseDescription=" + quotedReleaseDescription);
-					writer.WriteProcessingInstruction("define", string.Format("Revision=\"{0}\"", revision));
 					writer.WriteEndElement();
 					writer.WriteEndDocument();
 				}
