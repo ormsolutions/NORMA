@@ -1305,30 +1305,6 @@
 						<orm:RolePlayer ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
 					</orm:SupertypeMetaRole>
 				</orm:FactRoles>
-				<orm:ReadingOrders>
-					<orm:ReadingOrder id="_AD14C822-5487-43E2-8882-37ACE3001D66">
-						<orm:Readings>
-							<orm:Reading id="_168A9543-D68E-4895-A8BC-F7EFC1AEA125">
-								<orm:Data>{0} is a subtype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_A9D03484-569E-4839-A9EE-B59CD75E8CAE" />
-							<orm:Role ref="_2DC337A4-AE48-4EFD-8A48-D212D8F2E1FB" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-					<orm:ReadingOrder id="_F7009D6F-BA7C-46F8-BE37-AE51893EADE7">
-						<orm:Readings>
-							<orm:Reading id="_7FD8D204-E2DD-4E6A-BD2C-EEC4A4C69475">
-								<orm:Data>{0} is a supertype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_2DC337A4-AE48-4EFD-8A48-D212D8F2E1FB" />
-							<orm:Role ref="_A9D03484-569E-4839-A9EE-B59CD75E8CAE" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-				</orm:ReadingOrders>
 				<orm:InternalConstraints>
 					<orm:UniquenessConstraint ref="_36FA3F3B-1404-474B-9BC7-C6984F0A58DF" />
 					<orm:MandatoryConstraint ref="_562E6D97-144B-4FCA-A754-4519318C77D3" />
@@ -1344,30 +1320,6 @@
 						<orm:RolePlayer ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
 					</orm:SupertypeMetaRole>
 				</orm:FactRoles>
-				<orm:ReadingOrders>
-					<orm:ReadingOrder id="_B0D181B2-CBA1-41A5-B810-A535683D0553">
-						<orm:Readings>
-							<orm:Reading id="_B265B139-AED1-4783-8D8F-80317691EF9F">
-								<orm:Data>{0} is a subtype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_C987E3E9-A976-4064-ABCE-A4EA16BC2535" />
-							<orm:Role ref="_8E6158FD-6C2F-4220-9294-8F358936935C" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-					<orm:ReadingOrder id="_E8949526-376F-4AA2-93DF-C1B6D0FEAC11">
-						<orm:Readings>
-							<orm:Reading id="_81C47770-2474-4B0E-B6FD-4B11CB1BF063">
-								<orm:Data>{0} is a supertype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_8E6158FD-6C2F-4220-9294-8F358936935C" />
-							<orm:Role ref="_C987E3E9-A976-4064-ABCE-A4EA16BC2535" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-				</orm:ReadingOrders>
 				<orm:InternalConstraints>
 					<orm:UniquenessConstraint ref="_40F44B0D-F023-4FC1-AB41-C5E6E53EB845" />
 					<orm:MandatoryConstraint ref="_C95E4799-E6D0-47CB-ACA5-56AC5E14A652" />
@@ -1588,30 +1540,6 @@
 						<orm:RolePlayer ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
 					</orm:SupertypeMetaRole>
 				</orm:FactRoles>
-				<orm:ReadingOrders>
-					<orm:ReadingOrder id="_8B0C666D-93A0-4470-B68B-1C3B7537C33D">
-						<orm:Readings>
-							<orm:Reading id="_23DE1ACE-B7E4-4901-882C-A1F7C05B4E87">
-								<orm:Data>{0} is a subtype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_F6461991-31A0-4734-88C3-C94C7AA8E785" />
-							<orm:Role ref="_D1871C44-65D4-41A5-86A6-6AEFB0F9A365" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-					<orm:ReadingOrder id="_7E00572D-1A81-43F8-8691-554AA59DDE15">
-						<orm:Readings>
-							<orm:Reading id="_E952C457-6E92-4B19-BA56-53C3D83C72C3">
-								<orm:Data>{0} is a supertype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_D1871C44-65D4-41A5-86A6-6AEFB0F9A365" />
-							<orm:Role ref="_F6461991-31A0-4734-88C3-C94C7AA8E785" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-				</orm:ReadingOrders>
 				<orm:InternalConstraints>
 					<orm:UniquenessConstraint ref="_6BBBC94F-4F93-41F7-9B7A-B08AE9AE624E" />
 					<orm:MandatoryConstraint ref="_3667C883-BA5E-4CA2-A45C-6AF045B99578" />
@@ -1627,30 +1555,6 @@
 						<orm:RolePlayer ref="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" />
 					</orm:SupertypeMetaRole>
 				</orm:FactRoles>
-				<orm:ReadingOrders>
-					<orm:ReadingOrder id="_CE039E87-A82B-45C5-87D6-0A2D83646742">
-						<orm:Readings>
-							<orm:Reading id="_0D2E8306-61C1-458D-AE33-CFEA1E220E45">
-								<orm:Data>{0} is a subtype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_1021A8DD-8005-4AB6-940F-022A4523F518" />
-							<orm:Role ref="_03B4EB5F-3A90-45D2-95EB-EE0AEA9844B8" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-					<orm:ReadingOrder id="_6555565C-F1CE-4A23-855B-774B40D199D1">
-						<orm:Readings>
-							<orm:Reading id="_785DF3C7-0C1B-4EF0-83FD-57A684356BEC">
-								<orm:Data>{0} is a supertype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_03B4EB5F-3A90-45D2-95EB-EE0AEA9844B8" />
-							<orm:Role ref="_1021A8DD-8005-4AB6-940F-022A4523F518" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-				</orm:ReadingOrders>
 				<orm:InternalConstraints>
 					<orm:UniquenessConstraint ref="_3DBFF81B-FDF9-482A-B835-E6E13998883C" />
 					<orm:MandatoryConstraint ref="_6847752D-D2F4-46CA-BD49-CBE1618E4E60" />
@@ -1666,30 +1570,6 @@
 						<orm:RolePlayer ref="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" />
 					</orm:SupertypeMetaRole>
 				</orm:FactRoles>
-				<orm:ReadingOrders>
-					<orm:ReadingOrder id="_46737747-65CC-4EC6-ADC9-80DCCCE4D263">
-						<orm:Readings>
-							<orm:Reading id="_84A5E198-31C7-4861-9FC3-5D9BF02811FA">
-								<orm:Data>{0} is a subtype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_AE8E2980-8D1B-4CEA-8709-61CE188384C8" />
-							<orm:Role ref="_C0B623D1-7CD0-49CC-B419-4F2EFAEA77B8" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-					<orm:ReadingOrder id="_F8C597AB-7242-42ED-814F-01AE7F7DC46F">
-						<orm:Readings>
-							<orm:Reading id="_DF1C4415-6349-4828-9331-F203E47F32C0">
-								<orm:Data>{0} is a supertype of {1}</orm:Data>
-							</orm:Reading>
-						</orm:Readings>
-						<orm:RoleSequence>
-							<orm:Role ref="_C0B623D1-7CD0-49CC-B419-4F2EFAEA77B8" />
-							<orm:Role ref="_AE8E2980-8D1B-4CEA-8709-61CE188384C8" />
-						</orm:RoleSequence>
-					</orm:ReadingOrder>
-				</orm:ReadingOrders>
 				<orm:InternalConstraints>
 					<orm:UniquenessConstraint ref="_AF780216-92ED-4BB5-9926-9C8B180A71FC" />
 					<orm:MandatoryConstraint ref="_D637D939-A3E6-495A-812F-F70F97C9D7E5" />

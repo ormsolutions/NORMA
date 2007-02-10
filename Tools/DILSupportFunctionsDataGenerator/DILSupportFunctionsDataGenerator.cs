@@ -72,7 +72,7 @@ namespace Neumont.Tools.DIL
 			{
 				Console.Write("Generating 'split' pattern...");
 				StringBuilder splitPatternBuilder = new StringBuilder(200);
-				splitPatternBuilder.Append(@"const splitPattern = /[\t\n\x0B\r\x85\x20");
+				splitPatternBuilder.Append(@"var splitPattern = /[\t\n\x0B\r\x85\x20");
 				foreach (CodePoint codePoint in CodePoint.CodePoints)
 				{
 					if (codePoint.Value > 0xFFFF)
@@ -91,7 +91,7 @@ namespace Neumont.Tools.DIL
 			{
 				Console.Write("Generating 'nonword character' pattern...");
 				StringBuilder nonwordCharacterPatternBuilder = new StringBuilder(100000);
-				nonwordCharacterPatternBuilder.Append(@"const nonwordCharacterPattern = /[^");
+				nonwordCharacterPatternBuilder.Append(@"var nonwordCharacterPattern = /[^");
 				foreach (CodePoint codePoint in CodePoint.CodePoints)
 				{
 					if (codePoint.Value > 0xFFFF)
@@ -111,7 +111,7 @@ namespace Neumont.Tools.DIL
 			{
 				Console.Write("Generating 'not upper case letter or number' pattern...");
 				StringBuilder notUpperCaseLetterOrNumberPatternBuilder = new StringBuilder(100000);
-				notUpperCaseLetterOrNumberPatternBuilder.Append(@"const notUpperCaseLetterOrNumberPattern = /[^");
+				notUpperCaseLetterOrNumberPatternBuilder.Append(@"var notUpperCaseLetterOrNumberPattern = /[^");
 				foreach (CodePoint codePoint in CodePoint.CodePoints)
 				{
 					if (codePoint.Value > 0xFFFF)
@@ -145,7 +145,7 @@ namespace Neumont.Tools.DIL
 				}
 				string letterOrNumberLetter = regularIdentifierPatternBuilder.ToString();
 				regularIdentifierPatternBuilder.Length = 0;
-				regularIdentifierPatternBuilder.Append(@"const regularIdentifierPattern = /^([");
+				regularIdentifierPatternBuilder.Append(@"var regularIdentifierPattern = new RegExp(""^([");
 				regularIdentifierPatternBuilder.Append(letterOrNumberLetter);
 				regularIdentifierPatternBuilder.Append(@"][");
 				regularIdentifierPatternBuilder.Append(letterOrNumberLetter);
@@ -167,7 +167,7 @@ namespace Neumont.Tools.DIL
 							break;
 					}
 				}
-				regularIdentifierPatternBuilder.Append(@"]{0,17})$/;");
+				regularIdentifierPatternBuilder.Append(@"]{0,"" + (MAX_IDENTIFIER_LENGTH - 1) + ""})$"");");
 				writer.WriteLine(regularIdentifierPatternBuilder.ToString());
 				Console.WriteLine(" Done!");
 			}

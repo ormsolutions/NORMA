@@ -357,22 +357,6 @@ namespace Neumont.Tools.DIL.Unicode
 					downloadCompletedEvent.WaitOne();
 				}
 				Debug.Assert(File.Exists(fileName));
-				WebClient webClient1, webClient2;
-				
-using (ManualResetEvent download1CompletedEvent = new ManualResetEvent(false), download2CompletedEvent = new ManualResetEvent(false))
-{
-	webClient1.DownloadStringCompleted += delegate
-	{
-		download1CompletedEvent.Set();
-	};
-	webClient2.DownloadStringCompleted += delegate
-	{
-		download2CompletedEvent.Set();
-	};
-	webClient1.DownloadStringAsync(new Uri("whatever1"));
-	webClient2.DownloadStringAsync(new Uri("whatever2"));
-	WaitHandle.WaitAll(new WaitHandle[] { download1CompletedEvent, download2CompletedEvent });
-}
 			}
 		}
 		#endregion // GetFile method

@@ -337,30 +337,6 @@
 					<orm:RolePlayer ref="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" />
 				</orm:SupertypeMetaRole>
 			</orm:FactRoles>
-			<orm:ReadingOrders>
-				<orm:ReadingOrder id="_5AA703AF-D12F-46E7-9FAC-DC0370EDB938">
-					<orm:Readings>
-						<orm:Reading id="_8724DB17-DC78-4FA7-B3BD-1AC84504251C">
-							<orm:Data>{0} is a subtype of {1}</orm:Data>
-						</orm:Reading>
-					</orm:Readings>
-					<orm:RoleSequence>
-						<orm:Role ref="_EE81D1B8-C073-407E-9445-4D77B2A771BF" />
-						<orm:Role ref="_BF787BAC-4058-462F-9B63-BB5B79049B43" />
-					</orm:RoleSequence>
-				</orm:ReadingOrder>
-				<orm:ReadingOrder id="_21F86A46-74E3-4E70-B99B-68089D21BEC1">
-					<orm:Readings>
-						<orm:Reading id="_E0348600-C1E4-4A82-AA31-A7C24349DB47">
-							<orm:Data>{0} is a supertype of {1}</orm:Data>
-						</orm:Reading>
-					</orm:Readings>
-					<orm:RoleSequence>
-						<orm:Role ref="_BF787BAC-4058-462F-9B63-BB5B79049B43" />
-						<orm:Role ref="_EE81D1B8-C073-407E-9445-4D77B2A771BF" />
-					</orm:RoleSequence>
-				</orm:ReadingOrder>
-			</orm:ReadingOrders>
 			<orm:InternalConstraints>
 				<orm:MandatoryConstraint ref="_F0ABE548-41D3-489D-B47D-5A83F1E62135" />
 				<orm:UniquenessConstraint ref="_01B4672A-5C53-4F3C-B169-F92DF4B991A5" />
@@ -625,30 +601,6 @@
 					<orm:RolePlayer ref="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216" />
 				</orm:SupertypeMetaRole>
 			</orm:FactRoles>
-			<orm:ReadingOrders>
-				<orm:ReadingOrder id="_B75B0EA7-41E5-47ED-A47C-549E98C4C2DF">
-					<orm:Readings>
-						<orm:Reading id="_E3E9BB06-3E99-4000-B1D2-87D1B6E97AFE">
-							<orm:Data>{0} is a subtype of {1}</orm:Data>
-						</orm:Reading>
-					</orm:Readings>
-					<orm:RoleSequence>
-						<orm:Role ref="_61F4213B-402E-4149-B290-58102E27EB03" />
-						<orm:Role ref="_28E6E94A-7CBC-46DD-83E2-8D066C1945AA" />
-					</orm:RoleSequence>
-				</orm:ReadingOrder>
-				<orm:ReadingOrder id="_F317F853-F018-40F4-BF2D-BD71B24931C5">
-					<orm:Readings>
-						<orm:Reading id="_E3D771EE-9CE8-4ACC-B077-3741ADE46018">
-							<orm:Data>{0} is a supertype of {1}</orm:Data>
-						</orm:Reading>
-					</orm:Readings>
-					<orm:RoleSequence>
-						<orm:Role ref="_28E6E94A-7CBC-46DD-83E2-8D066C1945AA" />
-						<orm:Role ref="_61F4213B-402E-4149-B290-58102E27EB03" />
-					</orm:RoleSequence>
-				</orm:ReadingOrder>
-			</orm:ReadingOrders>
 			<orm:InternalConstraints>
 				<orm:MandatoryConstraint ref="_3C99B4C2-3C14-49B6-AF53-9D8033902F46" />
 				<orm:UniquenessConstraint ref="_4686A91D-159F-403C-9867-7E3AA2F16D2D" />
