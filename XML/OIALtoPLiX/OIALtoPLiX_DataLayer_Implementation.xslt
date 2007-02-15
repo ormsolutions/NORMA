@@ -636,27 +636,29 @@
 					<xsl:copy-of select="$passTypeParams[1]/child::*"/>
 				</plx:param>
 				<plx:returns dataTypeName="{$uniqueConceptTypeName}"/>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:nameRef type="parameter" name="{@name}"/>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string>
-									<xsl:value-of select="@name"/>
-								</plx:string>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
+				<xsl:if test="@canBeNull='true'">
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="{@name}"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>
+										<xsl:value-of select="@name"/>
+									</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+				</xsl:if>
 				<plx:local name="command" dataTypeName="IDbCommand">
 					<plx:initialize>
 						<plx:callInstance type="methodCall" name="CreateCommand">
