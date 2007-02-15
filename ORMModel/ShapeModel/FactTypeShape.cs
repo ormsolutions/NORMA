@@ -1364,6 +1364,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // WalkConstraintBoxes implementation
 		#region Size Constants
+		// Note: These values should NOT agree with the InitialSize/InitialWidth specified in the model file.
+		// Changing the height to match or the width such that a muliple matches the default may adversely affect
+		// the ORMBaseShape.MaintainRelativeShapeOffsetsForBoundsChange function, where changing from the default
+		// size is ignored wrt/repositioning relative shapes.
 		private const double RoleBoxHeight = 0.11;
 		private const double RoleBoxWidth = 0.16;
 		private const double NestedFactHorizontalMargin = 0.09;

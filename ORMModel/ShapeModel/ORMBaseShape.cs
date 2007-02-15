@@ -669,6 +669,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMBaseShape parentShape = e.ModelElement as ORMBaseShape;
 				RectangleD oldBounds = (RectangleD)e.OldValue;
 				if (oldBounds.IsEmpty ||
+					oldBounds.Size == parentShape.DefaultSize ||
 					e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes))
 				{
 					// Initializing, let normal placement win
