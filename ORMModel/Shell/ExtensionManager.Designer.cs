@@ -56,7 +56,6 @@ namespace Neumont.Tools.ORM.Shell
 			this.lvExtensions.TabIndex = 0;
 			this.lvExtensions.UseCompatibleStateImageBehavior = false;
 			this.lvExtensions.View = System.Windows.Forms.View.Details;
-			this.lvExtensions.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvExtensions_ItemChecked);
 			// 
 			// columnHeader4
 			// 
