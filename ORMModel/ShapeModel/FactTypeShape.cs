@@ -2180,6 +2180,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			#endregion // Accessor functions
+			#region Accessibility Overrides
+			/// <summary>
+			/// Defer to the associated constraint for the accessible name
+			/// </summary>
+			public override string GetAccessibleName(ShapeElement parentShape, ShapeField parentField)
+			{
+				return TypeDescriptor.GetClassName(myAssociatedConstraint);
+			}
+			/// <summary>
+			/// Defer to the associated constraint for the accessible value
+			/// </summary>
+			public override string GetAccessibleValue(ShapeElement parentShape, ShapeField parentField)
+			{
+				return TypeDescriptor.GetComponentName(myAssociatedConstraint);
+			}
+			#endregion // Accessibility Overrides
 		}
 		#endregion // ConstraintSubField class
 		#region RolesShapeField class
@@ -2243,7 +2259,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			public sealed override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
 			{
-				return new RoleSubField((parentShape as FactTypeShape).AssociatedFactType.RoleCollection[index]);
+				return new RoleSubField((parentShape as FactTypeShape).DisplayedRoleOrder[index]);
 			}
 			/// <summary>
 			/// Gets the minimum <see cref="SizeD"/> of this <see cref="RolesShapeField"/>.
@@ -2740,6 +2756,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			#endregion // Accessor functions
+			#region Accessibility Overrides
+			/// <summary>
+			/// Defer to the associated role for the accessible name
+			/// </summary>
+			public override string GetAccessibleName(ShapeElement parentShape, ShapeField parentField)
+			{
+				return TypeDescriptor.GetClassName(myAssociatedRole);
+			}
+			/// <summary>
+			/// Defer to the associated role for the accessible value
+			/// </summary>
+			public override string GetAccessibleValue(ShapeElement parentShape, ShapeField parentField)
+			{
+				return TypeDescriptor.GetComponentName(myAssociatedRole);
+			}
+			#endregion // Accessibility Overrides
 		}
 		#endregion // RoleSubField class
 		#region Member Variables
@@ -2974,6 +3006,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.InitializeShapeFields(shapeFields);
 
 			// Initialize fields
+			// UNDONE: Localize these values. They are used only for accessibility display
 			RolesShapeField rolesField = new RolesShapeField("Roles");
 			ConstraintShapeField topConstraintField = new ConstraintShapeField("TopConstraints", ConstraintAttachPosition.Top);
 			ConstraintShapeField bottomConstraintField = new ConstraintShapeField("BottomConstraints", ConstraintAttachPosition.Bottom);
@@ -3396,17 +3429,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public override string GetFieldAccessibleName(ShapeField field)
 		{
-			// UNDONE: Localize these values
-			ConstraintShapeField constraintField;
-			if (null != (constraintField = field as ConstraintShapeField))
-			{
-				return "Constraints";
-			}
-			else if (field is RolesShapeField)
-			{
-				return "Roles";
-			}
-			return base.GetFieldAccessibleName(field);
+			return field.Name;
 		}
 		/// <summary>
 		/// Get the accessible value for a shape field

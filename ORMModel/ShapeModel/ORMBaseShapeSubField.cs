@@ -30,7 +30,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// Implement to receive mouse move notifications from <see cref="ORMBaseShapeSubField"/>s.
 	/// </summary>
-	public interface IHandleSubFieldMoveMove
+	public interface IHandleSubFieldMouseMove
 	{
 		/// <summary>
 		/// Called from <see cref="ShapeSubField.OnMouseMove"/> in <see cref="ORMBaseShapeSubField"/>.
@@ -39,12 +39,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	/// <summary>
 	/// <see cref="ShapeSubField"/> that calls back to parent shape from <see cref="OnMouseMove"/>
-	/// if parent shape implements <see cref="IHandleSubFieldMoveMove"/>.
+	/// if parent shape implements <see cref="IHandleSubFieldMouseMove"/>.
 	/// </summary>
 	public abstract class ORMBaseShapeSubField : ShapeSubField
 	{
 		/// <summary>
-		/// Calls back to parent's implementation of <see cref="IHandleSubFieldMoveMove.OnSubFieldMouseMove"/>.
+		/// Calls back to parent's implementation of <see cref="IHandleSubFieldMouseMove.OnSubFieldMouseMove"/>.
 		/// </summary>
 		public override void OnMouseMove(DiagramMouseEventArgs e)
 		{
@@ -52,7 +52,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			DiagramItem diagramItem = e.DiagramHitTestInfo.HitDiagramItem;
 			if (diagramItem != null && diagramItem.Field != null)
 			{
-				IHandleSubFieldMoveMove handlerShape = diagramItem.Shape as IHandleSubFieldMoveMove;
+				IHandleSubFieldMouseMove handlerShape = diagramItem.Shape as IHandleSubFieldMouseMove;
 				if (handlerShape != null)
 				{
 					handlerShape.OnSubFieldMouseMove(diagramItem.Field, diagramItem.SubField, e);

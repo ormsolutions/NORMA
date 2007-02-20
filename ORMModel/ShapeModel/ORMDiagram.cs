@@ -1439,7 +1439,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return TypeDescriptor.GetClassName(this);
+				return ResourceStrings.ORMDiagramAccessibleName;
 			}
 		}
 		/// <summary>
@@ -1449,7 +1449,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return TypeDescriptor.GetComponentName(this);
+				return this.Name;
 			}
 		}
 		#endregion // Accessibility Properties

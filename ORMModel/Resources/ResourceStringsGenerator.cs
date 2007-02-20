@@ -25,7 +25,15 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Toolbox.DefaultTabName");
+				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "ORM DesignerToolboxTab");
+			}
+		}
+		/// <summary>The accessible name for a diagram</summary>
+		public static string ORMDiagramAccessibleName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName");
 			}
 		}
 		/// <summary>The display name used for an ObjectType when IsValueType is false</summary>

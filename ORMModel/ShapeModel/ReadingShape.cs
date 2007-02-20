@@ -347,8 +347,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
 			base.InitializeShapeFields(shapeFields);
-			DirectionIndicatorField leftField = new DirectionIndicatorField("", true);
-			DirectionIndicatorField rightField = new DirectionIndicatorField("", false);
+			// UNDONE: Localize field names, used only for accessibility display
+			DirectionIndicatorField leftField = new DirectionIndicatorField("LeftDirectionIndicator", true);
+			DirectionIndicatorField rightField = new DirectionIndicatorField("RightDirectionIndicator", false);
 			shapeFields.Add(leftField);
 			shapeFields.Add(rightField);
 			AnchoringBehavior behavior = leftField.AnchoringBehavior;
@@ -377,6 +378,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				return retVal;
 			}
+		}
+		/// <summary>
+		/// Get the accessible name for a shape field
+		/// </summary>
+		public override string GetFieldAccessibleName(ShapeField field)
+		{
+			return field.Name;
 		}
 		#endregion // Base Overrides
 		#region Helper methods

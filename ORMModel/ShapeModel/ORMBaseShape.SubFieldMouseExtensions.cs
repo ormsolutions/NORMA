@@ -25,7 +25,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// framework and would be more consistent there because virtual methods
 	/// for these events could appear directly on ShapeSubField.
 	/// </summary>
-	public partial class ORMBaseShape : IHandleSubFieldMoveMove
+	public partial class ORMBaseShape : IHandleSubFieldMouseMove
 	{
 		#region Extension to add SubShape Enter/Leave/Hover events
 		/// <summary>

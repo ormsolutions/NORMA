@@ -102,20 +102,6 @@ namespace Neumont.Tools.ORM
 			}
 		}
 
-		// UNDONE: 2006-06 DSL Tools port: ResourceManagers have been temporarily redirected until we port the resx files.
-		private static ResourceManager myShapeModelResourceManager;
-		private static ResourceManager ShapeModelResourceManager
-		{
-			get
-			{
-				if (myShapeModelResourceManager == null)
-				{
-					LoadResourceManagerForType(ref myShapeModelResourceManager, typeof(ORMShapeDomainModel));
-				}
-				return myShapeModelResourceManager;
-			}
-		}
-
 		#endregion // Non-IMS ResourceManagers
 
 		#region Helper functions
@@ -128,8 +114,7 @@ namespace Neumont.Tools.ORM
 					//return ORMCoreDomainModel.SingletonResourceManager;
 					return CoreModelResourceManager;
 				case ResourceManagers.ShapeModel:
-					//return ORMShapeDomainModel.SingletonResourceManager;
-					return ShapeModelResourceManager;
+					return ORMShapeDomainModel.SingletonResourceManager;
 				case ResourceManagers.Diagram:
 					return DiagramResourceManager;
 				case ResourceManagers.Model:

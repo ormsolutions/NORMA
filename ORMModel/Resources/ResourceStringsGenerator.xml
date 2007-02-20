@@ -55,7 +55,7 @@
 								</xs:element>
 							</xs:sequence>
 							<xs:attribute name="name" type="xs:NCName" use="required"/>
-							<xs:attribute name="resourceName" type="xs:NCName" use="required"/>
+							<xs:attribute name="resourceName" type="xs:token" use="required"/>
 							<xs:attribute name="model" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:NCName">
@@ -72,8 +72,11 @@
 			</xs:complexType>
 		</xs:element>
 	</xs:schema>
-	<ResourceString name="ToolboxDefaultTabName" resourceName="Toolbox.DefaultTabName" model="ShapeModel">
+	<ResourceString name="ToolboxDefaultTabName" resourceName="ORM DesignerToolboxTab" model="ShapeModel">
 		<comment type="summary">The tab name for default toolbox</comment>
+	</ResourceString>
+	<ResourceString name="ORMDiagramAccessibleName" resourceName="Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName" model="ShapeModel">
+		<comment type="summary">The accessible name for a diagram</comment>
 	</ResourceString>
 	<ResourceString name="ValueType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType">
 		<comment type="summary">The display name used for an ObjectType when IsValueType is false</comment>
