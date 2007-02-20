@@ -38,7 +38,6 @@ namespace Neumont.Tools.ORM.Shell
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
-			this.ckLaunchCustomPropertiesEditor = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// lvExtensions
@@ -110,17 +109,6 @@ namespace Neumont.Tools.ORM.Shell
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			// 
-			// ckLaunchCustomPropertiesEditor
-			// 
-			this.ckLaunchCustomPropertiesEditor.AutoSize = true;
-			this.ckLaunchCustomPropertiesEditor.Enabled = false;
-			this.ckLaunchCustomPropertiesEditor.Location = new System.Drawing.Point(12, 317);
-			this.ckLaunchCustomPropertiesEditor.Name = "ckLaunchCustomPropertiesEditor";
-			this.ckLaunchCustomPropertiesEditor.Size = new System.Drawing.Size(180, 17);
-			this.ckLaunchCustomPropertiesEditor.TabIndex = 4;
-			this.ckLaunchCustomPropertiesEditor.Text = "Launch Custom Properties Editor";
-			this.ckLaunchCustomPropertiesEditor.UseVisualStyleBackColor = true;
-			// 
 			// ExtensionManager
 			// 
 			this.AcceptButton = this.btnOK;
@@ -128,7 +116,6 @@ namespace Neumont.Tools.ORM.Shell
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(534, 339);
-			this.Controls.Add(this.ckLaunchCustomPropertiesEditor);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.label1);
@@ -139,7 +126,6 @@ namespace Neumont.Tools.ORM.Shell
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ExtensionManager";
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -152,6 +138,5 @@ namespace Neumont.Tools.ORM.Shell
 		private System.Windows.Forms.ColumnHeader columnHeader6;
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
-		private System.Windows.Forms.CheckBox ckLaunchCustomPropertiesEditor;
 	}
 }

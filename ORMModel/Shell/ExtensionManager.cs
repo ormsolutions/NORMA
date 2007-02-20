@@ -134,15 +134,6 @@ namespace Neumont.Tools.ORM.Shell
 						stream.Dispose();
 					}
 				}
-
-				if (extensionManager.ckLaunchCustomPropertiesEditor.Checked)
-				{
-					Type customPropertyDomainModelType = ORMDesignerPackage.GetExtensionDomainModel("http://schemas.neumont.edu/ORM/Preview/CustomProperties");
-					Store store = docData.Store;
-
-					customPropertyDomainModelType.InvokeMember("ShowCustomGroups", System.Reflection.BindingFlags.ExactBinding | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.InvokeMethod,
-									null, null, new object[] { store });
-				}
 			}
 		}
 		/// <summary>
@@ -325,24 +316,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			return retVal;
-		}
-
-
-		private void lvExtensions_ItemChecked(object sender, ItemCheckedEventArgs e)
-		{
-			ListViewItem lvi = e.Item;
-			if (lvi.SubItems[1].Text.ToLower() == "custom properties")
-			{
-				if (lvi.Checked)
-				{
-					ckLaunchCustomPropertiesEditor.Enabled = true;
-				}
-				else
-				{
-					ckLaunchCustomPropertiesEditor.Checked = false;
-					ckLaunchCustomPropertiesEditor.Enabled = false;
-				}
-			}
 		}
 	}
 }

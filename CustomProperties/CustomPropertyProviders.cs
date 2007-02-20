@@ -93,6 +93,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 			{
 				GetProvidedProperties(ORMTypes.ValueConstraint, extendableElement, properties);
 			};
+			public static readonly ORMPropertyProvisioning CustomPropertiesEditor = delegate(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+			{
+				properties.Add(CustomPropertiesEditorPropertyDescriptor.Instance);
+			};
 		}
 		#endregion // CustomPropertyProviders class
 
@@ -102,6 +106,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			IORMPropertyProviderService propertyProvisioningService = ((IORMToolServices)this.Store).PropertyProviderService;
 			if (action == EventHandlerAction.Add)
 			{
+				propertyProvisioningService.RegisterPropertyProvider<ORMModel>(CustomPropertyProviders.CustomPropertiesEditor, true);
 				propertyProvisioningService.RegisterPropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true);
 				propertyProvisioningService.RegisterPropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true);
 				propertyProvisioningService.RegisterPropertyProvider<FactType>(CustomPropertyProviders.FactType, false);
@@ -117,6 +122,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 			else
 			{
+				propertyProvisioningService.UnregisterPropertyProvider<ORMModel>(CustomPropertyProviders.CustomPropertiesEditor, true);
 				propertyProvisioningService.UnregisterPropertyProvider<ObjectType>(CustomPropertyProviders.ObjectType, true);
 				propertyProvisioningService.UnregisterPropertyProvider<SubtypeFact>(CustomPropertyProviders.SubtypeFact, true);
 				propertyProvisioningService.UnregisterPropertyProvider<FactType>(CustomPropertyProviders.FactType, false);
@@ -141,9 +147,113 @@ namespace Neumont.Tools.ORM.CustomProperties
 		}
 		#endregion
 
-		private static void ShowCustomGroups(Store store)
+		private sealed class CustomPropertiesEditorPropertyDescriptor : PropertyDescriptor
 		{
-			CustomPropertiesManager.ShowCustomGroups(store);
+			private sealed class CustomPropertiesEditorUITypeEditor : UITypeEditor
+			{
+				public static readonly CustomPropertiesEditorUITypeEditor Instance = new CustomPropertiesEditorUITypeEditor();
+				private CustomPropertiesEditorUITypeEditor()
+					: base()
+				{
+				}
+
+				public sealed override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+				{
+					return UITypeEditorEditStyle.Modal;
+				}
+				public sealed override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+				{
+					if (context != null)
+					{
+						ModelElement element = EditorUtility.ResolveContextInstance(context.Instance, false) as ModelElement;
+						if (element != null)
+						{
+							CustomPropertiesManager.ShowCustomGroups(element.Store, provider);
+						}
+					}
+					return value;
+				}
+			}
+
+			public static readonly CustomPropertiesEditorPropertyDescriptor Instance = new CustomPropertiesEditorPropertyDescriptor();
+			private CustomPropertiesEditorPropertyDescriptor()	: base("CustomPropertiesEditor", null)
+			{
+			}
+
+			public sealed override bool CanResetValue(object component)
+			{
+				return false;
+			}
+			public sealed override bool ShouldSerializeValue(object component)
+			{
+				return false;
+			}
+			public sealed override string DisplayName
+			{
+				get
+				{
+					return CustomPropertyProvidersResources.DisplayName;
+				}
+			}
+			public sealed override string Category
+			{
+				get
+				{
+					return CustomPropertyProvidersResources.Category;
+				}
+			}
+			public sealed override string Description
+			{
+				get
+				{
+					return CustomPropertyProvidersResources.Description;
+				}
+			}
+			public sealed override object GetValue(object component)
+			{
+				return null;
+			}
+			public sealed override object GetEditor(Type editorBaseType)
+			{
+				if (editorBaseType == typeof(UITypeEditor))
+				{
+					return CustomPropertiesEditorUITypeEditor.Instance;
+				}
+				else
+				{
+					return base.GetEditor(editorBaseType);
+				}
+			}
+
+			public sealed override Type ComponentType
+			{
+				get
+				{
+					return typeof(ORMModel);
+				}
+			}
+			public sealed override bool IsReadOnly
+			{
+				get
+				{
+					return false;
+				}
+			}
+			public sealed override Type PropertyType
+			{
+				get
+				{
+					return typeof(object);
+				}
+			}
+			public sealed override void ResetValue(object component)
+			{
+				// Do nothing.
+			}
+			public sealed override void SetValue(object component, object value)
+			{
+				// Do nothing.
+			}
 		}
 	}
 }

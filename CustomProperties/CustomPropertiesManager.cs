@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
-using System.Xml;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
+using System.Xml;
 using Microsoft.VisualStudio.Modeling;
-using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.CustomProperties
 {
@@ -479,11 +479,16 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// and in the specified model.
 		/// </summary>
 		/// <param name="store">The store for the current model.</param>
-		public static void ShowCustomGroups(Store store)
+		/// <param name="serviceProvider">The service provider to use to display the form.</param>
+		public static void ShowCustomGroups(Store store, IServiceProvider serviceProvider)
 		{
 			if (store == null)
 			{
 				return;
+			}
+			if (serviceProvider == null)
+			{
+				serviceProvider = store;
 			}
 			using (Transaction t = store.TransactionManager.BeginTransaction())
 			{
@@ -505,7 +510,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 					}
 					else
 					{
-						_loadedDoc.AppendChild(_loadedDoc.CreateXmlDeclaration("1.0", "UTF-8", string.Empty));
+						_loadedDoc.AppendChild(_loadedDoc.CreateXmlDeclaration("1.0", "utf-8", string.Empty));
 						XmlNode newGroups = _loadedDoc.CreateNode("element", "CustomPropertyGroups", CustomPropertiesDomainModel.XmlNamespace);
 						_loadedDoc.AppendChild(newGroups);
 					}
@@ -552,7 +557,19 @@ namespace Neumont.Tools.ORM.CustomProperties
 
 				mgr.ApplyDefaultGroups();
 
-				if (mgr.ShowDialog() == DialogResult.OK)
+				bool saveChanges = false;
+				IWindowsFormsEditorService windowsFormsEditorService = serviceProvider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+				IUIService uiService;
+				if (windowsFormsEditorService != null)
+				{
+					saveChanges = (windowsFormsEditorService.ShowDialog(mgr) == DialogResult.OK);
+				}
+				else if ((uiService = serviceProvider.GetService(typeof(IUIService)) as IUIService) != null)
+				{
+					saveChanges = (uiService.ShowDialog(mgr) == DialogResult.OK);
+				}
+				
+				if (saveChanges)
 				{
 					t.Commit();
 				}
