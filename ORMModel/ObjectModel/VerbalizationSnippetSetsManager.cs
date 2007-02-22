@@ -339,6 +339,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // VerbalizationSnippetsProviderAttribute class
 
 	#region VerbalizationSnippetsIdentifier struct
+    /// <summary>
+    /// Determines what target the Verbalization Set applies to
+    /// </summary>
+    public enum VerbalizationSnippetsIdentifierTarget
+    {
+        /// <summary>
+        /// Specifies the verbalization snippet set to be used with the ORM Verbalization Browser
+        /// </summary>
+        VerbalizationBrowser,
+        /// <summary>
+        /// Specifies the verbalization snippet set to be used with the Verbalization Reports
+        /// </summary>
+        Report
+    }
 	/// <summary>
 	/// A unique identifier for verbalization snippets
 	/// </summary>
@@ -349,6 +363,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private string myLangId;
 		private string myId;
 		private string myDescription;
+        private VerbalizationSnippetsIdentifierTarget myTarget;
 		private const string DefaultLanguageId = "en-US";
 		private const string DefaultId = "_default";
 		#endregion // Member Variables
@@ -360,7 +375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		public VerbalizationSnippetsIdentifier(Type enumType, string languageId, string id)
-			: this(enumType, languageId, id, null)
+			: this(enumType, languageId, id, null, VerbalizationSnippetsIdentifierTarget.VerbalizationBrowser)
 		{
 		}
 		/// <summary>
@@ -370,7 +385,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		/// <param name="description">A displayable description for this identifier</param>
-		public VerbalizationSnippetsIdentifier(Type enumType, string languageId, string id, string description)
+        /// <param name="target">The target output of the Verbalization Snippets set</param>
+		public VerbalizationSnippetsIdentifier(Type enumType, string languageId, string id, string description, VerbalizationSnippetsIdentifierTarget target)
 		{
 			if (enumType == null)
 			{
@@ -389,6 +405,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			myLangId = languageId;
 			myId = id;
 			myDescription = description;
+            myTarget = target;
 		}
 		/// <summary>
 		/// Create a snippets identifier from a type name
@@ -397,7 +414,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		public VerbalizationSnippetsIdentifier(string enumTypeName, string languageId, string id)
-			: this(enumTypeName, languageId, id, null)
+			: this(enumTypeName, languageId, id, null, VerbalizationSnippetsIdentifierTarget.VerbalizationBrowser)
+		{
+		}
+        /// <summary>
+		/// Create a snippets identifier from a type name
+		/// </summary>
+		/// <param name="enumTypeName">The namespace-qualified name of an enum representing the snippets</param>
+		/// <param name="languageId">The name of the language identifying the snippets</param>
+		/// <param name="id">The identifier for the snippets</param>
+        /// <param name="target">The target output of the Verbalization Snippets set</param>
+        public VerbalizationSnippetsIdentifier(string enumTypeName, string languageId, string id, VerbalizationSnippetsIdentifierTarget target)
+			: this(enumTypeName, languageId, id, null, target)
 		{
 		}
 		/// <summary>
@@ -407,7 +435,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="languageId">The name of the language identifying the snippets</param>
 		/// <param name="id">The identifier for the snippets</param>
 		/// <param name="description">A displayable description for this identifier</param>
-		public VerbalizationSnippetsIdentifier(string enumTypeName, string languageId, string id, string description)
+        /// <param name="target">The target output of the Verbalization Snippets set</param>
+		public VerbalizationSnippetsIdentifier(string enumTypeName, string languageId, string id, string description, VerbalizationSnippetsIdentifierTarget target)
 		{
 			if (enumTypeName == null)
 			{
@@ -425,6 +454,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			myLangId = languageId;
 			myId = id;
 			myDescription = null;
+            myTarget = target;
 		}
 		#endregion // Constructors
 		#region Accessor Properties
@@ -457,7 +487,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>VerbalizationSnippetsIdentifier with default language and id</returns>
 		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(Type enumType, string description)
 		{
-			return new VerbalizationSnippetsIdentifier(enumType, DefaultLanguageId, DefaultId, description);
+			return new VerbalizationSnippetsIdentifier(enumType, DefaultLanguageId, DefaultId, description, VerbalizationSnippetsIdentifierTarget.VerbalizationBrowser);
 		}
 		/// <summary>
 		/// Create a default identifier for the specified enum type name
@@ -467,7 +497,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>VerbalizationSnippetsIdentifier with default language and id</returns>
 		public static VerbalizationSnippetsIdentifier CreateDefaultIdentifier(string enumTypeName, string description)
 		{
-			return new VerbalizationSnippetsIdentifier(enumTypeName, DefaultLanguageId, DefaultId, description);
+			return new VerbalizationSnippetsIdentifier(enumTypeName, DefaultLanguageId, DefaultId, description, VerbalizationSnippetsIdentifierTarget.VerbalizationBrowser);
 		}
 		/// <summary>
 		/// The qualified name of the enum type representing the verbalization snippets
@@ -509,6 +539,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return myDescription;
 			}
 		}
+        /// <summary>
+        /// The target output of the Verbalization Snippets set
+        /// </summary>
+        public VerbalizationSnippetsIdentifierTarget Target
+        {
+            get
+            {
+                return myTarget;
+            }
+        }
 		#endregion // Accessor Properties
 		#region Utility Functions
 		/// <summary>
@@ -534,7 +574,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						string[] fields = ids[i].Split(separators, StringSplitOptions.RemoveEmptyEntries);
 						Debug.Assert(fields.Length == 3, "The string passed to ParseIdentifiers must be saved with SaveIdentifiers");
-						retVal[i] = new VerbalizationSnippetsIdentifier(fields[0], fields[1], fields[2]);
+						retVal[i] = new VerbalizationSnippetsIdentifier(fields[0], fields[1], fields[2], (VerbalizationSnippetsIdentifierTarget)Enum.Parse(typeof(VerbalizationSnippetsIdentifierTarget), fields[3]));
 					}
 				}
 			}
@@ -567,6 +607,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sb.Append(identifier.LanguageId);
 						sb.Append(',');
 						sb.Append(identifier.Id);
+                        sb.Append(',');
+                        sb.Append(identifier.Target.ToString());
 					}
 				}
 			}
@@ -652,6 +694,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public const string SignAttribute = "sign";
 			public const string LangAttribute = "xml:lang";
 			public const string NameAttribute = "name";
+            public const string TargetAttribute = "target";
 			public const string DescriptionAttribute = "description";
 			public const string BaseSnippetsNameAttribute = "baseSnippetsName";
 			public const string BaseSnippetsLanguageAttribute = "baseSnippetsLanguage";
@@ -717,6 +760,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public readonly string SignAttribute;
 			public readonly string LangAttribute;
 			public readonly string NameAttribute;
+            public readonly string TargetAttribute;
 			public readonly string DescriptionAttribute;
 			public readonly string BaseSnippetsNameAttribute;
 			public readonly string BaseSnippetsLanguageAttribute;
@@ -735,6 +779,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SignAttribute = Add(VerbalizationSnippetSets.SignAttribute);
 				LangAttribute = Add(VerbalizationSnippetSets.LangAttribute);
 				NameAttribute = Add(VerbalizationSnippetSets.NameAttribute);
+                TargetAttribute = Add(VerbalizationSnippetSets.TargetAttribute);
 				DescriptionAttribute = Add(VerbalizationSnippetSets.DescriptionAttribute);
 				BaseSnippetsNameAttribute = Add(VerbalizationSnippetSets.BaseSnippetsNameAttribute);
 				BaseSnippetsLanguageAttribute = Add(VerbalizationSnippetSets.BaseSnippetsLanguageAttribute);
@@ -1328,6 +1373,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			string name = reader.GetAttribute(names.NameAttribute);
 			string description = reader.GetAttribute(names.DescriptionAttribute);
+            string target = reader.GetAttribute(names.TargetAttribute);
 			string baseName = reader.GetAttribute(names.BaseSnippetsNameAttribute);
 			string baseLang = reader.GetAttribute(names.BaseSnippetsLanguageAttribute);
 			if (identifiersOnly)
@@ -1359,7 +1405,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (identifiersOnly || retVal.Snippets != null)
 			{
-				retVal.Id = new VerbalizationSnippetsIdentifier(typeof(TEnum), languageId, name, description);
+				retVal.Id = new VerbalizationSnippetsIdentifier(typeof(TEnum), languageId, name, description, 
+                    ((target != null) ? (VerbalizationSnippetsIdentifierTarget)Enum.Parse(typeof(VerbalizationSnippetsIdentifierTarget), target) : VerbalizationSnippetsIdentifierTarget.VerbalizationBrowser));
 				retVal.BaseId = new VerbalizationSnippetsIdentifier(typeof(TEnum), baseLang, baseName);
 			}
 			return retVal;

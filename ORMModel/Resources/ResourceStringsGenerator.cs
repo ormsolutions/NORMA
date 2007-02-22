@@ -916,6 +916,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.SnippetsTypeDescription");
 			}
 		}
+		/// <summary>The description for the default verbalization report snippets for the core model.</summary>
+		public static string VerbalizationReportSnippetsDefaultDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.ReportSnippetsDefaultDescription");
+			}
+		}
+		/// <summary>The description for the verbalization report snippets associated with the core model.</summary>
+		public static string VerbalizationReportSnippetsTypeDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.ReportSnippetsTypeDescription");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</summary>
 		public static string ModelExceptionFactTypeInstanceInconsistentRoleOwners
 		{

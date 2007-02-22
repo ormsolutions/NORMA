@@ -35,6 +35,7 @@
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevJSharpComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationCoreComponent"/>
+			<ComponentRef Id="NORMAVSVerbalizationReportComponent"/>
 			<ComponentRef Id="NORMAVSOIALModelExtensionComponent"/>
 			<ComponentRef Id="NORMAVSRelationalViewExtensionComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesExtensionComponent"/>

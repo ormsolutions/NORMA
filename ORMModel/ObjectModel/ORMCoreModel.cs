@@ -510,7 +510,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						CoreVerbalizationSets.Default,
 						"Core",
 						ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
-						ResourceStrings.CoreVerbalizationSnippetsDefaultDescription)
+						ResourceStrings.CoreVerbalizationSnippetsDefaultDescription
+                    ),
+                    new VerbalizationSnippetsData(
+						typeof(ReportVerbalizationSnippetType),
+						ReportVerbalizationSets.Default,
+						"Report",
+						ResourceStrings.VerbalizationReportSnippetsTypeDescription,
+						ResourceStrings.VerbalizationReportSnippetsDefaultDescription
+                    )
 				};
 			}
 			VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()

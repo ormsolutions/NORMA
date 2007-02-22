@@ -744,4 +744,63 @@
     <value>Core ORM Verbalization Snippets</value>
     <comment>The description for the verbalization snippets associated with the core model.</comment>
   </data>
+	<data name="Verbalization.ReportSnippetsDefaultDescription" xml:space="preserve">
+    <value>Default Report</value>
+    <comment>The description for the default verbalization report snippets.</comment>
+  </data>
+	<data name="Verbalization.ReportSnippetsTypeDescription" xml:space="preserve">
+    <value>ORM Verbalization Report Snippets</value>
+    <comment>The description for the snippets associated with the verbalization reports.</comment>
+  </data>
+	<data name="VerbalizationReportContent.All" xml:space="preserve">
+		<value>All Model Elements</value>
+	</data>
+	<data name="VerbalizationReportContent.AllConstraints" xml:space="preserve">
+		<value>All Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.AllSetComparisonConstraints" xml:space="preserve">
+		<value>All Set Comparison Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.AllSetConstraints" xml:space="preserve">
+		<value>All Set Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.DisjunctiveMandatoryConstraints" xml:space="preserve">
+		<value>InclusiveOr Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.EqualityConstraints" xml:space="preserve">
+		<value>Equality Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.ExclusionConstraints" xml:space="preserve">
+		<value>Exclusion Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.ExternalUniquenessConstraints" xml:space="preserve">
+		<value>External Uniqueness Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.FactTypes" xml:space="preserve">
+		<value>Fact Types</value>
+	</data>
+	<data name="VerbalizationReportContent.FrequencyConstraints" xml:space="preserve">
+		<value>Frequency Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.InternalUniquenessConstraints" xml:space="preserve">
+		<value>Internal Uniqueness Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.ObjectTypes" xml:space="preserve">
+		<value>Object Types</value>
+	</data>
+	<data name="VerbalizationReportContent.RingConstraints" xml:space="preserve">
+		<value>Ring Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.SimpleMandatoryConstraints" xml:space="preserve">
+		<value>Simple Mandatory Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.SubsetConstraints" xml:space="preserve">
+		<value>Subset Constraints</value>
+	</data>
+	<data name="VerbalizationReportContent.SuperTypes" xml:space="preserve">
+		<value>Super Types</value>
+	</data>
+	<data name="VerbalizationReportContent.ValidationReport" xml:space="preserve">
+		<value>Validation Report</value>
+	</data>
 </root>

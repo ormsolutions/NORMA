@@ -263,11 +263,21 @@
 								</Component>
 								<Directory Id="CoreVerbalization" Name="Core">
 									<Component Id="NORMAVSVerbalizationCoreComponent" Guid="45D2041A-3025-41E6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-										<File Id="_default.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
+										<File Id="VrbCrDef.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="VrbCrRep.xml" Name="VrbCrRep.xml" LongName="ReportSnippets.xml"  src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="VerbalizationCoreSnippets.xsd" Name="VrbCrSnp.xsd" LongName="VerbalizationCoreSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="VerbalizationCoreSnippetsDocumentation.html" Name="VrbCrSnD.htm" LongName="VerbalizationCoreSnippetsDocumentation.html"  src="..\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									</Component>
+								</Directory>
+								<Directory Id="ReportVerbalization" Name="Report">
+									<Component Id="NORMAVSVerbalizationReportComponent" Guid="6F50F477-F95B-45AE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+										<File Id="VrbReDef.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="VerbalizationReportSnippets.xsd" Name="VrbReSnp.xsd" LongName="VerbalizationReportSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 									</Component>
 								</Directory>

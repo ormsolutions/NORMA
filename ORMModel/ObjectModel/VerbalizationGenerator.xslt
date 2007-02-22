@@ -24,15 +24,11 @@
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:preserve-space elements="cvg:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
-<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
+<xsl:param name="CustomToolNamespace" select="'Neumont.Tools.ORM.ObjectModel'"/>
 
 	<!-- Names of the different classes we generate -->
 	<xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationSnippetType'"/>
-	<xsl:param name="VerbalizationSet" select="'VerbalizationSet'"/>
-	<xsl:param name="VerbalizationSets" select="'VerbalizationSets'"/>
 	<xsl:param name="CoreVerbalizationSets" select="'CoreVerbalizationSets'"/>
-	<xsl:param name="ArrayVerbalizationSet" select="'ArrayVerbalizationSet'"/>
-	<xsl:param name="DictionaryVerbalizationSet" select="'DictionaryVerbalizationSet'"/>
 
 	<!-- Parts of variable names used in generated code. These
 		 names are decorated with position numbers and allow multiple
@@ -71,9 +67,16 @@
 					</plx:leadingInfo>
 				</xsl:if>
 				<!-- Generate verbalization set classes and default populations -->
-				<xsl:call-template name="GenerateVerbalizationSets"/>
+				<xsl:call-template name="GenerateVerbalizationSets">
+					<xsl:with-param name="SnippetEnumTypeName" select="$VerbalizationTextSnippetType"/>
+					<xsl:with-param name="VerbalizationSetName" select="$CoreVerbalizationSets"/>
+					<xsl:with-param name="SnippetsLocation" select="@snippetsLocation"/>
+				</xsl:call-template>
 				<!-- Generate verbalization implementations for all constructs -->
 				<xsl:call-template name="GenerateVerbalizationClasses"/>
+				<!-- Generate verbalization set classes and default populations -->
+				<!--<xsl:call-template name="GenerateVerbalizationReportSets"/>-->
+				
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>
@@ -119,7 +122,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -150,10 +153,10 @@
 		</plx:class>
 	</xsl:template>
 	<xsl:template name="DeclareSnippetsLocal">
-		<plx:local name="snippets" dataTypeName="I{$VerbalizationSets}">
+		<plx:local name="snippets" dataTypeName="IVerbalizationSets">
 			<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
 			<plx:initialize>
-				<plx:cast dataTypeName="I{$VerbalizationSets}">
+				<plx:cast dataTypeName="IVerbalizationSets">
 					<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
 					<plx:callInstance type="indexerCall" name=".implied">
 						<plx:callObject>
@@ -202,7 +205,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -274,7 +277,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -396,7 +399,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -478,7 +481,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -524,7 +527,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -607,7 +610,7 @@
 				<plx:param name="writer" dataTypeName="TextWriter"/>
 				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
 					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>

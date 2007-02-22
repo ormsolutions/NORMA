@@ -232,7 +232,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// Expand the diagram list for the selected shape
 		/// </summary>
 		DiagramList = 0x40000000000,
-		/// <summary>
+        /// <summary>
+        /// Run the report generator
+        /// </summary>
+        GenerateReport = 0x80000000000,
+        /// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
@@ -274,7 +278,7 @@ namespace Neumont.Tools.ORM.Shell
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
 			ORMDesignerCommands.CopyImage |
-			ORMDesignerCommands.DisplayOrientation |
+            ORMDesignerCommands.DisplayOrientation |
 			ORMDesignerCommands.DisplayConstraintsPosition |
 			ORMDesignerCommands.ExclusiveOrDecoupler |
 			ORMDesignerCommands.SelectAll |
@@ -282,7 +286,8 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerCommands.AutoLayout |
 			ORMDesignerCommands.AddInternalUniqueness |
 			ORMDesignerCommands.ToggleSimpleMandatory |
-			ORMDesignerCommands.DeleteAny |
+            ORMDesignerCommands.GenerateReport |
+            ORMDesignerCommands.DeleteAny |
 			ORMDesignerCommands.DeleteAnyShape |
 			ORMDesignerCommands.DeleteShape |
 			(ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
@@ -1031,8 +1036,8 @@ namespace Neumont.Tools.ORM.Shell
 				enabledCommands |= ORMDesignerCommands.DiagramList;
 			}
 			// Turn on standard commands for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.GenerateReport;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.GenerateReport;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -1969,7 +1974,26 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements);
 		}
-		/// <summary>
+        /// <summary>
+        /// Run the report generator
+        /// </summary>
+        protected virtual void OnMenuGenerateReport()
+        {
+            Diagram diagram;
+            ORMModel model;
+            if (null != (diagram = CurrentDiagram) &&
+                null != (model = diagram.ModelElement as ORMModel))
+            {
+                IServiceProvider provider;
+                System.Windows.Forms.Design.IUIService uiService;
+                if (null != (provider = (model.Store as IORMToolServices).ServiceProvider) &&
+                        null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
+                {
+                    uiService.ShowDialog(new GenerateReportDialog(model));
+                }
+            }
+        }
+        /// <summary>
 		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
 		/// the <see cref="Diagram"/> specified by <paramref name="diagram"/>.
 		/// </summary>
@@ -2403,7 +2427,6 @@ namespace Neumont.Tools.ORM.Shell
 				break; // Single-select command
 			}
 		}
-
 		#region OnMenuCopyImage method and support
 		#region UnsafeNativeMethods
 		[System.Security.SuppressUnmanagedCodeSecurity]

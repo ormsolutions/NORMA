@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:redefine schemaLocation="../VerbalizationUntypedSnippets.xsd">
+		<xs:simpleType name="SnippetTypeEnum">
+			<xs:restriction base="SnippetTypeEnum">
+				<xs:enumeration value="ObjectTypePageHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Header for the individual Object Type Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypePageFactTypeListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet for the sub-header for the listing of Fact Types on an individual Object Type Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypePageFactTypeListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet for the sub-header for the listing of Fact Types on an individual Object Type Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeListHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Header for the Object Type List Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeListFooter">
+					<xs:annotation>
+						<xs:documentation>Description: Footer for the Object Type List Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypePageHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Header for the individual Fact Type Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypePageObjectTypeListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet for the list of role players for a given fact on an individual Fact Type page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypePageObjectTypeListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet for the list of role players for a given fact on an individual Fact Type page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Header for the Fact Type List Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListFooter">
+					<xs:annotation>
+						<xs:documentation>Description: Footer for the Fact Type List Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeListFooter">
+					<xs:annotation>
+						<xs:documentation>Description: Footer for the Fact Type List Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeConstraintValidationHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Header for the Constraint Validation Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeConstraintValidationListItemOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet for the list of Fact Types on the Constraint Validation Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeConstraintValidationListItemClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet for the list of Fact Types on the Constraint Validation Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeConstraintValidationListSpacer">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a space between elements in the list of Fact Types on the Constraint Validation Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeConstraintValidationSignature">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a signature line on the Constraint Validation Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSummaryOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a summary section on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSummaryClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a summary section on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericConstraintListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a list of Constraints on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericConstraintListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a list of Constraints on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericConstraintListItemOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create an item in a list of Constraints on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericConstraintListItemClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create an item in a list of Constraints on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericRelationshipsListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a list of related Object Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericRelationshipsListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a list of related Object Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSamplePopulationOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a list of related Object Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSuperTypeListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a list of Super Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSuperTypeListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a list of Super Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSubTypeListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a list of Sub Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericSubTypeListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a list of Sub Types on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericListItemLink">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a list item with a hyperlink on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericListItemOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a list item on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericListItemClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a list item on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EmptyContentListItemSnippet">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a list item displaying no content on any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeValueLink">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any Object Type Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeListObjectTypeValueLink">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any top-level Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeRelationshipValueLink">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any bottom-level Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeRelationshipLinkOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Opening snippet used to create a hyperlink from a Fact Type on any bottom-level Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeRelationshipLinkClose">
+					<xs:annotation>
+						<xs:documentation>Description: Closing snippet used to create a hyperlink from a Fact Type on any bottom-level Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReportDocumentHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create the document header for any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReportDocumentFooter">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create the document footer for any Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReportDocumentContents">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create the table of contents section for any top-level Verbalization Report Page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReportDocumentContentsReplacementAll">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a link to all sections of the Verbalization Report</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReportDocumentContentsReplacementObject">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a link to the Object Type section of the Verbalization Report</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReportDocumentContentsReplacementValidation">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a link to the Constraint Validation section of the Verbalization Report</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:redefine>
+</xs:schema>

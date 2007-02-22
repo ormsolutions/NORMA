@@ -408,6 +408,12 @@
 	<ResourceString name="CoreVerbalizationSnippetsTypeDescription" model="Model" resourceName="Verbalization.SnippetsTypeDescription">
 		<comment type="summary">The description for the verbalization snippets associated with the core model.</comment>
 	</ResourceString>
+	<ResourceString name="VerbalizationReportSnippetsDefaultDescription" model="Model" resourceName="Verbalization.ReportSnippetsDefaultDescription">
+		<comment type="summary">The description for the default verbalization report snippets for the core model.</comment>
+	</ResourceString>
+	<ResourceString name="VerbalizationReportSnippetsTypeDescription" model="Model" resourceName="Verbalization.ReportSnippetsTypeDescription">
+		<comment type="summary">The description for the verbalization report snippets associated with the core model.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners">
 		<comment type="summary">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
 	</ResourceString>

@@ -108,6 +108,8 @@
 #define cmdIdExclusiveOrCoupler					0x2927
 #define cmdIdExclusiveOrDecoupler				0x2928
 
+#define cmdIdGenerateReport						0x2929
+
 #define cmdIdErrorList					0x2A00
 #define cmdIdErrorListEnd				0x2AFF
 // Reserve 2a00 range for errors, start additional commands after

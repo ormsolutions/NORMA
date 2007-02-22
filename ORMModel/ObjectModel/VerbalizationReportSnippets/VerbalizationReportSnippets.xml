@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Neumont Object-Role Modeling Architect for Visual Studio
+
+Copyright © Neumont University. All rights reserved.
+
+The use and distribution terms for this software are covered by the
+Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+can be found in the file CPL.txt at the root of this distribution.
+By using this software in any fashion, you are agreeing to be bound by
+the terms of this license.
+
+You must not remove this notice, or any other, from this software.
+-->
+<Languages xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.neumont.edu/ORM/SDK/Verbalization VerbalizationReportSnippets.xsd">
+	<Language xml:lang="en-US">
+		<Snippets name="_default" description="Built-in verbalization report snippets">
+			<!-- Object Type Page Snippets -->
+			<Snippet type="ObjectTypePageHeader">
+				<![CDATA[
+				<div id="header">
+					<div id="objectTypeName">{0}</div>
+					<div id="typeName">Object Type</div>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="ObjectTypePageFactTypeListOpen">
+				<![CDATA[
+				<div class="list">
+				<div class="header">Fact Types</div>
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="ObjectTypePageFactTypeListClose">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="ObjectTypeListHeader">
+				<![CDATA[
+				<div id="header">
+					Object Types
+				</div>
+				<div class="body">
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="ObjectTypeListFooter">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<!-- End Object Type Page Snippets -->
+
+			<!-- Begin Fact Type Page Snippets -->
+			<Snippet type="FactTypePageHeader">
+				<![CDATA[
+				<div id="header">
+					<div id="objectTypeName">&quot;{0}&quot;</div>
+					<div id="typeName">Fact Type</div>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="FactTypePageObjectTypeListOpen">
+				<![CDATA[
+				<div class="list">
+				<div class="header">Role Players</div>
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="FactTypePageObjectTypeListClose">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="FactTypeListHeader">
+				<![CDATA[
+				<div id="header">
+					Fact Types
+				</div>
+				<div class="body">
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="FactTypeListFooter">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<!-- End Fact Type Page Snippets -->
+
+			<!-- Begin FactType/Constraint Validation Report Snippets -->
+			<Snippet type="FactTypeConstraintValidationHeader">
+				<![CDATA[<div id="spaceHeader">Constraint Validation Report</div>]]>
+			</Snippet>
+			<Snippet type="FactTypeConstraintValidationListItemOpen">
+				<![CDATA[
+				<div class="constraintName"><input type="checkbox" name="chkConstraint" value="1"/>&nbsp;<span class="constraintName">{0}</span></div>
+				<div class="constraintHeader">Type:</div>
+				<div class="constraintType">{1}</div>
+				<div class="constraintHeaderNoWrap">Verbalization:</div>
+				<div class="constraintVerbalization">
+				]]>
+			</Snippet>
+			<Snippet type="FactTypeConstraintValidationListItemClose">
+				<![CDATA[
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="FactTypeConstraintValidationListSpacer">
+				<![CDATA[
+				<div class="constraintListSpacer"></div>
+				]]>
+			</Snippet>
+			<Snippet type="FactTypeConstraintValidationSignature">
+				<![CDATA[
+				<div class="signatureLine"></div>
+				<div class="signatureLabel">Signature</div>
+				]]>
+			</Snippet>
+			<!-- End FactType/Constraint Validation Report Snippets -->
+			<!-- Shared Snippets-->
+			<Snippet type="GenericSummaryOpen">
+				<![CDATA[
+					<div class="header">Summary</div>
+					<div class="body">	
+				]]>
+			</Snippet>
+			<Snippet type="GenericSummaryClose"><![CDATA[</div>]]></Snippet>
+			<Snippet type="GenericConstraintListOpen">
+				<![CDATA[
+				<div class="header">Constraints</div>
+					<div class="body">
+				]]>
+			</Snippet>
+			<Snippet type="GenericConstraintListClose">
+				<![CDATA[
+					</div>
+				</div>
+				]]>
+			</Snippet>
+			<!--/**
+				  *	Replacements:
+				  *	0 -> Constraint Name
+				  *	1 -> Constraint Type
+				 */
+			-->
+			<Snippet type="GenericConstraintListItemOpen">
+				<![CDATA[
+				<div class="constraintName"><span class="constraintName">{0}</span></div>
+				<div class="constraintHeader">Type:</div>
+				<div class="constraintType">{1}</div>
+				<div class="constraintHeaderNoWrap">Verbalization:</div>
+				<div class="constraintVerbalization">
+				]]>
+			</Snippet>
+			<Snippet type="GenericConstraintListItemClose">
+				<![CDATA[
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="GenericRelationshipsListOpen">
+				<![CDATA[
+				<div class="list">
+				<div class="header">Relationships</div>
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="GenericRelationshipsListClose">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="GenericSuperTypeListOpen">
+				<![CDATA[
+				<div class="list">
+				<div class="header">Super Types</div>
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="GenericSuperTypeListClose">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="GenericSubTypeListOpen">
+				<![CDATA[
+				<div class="list">
+				<div class="header">Sub Types</div>
+					<ul>
+				]]>
+			</Snippet>
+			<Snippet type="GenericSubTypeListClose">
+				<![CDATA[
+					</ul>
+				</div>
+				]]>
+			</Snippet>
+			<Snippet type="GenericListItemLink">
+				<![CDATA[
+					<li><a href="{0}/{1}.html">{1}</a></li>
+				]]>
+			</Snippet>
+			<Snippet type="GenericListItemOpen"><![CDATA[<li class="ListLink">]]></Snippet>
+			<Snippet type="GenericListItemClose"><![CDATA[</li>]]></Snippet>
+			<Snippet type="EmptyContentListItemSnippet"><![CDATA[<li class="ListLink">There are no items for this section.</li>]]></Snippet>
+			<Snippet type="ObjectTypeValueLink"><![CDATA[<span class="objectType"><a href="{0}.html">{0}</a></span>]]></Snippet>
+			<Snippet type="ObjectTypeListObjectTypeValueLink"><![CDATA[<span class="objectType"><a href="ObjectTypes/{0}.html">{0}</a></span>]]></Snippet>
+			<Snippet type="ObjectTypeRelationshipValueLink"><![CDATA[<span class="objectType"><a href="../ObjectTypes/{0}.html">{0}</a></span>]]></Snippet>
+			<Snippet type="FactTypeRelationshipLinkOpen"><![CDATA[<a href="../FactTypes/{0}.html">]]></Snippet>
+			<Snippet type="FactTypeRelationshipLinkClose"><![CDATA[</a></span>]]></Snippet>
+			<Snippet type="ReportDocumentHeader">
+				<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+						<html xmlns="http://www.w3.org/1999/xhtml">
+						<head>
+							<title>NORMA Verbalization Report</title>
+							<style type="text/css">
+								/*******************************************************
+								* Global Page Styles								   *
+								******************************************************/
+								.verbalization { color: DarkGreen; }
+								.objectType { color: Purple; font-weight: normal; }
+								.objectTypeMissing { color: Purple; font-weight: normal; }
+								.referenceMode { color: Brown; font-weight: normal; }
+								.predicateText { color: DarkGreen; font-weight: normal; }
+								.quantifier { color: MediumBlue; font-weight: bold; }
+								.primaryErrorReport { color: red; font-weight: bolder; }
+								.secondaryErrorReport { color: red; }
+								.indent { left: 20px; position: relative; }
+								.smallIndent { left: 8px; position: relative;}
+								.listSeparator { color: windowtext; font-weight: 200;}
+								.logicalOperator { color: MediumBlue; font-weight: bold;}
+								.note { color: DarkGray; font-style: italic; font-weight: normal; }
+								.notAvailable { font-style: italic; }
+								.instance { color: Brown; font-weight: normal; }
+								
+								div#disclaimer
+								{
+									font-weight:bold;
+									color:#FF0000;
+									padding-bottom:25px;
+									padding-left:20px;
+								}
+								div#spaceHeader
+								{
+									position:relative;
+									border-bottom: 2px solid #FFCE84;
+									margin-bottom: 150px;
+									font-size:18px;
+								}
+								div#header
+								{
+									position:relative;
+									border-bottom: 2px solid #FFCE84;
+									font-size:18px;
+								}
+								div#container
+								{
+									position:relative;
+									width:650px;
+									padding: 0px;
+									overflow:visible;
+								}
+								body,td,th {
+									font-family: Geneva, Arial, Helvetica, sans-serif;
+									font-size: 12px;
+									color: #000000;
+								}
+								body {
+									background-color: #FFFFFF;
+								}
+
+								/*******************************************************
+								* Global Link Styles								   *
+								******************************************************/
+								:link { text-decoration:none; color:#0088B5; }
+								a:active { text-decoration:none; color:#0088B5; }
+								a:hover { text-decoration:none; color:#333333; }
+								:visited { text-decoration:none; color:#0088B5; }
+								
+								div#objectTypeName
+								{
+									font-size:18px;
+									float:left;
+									margin-right:8px;
+									padding-bottom:5px;
+								}
+								div#typeName
+								{
+									font-size:18px;
+									padding-top:0px;
+									padding-bottom:5px;b
+								}
+								div.header
+								{
+									font-weight:bold;
+									margin-top:10px;
+								}
+								div.body
+								{
+									margin-top:5px;
+									margin-left:10px;
+								}
+								div.constraintName
+								{
+									padding-left:5px;
+									padding-bottom:5px;
+								}
+								div.constraintName span.constraintName
+								{
+									padding-left:5px;
+									text-decoration:underline;
+								}
+								div.constraintHeader
+								{
+									color: #333333;
+									padding-left:10px;
+									float:left;
+									margin-right:5px;
+								}
+								div.constraintHeaderNoWrap
+								{
+									color: #333333;
+									padding-left:10px;
+								}
+								div.constraintVerbalization
+								{
+									padding-top:0px;
+									margin-left:20px;
+									padding-bottom:10px;
+								}
+								div.constraintListSpacer
+								{
+									padding-top:5px;
+									padding-bottom:5px;
+									height:5px;
+								}
+								div.signatureLabel
+								{
+									text-align:left;
+								}
+								div.signatureLine
+								{
+									padding-top:50px;
+									border-bottom: 1px solid #000000;
+									width:300px;
+								}
+								div#navBar
+								{
+									float:right;
+									padding-top:50px;
+								}
+								div#navBar h4
+								{
+									padding-left:10px;
+								}
+								.roundTop1_b, .roundTop1_s { font-size:1px; }
+								.roundTop1_1, .roundTop1_2, .roundTop1_3, .roundTop1_4, .roundTop1_b, .roundTop1_s {display:block; overflow:hidden;}
+								.roundTop1_1, .roundTop1_2, .roundTop1_3, .roundTop1_s {height:1px;}
+								.roundTop1_2, .roundTop1_3, .roundTop1_4 {border-style: solid; border-width: 0 1px; }
+								.roundTop1_1 {margin:0 5px; }
+								.roundTop1_2 {margin:0 3px; border-width:0 2px;}
+								.roundTop1_3 {margin:0 2px;}
+								.roundTop1_4 {height:2px; margin:0 1px;}
+								.roundTop1_c {display:block; border-style: solid ; border-width: 0 1px;}
+							</style>
+						</head>
+						<body>]]>
+			</Snippet>
+			<Snippet type="ReportDocumentFooter">
+				<![CDATA[</body>
+				</html>]]>
+			</Snippet>
+			<Snippet type="ReportDocumentContents">
+				<![CDATA[
+				<div id="navBar">
+					<div class="content">
+					<div style="width:250px;">
+					 <b class="roundTop1_b">
+					  <b class="roundTop1_1" style="background:#9DCEFF; color: inherit;"></b>
+					  <b class="roundTop1_2" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;"></b>
+					  <b class="roundTop1_3" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;"></b>
+					  <b class="roundTop1_4" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;"></b>
+					 </b>
+					 <div class="roundTop1_c" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">
+					  <b class="roundTop1_s"></b>
+					  <h4>Verbalization Report Contents</h4>
+						<ol>
+							{0}
+						</ol>				
+				  <b class="roundTop1_s"></b>
+				 </div>
+				 <b class="roundTop1_b">
+				  <b class="roundTop1_4" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;"></b>
+				  <b class="roundTop1_3" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;"></b>
+				  <b class="roundTop1_2" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;"></b>
+				  <b class="roundTop1_1" style="background:#9DCEFF; color: inherit;"></b>
+				 </b>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				</div>]]>
+			</Snippet>
+			<Snippet type="ReportDocumentContentsReplacementAll">
+				<![CDATA[
+				<li><a href="ObjectTypeList.html">Object Types</a></li>
+				<li><a href="ConstraintValidationReport.html">Constraint Validation</a></li>]]></Snippet>
+			<Snippet type="ReportDocumentContentsReplacementObject">
+				<![CDATA[
+				<li><a href="ObjectTypeList.html">Object Types</a></li>]]></Snippet>
+			<Snippet type="ReportDocumentContentsReplacementValidation">
+				<![CDATA[
+				<li><a href="ConstraintValidationReport.html">Constraint Validation</a></li>]]></Snippet>
+		</Snippets>
+	</Language>
+</Languages>

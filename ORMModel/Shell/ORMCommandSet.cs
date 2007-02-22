@@ -218,6 +218,10 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusExclusiveOrDecoupler), 
 						new EventHandler(OnMenuExclusiveOrDecoupler),
 						ORMDesignerCommandIds.ExclusiveOrDecoupler)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusGenerateReport), 
+						new EventHandler(OnMenuGenerateReport),
+						ORMDesignerCommandIds.GenerateReport)
 						// Alignment Commands
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAlignShapes),
@@ -751,7 +755,23 @@ namespace Neumont.Tools.ORM.Shell
 					docView.OnMenuExclusiveOrDecoupler();
 				}
 			}
-			/// <summary>
+            private void OnStatusGenerateReport(object sender, EventArgs e)
+            {
+                ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.GenerateReport);
+            }
+            /// <summary>
+            /// Menu handler
+            /// </summary>
+            private void OnMenuGenerateReport(object sender, EventArgs e)
+            {
+                ORMDesignerDocView docView = CurrentORMView;
+                if (docView != null)
+                {
+                    // Defer to the doc view
+                    docView.OnMenuGenerateReport();
+                }
+            }
+            /// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusAlignShapes(object sender, EventArgs e)
@@ -1354,7 +1374,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// Decouple disjunctive mandatory and exclusion constraints
 			/// </summary>
 			public static readonly CommandID ExclusiveOrDecoupler = new CommandID(guidORMDesignerCommandSet, cmdIdExclusiveOrDecoupler);
-			#endregion // CommandID objects for commands
+            /// <summary>
+            /// Launch the Generate Report dialog
+            /// </summary>
+            public static readonly CommandID GenerateReport = new CommandID(guidORMDesignerCommandSet, cmdIdGenerateReport);
+            #endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
 			/// The context menu for the diagram
@@ -1615,6 +1639,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// Decouple disjunctive mandatory and exclusion constraints
 			/// </summary>
 			private const int cmdIdExclusiveOrDecoupler = 0x2928;
+            /// <summary>
+            /// Launch the Generate Report dialog
+            /// </summary>
+            private const int cmdIdGenerateReport = 0x2929;
 			#endregion
 		}
 	}
