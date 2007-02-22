@@ -547,7 +547,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return default(CommandID);
+				return ORMDesignerCommandIds.ViewContextMenu;
 			}
 		}
 
@@ -571,10 +571,7 @@ namespace Neumont.Tools.ORM.Shell
 			// myVisibleCommands and myEnabledCommands will be set when the selection is changed
 			if (0 != (myVisibleCommands & myEnabledCommands))
 			{
-				DiagramClientView clientView = mouseArgs.DiagramClientView;
-				// Get the mouse point (relative to the diagram's position), and convert it to a point on the screen
-				Point emulateClickPoint = clientView.PointToScreen(clientView.WorldToDevice(mouseArgs.MousePosition));
-				this.MenuService.ShowContextMenu(ORMDesignerCommandIds.ViewContextMenu, emulateClickPoint.X, emulateClickPoint.Y);
+				base.OnContextMenuRequested(mouseArgs);
 			}
 			else
 			{

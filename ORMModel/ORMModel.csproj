@@ -379,8 +379,11 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\Design\Editors\FlagsEnumEditor.cs" />
+    <Compile Include="Framework\Design\Editors\FlagsEnumListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Framework\Diagrams\LayoutEngine.cs" />
-    <Compile Include="Framework\Design\CustomDisplayPropertyDescriptor.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />

@@ -309,10 +309,13 @@ namespace Neumont.Tools.Modeling.Design
 				ICustomTypeDescriptor typeDescriptor = TypeDescriptor.GetProvider(element).GetTypeDescriptor(element.GetType(), element);
 				Type propertyType = domainPropertyInfo.PropertyType;
 				string propertyName = domainPropertyInfo.Name;
+				Guid domainPropertyId = domainPropertyInfo.Id;
 				PropertyDescriptorCollection propertyDescriptors = typeDescriptor.GetProperties();
 				foreach (PropertyDescriptor propertyDescriptor in propertyDescriptors)
 				{
-					if (propertyDescriptor.PropertyType == propertyType && propertyDescriptor.Name == propertyName)
+					ElementPropertyDescriptor elementPropertyDescriptor = propertyDescriptor as ElementPropertyDescriptor;
+					if ((elementPropertyDescriptor != null && elementPropertyDescriptor.DomainPropertyInfo.Id == domainPropertyId) ||
+						(propertyDescriptor.PropertyType == propertyType && propertyDescriptor.Name == propertyName))
 					{
 						return propertyDescriptor;
 					}

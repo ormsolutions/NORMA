@@ -90,6 +90,10 @@ namespace Neumont.Tools.Modeling.Design
 				{
 					return (SelectedIndex == 0) ? null : base.Text;
 				}
+				set
+				{
+					base.Text = value;
+				}
 			}
 		}
 		#endregion // DropDownListBox class. Handles Escape key for ListBox

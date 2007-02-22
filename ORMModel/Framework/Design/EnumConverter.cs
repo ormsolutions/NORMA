@@ -89,7 +89,7 @@ namespace Neumont.Tools.Modeling.Design
 		#region LocalizedNameDictionary class
 		private sealed class LocalizedNameDictionary
 		{
-			private readonly Dictionary<string, TEnum> ValuesByName = new Dictionary<string, TEnum>(DefinedValuesCount, StringComparer.Ordinal);
+			private readonly Dictionary<string, TEnum> ValuesByName = new Dictionary<string, TEnum>(DefinedValuesCount, StringComparer.OrdinalIgnoreCase);
 			private readonly Dictionary<TEnum, string> NamesByValue = new Dictionary<TEnum, string>(DefinedValuesCount);
 
 			public bool TryGetName(TEnum value, out string name)
@@ -126,7 +126,7 @@ namespace Neumont.Tools.Modeling.Design
 			FieldInfo[] fields = enumType.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly);
 			int definedValuesCount = DefinedValuesCount = fields.Length;
 			Dictionary<TEnum, EnumValueInfo> valueInfoDictionary = ValueInfoDictionary = new Dictionary<TEnum, EnumValueInfo>(definedValuesCount);
-			Dictionary<string, TEnum> invariantNameDictionary = InvariantNameDictionary = new Dictionary<string, TEnum>(definedValuesCount, StringComparer.Ordinal);
+			Dictionary<string, TEnum> invariantNameDictionary = InvariantNameDictionary = new Dictionary<string, TEnum>(definedValuesCount, StringComparer.OrdinalIgnoreCase);
 			for (int i = 0; i < fields.Length; i++)
 			{
 				EnumValueInfo valueInfo = new EnumValueInfo(fields[i]);
@@ -144,8 +144,8 @@ namespace Neumont.Tools.Modeling.Design
 		private static readonly Dictionary<string, TEnum> InvariantNameDictionary;
 		private static readonly Dictionary<string, LocalizedNameDictionary> LocalizedNamesByCultureName;
 
-		private const string FlagsNameSeparator = ", ";
-		private static readonly string[] FlagsNameSeparatorArray = new string[] { FlagsNameSeparator };
+		private const string FlagsNameSeparatorString = ", ";
+		private static readonly char[] FlagsNameSeparatorArray = new char[] { ',' };
 
 		private static EnumValueInfo? GetValueInfo(TEnum value)
 		{
@@ -183,12 +183,12 @@ namespace Neumont.Tools.Modeling.Design
 						int invariantNamesLengthMinusOne = invariantNames.Length - 1;
 						for (int i = 0; i < invariantNames.Length; i++)
 						{
-							string currentInvariantName = invariantNames[i];
+							string currentInvariantName = invariantNames[i].Trim();
 							nullableValueInfo = GetValueInfo(currentInvariantName);
 							sb.Append(nullableValueInfo.HasValue ? GetLocalizedNameFromValueInternal(nullableValueInfo.Value, culture) : currentInvariantName);
 							if (i < invariantNamesLengthMinusOne)
 							{
-								sb.Append(FlagsNameSeparator);
+								sb.Append(FlagsNameSeparatorString);
 							}
 						}
 						return sb.ToString();
@@ -277,6 +277,37 @@ namespace Neumont.Tools.Modeling.Design
 		}
 		private static TEnum? GetValueFromLocalizedName(string localizedName, CultureInfo culture)
 		{
+			localizedName = localizedName.Trim();
+			TEnum? nullableValue = GetValueFromLocalizedNameInternal(localizedName, culture);
+			if (!nullableValue.HasValue && IsFlags)
+			{
+				string[] localizedNameParts = localizedName.Split(FlagsNameSeparatorArray, StringSplitOptions.RemoveEmptyEntries);
+				if (localizedNameParts.Length > 1)
+				{
+					ulong? rawValue = null;
+					for (int i = 0; i < localizedNameParts.Length; i++)
+					{
+						string currentLocalizedNamePart = localizedNameParts[i].Trim();
+						object currentNamePartValue = GetValueFromLocalizedNameInternal(currentLocalizedNamePart, culture);
+						if (currentNamePartValue == null)
+						{
+							currentNamePartValue = Enum.Parse(EnumType, currentLocalizedNamePart, true);
+						}
+						if (currentNamePartValue != null)
+						{
+							rawValue = rawValue.GetValueOrDefault() | Convert.ToUInt64(currentNamePartValue, culture);
+						}
+					}
+					if (rawValue.HasValue)
+					{
+						nullableValue = rawValue as TEnum?;
+					}
+				}
+			}
+			return nullableValue;
+		}
+		private static TEnum? GetValueFromLocalizedNameInternal(string localizedName, CultureInfo culture)
+		{
 			TEnum value;
 			if (InvariantNameDictionary.TryGetValue(localizedName, out value))
 			{
@@ -323,6 +354,7 @@ namespace Neumont.Tools.Modeling.Design
 		{
 		}
 
+		#region ConvertFrom method
 		/// <summary>See <see cref="EnumConverter.ConvertFrom"/>.</summary>
 		public sealed override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
@@ -337,7 +369,9 @@ namespace Neumont.Tools.Modeling.Design
 			}
 			return base.ConvertFrom(context, culture, value);
 		}
+		#endregion // ConvertFrom method
 
+		#region ConvertTo method
 		/// <summary>See <see cref="EnumConverter.ConvertTo"/>.</summary>
 		public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
@@ -347,6 +381,7 @@ namespace Neumont.Tools.Modeling.Design
 			}
 			return base.ConvertTo(context, culture, value, destinationType);
 		}
+		#endregion // ConvertTo method
 
 		#region GetStandardValues method
 		/// <summary>
@@ -393,5 +428,13 @@ namespace Neumont.Tools.Modeling.Design
 			return standardValuesCollection;
 		}
 		#endregion // GetStandardValues method
+
+		#region GetStandardValuesExclusive method
+		/// <summary>See <see cref="EnumConverter.GetStandardValuesExclusive"/>.</summary>
+		public sealed override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
+		{
+			return !IsFlags;
+		}
+		#endregion // GetStandardValuesExclusive method
 	}
 }

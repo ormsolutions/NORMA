@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		where TModelElement : ExclusionConstraint
 	{
 		/// <summary>
-		/// Initializes a new instance of <see cref="MandatoryConstraintTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="ExclusionConstraintTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
 		public ExclusionConstraintTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
@@ -43,35 +43,45 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// Distinguish between disjunctive and simple <see cref="MandatoryConstraint"/>s in the property grid display.
+		/// Distinguish between <see cref="ExclusionConstraint"/>s and <c>Exclusive Or</c> constraints
+		/// in the property grid display.
 		/// </summary>
 		public override string GetClassName()
 		{
 			return (ModelElement.ExclusiveOrMandatoryConstraint == null) ? base.GetClassName() : ResourceStrings.ExclusiveOrConstraint;
 		}
+		
 		/// <summary>
-		/// Modify the display of the Name properties for constraints with an ExclusiveOrCoupler
+		/// Add a <c>Name</c> property for the associated <see cref="MandatoryConstraint"/> if an
+		/// <see cref="ExclusiveOrConstraintCoupler"/> is attached to this <see cref="ExclusionConstraint"/>.
 		/// </summary>
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			PropertyDescriptorCollection descriptors = base.GetProperties(attributes);
+			PropertyDescriptorCollection properties = base.GetProperties(attributes);
 			MandatoryConstraint mandatoryConstraint = ModelElement.ExclusiveOrMandatoryConstraint;
 			if (mandatoryConstraint != null)
 			{
-				int descriptorCount = descriptors.Count;
-				for (int i = 0; i < descriptorCount; ++i)
-				{
-					ElementPropertyDescriptor currentDescriptor = descriptors[i] as ElementPropertyDescriptor;
-					if (currentDescriptor != null && currentDescriptor.DomainPropertyInfo.Id == ExclusionConstraint.NameDomainPropertyId)
-					{
-						descriptors.RemoveAt(i);
-						descriptors.Add(new CustomDisplayPropertyDescriptor(currentDescriptor, ResourceStrings.ExclusiveOrConstraintExclusionConstraintNameDisplayName, null, null));
-						descriptors.Add(new CustomDisplayPropertyDescriptor(CreatePropertyDescriptor(mandatoryConstraint, currentDescriptor.DomainPropertyInfo, null), ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName, null, null));
-						break;
-					}
-				}
+				DomainPropertyInfo mandatoryConstraintNameDomainProperty = mandatoryConstraint.GetDomainClass().NameDomainProperty;
+				properties.Add(new ElementPropertyDescriptor(this, mandatoryConstraint, mandatoryConstraintNameDomainProperty,
+					base.GetDomainPropertyAttributes(mandatoryConstraintNameDomainProperty)));
 			}
-			return descriptors;
+			return properties;
+		}
+
+		/// <summary>
+		/// Distinguish between the <c>Name</c> properties for the <see cref="ExclusionConstraint"/> and
+		/// the <see cref="MandatoryConstraint"/> that make up an <c>Exclusive Or</c> constraint.
+		/// </summary>
+		protected override string GetPropertyDescriptorDisplayName(ElementPropertyDescriptor propertyDescriptor)
+		{
+			if (propertyDescriptor.DomainPropertyInfo.Id == ExclusionConstraint.NameDomainPropertyId &&
+				ModelElement.ExclusiveOrMandatoryConstraint != null)
+			{
+				return propertyDescriptor.ModelElement is ExclusionConstraint ?
+					ResourceStrings.ExclusiveOrConstraintExclusionConstraintNameDisplayName :
+					ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName;
+			}
+			return base.GetPropertyDescriptorDisplayName(propertyDescriptor);
 		}
 	}
 }

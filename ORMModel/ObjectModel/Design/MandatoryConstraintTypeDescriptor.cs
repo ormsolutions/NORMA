@@ -41,47 +41,62 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			: base(parent, selectedElement)
 		{
 		}
+
 		/// <summary>
-		/// Redirect the displayed component name for an exclusive or constraint
+		/// Redirect the displayed component name if this <see cref="MandatoryConstraint"/> is part of an
+		/// <c>Exclusive Or</c> constraint.
 		/// </summary>
 		public override string GetComponentName()
 		{
 			ExclusionConstraint exclusionConstraint = ModelElement.ExclusiveOrExclusionConstraint;
 			return (exclusionConstraint != null) ? TypeDescriptor.GetComponentName(exclusionConstraint) : base.GetComponentName();
 		}
+
 		/// <summary>
-		/// Distinguish between disjunctive and simple <see cref="MandatoryConstraint"/>s in the property grid display.
+		/// Distinguish between simple <see cref="MandatoryConstraint"/>s, disjunctive <see cref="MandatoryConstraint"/>s,
+		/// and <c>Exclusive Or</c> constraints in the property grid display.
 		/// </summary>
 		public override string GetClassName()
 		{
 			MandatoryConstraint mandatoryConstraint = ModelElement;
 			return mandatoryConstraint.IsSimple ?
 				ResourceStrings.SimpleMandatoryConstraint :
-				(mandatoryConstraint.ExclusiveOrExclusionConstraint == null) ? ResourceStrings.DisjunctiveMandatoryConstraint : ResourceStrings.ExclusiveOrConstraint;
+				(mandatoryConstraint.ExclusiveOrExclusionConstraint == null) ?
+					ResourceStrings.DisjunctiveMandatoryConstraint :
+					ResourceStrings.ExclusiveOrConstraint;
 		}
+
 		/// <summary>
-		/// Modify the display of the Name properties for constraints with an ExclusiveOrCoupler
+		/// Add a <c>Name</c> property for the associated <see cref="ExclusionConstraint"/> if an
+		/// <see cref="ExclusiveOrConstraintCoupler"/> is attached to this <see cref="MandatoryConstraint"/>.
 		/// </summary>
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			PropertyDescriptorCollection descriptors = base.GetProperties(attributes);
+			PropertyDescriptorCollection properties = base.GetProperties(attributes);
 			ExclusionConstraint exclusionConstraint = ModelElement.ExclusiveOrExclusionConstraint;
 			if (exclusionConstraint != null)
 			{
-				int descriptorCount = descriptors.Count;
-				for (int i = 0; i < descriptorCount; ++i)
-				{
-					ElementPropertyDescriptor currentDescriptor = descriptors[i] as ElementPropertyDescriptor;
-					if (currentDescriptor != null && currentDescriptor.DomainPropertyInfo.Id == MandatoryConstraint.NameDomainPropertyId)
-					{
-						descriptors.RemoveAt(i);
-						descriptors.Add(new CustomDisplayPropertyDescriptor(currentDescriptor, ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName, null, null));
-						descriptors.Add(new CustomDisplayPropertyDescriptor(CreatePropertyDescriptor(exclusionConstraint, currentDescriptor.DomainPropertyInfo, null), ResourceStrings.ExclusiveOrConstraintExclusionConstraintNameDisplayName, null, null));
-						break;
-					}
-				}
+				DomainPropertyInfo exclusionConstraintNameDomainProperty = exclusionConstraint.GetDomainClass().NameDomainProperty;
+				properties.Add(new ElementPropertyDescriptor(this, exclusionConstraint, exclusionConstraintNameDomainProperty,
+					base.GetDomainPropertyAttributes(exclusionConstraintNameDomainProperty)));
 			}
-			return descriptors;
+			return properties;
+		}
+
+		/// <summary>
+		/// Distinguish between the <c>Name</c> properties for the <see cref="ExclusionConstraint"/> and
+		/// the <see cref="MandatoryConstraint"/> that make up an <c>Exclusive Or</c> constraint.
+		/// </summary>
+		protected override string GetPropertyDescriptorDisplayName(ElementPropertyDescriptor propertyDescriptor)
+		{
+			if (propertyDescriptor.DomainPropertyInfo.Id == MandatoryConstraint.NameDomainPropertyId &&
+				ModelElement.ExclusiveOrExclusionConstraint != null)
+			{
+				return propertyDescriptor.ModelElement is MandatoryConstraint ?
+					ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName :
+					ResourceStrings.ExclusiveOrConstraintExclusionConstraintNameDisplayName;
+			}
+			return base.GetPropertyDescriptorDisplayName(propertyDescriptor);
 		}
 	}
 }

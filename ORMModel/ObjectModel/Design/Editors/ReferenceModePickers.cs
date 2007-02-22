@@ -36,7 +36,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 	/// Associated with the <see cref="ReferenceMode.KindDisplay"/> property.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
-	public class ReferenceModeKindPicker : ElementPicker<ReferenceModeKindPicker>
+	public sealed class ReferenceModeKindPicker : ElementPicker<ReferenceModeKindPicker>
 	{
 		/// <summary>
 		/// Returns a list of role player candidates for a fact type.

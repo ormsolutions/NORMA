@@ -341,23 +341,26 @@ namespace Neumont.Tools.ORM.Shell
 						userRegistryRoot = this.UserRegistryRoot;
 						packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
 
-						// Lookup the recorded toolbox revision, and check whether it matches the current revision.
-						int? toolboxRevision = packageRegistryRoot.GetValue(REGISTRYVALUE_TOOLBOXREVISION, null) as int?;
-						if (toolboxRevision.HasValue && toolboxRevision.GetValueOrDefault() == currentRevision)
+						if (packageRegistryRoot != null)
 						{
-							// If the toolbox is already from this exact revision, don't do anything.
-							return;
+							// Lookup the recorded toolbox revision, and check whether it matches the current revision.
+							int? toolboxRevision = packageRegistryRoot.GetValue(REGISTRYVALUE_TOOLBOXREVISION, null) as int?;
+							if (toolboxRevision.HasValue && toolboxRevision.GetValueOrDefault() == currentRevision)
+							{
+								// If the toolbox is already from this exact revision, don't do anything.
+								return;
+							}
+							packageRegistryRoot.Close();
 						}
 
 						// Since the toolbox has either not been set up before, or is from an older or newer revision, call SetupDynamicToolbox.
 						// This might not be necessary if it is from a newer revision, but we do it anyway to be safe.
 						base.SetupDynamicToolbox();
 
-						packageRegistryRoot.Close();
 						try
 						{
 							// If a exception were to occur right here, Close() could get called twice for packageRegistryRoot, but that wouldn't actually hurt anything.
-							packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
+							packageRegistryRoot = userRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
 							// Record the current revision in the registry.
 							packageRegistryRoot.SetValue(REGISTRYVALUE_TOOLBOXREVISION, currentRevision, RegistryValueKind.DWord);
