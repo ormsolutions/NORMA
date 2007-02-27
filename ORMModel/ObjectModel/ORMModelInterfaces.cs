@@ -23,10 +23,33 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region VerbalizationTarget enum
+	/// <summary>
+	/// Determines what target the Verbalization Set applies to
+	/// </summary>
+	[TypeConverter(typeof(EnumConverter<VerbalizationTarget, ORMModel>))]
+	public enum VerbalizationTarget
+	{
+		/// <summary>
+		/// Specifies the default verbalization snippet set. If a specific set is
+		/// not available for any of the other values, then we use the default set.
+		/// </summary>
+		Default,
+		/// <summary>
+		/// Specifies the verbalization snippet set to be used with the ORM Verbalization Browser
+		/// </summary>
+		VerbalizationBrowser,
+		/// <summary>
+		/// Specifies the verbalization snippet set to be used with the Verbalization Reports
+		/// </summary>
+		Report,
+	}
+	#endregion // VerbalizationTarget enum
 	#region IORMToolServices interface
 	/// <summary>
 	/// An interface that should be implemented by any
@@ -57,7 +80,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Retrieve the VerbalizationSnippets dictionary for this store
 		/// </summary>
-		IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary { get;}
+		/// <param name="target">The type of dictionary to retrieve.</param>
+		IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(VerbalizationTarget target);
 		/// <summary>
 		/// Retrieve the LayoutEngines dictionary for this store
 		/// </summary>

@@ -195,21 +195,15 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			/// <summary>
 			/// Defer to VerbalizationSnippetsDictionary on the document. Implements
-			/// IORMToolServices.VerbalizationSnippetsDictionary
+			/// IORMToolServices.GetVerbalizationSnippetsDictionary
 			/// </summary>
-			protected IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary
+			protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
 			{
-				get
-				{
-					return myServices.VerbalizationSnippetsDictionary;
-				}
+				return myServices.GetVerbalizationSnippetsDictionary(target);
 			}
-			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+			IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
 			{
-				get
-				{
-					return VerbalizationSnippetsDictionary;
-				}
+				return GetVerbalizationSnippetsDictionary(target);
 			}
 			/// <summary>
 			/// Returns an instance of the specified layout engine type
@@ -1013,7 +1007,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region IORMToolServices Implementation
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
-		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
+		private IDictionary<VerbalizationTarget, IDictionary<Type, IVerbalizationSets>> myTargetedVerbalizationSnippets;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private IORMPropertyProviderService myPropertyProviderService;
@@ -1088,39 +1082,54 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Implements IORMToolServices.VerbalizationSnippetsDictionary
+		/// Implements IORMToolServices.GetVerbalizationSnippetsDictionary
 		/// </summary>
-		protected IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary
+		protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
 		{
-			get
+			IDictionary<Type, IVerbalizationSets> retVal = null;
+			IDictionary<VerbalizationTarget, IDictionary<Type, IVerbalizationSets>> targetedSnippets = myTargetedVerbalizationSnippets;
+			string currentSnippetsOptions = myLastVerbalizationSnippetsOptions;
+			string verbalizationOptions = OptionsPage.CurrentCustomVerbalizationSnippets;
+			if (verbalizationOptions == null)
 			{
-				IDictionary<Type, IVerbalizationSets> retVal = myVerbalizationSnippets;
-				string currentSnippetsOptions = myLastVerbalizationSnippetsOptions;
-				string verbalizationOptions = OptionsPage.CurrentCustomVerbalizationSnippets;
-				if (verbalizationOptions == null)
-				{
-					verbalizationOptions = "";
-				}
-				if (retVal == null || (currentSnippetsOptions == null || currentSnippetsOptions != verbalizationOptions))
-				{
-					currentSnippetsOptions = verbalizationOptions;
-					// UNDONE: Directory should be configurable
-					retVal = VerbalizationSnippetSetsManager.LoadSnippetsDictionary(
-						Store,
-						ORMDesignerPackage.VerbalizationDirectory,
-						VerbalizationSnippetsIdentifier.ParseIdentifiers(verbalizationOptions));
-					myVerbalizationSnippets = retVal;
-					myLastVerbalizationSnippetsOptions = currentSnippetsOptions;
-				}
-				return retVal;
+				verbalizationOptions = "";
 			}
+			bool loadTarget = false;
+			if (targetedSnippets == null || (currentSnippetsOptions == null || currentSnippetsOptions != verbalizationOptions))
+			{
+				// UNDONE: See comments in LoadSnippetsDictionary about loading
+				// a dictionary with all type/target combinations then wrapping it
+				// to provide a target-specific dictionary.
+				currentSnippetsOptions = verbalizationOptions;
+				myLastVerbalizationSnippetsOptions = currentSnippetsOptions;
+				loadTarget = true;
+				if (targetedSnippets != null)
+				{
+					targetedSnippets.Clear();
+				}
+			}
+			else if (targetedSnippets != null)
+			{
+				loadTarget = !targetedSnippets.TryGetValue(target, out retVal);
+			}
+			if (loadTarget)
+			{
+				retVal = VerbalizationSnippetSetsManager.LoadSnippetsDictionary(
+					Store,
+					target,
+					ORMDesignerPackage.VerbalizationDirectory,
+					VerbalizationSnippetsIdentifier.ParseIdentifiers(verbalizationOptions));
+				if (targetedSnippets == null)
+				{
+					myTargetedVerbalizationSnippets = targetedSnippets = new Dictionary<VerbalizationTarget, IDictionary<Type, IVerbalizationSets>>();
+				}
+				targetedSnippets[target] = retVal;
+			}
+			return retVal;
 		}
-		IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+		IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(VerbalizationTarget target)
 		{
-			get
-			{
-				return VerbalizationSnippetsDictionary;
-			}
+			return GetVerbalizationSnippetsDictionary(target);
 		}
 		/// <summary>
 		/// Get an instance of the specified <seealso cref="LayoutEngine"/> type.

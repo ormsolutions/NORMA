@@ -1,2 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<VerbalizationReport/>
+<ReportVerbalization snippetsLocation="VerbalizationReportSnippets/VerbalizationReportSnippets.xml" xmlns="http://schemas.neumont.edu/ORM/SDK/ReportVerbalizationGenerator">
+	<Copyright name="Common Public License Copyright Notice">
+		<CopyrightLine>/**************************************************************************\</CopyrightLine>
+		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
+		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
+		<CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</CopyrightLine>
+		<CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</CopyrightLine>
+		<CopyrightLine>* the terms of this license.                                               *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* You must not remove this notice, or any other, from this software.       *</CopyrightLine>
+		<CopyrightLine>\**************************************************************************/</CopyrightLine>
+	</Copyright>
+</ReportVerbalization>

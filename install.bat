@@ -60,6 +60,14 @@ IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreSnippets.xml" (
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\_default.xml"
 	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreSnippets.xml" "_default.xml"
 )
+IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml" (
+	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\DefaultReportSnippets.xml"
+	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml" "DefaultReportSnippets.xml"
+)
+IF EXIST "%NORMADir%\Xml\Verbalization\Report\VerbalizationReportSnippets.xml" (
+	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Report\_default.xml"
+	REN "%NORMADir%\Xml\Verbalization\Report\VerbalizationReportSnippets.xml" "_default.xml"
+)
 
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILDT.xsd" "%DILDir%\Schemas\"

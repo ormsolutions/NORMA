@@ -4134,7 +4134,7 @@
 																				<plx:nameRef name="includedFactRoles"/>
 																			</plx:callObject>
 																			<plx:passParam>
-																				<plx:nameRef name="{$IteratorVariableName}" type="local"/>
+																				<plx:nameRef name="{$IteratorVariableName}"/>
 																			</plx:passParam>
 																		</plx:callInstance>
 																	</plx:callObject>
@@ -4156,7 +4156,7 @@
 																				<plx:nameRef name="includedFactRoles"/>
 																			</plx:callObject>
 																			<plx:passParam>
-																				<plx:value data="0" type="i4"/>
+																				<plx:nameRef name="{$IteratorVariableName}"/>
 																			</plx:passParam>
 																		</plx:callInstance>
 																	</plx:callObject>
@@ -4321,7 +4321,7 @@
 																<plx:nameRef name="includedFactRoles"/>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:nameRef name="{$IteratorVariableName}" type="local"/>
+																<plx:nameRef name="{$IteratorVariableName}"/>
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -4343,7 +4343,7 @@
 																<plx:nameRef name="includedFactRoles"/>
 															</plx:callObject>
 															<plx:passParam>
-																<plx:value data="0" type="i4"/>
+																<plx:nameRef name="{$IteratorVariableName}"/>
 															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
@@ -4387,7 +4387,7 @@
 																		<plx:nameRef name="includedFactRoles"/>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:nameRef name="{$IteratorVariableName}" type="local"/>
+																		<plx:nameRef name="{$IteratorVariableName}"/>
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -4409,7 +4409,7 @@
 																		<plx:nameRef name="includedFactRoles"/>
 																	</plx:callObject>
 																	<plx:passParam>
-																		<plx:value data="0" type="i4"/>
+																		<plx:nameRef name="{$IteratorVariableName}"/>
 																	</plx:passParam>
 																</plx:callInstance>
 															</plx:callObject>
@@ -4424,7 +4424,7 @@
 													</plx:callObject>
 													<plx:passParam>
 														<xsl:choose>
-															<xsl:when test="not($ConditionalMatch='null') and not(boolean(@pass))">
+															<xsl:when test="not($ConditionalMatch='null') or not(@pass)">
 																<plx:nameRef name="{$IteratorVariableName}"/>
 															</xsl:when>
 															<xsl:otherwise>
@@ -4642,7 +4642,7 @@
 																							<plx:nameRef name="includedFactRoles"/>
 																						</plx:callObject>
 																						<plx:passParam>
-																							<plx:nameRef name="{$IteratorVariableName}" type="local"/>
+																							<plx:nameRef name="{$IteratorVariableName}"/>
 																						</plx:passParam>
 																					</plx:callInstance>
 																				</plx:callObject>

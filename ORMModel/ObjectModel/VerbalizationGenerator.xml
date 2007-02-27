@@ -1037,7 +1037,7 @@
 						</ConditionalSnippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles columnArity="2" constraintArity="2" sign="positive">
+				<ConstrainedRoles factCount="2" columnArity="2" constraintArity="2" sign="positive">
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<ConditionalSnippet>
 							<Snippet conditionalMatch="IsBinaryLeadReading" ref="ExclusionBinaryLeadReading"/>

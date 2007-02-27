@@ -118,16 +118,33 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				public string TypeDescription;
 				public string EnumTypeName;
+				public int FirstTargetedType;
+				public int FirstExplicitlyTargetedType;
+				public int LastTargetedType;
+			}
+			#endregion // SnippetsType structure
+			#region TargetedSnippetsType structure
+			private struct TargetedSnippetsType
+			{
+				public VerbalizationTarget Target;
+				public int TypeIndex;
 				public int FirstIdentifier;
 				public int LastIdentifier;
 				public int CurrentIdentifier;
+				public void BindType(int typeIndex, VerbalizationTarget target)
+				{
+					TypeIndex = typeIndex;
+					Target = target;
+				}
 			}
-			#endregion // SnippetsType structure
+			#endregion // TargetedSnippetsType structure
 			#region Member Variables
 			private List<SnippetsType> myTypes;
+			private TargetedSnippetsType[] myTargetedTypes;
 			private VerbalizationSnippetsIdentifier[] myIdentifiers;
 			private string[] myItemStrings;
 			private string myLanguageFormatString;
+			private static string[] myTargetDisplayNames;
 			#endregion // Member Variables
 			#region Constructors
 			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationSnippetsProvider> providers, string verbalizationDirectory, string languageFormatString)
@@ -151,13 +168,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 
 				// Gather all types
 				List<SnippetsType> types = new List<SnippetsType>();
+				SnippetsType currentType;
 				foreach (IVerbalizationSnippetsProvider provider in providers)
 				{
 					VerbalizationSnippetsData[] currentData = provider.ProvideVerbalizationSnippets();
 					int count = (currentData != null) ? currentData.Length : 0;
 					for (int i = 0; i < count; ++i)
 					{
-						SnippetsType currentType = default(SnippetsType);
+						currentType = default(SnippetsType);
 						currentType.TypeDescription = currentData[i].TypeDescription;
 						currentType.EnumTypeName = currentData[i].EnumType.FullName;
 						types.Add(currentType);
@@ -172,7 +190,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					});
 
 				// Sort all identifiers. First by type description on previous sort, then
-				// putting the default identifier first, then by the identifier description
+				// putting the default identifier first, then by explicit target types, then by the identifier description
 				int typesCount = types.Count;
 				Array.Sort<VerbalizationSnippetsIdentifier>(
 					allIdentifiers,
@@ -205,6 +223,27 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						}
 						if (retVal == 0)
 						{
+							VerbalizationTarget target1 = identifier1.Target;
+							VerbalizationTarget target2 = identifier2.Target;
+							if (target1 != target2)
+							{
+								if (target1 == VerbalizationTarget.Default)
+								{
+									retVal = -1;
+								}
+								else if (target2 == VerbalizationTarget.Default)
+								{
+									retVal = 1;
+								}
+								else
+								{
+									string[] targetNames = VerbalizationTargetDisplayNames;
+									retVal = string.Compare(targetNames[(int)target1], targetNames[(int)target2], StringComparison.CurrentCultureIgnoreCase);
+								}
+							}
+						}
+						if (retVal == 0)
+						{
 							bool isDefault1 = identifier1.IsDefaultIdentifier;
 							bool isDefault2 = identifier2.IsDefaultIdentifier;
 							if (isDefault1)
@@ -225,38 +264,110 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 						}
 						return retVal;
 					});
-
-				// Now, associate indices in the sorted allIdentifiersList with each type
+				
+				// Now get a count of all targeted types
 				int allIdentifiersCount = allIdentifiers.Length;
-				int nextIdentifier = 0;
-				for (int i = 0; i < typesCount; ++i)
+				int targetedTypesCount = 0;
+				VerbalizationTarget lastTarget = (VerbalizationTarget)(-1); // Start with invalid target
+				string lastEnumTypeName = null;
+				for (int i = 0; i < allIdentifiersCount; ++i)
 				{
-					SnippetsType currentType = types[i];
-					string matchTypeName = currentType.EnumTypeName;
-					currentType.FirstIdentifier = nextIdentifier;
-					currentType.LastIdentifier = nextIdentifier;
-					currentType.CurrentIdentifier = nextIdentifier;
+					VerbalizationTarget currentTarget = allIdentifiers[i].Target;
+					if (currentTarget != lastTarget)
+					{
+						lastEnumTypeName = allIdentifiers[i].EnumTypeName;
+						lastTarget = currentTarget;
+						++targetedTypesCount;
+					}
+					else if (lastEnumTypeName != null)
+					{
+						string currentEnumTypeName = allIdentifiers[i].EnumTypeName;
+						if (currentEnumTypeName != lastEnumTypeName)
+						{
+							lastEnumTypeName = currentEnumTypeName;
+							++targetedTypesCount;
+						}
+					}
+				}
+
+				// Allocate targeted types and bind targeted types to types
+				TargetedSnippetsType[] targetedTypes = new TargetedSnippetsType[targetedTypesCount];
+				lastTarget = (VerbalizationTarget)(-1);
+				int currentTypeIndex = -1;
+				currentType = default(SnippetsType);
+				TargetedSnippetsType currentTargetedType = default(TargetedSnippetsType);
+				int currentTargetIndex = -1;
+				lastEnumTypeName = null;
+				for (int i = 0; i < allIdentifiersCount; ++i)
+				{
+					VerbalizationTarget currentTarget = allIdentifiers[i].Target;
+					string currentEnumTypeName = allIdentifiers[i].EnumTypeName;
+					bool enumNameChanged = lastEnumTypeName == null || currentEnumTypeName != lastEnumTypeName;
+					if (enumNameChanged || currentTarget != lastTarget)
+					{
+						++currentTargetIndex;
+						lastTarget = currentTarget;
+						if (enumNameChanged)
+						{
+							lastEnumTypeName = currentEnumTypeName;
+							if (currentTypeIndex != -1)
+							{
+								types[currentTypeIndex] = currentType;
+							}
+							currentType = types[++currentTypeIndex];
+							currentType.FirstExplicitlyTargetedType = -1;
+							currentType.FirstTargetedType = currentTargetIndex;
+							currentType.LastTargetedType = currentTargetIndex;
+						}
+						else
+						{
+							currentType.LastTargetedType += 1;
+						}
+						targetedTypes[currentTargetIndex].BindType(currentTypeIndex, currentTarget);
+					}
+					if (currentTarget != VerbalizationTarget.Default && currentType.FirstExplicitlyTargetedType == -1)
+					{
+						currentType.FirstExplicitlyTargetedType = currentTargetIndex;
+					}
+				}
+				if (currentTypeIndex != -1)
+				{
+					types[currentTypeIndex] = currentType;
+				}
+
+				// Now, associate indices in the sorted allIdentifiersList with each targeted type
+				int nextIdentifier = 0;
+				for (int i = 0; i < targetedTypesCount; ++i)
+				{
+					currentTargetedType = targetedTypes[i];
+					string matchTypeName = types[currentTargetedType.TypeIndex].EnumTypeName;
+					VerbalizationTarget matchTarget = currentTargetedType.Target;
+					currentTargetedType.FirstIdentifier = nextIdentifier;
+					currentTargetedType.LastIdentifier = nextIdentifier;
+					currentTargetedType.CurrentIdentifier = nextIdentifier;
 					Debug.Assert(allIdentifiers[nextIdentifier].IsDefaultIdentifier && allIdentifiers[nextIdentifier].EnumTypeName == matchTypeName, "No default snippets identifier for " + matchTypeName);
 					++nextIdentifier;
 					bool matchedCurrent = currentIdentifiers == null;
 					for (; nextIdentifier < allIdentifiersCount; ++nextIdentifier)
 					{
-						if (allIdentifiers[nextIdentifier].EnumTypeName != matchTypeName)
+						if (allIdentifiers[nextIdentifier].Target != matchTarget ||
+							allIdentifiers[nextIdentifier].EnumTypeName != matchTypeName)
 						{
 							break;
 						}
-						currentType.LastIdentifier = nextIdentifier;
+						currentTargetedType.LastIdentifier = nextIdentifier;
 						if (!matchedCurrent)
 						{
 							if (Array.IndexOf<VerbalizationSnippetsIdentifier>(currentIdentifiers, allIdentifiers[nextIdentifier]) >= 0)
 							{
-								currentType.CurrentIdentifier = nextIdentifier;
+								currentTargetedType.CurrentIdentifier = nextIdentifier;
 								matchedCurrent = true;
 							}
 						}
 					}
-					types[i] = currentType;
+					targetedTypes[i] = currentTargetedType;
 				}
+				myTargetedTypes = targetedTypes;
 				myTypes = types;
 				myIdentifiers = allIdentifiers;
 				if (languageFormatString != null)
@@ -266,6 +377,28 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			#endregion // Constructors
 			#region ProviderBranch specific
+			private static string[] VerbalizationTargetDisplayNames
+			{
+				get
+				{
+					string[] retVal = myTargetDisplayNames;
+					if (retVal == null)
+					{
+						Type targetType = typeof(VerbalizationTarget);
+						Array values = Enum.GetValues(targetType);
+						TypeConverter converter = TypeDescriptor.GetConverter(targetType);
+						int valueCount = values.Length;
+						retVal = new string[valueCount];
+						for (int i = 0; i < valueCount; ++i)
+						{
+							object value = values.GetValue(i);
+							retVal[(int)value] = converter.ConvertToString(value);
+						}
+						myTargetDisplayNames = retVal;
+					}
+					return retVal;
+				}
+			}
 			/// <summary>
 			/// An enumerable of current identifiers
 			/// </summary>
@@ -273,14 +406,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				get
 				{
-					List<SnippetsType> types = myTypes;
-					if (types != null)
+					TargetedSnippetsType[] targetedTypes = myTargetedTypes;
+					if (targetedTypes != null)
 					{
 						VerbalizationSnippetsIdentifier[] allIdentifiers = myIdentifiers;
-						int typesCount = types.Count;
-						for (int i = 0; i < typesCount; ++i)
+						for (int i = 0; i < targetedTypes.Length; ++i)
 						{
-							yield return allIdentifiers[types[i].CurrentIdentifier];
+							yield return allIdentifiers[targetedTypes[i].CurrentIdentifier];
 						}
 					}
 				}
@@ -312,7 +444,26 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				Debug.Assert(style == ObjectStyle.ExpandedBranch);
-				return new Subbranch(this, row);
+				if (style != ObjectStyle.ExpandedBranch)
+				{
+					return null;
+				}
+				SnippetsType type = myTypes[row];
+				int firstTargetedType = type.FirstTargetedType;
+				int targetedTypesCount = type.LastTargetedType - firstTargetedType;
+				if (targetedTypesCount != 0)
+				{
+					TargetedTypeData[] typeData = new TargetedTypeData[targetedTypesCount];
+					for (int i = 0; i < targetedTypesCount; ++i)
+					{
+						typeData[i] = new TargetedTypeData(VerbalizationTargetDisplayNames[(int)myTargetedTypes[firstTargetedType + 1].Target], firstTargetedType + i + 1);
+					}
+					return new TypeBranchWithExplicitTargets(this, firstTargetedType, typeData);
+				}
+				else
+				{
+					return new TypeBranch(this, firstTargetedType);
+				}
 			}
 			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
@@ -321,48 +472,80 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				return retVal;
 			}
 			#endregion // IBranch implementation
-			#region Subbranch class
-			private sealed class Subbranch : BaseBranch, IBranch
+			#region TypeBranch class
+			private class TypeBranch : BaseBranch, IBranch
 			{
 				#region Member Variables
 				private ProviderBranch myParentBranch;
-				private int myTypeIndex;
+				private int myTargetedTypeIndex;
 				#endregion // Member Variables
 				#region Constructors
-				public Subbranch(ProviderBranch parentBranch, int typeIndex)
+				public TypeBranch(ProviderBranch parentBranch, int targetedTypeIndex)
 				{
 					myParentBranch = parentBranch;
-					myTypeIndex = typeIndex;
+					myTargetedTypeIndex = targetedTypeIndex;
 				}
 				#endregion // Constructors
+				#region Accessor Functions
+				protected ProviderBranch ParentBranch
+				{
+					get
+					{
+						return myParentBranch;
+					}
+				}
+				#endregion // Accessor Functions
 				#region IBranch implementation
+				/// <summary>
+				/// The item count for this branch. Implements IBranch.VisibleItemCount;
+				/// </summary>
+				protected int VisibleItemCount
+				{
+					get
+					{
+						TargetedSnippetsType type = myParentBranch.myTargetedTypes[myTargetedTypeIndex];
+						return type.LastIdentifier - type.FirstIdentifier + 1;
+					}
+				}
 				int IBranch.VisibleItemCount
 				{
 					get
 					{
-						SnippetsType type = myParentBranch.myTypes[myTypeIndex];
-						return type.LastIdentifier - type.FirstIdentifier + 1;
+						return VisibleItemCount;
 					}
 				}
-				BranchFeatures IBranch.Features
+				/// <summary>
+				/// The features enabled for this branch. Implements IBranch.Features
+				/// </summary>
+				protected static BranchFeatures Features
 				{
 					get
 					{
 						return BranchFeatures.StateChanges;
 					}
 				}
-				string IBranch.GetText(int row, int column)
+				BranchFeatures IBranch.Features
+				{
+					get
+					{
+						return Features;
+					}
+				}
+				/// <summary>
+				/// Implements IBranch.Text
+				/// </summary>
+				protected string GetText(int row, int column)
 				{
 					ProviderBranch parentBranch = myParentBranch;
 					string[] itemStrings = parentBranch.myItemStrings;
 					string retVal;
 					if (itemStrings != null)
 					{
+						row += parentBranch.myTargetedTypes[myTargetedTypeIndex].FirstIdentifier;
 						retVal = itemStrings[row];
 						if (retVal == null)
 						{
-							SnippetsType type = parentBranch.myTypes[myTypeIndex];
-							VerbalizationSnippetsIdentifier id = parentBranch.myIdentifiers[type.FirstIdentifier + row];
+							VerbalizationSnippetsIdentifier id = parentBranch.myIdentifiers[row];
 							if (id.IsDefaultIdentifier)
 							{
 								retVal = id.Description;
@@ -384,14 +567,21 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 					else
 					{
-						retVal = parentBranch.myIdentifiers[parentBranch.myTypes[myTypeIndex].FirstIdentifier + row].Description;
+						retVal = parentBranch.myIdentifiers[parentBranch.myTargetedTypes[myTargetedTypeIndex].FirstIdentifier + row].Description;
 					}
 					return retVal;
 				}
-				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				string IBranch.GetText(int row, int column)
+				{
+					return GetText(row, column);
+				}
+				/// <summary>
+				/// Implements IBranch.GetDisplayData
+				/// </summary>
+				protected VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
 					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
-					SnippetsType type = myParentBranch.myTypes[myTypeIndex];
+					TargetedSnippetsType type = myParentBranch.myTargetedTypes[myTargetedTypeIndex];
 					if (type.CurrentIdentifier == (type.FirstIdentifier + row))
 					{
 						retVal.Bold = true;
@@ -403,21 +593,120 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					}
 					return retVal;
 				}
-				StateRefreshChanges IBranch.ToggleState(int row, int column)
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
-					SnippetsType type = myParentBranch.myTypes[myTypeIndex];
+					return GetDisplayData(row, column, requiredData);
+				}
+				protected StateRefreshChanges ToggleState(int row, int column)
+				{
+					TargetedSnippetsType type = myParentBranch.myTargetedTypes[myTargetedTypeIndex];
 					int identifierIndex = type.FirstIdentifier + row;
 					if (type.CurrentIdentifier != identifierIndex)
 					{
 						type.CurrentIdentifier = identifierIndex;
-						myParentBranch.myTypes[myTypeIndex] = type;
+						myParentBranch.myTargetedTypes[myTargetedTypeIndex] = type;
 						return StateRefreshChanges.ParentsChildren;
+					}
+					return StateRefreshChanges.None;
+				}
+				StateRefreshChanges IBranch.ToggleState(int row, int column)
+				{
+					return ToggleState(row, column);
+				}
+				#endregion // IBranch implementation
+			}
+			#endregion // TypeBranch class
+			#region TypeBranchWithExplicitTargets class
+			/// <summary>
+			/// A structure representing an explicitly targeted snippet expansion
+			/// </summary>
+			private struct TargetedTypeData
+			{
+				public TargetedTypeData(string targetDisplayName, int targetedTypeIndex)
+				{
+					TargetDisplayName = targetDisplayName;
+					TargetedTypeIndex = targetedTypeIndex;
+				}
+				public string TargetDisplayName;
+				public int TargetedTypeIndex;
+			}
+			/// <summary>
+			/// A <see cref="TypeBranch"/> extended with othered targeted types
+			/// </summary>
+			private sealed class TypeBranchWithExplicitTargets : TypeBranch, IBranch
+			{
+				#region Member Variables
+				private TargetedTypeData[] myExpansions;
+				#endregion // Member Variables
+				#region Constructors
+				public TypeBranchWithExplicitTargets(ProviderBranch parentBranch, int typeIndex, TargetedTypeData[] expansions)
+					: base(parentBranch, typeIndex)
+				{
+					Debug.Assert(expansions != null && expansions.Length != 0); // Create a TypeBranch directly if there are no expansions
+					myExpansions = expansions;
+				}
+				#endregion // Constructors
+				#region IBranch implementation
+				int IBranch.VisibleItemCount
+				{
+					get
+					{
+						return base.VisibleItemCount + myExpansions.Length;
+					}
+				}
+				BranchFeatures IBranch.Features
+				{
+					get
+					{
+						return Features | BranchFeatures.Expansions;
+					}
+				}
+				string IBranch.GetText(int row, int column)
+				{
+					int baseItemCount = base.VisibleItemCount;
+					if (row < baseItemCount)
+					{
+						return base.GetText(row, column);
+					}
+					return myExpansions[row - baseItemCount].TargetDisplayName;
+				}
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				{
+					if (row < base.VisibleItemCount)
+					{
+						return base.GetDisplayData(row, column, requiredData);
+					}
+					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+					retVal.Bold = true;
+					return retVal;
+				}
+				bool IBranch.IsExpandable(int row, int column)
+				{
+					return row >= base.VisibleItemCount;
+				}
+				object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+				{
+					if (style == ObjectStyle.ExpandedBranch)
+					{
+						int baseItemCount = base.VisibleItemCount;
+						if (row >= baseItemCount)
+						{
+							return new TypeBranch(ParentBranch, myExpansions[row - baseItemCount].TargetedTypeIndex);
+						}
+					}
+					return null;
+				}
+				StateRefreshChanges IBranch.ToggleState(int row, int column)
+				{
+					if (row < base.VisibleItemCount)
+					{
+						return base.ToggleState(row, column);
 					}
 					return StateRefreshChanges.None;
 				}
 				#endregion // IBranch implementation
 			}
-			#endregion // Subbranch class
+			#endregion // TypeBranchWithExplicitTargets class
 		}
 		#endregion // ProviderBranch class
 		#region BaseBranch class

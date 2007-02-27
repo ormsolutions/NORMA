@@ -22,20 +22,9 @@
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 
-	<!-- This file is designed as an include in VerbalizationGenerator.xslt. The CustomToolNamespace,
-			 VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in
-			 this file and defined in the containing file. They are redefined here (along with a root template)
-			 to ease development and debugging of this file without the container. -->
-	<!--<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
-    <xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationSnippetType'"/>
-    <xsl:param name="CoreVerbalizationSets" select="'CoreVerbalizationSets'"/>
-	<xsl:template match="cvg:VerbalizationRoot" xmlns:cvg="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator">
-		<plx:root>
-			<plx:namespace name="{$CustomToolNamespace}">
-				<xsl:call-template name="GenerateVerbalizationSets"/>
-			</plx:namespace>
-		</plx:root>
-	</xsl:template>-->
+	<!-- This file is designed as an include in VerbalizationGenerator.xslt and other files
+			.that generation default verbalization snippets. The containing template should generate
+			 any namespace information, then defer to the GenerateVerbalizationSets template in this file.-->
 
 	<!-- Template to sort and normalize ve:Snippet templates for the default (en-US) language. Called from
 	     the ve:VerbalizationRoot node.-->
@@ -305,6 +294,7 @@
 						</xsl:call-template>
 					</plx:right>
 				</plx:assign>
+				<xsl:variable name="identicalSets" select="count($SortedSnippets) = count($alethicPositive)"/>
 				<plx:assign>
 					<plx:left>
 						<plx:callInstance name=".implied" type="arrayIndexer">
@@ -317,15 +307,29 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<xsl:call-template name="VerbalizationSetPassParam">
-							<xsl:with-param name="SnippetsFragment">
-								<xsl:call-template name="MatchSnippetSet">
-									<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
-									<xsl:with-param name="Modality" select="'deontic'"/>
-									<xsl:with-param name="Sign" select="'positive'"/>
+						<xsl:choose>
+							<xsl:when test="$identicalSets">
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="sets"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value type="i4" data="0"/>
+									</plx:passParam>
+								</plx:callInstance>						
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="VerbalizationSetPassParam">
+									<xsl:with-param name="SnippetsFragment">
+										<xsl:call-template name="MatchSnippetSet">
+											<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
+											<xsl:with-param name="Modality" select="'deontic'"/>
+											<xsl:with-param name="Sign" select="'positive'"/>
+										</xsl:call-template>
+									</xsl:with-param>
 								</xsl:call-template>
-							</xsl:with-param>
-						</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -340,15 +344,29 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<xsl:call-template name="VerbalizationSetPassParam">
-							<xsl:with-param name="SnippetsFragment">
-								<xsl:call-template name="MatchSnippetSet">
-									<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
-									<xsl:with-param name="Modality" select="'alethic'"/>
-									<xsl:with-param name="Sign" select="'negative'"/>
+						<xsl:choose>
+							<xsl:when test="$identicalSets">
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="sets"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value type="i4" data="0"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="VerbalizationSetPassParam">
+									<xsl:with-param name="SnippetsFragment">
+										<xsl:call-template name="MatchSnippetSet">
+											<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
+											<xsl:with-param name="Modality" select="'alethic'"/>
+											<xsl:with-param name="Sign" select="'negative'"/>
+										</xsl:call-template>
+									</xsl:with-param>
 								</xsl:call-template>
-							</xsl:with-param>
-						</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -363,15 +381,29 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<xsl:call-template name="VerbalizationSetPassParam">
-							<xsl:with-param name="SnippetsFragment">
-								<xsl:call-template name="MatchSnippetSet">
-									<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
-									<xsl:with-param name="Modality" select="'deontic'"/>
-									<xsl:with-param name="Sign" select="'negative'"/>
+						<xsl:choose>
+							<xsl:when test="$identicalSets">
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="sets"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value type="i4" data="0"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="VerbalizationSetPassParam">
+									<xsl:with-param name="SnippetsFragment">
+										<xsl:call-template name="MatchSnippetSet">
+											<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
+											<xsl:with-param name="Modality" select="'deontic'"/>
+											<xsl:with-param name="Sign" select="'negative'"/>
+										</xsl:call-template>
+									</xsl:with-param>
 								</xsl:call-template>
-							</xsl:with-param>
-						</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:right>
 				</plx:assign>
 			</plx:function>

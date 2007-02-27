@@ -741,7 +741,7 @@
     <comment>The description for the default verbalization snippets for the core model.</comment>
   </data>
 	<data name="Verbalization.SnippetsTypeDescription" xml:space="preserve">
-    <value>Core ORM Verbalization Snippets</value>
+    <value>Core ORM Verbalization</value>
     <comment>The description for the verbalization snippets associated with the core model.</comment>
   </data>
 	<data name="Verbalization.ReportSnippetsDefaultDescription" xml:space="preserve">
@@ -749,7 +749,7 @@
     <comment>The description for the default verbalization report snippets.</comment>
   </data>
 	<data name="Verbalization.ReportSnippetsTypeDescription" xml:space="preserve">
-    <value>ORM Verbalization Report Snippets</value>
+    <value>Report Verbalization</value>
     <comment>The description for the snippets associated with the verbalization reports.</comment>
   </data>
 	<data name="VerbalizationReportContent.All" xml:space="preserve">
@@ -802,5 +802,11 @@
 	</data>
 	<data name="VerbalizationReportContent.ValidationReport" xml:space="preserve">
 		<value>Validation Report</value>
+	</data>
+	<data name="VerbalizationTarget.Report" xml:space="preserve">
+		<value>Report Settings</value>
+	</data>
+	<data name="VerbalizationTarget.VerbalizationBrowser" xml:space="preserve">
+		<value>Browser Settings</value>
 	</data>
 </root>

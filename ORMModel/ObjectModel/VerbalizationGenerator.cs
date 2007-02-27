@@ -2035,7 +2035,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 					snippet1Replace1Replace1 = sbTemp.ToString();
@@ -6956,7 +6956,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7247,7 +7247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7528,7 +7528,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7938,7 +7938,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -8055,7 +8055,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
-			else if ((columnArity == 2) && ((constraintRoleArity == 2) && !(isNegative)))
+			else if ((allFactsCount == 2) && ((columnArity == 2) && ((constraintRoleArity == 2) && !(isNegative))))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -8188,7 +8188,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 					string snippet1Replace1Replace1Replace2 = null;
@@ -8386,7 +8386,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										sbTemp.Append(snippets.GetSnippet(listSnippet));
 										isFirstAppend = false;
 									}
-									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 								}
 							}
 						}
@@ -8467,7 +8467,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][includedFactRoles[FactIter2].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 				}
@@ -8681,7 +8681,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[0].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}

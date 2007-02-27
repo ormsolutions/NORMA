@@ -104,7 +104,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="IndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 			<Snippet type="IndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 			<Snippet type="IndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
-			<Snippet type="IndentedCompoundListClose"><![CDATA[</span>]]></Snippet>				
+			<Snippet type="IndentedCompoundListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="IndentedListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 			<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>

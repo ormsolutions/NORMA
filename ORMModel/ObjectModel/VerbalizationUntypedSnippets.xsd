@@ -42,7 +42,7 @@
 			<xs:element name="Snippets" minOccurs="1" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="Snippet" minOccurs="1" maxOccurs="unbounded">
+						<xs:element name="Snippet" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:extension base="xs:string">
