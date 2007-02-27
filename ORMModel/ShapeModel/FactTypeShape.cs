@@ -36,11 +36,12 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape
 	{
 		#region Public token values
 		/// <summary>
@@ -756,7 +757,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes produced by WalkConstraintBoxes.</param>
 		protected void WalkConstraintBoxes(ShapeField shapeField, ConstraintAttachPosition attachPosition, VisitConstraintBox boxUser)
 		{
-			WalkConstraintBoxes(shapeField.GetBounds(this), attachPosition,  boxUser);
+			WalkConstraintBoxes(shapeField.GetBounds(this), attachPosition, boxUser);
 		}
 
 		/// <summary>
@@ -3469,7 +3470,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public PointD CalculateConnectionPoint(NodeShape oppositeShape, FactTypeLinkConnectorShape connectorShape)
 		{
 			Debug.Assert(connectorShape == null || connectorShape.ParentShape == this);
-			
+
 			// First figure out the link we're attempting to connect
 			ModelElement linkElement = null;
 			LinkedElementCollection<LinkShape> linkedToThisShape = LinkConnectsToNode.GetLink((connectorShape != null) ? connectorShape as NodeShape : this);
@@ -3812,7 +3813,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="oppositeShape">The opposite shape to get a unique connector for</param>
 		/// <returns>NodeShape</returns>
-		public NodeShape GetUniqueConnectorShape(NodeShape oppositeShape)
+		protected NodeShape GetUniqueConnectorShape(NodeShape oppositeShape)
 		{
 			NodeShape fromShape = this;
 			LinkedElementCollection<LinkShape> linkedToFromShape = LinkConnectsToNode.GetLink(fromShape);
@@ -3864,6 +3865,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return fromShape;
+		}
+		NodeShape IProvideConnectorShape.GetUniqueConnectorShape(NodeShape oppositeShape)
+		{
+			return GetUniqueConnectorShape(oppositeShape);
 		}
 		#endregion // ICustomShapeFolding implementation
 		#region IModelErrorActivation Implementation
@@ -4302,7 +4307,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 									if (widthAdjust != 0)
 									{
-										double adjust =  widthAdjust * RoleBoxWidth;
+										double adjust = widthAdjust * RoleBoxWidth;
 										if (isVertical)
 										{
 											rect.Height -= adjust;
@@ -5442,7 +5447,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	#endregion // ObjectifiedFactTypeNameShape class
 	#region FactTypeLinkConnectorShape class
-	public partial class FactTypeLinkConnectorShape : ICustomShapeFolding, IProxyConnectorShape
+	public partial class FactTypeLinkConnectorShape : ICustomShapeFolding
 	{
 		#region ICustomShapeFolding Implementation
 		/// <summary>
@@ -5463,25 +5468,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return CalculateConnectionPoint(oppositeShape);
 		}
 		#endregion // ICustomShapeFolding Implementation
-		#region IProxyConnectorShape implementation
-		/// <summary>
-		/// Implements IProxyConnectorShape.ProxyConnectorShapeFor
-		/// </summary>
-		protected NodeShape ProxyConnectorShapeFor
-		{
-			get
-			{
-				return ParentShape as NodeShape;
-			}
-		}
-		NodeShape IProxyConnectorShape.ProxyConnectorShapeFor
-		{
-			get
-			{
-				return ProxyConnectorShapeFor;
-			}
-		}
-		#endregion // IProxyConnectorShape implementation
 		#region Modified shape geometry
 		/// <summary>
 		/// Return a shape geometry that supports shape folding

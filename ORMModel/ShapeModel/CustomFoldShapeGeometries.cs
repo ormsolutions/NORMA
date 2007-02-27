@@ -21,6 +21,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
+using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -41,21 +42,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		PointD CalculateConnectionPoint(NodeShape oppositeShape);
 	}
 	#endregion // ICustomShapeFolding interface
-	#region IProxyConnectorShape interface
-	/// <summary>
-	/// Support the creation of place holder shape objects
-	/// that are used to connect the same two shapes multiple
-	/// times without link display ambiguity.
-	/// </summary>
-	public interface IProxyConnectorShape
-	{
-		/// <summary>
-		/// Return another shape that for which this shape is
-		/// acting as a proxy connector.
-		/// </summary>
-		NodeShape ProxyConnectorShapeFor { get;}
-	}
-	#endregion // IProxyConnectorShape interface
 	#region GeometryUtility class
 	/// <summary>
 	/// Helper functions for custom shape folding
@@ -497,7 +483,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool negativeY = vectorEndPoint.Y < boxCenter.Y;
 
 				double slope = (vectorEndPoint.Y - boxCenter.Y) / (vectorEndPoint.X - boxCenter.X);
-				double x = radius  / Math.Sqrt(1 + slope * slope);
+				double x = radius / Math.Sqrt(1 + slope * slope);
 				double y = slope * x;
 				x = Math.Abs(x);
 				y = Math.Abs(y);
@@ -797,4 +783,4 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // CustomFoldTriangleShapeGeometry class
-} 
+}

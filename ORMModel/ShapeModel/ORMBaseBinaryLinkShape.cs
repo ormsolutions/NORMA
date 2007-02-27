@@ -14,6 +14,14 @@
 \**************************************************************************/
 #endregion
 
+// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
+// In this case, the 'anchor' end is always connected if an opposite shape is available.
+// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
+// ShapeB instance is not closer to a different instance of ShapeA.
+// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
+// in the project properties if you want to experiment. This is here for reference only.
+//#define LINKS_ALWAYS_CONNECT
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,11 +35,15 @@ using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ORMBaseBinaryLinkShape
+	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink
+#if LINKS_ALWAYS_CONNECT
+		, IBinaryLinkAnchor
+		#endif //LINKS_ALWAYS_CONNECT
 	{
 		#region SubtypeLink Hack
 		/// <summary>
@@ -47,6 +59,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // SubtypeLink Hack
+		#region MultipleShapesSupport
+		#if LINKS_ALWAYS_CONNECT
+		/// <summary>
+		/// Gets whether this link is anchored to its ToShape or FromShape
+		/// </summary>
+		protected abstract BinaryLinkAnchor Anchor { get;}
+		BinaryLinkAnchor IBinaryLinkAnchor.Anchor
+		{
+			get
+			{
+				return Anchor;
+			}
+		}
+		#endif //LINKS_ALWAYS_CONNECT
+		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
+		public override ShapeElement FixUpChildShapes(ModelElement childElement)
+		{
+			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+		}
+		/// <summary>
+		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// </summary>
+		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
+		protected abstract void Reconfigure(ShapeElement discludedShape);
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
+		}
+		#endregion //MultipleShapesSupport
 		#region Customize appearance
 		/// <summary>
 		/// Specify CenterToCenter routing style so we can
@@ -122,31 +163,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Luminosity Modification
 		#region LinkConnectorShape management
-		/// <summary>
-		/// ORM diagrams need to connect links to other links, but this is
-		/// not supported directly by the framework, so we create a dummy
-		/// node shape that tracks the center of the link line and connect
-		/// to the shape instead.
-		/// </summary>
-		/// <returns>LinkConnectorShape</returns>
-		public LinkConnectorShape EnsureLinkConnectorShape()
-		{
-			LinkConnectorShape retVal = null;
-			LinkedElementCollection<ShapeElement> childShapes = RelativeChildShapes;
-			foreach (ShapeElement shape in childShapes)
-			{
-				retVal = shape as LinkConnectorShape;
-				if (retVal != null)
-				{
-					return retVal;
-				}
-			}
-			retVal = new LinkConnectorShape(Partition);
-			RectangleD bounds = AbsoluteBoundingBox;
-			childShapes.Add(retVal);
-			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
-			return retVal;
-		}
 
 		#region LinkChangeRule class
 		/// <summary>
@@ -183,7 +199,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									// during load. Force the link to reconnect with a RecalculateRoute call
 									linkShape.RecalculateRoute();
 								}
-								
+
 							}
 							break;
 						}
@@ -232,8 +248,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Accessibility Properties
 	}
 	#region LinkConnectorShape class
-	public partial class LinkConnectorShape
+	public partial class LinkConnectorShape : IProxyConnectorShape
 	{
+		#region IProxyConnectorShape implementation
+		/// <summary>
+		/// Implements IProxyConnectorShape.ProxyConnectorShapeFor
+		/// </summary>
+		protected NodeShape ProxyConnectorShapeFor
+		{
+			get
+			{
+				return ParentShape as NodeShape;
+			}
+		}
+		NodeShape IProxyConnectorShape.ProxyConnectorShapeFor
+		{
+			get
+			{
+				return ProxyConnectorShapeFor;
+			}
+		}
+		#endregion // IProxyConnectorShape implementation
 		#region ClickThroughRectangleGeometry
 		private class ClickThroughRectangleGeometry : RectangleShapeGeometry
 		{
@@ -259,6 +294,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ClickThroughRectangleGeometry
+		#region MultipleShapesSupport
+		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
+		public override ShapeElement FixUpChildShapes(ModelElement childElement)
+		{
+			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+		}
+		#endregion //MultipleShapesSupport
 		/// <summary>
 		/// Link connector shapes are not selectable
 		/// </summary>

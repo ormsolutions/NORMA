@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMShapeDomainModel
@@ -112,18 +113,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							// Stop the reading shape from ending up in the wrong place during refmode expansion
 							e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
-							bool fixUpReadings = false;
-							ShapeElement shapeOnDiagram;
-							if (null == (shapeOnDiagram = parentDiagram.FindShapeForElement(factType)))
+
+							if (!parentDiagram.ElementHasShape(factType))
 							{
 								Diagram.FixUpDiagram(objectType.Model, factType);
-								shapeOnDiagram = parentDiagram.FindShapeForElement(factType);
-								shapeElements.Add(shapeOnDiagram, true);
-								fixUpReadings = true;
-							}
 
-							if (fixUpReadings)
-							{
+								foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, factType))
+								{
+									shapeElements.Add(shapeOnDiagram, true);
+								}
+
 								foreach (ReadingOrder readingOrder in factType.ReadingOrderCollection)
 								{
 									Diagram.FixUpDiagram(factType, readingOrder);
@@ -137,12 +136,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							if (expandingRefMode)
 							{
-								ShapeElement shapeOnDiagram;
-								if (null == (shapeOnDiagram = parentDiagram.FindShapeForElement(valueType)))
+								if (!parentDiagram.ElementHasShape(valueType))
 								{
 									Diagram.FixUpDiagram(objectType.Model, valueType);
-									shapeOnDiagram = parentDiagram.FindShapeForElement(valueType);
-									shapeElements.Add(shapeOnDiagram, true);
+
+									foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, valueType))
+									{
+										shapeElements.Add(shapeOnDiagram, true);
+									}
 								}
 
 								foreach (ValueTypeHasValueConstraint link in DomainRoleInfo.GetElementLinks<ValueTypeHasValueConstraint>(valueType, ValueTypeHasValueConstraint.ValueTypeDomainRoleId))
@@ -469,7 +470,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Create a new DisplayRolePlayersFixupListener
 			/// </summary>
-			public DisplayRolePlayersFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			public DisplayRolePlayersFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
 			{
 			}
 			/// <summary>
@@ -511,15 +513,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			FactType associatedFact = link.PlayedRole.FactType;
-			if (associatedFact != null)
+			FactType associatedFact;
+			if ((associatedFact = link.PlayedRole.FactType) != null)
 			{
 				ObjectType rolePlayer = link.RolePlayer;
-				ORMModel model = rolePlayer.Model;
-				if (model != null)
+				ORMModel model;
+				if ((model = rolePlayer.Model) != null)
 				{
-					FactType nestedFact = rolePlayer.NestedFactType;
-					if (FactTypeShape.ShouldDrawObjectification(nestedFact))
+					FactType nestedFact;
+					if (FactTypeShape.ShouldDrawObjectification(nestedFact = rolePlayer.NestedFactType))
 					{
 						Diagram.FixUpDiagram(model, nestedFact);
 						Diagram.FixUpDiagram(nestedFact, rolePlayer);
@@ -529,7 +531,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Diagram.FixUpDiagram(model, rolePlayer);
 					}
 					Diagram.FixUpDiagram(model, associatedFact);
-					Diagram.FixUpDiagram(model, link);
+
+					object AllowMultipleShapes;
+					Dictionary<object, object> topLevelContextInfo;
+					bool containedAllowMultipleShapes;
+					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+					{
+						topLevelContextInfo.Add(AllowMultipleShapes, null);
+					}
+
+					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+					{
+						ORMDiagram diagram;
+						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						{
+							//add a link shape for each fact type shape on the diagram for the played role
+							foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, associatedFact))
+							{
+								diagram.FixUpLocalDiagram(link);
+							}
+						}
+					}
+
+					if (!containedAllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(AllowMultipleShapes);
+					}
 				}
 			}
 		}
@@ -601,11 +628,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (factType != null)
 			{
 				ORMModel model = factType.Model;
-				if(model != null)
+				if (model != null)
 				{
 					Diagram.FixUpDiagram(model, factType);
 					Diagram.FixUpDiagram(factType, roleValueConstraint);
-					Diagram.FixUpDiagram(model, link);
+
+					object AllowMultipleShapes;
+					Dictionary<object, object> topLevelContextInfo;
+					bool containedAllowMultipleShapes;
+					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+					{
+						topLevelContextInfo.Add(AllowMultipleShapes, null);
+					}
+
+					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+					{
+						ORMDiagram diagram;
+						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						{
+							//add a link shape for each constraint shape
+							foreach (ValueConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ValueConstraintShape>(diagram, roleValueConstraint))
+							{
+								diagram.FixUpLocalDiagram(link);
+							}
+						}
+					}
+
+					if (!containedAllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(AllowMultipleShapes);
+					}
 				}
 			}
 		}
@@ -702,7 +754,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Diagram.FixUpDiagram(model, objectType);
 					}
 					Diagram.FixUpDiagram(objectType, roleValueConstraint);
+
+					object AllowMultipleShapes;
+					Dictionary<object, object> topLevelContextInfo;
+					bool containedAllowMultipleShapes;
+					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+					{
+						topLevelContextInfo.Add(AllowMultipleShapes, null);
+					}
+
 					Diagram.FixUpDiagram(model, link);
+
+					if (!containedAllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(AllowMultipleShapes);
+					}
 				}
 			}
 		}
@@ -752,7 +818,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Create a new DisplayExternalConstraintLinksFixupListener
 			/// </summary>
-			public DisplayExternalConstraintLinksFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			public DisplayExternalConstraintLinksFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
 			{
 			}
 			/// <summary>
@@ -787,9 +854,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (model != null)
 				{
 					Debug.Assert(model == constraint.Model);
+
 					Diagram.FixUpDiagram(model, constraint as ModelElement);
 					Diagram.FixUpDiagram(model, factType);
-					Diagram.FixUpDiagram(model, link);
+
+					object AllowMultipleShapes;
+					Dictionary<object, object> topLevelContextInfo;
+					bool containedAllowMultipleShapes;
+					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+					{
+						topLevelContextInfo.Add(AllowMultipleShapes, null);
+					}
+
+					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+					{
+						ORMDiagram diagram;
+						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						{
+							//add a link shape for each constraint shape
+							foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
+							{
+								diagram.FixUpLocalDiagram(link);
+							}
+						}
+					}
+
+					if (!containedAllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(AllowMultipleShapes);
+					}
 				}
 			}
 		}
@@ -808,7 +901,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (!fact.IsDeleted && !(fact is SubtypeFact) && model != null)
 			{
 				Diagram.FixUpDiagram(model, fact); // Make sure the fact is already there
+
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				{
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
+
 				Diagram.FixUpDiagram(fact, readingOrd);
+
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
+				}
 			}
 		}
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
@@ -857,30 +964,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				if (e.DomainProperty.Id == Role.NameDomainPropertyId)
 				{
-						Role role = (Role)e.ModelElement;
-						if (!role.IsDeleted)
+					Role role = (Role)e.ModelElement;
+					if (!role.IsDeleted)
+					{
+						if (string.IsNullOrEmpty(role.Name))
 						{
-							if (string.IsNullOrEmpty(role.Name))
+							RoleNameShape.RemoveRoleNameShapeFromRole(role);
+						}
+						else
+						{
+							Diagram.FixUpDiagram(role.FactType, role);
+							if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
 							{
-								RoleNameShape.RemoveRoleNameShapeFromRole(role);
-							}
-							else
-							{
-								Diagram.FixUpDiagram(role.FactType, role);
-								if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
+								foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
 								{
-									foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
+									FactTypeShape fts = element as FactTypeShape;
+									if (fts != null
+										&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
 									{
-										FactTypeShape fts = element as FactTypeShape;
-										if (fts != null
-											&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
-										{
-											RoleNameShape.SetRoleNameDisplay(role.FactType);
-										}
+										RoleNameShape.SetRoleNameDisplay(role.FactType);
 									}
 								}
 							}
 						}
+					}
 				}
 			}
 		}
@@ -894,7 +1001,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Create a new DisplayRoleNameFixupListener
 			/// </summary>
-			public DisplayRoleNameFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			public DisplayRoleNameFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
 			{
 			}
 			/// <summary>
@@ -976,7 +1084,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (!(note.IsDeleted || element.IsDeleted) &&
 				null != (model = note.Model))
 			{
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				{
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
+
 				Diagram.FixUpDiagram(model, link);
+
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
+				}
 			}
 		}
 		#endregion // ModelNote fixup

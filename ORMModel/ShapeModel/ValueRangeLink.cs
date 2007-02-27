@@ -14,6 +14,14 @@
 \**************************************************************************/
 #endregion
 
+// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
+// In this case, the 'anchor' end is always connected if an opposite shape is available.
+// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
+// ShapeB instance is not closer to a different instance of ShapeA.
+// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
+// in the project properties if you want to experiment. This is here for reference only.
+//#define LINKS_ALWAYS_CONNECT
+
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -23,6 +31,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Diagrams;
+
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ValueRangeLink
@@ -76,21 +86,65 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
-			// If we're already connected then walk away
-			if (FromShape == null && ToShape == null)
+			//We have to make sure each shape is connected to its parent,
+			// so we can't use the MultiShapeUtility.
+
+			RoleHasValueConstraint modelLink = ModelElement as RoleHasValueConstraint;
+			ModelElement factType = modelLink.Role.FactType;
+			//connect the first unconnected constraint shape to its parent
+			foreach (ValueConstraintShape shape in MultiShapeUtility.FindAllShapesForElement<ValueConstraintShape>(diagram, modelLink.ValueConstraint))
 			{
-				RoleHasValueConstraint modelLink = ModelElement as RoleHasValueConstraint;
-				ValueConstraint valueRangeDefn = modelLink.ValueConstraint;
-				Role role = modelLink.Role;
-				NodeShape fromShape;
-				NodeShape toShape;
-				if (null != (fromShape = diagram.FindShapeForElement(role.FactType) as NodeShape) &&
-					null != (toShape = diagram.FindShapeForElement(valueRangeDefn) as NodeShape))
+				bool connected = false;
+				foreach (ShapeElement link in shape.ToRoleLinkShapes)
 				{
-					Connect(fromShape, toShape);
+					//check if the shape is already connected
+					ValueRangeLink valueRangeLink;
+					if ((valueRangeLink = link as ValueRangeLink) != null &&
+						valueRangeLink.FromShape.ModelElement == factType)
+					{
+						connected = true;
+						break;
+					}
 				}
+				if (connected)
+				{
+					continue;
+				}
+
+				Connect(shape.ParentShape as NodeShape, shape);
+				return;
+			}
+
+			//this link should not have been created unless there were shapes to connect
+			Debug.Assert(false);
+			Delete();
+		}
+		/// <summary>
+		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// </summary>
+		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
+		protected override void Reconfigure(ShapeElement discludedShape)
+		{
+			//We want to leave the link so that the child remains connected to its parent,
+			// unless one of the connected shapes is being deleted.
+			if (discludedShape == ToShape || discludedShape == FromShape)
+			{
+				Delete();
 			}
 		}
+		#if LINKS_ALWAYS_CONNECT
+		/// <summary>
+		/// Gets whether this link is anchored to its ToShape or FromShape
+		/// </summary>
+		protected override BinaryLinkAnchor Anchor
+		{
+			get
+			{
+				//as this link is never reconfigured, the anchor is never used
+				return BinaryLinkAnchor.FromShape;
+			}
+		}
+		#endif //LINKS_ALWAYS_CONNECT
 		#endregion // ValueRangeLink specific
 		#region Accessibility Properties
 		/// <summary>

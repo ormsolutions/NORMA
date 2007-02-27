@@ -198,6 +198,10 @@
     <value xml:space="preserve">Edit Reading</value>
     <comment xml:space="preserve">This text appears on the undo/redo menu when a reading is edited.</comment>
   </data>
+  <data name="Command.NextOnThisDiagram.Text">
+    <value xml:space="preserve">Next on this Dia&amp;gram</value>
+    <comment xml:space="preserve">This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</comment>
+  </data>
   <data name="Command.SwapRoleOrder.Text">
     <value xml:space="preserve">S&amp;wap Role Order</value>
     <comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>

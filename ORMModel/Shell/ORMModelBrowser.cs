@@ -112,6 +112,7 @@ namespace Neumont.Tools.ORM.Shell
 							ORMBaseShape.VisitAssociatedShapes(
 								element,
 								null,
+								true,
 								delegate(ShapeElement testShape)
 								{
 									if (diagramIndex == 0)
@@ -198,6 +199,7 @@ namespace Neumont.Tools.ORM.Shell
 				ORMBaseShape.VisitAssociatedShapes(
 					element,
 					null,
+					true,
 					delegate(ShapeElement shape)
 					{
 						if (diagramIndex == 0)
@@ -309,7 +311,7 @@ namespace Neumont.Tools.ORM.Shell
 				treeControl.ContextMenuInvoked += new ContextMenuEventHandler(Tree_ContextMenuInvoked);
 				treeControl.LabelEditControlChanged += new EventHandler(Tree_LabelEditControlChanged);
 			}
-			
+
 			ORMDesignerDocData currentDocument = this.CurrentDocument;
 			treeContainer.Tree = (currentDocument != null) ? currentDocument.SurveyTree : null;
 		}
@@ -329,7 +331,7 @@ namespace Neumont.Tools.ORM.Shell
 		private void Tree_SelectionChanged(object sender, EventArgs e)
 		{
 			object selectedObject = SelectedNode;
-			SetSelectedComponents((selectedObject != null) ? new object[]{selectedObject} : null);
+			SetSelectedComponents((selectedObject != null) ? new object[] { selectedObject } : null);
 		}
 		#endregion //LoadWindow method
 		#region ORMToolWindow overrides

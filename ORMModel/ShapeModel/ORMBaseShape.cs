@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,10 +25,11 @@ using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -86,6 +88,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Virtual extensions
+		#region MultipleShapesSupport
+		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
+		public override ShapeElement FixUpChildShapes(ModelElement childElement)
+		{
+			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+		}
+		[RuleOn(typeof(NodeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed partial class AbsoluteBoundsChangedRule : ChangeRule
+		{
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				ShapeElement originalElement;
+				if (e.DomainProperty.Id == NodeShape.AbsoluteBoundsDomainPropertyId &&
+					(originalElement = e.ModelElement as ShapeElement) != null)
+				{
+					MultiShapeUtility.CheckLinksOnBoundsChanged(originalElement);
+				}
+			}
+		}
+		#endregion // MultipleShapesSupport
 		#region Customize appearance
 		/// <summary>
 		/// Determines if a the model element backing the shape element
@@ -127,9 +149,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Iterate shapes associated with a given element
 		/// </summary>
 		/// <param name="modelElement">The parent element to iterate. Can be <see langword="null"/> if <paramref name="shapeElement"/> is specified.</param>
-		/// <param name="shapeElement">The shape to reference. Can be <see langword="null"/> is <paramref name="modelElement"/> is specified.</param>
+		/// <param name="shapeElement">The shape to reference. Can be <see langword="null"/> if <paramref name="modelElement"/> is specified.</param>
+		/// <param name="onePerDiagram">True to filter the shapes to one per diagram</param>
 		/// <param name="visitor">A <see cref="VisitShape"/> callback delegate</param>
-		public static void VisitAssociatedShapes(ModelElement modelElement, ShapeElement shapeElement, VisitShape visitor)
+		public static void VisitAssociatedShapes(ModelElement modelElement, ShapeElement shapeElement, bool onePerDiagram, VisitShape visitor)
 		{
 			if (modelElement == null && shapeElement != null)
 			{
@@ -141,6 +164,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				int pelCount = presentationElements.Count;
 				if (pelCount != 0)
 				{
+					List<Diagram> visitedDiagrams = null;
+					Diagram visitedDiagram = null;
+
 					Partition shapePartition = (shapeElement != null) ? shapeElement.Partition : modelElement.Partition;
 					Type thisType = (shapeElement != null) ? shapeElement.GetType() : typeof(ShapeElement);
 					for (int i = 0; i < pelCount; ++i)
@@ -148,9 +174,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 						PresentationElement pel = presentationElements[i];
 						if (shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
 						{
-							if (!visitor(pel as ShapeElement))
+							ShapeElement sel = pel as ShapeElement;
+							Diagram selDiagram = sel.Diagram;
+							if (!onePerDiagram || (visitedDiagram != selDiagram && (visitedDiagrams == null || !visitedDiagrams.Contains(selDiagram))))
 							{
-								return;
+								if (!visitor(sel))
+								{
+									return;
+								}
+								if (onePerDiagram)
+								{
+									if (visitedDiagram == null)
+									{
+										visitedDiagram = selDiagram;
+									}
+									else
+									{
+										if (visitedDiagrams == null)
+										{
+											visitedDiagrams = new List<Diagram>();
+										}
+										visitedDiagrams.Add(selDiagram);
+									}
+								}
 							}
 						}
 					}
@@ -748,4 +794,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Luminosity Modification
 	}
+	#region ORMShapeDeleteClosure for multiple shapes
+	public partial class ORMShapeDeleteClosure
+	{
+		/// <summary>
+		/// Calls <see cref="MultiShapeUtility.ShouldVisitOnDelete"/> to determine if the relationship should be visited
+		/// and to reconfigure any links
+		/// </summary>
+		/// <param name="walker">The current <see cref="ElementWalker"/></param>
+		/// <param name="sourceElement">The <see cref="ModelElement"/> being deleted</param>
+		/// <param name="sourceRoleInfo">The role information</param>
+		/// <param name="domainRelationshipInfo">The relationship information</param>
+		/// <param name="targetRelationship">The other <see cref="ModelElement"/> in the relationship</param>
+		/// <returns>Whether to visit the relationship</returns>
+		public override VisitorFilterResult ShouldVisitRelationship(ElementWalker walker, ModelElement sourceElement, DomainRoleInfo sourceRoleInfo, DomainRelationshipInfo domainRelationshipInfo, ElementLink targetRelationship)
+		{
+			if (MultiShapeUtility.ShouldVisitOnDelete(walker, sourceElement, domainRelationshipInfo, targetRelationship))
+			{
+				return base.ShouldVisitRelationship(walker, sourceElement, sourceRoleInfo, domainRelationshipInfo, targetRelationship);
+			}
+			else
+			{
+				return VisitorFilterResult.Never;
+			}
+		}
+	}
+	#endregion // ORMShapeDeleteClosure for multiple shapes
 }

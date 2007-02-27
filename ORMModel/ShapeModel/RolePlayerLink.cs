@@ -14,7 +14,16 @@
 \**************************************************************************/
 #endregion
 
+// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
+// In this case, the 'anchor' end is always connected if an opposite shape is available.
+// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
+// ShapeB instance is not closer to a different instance of ShapeA.
+// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
+// in the project properties if you want to experiment. This is here for reference only.
+//#define LINKS_ALWAYS_CONNECT
+
 //#define IMPLIEDJOINPATH
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +37,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region (Temporary) CompositeLinkDecorator test class
@@ -145,7 +155,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return toPoint.X < fromPoint.X;
 				}
 			}
-			#region ILinkDecoratorSettings Implementation
+		#region ILinkDecoratorSettings Implementation
 			/// <summary>
 			/// Implements ILinkDecoratorSettings.DecoratorSize.
 			/// </summary>
@@ -188,7 +198,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return OffsetBy;
 				}
 			}
-			#endregion // ILinkDecoratorSettings Implementation
+		#endregion // ILinkDecoratorSettings Implementation
 		}
 		#endregion // ImpliedFactJoinPathDecorator class
 #endif // IMPLIEDJOINPATH
@@ -420,23 +430,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
-			// If we're already connected then walk away
-			if (FromShape == null && ToShape == null)
+			Reconfigure(null);
+		}
+		/// <summary>
+		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// </summary>
+		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
+		protected override void Reconfigure(ShapeElement discludedShape)
+		{
+			ObjectTypePlaysRole modelLink = ModelElement as ObjectTypePlaysRole;
+			ObjectType rolePlayer = modelLink.RolePlayer;
+			FactType nestedFact = rolePlayer.NestedFactType;
+
+			MultiShapeUtility.ReconfigureLink(this, modelLink.PlayedRole.FactType, (nestedFact == null) ? rolePlayer as ModelElement : nestedFact, discludedShape);
+		}
+		#if LINKS_ALWAYS_CONNECT
+		/// <summary>
+		/// Gets whether this link is anchored to its ToShape or FromShape
+		/// </summary>
+		protected override BinaryLinkAnchor Anchor
+		{
+			get
 			{
-				ObjectTypePlaysRole modelLink = ModelElement as ObjectTypePlaysRole;
-				ObjectType rolePlayer = modelLink.RolePlayer;
-				FactType nestedFact = rolePlayer.NestedFactType;
-				FactTypeShape fromFactTypeShape;
-				NodeShape fromShape;
-				NodeShape toShape;
-				if (null != (fromFactTypeShape = diagram.FindShapeForElement<FactTypeShape>(modelLink.PlayedRole.FactType)) &&
-					null != (toShape = diagram.FindShapeForElement<NodeShape>((nestedFact == null) ? rolePlayer as ModelElement : nestedFact)))
-				{
-					fromShape = fromFactTypeShape.GetUniqueConnectorShape(toShape);
-					Connect(fromShape, toShape);
-				}
+				return BinaryLinkAnchor.FromShape;
 			}
 		}
+		#endif //LINKS_ALWAYS_CONNECT
 		#endregion // RolePlayerLink specific
 		#region Accessibility Properties
 		/// <summary>

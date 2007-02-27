@@ -474,6 +474,9 @@
 	<ResourceString name="CommandSwapRoleOrderText" model="Diagram" resourceName="Command.SwapRoleOrder.Text">
 		<comment type="summary">This text appears on the move role left/right when the fact type is binary.</comment>
 	</ResourceString>
+	<ResourceString name="CommandNextOnThisDiagramText" model="Diagram" resourceName="Command.NextOnThisDiagram.Text">
+		<comment type="summary">This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</comment>
+	</ResourceString>
 	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText">
 		<comment type="summary">Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text</comment>
 	</ResourceString>

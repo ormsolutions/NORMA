@@ -14,6 +14,14 @@
 \**************************************************************************/
 #endregion
 
+// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
+// In this case, the 'anchor' end is always connected if an opposite shape is available.
+// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
+// ShapeB instance is not closer to a different instance of ShapeA.
+// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
+// in the project properties if you want to experiment. This is here for reference only.
+//#define LINKS_ALWAYS_CONNECT
+
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -22,6 +30,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -105,31 +114,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
-			// If we're already connected then walk away
-			if (FromShape == null && ToShape == null)
+			Reconfigure(null);
+		}
+		/// <summary>
+		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// </summary>
+		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
+		protected override void Reconfigure(ShapeElement discludedShape)
+		{
+			ModelNoteReferencesModelElement link = ModelElement as ModelNoteReferencesModelElement;
+			MultiShapeUtility.ReconfigureLink(this, link.Note, link.Element, discludedShape);
+		}
+		#if LINKS_ALWAYS_CONNECT
+		/// <summary>
+		/// Gets whether this link is anchored to its ToShape or FromShape
+		/// </summary>
+		protected override Neumont.Tools.Modeling.Diagrams.BinaryLinkAnchor Anchor
+		{
+			get
 			{
-				ModelNoteReferencesModelElement link = ModelElement as ModelNoteReferencesModelElement;
-				ORMBaseShape fromShape;
-				ShapeElement untypedToShape;
-				if (null != (fromShape = diagram.FindShapeForElement<ORMBaseShape>(link.Note)) &&
-					null != (untypedToShape = diagram.FindShapeForElement(link.Element)))
-				{
-					NodeShape toShape = untypedToShape as NodeShape;
-					if (null == toShape)
-					{
-						SubtypeLink subTypeLink = untypedToShape as SubtypeLink;
-						if (null != subTypeLink)
-						{
-							toShape = subTypeLink.EnsureLinkConnectorShape();
-						}
-					}
-					if (toShape != null)
-					{
-						Connect(fromShape, toShape);
-					}
-				}
+				return Neumont.Tools.Modeling.Diagrams.BinaryLinkAnchor.FromShape;
 			}
 		}
+#endif //LINKS_ALWAYS_CONNECT
 		#endregion // ModelNoteLink specific
 		#region Accessibility Properties
 		/// <summary>

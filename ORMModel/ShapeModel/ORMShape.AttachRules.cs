@@ -66,6 +66,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequenceRoleAdded),
@@ -130,7 +131,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 63; ++i)
+			for (int i = 0; i < 64; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -457,6 +458,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		partial class LinkChangeRule
 		{
 			public LinkChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class ORMBaseShape
+	{
+		partial class AbsoluteBoundsChangedRule
+		{
+			public AbsoluteBoundsChangedRule()
 			{
 				base.IsEnabled = false;
 			}

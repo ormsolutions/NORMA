@@ -311,13 +311,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="docData">DocData</param>
 		/// <param name="serviceProvider">IServiceProvider</param>
-		public ORMDesignerDocView(ModelingDocData docData, IServiceProvider serviceProvider) : base(docData, serviceProvider)
+		public ORMDesignerDocView(ModelingDocData docData, IServiceProvider serviceProvider)
+			: base(docData, serviceProvider)
 		{
 			myCtorServiceProvider = serviceProvider;
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
-		
+
 		#region Context Menu
 		/// <summary>
 		/// When set as the <see cref="ToolStripItem.Tag"/> for a <see cref="ToolStripItem"/> in <see cref="P:ContextMenuStrip"/>,
@@ -388,7 +389,7 @@ namespace Neumont.Tools.ORM.Shell
 			base.RenameDiagramAtPoint(((ToolStripItem)sender).Owner.Location);
 		}
 		#endregion // Context Menu
-		
+
 		#region HACK: Temporary RelationalView Context Menu stuff
 #if !DISABLE_RELATIONAL_VIEW_HACK
 		private void ContextMenuNewPageRelationalView(object sender, EventArgs e)
@@ -1063,7 +1064,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Check the current status of the requested command. This is called frequently, and is
 		/// static to enable placing the null check inside this function.
@@ -1305,44 +1306,30 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						OleMenuCommand cmd = sender as OleMenuCommand;
 						int diagramIndex = cmd.MatchedCommandId;
-						string diagramName = null;
-						foreach (ModelElement mel in docView.GetSelectedComponents())
-						{
-							ORMBaseShape shape = mel as ORMBaseShape;
-							if (shape != null)
-							{
-								ORMBaseShape.VisitAssociatedShapes(
-									null,
-									shape,
-									delegate(ShapeElement testShape)
-									{
-										if (testShape != shape)
-										{
-											if (diagramIndex == 0)
-											{
-												diagramName = testShape.Diagram.Name;
-												return false;
-											}
-											--diagramIndex;
-										}
-										return true;
-									});
-							}
-							break; // Single-select command
-						}
-						if (diagramName != null)
+						bool thisDiagram = (diagramIndex == 0);
+
+						ShapeElement sel = docView.GetShapeForDiagramList(diagramIndex);
+						if (sel != null)
 						{
 							cmd.Enabled = true;
 							cmd.Visible = true;
 							cmd.Supported = true;
-							cmd.Text = diagramName;
+							if (thisDiagram)
+							{
+								cmd.Text = ResourceStrings.CommandNextOnThisDiagramText;
+							}
+							else
+							{
+								cmd.Text = sel.Diagram.Name;
+							}
 						}
-						else
+						else if (!thisDiagram)
 						{
 							cmd.Supported = false;
 						}
 					}
 				}
+
 				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness)
 				{
 					if (isEnabled)
@@ -1652,10 +1639,10 @@ namespace Neumont.Tools.ORM.Shell
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
 				{
 					Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
-					#if QUEUEDSELECTION
+#if QUEUEDSELECTION
 					// UNDONE: 2006-06 DSL Tools port: QueuedSelection doesn't seem to exist any more. What do we replace it with?
 					IList queuedSelection = docData.QueuedSelection as IList;
-					#endif // QUEUEDSELECTION
+#endif // QUEUEDSELECTION
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
 					{
@@ -2364,12 +2351,12 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ExtensionManager.ShowDialog(ServiceProvider, this.DocData as ORMDesignerDocData);
 		}
-        /// <summary>
-        /// Expand the context menu to display local errors
-        /// </summary>
+		/// <summary>
+		/// Expand the context menu to display local errors
+		/// </summary>
 		/// <param name="errorIndex">Index of the error in the error collection</param>
-        protected virtual void OnMenuErrorList(int errorIndex)
-        {
+		protected virtual void OnMenuErrorList(int errorIndex)
+		{
 			foreach (ModelElement mel in GetSelectedComponents())
 			{
 				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
@@ -2402,30 +2389,88 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="diagramIndex">Index of the diagram in the list of diagrams</param>
 		protected virtual void OnMenuDiagramList(int diagramIndex)
 		{
+			ShapeElement activate = GetShapeForDiagramList(diagramIndex);
+			if (activate != null)
+			{
+				(DocData as IORMToolServices).ActivateShape(activate);
+			}
+		}
+
+		/// <summary>
+		/// Gets the shape associated with the specified diagram index in the diagram list
+		/// </summary>
+		/// <param name="diagramIndex">The diagram index for which to get the associated shape</param>
+		/// <returns>The shape, if any</returns>
+		protected ShapeElement GetShapeForDiagramList(int diagramIndex)
+		{
+			ShapeElement retVal = null;
+
 			foreach (ModelElement mel in GetSelectedComponents())
 			{
 				ORMBaseShape shape = mel as ORMBaseShape;
 				if (shape != null)
 				{
-					ORMBaseShape.VisitAssociatedShapes(
-						null,
-						shape,
-						delegate(ShapeElement testShape)
-						{
-							if (testShape != shape)
+					Diagram shapeDiagram = shape.Diagram;
+					// for the first diagram, find the next shape on the same diagram
+					// The first command is recognized, it is just hidden if there are no
+					// other shapes on the first diagram
+					if (diagramIndex == 0)
+					{
+						ShapeElement firstShape = null;
+						bool seenCurrent = false;
+						ORMBaseShape.VisitAssociatedShapes(null, shape, false,
+							delegate(ShapeElement testShape)
 							{
-								if (diagramIndex == 0)
+								if (testShape == shape)
 								{
-									(DocData as IORMToolServices).ActivateShape(testShape);
-									return false;
+									seenCurrent = true;
 								}
-								--diagramIndex;
+								else if (testShape.Diagram == shapeDiagram)
+								{
+									if (seenCurrent)
+									{
+										retVal = testShape;
+										return false;
+									}
+									else if (firstShape == null)
+									{
+										firstShape = testShape;
+									}
+								}
+								return true;
 							}
-							return true;
-						});
+						);
+						if (retVal == null && seenCurrent)
+						{
+							retVal = firstShape;
+						}
+					}
+					else
+					{
+						--diagramIndex;
+
+						ORMBaseShape.VisitAssociatedShapes(null, shape, true,
+							delegate(ShapeElement testShape)
+							{
+								if (testShape.Diagram != shapeDiagram)
+								{
+									if (diagramIndex == 0)
+									{
+										retVal = testShape;
+										return false;
+									}
+									--diagramIndex;
+								}
+								return true;
+							}
+						);
+					}
 				}
+
 				break; // Single-select command
 			}
+
+			return retVal;
 		}
 		#region OnMenuCopyImage method and support
 		#region UnsafeNativeMethods
@@ -2538,7 +2583,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			CopyImageToClipboard(diagram, selectedElements);
 		}
-		
+
 		private static void CopyImageToClipboard(Diagram diagram, ICollection selectedElements)
 		{
 			GetShapesToDrawDelegate getShapesToDraw = GetShapesToDraw;
@@ -2602,7 +2647,7 @@ namespace Neumont.Tools.ORM.Shell
 						metafile.Dispose();
 					}
 				}
-				
+
 				return;
 			}
 			// Fall back to the built-in support if we can't copy to the clipboard ourselves.
@@ -2889,11 +2934,11 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							t.Commit();
 							ormDiagram.StickyObject.StickyRedraw();
-//							// TODO:  Re-initializing the StickyObject is probably inefficient.  Implementing a rule on
-//							// MCECs whenever their constraint collection is changed would probably be more effective.
-//							// This is especially true when role sequences are just being moved up and down.  No insertions
-//							// or deletions, it's just touched.
-//							ormDiagram.StickyObject.StickyInitialize();
+							// TODO:  Re-initializing the StickyObject is probably inefficient.  Implementing a rule on
+							// MCECs whenever their constraint collection is changed would probably be more effective.
+							// This is especially true when role sequences are just being moved up and down.  No insertions
+							// or deletions, it's just touched.
+							//ormDiagram.StickyObject.StickyInitialize();
 						}
 					}
 				}

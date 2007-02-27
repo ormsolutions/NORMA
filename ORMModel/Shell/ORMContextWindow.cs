@@ -48,7 +48,6 @@ namespace Neumont.Tools.ORM.Shell
 	[CLSCompliant(false)]
 	public class ORMContextWindow : ORMToolWindow
 	{
-
 		#region Private data members
 		private DiagramView myDiagramView;
 		private ORMDiagram myDiagram;
@@ -313,7 +312,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myDiagram.NestedChildShapes.Clear();
 				myDiagram.AutoPopulateShapes = true;
-				
+
 				PlaceObject(hierarchyElement);
 				LinkedElementCollection<ShapeElement> collection = myDiagram.NestedChildShapes;
 				LayoutManager bl = new LayoutManager(myDiagram, (myDiagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
@@ -345,7 +344,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					continue;
 				}
-				myDiagram.PlaceORMElementOnDiagram(null, (ModelElement)elem, PointD.Empty, false);
+				myDiagram.PlaceORMElementOnDiagram(null, (ModelElement)elem, PointD.Empty, ORMPlacementOption.None);
 			}
 		}
 		/// <summary>

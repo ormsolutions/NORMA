@@ -37,35 +37,9 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	#region IStickyObject interface
-	/// <summary>
-	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky
-	/// will maintain their selected status when compatible objects are clicked.
-	/// </summary>
-	public interface IStickyObject
-	{
-		/// <summary>
-		/// Call this on an object when you're setting it as a StickyObject.  This method
-		/// will go through the object's associated elements to perform any actions needed
-		/// such as calling Invalidate().
-		/// </summary>
-		void StickyInitialize();
-		/// <summary>
-		/// Returns whether the Presentation Element that was passed in is selectable in the
-		/// context of this StickyObject.  For example, when an external constraint is the
-		/// active StickyObject, roles are selectable and objects are not.
-		/// </summary>
-		/// <returns>Whether the PresentationElement passed in is selectable in this StickyObject's context</returns>
-		bool StickySelectable(ModelElement mel);
-		/// <summary>
-		/// Needed to allow outside entities to tell the StickyObject to redraw itself and its children.
-		/// </summary>
-		void StickyRedraw();
-	}
-	#endregion // IStickyObject interface
-
 	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
 	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
@@ -93,7 +67,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.SnapToGrid = false;
 			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
-		#endregion
+		#endregion // Constructors
 		#region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
@@ -124,7 +98,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return;
 			}
-			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, true))
+			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, ORMPlacementOption.AllowMultipleShapes))
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -137,9 +111,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="dataObject">The dataObject containing the element to place. If this is set, elementToPlace must be null.</param>
 		/// <param name="elementToPlace">The the element to place. If this is set, dataObject must be null.</param>
 		/// <param name="elementPosition">An initial position for the element</param>
-		/// <param name="selectIfNotAdded">Select the object on the diagram if it is already there.</param>
+		/// <param name="placementOptions">Controls the actions by this method</param>
 		/// <returns>true if the element was placed</returns>
-		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, bool selectIfNotAdded)
+		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOptions)
 		{
 			Debug.Assert((dataObject == null) ^ (elementToPlace == null), "Pass in dataObject or elementToPlace");
 			bool retVal = false;
@@ -177,7 +151,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				int factCount = verifyFactTypeList.Count;
 				for (int i = 0; i < factCount; ++i)
 				{
-					if (null == FindShapeForElement(verifyFactTypeList[i]))
+					if (!ElementHasShape(verifyFactTypeList[i]))
 					{
 						element = null;
 						break;
@@ -196,30 +170,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						DropTargetContext.Set(transaction.TopLevelTransaction, Id, elementPosition, null);
 					}
-					FixUpLocalDiagram(null, element);
+					Dictionary<object, object> topLevelContextInfo = transaction.TopLevelTransaction.Context.ContextInfo;
+					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					{
+						topLevelContextInfo.Add(MultiShapeUtility.AllowMultipleShapes, null);
+					}
+					ShapeElement shapeElement = FixUpLocalDiagram(element);
 					if (clearContext)
 					{
 						DropTargetContext.Remove(transaction.TopLevelTransaction);
 					}
 					if (factType != null)
 					{
-						FixupFactType(factType, false);
+						FixupFactType(factType, shapeElement as FactTypeShape, false);
 					}
 					else if (objectType != null)
 					{
-						FixupObjectType(objectType, false);
+						FixupObjectType(objectType, shapeElement as ObjectTypeShape, false);
 					}
 					else if (setConstraint != null)
 					{
-						FixupSetConstraint(setConstraint);
+						FixupConstraint(setConstraint);
 					}
 					else if (setComparisonConstraint != null)
 					{
-						FixupSetComparisonConstraint(setComparisonConstraint);
+						FixupConstraint(setComparisonConstraint);
 					}
 					else if (modelNote != null)
 					{
-						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
+						FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
+					}
+					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(MultiShapeUtility.AllowMultipleShapes);
 					}
 					if (transaction.HasPendingChanges)
 					{
@@ -227,21 +210,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 						storeChange = true;
 					}
 				}
-				if (!storeChange && selectIfNotAdded)
+				if (!storeChange && placementOptions == ORMPlacementOption.SelectIfNotPlaced)
 				{
-					DiagramView selectOnView;
-					ShapeElement shape;
-					if (null != (selectOnView = ActiveDiagramView) &&
-						null != (shape = FindShapeForElement(element)))
+					DiagramView selectOnView = ActiveDiagramView;
+					ShapeElement shape = null;
+
+					foreach (ShapeElement existingShape in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(this, element))
+					{
+						shape = existingShape;
+						break;
+					}
+
+					if (selectOnView != null && shape != null)
 					{
 						selectOnView.Selection.Set(new DiagramItem(shape));
 						selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
 					}
 				}
-			} 
+			}
 			return retVal;
 		}
-		private void FixupFactType(FactType factType, bool childShapesMerged)
+		private void FixupFactType(FactType factType, FactTypeShape factTypeShape, bool childShapesMerged)
 		{
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
@@ -250,23 +239,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 				//Role role = roleBase.Role;
 				Role role = roleCollection[i].Role;
 				// Pick up role players
-				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
 
 				// Pick up attached constraints
-				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
-				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
 
 				if (!childShapesMerged)
 				{
 					// Pick up the role shape
-					FixUpLocalDiagram(factType, role);
+					//check if we have a specific shape or need to use the model element
+					if (factTypeShape == null)
+					{
+						FixUpLocalDiagram(factType, role);
+					}
+					else
+					{
+						FixUpLocalDiagram(factTypeShape as ShapeElement, role);
+					}
 
 					// Get the role value constraint and the link to it.
 					RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
 
 					if (valueConstraintLink != null)
 					{
-						FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
+						if (factTypeShape == null)
+						{
+							FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
+						}
+						else
+						{
+							FixUpLocalDiagram(factTypeShape as ShapeElement, valueConstraintLink.ValueConstraint);
+						}
 					}
 				}
 			}
@@ -275,22 +279,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 				LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
 				if (orders.Count != 0)
 				{
-					FixUpLocalDiagram(factType, orders[0]);
+					if (factTypeShape == null)
+					{
+						FixUpLocalDiagram(factType, orders[0]);
+					}
+					else
+					{
+						FixUpLocalDiagram(factTypeShape as ShapeElement, orders[0]);
+					}
 				}
 			}
-			FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
+			FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
 			Objectification objectification = factType.Objectification;
 			if (objectification != null && !objectification.IsImplied)
 			{
 				ObjectType nestingType = objectification.NestingType;
 				if (!childShapesMerged)
 				{
-					FixUpLocalDiagram(factType, nestingType);
+					if (factTypeShape == null)
+					{
+						FixUpLocalDiagram(factType, nestingType);
+					}
+					else
+					{
+						FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType);
+					}
 				}
-				FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 			}
 		}
-		private void FixupObjectType(ObjectType objectType, bool childShapeMerged)
+		private void FixupObjectType(ObjectType objectType, ObjectTypeShape objectTypeShape, bool childShapesMerged)
 		{
 			ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(objectType, ObjectTypePlaysRole.RolePlayerDomainRoleId);
 			int linksCount = rolePlayerLinks.Count;
@@ -311,28 +329,40 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				if (subtypeFact != null)
 				{
-					FixUpLocalDiagram(null, subtypeFact);
+					FixUpLocalDiagram(subtypeFact);
 				}
 				else
 				{
-					FixUpLocalDiagram(null, link);
+					FixUpLocalDiagram(link);
 				}
 			}
-			if (!childShapeMerged)
+			if (!childShapesMerged)
 			{
 				ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
 				if (valueConstraint != null)
 				{
-					FixUpLocalDiagram(objectType, valueConstraint);
+					//check if we have a specific shape or need to use the model element
+					if (objectTypeShape == null)
+					{
+						FixUpLocalDiagram(objectType, valueConstraint);
+					}
+					else
+					{
+						FixUpLocalDiagram(objectTypeShape as ShapeElement, valueConstraint);
+					}
 				}
 			}
-			FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+			FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 		}
-		private void FixupSetConstraint(SetConstraint setConstraint)
+		private void FixupConstraint(IConstraint constraint)
 		{
+			Debug.Assert(constraint is SetComparisonConstraint || constraint is SetConstraint,
+				"Only use FixupConstraint for a SetConstraint or SetComparisonConstraint.");
+
 			FixupRelatedLinks(
-				null,
-				DomainRoleInfo.GetElementLinks<ElementLink>(setConstraint, FactSetConstraint.SetConstraintDomainRoleId),
+				DomainRoleInfo.GetElementLinks<ElementLink>(constraint as ModelElement, constraint is SetComparisonConstraint ?
+					FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId :
+					FactSetConstraint.SetConstraintDomainRoleId),
 				delegate(ElementLink link, ShapeElement newShape)
 				{
 					ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
@@ -341,58 +371,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 						FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
 						if (shape != null)
 						{
-							shape.ConstraintShapeSetChanged(setConstraint);
-						}
-					}
-				});
-		}
-		private void FixupSetComparisonConstraint(SetComparisonConstraint setComparisonConstraint)
-		{
-			FixupRelatedLinks(
-				null,
-				DomainRoleInfo.GetElementLinks<ElementLink>(setComparisonConstraint, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId),
-				delegate(ElementLink link, ShapeElement newShape)
-				{
-					ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
-					if (linkShape != null)
-					{
-						FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
-						if (shape != null)
-						{
-							shape.ConstraintShapeSetChanged(setComparisonConstraint);
+							shape.ConstraintShapeSetChanged(constraint);
 						}
 					}
 				});
 		}
 		/// <summary>
-		/// Callback used with <see cref="FixupRelatedLinks(ModelElement,ReadOnlyCollection{ElementLink},AfterLinkFixup)"/>
+		/// Callback used with <see cref="FixupRelatedLinks(ReadOnlyCollection{ElementLink},AfterLinkFixup)"/>
 		/// </summary>
 		/// <param name="link">The link that was fixed up</param>
 		/// <param name="newShape">A newly created shape associated with the link</param>
 		private delegate void AfterLinkFixup(ElementLink link, ShapeElement newShape);
 		/// <summary>
-		/// Fixes up the local diagram for each of the links related to the specified ModelElement.
+		/// Fixes up the local diagram for each of the links
 		/// </summary>
-		/// <param name="droppedOnElement">The dropped on element.</param>
-		/// <param name="links">The links.</param>
-		private void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links)
+		/// <param name="links">The links</param>
+		private void FixupRelatedLinks(ReadOnlyCollection<ElementLink> links)
 		{
-			FixupRelatedLinks(droppedOnElement, links, null);
+			FixupRelatedLinks(links, null);
 		}
 		/// <summary>
-		/// Fixes up the local diagram for each of the links related to the specified ModelElement.
+		/// Fixes up the local diagram for each of the links
 		/// </summary>
-		/// <param name="droppedOnElement">The dropped on element.</param>
-		/// <param name="links">The links.</param>
-		/// <param name="afterFixup">A callback that fires after link fixup is complete.</param>
-		private void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links, AfterLinkFixup afterFixup)
+		/// <param name="links">The links</param>
+		/// <param name="afterFixup">A callback that fires after link fixup is complete</param>
+		private void FixupRelatedLinks(ReadOnlyCollection<ElementLink> links, AfterLinkFixup afterFixup)
 		{
 			int linksCount = links.Count;
 			for (int i = 0; i < linksCount; ++i)
 			{
 				ElementLink link;
-				ShapeElement newChildShape = FixUpLocalDiagram(droppedOnElement, link = links[i]);
-				if (afterFixup != null && newChildShape != null)
+				ShapeElement newChildShape = FixUpLocalDiagram(link = links[i]);
+				if (afterFixup != null)
 				{
 					afterFixup(link, newChildShape);
 				}
@@ -400,32 +410,74 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		/// <summary>
 		/// Do the same work as <see cref="Diagram.FixUpDiagram"/> for just
-		/// this diagram.
+		/// this diagram.  Uses this model as the parent.
 		/// </summary>
-		/// <param name="existingParent">An element with a shape on this diagram.
-		/// Pass in null to use the model.</param>
-		/// <param name="newChild">The new element to add.</param>
-		/// <returns>A newly created child shape for the element</returns>
-		public ShapeElement FixUpLocalDiagram(ModelElement existingParent, ModelElement newChild)
+		/// <param name="newChild">The new element to add</param>
+		/// <returns>A newly created child shape</returns>
+		public ShapeElement FixUpLocalDiagram(ModelElement newChild)
 		{
-			ShapeElement parentShape = this;
-			if (existingParent != null && existingParent != ModelElement)
+			return FixUpLocalDiagram(this as ShapeElement, newChild);
+		}
+		/// <summary>
+		/// Do the same work as <see cref="Diagram.FixUpDiagram"/> for just
+		/// this diagram
+		/// </summary>
+		/// <param name="existingParent">A model element with a shape on this diagram</param>
+		/// <param name="newChild">The new element to add</param>
+		/// <returns>All newly created child shapes for the element</returns>
+		public IList<ShapeElement> FixUpLocalDiagram(ModelElement existingParent, ModelElement newChild)
+		{
+			List<ShapeElement> allChildShapes = new List<ShapeElement>();
+
+			if (existingParent == null || existingParent == ModelElement)
 			{
-				parentShape = FindShapeForElement(existingParent);
-				if (parentShape == null)
+				//fix up using this diagram as the parent
+				ShapeElement newChildShape;
+				if ((newChildShape = FixUpLocalDiagram(newChild)) != null)
 				{
-					return null;
+					allChildShapes.Add(newChildShape);
+				}
+				return allChildShapes;
+			}
+
+			//fix up for each shape associated with the model element
+			foreach (ShapeElement parentShape in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(this, existingParent))
+			{
+				ShapeElement newChildShape;
+				if ((newChildShape = FixUpLocalDiagram(parentShape, newChild)) != null)
+				{
+					allChildShapes.Add(newChildShape);
 				}
 			}
-			ShapeElement newChildShape = parentShape.FixUpChildShapes(newChild);
-			if (newChildShape != null && newChildShape.Diagram == this)
+
+			return allChildShapes;
+		}
+		/// <summary>
+		/// Do the same work as <see cref="Diagram.FixUpDiagram"/> for just
+		/// this diagram
+		/// </summary>
+		/// <param name="existingParent">A shape element on this diagram</param>
+		/// <param name="newChild">The new element to add</param>
+		/// <returns>A newly created child shape for the element</returns>
+		public ShapeElement FixUpLocalDiagram(ShapeElement existingParent, ModelElement newChild)
+		{
+			if (existingParent == null || existingParent == ModelElement)
+			{
+				//use this diagram as the parent
+				existingParent = this;
+			}
+
+			ShapeElement newChildShape;
+			if ((newChildShape = existingParent.FixUpChildShapes(newChild)) != null &&
+				newChildShape.Diagram == this)
 			{
 				FixUpDiagramSelection(newChildShape);
 				return newChildShape;
 			}
+
 			return null;
 		}
-		# endregion // DragDrop overrides
+		#endregion // DragDrop overrides
 		#region Toolbox filter strings
 		// UNDONE: 2006-06 DSL Tools port: Some of these toolbox filter strings have been changed to point to the filter strings
 		// in ToolboxHelper. Is this the correct thing to do, and does anything else need to be done? (The original versions of
@@ -522,11 +574,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region View Fixup Methods
 		/// <summary>
 		/// Called as a result of the FixUpDiagram calls
-		/// with the diagram as the first element.
+		/// with the diagram as the first element
 		/// </summary>
 		/// <param name="element">Added element</param>
 		/// <returns>True for items displayed directly on the
-		/// surface. Nesting object types are not displayed.</returns>
+		/// surface. Nesting object types are not displayed</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
 			ElementLink link = element as ElementLink;
@@ -555,7 +607,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 
 			bool isLink = link != null || subtypeFact != null;
-			if (isLink && (element1 == null || element2 == null || FindShapeForElement(element1) == null || FindShapeForElement(element2) == null))
+			if (isLink && (element1 == null || element2 == null || !ElementHasShape(element1) || !ElementHasShape(element2)))
 			{
 				return false;
 			}
@@ -846,7 +898,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Locate an existing shape on this diagram corresponding to this element
 		/// </summary>
 		/// <param name="element">The element to search</param>
-		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true.</param>
+		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
 		/// <returns>An existing shape, or null if not found</returns>
 		public ShapeElement FindShapeForElement(ModelElement element, bool filterDeleting)
 		{
@@ -867,7 +919,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <typeparam name="TShape">The type of the shape to return</typeparam>
 		/// <param name="element">The element to search</param>
-		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true.</param>
+		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
 		/// <returns>An existing shape, or null if not found</returns>
 		public TShape FindShapeForElement<TShape>(ModelElement element, bool filterDeleting) where TShape : ShapeElement
 		{
@@ -884,6 +936,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return null;
 		}
+		///// <summary>
+		///// Locate all existing shapes on this diagram corresponding to this element
+		///// </summary>
+		///// <param name="element">The element to search</param>
+		///// <returns>An IEnumerable for enumeration through all existing shapes</returns>
+		//public IEnumerable<ShapeElement> FindAllShapesForElement(ModelElement element)
+		//{
+		//    return FindAllShapesForElement<ShapeElement>(element, false);
+		//}
+		///// <summary>
+		///// Locate all existing shapes on this diagram corresponding to this element
+		///// </summary>
+		///// <param name="element">The element to search</param>
+		///// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
+		///// <returns>An IEnumerable for enumeration through all existing shapes</returns>
+		//public IEnumerable<ShapeElement> FindAllShapesForElement(ModelElement element, bool filterDeleting)
+		//{
+		//    return FindAllShapesForElement<ShapeElement>(element, filterDeleting);
+		//}
+		/// <summary>
+		/// Determines if an element has a shape on this diagram.
+		/// </summary>
+		/// <param name="element">The element to check</param>
+		/// <returns>true if a shape exists on this diagram for the element</returns>
+		public bool ElementHasShape(ModelElement element)
+		{
+			return ElementHasShape(element, false);
+		}
+		/// <summary>
+		/// Determines if an element has a shape on this diagram.
+		/// </summary>
+		/// <param name="element">The element to check</param>
+		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
+		/// <returns>true if a shape exists on this diagram for the element</returns>
+		public bool ElementHasShape(ModelElement element, bool filterDeleting)
+		{
+			foreach (ShapeElement shapeElement in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(this, element, filterDeleting))
+			{
+				return true;
+			}
+			return false;
+		}
 		/// <summary>
 		/// Setup our routing style.
 		/// </summary>
@@ -891,6 +985,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			base.OnInitialize();
 			this.RoutingStyle = VGRoutingStyle.VGRouteNone;
+		}
+		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
+		public override ShapeElement FixUpChildShapes(ModelElement childElement)
+		{
+			return MultiShapeUtility.FixUpChildShapes(this, childElement);
 		}
 		#endregion // View Fixup Methods
 		#region Customize appearance
@@ -1576,6 +1675,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="shape">The newly merged <see cref="ShapeElement"/></param>
 		protected virtual void MergeRelateShape(ShapeElement shape)
 		{
+			object AllowMultipleShapes;
+			Dictionary<object, object> topLevelContextInfo;
+			bool containedAllowMultipleShapes;
+			if (!(containedAllowMultipleShapes = (topLevelContextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+			{
+				topLevelContextInfo.Add(AllowMultipleShapes, null);
+			}
+
 			ModelElement element = shape.ModelElement;
 			FactType factType;
 			ObjectType objectType;
@@ -1583,19 +1690,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SetComparisonConstraint setComparisonConstraint;
 			if (null != (factType = element as FactType))
 			{
-				FixupFactType(factType, true);
+				FixupFactType(factType, shape as FactTypeShape, true);
 			}
 			else if (null != (objectType = element as ObjectType))
 			{
-				FixupObjectType(objectType, true);
+				FixupObjectType(objectType, shape as ObjectTypeShape, true);
 			}
 			else if (null != (setConstraint = element as SetConstraint))
 			{
-				FixupSetConstraint(setConstraint);
+				FixupConstraint(setConstraint);
 			}
 			else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
 			{
-				FixupSetComparisonConstraint(setComparisonConstraint);
+				FixupConstraint(setComparisonConstraint);
+			}
+
+			if (!containedAllowMultipleShapes)
+			{
+				topLevelContextInfo.Remove(AllowMultipleShapes);
 			}
 		}
 		void IMergeElements.MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
@@ -1629,7 +1741,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// See which prototype facts are being added. Create an editable list so
 					// we can walk this once only.
 					IElementDirectory elementDirectory = Store.ElementDirectory;
-					ReadOnlyCollection < ProtoElement > rootElements = elementGroupPrototype.RootProtoElements;
+					ReadOnlyCollection<ProtoElement> rootElements = elementGroupPrototype.RootProtoElements;
 					int rootElementCount = rootElements.Count;
 					for (int j = 0; j < rootElementCount; ++j)
 					{
@@ -1678,8 +1790,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				(Guid)storeId == store.Id &&
 				null != (pel = store.ElementDirectory.FindElement(rootElement.ElementId) as PresentationElement) &&
 				null != (element = pel.ModelElement) &&
-				null == FindShapeForElement(element) &&
-				ShouldAddShapeForElement(element))
+				(ShouldAddShapeForElement(element)))
 			{
 				return CanMergeElement(element, elementGroupPrototype);
 			}
@@ -1798,13 +1909,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 				int elementCount = elements.Count;
 				if (elementCount > 1)
 				{
-					Comparison<ModelElement> comparer = CopyOrderComparer;
-					if (comparer != null)
+					int remainingCount = elementCount;
+					foreach (ModelElement mel in elements)
 					{
-						ModelElement[] sortedElements = new ModelElement[elementCount];
-						elements.CopyTo(sortedElements, 0);
-						Array.Sort<ModelElement>(sortedElements, comparer);
-						elements = sortedElements;
+						if (!FilterCopiedElement(mel))
+						{
+							--remainingCount;
+						}
+					}
+					if (remainingCount != 0)
+					{
+						Comparison<ModelElement> comparer = CopyOrderComparer;
+						if (comparer != null || remainingCount != elementCount)
+						{
+							ModelElement[] modifiedElements = new ModelElement[remainingCount];
+							if (remainingCount == elementCount)
+							{
+								elements.CopyTo(modifiedElements, 0);
+							}
+							else
+							{
+								int i = -1;
+								foreach (ModelElement mel in elements)
+								{
+									if (FilterCopiedElement(mel))
+									{
+										modifiedElements[++i] = mel;
+									}
+								}
+							}
+							if (comparer != null)
+							{
+								Array.Sort<ModelElement>(modifiedElements, comparer);
+							}
+							elements = modifiedElements;
+						}
 					}
 				}
 				base.Copy(data, elements, closureType, sourcePosition);
@@ -1820,6 +1959,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return new Comparison<ModelElement>(CompareElementsForCopy);
 				}
+			}
+			/// <summary>
+			/// Remove elements from a set of copied elements
+			/// </summary>
+			/// <param name="element"><see cref="ModelElement">Element</see> to filter.</param>
+			/// <returns>Return <see langword="true"/> to include the <paramref name="element"/>.</returns>
+			protected virtual bool FilterCopiedElement(ModelElement element)
+			{
+				return !(element is SubtypeLink);
 			}
 			/// <summary>
 			/// Reorder elements so that <see cref="ExternalConstraintShape"/> elements
@@ -1887,7 +2035,53 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ORMDesignerElementOperations class
 		#endregion // IMergeElements implementation
 	}
-
+	#region IStickyObject interface
+	/// <summary>
+	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky
+	/// will maintain their selected status when compatible objects are clicked.
+	/// </summary>
+	public interface IStickyObject
+	{
+		/// <summary>
+		/// Call this on an object when you're setting it as a StickyObject.  This method
+		/// will go through the object's associated elements to perform any actions needed
+		/// such as calling Invalidate().
+		/// </summary>
+		void StickyInitialize();
+		/// <summary>
+		/// Returns whether the Presentation Element that was passed in is selectable in the
+		/// context of this StickyObject.  For example, when an external constraint is the
+		/// active StickyObject, roles are selectable and objects are not.
+		/// </summary>
+		/// <returns>Whether the PresentationElement passed in is selectable in this StickyObject's context</returns>
+		bool StickySelectable(ModelElement mel);
+		/// <summary>
+		/// Needed to allow outside entities to tell the StickyObject to redraw itself and its children.
+		/// </summary>
+		void StickyRedraw();
+	}
+	#endregion // IStickyObject interface
+	#region ORMPlacementOption enum
+	/// <summary>
+	/// Controls the actions taken when placing a <see cref="ModelElement"/> on a <see cref="Diagram"/>.
+	/// </summary>
+	[Serializable]
+	public enum ORMPlacementOption
+	{
+		/// <summary>
+		/// No special placement actions should be taken.
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Select a <see cref="ShapeElement"/> for the <see cref="ModelElement"/> on the <see cref="Diagram"/> if one already exists.
+		/// </summary>
+		SelectIfNotPlaced = 1,
+		/// <summary>
+		/// Always add a new <see cref="ShapeElement"/> for the <see cref="ModelElement"/>.
+		/// </summary>
+		AllowMultipleShapes = 2,
+	}
+	#endregion // ORMPlacementOption enum
 	#region ORMDiagramBase class
 	public partial class ORMDiagramBase
 	{

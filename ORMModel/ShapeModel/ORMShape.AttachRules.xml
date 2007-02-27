@@ -48,6 +48,7 @@
 		<arg:Rule class="ObjectTypeShape.RolePlayerDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
 		<arg:Rule class="ORMBaseBinaryLinkShape.LinkChangeRule"/>
+		<arg:Rule class="ORMBaseShape.AbsoluteBoundsChangedRule"/>
 		<arg:Rule class="ORMBaseShape.ModelErrorAdded"/>
 		<arg:Rule class="ORMBaseShape.ModelErrorDeleting"/>
 		<arg:Rule class="ORMShapeDomainModel.ConstraintRoleSequenceRoleAdded"/>

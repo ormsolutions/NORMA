@@ -222,9 +222,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				#region Frequency
 				case ConstraintType.Frequency:
-				{
-					break;
-				}
+					{
+						break;
+					}
 				#endregion
 				#region Ring
 				case ConstraintType.Ring:
@@ -235,113 +235,113 @@ namespace Neumont.Tools.ORM.ShapeModel
 				#endregion
 				#region Equality
 				case ConstraintType.Equality:
-				{
-					double xOffset = bounds.Width * .3;
-					float xLeft = (float)(bounds.Left + xOffset);
-					float xRight = (float)(bounds.Right - xOffset);
-					double yCenter = bounds.Top + bounds.Height / 2;
-					double yOffset = (double)pen.Width * 1.0;
-					float y = (float)(yCenter - yOffset);
-					g.DrawLine(pen, xLeft, y, xRight, y);
-					y = (float)(yCenter + yOffset);
-					g.DrawLine(pen, xLeft, y, xRight, y);
-					break;
-				}
-				#endregion
-				#region Mandatory
-				case ConstraintType.DisjunctiveMandatory:
-				{
-					// Draw the dot
-					RectangleF shrinkBounds = boundsF;
-					shrinkBounds.Inflate(-boundsF.Width * .22f, -boundsF.Height * .22f);
-					g.FillEllipse(brush, shrinkBounds);
-					if (null != ExclusiveOrConstraintCoupler.GetExclusiveOrExclusionConstraint((MandatoryConstraint)constraint))
 					{
-						goto case ConstraintType.Exclusion;
-					}
-					break;
-				}
-				#endregion
-				#region Exclusion
-				case ConstraintType.Exclusion:
-				{
-					// Draw the X
-					double offset = (bounds.Width + pen.Width) * (1 - cos45) / 2;
-					float leftX = (float)(bounds.Left + offset);
-					float rightX = (float)(bounds.Right - offset);
-					float topY = (float)(bounds.Top + offset);
-					float bottomY = (float)(bounds.Bottom - offset);
-					g.DrawLine(pen, leftX, topY, rightX, bottomY);
-					g.DrawLine(pen, leftX, bottomY, rightX, topY);
-					break;
-				}
-				#endregion
-				#region Uniqueness
-				case ConstraintType.ExternalUniqueness:
-				{
-					// Draw a single line for a uniqueness constraint and a double
-					// line for preferred uniqueness
-					UniquenessConstraint euc = constraint as UniquenessConstraint;
-					double widthAdjust = (double)pen.Width / 2;
-					float xLeft = (float)(bounds.Left + widthAdjust);
-					float xRight = (float)(bounds.Right - widthAdjust);
-					if (euc.IsPreferred)
-					{
+						double xOffset = bounds.Width * .3;
+						float xLeft = (float)(bounds.Left + xOffset);
+						float xRight = (float)(bounds.Right - xOffset);
 						double yCenter = bounds.Top + bounds.Height / 2;
-						double yOffset = (double)pen.Width * .7;
+						double yOffset = (double)pen.Width * 1.0;
 						float y = (float)(yCenter - yOffset);
 						g.DrawLine(pen, xLeft, y, xRight, y);
 						y = (float)(yCenter + yOffset);
 						g.DrawLine(pen, xLeft, y, xRight, y);
+						break;
 					}
-					else
+				#endregion
+				#region Mandatory
+				case ConstraintType.DisjunctiveMandatory:
 					{
-						float y = (float)(bounds.Top + bounds.Height / 2);
-						g.DrawLine(pen, xLeft, y, xRight, y);
+						// Draw the dot
+						RectangleF shrinkBounds = boundsF;
+						shrinkBounds.Inflate(-boundsF.Width * .22f, -boundsF.Height * .22f);
+						g.FillEllipse(brush, shrinkBounds);
+						if (null != ExclusiveOrConstraintCoupler.GetExclusiveOrExclusionConstraint((MandatoryConstraint)constraint))
+						{
+							goto case ConstraintType.Exclusion;
+						}
+						break;
 					}
-					break;
-				}
+				#endregion
+				#region Exclusion
+				case ConstraintType.Exclusion:
+					{
+						// Draw the X
+						double offset = (bounds.Width + pen.Width) * (1 - cos45) / 2;
+						float leftX = (float)(bounds.Left + offset);
+						float rightX = (float)(bounds.Right - offset);
+						float topY = (float)(bounds.Top + offset);
+						float bottomY = (float)(bounds.Bottom - offset);
+						g.DrawLine(pen, leftX, topY, rightX, bottomY);
+						g.DrawLine(pen, leftX, bottomY, rightX, topY);
+						break;
+					}
+				#endregion
+				#region Uniqueness
+				case ConstraintType.ExternalUniqueness:
+					{
+						// Draw a single line for a uniqueness constraint and a double
+						// line for preferred uniqueness
+						UniquenessConstraint euc = constraint as UniquenessConstraint;
+						double widthAdjust = (double)pen.Width / 2;
+						float xLeft = (float)(bounds.Left + widthAdjust);
+						float xRight = (float)(bounds.Right - widthAdjust);
+						if (euc.IsPreferred)
+						{
+							double yCenter = bounds.Top + bounds.Height / 2;
+							double yOffset = (double)pen.Width * .7;
+							float y = (float)(yCenter - yOffset);
+							g.DrawLine(pen, xLeft, y, xRight, y);
+							y = (float)(yCenter + yOffset);
+							g.DrawLine(pen, xLeft, y, xRight, y);
+						}
+						else
+						{
+							float y = (float)(bounds.Top + bounds.Height / 2);
+							g.DrawLine(pen, xLeft, y, xRight, y);
+						}
+						break;
+					}
 				#endregion
 				#region Subset
 				case ConstraintType.Subset:
-				{
-					RectangleD arcBounds = bounds;
-					double shrinkBy = -bounds.Height * .35;
-					double yOffset = pen.Width * .7;
-					double xOffset = shrinkBy * .35;
-					arcBounds.Inflate(shrinkBy, shrinkBy);
-					arcBounds.Offset(xOffset, -yOffset);
-					g.DrawArc(pen, RectangleD.ToRectangleF(arcBounds), 90, 180);
-					float xLeft = (float)arcBounds.Center.X;
-					float xRight = (float)(bounds.Right + shrinkBy - xOffset);
-					float y = (float)arcBounds.Top;
-					g.DrawLine(pen, xLeft, y, xRight, y);
-					y = (float)arcBounds.Bottom;
-					g.DrawLine(pen, xLeft, y, xRight, y);
-					y = (float)(arcBounds.Bottom + yOffset + yOffset);
-					g.DrawLine(pen, (float)arcBounds.Left, y, xRight, y);
-					break;
-				}
+					{
+						RectangleD arcBounds = bounds;
+						double shrinkBy = -bounds.Height * .35;
+						double yOffset = pen.Width * .7;
+						double xOffset = shrinkBy * .35;
+						arcBounds.Inflate(shrinkBy, shrinkBy);
+						arcBounds.Offset(xOffset, -yOffset);
+						g.DrawArc(pen, RectangleD.ToRectangleF(arcBounds), 90, 180);
+						float xLeft = (float)arcBounds.Center.X;
+						float xRight = (float)(bounds.Right + shrinkBy - xOffset);
+						float y = (float)arcBounds.Top;
+						g.DrawLine(pen, xLeft, y, xRight, y);
+						y = (float)arcBounds.Bottom;
+						g.DrawLine(pen, xLeft, y, xRight, y);
+						y = (float)(arcBounds.Bottom + yOffset + yOffset);
+						g.DrawLine(pen, (float)arcBounds.Left, y, xRight, y);
+						break;
+					}
 				#endregion
 				#region Fallback (default)
 				default:
-				{
-					// Draws a frowny face
-					float eyeY = boundsF.Y + (boundsF.Height / 3);
-					PointF leftEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.3f), eyeY);
-					PointF leftEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.4f), eyeY);
-					PointF rightEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.6f), eyeY);
-					PointF rightEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.7f), eyeY);
-					g.DrawLine(pen, leftEyeStart, leftEyeEnd);
-					g.DrawLine(pen, rightEyeStart, rightEyeEnd);
+					{
+						// Draws a frowny face
+						float eyeY = boundsF.Y + (boundsF.Height / 3);
+						PointF leftEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.3f), eyeY);
+						PointF leftEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.4f), eyeY);
+						PointF rightEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.6f), eyeY);
+						PointF rightEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.7f), eyeY);
+						g.DrawLine(pen, leftEyeStart, leftEyeEnd);
+						g.DrawLine(pen, rightEyeStart, rightEyeEnd);
 
-					float mouthLeft = boundsF.X + (boundsF.Width * 0.25f);
-					float mouthTop = boundsF.Y + (boundsF.Height * 0.55f);
-					RectangleF mouthRectangle = new RectangleF(mouthLeft, mouthTop, boundsF.Width * 0.5f, boundsF.Height * 0.25f);
-					g.DrawArc(pen, mouthRectangle, 180, 180);
+						float mouthLeft = boundsF.X + (boundsF.Width * 0.25f);
+						float mouthTop = boundsF.Y + (boundsF.Height * 0.55f);
+						RectangleF mouthRectangle = new RectangleF(mouthLeft, mouthTop, boundsF.Width * 0.5f, boundsF.Height * 0.25f);
+						g.DrawArc(pen, mouthRectangle, 180, 180);
 
-					break;
-				}
+						break;
+					}
 				#endregion
 			}
 			if (constraint.Modality == ConstraintModality.Deontic && constraint.ConstraintType != ConstraintType.Ring)
@@ -769,7 +769,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							bounds = diagram.BoundsRules.GetCompliantBounds(shape, bounds);
 							shape.AbsoluteBounds = bounds;
 							bounds.Offset(width, 0);
-							diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, false);
+							diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, ORMPlacementOption.None);
 						}
 					}
 				}

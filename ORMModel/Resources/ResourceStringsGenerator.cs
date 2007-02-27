@@ -1092,6 +1092,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.SwapRoleOrder.Text");
 			}
 		}
+		/// <summary>This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</summary>
+		public static string CommandNextOnThisDiagramText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.NextOnThisDiagram.Text");
+			}
+		}
 		/// <summary>Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text</summary>
 		public static string ModelReadingEditorListColumnHeaderReadingText
 		{

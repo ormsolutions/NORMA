@@ -14,6 +14,14 @@
 \**************************************************************************/
 #endregion
 
+// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
+// In this case, the 'anchor' end is always connected if an opposite shape is available.
+// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
+// ShapeB instance is not closer to a different instance of ShapeA.
+// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
+// in the project properties if you want to experiment. This is here for reference only.
+//#define LINKS_ALWAYS_CONNECT
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +38,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IEnsureConnectorShapeForLink
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -380,33 +388,66 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
-			// If we're already connected then walk away
-			if (FromShape == null && ToShape == null)
+			Reconfigure(null);
+		}
+		/// <summary>
+		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// </summary>
+		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
+		protected override void Reconfigure(ShapeElement discludedShape)
+		{
+			SubtypeFact subtypeFact = AssociatedSubtypeFact;
+			ObjectType subType = subtypeFact.Subtype;
+			ObjectType superType = subtypeFact.Supertype;
+			FactType nestedSubFact = subType.NestedFactType;
+			FactType nestedSuperFact = superType.NestedFactType;
+
+			MultiShapeUtility.ReconfigureLink(this, (nestedSubFact == null) ? subType as ModelElement : nestedSubFact as ModelElement,
+				(nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact as ModelElement, discludedShape);
+		}
+		/// <summary>
+		/// ORM diagrams need to connect links to other links, but this is
+		/// not supported directly by the framework, so we create a dummy
+		/// node shape that tracks the center of the link line and connect
+		/// to the shape instead.
+		/// Implements <see cref="IEnsureConnectorShapeForLink.EnsureLinkConnectorShape"/>
+		/// </summary>
+		/// <returns>LinkConnectorShape</returns>
+		protected NodeShape EnsureLinkConnectorShape()
+		{
+			LinkConnectorShape retVal = null;
+			LinkedElementCollection<ShapeElement> childShapes = RelativeChildShapes;
+			foreach (ShapeElement shape in childShapes)
 			{
-				SubtypeFact subtypeFact = AssociatedSubtypeFact;
-				ObjectType subType = subtypeFact.Subtype;
-				ObjectType superType = subtypeFact.Supertype;
-				FactType nestedSubFact = subType.NestedFactType;
-				FactType nestedSuperFact = superType.NestedFactType;
-				FactTypeShape nestedSubFactShape = null;
-				FactTypeShape nestedSuperFactShape = null;
-				NodeShape fromShape;
-				NodeShape toShape;
-				if (null != (toShape = (nestedSuperFact == null) ? diagram.FindShapeForElement(superType) as NodeShape : (nestedSuperFactShape = diagram.FindShapeForElement<FactTypeShape>(nestedSuperFact))) &&
-					null != (fromShape = (nestedSubFact == null) ? diagram.FindShapeForElement(subType) as NodeShape : (nestedSubFactShape = diagram.FindShapeForElement<FactTypeShape>(nestedSubFact))))
+				retVal = shape as LinkConnectorShape;
+				if (retVal != null)
 				{
-					if (nestedSuperFactShape != null)
-					{
-						toShape = nestedSuperFactShape.GetUniqueConnectorShape(fromShape);
-					}
-					else if (nestedSubFactShape != null)
-					{
-						fromShape = nestedSubFactShape.GetUniqueConnectorShape(toShape);
-					}
-					Connect(fromShape, toShape);
+					return retVal;
 				}
 			}
+			retVal = new LinkConnectorShape(Partition);
+			RectangleD bounds = AbsoluteBoundingBox;
+			childShapes.Add(retVal);
+			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
+			return retVal;
 		}
+
+		NodeShape IEnsureConnectorShapeForLink.EnsureLinkConnectorShape()
+		{
+			return EnsureLinkConnectorShape();
+		}
+#if LINKS_ALWAYS_CONNECT
+		/// <summary>
+		/// Gets whether this link is anchored to its ToShape or FromShape
+		/// </summary>
+		protected override BinaryLinkAnchor Anchor
+		{
+			get
+			{
+				return BinaryLinkAnchor.FromShape;
+			}
+		}
+#endif //LINKS_ALWAYS_CONNECT
 		#region HACK: Size property
 		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
 		// since links must be related to DomainRelationship elements, not DomainClass elements.
@@ -528,7 +569,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						Diagram.FixUpDiagram(model, rolePlayer);
 					}
-					Diagram.FixUpDiagram(model, subTypeFact);
+
+					object AllowMultipleShapes;
+					Dictionary<object, object> topLevelContextInfo;
+					bool containedAllowMultipleShapes;
+					if (!(containedAllowMultipleShapes = (topLevelContextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+					{
+						topLevelContextInfo.Add(AllowMultipleShapes, null);
+					}
+
+					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+					{
+						ORMDiagram diagram;
+						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						{
+							//add a link shape for each fact type shape on the diagram for the played role
+							foreach (ObjectTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ObjectTypeShape>(diagram, subTypeFact.Subtype))
+							{
+								diagram.FixUpLocalDiagram(subTypeFact);
+							}
+						}
+					}
+
+					if (!containedAllowMultipleShapes)
+					{
+						topLevelContextInfo.Remove(AllowMultipleShapes);
+					}
 				}
 			}
 		}

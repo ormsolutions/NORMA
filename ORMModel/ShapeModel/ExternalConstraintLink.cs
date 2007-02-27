@@ -14,6 +14,14 @@
 \**************************************************************************/
 #endregion
 
+// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
+// In this case, the 'anchor' end is always connected if an opposite shape is available.
+// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
+// ShapeB instance is not closer to a different instance of ShapeA.
+// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
+// in the project properties if you want to experiment. This is here for reference only.
+//#define LINKS_ALWAYS_CONNECT
+
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -22,6 +30,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintLink
@@ -126,7 +135,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			PenSettings settings = new PenSettings();
 			settings.Color = constraintColor;
 			settings.DashStyle = DashStyle.Dash;
-			settings.Width = 1.0F/72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			settings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, settings);
 			settings.Color = activeColor;
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ConnectionLine, settings);
@@ -301,38 +310,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
-			// If we're already connected then walk away
-			if (FromShape == null && ToShape == null)
+			Reconfigure(null);
+		}
+		/// <summary>
+		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// </summary>
+		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
+		protected override void Reconfigure(ShapeElement discludedShape)
+		{
+			IFactConstraint modelLink = ModelElement as IFactConstraint;
+			//During the delete routine for an external constrant, 
+			// the model element reference gets removed before checking ShouldVisitRelationship,
+			// so we have to check the null case.
+			if (modelLink != null)
 			{
-				IFactConstraint modelLink = ModelElement as IFactConstraint;
-				FactType attachedFact = modelLink.FactType;
-				IConstraint constraint = modelLink.Constraint;
-				NodeShape fromShape = diagram.FindShapeForElement(constraint as ModelElement) as NodeShape;
-				if (null != fromShape)
-				{
-					ShapeElement untypedToShape = diagram.FindShapeForElement(attachedFact);
-					NodeShape toShape = untypedToShape as NodeShape;
-					if (null == toShape)
-					{
-						SubtypeLink subTypeLink = untypedToShape as SubtypeLink;
-						if (null != subTypeLink)
-						{
-							toShape = subTypeLink.EnsureLinkConnectorShape();
-						}
-					}
-					if (null != toShape)
-					{
-						// Note that the from/to ordering reversal here is a hack so
-						// the fact type shape folding code can find the opposite constraint
-						// based on its center point. If both ends move the connection point,
-						// then only the first one passed in here can find the opposite shape.
-						// UNDONE: Slimy hack, should be removed if we get better framework support.
-						// The order here needs to be in sync with the code in RemoveDanglingConstraintShape
-						Connect(toShape, fromShape);
-					}
-				}
+				MultiShapeUtility.ReconfigureLink(this, modelLink.FactType, modelLink.Constraint as ModelElement, discludedShape);
 			}
 		}
+#if LINKS_ALWAYS_CONNECT
+		/// <summary>
+		/// Gets whether this link is anchored to its ToShape or FromShape
+		/// </summary>
+		protected override Neumont.Tools.Modeling.Diagrams.BinaryLinkAnchor Anchor
+		{
+			get
+			{
+				return Neumont.Tools.Modeling.Diagrams.BinaryLinkAnchor.ToShape;
+			}
+		}
+#endif //LINKS_ALWAYS_CONNECT
 		/// <summary>
 		/// Return the fact shape this link is attached to. Can return
 		/// either a <see cref="FactTypeShape"/> or a <see cref="SubtypeLink"/>
