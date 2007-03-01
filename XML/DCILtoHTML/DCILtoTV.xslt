@@ -16,12 +16,8 @@
 					<xsl:attribute name="sourceTable">
 						<xsl:value-of select="../@name"/>
 					</xsl:attribute>
-					<FK>
+					<FK name="{@name}" targetTable="{@targetTable}">
 						<xsl:for-each select="dcl:columnRef">
-							<xsl:copy-of select="../@name"/>
-							<xsl:attribute name="targetTable">
-								<xsl:value-of select="../@targetTable"/>
-							</xsl:attribute>
 							<column>
 								<xsl:attribute name="sourceColumn">
 									<xsl:value-of select="@sourceName"/>

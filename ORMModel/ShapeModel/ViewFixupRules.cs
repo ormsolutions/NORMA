@@ -77,9 +77,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 					ObjectType objectType = ((objectTypeShape != null) ? objectTypeShape.ModelElement : objectifiedShape.ModelElement) as ObjectType;
 					UniquenessConstraint preferredConstraint;
+					LinkedElementCollection<Role> constraintRoles;
+					ObjectType rolePlayer;
 					if (null != (preferredConstraint = objectType.PreferredIdentifier) &&
 						preferredConstraint.IsInternal &&
-						preferredConstraint.RoleCollection[0].RolePlayer.IsValueType)
+						1 == (constraintRoles = preferredConstraint.RoleCollection).Count &&
+						null != (rolePlayer = constraintRoles[0].RolePlayer) &&
+						rolePlayer.IsValueType)
 					{
 
 						bool expandingRefMode = (bool)e.NewValue;
