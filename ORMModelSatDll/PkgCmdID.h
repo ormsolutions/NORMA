@@ -53,6 +53,7 @@
 // Command IDs       (0x2xxx)
 // IMPORTANT: keep constants in sync with ORMModel\Shell\ORMCommandSet.cs
 #ifdef DEBUG
+#define cmdIdDebugViewTransactionLogs	0x28FE
 #define cmdIdDebugViewStore				0x28FF
 #endif
 #define cmdIdViewModelBrowser			0x2900

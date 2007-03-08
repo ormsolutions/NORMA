@@ -66,6 +66,16 @@ namespace Neumont.Tools.ORM.Shell
 		{
 		}
 		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override string ToString()
+		{
+			// Return a shorter name. This object is used
+			// as the Id for the alternate partition, which
+			// can be displayed, so we give it a shorter name.
+			return GetType().Name;
+		}
+		/// <summary>
 		/// Create or retrieve the diagram view
 		/// </summary>
 		public override IWin32Window Window

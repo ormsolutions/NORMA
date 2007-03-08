@@ -70,6 +70,9 @@ namespace Neumont.Tools.ORM.Shell
 						new MenuCommand(
 						new EventHandler(OnMenuDebugViewStore),
 						ORMDesignerCommandIds.DebugViewStore),
+						new MenuCommand(
+						new EventHandler(OnMenuDebugViewTransactionLogs),
+						ORMDesignerCommandIds.DebugViewTransactionLogs),
 					#endif // DEBUG
 						new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusReferenceModesWindow),
@@ -373,6 +376,17 @@ namespace Neumont.Tools.ORM.Shell
 			protected void OnMenuDebugViewStore(object sender, EventArgs e)
 			{
 				Microsoft.VisualStudio.Modeling.Diagnostics.StoreViewer.Show(((ModelingDocData)CurrentORMView.DocData).Store);
+			}
+			/// <summary>
+			/// Show a debug window displaying the contents of the current store
+			/// </summary>
+			protected void OnMenuDebugViewTransactionLogs(object sender, EventArgs e)
+			{
+				Store store = ((ModelingDocData)CurrentORMView.DocData).Store;
+				if (store != null && !store.Disposed)
+				{
+					Neumont.Tools.Modeling.Diagnostics.TransactionLogViewer.Show(store, ((IORMToolServices)store).ServiceProvider);
+				}
 			}
 #endif // DEBUG
 
@@ -1217,6 +1231,10 @@ namespace Neumont.Tools.ORM.Shell
 			#region CommandID objects for commands
 #if DEBUG
 			/// <summary>
+			/// A command to view transaction contents in debug mode
+			/// </summary>
+			public static readonly CommandID DebugViewTransactionLogs = new CommandID(guidORMDesignerCommandSet, cmdIdDebugViewTransactionLogs);
+			/// <summary>
 			/// A command to view the current store contents in debug mode
 			/// </summary>
 			public static readonly CommandID DebugViewStore = new CommandID(guidORMDesignerCommandSet, cmdIdDebugViewStore);
@@ -1265,10 +1283,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Verbalization Browser Window item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewVerbalizationBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewVerbalizationBrowser);
-			/// <summary>
-			/// The ORM Model Browser Window item on the context menu
-			/// </summary>
-			public static readonly CommandID ViewOldModelBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewOldModelBrowser);
 			/// <summary>
 			/// The ORM Verbalization Browser toolbar button for positive verbalization
 			/// </summary>
@@ -1434,14 +1448,14 @@ namespace Neumont.Tools.ORM.Shell
 
 #if DEBUG
 			/// <summary>
+			/// A command to view transaction contents in debug mode
+			/// </summary>
+			private const int cmdIdDebugViewTransactionLogs = 0x28FE;
+			/// <summary>
 			/// A command to view the current store contents in debug mode
 			/// </summary>
 			private const int cmdIdDebugViewStore = 0x28FF;
 #endif // DEBUG
-			/// <summary>
-			/// The NewORM Model Browser item on the view menu
-			/// </summary>
-			private const int cmdIdViewOldModelBrowser = 0x2899;
 			/// <summary>
 			/// The ORM Model Browser item on the view menu
 			/// </summary>

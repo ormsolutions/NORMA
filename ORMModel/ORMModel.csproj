@@ -383,6 +383,12 @@
     <Compile Include="Framework\Design\Editors\FlagsEnumListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Framework\Diagnostics\TransactionLogViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Framework\Diagnostics\TransactionLogViewer.Designer.cs">
+      <DependentUpon>TransactionLogViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Diagrams\LayoutEngine.cs" />
     <Compile Include="Framework\Diagrams\MultiShapeUtility.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
@@ -491,6 +497,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Framework\Diagnostics\TransactionLogViewer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransactionLogViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\GeneratedCode\DomainModelResx.resx">
       <LogicalName>Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx.resources</LogicalName>
       <DependentUpon>DomainModelResx.tt</DependentUpon>
