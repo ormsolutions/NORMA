@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // (Temporary) CompositeLinkDecorator test
-	public partial class RolePlayerLink
+	public partial class RolePlayerLink : IReconfigureableLink
 	{
 #if IMPLIEDJOINPATH
 		#region ImpliedFactJoinPathDecorator class
@@ -433,16 +433,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Reconfigure(null);
 		}
 		/// <summary>
-		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>
 		/// </summary>
-		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		protected override void Reconfigure(ShapeElement discludedShape)
+		protected void Reconfigure(ShapeElement discludedShape)
 		{
 			ObjectTypePlaysRole modelLink = ModelElement as ObjectTypePlaysRole;
 			ObjectType rolePlayer = modelLink.RolePlayer;
 			FactType nestedFact = rolePlayer.NestedFactType;
 
 			MultiShapeUtility.ReconfigureLink(this, modelLink.PlayedRole.FactType, (nestedFact == null) ? rolePlayer as ModelElement : nestedFact, discludedShape);
+		}
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
 		}
 		#if LINKS_ALWAYS_CONNECT
 		/// <summary>

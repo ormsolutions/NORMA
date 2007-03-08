@@ -35,7 +35,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ValueRangeLink
+	public partial class ValueRangeLink : IReconfigureableLink
 	{
 		#region Customize appearance
 		/// <summary>
@@ -120,19 +120,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Delete();
 		}
 		/// <summary>
-		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>
 		/// </summary>
-		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		protected override void Reconfigure(ShapeElement discludedShape)
+		protected void Reconfigure(ShapeElement discludedShape)
 		{
-			//We want to leave the link so that the child remains connected to its parent,
+			// We want to leave the link so that the child remains connected to its parent,
 			// unless one of the connected shapes is being deleted.
-			if (discludedShape == ToShape || discludedShape == FromShape)
+			if (discludedShape != null && discludedShape == ToShape || discludedShape == FromShape)
 			{
 				Delete();
 			}
 		}
-		#if LINKS_ALWAYS_CONNECT
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
+		}
+#if LINKS_ALWAYS_CONNECT
 		/// <summary>
 		/// Gets whether this link is anchored to its ToShape or FromShape
 		/// </summary>

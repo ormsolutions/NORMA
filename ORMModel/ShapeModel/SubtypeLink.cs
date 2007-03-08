@@ -38,7 +38,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IEnsureConnectorShapeForLink
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IEnsureConnectorShapeForLink, IReconfigureableLink
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -391,10 +391,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Reconfigure(null);
 		}
 		/// <summary>
-		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>
 		/// </summary>
-		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		protected override void Reconfigure(ShapeElement discludedShape)
+		protected void Reconfigure(ShapeElement discludedShape)
 		{
 			SubtypeFact subtypeFact = AssociatedSubtypeFact;
 			ObjectType subType = subtypeFact.Subtype;
@@ -404,6 +403,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			MultiShapeUtility.ReconfigureLink(this, (nestedSubFact == null) ? subType as ModelElement : nestedSubFact as ModelElement,
 				(nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact as ModelElement, discludedShape);
+		}
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
 		}
 		/// <summary>
 		/// ORM diagrams need to connect links to other links, but this is

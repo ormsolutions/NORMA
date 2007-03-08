@@ -246,9 +246,12 @@ namespace Neumont.Tools.Modeling.Diagrams
 		{
 			if (element != null)
 			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
+				int pelCount = pels.Count;
+				for (int i = pelCount - 1; i >= 0; --i)
 				{
-					TShape shape = pel as TShape;
+					// Walk backwards so we can support shape deletion out of this loop
+					TShape shape = pels[i] as TShape;
 					if (shape != null && shape.Diagram == diagram && (!filterDeleting || !shape.IsDeleting))
 					{
 						yield return shape;
@@ -417,7 +420,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 				foreach (ShapeElement currentFromShape in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
 #endif //LINKS_ALWAYS_CONNECT
 				{
-					if (discludedShape == ResolvePrimaryShape(currentFromShape)
+					if (discludedShape != null && discludedShape == ResolvePrimaryShape(currentFromShape)
 #if LINKS_ALWAYS_CONNECT
 						|| AlreadyConnectedTo(currentFromShape, toElement, anchorsToFromShape, link)
 #endif //LINKS_ALWAYS_CONNECT
@@ -437,7 +440,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 					foreach (ShapeElement currentToShape in FindAllShapesForElement<ShapeElement>(diagram, toElement, true))
 #endif //LINKS_ALWAYS_CONNECT
 					{
-						if (discludedShape == ResolvePrimaryShape(currentToShape))
+						if (discludedShape != null && discludedShape == ResolvePrimaryShape(currentToShape))
 						{
 							continue;
 						}

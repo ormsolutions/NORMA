@@ -78,14 +78,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return MultiShapeUtility.FixUpChildShapes(this, childElement);
 		}
-		/// <summary>
-		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
-		/// </summary>
-		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		protected abstract void Reconfigure(ShapeElement discludedShape);
 		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
 		{
-			Reconfigure(discludedShape);
+			Debug.Fail("Classes derived from ORMBaseBinarLinkShape must implement IReconfigurableLink.Reconfigure");
 		}
 		#endregion //MultipleShapesSupport
 		#region Customize appearance

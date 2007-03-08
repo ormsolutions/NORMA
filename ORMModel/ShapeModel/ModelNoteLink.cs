@@ -34,7 +34,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ModelNoteLink : ISelectionContainerFilter
+	public partial class ModelNoteLink : ISelectionContainerFilter, IReconfigureableLink
 	{
 		#region Customize appearance
 		/// <summary>
@@ -117,15 +117,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Reconfigure(null);
 		}
 		/// <summary>
-		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>
 		/// </summary>
-		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		protected override void Reconfigure(ShapeElement discludedShape)
+		protected void Reconfigure(ShapeElement discludedShape)
 		{
 			ModelNoteReferencesModelElement link = ModelElement as ModelNoteReferencesModelElement;
 			MultiShapeUtility.ReconfigureLink(this, link.Note, link.Element, discludedShape);
 		}
-		#if LINKS_ALWAYS_CONNECT
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
+		}
+#if LINKS_ALWAYS_CONNECT
 		/// <summary>
 		/// Gets whether this link is anchored to its ToShape or FromShape
 		/// </summary>

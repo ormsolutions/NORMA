@@ -878,7 +878,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 							//add a link shape for each constraint shape
 							foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
 							{
-								diagram.FixUpLocalDiagram(link);
+								if (null == diagram.FixUpLocalDiagram(link))
+								{
+									shapeElement.Delete();
+								}
 							}
 						}
 					}

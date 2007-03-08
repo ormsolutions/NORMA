@@ -75,6 +75,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		protected override string GetPropertyDescriptorDisplayName(ElementPropertyDescriptor propertyDescriptor)
 		{
 			if (propertyDescriptor.DomainPropertyInfo.Id == ExclusionConstraint.NameDomainPropertyId &&
+				ModelElement.Store != null &&
 				ModelElement.ExclusiveOrMandatoryConstraint != null)
 			{
 				return propertyDescriptor.ModelElement is ExclusionConstraint ?

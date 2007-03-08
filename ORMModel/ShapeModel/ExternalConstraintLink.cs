@@ -33,7 +33,7 @@ using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ExternalConstraintLink
+	public partial class ExternalConstraintLink : IReconfigureableLink
 	{
 		#region SubsetDecorator class
 		/// <summary>
@@ -313,10 +313,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Reconfigure(null);
 		}
 		/// <summary>
-		/// Reconfigure this link to connect the appropriate <see cref="NodeShape"/>s
+		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>
 		/// </summary>
-		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		protected override void Reconfigure(ShapeElement discludedShape)
+		protected void Reconfigure(ShapeElement discludedShape)
 		{
 			IFactConstraint modelLink = ModelElement as IFactConstraint;
 			//During the delete routine for an external constrant, 
@@ -326,6 +325,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				MultiShapeUtility.ReconfigureLink(this, modelLink.FactType, modelLink.Constraint as ModelElement, discludedShape);
 			}
+		}
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
 		}
 #if LINKS_ALWAYS_CONNECT
 		/// <summary>
@@ -383,7 +386,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					if (!shape.IsDeleting)
 					{
-						shape.Delete();
+						ORMCoreDomainModel.DelayValidateElement(shape, DelayValidateExternalConstraintShapeFullyConnected);
 					}
 					else
 					{
@@ -401,6 +404,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 					}
+				}
+			}
+		}
+		private static void DelayValidateExternalConstraintShapeFullyConnected(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ExternalConstraintShape shape = (ExternalConstraintShape)element;
+				int linkCount = 0;
+				foreach (LinkConnectsToNode link in LinkConnectsToNode.GetLinksToLink(shape))
+				{
+					if (link.Link is ExternalConstraintLink)
+					{
+						++linkCount;
+					}
+				}
+				bool keepShape = false;
+				if (linkCount != 0)
+				{
+					IConstraint constraint = shape.AssociatedConstraint;
+					switch (constraint.ConstraintStorageStyle)
+					{
+						case ConstraintStorageStyle.SetConstraint:
+							keepShape = ((SetConstraint)constraint).FactTypeCollection.Count == linkCount;
+							break;
+						case ConstraintStorageStyle.SetComparisonConstraint:
+							keepShape = ((SetComparisonConstraint)constraint).FactTypeCollection.Count == linkCount;
+							break;
+					}
+				}
+				if (!keepShape)
+				{
+					shape.Delete();
 				}
 			}
 		}
