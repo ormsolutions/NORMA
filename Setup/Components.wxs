@@ -251,6 +251,10 @@
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="VisioToCoreModelImport.xslt" Name="VsCrMdl.xsl" LongName="VisioToCoreModelImport.xslt" src="..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="DCILtoOIAL.xslt" Name="DclToOil.xsl" LongName="DCILtoOIAL.xslt" src="..\ORMModel\Shell\Converters\DCILtoOIAL.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="OIALtoORM.xslt" Name="OilToOrm.xsl" LongName="OIALtoORM.xslt" src="..\ORMModel\Shell\Converters\OIALtoORM.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
 									</Component>
 								</Directory>

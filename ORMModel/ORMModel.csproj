@@ -470,6 +470,8 @@
     <None Include="Shell\catalog.xml" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteSearching.cur" />
+    <Content Include="Shell\Converters\DCILtoOIAL.xslt" />
+    <Content Include="Shell\Converters\OIALtoORM.xslt" />
     <Content Include="Shell\Converters\RootUpgradeTo2006-04.xslt" />
     <Content Include="Shell\Converters\CoreUpgradeTo2006-04.xslt" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
