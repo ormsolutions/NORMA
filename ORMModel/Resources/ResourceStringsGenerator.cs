@@ -892,12 +892,12 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</summary>
-		public static string ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraintRoles
+		/// <summary>Exception message when an attempt is made to form an ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</summary>
+		public static string ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraints
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRolesOrModality");
 			}
 		}
 		/// <summary>The description for the default verbalization snippets for the core model.</summary>

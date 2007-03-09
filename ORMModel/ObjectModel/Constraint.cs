@@ -5889,11 +5889,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return false;
 			}
-			LinkedElementCollection<Role> mandatoryRoles = mandatoryConstraint.RoleCollection;
-			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences = exclusionConstraint.RoleSequenceCollection;
-			int sequenceCount = exclusionSequences.Count;
+			LinkedElementCollection<Role> mandatoryRoles;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences;
+			int sequenceCount;
 			bool retVal = false;
-			if (mandatoryRoles.Count == sequenceCount)
+			if (mandatoryConstraint.Modality == exclusionConstraint.Modality &&
+				(mandatoryRoles = mandatoryConstraint.RoleCollection).Count == (sequenceCount = (exclusionSequences = exclusionConstraint.RoleSequenceCollection).Count))
 			{
 				retVal = true; // Prove otherwise
 				IList<Role> testRoles = null; // A temporary array so we can null out roles that are already matched
@@ -5954,11 +5955,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the synchronization succeeded.</returns>
 		private bool SynchronizeCoupledRoles(bool throwOnFailure, bool rulesEnabled)
 		{
-			LinkedElementCollection<Role> mandatoryRoles = MandatoryConstraint.RoleCollection;
-			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences = ExclusionConstraint.RoleSequenceCollection;
-			int sequenceCount = exclusionSequences.Count;
+			MandatoryConstraint mandatoryConstraint = MandatoryConstraint;
+			ExclusionConstraint exclusionConstraint = ExclusionConstraint;
+			LinkedElementCollection<Role> mandatoryRoles;
+			LinkedElementCollection<SetComparisonConstraintRoleSequence> exclusionSequences;
+			int sequenceCount;
 			bool invalidConfiguration = true;
-			if (mandatoryRoles.Count == sequenceCount)
+			if (mandatoryConstraint.Modality == exclusionConstraint.Modality &&
+				(mandatoryRoles = mandatoryConstraint.RoleCollection).Count == (sequenceCount = (exclusionSequences = exclusionConstraint.RoleSequenceCollection).Count))
 			{
 				invalidConfiguration = false; // Prove otherwise
 				Type ruleType = null;
@@ -6010,7 +6014,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (invalidConfiguration && throwOnFailure)
 			{
-				throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceSingleFactForInternalConstraint);
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraints);
 			}
 			return !invalidConfiguration;
 		}

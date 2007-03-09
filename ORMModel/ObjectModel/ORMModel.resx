@@ -317,9 +317,9 @@
     <value>Direct modification of role players on a ConstraintRoleSequenceHasRole relationship is not supported. As an alternative, first delete the link then add a new one.</value>
     <comment>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
   </data>
-	<data name="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles" xml:space="preserve">
-    <value>An ExclusiveOr coupling between a MandatoryConstraint and ExclusionConstraint requires a single-column exclusion constraint with the same roles as the MandatoryConstraint.</value>
-    <comment>Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
+	<data name="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRolesOrModality" xml:space="preserve">
+    <value>An ExclusiveOr coupling between a MandatoryConstraint and ExclusionConstraint requires a single-column exclusion constraint with the same roles and modality as the MandatoryConstraint.</value>
+    <comment>Exception message when an attempt is made to form an ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
   </data>
 	<data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
     <value>Reading text is not in a valid format.</value>

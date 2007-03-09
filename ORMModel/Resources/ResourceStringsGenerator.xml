@@ -399,8 +399,8 @@
 	<ResourceString name="ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange" model="Model" resourceName="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange">
 		<comment type="summary">Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraintRoles" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRoles">
-		<comment type="summary">Exception message when an attempt is made to form and ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
+	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraints" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRolesOrModality">
+		<comment type="summary">Exception message when an attempt is made to form an ExclusiveOrConstraintCoupler relationship between incompatible MandatoryConstraint and ExclusionConstraint elements.</comment>
 	</ResourceString>
 	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription">
 		<comment type="summary">The description for the default verbalization snippets for the core model.</comment>
