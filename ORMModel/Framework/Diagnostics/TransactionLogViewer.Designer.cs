@@ -28,8 +28,10 @@ namespace Neumont.Tools.Modeling.Diagnostics
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TransactionLogViewer));
-			this.TreeControl = new ViewerTreeControl();
+			this.TreeControl = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
+			this.ImageList = new System.Windows.Forms.ImageList(this.components);
 			this.CloseButton = new System.Windows.Forms.Button();
 			this.UndoItemsCombo = new System.Windows.Forms.ComboBox();
 			this.RedoItemsCombo = new System.Windows.Forms.ComboBox();
@@ -45,9 +47,27 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			this.TreeControl.HasLines = false;
 			this.TreeControl.HasRootLines = false;
 			this.TreeControl.HasVerticalGridLines = true;
+			this.TreeControl.ImageList = this.ImageList;
 			this.TreeControl.IsDragSource = false;
 			this.TreeControl.LabelEditSupport = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.None;
 			this.TreeControl.Name = "TreeControl";
+			// 
+			// ImageList
+			// 
+			this.ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList.ImageStream")));
+			this.ImageList.TransparentColor = System.Drawing.Color.Transparent;
+			this.ImageList.Images.SetKeyName(0, "");
+			this.ImageList.Images.SetKeyName(1, "");
+			this.ImageList.Images.SetKeyName(2, "");
+			this.ImageList.Images.SetKeyName(3, "");
+			this.ImageList.Images.SetKeyName(4, "");
+			this.ImageList.Images.SetKeyName(5, "");
+			this.ImageList.Images.SetKeyName(6, "");
+			this.ImageList.Images.SetKeyName(7, "");
+			this.ImageList.Images.SetKeyName(8, "");
+			this.ImageList.Images.SetKeyName(9, "");
+			this.ImageList.Images.SetKeyName(10, "");
+			this.ImageList.Images.SetKeyName(11, "");
 			// 
 			// CloseButton
 			// 
@@ -101,6 +121,8 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			this.MinimizeBox = false;
 			this.Name = "TransactionLogViewer";
 			this.ShowIcon = false;
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TransactionLogViewer_FormClosed);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TransactionLogViewer_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -108,11 +130,12 @@ namespace Neumont.Tools.Modeling.Diagnostics
 
 		#endregion
 
-		private Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl TreeControl;
 		private System.Windows.Forms.Button CloseButton;
 		private System.Windows.Forms.ComboBox UndoItemsCombo;
 		private System.Windows.Forms.ComboBox RedoItemsCombo;
 		private System.Windows.Forms.Label UndoLabel;
 		private System.Windows.Forms.Label RedoLabel;
+		private Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl TreeControl;
+		private System.Windows.Forms.ImageList ImageList;
 	}
 }

@@ -340,6 +340,15 @@ namespace Neumont.Tools.ORM.Shell
 		private const ReadingDirectionIndicatorDisplay ReadingDirectionIndicatorDisplay_Default = ReadingDirectionIndicatorDisplay.Separated;
 		private static ReadingDirectionIndicatorDisplay myCurrentReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay_Default;
 		private ReadingDirectionIndicatorDisplay myReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay_Default;
+
+		private const bool ShowDebugCommands_Default = 
+#if DEBUG
+			true;
+#else
+			false;
+#endif
+		private static bool myCurrentShowDebugCommands = ShowDebugCommands_Default;
+		private bool myShowDebugCommands = ShowDebugCommands_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -362,6 +371,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
+			myCurrentShowDebugCommands = myShowDebugCommands;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -383,6 +393,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
 			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
+			myShowDebugCommands = myCurrentShowDebugCommands;
 		}
 
 		/// <summary>
@@ -411,6 +422,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
+				myCurrentShowDebugCommands = myShowDebugCommands;
 				if (updateVerbalizer)
 				{
 					ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
@@ -437,6 +449,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
+			myCurrentShowDebugCommands = myShowDebugCommands;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -829,6 +842,26 @@ namespace Neumont.Tools.ORM.Shell
 		public static ReadingDirectionIndicatorDisplay CurrentReadingDirectionIndicatorDisplay
 		{
 			get { return myCurrentReadingDirectionIndicatorDisplay; }
+		}
+		/// <summary>
+		/// Current setting for ShowDebugCommands
+		/// </summary>
+		[DefaultValue(ShowDebugCommands_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryDiagnosticsId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyShowDebugCommandsDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyShowDebugCommandsDisplayNameId)]
+		public bool ShowDebugCommands
+		{
+			get { return myShowDebugCommands; }
+			set { myShowDebugCommands = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for ShowDebugCommands
+		/// </summary>
+		public static bool CurrentShowDebugCommands
+		{
+			get { return myCurrentShowDebugCommands; }
 		}
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option

@@ -514,6 +514,10 @@
     <value xml:space="preserve">Delete Behavior</value>
     <comment xml:space="preserve">This is the title of the category on the options page (delete behavior).</comment>
   </data>
+  <data name="OptionsPage.Category.Diagnostics">
+    <value xml:space="preserve">Diagnostics</value>
+    <comment xml:space="preserve">This is the title of the category on the options page (diagnostics).</comment>
+  </data>
   <data name="OptionsPage.Category.VerbalizationBehavior">
     <value xml:space="preserve">Verbalization</value>
     <comment xml:space="preserve">This is the title of the category on the options page (verbalization).</comment>
@@ -525,6 +529,14 @@
   <data name="OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.DisplayName">
     <value xml:space="preserve">Combine Mandatory and Uniqueness Constraint</value>
     <comment xml:space="preserve">The display name of the Combine Mandatory And Unique Verbalization option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ShowDebugCommands.Description">
+    <value xml:space="preserve">Show Debug commands be shown on the ORM Designer context menu?</value>
+    <comment xml:space="preserve">The description of the Show Debug Commands option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ShowDebugCommands.DisplayName">
+    <value xml:space="preserve">Show Debug Commands</value>
+    <comment xml:space="preserve">The display name of the Show Debug Commands option.</comment>
   </data>
   <data name="OptionsPage.Property.ShowDefaultConstraintVerbalization.Description">
     <value xml:space="preserve">Should verbalization be shown for constraints implied by the lack of a constraint?</value>

@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using Emit = System.Reflection.Emit;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 
 namespace Neumont.Tools.Modeling.Diagnostics
 {
@@ -242,22 +243,32 @@ namespace Neumont.Tools.Modeling.Diagnostics
 	/// </summary>
 	public partial class TransactionLogViewer : Form
 	{
-		private class ViewerTreeControl : VirtualTreeControl
+		#region GlyphIndex enum
+		/// <summary>
+		/// Indices correspond to values in the ImageStream
+		/// </summary>
+		private enum GlyphIndex
 		{
-			/// <summary>
-			/// WM_ERASEBKGND is no working correctly in VirtualTreeControl. Take
-			/// care of it here.
-			/// </summary>
-			protected override void WndProc(ref Message m)
-			{
-				if (m.Msg == 20) // WM_ERASEBKGND
-				{
-					base.DefWndProc(ref m);
-					return;
-				}
-				base.WndProc(ref m);
-			}
+			DomainModel,
+			DomainClass,
+			DomainRelationship,
+			SourceDomainRole,
+			TargetDomainRole,
+			DomainProperty,
+			OldValue,
+			NewValue,
+			ElementId,
+			OldElementId,
+			NewElementId,
+			Partition,
 		}
+		#endregion // GlyphIndex enum
+		#region Member Variables
+		private static TransactionLogViewer mySingleton;
+		private IList<TransactionItem> myUndoItems;
+		private IList<TransactionItem> myRedoItems;
+		#endregion // Member Variables
+		#region Initialization
 		/// <summary>
 		/// Display a dialog detailing transactions in the current store
 		/// </summary>
@@ -269,9 +280,14 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			if (null != serviceProvider &&
 				null != (uiService = (IUIService)serviceProvider.GetService(typeof(IUIService))))
 			{
-				UndoManager manager = store.UndoManager;
-				TransactionLogViewer viewer = new TransactionLogViewer();
-				viewer.Initialize(manager);
+				TransactionLogViewer viewer = mySingleton;
+				if (mySingleton == null)
+				{
+					viewer = new TransactionLogViewer();
+					ChangeBranch.InitializeHeaders(viewer.TreeControl);
+					mySingleton = viewer;
+				}
+				viewer.Attach(store.UndoManager);
 				uiService.ShowDialog(viewer);
 			}
 		}
@@ -282,18 +298,14 @@ namespace Neumont.Tools.Modeling.Diagnostics
 		{
 			InitializeComponent();
 		}
-		private IList<TransactionItem> myUndoItems;
-		private IList<TransactionItem> myRedoItems;
-		private void Initialize(UndoManager undoManager)
+		private void Attach(UndoManager undoManager)
 		{
+			// Items filled here should be cleared in the TransactionLogViewer_FormClosed event
 			myUndoItems = undoManager.UndoableTransactions;
 			myRedoItems = undoManager.RedoableTransactions;
 			FillCombo(UndoItemsCombo, myUndoItems);
 			FillCombo(RedoItemsCombo, myRedoItems);
-			IMultiColumnTree tree = new MultiColumnTree((int)ChangeBranch.ColumnContent.Count);
-			VirtualTreeControl control = TreeControl;
-			ChangeBranch.InitializeHeaders(control);
-			control.MultiColumnTree = tree;
+			TreeControl.MultiColumnTree = new MultiColumnTree((int)ChangeBranch.ColumnContent.Count);
 			if (myUndoItems.Count != 0)
 			{
 				UndoItemsCombo.SelectedIndex = 0;
@@ -312,6 +324,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				items.Add(item.Name);
 			}
 		}
+		#endregion // Initialization
 		#region BaseBranch class
 		/// <summary>
 		/// A helper class to provide a default IBranch implementation
@@ -582,9 +595,30 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				}
 				return retVal;
 			}
+			/// <summary>
+			/// Return true if the value is a model element
+			/// </summary>
+			private static bool IsElement(object value)
+			{
+				if (value != null)
+				{
+					Type type = value.GetType();
+					if (!type.IsEnum &&
+						Type.GetTypeCode(type) == TypeCode.Object &&
+						typeof(ModelElement).IsAssignableFrom(type))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
 			private static string FormatIdentifier(Guid id)
 			{
 				return id.ToString("N").Substring(0, 8);
+			}
+			private static string FormatFullIdentifier(Guid id)
+			{
+				return id.ToString("D");
 			}
 			#endregion // Helper methods
 			#region DetailHandler implementations
@@ -608,15 +642,33 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 					{
 						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
-						if (row == 1)
+						switch (row)
 						{
-							retVal.GrayText = true;
+							case 0:
+								retVal.SelectedImage = retVal.Image = IsElement(myArgs.NewValue) ? (short)GlyphIndex.NewElementId : (short)GlyphIndex.NewValue;
+								break;
+							case 1:
+								retVal.SelectedImage = retVal.Image = IsElement(myArgs.OldValue) ? (short)GlyphIndex.OldElementId : (short)GlyphIndex.OldValue;
+								retVal.GrayText = true;
+								break;
 						}
 						return retVal;
 					}
 					string IBranch.GetText(int row, int column)
 					{
 						return GetValueString((row == 0) ? myArgs.NewValue : myArgs.OldValue);
+					}
+					string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+					{
+						if (tipType == ToolTipType.Icon)
+						{
+							object value = (row == 0) ? myArgs.NewValue : myArgs.OldValue;
+							if (IsElement(value))
+							{
+								return FormatFullIdentifier(((ModelElement)value).Id);
+							}
+						}
+						return null;
 					}
 					int IBranch.VisibleItemCount
 					{
@@ -665,6 +717,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
 					if (detailColumn == 0)
 					{
+						retVal.SelectedImage = retVal.Image = (short)GlyphIndex.DomainProperty;
 						retVal.Bold = true;
 					}
 					return retVal;
@@ -699,13 +752,25 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					}
 					return null;
 				}
+				string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+				{
+					if (row == 1 && tipType == ToolTipType.Icon)
+					{
+						return FormatFullIdentifier(myElementId);
+					}
+					return null;
+				}
 				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
 					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
 					switch (row)
 					{
 						case 0:
+							retVal.SelectedImage = retVal.Image = myRoleInfo.IsSource ? (short)GlyphIndex.SourceDomainRole : (short)GlyphIndex.TargetDomainRole;
 							retVal.Bold = true;
+							break;
+						case 1:
+							retVal.SelectedImage = retVal.Image = (short)GlyphIndex.ElementId;
 							break;
 					}
 					return retVal;
@@ -750,12 +815,36 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						}
 						return null;
 					}
+					string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+					{
+						if (column == 1 && tipType == ToolTipType.Icon)
+						{
+							object value = myAssignments[row].Value;
+							if (IsElement(value))
+							{
+								return FormatFullIdentifier(((ModelElement)value).Id);
+							}
+						}
+						return null;
+					}
 					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 					{
 						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+						switch (column)
+						{
+							case 0:
+								retVal.SelectedImage = retVal.Image = (short)GlyphIndex.DomainProperty;
+								retVal.Bold = true;
+								break;
+							case 1:
+								if (IsElement(myAssignments[row].Value))
+								{
+									retVal.SelectedImage = retVal.Image = (short)GlyphIndex.ElementId;
+								}
+								break;
+						}
 						if (column == 0)
 						{
-							retVal.Bold = true;
 						}
 						return retVal;
 					}
@@ -902,15 +991,34 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						}
 						return null;
 					}
+					string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+					{
+						if (tipType == ToolTipType.Icon)
+						{
+							switch (row)
+							{
+								case 1:
+									return FormatFullIdentifier(myNewId);
+								case 2:
+									return FormatFullIdentifier(myOldId);
+							}
+						}
+						return null;
+					}
 					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 					{
 						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
 						switch (row)
 						{
 							case 0:
+								retVal.SelectedImage = retVal.Image = myRoleInfo.IsSource ? (short)GlyphIndex.SourceDomainRole : (short)GlyphIndex.TargetDomainRole;
 								retVal.Bold = true;
 								break;
+							case 1:
+								retVal.SelectedImage = retVal.Image = (short)GlyphIndex.NewElementId;
+								break;
 							case 2:
+								retVal.SelectedImage = retVal.Image = (short)GlyphIndex.OldElementId;
 								retVal.GrayText = true;
 								break;
 						}
@@ -959,11 +1067,157 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				VirtualTreeDisplayData IDetailHandler.GetDetailDisplayData(PartitionChange change, int detailColumn, VirtualTreeDisplayDataMasks requiredData)
 				{
 					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+					retVal.SelectedImage = retVal.Image = ((RolePlayerChangedEventArgs)change.ChangeArgs).DomainRole.OppositeDomainRole.IsSource ? (short)GlyphIndex.SourceDomainRole : (short)GlyphIndex.TargetDomainRole;
 					retVal.Bold = true;
 					return retVal;
 				}
 			}
 			#endregion // RolePlayerChangeDetailHandler class
+			#region RolePlayerOrderChangeDetailHandler class
+			private class RolePlayerOrderChangeDetailHandler : IDetailHandler
+			{
+				#region CounterpartRolePlayerDetailBranch class
+				private class CounterpartRolePlayerDetailBranch : BaseBranch, IBranch
+				{
+					private DomainRoleInfo myRoleInfo;
+					private Guid myId;
+					public CounterpartRolePlayerDetailBranch(DomainRoleInfo counterpartRole, Guid counterpartElementId)
+					{
+						myRoleInfo = counterpartRole;
+						myId = counterpartElementId;
+					}
+					BranchFeatures IBranch.Features
+					{
+						get
+						{
+							return BranchFeatures.None;
+						}
+					}
+					string IBranch.GetText(int row, int column)
+					{
+						switch (row)
+						{
+							case 0:
+								return myRoleInfo.Name;
+							case 1:
+								return FormatIdentifier(myId);
+						}
+						return null;
+					}
+					string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+					{
+						if (row == 1 && tipType == ToolTipType.Icon)
+						{
+							return FormatFullIdentifier(myId);
+						}
+						return null;
+					}
+					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+					{
+						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+						switch (row)
+						{
+							case 0:
+								retVal.SelectedImage = retVal.Image = myRoleInfo.IsSource ? (short)GlyphIndex.SourceDomainRole : (short)GlyphIndex.TargetDomainRole;
+								retVal.Bold = true;
+								break;
+							case 1:
+								retVal.SelectedImage = retVal.Image = (short)GlyphIndex.ElementId;
+								break;
+						}
+						return retVal;
+					}
+					int IBranch.VisibleItemCount
+					{
+						get
+						{
+							return 2;
+						}
+					}
+				}
+				#endregion // CounterpartRolePlayerDetailBranch class
+				#region PositionDetailBranch class
+				private class PositionDetailBranch : BaseBranch, IBranch
+				{
+					private string myNewPosition;
+					private string myOldPosition;
+					public PositionDetailBranch(int newPosition, int oldPosition)
+					{
+						myNewPosition = newPosition.ToString(CultureInfo.CurrentCulture);
+						myOldPosition = oldPosition.ToString(CultureInfo.CurrentCulture);
+					}
+					BranchFeatures IBranch.Features
+					{
+						get
+						{
+							return BranchFeatures.None;
+						}
+					}
+					string IBranch.GetText(int row, int column)
+					{
+						return (row == 0) ? myNewPosition : myOldPosition;
+					}
+					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+					{
+						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+						switch (row)
+						{
+							case 0:
+								retVal.SelectedImage = retVal.Image = (short)GlyphIndex.NewValue;
+								break;
+							case 1:
+								retVal.SelectedImage = retVal.Image = (short)GlyphIndex.OldValue;
+								retVal.GrayText = true;
+								break;
+						}
+						return retVal;
+					}
+					int IBranch.VisibleItemCount
+					{
+						get
+						{
+							return 2;
+						}
+					}
+				}
+				#endregion // PositionDetailBranch class
+				int IDetailHandler.GetDetailColumnCount(PartitionChange change)
+				{
+					return 2;
+				}
+				SubItemCellStyles IDetailHandler.GetDetailColumnStyle(PartitionChange change, int detailColumn)
+				{
+					return SubItemCellStyles.Complex;
+				}
+				string IDetailHandler.GetDetailText(PartitionChange change, int detailColumn)
+				{
+					return null;
+				}
+				string IDetailHandler.GetDetailTipText(PartitionChange change, int detailColumn, ToolTipType tipType)
+				{
+					return null;
+				}
+				object IDetailHandler.GetDetailObject(PartitionChange change, int detailColumn, ObjectStyle style)
+				{
+					if (style == ObjectStyle.SubItemRootBranch)
+					{
+						RolePlayerOrderChangedEventArgs args = (RolePlayerOrderChangedEventArgs)change.ChangeArgs;
+						return (detailColumn == 0) ?
+							(IBranch)(new CounterpartRolePlayerDetailBranch(args.CounterpartDomainRole, args.CounterpartRolePlayerId)) :
+							new PositionDetailBranch(args.NewOrdinal, args.OldOrdinal);
+					}
+					return null;
+				}
+				bool IDetailHandler.GetDetailIsExpandable(PartitionChange change, int detailColumn)
+				{
+					return false;
+				}
+				VirtualTreeDisplayData IDetailHandler.GetDetailDisplayData(PartitionChange change, int detailColumn, VirtualTreeDisplayDataMasks requiredData)
+				{
+					return VirtualTreeDisplayData.Empty;
+				}
+			}
+			#endregion // RolePlayerOrderChangeDetailHandler class
 			#region RedirectDetailHandler class
 			private class RedirectDetailHandler : IDetailHandler
 			{
@@ -977,6 +1231,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					handlers[typeof(ElementDeletedEventArgs)] = deleteHandler;
 					handlers[typeof(ElementDeletingEventArgs)] = deleteHandler;
 					handlers[typeof(RolePlayerChangedEventArgs)] = new RolePlayerChangeDetailHandler();
+					handlers[typeof(RolePlayerOrderChangedEventArgs)] = new RolePlayerOrderChangeDetailHandler();
 					// Add additional typed handlers here
 					myDetailHandlers = handlers;
 				}
@@ -1089,11 +1344,17 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					case ColumnContent.Partition:
 						{
 							Partition partition;
-							object alternateId;
-							if (null != (partition = change.Partition) &&
-								null != (alternateId = partition.AlternateId))
+							if (null != (partition = change.Partition))
 							{
-								retVal = alternateId.ToString();
+								object alternateId;
+								if (null != (alternateId = partition.AlternateId))
+								{
+									retVal = alternateId.ToString();
+								}
+								else if (partition == partition.Store.DefaultPartition)
+								{
+									retVal = "Default";
+								}
 							}
 						}
 						break;
@@ -1130,10 +1391,12 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						break;
 					case ColumnContent.Id:
 						{
-							ElementEventArgs elementArgs = change.ChangeArgs as ElementEventArgs;
-							if (elementArgs != null)
+							GenericEventArgs genericArgs;
+							Guid elementId;
+							if (null != (genericArgs = change.ChangeArgs as GenericEventArgs) &&
+								(elementId = genericArgs.ElementId) != Guid.Empty)
 							{
-								retVal = FormatIdentifier(elementArgs.ElementId);
+								retVal = FormatIdentifier(elementId);
 							}
 						}
 						break;
@@ -1152,6 +1415,15 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			{
 				switch ((ColumnContent)column)
 				{
+					case ColumnContent.Id:
+						GenericEventArgs genericArgs;
+						Guid elementId;
+						if (null != (genericArgs = myChanges[row].ChangeArgs as GenericEventArgs) &&
+							(elementId = genericArgs.ElementId) != Guid.Empty)
+						{
+							return FormatFullIdentifier(elementId);
+						}
+						break;
 					case ColumnContent.Detail1:
 					case ColumnContent.Detail2:
 						column -= (int)ColumnContent.Detail1;
@@ -1173,9 +1445,29 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						retVal.Bold = true;
 						retVal.GrayText = true;
 						break;
+					case ColumnContent.Partition:
+						retVal.Image = (short)GlyphIndex.Partition;
+						{
+							Partition partition = myChanges[row].Partition;
+							if (partition != null && partition == partition.Store.DefaultPartition)
+							{
+								retVal.GrayText = true;
+							}
+						}
+						break;
 					case ColumnContent.Class:
+						{
+							GenericEventArgs args = myChanges[row].ChangeArgs as GenericEventArgs;
+							retVal.SelectedImage = retVal.Image = (args.DomainClass is DomainRelationshipInfo) ? (short)GlyphIndex.DomainRelationship : (short)GlyphIndex.DomainClass;
+							retVal.Bold = true;
+						}
+						break;
 					case ColumnContent.Model:
+						retVal.SelectedImage = retVal.Image = (short)GlyphIndex.DomainModel;
 						retVal.Bold = true;
+						break;
+					case ColumnContent.Id:
+						retVal.SelectedImage = retVal.Image = (short)GlyphIndex.ElementId;
 						break;
 					case ColumnContent.Detail1:
 					case ColumnContent.Detail2:
@@ -1215,7 +1507,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				}
 			}
 			#endregion // IBranch Implementation
-			#region // IMultiColumnBranch Implementation
+			#region IMultiColumnBranch Implementation
 			int IMultiColumnBranch.ColumnCount
 			{
 				get
@@ -1241,14 +1533,14 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			#endregion // IMultiColumnBranch Implementation
 		}
 		#endregion // BaseBranch class
-
+		#region Event Handlers
 		private void UndoItemsCombo_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int index = UndoItemsCombo.SelectedIndex;
 			if (index >= 0)
 			{
 				RedoItemsCombo.SelectedIndex = -1;
-				TreeControl.Tree.Root = new ChangeBranch(myUndoItems[index]);
+				ResetTree(myUndoItems[index]);
 			}
 		}
 		private void RedoItemsCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -1257,8 +1549,35 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			if (index >= 0)
 			{
 				UndoItemsCombo.SelectedIndex = -1;
-				TreeControl.Tree.Root = new ChangeBranch(myRedoItems[index]);
+				ResetTree(myRedoItems[index]);
 			}
 		}
+		private void TransactionLogViewer_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			TreeControl.Tree = null;
+			UndoItemsCombo.Items.Clear();
+			RedoItemsCombo.Items.Clear();
+			myRedoItems = null;
+			myUndoItems = null;
+		}
+		private void ResetTree(TransactionItem transactionItem)
+		{
+			// MSBUG: We should be able to reset the Root branch with the
+			// tree attached to the control, but it is losing subitem expansions
+			// and causes all sorts of drawing problems, so detach and reattach
+			// the tree.
+			VirtualTreeControl control = TreeControl;
+			ITree tree = control.Tree;
+			control.Tree = null;
+			tree.Root = new ChangeBranch(transactionItem);
+			control.MultiColumnTree = (IMultiColumnTree)tree;
+		}
+		private void TransactionLogViewer_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			// IUIService.Show display the window in normal state. All is lost
+			// if its size settings are set at Maximized.
+			WindowState = FormWindowState.Normal;
+		}
+		#endregion // Event Handlers
 	}
 }

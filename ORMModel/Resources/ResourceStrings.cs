@@ -255,6 +255,10 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPageCategoryVerbalizationBehaviorId = "OptionsPage.Category.VerbalizationBehavior";
 		/// <summary>
+		/// Category name for options page (diagnostics)
+		/// </summary>
+		public const string OptionsPageCategoryDiagnosticsId = "OptionsPage.Category.Diagnostics";
+		/// <summary>
 		/// Description of the Custom Verbalization Snippets option
 		/// </summary>
 		public const string OptionsPagePropertyCustomVerbalizationSnippetsDescriptionId = "OptionsPage.Property.CustomVerbalizationSnippets.Description";
@@ -358,6 +362,14 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the Show Default Constraint Verbalization option
 		/// </summary>
 		public const string OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId = "OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName";
+		/// <summary>
+		/// Description of the show debug commands option
+		/// </summary>
+		public const string OptionsPagePropertyShowDebugCommandsDescriptionId = "OptionsPage.Property.ShowDebugCommands.Description";
+		/// <summary>
+		/// Display name of the show debug commands option
+		/// </summary>
+		public const string OptionsPagePropertyShowDebugCommandsDisplayNameId = "OptionsPage.Property.ShowDebugCommands.DisplayName";
 		#endregion // OptionsPage Ids
 
 		#region FactEditorColors Ids

@@ -82,10 +82,8 @@ CMDS_SECTION guidORMDesignerPackage
 
 	BUTTONS_BEGIN
 		// Button/Menu Item											Item Group												Priority	Icon															Type	Flags											Text
-		#ifdef DEBUG
 		guidORMDesignerCommandSet:cmdIdDebugViewStore,				guidORMDesignerCommandSet:groupIdDebugCommands,			0x0010,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Debug: View Store...";
 		guidORMDesignerCommandSet:cmdIdDebugViewTransactionLogs,	guidORMDesignerCommandSet:groupIdDebugCommands,			0x0020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Debug: View Transactions...";
-		#endif
 		guidORMDesignerCommandSet:cmdIdExclusiveOrCoupler,			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0010,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Com&bine as Exclusive Or Constraint";
 		guidORMDesignerCommandSet:cmdIdExclusiveOrDecoupler,		guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"S&plit Exclusive Or Constraint";
 		guidORMDesignerCommandSet:cmdIdActivateRoleSequence			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0030,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Edit Role Sequence";

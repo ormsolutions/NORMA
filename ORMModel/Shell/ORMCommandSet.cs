@@ -66,14 +66,14 @@ namespace Neumont.Tools.ORM.Shell
 					new MenuCommand[]
 					{
 						// Commands
-					#if DEBUG
-						new MenuCommand(
+						new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDebugCommand),
 						new EventHandler(OnMenuDebugViewStore),
 						ORMDesignerCommandIds.DebugViewStore),
-						new MenuCommand(
+						new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDebugCommand),
 						new EventHandler(OnMenuDebugViewTransactionLogs),
 						ORMDesignerCommandIds.DebugViewTransactionLogs),
-					#endif // DEBUG
 						new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusReferenceModesWindow),
 						new EventHandler(OnMenuReferenceModesWindow),
@@ -369,7 +369,16 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-#if DEBUG
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusDebugCommand(object sender, EventArgs e)
+			{
+				MenuCommand command = sender as MenuCommand;
+				bool turnOn = OptionsPage.CurrentShowDebugCommands;
+				command.Enabled = true; // No reason to disable it, we just don't want to show it
+				command.Visible = turnOn;
+			}
 			/// <summary>
 			/// Show a debug window displaying the contents of the current store
 			/// </summary>
@@ -388,7 +397,6 @@ namespace Neumont.Tools.ORM.Shell
 					Neumont.Tools.Modeling.Diagnostics.TransactionLogViewer.Show(store, ((IORMToolServices)store).ServiceProvider);
 				}
 			}
-#endif // DEBUG
 
 			/// <summary>
 			/// Status callback
@@ -1229,7 +1237,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4b39-89B5-42BC9F49EA24");    // keep in sync with SatDll\PkgCmd.ctc
 			#region CommandID objects for commands
-#if DEBUG
 			/// <summary>
 			/// A command to view transaction contents in debug mode
 			/// </summary>
@@ -1238,7 +1245,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// A command to view the current store contents in debug mode
 			/// </summary>
 			public static readonly CommandID DebugViewStore = new CommandID(guidORMDesignerCommandSet, cmdIdDebugViewStore);
-#endif // DEBUG
 			/// <summary>
 			/// The ORM Model Browser item on the view menu
 			/// </summary>
@@ -1446,7 +1452,6 @@ namespace Neumont.Tools.ORM.Shell
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
 
-#if DEBUG
 			/// <summary>
 			/// A command to view transaction contents in debug mode
 			/// </summary>
@@ -1455,7 +1460,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// A command to view the current store contents in debug mode
 			/// </summary>
 			private const int cmdIdDebugViewStore = 0x28FF;
-#endif // DEBUG
+
 			/// <summary>
 			/// The ORM Model Browser item on the view menu
 			/// </summary>
