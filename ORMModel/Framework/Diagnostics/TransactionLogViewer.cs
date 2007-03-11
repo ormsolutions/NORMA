@@ -261,12 +261,15 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			OldElementId,
 			NewElementId,
 			Partition,
+			Filter, // Used for FilterLabel
 		}
 		#endregion // GlyphIndex enum
 		#region Member Variables
 		private static TransactionLogViewer mySingleton;
 		private IList<TransactionItem> myUndoItems;
 		private IList<TransactionItem> myRedoItems;
+		private PartitionChangeFilter myFilter;
+		private bool mySkipClose;
 		#endregion // Member Variables
 		#region Initialization
 		/// <summary>
@@ -325,6 +328,323 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			}
 		}
 		#endregion // Initialization
+		#region Filter Classes
+		#region ChangeFilter class
+		private class PartitionChangeFilter
+		{
+			private bool myFilterChanged;
+			private Partition myPartition;
+			private DomainModelInfo myDomainModel;
+			private DomainClassInfo myDomainClass;
+			private DomainPropertyInfo myDomainProperty;
+			private Type myChangeType;
+			private Guid? myElementId;
+			private ChangeSource? myChangeSource;
+			/// <summary>
+			/// Return an array of indices into the <paramref name=" changes"/>
+			/// array that matches the current state of the filter.
+			/// </summary>
+			/// <param name="changes">An array of <see cref="PartitionChange"/>s</param>
+			/// <param name="filter">On input, this is the previous filter returned
+			/// from this method for these changes. If the current filter state has not changed
+			/// since the previous call then the array will not be modified.</param>
+			/// <returns><see langword="true"/> if the <paramref name="filter"/> array is modified.</returns>
+			public bool ApplyFilter(PartitionChange[] changes, ref int[] filter)
+			{
+				if (!myFilterChanged)
+				{
+					myFilterChanged = false;
+					return false;
+				}
+				myFilterChanged = false;
+				Partition partition = myPartition;
+				DomainModelInfo modelInfo = myDomainModel;
+				DomainClassInfo classInfo = myDomainClass;
+				DomainPropertyInfo propertyInfo = myDomainProperty;
+				ChangeSource? source = myChangeSource;
+				Guid? elementId = myElementId;
+				Type changeType = myChangeType;
+				if (partition == null &&
+					modelInfo == null &&
+					classInfo == null &&
+					propertyInfo == null &&
+					changeType == null &&
+					!source.HasValue &&
+					!elementId.HasValue)
+				{
+					filter = null;
+					return true;
+				}
+				int changeCount = changes.Length;
+				int[] newFilter = new int[changeCount];
+				int filterCount = 0;
+				for (int i = 0; i < changeCount; ++i)
+				{
+					PartitionChange change = changes[i];
+					if (partition != null && change.Partition != partition)
+					{
+						continue;
+					}
+					EventArgs changeArgs = change.ChangeArgs;
+					if (changeType != null && changeType != changeArgs.GetType())
+					{
+						continue;
+					}
+					GenericEventArgs genericArgs = changeArgs as GenericEventArgs;
+					ElementPropertyChangedEventArgs propertyChangeArgs;
+					if (modelInfo != null && (genericArgs == null || modelInfo != genericArgs.DomainModel))
+					{
+						continue;
+					}
+					if (classInfo != null && (genericArgs == null || classInfo != genericArgs.DomainClass))
+					{
+						continue;
+					}
+					if (propertyInfo != null && (null == (propertyChangeArgs = genericArgs as ElementPropertyChangedEventArgs) || propertyInfo != propertyChangeArgs.DomainProperty))
+					{
+						continue;
+					}
+					if (source.HasValue && (genericArgs == null || source.Value != genericArgs.ChangeSource))
+					{
+						continue;
+					}
+					if (elementId.HasValue)
+					{
+						if (genericArgs == null)
+						{
+							continue;
+						}
+						else
+						{
+							Guid id = elementId.Value;
+							if (genericArgs.ElementId != id)
+							{
+								RoleAssignment[] assignments = change.RoleAssignments;
+								int assignmentCount = (assignments != null) ? assignments.Length : 0;
+								int j = 0;
+								for (; j < assignmentCount; ++j)
+								{
+									if (assignments[j].RolePlayer.Id == id)
+									{
+										break;
+									}
+								}
+								if (j == assignmentCount)
+								{
+									RolePlayerChangedEventArgs changedArgs;
+									if (null == (changedArgs = genericArgs as RolePlayerChangedEventArgs) ||
+										(id != changedArgs.NewRolePlayerId && id != changedArgs.OldRolePlayerId))
+									{
+										RolePlayerOrderChangedEventArgs orderChangedArgs;
+										if (null == (orderChangedArgs = genericArgs as RolePlayerOrderChangedEventArgs) ||
+											id != orderChangedArgs.CounterpartRolePlayerId)
+										{
+											continue;
+										}
+									}
+								}
+							}
+						}
+					}
+					newFilter[filterCount] = i;
+					++filterCount;
+				}
+				if (filterCount == changeCount)
+				{
+					newFilter = null;
+				}
+				else
+				{
+					Array.Resize<int>(ref newFilter, filterCount);
+				}
+				filter = newFilter;
+				return true;
+			}
+			/// <summary>
+			/// Clear all values from the current filter. Note that this can
+			/// cause the <see cref="FilterChanged"/> property to change to <see langword="true"/>
+			/// </summary>
+			public void ClearFilter()
+			{
+				Partition = null;
+				DomainClass = null;
+				DomainModel = null;
+				DomainProperty = null;
+				ChangeType = null;
+				ChangeSource = null;
+				ElementId = null;
+			}
+			/// <summary>
+			/// Return true if the current filter has no values turned on
+			/// </summary>
+			public bool IsClear
+			{
+				get
+				{
+					return myPartition == null &&
+						myDomainModel == null &&
+						myDomainClass == null &&
+						myChangeType == null &&
+						myDomainProperty == null &&
+						!myChangeSource.HasValue &&
+						!myElementId.HasValue;
+				}
+			}
+			/// <summary>
+			/// True if the filter has changed since the last call to ApplyFilter
+			/// </summary>
+			public bool FilterChanged
+			{
+				get
+				{
+					return myFilterChanged;
+				}
+			}
+			/// <summary>
+			/// Filter on this <see cref="Partition"/>
+			/// </summary>
+			public Partition Partition
+			{
+				get
+				{
+					return myPartition;
+				}
+				set
+				{
+					if (value != myPartition)
+					{
+						myFilterChanged = true;
+						myPartition = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Filter on this <see cref="DomainModelInfo"/>
+			/// </summary>
+			public DomainModelInfo DomainModel
+			{
+				get
+				{
+					return myDomainModel;
+				}
+				set
+				{
+					if (value != myDomainModel)
+					{
+						myFilterChanged = true;
+						myDomainModel = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Filter on this <see cref="DomainClassInfo"/>
+			/// </summary>
+			public DomainClassInfo DomainClass
+			{
+				get
+				{
+					return myDomainClass;
+				}
+				set
+				{
+					if (value != myDomainClass)
+					{
+						myFilterChanged = true;
+						myDomainClass = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Filter on this <see cref="DomainPropertyInfo"/>
+			/// </summary>
+			public DomainPropertyInfo DomainProperty
+			{
+				get
+				{
+					return myDomainProperty;
+				}
+				set
+				{
+					if (value != myDomainProperty)
+					{
+						myFilterChanged = true;
+						myDomainProperty = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Filter on the <see cref="Type"/> of the <see cref="EventArgs"/> returned by <see cref="PartitionChange.ChangeArgs"/>
+			/// </summary>
+			public Type ChangeType
+			{
+				get
+				{
+					return myChangeType;
+				}
+				set
+				{
+					if (value != myChangeType)
+					{
+						myFilterChanged = true;
+						myChangeType = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Filter on this <see cref="ChangeSource"/>
+			/// </summary>
+			public ChangeSource? ChangeSource
+			{
+				get
+				{
+					return myChangeSource;
+				}
+				set
+				{
+					if (value != myChangeSource)
+					{
+						myFilterChanged = true;
+						myChangeSource = value;
+					}
+				}
+			}
+			/// <summary>
+			/// Filter on this ElementId
+			/// </summary>
+			public Guid? ElementId
+			{
+				get
+				{
+					return myElementId;
+				}
+				set
+				{
+					if (value != myElementId)
+					{
+						myFilterChanged = true;
+						myElementId = value;
+					}
+				}
+			}
+		}
+		#endregion // ChangeFilter class
+		#region IItemFilter interface
+		/// <summary>
+		/// An interface to implement along with <see cref="IBranch"/>
+		/// to enable the branch to add one of its items to a filter.
+		/// </summary>
+		private interface IItemFilter
+		{
+			/// <summary>
+			/// Modify the filter to include this item
+			/// </summary>
+			/// <param name="filter">The <see cref="PartitionChangeFilter"/> to modify</param>
+			/// <param name="row">The row in the branch.</param>
+			/// <param name="column">The column in the branch.</param>
+			void FilterItem(PartitionChangeFilter filter, int row, int column);
+		}
+		#endregion // IItemFilter interface
+		#endregion // Filter Classes
 		#region BaseBranch class
 		/// <summary>
 		/// A helper class to provide a default IBranch implementation
@@ -427,7 +747,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 		/// <summary>
 		/// A helper class to provide a default IBranch implementation
 		/// </summary>
-		private class ChangeBranch : BaseBranch, IBranch, IMultiColumnBranch
+		private sealed class ChangeBranch : BaseBranch, IBranch, IMultiColumnBranch, IItemFilter
 		{
 			#region Header initialization
 			public static void InitializeHeaders(VirtualTreeControl control)
@@ -621,6 +941,74 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				return id.ToString("D");
 			}
 			#endregion // Helper methods
+			#region Filter implementation
+			private PartitionChange GetChange(int branchRow)
+			{
+				int[] filter = myFilter;
+				return (filter != null) ? myChanges[filter[branchRow]] : myChanges[branchRow];
+			}
+			/// <summary>
+			/// Called to potentially modify the current filter
+			/// </summary>
+			/// <param name="filter">The <see cref="PartitionChangeFilter"/></param>
+			public void FilterChanged(PartitionChangeFilter filter)
+			{
+				int[] newFilter = null;
+				int[] oldFilter = myFilter;
+				if (oldFilter != null)
+				{
+					// We need to copy the filter because of the MSBUG with VirtualTree.DeleteItems discussed
+					int filterCount = oldFilter.Length;
+					newFilter = new int[filterCount];
+					oldFilter.CopyTo(newFilter, 0);
+				}
+				if (filter.ApplyFilter(myChanges, ref newFilter))
+				{
+					int itemCount = VisibleItemCount;
+					// UNDONE: This could be done without losing the current selection
+					// by doing an item-by-item diff on the before and after states of the filter.
+					BranchModificationEventHandler modify = myModify;
+					if (modify != null)
+					{
+						modify(this, BranchModificationEventArgs.DelayRedraw(true));
+
+						// MSBUG: Hack workaround a bug in VirtualTree.DeleteItems. The
+						// call to ChangeFullCountRecursive needs to pass a valid subItemIncr
+						// instead of the constant value 0.
+						int columnCount = (int)ColumnContent.Count;
+						for (int i = 0; i < columnCount; ++i)
+						{
+							if (0 != (ColumnStyles(i) & SubItemCellStyles.Complex))
+							{
+								for (int j = 0; j < itemCount; ++j)
+								{
+									modify(this, BranchModificationEventArgs.UpdateCellStyle(this, j, i, false));
+								}
+							}
+						}
+						modify(this, BranchModificationEventArgs.DeleteItems(this, 0, itemCount));
+						myFilter = newFilter; // This changes the VisibleItemCount
+						itemCount = VisibleItemCount;
+						modify(this, BranchModificationEventArgs.InsertItems(this, -1, itemCount));
+						for (int i = 0; i < columnCount; ++i)
+						{
+							if (0 != (ColumnStyles(i) & SubItemCellStyles.Complex))
+							{
+								for (int j = 0; j < itemCount; ++j)
+								{
+									// MSBUG: Hack workaround a bug in VirtualTree.InsertItems. Inserting
+									// a complex item should requery the branch for subitem expansions.
+									// This isn't as severe as the other (it doesn't crash), but this should
+									// still happen automatically.
+									modify(this, BranchModificationEventArgs.UpdateCellStyle(this, j, i, true));
+								}
+							}
+						}
+						modify(this, BranchModificationEventArgs.DelayRedraw(false));
+					}
+				}
+			}
+			#endregion // Filter implementation
 			#region DetailHandler implementations
 			#region PropertyChangedDetailHandler class
 			private class PropertyChangedDetailHandler : IDetailHandler
@@ -725,7 +1113,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			}
 			#endregion // PropertyChangedDetailHandler class
 			#region RoleAssignmentDetailBranch class
-			private class RoleAssignmentDetailBranch : BaseBranch, IBranch
+			private class RoleAssignmentDetailBranch : BaseBranch, IBranch, IItemFilter
 			{
 				private DomainRoleInfo myRoleInfo;
 				private Guid myElementId;
@@ -780,6 +1168,13 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					get
 					{
 						return 2;
+					}
+				}
+				void IItemFilter.FilterItem(PartitionChangeFilter filter, int row, int column)
+				{
+					if (row == 1)
+					{
+						filter.ElementId = myElementId;
 					}
 				}
 			}
@@ -960,7 +1355,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			private class RolePlayerChangeDetailHandler : IDetailHandler
 			{
 				#region RolePlayerChangeDetailBranch class
-				private class RolePlayerChangeDetailBranch : BaseBranch, IBranch
+				private class RolePlayerChangeDetailBranch : BaseBranch, IBranch, IItemFilter
 				{
 					private DomainRoleInfo myRoleInfo;
 					private Guid myOldId;
@@ -1031,6 +1426,18 @@ namespace Neumont.Tools.Modeling.Diagnostics
 							return 3;
 						}
 					}
+					void IItemFilter.FilterItem(PartitionChangeFilter filter, int row, int column)
+					{
+						switch (row)
+						{
+							case 1:
+								filter.ElementId = myNewId;
+								break;
+							case 2:
+								filter.ElementId = myOldId;
+								break;
+						}
+					}
 				}
 				#endregion // RolePlayerChangeDetailBranch class
 				int IDetailHandler.GetDetailColumnCount(PartitionChange change)
@@ -1077,7 +1484,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			private class RolePlayerOrderChangeDetailHandler : IDetailHandler
 			{
 				#region CounterpartRolePlayerDetailBranch class
-				private class CounterpartRolePlayerDetailBranch : BaseBranch, IBranch
+				private class CounterpartRolePlayerDetailBranch : BaseBranch, IBranch, IItemFilter
 				{
 					private DomainRoleInfo myRoleInfo;
 					private Guid myId;
@@ -1132,6 +1539,13 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						get
 						{
 							return 2;
+						}
+					}
+					void IItemFilter.FilterItem(PartitionChangeFilter filter, int row, int column)
+					{
+						if (row == 1)
+						{
+							filter.ElementId = myId;
 						}
 					}
 				}
@@ -1286,6 +1700,8 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			#endregion // DetailHandler implementations
 			#region Member variables
 			private PartitionChange[] myChanges;
+			private int[] myFilter;
+			private BranchModificationEventHandler myModify;
 			#endregion // Member variables
 			#region Constructor
 			public ChangeBranch(TransactionItem transactionItem)
@@ -1298,7 +1714,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			{
 				get
 				{
-					return BranchFeatures.ComplexColumns | BranchFeatures.Expansions;
+					return BranchFeatures.ComplexColumns | BranchFeatures.Expansions | BranchFeatures.InsertsAndDeletes;
 				}
 			}
 			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
@@ -1308,13 +1724,13 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					case ObjectStyle.ExpandedBranch:
 						if (column == (int)ColumnContent.ChangeType)
 						{
-							return RedirectDetailHandler.Instance.GetDetailObject(myChanges[row], -1, style);
+							return RedirectDetailHandler.Instance.GetDetailObject(GetChange(row), -1, style);
 						}
 						break;
 					case ObjectStyle.SubItemExpansion:
 					case ObjectStyle.SubItemRootBranch:
 						column -= (int)ColumnContent.Detail1;
-						PartitionChange change = myChanges[row];
+						PartitionChange change = GetChange(row);
 						if (RedirectDetailHandler.Instance.GetDetailColumnCount(change) > column &&
 							((style == ObjectStyle.SubItemRootBranch) ? SubItemCellStyles.Complex : SubItemCellStyles.Expandable) == RedirectDetailHandler.Instance.GetDetailColumnStyle(change, column))
 						{
@@ -1327,7 +1743,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			string IBranch.GetText(int row, int column)
 			{
 				string retVal = null;
-				PartitionChange change = myChanges[row];
+				PartitionChange change = GetChange(row);
 				switch ((ColumnContent)column)
 				{
 					case ColumnContent.ChangeType:
@@ -1339,7 +1755,8 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						}
 						break;
 					case ColumnContent.Index:
-						retVal = (row + 1).ToString();
+						int[] filter = myFilter;
+						retVal = (filter != null) ? (filter[row] + 1).ToString(CultureInfo.CurrentCulture) : (row + 1).ToString(CultureInfo.CurrentCulture);
 						break;
 					case ColumnContent.Partition:
 						{
@@ -1418,7 +1835,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					case ColumnContent.Id:
 						GenericEventArgs genericArgs;
 						Guid elementId;
-						if (null != (genericArgs = myChanges[row].ChangeArgs as GenericEventArgs) &&
+						if (null != (genericArgs = GetChange(row).ChangeArgs as GenericEventArgs) &&
 							(elementId = genericArgs.ElementId) != Guid.Empty)
 						{
 							return FormatFullIdentifier(elementId);
@@ -1427,7 +1844,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					case ColumnContent.Detail1:
 					case ColumnContent.Detail2:
 						column -= (int)ColumnContent.Detail1;
-						PartitionChange change = myChanges[row];
+						PartitionChange change = GetChange(row);
 						if (RedirectDetailHandler.Instance.GetDetailColumnCount(change) > column)
 						{
 							return RedirectDetailHandler.Instance.GetDetailTipText(change, column, tipType);
@@ -1446,9 +1863,9 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						retVal.GrayText = true;
 						break;
 					case ColumnContent.Partition:
-						retVal.Image = (short)GlyphIndex.Partition;
+						retVal.SelectedImage = retVal.Image = (short)GlyphIndex.Partition;
 						{
-							Partition partition = myChanges[row].Partition;
+							Partition partition = GetChange(row).Partition;
 							if (partition != null && partition == partition.Store.DefaultPartition)
 							{
 								retVal.GrayText = true;
@@ -1457,7 +1874,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						break;
 					case ColumnContent.Class:
 						{
-							GenericEventArgs args = myChanges[row].ChangeArgs as GenericEventArgs;
+							GenericEventArgs args = GetChange(row).ChangeArgs as GenericEventArgs;
 							retVal.SelectedImage = retVal.Image = (args.DomainClass is DomainRelationshipInfo) ? (short)GlyphIndex.DomainRelationship : (short)GlyphIndex.DomainClass;
 							retVal.Bold = true;
 						}
@@ -1472,7 +1889,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					case ColumnContent.Detail1:
 					case ColumnContent.Detail2:
 						column -= (int)ColumnContent.Detail1;
-						PartitionChange change = myChanges[row];
+						PartitionChange change = GetChange(row);
 						if (RedirectDetailHandler.Instance.GetDetailColumnCount(change) > column)
 						{
 							retVal = RedirectDetailHandler.Instance.GetDetailDisplayData(change, column, requiredData);
@@ -1486,11 +1903,11 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				switch ((ColumnContent)column)
 				{
 					case ColumnContent.ChangeType:
-						return RedirectDetailHandler.Instance.GetDetailIsExpandable(myChanges[row], -1);
+						return RedirectDetailHandler.Instance.GetDetailIsExpandable(GetChange(row), -1);
 					case ColumnContent.Detail1:
 					case ColumnContent.Detail2:
 						column -= (int)ColumnContent.Detail1;
-						PartitionChange change = myChanges[row];
+						PartitionChange change = GetChange(row);
 						if (RedirectDetailHandler.Instance.GetDetailColumnCount(change) > column)
 						{
 							return RedirectDetailHandler.Instance.GetDetailIsExpandable(change, column);
@@ -1499,12 +1916,25 @@ namespace Neumont.Tools.Modeling.Diagnostics
 				}
 				return false;
 			}
+			private int VisibleItemCount
+			{
+				get
+				{
+					int[] filter = myFilter;
+					return (filter != null) ? filter.Length : myChanges.Length;
+				}
+			}
 			int IBranch.VisibleItemCount
 			{
 				get
 				{
-					return myChanges.Length;
+					return VisibleItemCount;
 				}
+			}
+			event BranchModificationEventHandler IBranch.OnBranchModification
+			{
+				add { myModify += value; }
+				remove { myModify -= value; }
 			}
 			#endregion // IBranch Implementation
 			#region IMultiColumnBranch Implementation
@@ -1515,7 +1945,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 					return (int)ColumnContent.Count;
 				}
 			}
-			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+			private SubItemCellStyles ColumnStyles(int column)
 			{
 				switch ((ColumnContent)column)
 				{
@@ -1526,11 +1956,73 @@ namespace Neumont.Tools.Modeling.Diagnostics
 						return SubItemCellStyles.Simple;
 				}
 			}
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+			{
+				return ColumnStyles(column);
+			}
 			int IMultiColumnBranch.GetJaggedColumnCount(int row)
 			{
 				return (int)ColumnContent.Count;
 			}
 			#endregion // IMultiColumnBranch Implementation
+			#region IItemFilter Implementation
+			void IItemFilter.FilterItem(PartitionChangeFilter filter, int row, int column)
+			{
+				GenericEventArgs args;
+				switch ((ColumnContent)column)
+				{
+					case ColumnContent.Partition:
+						Partition partition = GetChange(row).Partition;
+						if (partition != null)
+						{
+							filter.Partition = partition;
+						}
+						break;
+					case ColumnContent.Model:
+						DomainModelInfo model;
+						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs) &&
+							null != (model = args.DomainModel))
+						{
+							filter.DomainModel = model;
+						}
+						break;
+					case ColumnContent.Class:
+						DomainClassInfo classInfo;
+						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs) &&
+							null != (classInfo = args.DomainClass))
+						{
+							filter.DomainClass = classInfo;
+						}
+						break;
+					case ColumnContent.ChangeSource:
+						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs))
+						{
+							filter.ChangeSource = args.ChangeSource;
+						}
+						break;
+					case ColumnContent.Id:
+						if (null != (args = GetChange(row).ChangeArgs as GenericEventArgs))
+						{
+							Guid id = args.ElementId;
+							if (id != Guid.Empty)
+							{
+								filter.ElementId = id;
+							}
+						}
+						break;
+					case ColumnContent.ChangeType:
+						filter.ChangeType = GetChange(row).ChangeArgs.GetType();
+						break;
+					case ColumnContent.Detail1:
+						ElementPropertyChangedEventArgs propertyChangedArgs = GetChange(row).ChangeArgs as ElementPropertyChangedEventArgs;
+						if (null != propertyChangedArgs)
+						{
+							filter.DomainProperty = propertyChangedArgs.DomainProperty;
+						}
+						break;
+				}
+			}
+			#endregion // IItemFilter Implementation
 		}
 		#endregion // BaseBranch class
 		#region Event Handlers
@@ -1559,6 +2051,7 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			RedoItemsCombo.Items.Clear();
 			myRedoItems = null;
 			myUndoItems = null;
+			myFilter = null;
 		}
 		private void ResetTree(TransactionItem transactionItem)
 		{
@@ -1569,14 +2062,86 @@ namespace Neumont.Tools.Modeling.Diagnostics
 			VirtualTreeControl control = TreeControl;
 			ITree tree = control.Tree;
 			control.Tree = null;
+			myFilter = null;
+			CancelButton = CloseButton;
+			ClearFilterButton.Enabled = false;
 			tree.Root = new ChangeBranch(transactionItem);
 			control.MultiColumnTree = (IMultiColumnTree)tree;
 		}
 		private void TransactionLogViewer_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			// IUIService.Show display the window in normal state. All is lost
-			// if its size settings are set at Maximized.
-			WindowState = FormWindowState.Normal;
+			if (mySkipClose)
+			{
+				mySkipClose = false;
+				e.Cancel = true;
+			}
+			else
+			{
+				// IUIService.Show display the window in normal state. All is lost
+				// if its size settings are set at Maximized.
+				WindowState = FormWindowState.Normal;
+			}
+		}
+		private void TreeControl_DoubleClick(object sender, DoubleClickEventArgs e)
+		{
+			VirtualTreeItemInfo itemInfo = e.ItemInfo;
+			IItemFilter itemFilter;
+			if (!itemInfo.Blank &&
+				null != (itemFilter = itemInfo.Branch as IItemFilter))
+			{
+				PartitionChangeFilter filter = myFilter;
+				bool filterWasClear = true;
+				if (filter == null)
+				{
+					filter = new PartitionChangeFilter();
+					myFilter = filter;
+				}
+				else
+				{
+					filterWasClear = filter.IsClear;
+				}
+				itemFilter.FilterItem(filter, itemInfo.Row, itemInfo.Column);
+				if (filter.FilterChanged)
+				{
+					(TreeControl.Tree.Root as ChangeBranch).FilterChanged(filter);
+					if (filterWasClear != filter.IsClear)
+					{
+						if (filterWasClear)
+						{
+							ClearFilterButton.Enabled = true;
+							CancelButton = ClearFilterButton;
+						}
+						else
+						{
+							ClearFilterButton.Enabled = false;
+							CancelButton = CloseButton;
+						}
+					}
+					e.Handled = true;
+				}
+			}
+		}
+		private void ClearFilterButton_Click(object sender, EventArgs e)
+		{
+			PartitionChangeFilter filter = myFilter;
+			if (filter != null)
+			{
+				filter.ClearFilter();
+				if (filter.FilterChanged)
+				{
+					(TreeControl.Tree.Root as ChangeBranch).FilterChanged(filter);
+				}
+				mySkipClose = CancelButton == ClearFilterButton;
+				ClearFilterButton.Enabled = false;
+				CancelButton = CloseButton;
+			}
+		}
+		private void CloseButton_Click(object sender, EventArgs e)
+		{
+			if (CancelButton != CloseButton)
+			{
+				Close();
+			}
 		}
 		#endregion // Event Handlers
 	}
