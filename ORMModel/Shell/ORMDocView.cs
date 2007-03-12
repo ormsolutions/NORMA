@@ -434,7 +434,7 @@ namespace Neumont.Tools.ORM.Shell
 				base.RegisterImageForDiagramType(typeof(ORMDiagram), ResourceStrings.DiagramTabImage);
 
 				#region Setup context menu
-				ContextMenuStrip contextMenu = base.ContextMenuStrip = new ContextMenuStrip();
+				ContextMenuStrip contextMenu = base.ContextMenuStrip = new MultiDiagramContextMenuStrip();
 				contextMenu.ShowImageMargin = false;
 				contextMenu.Opening += ContextMenuOpening;
 				ToolStripMenuItem newPageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandNewPage);

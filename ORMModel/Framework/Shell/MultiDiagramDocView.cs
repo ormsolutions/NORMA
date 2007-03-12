@@ -71,22 +71,84 @@ namespace Neumont.Tools.Modeling.Shell
 		public static readonly Size DiagramImageSize = new Size(DiagramImageWidth, DiagramImageHeight);
 		#endregion // Constants
 		#region Public Properties
-		#region ContextMenuStrip property
+		#region Context Menu support
 		/// <summary>
-		/// Gets or sets the <see cref="ContextMenuStrip"/> for this <see cref="MultiDiagramDocView"/>.
+		/// A <see cref="ContextMenuStrip"/> that operates against a specific <see cref="DiagramView"/>
+		/// and <see cref="Diagram"/>.
 		/// </summary>
-		public ContextMenuStrip ContextMenuStrip
+		protected class MultiDiagramContextMenuStrip : ContextMenuStrip
+		{
+			/// <summary>
+			/// Initializes a new instance of <see cref="MultiDiagramContextMenuStrip"/>.
+			/// </summary>
+			public MultiDiagramContextMenuStrip()
+				: base()
+			{
+			}
+
+			private DiagramView mySelectedDesigner;
+			/// <summary>
+			/// Gets the <see cref="DiagramView"/> against which this <see cref="MultiDiagramContextMenuStrip"/>
+			/// is currently operating.
+			/// </summary>
+			public DiagramView SelectedDesigner
+			{
+				get
+				{
+					return mySelectedDesigner;
+				}
+			}
+			/// <summary>
+			/// Gets the <see cref="Diagram"/> against which this <see cref="MultiDiagramContextMenuStrip"/>
+			/// is currently operating.
+			/// </summary>
+			public Diagram SelectedDiagram
+			{
+				get
+				{
+					DiagramView selectedDesigner = mySelectedDesigner;
+					return (selectedDesigner != null) ? selectedDesigner.Diagram : null;
+				}
+			}
+
+			/// <summary>See <see cref="ToolStripDropDown.OnOpening"/>.</summary>
+			protected override void OnOpening(System.ComponentModel.CancelEventArgs e)
+			{
+				MultiDiagramDocViewControl docViewControl = base.SourceControl as MultiDiagramDocViewControl;
+				if (docViewControl != null)
+				{
+					mySelectedDesigner = docViewControl.DesignerForContextMenu;
+				}
+				base.OnOpening(e);
+			}
+
+			/// <summary>See <see cref="ToolStripDropDown.OnClosed"/>.</summary>
+			protected override void OnClosed(ToolStripDropDownClosedEventArgs e)
+			{
+				base.OnClosed(e);
+				mySelectedDesigner = null;
+				MultiDiagramDocViewControl docViewControl = base.SourceControl as MultiDiagramDocViewControl;
+				if (docViewControl != null)
+				{
+					docViewControl.DesignerForContextMenu = null;
+				}
+			}
+		}
+		/// <summary>
+		/// Gets or sets the <see cref="MultiDiagramContextMenuStrip"/> for this <see cref="MultiDiagramDocView"/>.
+		/// </summary>
+		protected MultiDiagramContextMenuStrip ContextMenuStrip
 		{
 			get
 			{
-				return (myDocViewControl != null) ? myDocViewControl.ContextMenuStrip : null;
+				return (myDocViewControl != null) ? myDocViewControl.ContextMenuStrip as MultiDiagramContextMenuStrip : null;
 			}
 			set
 			{
 				DocViewControl.ContextMenuStrip = value;
 			}
 		}
-		#endregion // ContextMenuStrip property
+		#endregion // Context Menu support
 		#region Window property
 		/// <summary>See <see cref="Microsoft.VisualStudio.Shell.WindowPane.Window"/>.</summary>
 		public override IWin32Window Window

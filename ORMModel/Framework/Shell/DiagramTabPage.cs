@@ -51,7 +51,6 @@ namespace Neumont.Tools.Modeling.Shell
 				Designer = designer;
 				base.SuspendLayout();
 				base.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.SupportsTransparentBackColor, true);
-				base.SetStyle(ControlStyles.Selectable, false);
 				base.UseVisualStyleBackColor = false;
 				Diagram diagram = designer.Diagram;
 				base.Text = base.Name = diagram.Name;

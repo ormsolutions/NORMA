@@ -300,7 +300,24 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 			#endregion // OnGotFocus method
-			#region OnDoubleClick method
+			#region WndProc method
+			public DiagramView DesignerForContextMenu;
+			protected sealed override void WndProc(ref Message m)
+			{
+				const int WM_CONTEXTMENU = 0x007B;
+
+				if (m.Msg == WM_CONTEXTMENU)
+				{
+					uint lParam = (uint)m.LParam;
+					int x = (int)(lParam & 0xFFFF);
+					int y = (int)((lParam >> 16) & 0xFFFF);
+					DiagramTabPage diagramTabPage = (x == -1 && y == -1) ? SelectedDiagramTab : GetTabAtPoint(base.PointToClient(new Point(x, y)));
+					DesignerForContextMenu = (diagramTabPage != null) ? diagramTabPage.Designer : null;
+				}
+				base.WndProc(ref m);
+			}
+			#endregion // WndProc method
+			#region OnMouseDoubleClick method
 			protected sealed override void OnMouseDoubleClick(MouseEventArgs e)
 			{
 				Point point = e.Location;
@@ -310,7 +327,7 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 				base.OnMouseDoubleClick(e);
 			}
-			#endregion // OnDoubleClick method
+			#endregion // OnMouseDoubleClick method
 			#region RenameTab method
 			private void RenameTab(DiagramTabPage tabPage)
 			{
