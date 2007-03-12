@@ -424,7 +424,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 #if LINKS_ALWAYS_CONNECT
 						|| AlreadyConnectedTo(currentFromShape, toElement, anchorsToFromShape, link)
 #endif //LINKS_ALWAYS_CONNECT
-						)
+)
 					{
 						continue;
 					}
@@ -451,9 +451,9 @@ namespace Neumont.Tools.Modeling.Diagrams
 						if ((currentDistance = (distanceX = currentFromShape.Center.X - currentToShape.Center.X) * distanceX
 							+ (distanceY = currentFromShape.Center.Y - currentToShape.Center.Y) * distanceY) < minimumDistance
 #if !LINKS_ALWAYS_CONNECT
-							&& currentDistance < existingDistance && currentDistance < GetExistingConnectionDistance(currentToShape, fromElement, false, link)
+ && currentDistance < existingDistance && currentDistance < GetExistingConnectionDistance(currentToShape, fromElement, false, link)
 #endif //!LINKS_ALWAYS_CONNECT
-							)
+)
 						{
 							minimumDistance = currentDistance;
 							closestToShape = currentToShape;
@@ -475,21 +475,37 @@ namespace Neumont.Tools.Modeling.Diagrams
 
 				if (closestFromShape != null && closestToShape != null)
 				{
-					Debug.Assert(!(closestFromShape is IProvideConnectorShape) || !(closestToShape is IProvideConnectorShape),
-						"The toShape and fromShape of a link cannot both implement IProvideConnectorShape.");
-
 					NodeShape toShape;
 					NodeShape fromShape;
 
-					if (closestFromShape is IProvideConnectorShape)
+					IEnsureConnectorShapeForLink ensuresLinkConnectorShape;
+					IProvideConnectorShape getsUniqueConnectorShape;
+
+					if ((ensuresLinkConnectorShape = closestToShape as IEnsureConnectorShapeForLink) != null)
 					{
-						toShape = GetNewConnectorShape(closestToShape, null);
-						fromShape = GetNewConnectorShape(closestFromShape, toShape);
+						toShape = ensuresLinkConnectorShape.EnsureLinkConnectorShape();
 					}
 					else
 					{
-						fromShape = GetNewConnectorShape(closestFromShape, null);
-						toShape = GetNewConnectorShape(closestToShape, fromShape);
+						toShape = closestToShape as NodeShape;
+					}
+					if ((ensuresLinkConnectorShape = closestFromShape as IEnsureConnectorShapeForLink) != null)
+					{
+						fromShape = ensuresLinkConnectorShape.EnsureLinkConnectorShape();
+					}
+					else
+					{
+						fromShape = closestFromShape as NodeShape;
+					}
+
+					NodeShape temp = toShape;
+					if ((getsUniqueConnectorShape = closestToShape as IProvideConnectorShape) != null)
+					{
+						toShape = getsUniqueConnectorShape.GetUniqueConnectorShape(fromShape);
+					}
+					if ((getsUniqueConnectorShape = closestFromShape as IProvideConnectorShape) != null)
+					{
+						fromShape = getsUniqueConnectorShape.GetUniqueConnectorShape(temp);
 					}
 
 					if (toShape != null && fromShape != null)
@@ -585,34 +601,20 @@ namespace Neumont.Tools.Modeling.Diagrams
 			return retVal;
 #endif //LINKS_ALWAYS_CONNECT
 		}
-		/// <summary>
-		/// Return a new proxy connector ShapeElement, if necessary.  This method will check for 
-		/// the IEnsureConnectorShapeForLink and IProvideConnectorShape interfaces.
-		/// </summary>
-		/// <param name="shape">The shape to resolve.</param>
-		/// <param name="toShape">The opposite toShape.  Only necessary if shape implements IProvideConnectorShape.</param>
-		/// <returns>The connector NodeShape.</returns>
-		private static NodeShape GetNewConnectorShape(ShapeElement shape, NodeShape toShape)
-		{
-			NodeShape retVal = null;
+		///// <summary>
+		///// Return a new proxy connector ShapeElement, if necessary.  This method will check for 
+		///// the IEnsureConnectorShapeForLink and IProvideConnectorShape interfaces.
+		///// </summary>
+		///// <param name="shape">The shape to resolve.</param>
+		///// <param name="toShape">The opposite toShape.  Only necessary if shape implements IProvideConnectorShape.</param>
+		///// <returns>The connector NodeShape.</returns>
+		//private static NodeShape GetNewConnectorShape(ShapeElement shape, NodeShape toShape)
+		//{
+		//    NodeShape retVal = null;
 
-			IEnsureConnectorShapeForLink ensuresLinkConnectorShape = shape as IEnsureConnectorShapeForLink;
-			IProvideConnectorShape getsUniqueConnectorShape = shape as IProvideConnectorShape;
 
-			Debug.Assert((ensuresLinkConnectorShape == null) || (getsUniqueConnectorShape == null),
-				"No class should implement both IEnsureConnectorShapeForLink and IProvideConnectorShape.");
-
-			if (ensuresLinkConnectorShape != null)
-			{
-				retVal = ensuresLinkConnectorShape.EnsureLinkConnectorShape();
-			}
-			else if (getsUniqueConnectorShape != null)
-			{
-				retVal = getsUniqueConnectorShape.GetUniqueConnectorShape(toShape);
-			}
-
-			return retVal ?? shape as NodeShape;
-		}
+		//    return retVal ?? shape as NodeShape;
+		//}
 		/// <summary>
 		/// Gets all existing links for the shape and its proxy connectors.
 		/// This method will check for the IEnsureConnectorShapeForLink
