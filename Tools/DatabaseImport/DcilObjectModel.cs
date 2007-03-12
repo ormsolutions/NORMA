@@ -58,8 +58,8 @@ namespace Neumont.Tools.ORM.DatabaseImport
         /// Serializes an instance of <see cref="DcilSchema"/>
         /// </summary>
         /// <param name="schema">The <see cref="DcilSchema"/> to Serialize</param>
-        /// <param name="writer">The <see cref="XmlWriter"/> to write to</param>
-		public static void Serialize(DcilSchema schema, XmlWriter writer)
+        /// <param name="writer">The <see cref="System.IO.TextWriter"/> to write to</param>
+		public static void Serialize(DcilSchema schema, System.IO.TextWriter writer)
 		{
 			schema.Namespaces = new XmlSerializerNamespaces();
 			schema.Namespaces.Add("dcl", "http://schemas.orm.net/DIL/DCIL");
@@ -100,6 +100,17 @@ namespace Neumont.Tools.ORM.DatabaseImport
         {
             if (connection == null) throw new ArgumentNullException("connection");
             if (String.IsNullOrEmpty(schemaName)) throw new ArgumentException("The name of the schema must not be empty", "schemaName");
+            IDcilSchemaProvider provider = GetDcilSchemaProvider(connection, dataProviderName);
+            return provider.LoadSchema(schemaName);
+        }
+        /// <summary>
+        /// Returns a <see cref="IDcilSchemaProvider"/> object from given connection and data provider
+        /// </summary>
+        /// <param name="connection">The IDbConnection to use to retrieve the information</param>
+        /// <param name="dataProviderName">The invariant name of the Data Provider</param>
+        /// <returns><see cref="IDcilSchemaProvider"/></returns>
+        public static IDcilSchemaProvider GetDcilSchemaProvider(IDbConnection connection, string dataProviderName)
+        {
             IDcilSchemaProvider provider = null;
             switch (dataProviderName)
             {
@@ -111,7 +122,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
                     break;
             }
             if (provider == null) throw new NotSupportedException("The specified invariant name is not supported.");
-            return provider.LoadSchema(schemaName);
+            return provider;
         }
         /// <summary>
         /// Gets or Sets the Name of the Schema
