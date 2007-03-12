@@ -51,18 +51,16 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._conn = conn;
 		}
         /// <summary>
-        /// When implemented in a child class, retrieves a list of available schema names for the given <see cref="System.Data.IDbConnection"/>
+        /// When implemented in a child class, retrieves a list of available schema names
         /// </summary>
-        /// <param name="dbConn"><see cref="System.Data.IDbConnection"/> object to connect with</param>
         /// <returns>List of available schema names</returns>
-        public IList<string> GetAvailableSchemaNames(IDbConnection dbConn)
+        public IList<string> GetAvailableSchemaNames()
         {
-            if (dbConn == null) throw new ArgumentNullException("dbConn");
             IList<string> schemaNames = new List<string>();
             try
             {
-                dbConn.Open();
-                using (IDbCommand cmd = dbConn.CreateCommand())
+                _conn.Open();
+                using (IDbCommand cmd = _conn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "SELECT DISTINCT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME IN (SELECT DISTINCT TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES)";
@@ -77,9 +75,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
             }
             finally
             {
-                if (dbConn.State == ConnectionState.Open)
+                if (_conn.State == ConnectionState.Open)
                 {
-                    dbConn.Close();
+                    _conn.Close();
                 }
             }
             return schemaNames;

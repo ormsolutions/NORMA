@@ -51,23 +51,21 @@ namespace Neumont.Tools.ORM.DatabaseImport
             this._conn = conn;
 		}
         /// <summary>
-        /// When implemented in a child class, retrieves a list of available schema names for the given <see cref="System.Data.IDbConnection"/>
+        /// When implemented in a child class, retrieves a list of available schema names
         /// </summary>
-        /// <param name="dbConn"><see cref="System.Data.IDbConnection"/> object to connect with</param>
         /// <returns>List of available schema names</returns>
-        public IList<string> GetAvailableSchemaNames(IDbConnection dbConn)
+        public IList<string> GetAvailableSchemaNames()
         {
-            if (dbConn == null) throw new ArgumentNullException("dbConn");
             IList<string> schemaNames = new List<string>();
             try
             {
-                schemaNames.Add(dbConn.Database);
+                schemaNames.Add(_conn.Database);
             }
             finally
             {
-                if (dbConn.State == ConnectionState.Open)
+                if (_conn.State == ConnectionState.Open)
                 {
-                    dbConn.Close();
+                    _conn.Close();
                 }
             }
             return schemaNames;

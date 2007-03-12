@@ -104,6 +104,16 @@ namespace Neumont.Tools.ORM.DatabaseImport
             return provider.LoadSchema(schemaName);
         }
         /// <summary>
+        /// Retrieves a list of available schema names for the given <see cref="System.Data.IDbConnection"/> and Data Provider
+        /// </summary>
+        /// <param name="connection">The IDbConnection to use to retrieve the information</param>
+        /// <param name="dataProviderName">The invariant name of the Data Provider</param>
+        /// <returns></returns>
+        public static IList<string> GetAvailableSchemaNames(System.Data.IDbConnection connection, string dataProviderName)
+        {
+            return GetDcilSchemaProvider(connection, dataProviderName).GetAvailableSchemaNames();
+        }
+        /// <summary>
         /// Returns a <see cref="IDcilSchemaProvider"/> object from given connection and data provider
         /// </summary>
         /// <param name="connection">The IDbConnection to use to retrieve the information</param>

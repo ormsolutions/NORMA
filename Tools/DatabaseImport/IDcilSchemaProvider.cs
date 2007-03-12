@@ -37,11 +37,10 @@ namespace Neumont.Tools.ORM.DatabaseImport
     public interface IDcilSchemaProvider
     {
         /// <summary>
-        /// When implemented in a child class, retrieves a list of available schema names for the given <see cref="System.Data.IDbConnection"/>
+        /// When implemented in a child class, retrieves a list of available schema names
         /// </summary>
-        /// <param name="dbConn"><see cref="System.Data.IDbConnection"/> object to connect with</param>
         /// <returns>List of available schema names</returns>
-        IList<string> GetAvailableSchemaNames(System.Data.IDbConnection dbConn);
+        IList<string> GetAvailableSchemaNames();
         /// <summary>
         /// When implemented in a child class, loads the specified Schema into a <see cref="Neumont.Tools.ORM.DatabaseImport.DcilSchema"/> object
         /// </summary>
