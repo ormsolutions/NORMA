@@ -166,6 +166,57 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // TransactionRulesFixupHack class
 		#region Delayed Model Validation
+		#region DelayValidatePriorityAttribute class
+		/// <summary>
+		/// Place on a static delay validate method to explicitly control the execution order
+		/// of the validate callbacks. All delay validate methods from a given domain model will
+		/// be run before validators from dependent domain models are called. This attribute
+		/// allows tighter control within a domain, or to make a delay validate function run with
+		/// validators for earlier DomainModel.
+		/// </summary>
+		[AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=false)]
+		public sealed class DelayValidatePriorityAttribute : Attribute
+		{
+			private int myPriority;
+			private Type myDomainModelType;
+			/// <summary>
+			/// Create a new <see cref="DelayValidatePriorityAttribute"/>
+			/// </summary>
+			/// <param name="priority">The relative priority to run the code. 0 is the default priority. Negative
+			/// values will run before the default, positive values after.</param>
+			public DelayValidatePriorityAttribute(int priority)
+			{
+				myPriority = priority;
+			}
+			/// <summary>The relative priority to run the code. 0 is the default priority. Negative
+			/// values will run before the default, positive values after.</summary>
+			public int Priority
+			{
+				get
+				{
+					return myPriority;
+				}
+			}
+			/// <summary>
+			/// The type of the domain model to run with. If this is null then the
+			/// domain model is automatically configured based on the containing classes of the method.
+			/// </summary>
+			public Type DomainModelType
+			{
+				get
+				{
+					return myDomainModelType;
+				}
+				set
+				{
+					if (typeof(DomainModel).IsAssignableFrom(value))
+					{
+						myDomainModelType = value;
+					}
+				}
+			}
+		}
+		#endregion // DelayValidatePriorityAttribute class
 		/// <summary>
 		/// The rule priority where delay validation fires during a local commit.
 		/// Note that rules marked with <see cref="TimeToFire.TopLevelCommit"/> and
@@ -266,11 +317,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#region IComparable<ElementValidator> Implementation
 			public int Compare(ElementValidator validator1, ElementValidator validator2)
 			{
-				DomainModel model1 = validator1.DomainModel;
-				DomainModel model2 = validator2.DomainModel;
+				ElementValidatorOrder order1 = validator1.OrderInformation;
+				ElementValidatorOrder order2 = validator2.OrderInformation;
+				DomainModel model1 = order1.DomainModel;
+				DomainModel model2 = order2.DomainModel;
 				if (model1 == model2)
 				{
-					return 0;
+					int priority1 = order1.Priority;
+					int priority2 = order2.Priority;
+					if (priority1 == priority2)
+					{
+						return 0;
+					}
+					else if (priority1 < priority2)
+					{
+						// This would be -1 for forward order, reverse order here
+						return 1;
+					}
+					return -1;
 				}
 				else if (myDomainModels.IndexOf(model1) < myDomainModels.IndexOf(model2))
 				{
@@ -280,6 +344,125 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return -1;
 			}
 			#endregion // IComparable<ElementValidator> Implementation
+		}
+		private struct ElementValidatorOrder : IEquatable<ElementValidatorOrder>
+		{
+			private DomainModel myDomainModel;
+			private int myPriority;
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with a default priority
+			/// </summary>
+			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
+			public ElementValidatorOrder(DomainModel domainModel)
+			{
+				myDomainModel = domainModel;
+				myPriority = 0;
+			}
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with a default priority
+			/// </summary>
+			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
+			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
+			public ElementValidatorOrder(DomainModel domainModel, int priority)
+			{
+				myDomainModel = domainModel;
+				myPriority = priority;
+			}
+			/// <summary>
+			/// The <see cref="DomainModel"/> that this element runs with
+			/// </summary>
+			public DomainModel DomainModel
+			{
+				get
+				{
+					return myDomainModel;
+				}
+			}
+			/// <summary>
+			/// The relative priority to run this validation code for the given model
+			/// </summary>
+			public int Priority
+			{
+				get
+				{
+					return myPriority;
+				}
+			}
+			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
+			public override int GetHashCode()
+			{
+				DomainModel domainModel = myDomainModel;
+				return ((domainModel != null) ? domainModel.GetHashCode() : 0) ^ myPriority.GetHashCode();
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				return obj is ElementValidatorOrder && this.Equals((ElementValidatorOrderCache)obj);
+			}
+			/// <summary>See <see cref="IEquatable{ElementValidatorOrder}.Equals"/>.</summary>
+			public bool Equals(ElementValidatorOrder other)
+			{
+				return myDomainModel == other.myDomainModel && myPriority == other.myPriority;
+			}
+		}
+		private struct ElementValidatorOrderCache : IEquatable<ElementValidatorOrderCache>
+		{
+			private Guid myDomainModelId;
+			private int myPriority;
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with a default priority
+			/// </summary>
+			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
+			public ElementValidatorOrderCache(Guid domainModelId)
+			{
+				myDomainModelId = domainModelId;
+				myPriority = 0;
+			}
+			/// <summary>
+			/// Create a new ElementValidatorOrder structure with a default priority
+			/// </summary>
+			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
+			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
+			public ElementValidatorOrderCache(Guid domainModelId, int priority)
+			{
+				myDomainModelId = domainModelId;
+				myPriority = priority;
+			}
+			/// <summary>
+			/// The id for the <see cref="DomainModel"/> that this element runs with
+			/// </summary>
+			public Guid DomainModelId
+			{
+				get
+				{
+					return myDomainModelId;
+				}
+			}
+			/// <summary>
+			/// The relative priority to run this validation code for the given model
+			/// </summary>
+			public int Priority
+			{
+				get
+				{
+					return myPriority;
+				}
+			}
+			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
+			public override int GetHashCode()
+			{
+				return myDomainModelId.GetHashCode() ^ myPriority.GetHashCode();
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				return obj is ElementValidatorOrderCache && this.Equals((ElementValidatorOrderCache)obj);
+			}
+			/// <summary>See <see cref="IEquatable{ElementValidatorOrder}.Equals"/>.</summary>
+			public bool Equals(ElementValidatorOrderCache other)
+			{
+				return myDomainModelId == other.myDomainModelId && myPriority == other.myPriority;
+			}
 		}
 		/// <summary>
 		/// A structure to use for <see cref="ModelElement"/> validation.
@@ -325,43 +508,61 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			#endregion // RuntimeMethodHandleEqualityComparer class
-			private static Dictionary<RuntimeMethodHandle, Guid> myMethodToDomainModelMap = new Dictionary<RuntimeMethodHandle, Guid>(RuntimeMethodHandleEqualityComparer.Instance);
+			private static Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache> myMethodToElementValidatorOrderCacheMap = new Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache>(RuntimeMethodHandleEqualityComparer.Instance);
 			/// <summary>
-			/// Get the domain model associated with this validator
+			/// Get the order information associated with this validator
 			/// </summary>
-			public DomainModel DomainModel
+			public ElementValidatorOrder OrderInformation
 			{
 				get
 				{
-					DomainModel retVal = null;
+					ElementValidatorOrder retVal = new ElementValidatorOrder();
 					MethodInfo method = Validation.Method;
 					RuntimeMethodHandle methodHandle = method.MethodHandle;
-					Guid domainModelId;
+					ElementValidatorOrderCache orderCache;
 					Store store = Element.Store;
-					if (myMethodToDomainModelMap.TryGetValue(methodHandle, out domainModelId))
+					if (myMethodToElementValidatorOrderCacheMap.TryGetValue(methodHandle, out orderCache))
 					{
-						retVal = store.GetDomainModel(domainModelId);
+						retVal = new ElementValidatorOrder(store.GetDomainModel(orderCache.DomainModelId), orderCache.Priority);
 					}
 					else
 					{
-						Type declaringType = method.DeclaringType;
-						while (declaringType != null)
+						object[] explicitPriorityAttributes = method.GetCustomAttributes(typeof(DelayValidatePriorityAttribute), false);
+						int priority = 0;
+						Type explicitDomainModelType = null;
+						if (explicitPriorityAttributes.Length != 0)
 						{
-							object[] idAttributes = declaringType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
-							if (idAttributes.Length != 0)
-							{
-								DomainClassInfo classInfo = store.DomainDataDirectory.FindDomainClass(((DomainObjectIdAttribute)idAttributes[0]).Id);
-								if (classInfo != null)
-								{
-									domainModelId = classInfo.DomainModel.Id;
-									retVal = store.GetDomainModel(domainModelId);
-									myMethodToDomainModelMap[methodHandle] = domainModelId;
-									break;
-								}
-							}
-							declaringType = declaringType.DeclaringType;
+							DelayValidatePriorityAttribute priorityAttr = (DelayValidatePriorityAttribute)explicitPriorityAttributes[0];
+							priority = priorityAttr.Priority;
+							explicitDomainModelType = priorityAttr.DomainModelType;
 						}
-						Debug.Assert(retVal != null, "Cannot find DomainModel for delay validation function: " + method.DeclaringType.FullName + "." + method.Name);
+						if (explicitDomainModelType != null)
+						{
+							Guid domainModelId = explicitDomainModelType.GUID;
+							retVal = new ElementValidatorOrder(store.GetDomainModel(domainModelId), priority);
+							myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(domainModelId, priority);
+						}
+						else
+						{
+							Type declaringType = method.DeclaringType;
+							while (declaringType != null)
+							{
+								object[] idAttributes = declaringType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+								if (idAttributes.Length != 0)
+								{
+									DomainClassInfo classInfo = store.DomainDataDirectory.FindDomainClass(((DomainObjectIdAttribute)idAttributes[0]).Id);
+									if (classInfo != null)
+									{
+										Guid domainModelId = classInfo.DomainModel.Id;
+										retVal = new ElementValidatorOrder(store.GetDomainModel(domainModelId), priority);
+										myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(domainModelId, priority);
+										break;
+									}
+								}
+								declaringType = declaringType.DeclaringType;
+							}
+						}
+						Debug.Assert(retVal.DomainModel != null, "Cannot find DomainModel for delay validation function: " + method.DeclaringType.FullName + "." + method.Name);
 					}
 					return retVal;
 				}
