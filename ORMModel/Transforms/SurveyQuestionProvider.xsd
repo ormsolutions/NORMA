@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="XSDtoHTML.xslt"?>
+<xs:schema
+	id="SurveyQuestionProvider"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider"
+	xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+	
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="surveyQuestionProvider" type="surveyQuestionProviderType"/>
+	<xs:complexType name="surveyQuestionProviderType">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="provideSurveyQuestion" type="provideSurveyQuestionType">
+				<xs:unique name="UniqueDisplayType">
+					<xs:selector xpath="qp:displaySupport"/>
+					<xs:field xpath="@displayCategory"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="class" type="xs:token" use="required" />
+	</xs:complexType>
+	<xs:complexType name="provideSurveyQuestionType">
+		<xs:sequence>
+			<xs:element ref="displaySupport" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="questionType" type="xs:string" use="required" />
+	</xs:complexType>
+	<xs:element name="displaySupport" type="displaySupportType"/>
+	<xs:complexType name="displaySupportType">
+		<xs:attribute name="displayCategory" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Sorting">
+						<xs:annotation>
+							<xs:documentation>Answers to this question are used to sort the list contents</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Grouping">
+						<xs:annotation>
+							<xs:documentation>Answers to this question are used to group the list contents</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Glyph">
+						<xs:annotation>
+							<xs:documentation>Answers to this question are used to glyph the list of contents</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Overlay">
+						<xs:annotation>
+							<xs:documentation>Answers to this question are used to overlay the list of contents</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

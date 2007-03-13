@@ -519,6 +519,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					oldFactType = (FactType)e.OldRolePlayer;
 				}
+				RuleManager ruleManager = link.Store.RuleManager;
+				try
+				{
+					ruleManager.DisableRule(typeof(RoleDeletingRule));
+					link.ImpliedFactTypeCollection.Clear();
+				}
+				finally
+				{
+					ruleManager.EnableRule(typeof(RoleDeletingRule));
+				}
 				ObjectificationDeletingRule.ProcessObjectificationDeleting(link, oldFactType, oldObjectType);
 				ObjectificationAddRule.ProcessObjectificationAdded(link, null, null);
 			}
@@ -1119,6 +1129,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// We already have an implied Objectification, so modify it for the new ObjectType
 					RuleManager ruleManager = objectification.Store.RuleManager;
 					ObjectType impliedObjectifyingType = objectification.NestingType;
+					Objectification oldObjectification = nestingType.Objectification;
+					if (oldObjectification != null)
+					{
+						oldObjectification.Delete();
+					}
 					objectification.NestingType = nestingType;
 					bool addRuleDisabled = false;
 					bool removingRuleDisabled = false;

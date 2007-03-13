@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using System.Threading;
 using System.Diagnostics;
 using System.Collections;
 
@@ -48,6 +47,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				Question = question;
 				CurrentGrouping = new SurveyQuestionUISupport(); // Choose Sorting or Grouping
+
 				AnswerOrder = new int[Question.CategoryCount];
 				NeutralOnTop = true;
 			}
@@ -62,6 +62,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		private int myAttachedEventCount;
 		private Dictionary<object, SampleDataElementNode> myDictionary;
 		private ListGrouper myRootGrouper;
+		private ImageList myImageList;
 		/// <summary>
 		/// Public constructor
 		/// </summary>
@@ -71,6 +72,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				throw new ArgumentNullException("nodeProviderList");
 			}
+
 			if (questionProviderList == null)
 			{
 				throw new ArgumentNullException("questionProviderList");
@@ -85,8 +87,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					nodes.Add(new SampleDataElementNode(elementNode));
 				}
 			}
-			Survey survey = mySurvey = new Survey(questionProviderList);
-			List<SurveyQuestionDisplay> currentDisplays = myCurrentDisplays = new List<SurveyQuestionDisplay>();
+			Survey survey = new Survey(questionProviderList);
+			mySurvey = survey;
+			myImageList = mySurvey.MainImageList;
+			List<SurveyQuestionDisplay> currentDisplays = new List<SurveyQuestionDisplay>();
+			myCurrentDisplays = currentDisplays;
 			int surveyCount = survey.Count;
 			for (int i = 0; i < surveyCount; ++i)
 			{
@@ -94,13 +99,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			}
 			SampleDataElementNode.InitializeNodes(nodes, survey);
 			nodes.Sort(myNodeComparer);
-
-
 			myDictionary = new Dictionary<object, SampleDataElementNode>();
 			foreach (SampleDataElementNode node in myNodes)
 			{
 				myDictionary.Add(node.Element, node);
-
 			}
 		}
 		#endregion // Constructor and instance fields
@@ -136,8 +138,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				handler(this, e);
 			}
 		}
-
-
 		/// <summary>
 		/// provides the survey that this class contains, current applied questions can be accessed through the survey
 		/// </summary>
@@ -170,29 +170,31 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				for (int i = 0; i < displayCount && retVal == 0; ++i)
 				{
 					SurveyQuestionDisplay display = displays[i];
-					int[] order = display.AnswerOrder;
-					SurveyQuestion question = display.Question;
-					int neutralAnswer = question.Mask >> question.Shift;
-					int answer1 = question.ExtractAnswer(answers1);
-					int answer2 = question.ExtractAnswer(answers2);
-					if (answer1 != answer2)
+					if (0 != (display.Question.UISupport & (SurveyQuestionUISupport.Sorting)))
 					{
-						if (answer1 == neutralAnswer)
+						int[] order = display.AnswerOrder;
+						SurveyQuestion question = display.Question;
+						int neutralAnswer = question.Mask >> question.Shift;
+						int answer1 = question.ExtractAnswer(answers1);
+						int answer2 = question.ExtractAnswer(answers2);
+						if (answer1 != answer2)
 						{
-							retVal = display.NeutralOnTop ? -1 : 1;
-						}
-						else if (answer2 == neutralAnswer)
-						{
-							retVal = display.NeutralOnTop ? 1 : -1;
-						}
-
-						else if (answer1 < answer2)
-						{
-							retVal = -1;
-						}
-						else
-						{
-							retVal = 1;
+							if (answer1 == neutralAnswer)
+							{
+								retVal = display.NeutralOnTop ? -1 : 1;
+							}
+							else if (answer2 == neutralAnswer)
+							{
+								retVal = display.NeutralOnTop ? 1 : -1;
+							}
+							else if (answer1 < answer2)
+							{
+								retVal = -1;
+							}
+							else
+							{
+								retVal = 1;
+							}
 						}
 					}
 				}
@@ -290,15 +292,33 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// Implements <see cref="IBranch.GetDisplayData"/>
 		/// </summary>
-		protected static VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+		protected VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 		{
-			return VirtualTreeDisplayData.Empty;
+			VirtualTreeDisplayData returnData = new VirtualTreeDisplayData();
+			returnData.ImageList = myImageList;
+			int nodeData = myNodes[row].NodeData;
+			int questionCount = mySurvey.Count;
+			short image = 0;
+			for (int i = 0; i < questionCount; i++)
+			{
+				SurveyQuestion question = mySurvey[i];
+				if (0 != (question.Question.UISupport & SurveyQuestionUISupport.Glyph))
+				{
+					int answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData);
+					image = (short)question.Question.MapAnswerToImageIndex(answer);
+					image = (short)(image - question.ProviderImageListOffset);
+				}
+
+			}
+			returnData.Image = image;
+			returnData.SelectedImage = image;
+			returnData.OverlayIndex = -1; //TODO: ask Matt about overlays.
+			return returnData;
 		}
 		VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 		{
 			return GetDisplayData(row, column, requiredData);
 		}
-
 		/// <summary>
 		/// Implements <see cref="IBranch.GetObject"/>
 		/// </summary>
@@ -329,6 +349,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		protected string GetTipText(int row, int column, ToolTipType tipType)
 		{
 			return myNodes[row].SurveyName;
+
 		}
 		string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 		{
@@ -539,8 +560,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				myRootGrouper.ElementAddedAt(
 					index,
 					(forwardToHandler == null) ?
-						(BranchModificationEventHandler)null :
-						delegate(object eventSender, BranchModificationEventArgs e)
+						(BranchModificationEventHandler)null : delegate(object eventSender, BranchModificationEventArgs e)
 						{
 							if (forwardEvents == null)
 							{
@@ -564,14 +584,34 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementChanged"/>
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="questions"></param>
-		protected static void ElementChanged(object element, ISurveyQuestionTypeInfo[] questions)
+		/// <param name="element">the object that has been changed</param>
+		/// <param name="questionTypes">The question types.</param>
+		protected void ElementChanged(object element, params Type[] questionTypes)
 		{
+			SampleDataElementNode node;
+			int index;
+			if (!myDictionary.TryGetValue(element, out node) || 0 > (index = myNodes.BinarySearch(node, myNodeComparer)))
+			{
+				return;
+			}
+			node.Update(questionTypes, mySurvey);
+			myNodes[index] = node;
+			myDictionary[element] = node;
+
+			BranchModificationEventHandler modificationEvents = myModificationEvents;
+			if (myRootGrouper != null)
+			{
+				myRootGrouper.ElementChangedAt(modificationEvents, index);
+			}
+			else if (modificationEvents != null)
+			{
+				modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Image, this, index, 0, 1)));
+			}
+		
 		}
-		void INotifySurveyElementChanged.ElementChanged(object element, ISurveyQuestionTypeInfo[] questions)
+		void INotifySurveyElementChanged.ElementChanged(object element, params Type[] questionTypes)
 		{
-			ElementChanged(element, questions);
+			ElementChanged(element, questionTypes);
 		}
 		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted"/>
@@ -647,8 +687,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				else if (modificationEvents != null)
 				{
 					modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, fromIndex, 0, 1)));
-					modificationEvents(this, BranchModificationEventArgs.Redraw(false));
-					modificationEvents(this, BranchModificationEventArgs.Redraw(true));
 				}
 			}
 			else if (inverseToIndex >= 0)

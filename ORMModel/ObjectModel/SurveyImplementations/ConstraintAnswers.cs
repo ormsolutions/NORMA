@@ -22,10 +22,11 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class SetConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, ISurveyNode
+	public partial class SetConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
@@ -34,7 +35,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return AskErrorQuestion();
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuetion for errors
+		/// returns answer to IAnswerSurveyQuestion for errors
 		/// </summary>
 		/// <returns></returns>
 		protected int AskErrorQuestion()
@@ -87,8 +88,170 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
+
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		{
+			return AskGlyphQuestion();
+		}
+
+		#region AskGlyphQuestion
+		/// <summary>
+		/// Answers the glyph question.
+		/// </summary>
+		/// <returns></returns>
+		protected int AskGlyphQuestion()
+		{
+			if (this.Constraint.Modality == ConstraintModality.Alethic)
+			{
+				if (this.Constraint.ConstraintType == ConstraintType.Ring)
+				{
+					switch ((this as RingConstraint).RingType)
+					{
+						case RingConstraintType.Undefined:
+							return (int)SurveyQuestionGlyph.RingUndefined;
+						case RingConstraintType.PurelyReflexive:
+							return (int)SurveyQuestionGlyph.RingPurelyReflexive;
+						case RingConstraintType.Irreflexive:
+							return (int)SurveyQuestionGlyph.RingIrreflexive;
+						case RingConstraintType.Symmetric:
+							return (int)SurveyQuestionGlyph.RingSymmetric;
+						case RingConstraintType.Asymmetric:
+							return (int)SurveyQuestionGlyph.RingAsymmetric;
+						case RingConstraintType.Antisymmetric:
+							return (int)SurveyQuestionGlyph.RingAntisymmetric;
+						case RingConstraintType.Intransitive:
+							return (int)SurveyQuestionGlyph.RingIntransitive;
+						case RingConstraintType.Acyclic:
+							return (int)SurveyQuestionGlyph.RingAcyclic;
+						case RingConstraintType.AcyclicIntransitive:
+							return (int)SurveyQuestionGlyph.RingAcyclicIntransitive;
+						case RingConstraintType.AsymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingAsymmetricIntransitive;
+						case RingConstraintType.SymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricIntransitive;
+						case RingConstraintType.SymmetricIrreflexive:
+							return (int)SurveyQuestionGlyph.RingSymmetricIrreflexive;
+						default:
+							return (int)SurveyQuestionGlyph.RingUndefined;
+
+					}
+
+				}
+				else
+				{
+
+					switch (this.Constraint.ConstraintType)
+					{
+						case ConstraintType.ExternalUniqueness:
+							if ((this as UniquenessConstraint).IsPreferred)
+							{
+								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraintIsPreferred;
+							}
+							else
+							{
+								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraint;
+							}
+						case ConstraintType.SimpleMandatory:
+							return (int)SurveyQuestionGlyph.SimpleMandatoryConstraint;
+						case ConstraintType.InternalUniqueness:
+							return (int)SurveyQuestionGlyph.InternalUniquenessConstraint;
+						case ConstraintType.Frequency:
+							return (int)SurveyQuestionGlyph.FrequencyConstraint;
+						case ConstraintType.DisjunctiveMandatory:
+							if (null != (this as MandatoryConstraint).ExclusiveOrExclusionConstraint)
+							{
+								return (int)SurveyQuestionGlyph.ExclusiveOrConstraint;
+							}
+							else
+							{
+								return (int)SurveyQuestionGlyph.DisjunctiveMandatoryConstraint;
+							}
+						default:
+							Debug.Fail("Constraint has to be one of the above!");
+							return -1;
+					}
+				}
+			}
+			else
+			{
+				if (this.Constraint.ConstraintType == ConstraintType.Ring)
+				{
+
+					switch ((this as RingConstraint).RingType)
+					{
+						case RingConstraintType.Undefined:
+							return (int)SurveyQuestionGlyph.RingUndefinedDeontic;
+						case RingConstraintType.PurelyReflexive:
+							return (int)SurveyQuestionGlyph.RingPurelyReflexiveDeontic;
+						case RingConstraintType.Irreflexive:
+							return (int)SurveyQuestionGlyph.RingIrreflexiveDeontic;
+						case RingConstraintType.Symmetric:
+							return (int)SurveyQuestionGlyph.RingSymmetricDeontic;
+						case RingConstraintType.Asymmetric:
+							return (int)SurveyQuestionGlyph.RingAsymmetricDeontic;
+						case RingConstraintType.Antisymmetric:
+							return (int)SurveyQuestionGlyph.RingAntisymmetricDeontic;
+						case RingConstraintType.Intransitive:
+							return (int)SurveyQuestionGlyph.RingIntransitiveDeontic;
+						case RingConstraintType.Acyclic:
+							return (int)SurveyQuestionGlyph.RingAcyclicDeontic;
+						case RingConstraintType.AcyclicIntransitive:
+							return (int)SurveyQuestionGlyph.RingAcyclicIntransitiveDeontic;
+						case RingConstraintType.AsymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingAsymmetricIntransitiveDeontic;
+						case RingConstraintType.SymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricIntransitiveDeontic;
+						case RingConstraintType.SymmetricIrreflexive:
+							return (int)SurveyQuestionGlyph.RingSymmetricIrreflexiveDeontic;
+						default:
+							return (int)SurveyQuestionGlyph.RingUndefinedDeontic;
+
+					}
+
+				}
+				else
+				{
+
+					switch (this.Constraint.ConstraintType)
+					{
+						case ConstraintType.ExternalUniqueness:
+							if ((this as UniquenessConstraint).IsPreferred)
+							{
+								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraintIsPreferredDeontic;
+							}
+							else
+							{
+								return (int)SurveyQuestionGlyph.ExternalUniquenessConstraintDeontic;
+							}
+						case ConstraintType.SimpleMandatory:
+							return (int)SurveyQuestionGlyph.SimpleMandatoryConstraintDeontic;
+						case ConstraintType.InternalUniqueness:
+							return (int)SurveyQuestionGlyph.InternalUniquenessConstraintDeontic;
+						case ConstraintType.Frequency:
+							return (int)SurveyQuestionGlyph.FrequencyConstraintDeontic;
+						case ConstraintType.DisjunctiveMandatory:
+							if (null != (this as MandatoryConstraint).ExclusiveOrExclusionConstraint)
+							{
+								return (int)SurveyQuestionGlyph.ExclusiveOrConstraintDeontic;
+							}
+							else
+							{
+								return (int)SurveyQuestionGlyph.DisjunctiveMandatoryConstraintDeontic;
+							}
+						default:
+							Debug.Fail("Constraint has to be one of the above!");
+							return -1;
+					}
+				}
+			}
+
+		} 
+		#endregion
+
+		#endregion
 	}
-	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, ISurveyNode
+	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
@@ -97,7 +260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return AskErrorQuestion();
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuetion for errors
+		/// returns answer to IAnswerSurveyQuestion for errors
 		/// </summary>
 		/// <returns></returns>
 		protected int AskErrorQuestion()
@@ -117,9 +280,72 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskElementQuestion()
 		{
+
 			return (int)ElementType.Constraint;
 		}
 
+		#endregion
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
+
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		{
+			return AskGlyphQuestion();
+		}
+		#region AskGlyphQuestion
+		/// <summary>
+		/// implementation of AskQuestion method from IAnswerSurveyQuestion for Glyph types
+		/// </summary>
+		/// <returns></returns>
+		protected int AskGlyphQuestion()
+		{
+			IConstraint constraint = this as IConstraint;
+			if (constraint.Modality == ConstraintModality.Alethic)
+			{
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.Equality:
+						return (int)SurveyQuestionGlyph.EqualityConstraint;
+					case ConstraintType.Exclusion:
+						if (null != (constraint as ExclusionConstraint).ExclusiveOrMandatoryConstraint)
+						{
+							return (int)SurveyQuestionGlyph.ExclusiveOrConstraint;
+						}
+						else
+						{
+							return (int)SurveyQuestionGlyph.ExclusionConstraint;
+						}
+					case ConstraintType.Subset:
+						return (int)SurveyQuestionGlyph.SubsetConstraint;
+					default:
+						Debug.Fail("Constraint has to be one of the above!");
+						return -1;
+				}
+			}
+			else
+			{
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.Equality:
+						return (int)SurveyQuestionGlyph.EqualityConstraintDeontic;
+					case ConstraintType.Exclusion:
+						if (null != (constraint as ExclusionConstraint).ExclusiveOrMandatoryConstraint)
+						{
+							return (int)SurveyQuestionGlyph.ExclusiveOrConstraintDeontic;
+						}
+						else
+						{
+							return (int)SurveyQuestionGlyph.ExclusionConstraintDeontic;
+						}
+					case ConstraintType.Subset:
+						return (int)SurveyQuestionGlyph.SubsetConstraintDeontic;
+					default:
+						Debug.Fail("Constraint has to be one of the above!");
+						return -1;
+
+				}
+			}
+		} 
+		#endregion
 		#endregion
 		#region ISurveyNode Members
 		/// <summary>

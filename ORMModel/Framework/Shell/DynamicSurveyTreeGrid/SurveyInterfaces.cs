@@ -19,12 +19,13 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	#region ISurveyQuestionProvider
 	/// <summary>
-	/// An ISurveyQuestionProvider can return an array of ISurveyQeustionTypeInfo
+	/// An ISurveyQuestionProvider can return an array of ISurveyQuestionTypeInfo
 	/// </summary>
 	public interface ISurveyQuestionProvider
 	{
@@ -33,7 +34,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		/// <returns>Array of interfaces representing all available questions in the system</returns>
 		ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo();
+
+		/// <summary>
+		/// Gets the image list.
+		/// </summary>
+		/// <value>The image list.</value>
+		ImageList ImageList { get;}
+	
 	}
+
 	#endregion
 	#region ISurveyQuestionTypeInfo
 	/// <summary>
@@ -51,6 +60,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <param name="data">if object does not implement IAnswerSurveyQuestion return is not applicable</param>
 		/// <returns>integer answer to question, -1 if not applicable</returns>
 		int AskQuestion(object data);
+
+		/// <summary>
+		/// Maps the index of the answer to image.
+		/// </summary>
+		/// <param name="answer">The answer.</param>
+		/// <returns></returns>
+		int MapAnswerToImageIndex(int answer);
+		/// <summary>
+		/// UISupport for Question
+		/// </summary>
+		SurveyQuestionUISupport UISupport { get;}
 	}
 	#endregion
 	#region IAnswerSurveyQuestion<T>
@@ -70,7 +90,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	#endregion
 	#region ISurveyNode
 	/// <summary>
- 	/// must be implemented on objects to be displayed on survey tree, used to get their displayable and editable names
+	/// must be implemented on objects to be displayed on survey tree, used to get their displayable and editable names
 	/// </summary>
 	public interface ISurveyNode
 	{
@@ -119,8 +139,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// called if an element in the containers node provider has been changed
 		/// </summary>
 		/// <param name="element">the object that has been changed</param>
-		/// <param name="questions">array of ISurveyQuestionTypeInfo that could be effected by this change</param>
-		void ElementChanged(object element, ISurveyQuestionTypeInfo[] questions);
+		/// <param name="questionTypes">The question types.</param>
+		void ElementChanged(object element, params Type[] questionTypes);
 		/// <summary>
 		/// called if element is removed from the containers node provider
 		/// </summary>

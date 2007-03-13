@@ -29,6 +29,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		{
 			private sealed class SimpleListShifter : IBranch
 			{
+				#region Fields and Constructor
 				private readonly IBranch myBaseBranch;
 				private int myFirstItem;
 				private int myCount;
@@ -56,6 +57,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 
 				}
+				#endregion // Fields and Constructor
+				#region Accessor properties
 				/// <summary>
 				/// Gets or sets the first item of a shifter
 				/// </summary>
@@ -77,6 +80,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					get { return myFirstItem + myCount - 1; }
 				}
 
+				#endregion // Accessor properties
 				#region IBranch Members
 
 				public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
@@ -192,7 +196,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						return myCount;
 					}
 				}
-				#endregion
+				#endregion // IBranch Members
 			}
 		}
 	}

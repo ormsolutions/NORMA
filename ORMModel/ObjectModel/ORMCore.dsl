@@ -591,7 +591,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="MandatoryConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F054BE4D-BFCA-4CD3-A0D8-97F61C165753" DisplayName="MandatoryConstraint" Description="">
+		<DomainClass Name="MandatoryConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F054BE4D-BFCA-4CD3-A0D8-97F61C165753" DisplayName="InclusiveOrConstraint" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>

@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	partial class MainList
@@ -59,14 +58,20 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						int questionIndex = questionList.GetIndex(parent.myQuestion.Question.QuestionType);
 						if (questionIndex < questionList.Count - 1)
 						{
-							branch = new ListGrouper(parent.myBaseBranch, questionList[questionIndex + 1], Start, End, parent.myNeutralOnTop);
+							if ((0 != (parent.myQuestion.UISupport & (SurveyQuestionUISupport.Grouping)) && (parent.myQuestion != parent.myQuestionList[0])))
+							{
+								branch = new ListGrouper(parent.myBaseBranch, questionList[questionIndex + 1], Start, End, parent.myNeutralOnTop);
+							}
+							else
+							{
+								branch = new SimpleListShifter(parent.myBaseBranch, Start, Count);
+							}
 						}
 						else
 						{
 							branch = new SimpleListShifter(parent.myBaseBranch, Start, Count);
 						}
 						myBranch = branch;
-
 					}
 					return branch;
 				}
@@ -96,7 +101,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							}
 						}
 						if (index >= Start && index <= End)
-						{    
+						{
 							int startIndex = index;
 							index -= Start;
 							if (index < Count)
@@ -278,14 +283,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 										if (notifyThrough != null)
 										{
 											modificationEvents(notifyThrough, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, notifyThrough, fromIndex + notifyThroughOffset, 0, 1)));
-											modificationEvents(notifyThrough, BranchModificationEventArgs.Redraw(false));
-											modificationEvents(notifyThrough, BranchModificationEventArgs.Redraw(true));
 										}
 										else
 										{
 											modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, shifter, fromIndex, 0, 1)));
-											modificationEvents(shifter, BranchModificationEventArgs.Redraw(false));
-											modificationEvents(shifter, BranchModificationEventArgs.Redraw(true));
 										}
 									}
 								}
@@ -324,6 +325,29 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					if (adjustIndex == 1)
 					{
 						modificationEvents(notifyThrough, BranchModificationEventArgs.DeleteItems(notifyThrough, notifyThroughOffset + index, 1));
+					}
+				}
+				#endregion
+				#region AdjustChange
+				public void AdjustChange(BranchModificationEventHandler modificationEvents, int index)
+				{
+					if (Start <= index && End >= index)
+					{
+						index -= Start;
+						IBranch branch = myBranch;
+						if (branch != null)
+						{
+							SimpleListShifter shifter;
+							ListGrouper grouper;
+							if (null != (shifter = branch as SimpleListShifter))
+							{
+								modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, shifter, index, 0, 1)));
+							}
+							else if (null != (grouper = branch as ListGrouper))
+							{
+								grouper.ElementChangedAt(modificationEvents, index);
+							}
+						}
 					}
 				}
 				#endregion
@@ -559,19 +583,29 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						++myVisibleSubBranchCount;
 					}
 				}
+
 				return index < myEndIndex ? index : myEndIndex;
 			}
 			#endregion //tree creation
 			#region IBranch Members
-
+			/// <summary>
+			/// Implements <see cref="IBranch.BeginLabelEdit"/>
+			/// </summary>
 			public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				return VirtualTreeLabelEditData.Invalid;
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.CommitLabelEdit"/>
+			/// </summary>
 			public LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
 				return LabelEditResult.CancelEdit;
 			}
+			/// <summary>
+			/// Return the features supported by this branch.
+			/// </summary>
+			/// <value></value>
 			public BranchFeatures Features
 			{
 				get
@@ -579,10 +613,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return BranchFeatures.Expansions | BranchFeatures.BranchRelocation | BranchFeatures.InsertsAndDeletes | BranchFeatures.PositionTracking;
 				}
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetAccessibilityData"/>
+			/// </summary>
 			public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 			{
 				return VirtualTreeAccessibilityData.Empty;
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.BeginLabelEdit"/>
+			/// </summary>
 			public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				return VirtualTreeDisplayData.Empty;
@@ -605,7 +645,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 				return null;
 			}
-
+			/// <summary>
+			/// Implements <see cref="IBranch.GetText"/>
+			/// </summary>
 			public string GetText(int row, int column)
 			{
 				switch (TranslateRow(ref row))
@@ -618,11 +660,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						return string.Empty;
 				}
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.GetTipText"/>
+			/// </summary>
 			public string GetTipText(int row, int column, ToolTipType tipType)
 			{
 				return string.Empty;
-
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.IsExpandable"/>
+			/// </summary>
 			public bool IsExpandable(int row, int column)
 			{
 				switch (TranslateRow(ref row))
@@ -635,6 +682,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						return false;
 				}
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.LocateObject"/>
+			/// </summary>
 			public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
 				//TODO: ask matt about locating objects when I'm not storing references to my subbranches that are created
@@ -651,30 +701,48 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					myBaseBranch.OnBranchModification -= value;
 				}
 			}
-
+			/// <summary>
+			/// Implements <see cref="IBranch.OnDragEvent"/>
+			/// </summary>
 			public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
-
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnGiveFeedback"/>
+			/// </summary>
 			public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 			{
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnQueryContinueDrag"/>
+			/// </summary>
 			public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 			{
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.OnStartDrag"/>
+			/// </summary>
 			public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 			{
 				return VirtualTreeStartDragData.Empty;
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.SynchronizeState"/>
+			/// </summary>
 			public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 			{
 				return StateRefreshChanges.None;
 			}
+			/// <summary>
+			/// Implements <see cref="IBranch.ToggleState"/>
+			/// </summary>
 			public StateRefreshChanges ToggleState(int row, int column)
 			{
 				return StateRefreshChanges.None;
 			}
-
+			/// <summary>
+			/// Implements <see cref="IBranch.UpdateCounter"/>
+			/// </summary>
 			public int UpdateCounter
 			{
 				get
@@ -682,7 +750,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return 0;
 				}
 			}
-
+			/// <summary>
+			/// Implements <see cref="IBranch.VisibleItemCount"/>
+			/// </summary>
 			public int VisibleItemCount
 			{
 				get
@@ -903,6 +973,28 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			#endregion // ElementRenamedAt
+			#region ElementChangedAt
+			public void ElementChangedAt(BranchModificationEventHandler modificationEvents, int index)
+			{
+				if (modificationEvents != null)
+				{
+					if (myNeutralOnTop)
+					{
+						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
+					}
+					SubBranchMetaData[] subBranches = mySubBranches;
+					for (int i = 0; i < subBranches.Length; i++)
+					{
+						subBranches[i].AdjustChange(modificationEvents, index);
+					}
+					if (!myNeutralOnTop)
+					{
+						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
+						// UNDONE: Handle trailing neutral
+					}
+				}
+			} 
+			#endregion // ElementChangedAt
 		}
 
 	}

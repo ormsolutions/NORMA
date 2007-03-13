@@ -25,6 +25,7 @@
 	<xsl:template match="qp:surveyQuestionProvider">
 		<plx:root>
 			<plx:namespaceImport name="System"/>
+			<plx:namespaceImport name="System.Windows.Forms"/>
 			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="deferToPartial">
@@ -58,6 +59,20 @@
 							</plx:cast>
 						</plx:return>
 					</plx:function>
+					<plx:property name="ImageList" visibility ="public">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>Getter for ImageList </summary>
+								<value>ImageList</value>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:returns dataTypeName="ImageList"/>
+						<plx:get>
+							<plx:return>
+								<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+							</plx:return>
+						</plx:get>
+					</plx:property>
 					<xsl:apply-templates select="qp:provideSurveyQuestion"/>
 				</plx:class>
 			</plx:namespace>
@@ -119,6 +134,98 @@
 					</plx:return>
 				</plx:fallbackBranch>
 			</plx:function>
+				<plx:function name="MapAnswerToImageIndex" visibility="public" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+					<plx:param name="answer" dataTypeName=".i4"/>
+					<plx:returns dataTypeName=".i4"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="inequality">
+								<plx:left>
+									<plx:binaryOperator type="bitwiseAnd">
+										<plx:left>
+											<plx:callThis name="UISupport" type="property"/>
+										</plx:left>
+										<plx:right>
+											<plx:callStatic name="Glyph" type="field" dataTypeName="SurveyQuestionUISupport"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="None" type="field" dataTypeName="SurveyQuestionUISupport"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:local name="t" dataTypeName="SurveyQuestionGlyph">
+							<plx:initialize>
+								<plx:cast dataTypeName="SurveyQuestionGlyph">
+									<plx:nameRef name="answer" type="parameter"/>
+								</plx:cast>
+							</plx:initialize>
+						</plx:local>
+						<plx:return>
+							<plx:cast dataTypeName=".i4">
+								<plx:nameRef name="t"/>
+							</plx:cast>
+						</plx:return>
+					</plx:branch>
+					<plx:fallbackBranch>
+						<plx:return>
+							<plx:value type="i4" data="-1"/>
+						</plx:return>
+					</plx:fallbackBranch>
+				</plx:function>
+				<plx:property name="UISupport" visibility="public">
+				<plx:returns dataTypeName="SurveyQuestionUISupport"/>
+				<plx:get>
+					<plx:return>
+						<xsl:choose>
+							<xsl:when test="count(qp:displaySupport) = 1">
+								<plx:callStatic dataTypeName="SurveyQuestionUISupport" name="{qp:displaySupport/@displayCategory}" type="field"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:for-each select="qp:displaySupport">
+									<xsl:if test="position()=1">
+										<xsl:call-template name="OrTogetherEnumElements">
+											<xsl:with-param name="EnumType" select="'SurveyQuestionUISupport'"/>
+											<xsl:with-param name="name" select="@displayCategory"/>
+										</xsl:call-template>
+									</xsl:if>								
+								</xsl:for-each>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:return>
+				</plx:get>
+			</plx:property>
+
 		</plx:class>
+	</xsl:template>
+	<!-- Or together enum values from the given type. The current state on the initial
+	     call should be the position()=1 element inside a for-each context where the elements
+		 contain the (unqualified) names of the enum values to or together -->
+	<xsl:template name="OrTogetherEnumElements">
+		<xsl:param name="EnumType"/>
+		<xsl:param name="name"/>
+		<xsl:choose>
+			<xsl:when test="position()=last()">
+				<plx:callStatic dataTypeName="{$EnumType}" name="{$name}" type="field"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:binaryOperator type="bitwiseOr">
+					<plx:left>
+						<plx:callStatic dataTypeName="{$EnumType}" name="{$name}" type="field"/>
+					</plx:left>
+					<plx:right>
+						<xsl:for-each select="following-sibling::*">
+							<xsl:if test="position()=1">
+								<xsl:call-template name="OrTogetherEnumElements">
+									<xsl:with-param name="EnumType" select="$EnumType"/>
+									<xsl:with-param name="name" select="@displayCategory"/>
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:for-each>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>

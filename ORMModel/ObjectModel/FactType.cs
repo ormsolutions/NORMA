@@ -1800,17 +1800,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Guid changedRoleGuid = e.DomainRole.Id;
 				FactType oldFactType = null;
 				ObjectType oldObjectType = null;
+				Objectification link = e.ElementLink as Objectification;
 				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
 				{
 					oldObjectType = (ObjectType)e.OldRolePlayer;
+					oldFactType = link.NestedFactType;
 				}
 				else if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
 				{
 					oldFactType = (FactType)e.OldRolePlayer;
+					oldObjectType = link.NestingType;
 				}
-				Objectification link = e.ElementLink as Objectification;
+				string oldFactTypeName = oldFactType.myGeneratedName;
+				bool resetObjectTypeName = !string.IsNullOrEmpty(oldFactTypeName) && oldFactTypeName == oldObjectType.Name;
 				ValidateFactNameForObjectificationDelete.Process(link, oldFactType, oldObjectType);
 				ValidateFactNameForObjectificationAdded.Process(link);
+				if (resetObjectTypeName)
+				{
+					link.NestingType.Name = "";
+				}
 			}
 		}
 		#endregion

@@ -471,6 +471,7 @@
     <None Include="Shell\catalog.xml" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectModelNoteSearching.cur" />
+    <None Include="Resources\SurveyTree.ImageStrip.png" />
     <Content Include="Shell\Converters\DCILtoOIAL.xslt" />
     <Content Include="Shell\Converters\OIALtoORM.xslt" />
     <Content Include="Shell\Converters\RootUpgradeTo2006-04.xslt" />
@@ -621,6 +622,9 @@
     <None Include="Resources\DiagramTabImage.png" />
     <None Include="Resources\AboutBox.ico" />
     <None Include="Resources\ORM.ico" />
+    <None Include="Transforms\SurveyQuestionProvider.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

@@ -36,6 +36,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
+		private static Type[] questionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
 		#region InitializingToolboxItems property
 		private static bool myInitializingToolboxItems;
 		/// <summary>
@@ -665,7 +666,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			DomainDataDirectory directory = this.Store.DomainDataDirectory;
-			
 			//Object Type
 			DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded), action);
@@ -690,7 +690,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
 			propertyInfo = directory.FindDomainProperty(FactType.NameChangedDomainPropertyId);
 			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged), action);
+
+			//FactTypeHasRole
+			classInfo = directory.FindDomainClass(FactTypeHasRole.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleDeleted), action);
+
+			//ValueTypeHasDataType
+			classInfo = directory.FindDomainClass(ValueTypeHasDataType.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasDataTypeAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasDataTypeDeleted), action);
+
+			//Objectification
+			classInfo = directory.FindDomainClass(Objectification.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectificationAdded), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectificationDeleted), action);
+			
+			//RolePlayerChanged
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationRolePlayerChanged), action);
+
+			//ModalityChanged
+			DomainPropertyInfo info = directory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
+			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(ModalityChanged), action);
+			info = directory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
+			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(ModalityChanged), action);
+
+			//RingType changed
+			info = directory.FindDomainProperty(RingConstraint.RingTypeDomainPropertyId);
+			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(RingTypeChanged), action);
+
+			//RingType changed
+			info = directory.FindDomainProperty(UniquenessConstraint.IsPreferredDomainPropertyId);
+			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(IsPreferredChanged), action);
+			//ExclusiveOr added deleted 
+			classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ExclusiveOrAdded), action);
+			classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ExclusiveOrDeleted), action);
+
+			//SubType
+			info = directory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
+			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactIsPrimaryChanged), action);
 		}
+			
 		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			this.ManageSurveyQuestionModelingEventHandlers(eventManager, action);
@@ -712,14 +754,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						"Core",
 						ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
 						ResourceStrings.CoreVerbalizationSnippetsDefaultDescription
-                    ),
-                    new VerbalizationSnippetsData(
+					),
+					new VerbalizationSnippetsData(
 						typeof(ReportVerbalizationSnippetType),
 						ReportVerbalizationSets.Default,
 						"Report",
 						ResourceStrings.VerbalizationReportSnippetsTypeDescription,
 						ResourceStrings.VerbalizationReportSnippetsDefaultDescription
-                    )
+					)
 				};
 			}
 			VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
@@ -795,9 +837,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
+				ObjectType link = e.ModelElement as ObjectType;
 				ISurveyQuestionTypeInfo[] effectedQuestions = (this as ISurveyQuestionProvider).GetSurveyQuestionTypeInfo();
-				eventNotify.ElementChanged(link.ObjectType, effectedQuestions);
+				eventNotify.ElementChanged(link);
 			}
 		}
 		/// <summary>
@@ -812,7 +854,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventNotify.ElementRenamed(element);
 			}
 		}
-	
 		/// <summary>
 		/// wired on SurveyQuestionLoad as event handler for FactType Name change events (custom events)
 		/// </summary>
@@ -843,10 +884,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void SetConstraintAdded(object sender, ElementAddedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
-			ModelHasSetConstraint element = e.ModelElement as ModelHasSetConstraint;
+			SetConstraint element = (e.ModelElement as ModelHasSetConstraint).SetConstraint;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementAdded(element.SetConstraint);
+				//do not add mandatory constraint if it's part of ExclusiveOr
+				if (null != (element as MandatoryConstraint) &&  null != (element as MandatoryConstraint).ExclusiveOrExclusionConstraint)
+				{
+					return;
+				}
+				eventNotify.ElementAdded(element);
 			}
 		}
 		/// <summary>
@@ -868,10 +914,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void SetComparisonConstraintAdded(object sender, ElementAddedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
-			ModelHasSetComparisonConstraint element = e.ModelElement as ModelHasSetComparisonConstraint;
+			SetComparisonConstraint element = (e.ModelElement as ModelHasSetComparisonConstraint).SetComparisonConstraint;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementAdded(element.SetComparisonConstraint);
+				//do not add the exclusion constraint if its part of ExclusiveOr. 
+				if (null!=(element as ExclusionConstraint) && null !=((element as ExclusionConstraint).ExclusiveOrMandatoryConstraint))
+				{
+					return;
+				}
+				eventNotify.ElementAdded(element);
 			}
 		}
 		/// <summary>
@@ -885,7 +936,237 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				eventNotify.ElementDeleted(element.SetComparisonConstraint);
 			}
+		}
+
+		/// <summary>
+		/// Fact Type has role added
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="Microsoft.VisualStudio.Modeling.ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void FactTypeHasRoleAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			FactTypeHasRole element = e.ModelElement as FactTypeHasRole;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementChanged(element.FactType, typeof(SurveyQuestionGlyph));
+			}
+		}
+
+		/// <summary>
+		/// Fact Type has role deleted
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="Microsoft.VisualStudio.Modeling.ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void FactTypeHasRoleDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			FactTypeHasRole element = e.ModelElement as FactTypeHasRole;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				FactType factType = element.FactType;
+				if (!factType.IsDeleted)
+				{
+					eventNotify.ElementChanged(factType, questionTypes);
+				}
+				
+			}
+		}
+		/// <summary>
+		/// Objectification added.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ObjectificationAdded(object sender, ElementAddedEventArgs e)
+		{	
+			INotifySurveyElementChanged eventNotify;
+			Objectification element = e.ModelElement as Objectification;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged)
+				&& !element.IsImplied)
+			{
+					eventNotify.ElementChanged(element.NestingType, questionTypes);
+					eventNotify.ElementChanged(element.NestedFactType, questionTypes);
+			}
+		}
+		/// <summary>
+		/// Objectification deleted.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ObjectificationDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			Objectification element = e.ModelElement as Objectification;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged)
+				&& !element.IsImplied)
+			{
+				ObjectType nestingType = element.NestingType;
+				FactType nestedFactType = element.NestedFactType;
+				if (!nestingType.IsDeleted)
+				{
+					eventNotify.ElementChanged(nestingType, questionTypes);
+				}
+				if (!nestedFactType.IsDeleted)
+				{
+					eventNotify.ElementChanged(nestedFactType, questionTypes);
+				}
+			}
+		}
+		/// <summary>
+		/// Objectifications role player changed.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="RolePlayerChangedEventArgs"/> instance containing the event data.</param>
+		protected void ObjectificationRolePlayerChanged(object sender, RolePlayerChangedEventArgs e)
+		{
+
+			ObjectType newObjectType;			
+			ObjectType oldObjectType;
+			ModelElement element = e.NewRolePlayer;
+			INotifySurveyElementChanged eventNotify;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				if (null != (newObjectType = element as ObjectType))
+				{
+					oldObjectType = e.OldRolePlayer as ObjectType;
+					eventNotify.ElementChanged(newObjectType, questionTypes);
+					eventNotify.ElementChanged(oldObjectType, questionTypes);
+				}
+			}
+		}
+
+		/// <summary>
+		/// ValueTypeHasDataType added
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ValueTypeHasDataTypeAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ValueTypeHasDataType element = e.ModelElement as ValueTypeHasDataType;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementChanged(element.ValueType, questionTypes);
+			}
+		}
+		/// <summary>
+		/// ValueTypeHasDataType Deleted
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ValueTypeHasDataTypeDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ValueTypeHasDataType element = e.ModelElement as ValueTypeHasDataType;
+			ObjectType objectType = (e.ModelElement as ValueTypeHasDataType).ValueType;
+			if (!objectType.IsDeleted &&
+				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementChanged(objectType, questionTypes);
+			}
+		}
+
+		/// <summary>
+		/// Modality changed.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementPropertyChangedEventArgs"/> instance containing the event data.</param>
+		protected void ModalityChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				IConstraint constraint = element as IConstraint;
+				eventNotify.ElementChanged(constraint, questionTypes);
+			}
+		}
+		/// <summary>
+		/// Ring type changed.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementPropertyChangedEventArgs"/> instance containing the event data.</param>
+		protected void RingTypeChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				RingConstraint ringConstraint = element as RingConstraint;
+				eventNotify.ElementChanged(ringConstraint, questionTypes);
+			}
+		}
+		/// <summary>
+		/// External Uniqueness constraint IsPreferred property Changed
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementPropertyChangedEventArgs"/> instance containing the event data.</param>
+		protected void IsPreferredChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				UniquenessConstraint constraint = element as UniquenessConstraint;
+				eventNotify.ElementChanged(constraint, questionTypes);
+			}
+		}
+
+		/// <summary>
+		/// ValueTypeHasDataType added
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ExclusiveOrAdded(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
+				eventNotify.ElementAdded(coupler.ExclusionConstraint);
+				eventNotify.ElementDeleted(coupler.MandatoryConstraint);
+				eventNotify.ElementChanged(coupler.ExclusionConstraint, questionTypes);
+			}
+		}
+
+		/// <summary>
+		/// ValueTypeHasDataType added
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ExclusiveOrDeleted(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
+				if (!coupler.ExclusionConstraint.IsDeleted)
+				{
+					eventNotify.ElementAdded(coupler.MandatoryConstraint);
+					eventNotify.ElementChanged(coupler.ExclusionConstraint, questionTypes);
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// SubType Fact IsPrimary property changed
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementPropertyChangedEventArgs"/> instance containing the event data.</param>
+		protected void SubtypeFactIsPrimaryChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				SubtypeFact subTypeFact = element as SubtypeFact;
+				eventNotify.ElementChanged(subTypeFact, questionTypes);
+			}
 		}		
+
 		#endregion //SurveyEventHandling
 	}
 }

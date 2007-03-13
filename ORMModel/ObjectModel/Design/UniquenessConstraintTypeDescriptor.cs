@@ -49,17 +49,22 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			return ModelElement.IsInternal ? ResourceStrings.InternalUniquenessConstraint : ResourceStrings.ExternalUniquenessConstraint;
 		}
-
 		/// <summary>
 		/// Ensure that the <see cref="UniquenessConstraint.IsPreferred"/> property is read-only
 		/// when the <see cref="FactType.InternalUniquenessConstraintChangeRule"/> is
 		/// unable to make it <see langword="true"/>.
+		/// Make sure the <see cref="SetConstraint.Modality">Modality</see> property
+		/// is read only for single-role uniqueness constraints on the Objectification end of an implied fact type.
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			if (propertyDescriptor.DomainPropertyInfo.Id == UniquenessConstraint.IsPreferredDomainPropertyId)
+			UniquenessConstraint uniquenessConstraint;
+			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
+			LinkedElementCollection<Role> roles;
+			FactType factType;
+			if (propertyId == UniquenessConstraint.IsPreferredDomainPropertyId)
 			{
-				UniquenessConstraint uniquenessConstraint = ModelElement;
+				uniquenessConstraint = ModelElement;
 				ObjectType identifierFor = uniquenessConstraint.PreferredIdentifierFor;
 				if (identifierFor != null)
 				{
@@ -67,14 +72,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					// is the only alethic internal uniqueness constraint for the fact, then
 					// it will automatically be readded as the preferred identifier if it is
 					// changed to false. Don't allow it to change.
-					FactType nestedFact;
 					if (uniquenessConstraint.IsInternal &&
-						(null != (nestedFact = identifierFor.NestedFactType)) &&
+						(null != (factType = identifierFor.NestedFactType)) &&
 						// Note there is only fact with an internal constraint
-						(nestedFact == uniquenessConstraint.FactTypeCollection[0]))
+						(factType == uniquenessConstraint.FactTypeCollection[0]))
 					{
 						UniquenessConstraint candidate = null;
-						foreach (UniquenessConstraint constraint in nestedFact.GetInternalConstraints<UniquenessConstraint>())
+						foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
 						{
 							if (constraint.Modality == ConstraintModality.Alethic)
 							{
@@ -97,6 +101,15 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				{
 					return !uniquenessConstraint.TestAllowPreferred(null, false);
 				}
+			}
+			else if (propertyId == UniquenessConstraint.ModalityDomainPropertyId &&
+				(uniquenessConstraint = ModelElement).Store != null &&
+				uniquenessConstraint.IsInternal &&
+				(roles = uniquenessConstraint.RoleCollection).Count == 1 &&
+				((factType = roles[0].FactType).ImpliedByObjectification != null ||
+				factType is SubtypeFact))
+			{
+				return true;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}

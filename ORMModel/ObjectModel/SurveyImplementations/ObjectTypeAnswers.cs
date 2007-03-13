@@ -23,7 +23,7 @@ using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ObjectType : IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<ElementType>, ISurveyNode
+	public partial class ObjectType : IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 
 		#region IAnswerSurveyQuestion<ErrorState> Members
@@ -58,6 +58,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
+
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		{
+			return AnswerGlyphQuestion();
+		}
+
+		/// <summary>
+		/// Answers the glyph question.
+		/// </summary>
+		/// <returns></returns>
+		protected int AnswerGlyphQuestion()
+		{
+			if (this.IsValueType)
+			{
+				return (int)SurveyQuestionGlyph.ValueType;
+			}
+			else if (this.Objectification != null && !this.Objectification.IsImplied)
+			{
+				return (int)SurveyQuestionGlyph.ObjectifiedFactType;
+			}
+			else
+			{
+				return (int)SurveyQuestionGlyph.EntityType;
+			}
+		}
+
+		#endregion
 		#region ISurveyNode Members
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
@@ -66,6 +94,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
+				
 				DataObject retVal = new DataObject();
 				Objectification objectification;
 				if (null != (objectification = Objectification))
@@ -87,5 +116,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+
+		
 	}
+
 }

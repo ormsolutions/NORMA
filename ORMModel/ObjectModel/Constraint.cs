@@ -5269,8 +5269,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						LinkedElementCollection<RoleBase> factRoles = null;
 						bool directBinary;
 						patternOK = false;
-						if ((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2)) ||
-							proxy != null) // Condition 3 (RoleProxy can only be attached to a binary fact)
+						if (!(factType is SubtypeFact) && 
+							((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2)) ||
+							proxy != null)) // Condition 3 (RoleProxy can only be attached to a binary fact)
 						{
 							ObjectType rolePlayer = null;
 							ObjectType impliedRolePlayer = null;

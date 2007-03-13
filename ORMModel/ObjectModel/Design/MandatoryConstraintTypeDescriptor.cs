@@ -82,7 +82,26 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			return properties;
 		}
-
+		/// <summary>
+		/// Make sure the <see cref="SetConstraint.Modality">Modality</see> property
+		/// is read only for simple mandatory constraints on the Objectification end of an implied fact type.
+		/// </summary>
+		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
+		{
+			MandatoryConstraint element;
+			LinkedElementCollection<Role> roles;
+			FactType factType;
+			if (propertyDescriptor.DomainPropertyInfo.Id == MandatoryConstraint.ModalityDomainPropertyId &&
+				(element = ModelElement).Store != null &&
+				element.IsSimple &&
+				(roles = element.RoleCollection).Count == 1 &&
+				((factType = roles[0].FactType).ImpliedByObjectification != null ||
+				factType is SubtypeFact))
+			{
+				return true;
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
 		/// <summary>
 		/// Distinguish between the <c>Name</c> properties for the <see cref="ExclusionConstraint"/> and
 		/// the <see cref="MandatoryConstraint"/> that make up an <c>Exclusive Or</c> constraint.

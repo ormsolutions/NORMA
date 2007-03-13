@@ -21,6 +21,8 @@ using System.Windows.Forms;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
+using System.Drawing;
+using System.IO;
 
 namespace Neumont.Tools.ORM
 {
@@ -452,6 +454,7 @@ namespace Neumont.Tools.ORM
 		#endregion // Public resource ids
 
 		#region Private resource ids
+		private const string SurveyTreeImageList_Id = "SurveyTree.ImageStrip";
 		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";
 		#endregion // Private resource ids
 
@@ -479,6 +482,21 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return GetObject(ResourceManagers.Diagram, FactEditorIntellisenseImageList_Id) as ImageListStreamer;
+			}
+		}
+		/// <summary>
+		/// The images used in the model browser for the core model
+		/// </summary>
+		public static ImageList SurveyTreeImageList
+		{
+			get
+			{
+				ImageList list = new ImageList();
+				Bitmap image = GetObject(ResourceManagers.Diagram, SurveyTreeImageList_Id) as Bitmap;
+				list.Images.AddStrip(image);
+				list.ColorDepth = ColorDepth.Depth32Bit;
+				list.TransparentColor = Color.Transparent;
+				return list;
 			}
 		}
 		#endregion // Public accessor properties

@@ -271,7 +271,7 @@
     <value>InternalUniquenessConstraint</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" xml:space="preserve">
-    <value>DisjunctiveMandatoryConstraint</value>
+    <value>InclusiveOrConstraint</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType" xml:space="preserve">
     <value>ObjectifiedFactType</value>

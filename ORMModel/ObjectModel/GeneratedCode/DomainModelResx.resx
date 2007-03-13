@@ -610,7 +610,7 @@
     <comment>Description for DomainClass &apos;MandatoryConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DisplayName" xml:space="preserve">
-    <value>MandatoryConstraint</value>
+    <value>InclusiveOrConstraint</value>
     <comment>DisplayName for DomainClass &apos;MandatoryConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint/IsSimple.Description" xml:space="preserve">

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using System.Diagnostics;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
@@ -26,6 +27,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// wrapper for objects to be dispalyed in the Survey Tree
 		/// </summary>
+		[DebuggerDisplay("{myDisplayText} {(myElement != null) ? myElement.GetType().Name : @\"\"\"\"}")]
 		public struct SampleDataElementNode : IEquatable<SampleDataElementNode>
 		{
 			private readonly object myElement;
@@ -71,7 +73,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					return myNodeData;
 				}
-				set
+				private set
 				{
 					myNodeData = value;
 				}
@@ -185,15 +187,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					for (int j = 0; j < questionCount; ++j)
 					{
 						SurveyQuestion currentQuestion = survey[j];
-						int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
-						data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
+							int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
+							data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
+						
 					}
 					currentNode.NodeData = data;
 					nodeList[i] = currentNode;
 				}
 			}
 			/// <summary>
-			/// Processes the nodes.
+			/// Processes the current node
 			/// </summary>
 			/// <param name="survey">The <see cref="Survey"/>s to initialize the node for</param>
 			public void Initialize(Survey survey)
@@ -205,6 +208,25 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					SurveyQuestion currentQuestion = survey[i];
 					int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
+					data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
+				}
+				NodeData = data;
+			}
+			/// <summary>
+			/// Updates the current node data
+			/// </summary>
+			/// <param name="questionTypes">types of the questions that are affected by  the change</param>
+			/// <param name="survey">survey</param>
+			public void Update(Type[] questionTypes, Survey survey)
+			{
+				int data = myNodeData;
+				int questionCount = questionTypes.Length;
+				object nodeElement = Element;
+				for (int i = 0; i < questionCount; ++i)
+				{
+					SurveyQuestion currentQuestion = survey[questionTypes[i]];
+					int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
+					data &= ~currentQuestion.Mask;
 					data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
 				}
 				NodeData = data;

@@ -25,16 +25,17 @@ using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class FactType : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, ISurveyNode
+	public partial class FactType : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
 		int IAnswerSurveyQuestion<ErrorState>.AskQuestion()
 		{
+
 			return AskErrorQuestion();
 		}
 		/// <summary>
-		/// returns answer to IAnswerSurveyQuetion for errors
+		/// returns answer to IAnswerSurveyQuestion for errors
 		/// </summary>
 		/// <returns></returns>
 		protected int AskErrorQuestion()
@@ -76,7 +77,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, FactType.NameDomainPropertyId).IsReadOnly;
 			}
 		}
-		string ISurveyNode.SurveyName 
+		string ISurveyNode.SurveyName
 		{
 			get
 			{
@@ -88,7 +89,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected string SurveyName //TODO: this might be updated to show the more informative element names (componentName)?
 		{
-			get 
+			get
 			{
 				string retVal = this.Name;
 				if (string.IsNullOrEmpty(retVal))
@@ -152,6 +153,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return SurveyNodeDataObject;
 			}
+		}
+		#endregion
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
+
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		{
+			return AskGlyphQuestion();
+		}
+		/// <summary>
+		/// returns answer to IAnswerSurveyQuestion for glyphs
+		/// </summary>
+		/// <returns></returns>
+		protected int AskGlyphQuestion()
+		{
+			if (this.Objectification != null && !this.Objectification.IsImplied)
+			{
+				return (int)SurveyQuestionGlyph.ObjectifiedFactType;
+			}
+			else
+			{
+				switch (RoleCollection.Count)
+				{
+					case 1:
+						return (int)SurveyQuestionGlyph.UnaryFactType;
+					case 2:
+						return (int)SurveyQuestionGlyph.BinaryFactType;
+					case 3:
+						return (int)SurveyQuestionGlyph.TernaryFactType;
+					default:
+						return (int)SurveyQuestionGlyph.NaryFactType;
+
+				}
+			}
+
 		}
 		#endregion
 	}

@@ -21,11 +21,12 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region Element Type question
 	/// <summary>
 	/// element type enum question answers
 	/// </summary>
 	public enum ElementType
-	{	
+	{
 		/// <summary>
 		/// ORM element Object Type
 		/// </summary>
@@ -39,6 +40,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		Constraint,
 	}
+	#endregion // Element Type question
+	#region Error State question
 	/// <summary>
 	/// error state enum question answers
 	/// </summary>
@@ -55,6 +58,227 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// can not be determined whether the ORM element contains an error
 		/// </summary>
-		Inconclusive
+		Inconclusive,
 	}
+	#endregion // Error State question
+	#region Survey Glyph questions
+	/// <summary>
+	/// Glyph type enum question answers
+	/// </summary>
+	public enum SurveyQuestionGlyph
+	{
+		/// <summary>
+		/// Value type object
+		/// </summary>
+		ValueType,
+		/// <summary>
+		/// Entity type object
+		/// </summary>
+		EntityType,
+		/// <summary>
+		/// Unary fact type
+		/// </summary>
+		UnaryFactType,
+		/// <summary>
+		/// Binary fact type
+		/// </summary>
+		BinaryFactType,
+		/// <summary>
+		/// Ternary fact type
+		/// </summary>
+		TernaryFactType,
+		/// <summary>
+		/// Nary fact type
+		/// </summary>
+		NaryFactType,
+		/// <summary>
+		/// Objectified fact type
+		/// </summary>
+		ObjectifiedFactType,
+		/// <summary>
+		/// Internal uniqueness constraint
+		/// </summary>
+		InternalUniquenessConstraint,
+		/// <summary>
+		/// External uniqueness constraint
+		/// </summary>
+		ExternalUniquenessConstraint,
+		/// <summary>
+		/// preferred uniqueness constraint
+		/// </summary>
+		ExternalUniquenessConstraintIsPreferred,
+		/// <summary>
+		/// Exclusion constraint
+		/// </summary>
+		ExclusionConstraint,
+		/// <summary>
+		/// ExclusionOR constraint
+		/// </summary>
+		ExclusiveOrConstraint,
+		/// <summary>
+		/// Disjunctive mandatory constraint
+		/// </summary>
+		DisjunctiveMandatoryConstraint,
+		/// <summary>
+		/// Equality Constraint
+		/// </summary>
+		EqualityConstraint,
+		/// <summary>
+		/// Frequency constraint
+		/// </summary>
+		FrequencyConstraint,
+		/// <summary>
+		/// Subset constraint
+		/// </summary>
+		SubsetConstraint,
+		/// <summary>
+		/// Simple mandatory constraint
+		/// </summary>
+		SimpleMandatoryConstraint,
+		/// <summary>
+		/// undefined ring constraint
+		/// </summary>
+		RingUndefined,
+		/// <summary>
+		/// Acyclic ring 
+		/// </summary>
+		RingAcyclic,
+		/// <summary>
+		///Acyclic and Intransitive
+		/// </summary>
+		RingAcyclicIntransitive,
+		/// <summary>
+		///Antisymmetric
+		/// </summary>
+		RingAntisymmetric,
+		/// <summary>
+		///Asymmetric
+		/// </summary>
+		RingAsymmetric,
+		/// <summary>
+		///Asymmetric and Intransitive
+		/// </summary>
+		RingAsymmetricIntransitive,
+		/// <summary>
+		///Intransitive
+		/// </summary>
+		RingIntransitive,
+		/// <summary>
+		///Irreflexive
+		/// </summary>
+		RingIrreflexive,
+		/// <summary>
+		///Purely Reflexive
+		/// </summary>
+		RingPurelyReflexive,
+		/// <summary>
+		///Symmetric
+		/// </summary>
+		RingSymmetric,
+		/// <summary>
+		///Symmetric and Intransitive
+		/// </summary>
+		RingSymmetricIntransitive,
+		/// <summary>
+		///Symmetric and Irreflexive
+		/// </summary>
+		RingSymmetricIrreflexive,
+		/// <summary>
+		/// Internal uniqueness constraint
+		/// </summary>
+		InternalUniquenessConstraintDeontic,
+		/// <summary>
+		/// External uniqueness constraint deontic
+		/// </summary>
+		ExternalUniquenessConstraintDeontic,
+		/// <summary>
+		/// preferred uniqueness constraint deontic 
+		/// </summary>
+		ExternalUniquenessConstraintIsPreferredDeontic,
+		/// <summary>
+		/// Exclusion constraint deontic
+		/// </summary>
+		ExclusionConstraintDeontic,
+		/// <summary>
+		/// ExclusionOR constraint deontic
+		/// </summary>
+		ExclusiveOrConstraintDeontic,
+		/// <summary>
+		/// Disjunctive mandatory constraint deontic
+		/// </summary>
+		DisjunctiveMandatoryConstraintDeontic,
+		/// <summary>
+		/// Equality Constraint deontic
+		/// </summary>
+		EqualityConstraintDeontic,
+		/// <summary>
+		/// Frequency constraint deontic
+		/// </summary>
+		FrequencyConstraintDeontic,
+		/// <summary>
+		/// Subset constraint deontic
+		/// </summary>
+		SubsetConstraintDeontic,
+		/// <summary>
+		/// Simple mandatory constraint deontic
+		/// </summary>
+		SimpleMandatoryConstraintDeontic,
+		/// <summary>
+		/// undefined ring constraint deontic
+		/// </summary>
+		RingUndefinedDeontic,
+		/// <summary>
+		/// Acyclic ring deontic
+		/// </summary>
+		RingAcyclicDeontic,
+		/// <summary>
+		///Acyclic and Intransitive deontic
+		/// </summary>
+		RingAcyclicIntransitiveDeontic,
+		/// <summary>
+		///Antisymmetric deontic
+		/// </summary>
+		RingAntisymmetricDeontic,
+		/// <summary>
+		///Asymmetric deontic
+		/// </summary>
+		RingAsymmetricDeontic,
+		/// <summary>
+		///Asymmetric and Intransitive deontic
+		/// </summary>
+		RingAsymmetricIntransitiveDeontic,
+		/// <summary>
+		///Intransitive deontic
+		/// </summary>
+		RingIntransitiveDeontic,
+		/// <summary>
+		///Irreflexive deontic
+		/// </summary>
+		RingIrreflexiveDeontic,
+		/// <summary>
+		///Purely Reflexive deontic
+		/// </summary>
+		RingPurelyReflexiveDeontic,
+		/// <summary>
+		///Symmetric deontic
+		/// </summary>
+		RingSymmetricDeontic,
+		/// <summary>
+		///Symmetric and Intransitive deontic
+		/// </summary>
+		RingSymmetricIntransitiveDeontic,
+		/// <summary>
+		///Symmetric and Irreflexive deontic
+		/// </summary>
+		RingSymmetricIrreflexiveDeontic,
+		/// <summary>
+		/// Primary Subtype Relationship
+		/// </summary>
+		PrimarySubtypeRelationship,
+		/// <summary>
+		/// Secondary SubType Relationship
+		/// </summary>
+		SecondarySubtypeRelationship,
+	}
+	#endregion // Survey Glyph questions
 }

@@ -23,10 +23,11 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling;
 using System.Collections.ObjectModel;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class SubtypeFact : IVerbalizeCustomChildren
+	public partial class SubtypeFact : IVerbalizeCustomChildren, IAnswerSurveyQuestion<SurveyQuestionGlyph>
 	{
 		#region Create functions
 		/// <summary>
@@ -888,5 +889,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetCustomChildVerbalizations(isNegative);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion()
+		{
+			return AskGlyphQuestion();
+		}
+		/// <summary>
+		/// returns answer to IAnswerSurveyQuestion for glyphs
+		/// </summary>
+		/// <returns></returns>
+		protected new int AskGlyphQuestion()
+		{
+			if (this.IsPrimary)
+			{
+				return (int)SurveyQuestionGlyph.PrimarySubtypeRelationship;
+			}
+			else
+			{
+				return (int)SurveyQuestionGlyph.SecondarySubtypeRelationship;
+			}
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> implementation
 	}
 }
