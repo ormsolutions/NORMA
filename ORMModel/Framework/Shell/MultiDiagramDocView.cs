@@ -197,6 +197,32 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 		}
 		#endregion // CurrentDiagram property
+		#region Store property
+		/// <summary>
+		/// Returns the <see cref="Microsoft.VisualStudio.Modeling.Store"/> of the <see cref="ModelingDocData"/>
+		/// associated with this <see cref="MultiDiagramDocView"/>. If no <see cref="ModelingDocData"/> is
+		/// associated with this <see cref="MultiDiagramDocView"/>, or if
+		/// <see cref="Microsoft.VisualStudio.Modeling.Store.ShuttingDown"/> or
+		/// <see cref="Microsoft.VisualStudio.Modeling.Store.Disposed"/> return <see langword="true"/>,
+		/// <see langword="null"/> is returned.
+		/// </summary>
+		public Store Store
+		{
+			get
+			{
+				ModelingDocData docData = DocData;
+				if (docData != null)
+				{
+					Store store = docData.Store;
+					if (store != null && !store.ShuttingDown && !store.Disposed)
+					{
+						return store;
+					}
+				}
+				return null;
+			}
+		}
+		#endregion // Store property
 		#endregion // Public Properties
 		#region Methods
 		#region RegisterImageForDiagramType method

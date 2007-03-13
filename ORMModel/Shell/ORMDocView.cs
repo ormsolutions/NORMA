@@ -569,6 +569,20 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
+		/// See <see cref="ModelingDocView.DefaultToolboxTabToolboxItemsCount"/>.
+		/// </summary>
+		protected override int DefaultToolboxTabToolboxItemsCount
+		{
+			get
+			{
+				// Returning something other than 0 from this property as well as a non-empty string from
+				// DefaultToolboxTabName causes the base class to select the appropriate toolbox tab when
+				// this view receives focus.
+				return 1;
+			}
+		}
+
+		/// <summary>
 		/// Handle right-clicks on the diagram
 		/// </summary>
 		/// <param name="mouseArgs"></param>
@@ -642,7 +656,7 @@ namespace Neumont.Tools.ORM.Shell
 					Type firstType = null;
 					bool isComplex = false;
 					NodeShape primaryShape = PrimarySelectedShape;
-					foreach (ModelElement melIter in GetSelectedComponents())
+					foreach (ModelElement melIter in SelectedElements)
 					{
 						bool isPrimarySelection = false;
 						ModelElement mel = melIter;
@@ -722,7 +736,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					foreach (ModelElement melIter in GetSelectedComponents())
+					foreach (ModelElement melIter in SelectedElements)
 					{
 						ModelElement mel = melIter;
 						PresentationElement pel = mel as PresentationElement;
@@ -1078,7 +1092,7 @@ namespace Neumont.Tools.ORM.Shell
 			Debug.Assert(command != null);
 			if (docView != null)
 			{
-				IMonitorSelectionService monitorService = docView.MonitorSelectionService;
+				IMonitorSelectionService monitorService = docView.MonitorSelection;
 				if (monitorService != null && monitorService.CurrentSelectionContainer != docView)
 				{
 					ORMDesignerCommands activeFilter = ORMDesignerCommands.DisplayStandardWindows;
@@ -1106,7 +1120,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					if (isEnabled)
 					{
-						foreach (ModelElement mel in docView.GetSelectedComponents())
+						foreach (ModelElement mel in docView.SelectedElements)
 						{
 							Role role = mel as Role;
 							if (role != null)
@@ -1128,11 +1142,10 @@ namespace Neumont.Tools.ORM.Shell
 						// most of the processing for this command is deferred to this point.
 						// If it is visible but not enabled, then we have done this processing
 						// once already.
-						ICollection collection;
 						bool disable = false;
 						bool hide = false;
 						if (0 != (allEnabledCommands & ORMDesignerCommands.ExclusiveOrDecoupler) ||
-							2 != (collection = docView.GetSelectedComponents()).Count)
+							2 != docView.SelectedElements.Count)
 						{
 							disable = hide = true;
 						}
@@ -1140,7 +1153,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							MandatoryConstraint mandatory = null;
 							ExclusionConstraint exclusion = null;
-							foreach (ModelElement mel in docView.GetSelectedComponents())
+							foreach (ModelElement mel in docView.SelectedElements)
 							{
 								PresentationElement pel = mel as PresentationElement;
 								IConstraint testConstraint = (pel != null) ? pel.Subject as IConstraint : mel as IConstraint;
@@ -1204,7 +1217,7 @@ namespace Neumont.Tools.ORM.Shell
 								break;
 						}
 						bool isChecked = true;
-						foreach (ModelElement mel in docView.GetSelectedComponents())
+						foreach (ModelElement mel in docView.SelectedElements)
 						{
 							FactTypeShape shape = mel as FactTypeShape;
 							if (shape != null)
@@ -1233,7 +1246,7 @@ namespace Neumont.Tools.ORM.Shell
 								break;
 						}
 						bool isChecked = true;
-						foreach (ModelElement mel in docView.GetSelectedComponents())
+						foreach (ModelElement mel in docView.SelectedElements)
 						{
 							FactTypeShape shape = mel as FactTypeShape;
 							if (shape != null)
@@ -1251,7 +1264,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else if (0 != (commandFlag & (ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight)))
 				{
-					foreach (ModelElement mel in docView.GetSelectedComponents())
+					foreach (ModelElement mel in docView.SelectedElements)
 					{
 						Role role = mel as Role;
 						if (role != null)
@@ -1271,7 +1284,7 @@ namespace Neumont.Tools.ORM.Shell
 						OleMenuCommand cmd = sender as OleMenuCommand;
 						string errorText = null;
 						int errorIndex = cmd.MatchedCommandId;
-						foreach (ModelElement mel in docView.GetSelectedComponents())
+						foreach (ModelElement mel in docView.SelectedElements)
 						{
 							IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
 							if (errorOwner != null)
@@ -1343,16 +1356,18 @@ namespace Neumont.Tools.ORM.Shell
 						bool disable = false;
 						bool hide = false;
 						int selCount = docView.SelectionCount;
-						if (selCount != 0)
+						if (selCount > 0)
 						{
+							bool encounteredNonRole = false;
 							Role[] roles = new Role[selCount];
 							FactType fact = null;
-							int currentRoleIndex = 0;
-							foreach (ModelElement mel in docView.GetSelectedComponents())
+							int roleCount = 0;
+							foreach (ModelElement mel in docView.SelectedElements)
 							{
 								Role role = mel as Role;
 								if (role == null)
 								{
+									encounteredNonRole = true;
 									break;
 								}
 								FactType testFact = role.FactType;
@@ -1365,25 +1380,28 @@ namespace Neumont.Tools.ORM.Shell
 									fact = null;
 									break;
 								}
-								roles[currentRoleIndex] = role;
-								++currentRoleIndex;
+
+								if (Array.IndexOf<Role>(roles, role) < 0)
+								{
+									roles[roleCount++] = role;
+								}
 							}
-							if (currentRoleIndex == selCount && fact != null)
+							if (fact != null && !encounteredNonRole)
 							{
 								foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
 								{
 									LinkedElementCollection<Role> factRoles = iuc.RoleCollection;
-									if (factRoles.Count == selCount)
+									if (factRoles.Count == roleCount)
 									{
 										int i = 0;
-										for (; i < selCount; ++i)
+										for (; i < roleCount; ++i)
 										{
 											if (!factRoles.Contains(roles[i]))
 											{
 												break;
 											}
 										}
-										if (i == selCount)
+										if (i == roleCount)
 										{
 											disable = true;
 											break;
@@ -1600,13 +1618,13 @@ namespace Neumont.Tools.ORM.Shell
 			SetSelectedComponents(null);
 		}
 		/// <summary>
-		/// returns the monitor service
+		/// Returns the <see cref="IMonitorSelectionService"/> instance for this <see cref="ORMDesignerDocView"/>.
 		/// </summary>
-		protected IMonitorSelectionService MonitorSelectionService
+		protected IMonitorSelectionService MonitorSelection
 		{
 			get
 			{
-				return myMonitorSelection ?? (myMonitorSelection = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService)));
+				return myMonitorSelection ?? (myMonitorSelection = myCtorServiceProvider.GetService(typeof(IMonitorSelectionService)) as IMonitorSelectionService);
 			}
 		}
 		/// <summary>
@@ -1618,10 +1636,7 @@ namespace Neumont.Tools.ORM.Shell
 			int count = SelectionCount;
 			if (count > 0)
 			{
-				ModelingDocData docData = this.DocData as ModelingDocData;
-				Debug.Assert(docData != null);
-
-				Store store = docData.Store;
+				Store store = Store;
 				Debug.Assert(store != null);
 
 				ORMDesignerCommands enabledCommands = myEnabledCommands;
@@ -1636,16 +1651,15 @@ namespace Neumont.Tools.ORM.Shell
 
 				Diagram d = null;
 				// Use the localized text from the command for our transaction name
-				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
+				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", string.Empty)))
 				{
 					Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
-#if QUEUEDSELECTION
-					// UNDONE: 2006-06 DSL Tools port: QueuedSelection doesn't seem to exist any more. What do we replace it with?
-					IList queuedSelection = docData.QueuedSelection as IList;
-#endif // QUEUEDSELECTION
+
+					IList selectedElements = SelectedElements;
 					// account for multiple selection
-					foreach (object selectedObject in GetSelectedComponents())
+					for (int i = selectedElements.Count - 1; i >=0; i--)
 					{
+						object selectedObject = selectedElements[i];
 						ShapeElement pel; // just the shape
 						ModelElement mel;
 						bool deleteReferenceModeValueTypeInContext = false;
@@ -1703,57 +1717,6 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)
 						{
-#if QUEUEDSELECTION
-							// The object was selected directly (through a shape field or sub field element)
-							ModelElement shapeAssociatedMel = null;
-							if (complexSelection)
-							{
-								SetConstraint ic;
-								LinkedElementCollection<FactType> facts;
-								Role role;
-								if (null != (ic = selectedObject as SetConstraint) &&
-									ic.Constraint.ConstraintIsInternal &&
-									1 == (facts = ic.FactTypeCollection).Count)
-								{
-									shapeAssociatedMel = facts[0];
-								}
-								else if (null != (role = selectedObject as Role))
-								{
-									shapeAssociatedMel = role.FactType;
-								}
-							}
-							else
-							{
-								switch (enabledCommands & ORMDesignerCommands.Delete)
-								{
-									case ORMDesignerCommands.DeleteRole:
-										shapeAssociatedMel = (selectedObject as Role).FactType;
-										break;
-									case ORMDesignerCommands.DeleteConstraint:
-										{
-											SetConstraint setConstraint;
-											LinkedElementCollection<FactType> facts;
-											if (null != (setConstraint = selectedObject as SetConstraint) &&
-												setConstraint.Constraint.ConstraintIsInternal &&
-												1 == (facts = setConstraint.FactTypeCollection).Count)
-											{
-												shapeAssociatedMel = facts[0];
-											}
-										}
-										break;
-								}
-							}
-
-							// Add the parent shape into the queued selection
-							if (shapeAssociatedMel != null)
-							{
-								pel = (CurrentDiagram as ORMDiagram).FindShapeForElement(shapeAssociatedMel);
-								if (pel != null && !pel.IsDeleted)
-								{
-									queuedSelection.Add(pel);
-								}
-							}
-#endif // QUEUEDSELECTION
 
 							// Remove the item
 							mel.Delete();
@@ -1762,22 +1725,6 @@ namespace Neumont.Tools.ORM.Shell
 
 					if (t.HasPendingChanges)
 					{
-#if QUEUEDSELECTION
-						if (complexSelection)
-						{
-							for (int i = queuedSelection.Count - 1; i >= 0; --i)
-							{
-								if (((ModelElement)queuedSelection[i]).IsDeleted)
-								{
-									queuedSelection.RemoveAt(i);
-								}
-							}
-						}
-						if (queuedSelection.Count == 0 && d != null)
-						{
-							queuedSelection.Add(d);
-						}
-#endif // QUEUEDSELECTION
 						t.Commit();
 					}
 				}
@@ -1798,9 +1745,7 @@ namespace Neumont.Tools.ORM.Shell
 			int pelCount = SelectionCount;
 			if (pelCount > 0)
 			{
-				ModelingDocData docData = this.DocData as ModelingDocData;
-				Debug.Assert(docData != null);
-				Store store = docData.Store;
+				Store store = Store;
 				Debug.Assert(store != null);
 				ORMDesignerCommands enabledCommands = myEnabledCommands;
 				// There are a number of things to watch out for in a complex selection.
@@ -1812,17 +1757,14 @@ namespace Neumont.Tools.ORM.Shell
 				bool complexSelection = 0 == (enabledCommands & ORMDesignerCommands.DeleteShape);
 
 				// Use the localized text from the command for our transaction name
-				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
+				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", string.Empty)))
 				{
-					// Note that we don't deal with QueuedSelection here like
-					// we do in OnMenuDeleteElement because we only run this
-					// command for top-level shape elements, so there is no
-					// chance that we will have a parent other than the diagram
-					// to select.
 					FinalShapeDeleteBehavior finalDeleteBehavior = OptionsPage.CurrentFinalShapeDeleteBehavior;
 					bool testMelDeletion = finalDeleteBehavior != FinalShapeDeleteBehavior.DeleteShapeOnly;
-					foreach (ModelElement mel in GetSelectedComponents())
+					IList selectedElements = SelectedElements;
+					for (int i = selectedElements.Count - 1; i >= 0; i--)
 					{
+						ModelElement mel = selectedElements[i] as ModelElement;
 						PresentationElement pel = mel as ShapeElement;
 						ObjectType backingObjectifiedType = null;
 						// ReadingShape and ValueConstraintShape tolerate deletion, but the
@@ -1860,9 +1802,9 @@ namespace Neumont.Tools.ORM.Shell
 								LinkedElementCollection<PresentationElement> remainingPels = PresentationViewsSubject.GetPresentation(backingMel);
 								int newPelCount = remainingPels.Count;
 								Partition partition = store.DefaultPartition;
-								for (int i = newPelCount - 1; i >= 0; --i)
+								for (int j = newPelCount - 1; j >= 0; --j)
 								{
-									if (remainingPels[i].Partition != partition)
+									if (remainingPels[j].Partition != partition)
 									{
 										--newPelCount;
 									}
@@ -1870,22 +1812,12 @@ namespace Neumont.Tools.ORM.Shell
 
 								if (newPelCount == 0)
 								{
-									if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt)
+									if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt &&
+										(int)DialogResult.No == VsShellUtilities.ShowMessageBox(ServiceProvider,
+										    string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
+										    string.Empty, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND))
 									{
-										IVsUIShell shell;
-										if (null != (shell = (IVsUIShell)ServiceProvider.GetService(typeof(IVsUIShell))))
-										{
-											Guid g = new Guid();
-											int pnResult;
-											shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
-												string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
-												"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
-												OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
-											if (pnResult == (int)DialogResult.No)
-											{
-												continue;
-											}
-										}
+										continue;
 									}
 									backingMel.Delete();
 									if (backingObjectifiedType != null && !backingObjectifiedType.IsDeleted && PresentationViewsSubject.GetPresentation(backingObjectifiedType).Count <= 1)
@@ -1954,13 +1886,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		/// <summary>
-		/// Execute the AutoLayout menu command
-		/// </summary>
-		protected virtual void OnMenuAutoLayout()
-		{
-			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements);
-		}
         /// <summary>
         /// Run the report generator
         /// </summary>
@@ -1980,6 +1905,13 @@ namespace Neumont.Tools.ORM.Shell
                 }
             }
         }
+		/// <summary>
+		/// Execute the AutoLayout menu command
+		/// </summary>
+		protected virtual void OnMenuAutoLayout()
+		{
+			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements);
+		}
         /// <summary>
 		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
 		/// the <see cref="Diagram"/> specified by <paramref name="diagram"/>.
@@ -2052,13 +1984,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// </param>
 		protected virtual void OnMenuAlignShapes(int commandId)
 		{
-			ICollection components;
+			IList components;
 			int selectionCount;
 			NodeShape matchShape = PrimarySelectedShape;
 			Diagram diagram;
 			if (null != matchShape &&
 				null != (diagram = matchShape.ParentShape as Diagram) &&
-				null != (components = GetSelectedComponents()) &&
+				null != (components = SelectedElements) &&
 				(selectionCount = components.Count) > 1)
 			{
 				FactTypeShape factShape;
@@ -2104,12 +2036,12 @@ namespace Neumont.Tools.ORM.Shell
 					// diagram bounds. If this is the case, we need to adjust the location
 					// of all of the shapes (including the 'matchShape') by sufficient distance
 					// to get all of the shapes in bounds.
-					foreach (object component in components)
+					for (int i = components.Count - 1; i >= 0; i--)
 					{
-						NodeShape shape = component as NodeShape;
+						NodeShape shape = components[i] as NodeShape;
 						if (shape != null &&
 							shape != matchShape &&
-							(object)shape.ParentShape == diagram)
+							shape.ParentShape == diagram)
 						{
 							RectangleD bounds = shape.AbsoluteBounds;
 							PointD newLocation = bounds.Location;
@@ -2155,12 +2087,12 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				using (Transaction t = matchShape.Store.TransactionManager.BeginTransaction(ResourceStrings.AlignShapesTransactionName))
 				{
-					foreach (object component in components)
+					for (int i = components.Count - 1; i >= 0; i--)
 					{
-						NodeShape shape = component as NodeShape;
+						NodeShape shape = components[i] as NodeShape;
 						if (shape != null &&
 							shape != matchShape &&
-							(object)shape.ParentShape == diagram)
+							shape.ParentShape == diagram)
 						{
 							RectangleD bounds = shape.AbsoluteBounds;
 							PointD newLocation = bounds.Location;
@@ -2208,15 +2140,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// selected role, false to insert it before the selected role</param>
 		protected virtual void OnMenuInsertRole(bool insertAfter)
 		{
-			ICollection components = GetSelectedComponents();
+			IList components = SelectedElements;
 			if (components.Count == 1)
 			{
-				RoleBase role = null;
-				foreach (object component in components)
-				{
-					role = component as RoleBase;
-					break;
-				}
+				RoleBase role = components[0] as RoleBase;
 				FactType factType;
 				if (role != null &&
 					null != (factType = role.FactType))
@@ -2254,15 +2181,37 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuToggleSimpleMandatory()
 		{
-			foreach (object component in GetSelectedComponents())
+			Store store = Store;
+			if (store == null)
 			{
-				Role role = component as Role;
-				if (role != null)
+				return;
+			}
+
+			DomainPropertyInfo isMandatoryPropertyInfo = store.DomainDataDirectory.FindDomainProperty(Role.IsMandatoryDomainPropertyId);
+			Debug.Assert(isMandatoryPropertyInfo != null);
+
+			using (Transaction t = store.TransactionManager.BeginTransaction(
+				Microsoft.VisualStudio.Modeling.Design.ElementPropertyDescriptor.GetSetValueTransactionName(isMandatoryPropertyInfo.DisplayName)))
+			{
+				bool hasNewIsMandatoryValue = false;
+				bool newIsMandatoryValue = false;
+				IList selectedElements = SelectedElements;
+				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					// Use the standard property descriptor to pick up the
-					// same transaction name, etc. This emulates toggling the
-					// property in the properties window.
-					DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.IsMandatoryDomainPropertyId).SetValue(role, !role.IsMandatory);
+					Role role = selectedElements[i] as Role;
+					if (role != null)
+					{
+						if (!hasNewIsMandatoryValue)
+						{
+							newIsMandatoryValue = !role.IsMandatory;
+							hasNewIsMandatoryValue = true;
+						}
+						role.IsMandatory = newIsMandatoryValue;
+					}
+				}
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
 				}
 			}
 		}
@@ -2271,20 +2220,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuAddInternalUniqueness()
 		{
-			ORMDiagram diagram;
-			ORMModel model;
-			if ((null != (diagram = CurrentDiagram as ORMDiagram)) &&
-				(null != (model = diagram.ModelElement as ORMModel)))
+			Store store = Store;
+			if (store != null)
 			{
-				Store store = model.Store;
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
 				{
 					FactType parentFact = null;
 					LinkedElementCollection<Role> constraintRoles = null;
 					bool abort = false;
-					foreach (ModelElement mel in GetSelectedComponents())
+					IList selectedElements = SelectedElements;
+					for (int i = selectedElements.Count - 1; i >= 0; i--)
 					{
-						Role role = mel as Role;
+						Role role = selectedElements[i] as Role;
 						if (role != null)
 						{
 							FactType testFact = role.FactType;
@@ -2299,7 +2246,10 @@ namespace Neumont.Tools.ORM.Shell
 								abort = true; // Transaction will rollback when it disposes if we don't commit
 								break;
 							}
-							constraintRoles.Add(role);
+							if (!constraintRoles.Contains(role))
+							{
+								constraintRoles.Add(role);
+							}
 						}
 					}
 					if (!abort && t.HasPendingChanges)
@@ -2357,9 +2307,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="errorIndex">Index of the error in the error collection</param>
 		protected virtual void OnMenuErrorList(int errorIndex)
 		{
-			foreach (ModelElement mel in GetSelectedComponents())
+			IList selectedElements = SelectedElements;
+			for (int i = selectedElements.Count - 1; i >= 0; i++)
 			{
-				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
+				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(selectedElements[i], false) as IModelErrorOwner;
 				if (errorOwner != null)
 				{
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
@@ -2405,9 +2356,10 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ShapeElement retVal = null;
 
-			foreach (ModelElement mel in GetSelectedComponents())
+			IList selectedElements = SelectedElements;
+			if (selectedElements.Count >= 1) // Single-select command
 			{
-				ORMBaseShape shape = mel as ORMBaseShape;
+				ORMBaseShape shape = selectedElements[0] as ORMBaseShape;
 				if (shape != null)
 				{
 					Diagram shapeDiagram = shape.Diagram;
@@ -2466,8 +2418,6 @@ namespace Neumont.Tools.ORM.Shell
 						);
 					}
 				}
-
-				break; // Single-select command
 			}
 
 			return retVal;
@@ -2899,13 +2849,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuDeleteRoleSequence()
 		{
-			if (SelectedElements.Count == 1)
+			IList selectedElements = SelectedElements;
+			if (selectedElements.Count == 1)
 			{
 				Role role;
 				ORMDiagram ormDiagram;
 				ExternalConstraintShape ecs;
 				SetComparisonConstraint mcec;
-				if (null != (role = SelectedElements[0] as Role)
+				if (null != (role = selectedElements[0] as Role)
 					&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
 					&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
 					&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
@@ -3096,9 +3047,10 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void OnMenuMoveRoleLeft()
 		{
 			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in GetSelectedComponents())
+			IList selectedElements = SelectedElements;
+			for (int i = selectedElements.Count - 1; i >= 0; i--)
 			{
-				Role role = mel as Role;
+				Role role = selectedElements[i] as Role;
 				if (role != null)
 				{
 					FactTypeShape factShape = diagram.FindShapeForElement<FactTypeShape>(role.FactType);
@@ -3119,9 +3071,10 @@ namespace Neumont.Tools.ORM.Shell
 		protected virtual void OnMenuMoveRoleRight()
 		{
 			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in GetSelectedComponents())
+			IList selectedElements = SelectedElements;
+			for (int i = selectedElements.Count - 1; i >= 0; i--)
 			{
-				Role role = mel as Role;
+				Role role = selectedElements[i] as Role;
 				if (role != null)
 				{
 					FactTypeShape factShape = diagram.FindShapeForElement<FactTypeShape>(role.FactType);
@@ -3142,16 +3095,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="orientation">New orientation</param>
 		protected virtual void OnMenuDisplayOrientation(DisplayOrientation orientation)
 		{
-			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in GetSelectedComponents())
+			Store store = Store;
+			if (store == null)
 			{
-				FactTypeShape factTypeShape = mel as FactTypeShape;
-				if (factTypeShape != null)
+				return;
+			}
+
+			DomainPropertyInfo displayOrientationPropertyInfo = store.DomainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId);
+			Debug.Assert(displayOrientationPropertyInfo != null);
+
+			using (Transaction t = store.TransactionManager.BeginTransaction(
+				Microsoft.VisualStudio.Modeling.Design.ElementPropertyDescriptor.GetSetValueTransactionName(displayOrientationPropertyInfo.DisplayName)))
+			{
+				IList selectedElements = SelectedElements;
+				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					// Use the standard property descriptor to pick up the
-					// same transaction name, etc. This emulates toggling the
-					// property in the properties window.
-					DomainTypeDescriptor.CreatePropertyDescriptor(factTypeShape, FactTypeShape.DisplayOrientationDomainPropertyId).SetValue(factTypeShape, orientation);
+					FactTypeShape factTypeShape = selectedElements[i] as FactTypeShape;
+					if (factTypeShape != null)
+					{
+						factTypeShape.DisplayOrientation = orientation;
+					}
 				}
 			}
 		}
@@ -3161,16 +3124,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="position">New position</param>
 		protected virtual void OnMenuDisplayConstraintPosition(ConstraintDisplayPosition position)
 		{
-			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in GetSelectedComponents())
+			Store store = Store;
+			if (store == null)
 			{
-				FactTypeShape factTypeShape = mel as FactTypeShape;
-				if (factTypeShape != null)
+				return;
+			}
+
+			DomainPropertyInfo constraintDisplayPositionPropertyInfo = store.DomainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId);
+			Debug.Assert(constraintDisplayPositionPropertyInfo != null);
+
+			using (Transaction t = store.TransactionManager.BeginTransaction(
+				Microsoft.VisualStudio.Modeling.Design.ElementPropertyDescriptor.GetSetValueTransactionName(constraintDisplayPositionPropertyInfo.DisplayName)))
+			{
+				IList selectedElements = SelectedElements;
+				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					// Use the standard property descriptor to pick up the
-					// same transaction name, etc. This emulates toggling the
-					// property in the properties window.
-					DomainTypeDescriptor.CreatePropertyDescriptor(factTypeShape, FactTypeShape.ConstraintDisplayPositionDomainPropertyId).SetValue(factTypeShape, position);
+					FactTypeShape factTypeShape = selectedElements[i] as FactTypeShape;
+					if (factTypeShape != null)
+					{
+						factTypeShape.ConstraintDisplayPosition = position;
+					}
 				}
 			}
 		}
@@ -3179,10 +3152,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuDisplayReverseRoleOrder()
 		{
-			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in GetSelectedComponents())
+			IList selectedElements = SelectedElements;
+			for (int i = selectedElements.Count - 1; i >= 0; i--)
 			{
-				FactTypeShape factTypeShape = mel as FactTypeShape;
+				FactTypeShape factTypeShape = selectedElements[i] as FactTypeShape;
 				if (factTypeShape != null)
 				{
 					factTypeShape.ReverseDisplayedRoleOrder();
@@ -3195,16 +3168,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuExclusiveOrCoupler()
 		{
-			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			ICollection collection;
-			if (2 == (collection = GetSelectedComponents()).Count)
+			IList selectedElements = SelectedElements;
+			if (selectedElements.Count == 2)
 			{
 				MandatoryConstraint mandatory = null;
 				ExclusionConstraint exclusion = null;
-				foreach (ModelElement mel in collection)
+				for (int i = 1; i >= 0; i--)
 				{
+					ModelElement mel = selectedElements[i] as ModelElement;
 					PresentationElement pel = mel as PresentationElement;
 					IConstraint testConstraint = (pel != null) ? pel.Subject as IConstraint : mel as IConstraint;
+					Debug.Assert(testConstraint != null);
 					switch (testConstraint.ConstraintType)
 					{
 						case ConstraintType.DisjunctiveMandatory:
@@ -3230,15 +3204,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuExclusiveOrDecoupler()
 		{
-			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
 			// Cache the selected components collection, these actions are modifying it indirectly
-			ICollection selectedComponentsCollection = GetSelectedComponents();
+			IList selectedComponentsCollection = SelectedElements;
 			int selectedComponentsCount = selectedComponentsCollection.Count;
 			if (selectedComponentsCount > 0)
 			{
 				object[] selectedComponents = new object[selectedComponentsCount];
 				selectedComponentsCollection.CopyTo(selectedComponents, 0);
-				for (int i = 0; i < selectedComponentsCount; ++i)
+				for (int i = 0; i < selectedComponents.Length; ++i)
 				{
 					object mel = selectedComponents[i];
 					PresentationElement pel = mel as PresentationElement;
@@ -3265,9 +3238,11 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDiagram diagram = CurrentDiagram as ORMDiagram;
 			if (diagram != null)
 			{
-				foreach (ModelElement mel in GetSelectedComponents())
+				IList selectedElements = SelectedElements;
+				int selectedElementsCount = selectedElements.Count;
+				for (int i = 0; i < selectedElementsCount; i++)
 				{
-					FactType factType = ORMEditorUtility.ResolveContextFactType(mel);
+					FactType factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i]);
 					if (factType != null)
 					{
 						Store store = factType.Store;

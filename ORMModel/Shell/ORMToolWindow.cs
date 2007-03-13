@@ -228,9 +228,12 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Abstract Methods and Properties
 		#region ISelectionContainer overrides
 		/// <summary>
-		/// Passes the count request through to myCurrentORMSelectionContainer.
+		/// Counts the number of elements in the current selection.
+		/// Defers to <see cref="myCurrentORMSelectionContainer"/>.
 		/// </summary>
-		/// <returns>The number of objects selected in myCurrentORMSelectionContainer.</returns>
+		/// <remarks>
+		/// See <see cref="ModelingWindowPane.CountSelectedObjects"/> and <see cref="ISelectionContainer.CountObjects"/>.
+		/// </remarks>
 		protected override uint CountSelectedObjects()
 		{
 			uint retVal = 0;
@@ -249,9 +252,12 @@ namespace Neumont.Tools.ORM.Shell
 			return retVal;
 		}
 		/// <summary>
-		/// Passes the count request through to myCurrentORMSelectionContainer.
+		/// Counts the number of elements in the <see cref="ModelingWindowPane"/>.
+		/// Defers to <see cref="myCurrentORMSelectionContainer"/>.
 		/// </summary>
-		/// <returns>The total number of objects in myCurrentORMSelectionContainer.</returns>
+		/// <remarks>
+		/// See <see cref="ModelingWindowPane.CountAllObjects"/> and <see cref="ISelectionContainer.CountObjects"/>.
+		/// </remarks>
 		protected override uint CountAllObjects()
 		{
 			uint retVal = 0;
@@ -270,23 +276,29 @@ namespace Neumont.Tools.ORM.Shell
 			return retVal;
 		}
 		/// <summary>
-		/// Passes <see cref="GetSelectedComponents"/> through to <see cref="myCurrentORMSelectionContainer"/>
-		/// casted as a <see cref="ModelingWindowPane"/>.
+		/// Gets a read-only collection of currently selected elements in the <see cref="ModelingWindowPane"/>.
+		/// Defers to <see cref="myCurrentORMSelectionContainer"/>.
 		/// </summary>
+		/// <remarks>
+		/// See <see cref="ModelingWindowPane.GetSelectedComponents"/> and
+		/// <see cref="System.ComponentModel.Design.ISelectionService.GetSelectedComponents"/>.
+		/// </remarks>
 		public override ICollection GetSelectedComponents()
 		{
-			ModelingWindowPane pane = myCurrentORMSelectionContainer as ModelingWindowPane;
-			if (pane != null)
+			IORMSelectionContainer container = myCurrentORMSelectionContainer;
+			if (container != null)
 			{
-				return (pane == this) ? base.GetSelectedComponents() : pane.GetSelectedComponents();
+				return (container == this) ? base.GetSelectedComponents() : container.GetSelectedComponents();
 			}
 			return null;
 		}
 		/// <summary>
-		/// Passes the get request through to myCurrentORMSelectionContainer.
+		/// Returns the elements that are currently selected in the <see cref="ModelingWindowPane"/>.
+		/// Defers to <see cref="myCurrentORMSelectionContainer"/>.
 		/// </summary>
-		/// <param name="count">The number of objects to get.</param>
-		/// <param name="objects">An object array to store the objects retrieved from myCurrentORMSelectionContainer.</param>
+		/// <remarks>
+		/// See <see cref="ModelingWindowPane.GetSelectedObjects"/> and <see cref="ISelectionContainer.GetObjects"/>.
+		/// </remarks>
 		protected override void GetSelectedObjects(uint count, object[] objects)
 		{
 			IORMSelectionContainer container = myCurrentORMSelectionContainer;
@@ -303,10 +315,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Passes the get request through to myCurrentORMSelectionContainer.
+		/// Gets all elements in the <see cref="ModelingWindowPane"/>.
+		/// Defers to <see cref="myCurrentORMSelectionContainer"/>.
 		/// </summary>
-		/// <param name="count">The number of objects to get.</param>
-		/// <param name="objects">An object array to store the objects retrieved from myCurrentORMSelectionContainer.</param>
+		/// <remarks>
+		/// See <see cref="ModelingWindowPane.GetAllObjects"/> and <see cref="ISelectionContainer.GetObjects"/>.
+		/// </remarks>
 		protected override void GetAllObjects(uint count, object[] objects)
 		{
 			IORMSelectionContainer container = myCurrentORMSelectionContainer;
@@ -323,11 +337,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Passes the select request through to myCurrentORMSelectionContainer.
+		/// Selects elements in the <see cref="ModelingWindowPane"/>.
+		/// Defers to <see cref="myCurrentORMSelectionContainer"/>.
 		/// </summary>
-		/// <param name="count">The number of objects to select.</param>
-		/// <param name="objects">An array of objects which should be selected.</param>
-		/// <param name="flags">Unknown</param>
+		/// <remarks>
+		/// See <see cref="ModelingWindowPane.DoSelectObjects"/> and <see cref="ISelectionContainer.SelectObjects"/>.
+		/// </remarks>
 		protected override void DoSelectObjects(uint count, object[] objects, uint flags)
 		{
 			IORMSelectionContainer container = myCurrentORMSelectionContainer;
