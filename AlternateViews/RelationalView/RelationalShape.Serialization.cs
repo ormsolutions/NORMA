@@ -64,7 +64,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				context[RelationalModel.TablePositionDictionaryKey] = tablePositions = new Dictionary<ObjectType, PointD>();
 			}
 			while (reader.NodeType != XmlNodeType.Element && reader.Read()) ;
-			this.Associate(Store.ElementDirectory.GetElement(FromXml(reader.GetAttribute("SubjectRef"))));
+			if (this.Subject == null)
+			{
+				this.Associate(Store.ElementDirectory.GetElement(FromXml(reader.GetAttribute("SubjectRef"))));
+			}
 
 			TypeConverter pointConverter = TypeDescriptor.GetConverter(typeof(PointD));
 			while (reader.Read())

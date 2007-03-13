@@ -38,9 +38,12 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Shell;
+
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "UNDONE", "Diagram.TabImage")]
 	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
 	{
@@ -985,6 +988,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			base.OnInitialize();
 			this.RoutingStyle = VGRoutingStyle.VGRouteNone;
+			if (this.Subject == null)
+			{
+				ReadOnlyCollection<ORMModel> modelElements = this.Store.DefaultPartition.ElementDirectory.FindElements<ORMModel>();
+				if (modelElements.Count > 0)
+				{
+					this.Associate(modelElements[0]);
+				}
+			}
 		}
 		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
 		public override ShapeElement FixUpChildShapes(ModelElement childElement)

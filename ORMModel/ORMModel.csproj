@@ -392,6 +392,7 @@
     <Compile Include="Framework\Diagrams\LayoutEngine.cs" />
     <Compile Include="Framework\Diagrams\MultiShapeUtility.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
+    <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
     <Compile Include="ObjectModel\VerbalizationGenerator.cs">

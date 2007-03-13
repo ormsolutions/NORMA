@@ -36,6 +36,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
@@ -232,11 +233,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// Expand the diagram list for the selected shape
 		/// </summary>
 		DiagramList = 0x40000000000,
-        /// <summary>
-        /// Run the report generator
-        /// </summary>
-        GenerateReport = 0x80000000000,
-        /// <summary>
+		/// <summary>
+		/// Run the report generator
+		/// </summary>
+		GenerateReport = 0x80000000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
@@ -278,7 +279,7 @@ namespace Neumont.Tools.ORM.Shell
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
 			ORMDesignerCommands.CopyImage |
-            ORMDesignerCommands.DisplayOrientation |
+			ORMDesignerCommands.DisplayOrientation |
 			ORMDesignerCommands.DisplayConstraintsPosition |
 			ORMDesignerCommands.ExclusiveOrDecoupler |
 			ORMDesignerCommands.SelectAll |
@@ -286,8 +287,8 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerCommands.AutoLayout |
 			ORMDesignerCommands.AddInternalUniqueness |
 			ORMDesignerCommands.ToggleSimpleMandatory |
-            ORMDesignerCommands.GenerateReport |
-            ORMDesignerCommands.DeleteAny |
+			ORMDesignerCommands.GenerateReport |
+			ORMDesignerCommands.DeleteAny |
 			ORMDesignerCommands.DeleteAnyShape |
 			ORMDesignerCommands.DeleteShape |
 			(ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
@@ -328,13 +329,86 @@ namespace Neumont.Tools.ORM.Shell
 		public static readonly object ContextMenuItemNeedsSelectedTab = new object();
 		private void ContextMenuOpening(object sender, EventArgs e)
 		{
+			//ContextMenuStrip contextMenu = sender as ContextMenuStrip;
+			//bool haveSelectedTab = base.GetDesignerAtPoint(contextMenu.Location) != null;
+			//foreach (ToolStripItem item in contextMenu.Items)
+			//{
+			//    if (item.Tag == ContextMenuItemNeedsSelectedTab)
+			//    {
+			//        item.Enabled = haveSelectedTab;
+			//    }
+			//}
+
 			ContextMenuStrip contextMenu = sender as ContextMenuStrip;
-			bool haveSelectedTab = base.GetDesignerAtPoint(contextMenu.Location) != null;
-			foreach (ToolStripItem item in contextMenu.Items)
+			DiagramView designer = base.GetDesignerAtPoint(contextMenu.Location);
+			Partition partition = this.DocData.Store.DefaultPartition;
+
+			//Disable/Enable New Diagram Tabs stuff wow
+			ToolStripDropDownItem newPageMenuItem = (ToolStripDropDownItem)contextMenu.Items[ResourceStrings.DiagramCommandNewPage];
+			ToolStripItemCollection items = newPageMenuItem.DropDownItems;
+			int itemCount = items.Count;
+
+			for (int i = 0; i < itemCount; i++)
 			{
-				if (item.Tag == ContextMenuItemNeedsSelectedTab)
+				DomainClassInfo diagramInfo = (DomainClassInfo)items[i].Tag;
+				ReadOnlyCollection<ModelElement> modelElements = partition.ElementDirectory.FindElements(diagramInfo);
+
+				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), true);
+				if (attributes.Length > 0)
 				{
-					item.Enabled = haveSelectedTab;
+					DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
+					if (modelElements.Count > 0 & (attribute.DiagramOption & DiagramMenuDisplayOptions.AllowMultiple) == 0)
+					{
+						//DISABLE NEW
+						items[i].Enabled = false;
+					}
+					else
+					{
+						//ENABLE NEW
+						items[i].Enabled = true;
+					}
+				}
+			}
+
+			//If a diagram tab is selected
+			if (designer != null)
+			{
+				Diagram diagram = designer.Diagram;
+				//Retrieve all existing diagrams of the same type as the one selected
+				ReadOnlyCollection<ModelElement> modelElements = partition.ElementDirectory.FindElements(diagram.GetDomainClass(), true);
+				DomainClassInfo diagramInfo = diagram.GetDomainClass();
+
+				//Grab the attribute of the diagram type selected
+				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), true);
+				if (attributes.Length > 0)
+				{
+					DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
+					//If required but you only have 1 then disable delete
+					if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required)!= 0 && modelElements.Count <= 1)
+					{
+						//DISABLE DELETE
+						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandDeletePage];
+						deletePageMenuItem.Enabled = false;
+					}
+					else
+					{
+						//ALLOW DELETE
+						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandDeletePage];
+						deletePageMenuItem.Enabled = true;
+					}
+
+					if ((attribute.DiagramOption & DiagramMenuDisplayOptions.BlockRename) != 0)
+					{
+						//DISABLE RENAME
+						ToolStripMenuItem renamePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandRenamePage];
+						renamePageMenuItem.Enabled = false;
+					}
+					else
+					{
+						//ALLOW RENAME
+						ToolStripMenuItem renamePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandRenamePage];
+						renamePageMenuItem.Enabled = true;
+					}
 				}
 			}
 		}
@@ -347,6 +421,23 @@ namespace Neumont.Tools.ORM.Shell
 				ORMDiagram diagram = new ORMDiagram(store);
 				diagram.Associate(models.Count > 0 ? (ModelElement)models[0] : new ORMModel(store));
 				t.Commit();
+			}
+		}
+		private void ContextMenuNewPageClick(object sender, EventArgs e)
+		{
+			ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+			if (menuItem != null)
+			{
+				Store store = base.DocData.Store;
+				using (Transaction t = store.TransactionManager.BeginTransaction(menuItem.Name.Replace("&", string.Empty)))
+				{
+					DomainClassInfo diagramInfo = menuItem.Tag as DomainClassInfo;
+					if (diagramInfo != null)
+					{
+						store.ElementFactory.CreateElement(diagramInfo);
+						t.Commit();
+					}
+				}
 			}
 		}
 		private void ContextMenuDeletePageClick(object sender, EventArgs e)
@@ -430,9 +521,6 @@ namespace Neumont.Tools.ORM.Shell
 			if (base.LoadView())
 			{
 				ORMDesignerDocData document = (ORMDesignerDocData)this.DocData;
-
-				base.RegisterImageForDiagramType(typeof(ORMDiagram), ResourceStrings.DiagramTabImage);
-
 				#region Setup context menu
 				ContextMenuStrip contextMenu = base.ContextMenuStrip = new MultiDiagramContextMenuStrip();
 				contextMenu.ShowImageMargin = false;
@@ -440,64 +528,54 @@ namespace Neumont.Tools.ORM.Shell
 				ToolStripMenuItem newPageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandNewPage);
 				ToolStripMenuItem deletePageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandDeletePage);
 				ToolStripMenuItem renamePageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandRenamePage);
-				ToolStripMenuItem ormDiagramMenuItem = new ToolStripMenuItem("&ORM");
-				ormDiagramMenuItem.Image = ResourceStrings.DiagramTabImage;
-				ormDiagramMenuItem.Click += ContextMenuNewPageORMClick;
 				newPageMenuItem.DropDown = new ToolStripDropDown();
-				newPageMenuItem.DropDownItems.Add(ormDiagramMenuItem);
+				ToolStripItemCollection items = newPageMenuItem.DropDownItems;
+
+				ReadOnlyCollection<DomainClassInfo> diagrams = document.Store.DomainDataDirectory.FindDomainClass(Diagram.DomainClassId).AllDescendants;
+				int diagramCount = diagrams.Count;
+				for (int i = 0; i < diagramCount; ++i)
+				{
+					DomainClassInfo diagramInfo = diagrams[i];
+					object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), true);
+					if (attributes.Length > 0)
+					{
+						DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
+						Image image = attribute.Image;
+						string name = attribute.DisplayName;
+						if (string.IsNullOrEmpty(name))
+						{
+							name = diagramInfo.DisplayName;
+						}
+						if (image != null)
+						{
+							base.RegisterImageForDiagramType(diagramInfo.ImplementationClass, image);
+						}
+						ToolStripMenuItem newDiagramMenuItem = new ToolStripMenuItem(name, image, ContextMenuNewPageClick);
+						newDiagramMenuItem.Tag = diagramInfo;
+						items.Add(newDiagramMenuItem);
+					}
+				}
+				newPageMenuItem.Name = ResourceStrings.DiagramCommandNewPage;
 				newPageMenuItem.DropDown.ImageScalingSize = DiagramImageSize;
+
+				deletePageMenuItem.Name = ResourceStrings.DiagramCommandDeletePage;
 				deletePageMenuItem.Click += ContextMenuDeletePageClick;
 				deletePageMenuItem.Tag = ContextMenuItemNeedsSelectedTab;
+
+				renamePageMenuItem.Name = ResourceStrings.DiagramCommandRenamePage;
 				renamePageMenuItem.Click += ContextMenuRenamePageClick;
 				renamePageMenuItem.Tag = ContextMenuItemNeedsSelectedTab;
+
 				contextMenu.Items.AddRange(new ToolStripItem[] { newPageMenuItem, new ToolStripSeparator(), deletePageMenuItem, renamePageMenuItem });
 				#endregion // Setup context menu
-
-				#region HACK: Temporary RelationalView Context Menu stuff
-#if !DISABLE_RELATIONAL_VIEW_HACK
-				bool haveRelationalShapeDomainModel = false;
-				foreach (DomainModel model in document.Store.DomainModels)
-				{
-					if (model.GetType().FullName == "Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel")
-					{
-						haveRelationalShapeDomainModel = true;
-						break;
-					}
-				}
-				if (haveRelationalShapeDomainModel)
-				{
-					bool haveRelationalDiagram = false;
-					foreach (Diagram diagram in document.Store.ElementDirectory.FindElements<Diagram>(true))
-					{
-						if (diagram.GetType().FullName == "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram")
-						{
-							haveRelationalDiagram = true;
-							break;
-						}
-					}
-					if (!haveRelationalDiagram)
-					{
-						ToolStripMenuItem relationalViewMenuItem = new ToolStripMenuItem("&Relational View");
-						relationalViewMenuItem.Click += ContextMenuNewPageRelationalView;
-						newPageMenuItem.DropDownItems.Add(relationalViewMenuItem);
-					}
-					contextMenu.Opening += delegate(object sender, CancelEventArgs e)
-					{
-						DiagramView designer = base.GetDesignerAtPoint(((ContextMenuStrip)sender).Location);
-						renamePageMenuItem.Enabled = deletePageMenuItem.Enabled = (designer == null || designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram");
-					};
-				}
-#endif // !DISABLE_RELATIONAL_VIEW_HACK
-				#endregion // HACK: Temporary RelationalView Context Menu stuff
 
 				Store store = document.Store;
 				// Add our existing diagrams, or make a new one if we don't already have one
 				ReadOnlyCollection<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
 				int existingDiagramsCount = existingDiagrams.Count;
-				bool addDefaultDiagram = existingDiagramsCount == 0;
-				if (!addDefaultDiagram)
+				if (existingDiagramsCount != 0)
 				{
-					addDefaultDiagram = true;
+					bool seenDiagram = false;
 					Partition defaultPartition = store.DefaultPartition;
 					for (int i = 0; i < existingDiagramsCount; ++i)
 					{
@@ -505,37 +583,11 @@ namespace Neumont.Tools.ORM.Shell
 						if (existingDiagram.Partition == defaultPartition)
 						{
 							// Make the first diagram be selected
-							base.AddDiagram(existingDiagram, addDefaultDiagram);
-							addDefaultDiagram = false;
+							base.AddDiagram(existingDiagram, !seenDiagram);
+							seenDiagram = true;
 						}
 					}
 				}
-				if (addDefaultDiagram)
-				{
-					Diagram diagram = new ORMDiagram(store);
-					if (diagram.ModelElement == null)
-					{
-						// Make sure the diagram element is correctly attached to the model, and
-						// create a model if we don't have one yet.
-						ReadOnlyCollection<ORMModel> elements = store.ElementDirectory.FindElements<ORMModel>(true);
-						if (elements.Count <= 0)
-						{
-							diagram.Associate(new ORMModel(store));
-						}
-						else
-						{
-							Debug.Assert(elements.Count == 1);
-							diagram.Associate(elements[0]);
-						}
-					}
-					// The DocData events for adding new Diagrams to the DocView are not yet hooked up, so
-					// we need to explicitly add it here.
-					base.AddDiagram(diagram, true);
-				}
-
-				// TODO: We don't know where this call should go, because we're not even sure what it does...
-				// Make sure all of the shapes are set up correctly
-				base.CurrentDiagram.PerformShapeAnchoringRule();
 
 				// Make sure we get a closing notification so we can clear the
 				// selected components

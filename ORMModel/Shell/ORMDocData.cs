@@ -33,6 +33,7 @@ using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.Modeling;
 using EnvDTE;
 using System.Xml.Schema;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -324,7 +325,7 @@ namespace Neumont.Tools.ORM.Shell
 			Debug.Assert(myFileStream != null);
 			Stream stream = myFileStream;
 			Store store = this.Store;
-			
+
 			Debug.Assert(base.InLoad);
 			store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[NamedElementDictionary.DefaultAllowDuplicateNamesKey] = null;
 
@@ -351,6 +352,44 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					diagram.AutoPopulateShapes = false;
 					ORMDesignerDocView.AutoLayoutDiagram(diagram, diagram.NestedChildShapes);
+				}
+			}
+
+			// Go through each diagram type, look for the 'Required' setting on the DiagramMenuDisplay attribute, and
+			// create a diagram if needed.
+			IList<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
+			int existingDiagramCount = existingDiagrams.Count;
+			ReadOnlyCollection<DomainClassInfo> possibleDiagramTypes = store.DomainDataDirectory.FindDomainClass(Diagram.DomainClassId).AllDescendants;
+			int possibleDiagramTypeCount = possibleDiagramTypes.Count;
+			for (int i = 0; i < possibleDiagramTypeCount; ++i)
+			{
+				DomainClassInfo diagramInfo = possibleDiagramTypes[i];
+				Type testType = diagramInfo.ImplementationClass;
+				if (!testType.IsAbstract)
+				{
+					object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
+					if (attributes.Length > 0)
+					{
+						DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
+						if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required) != 0)
+						{
+							int j = 0;
+							for (; j < existingDiagramCount; ++j)
+							{
+								if (existingDiagrams[j].GetType() == testType)
+								{
+									break;
+								}
+							}
+
+							if (j == existingDiagramCount)
+							{
+								//A diagram does not exist for this required diagram type.
+								//Create one.
+								store.ElementFactory.CreateElement(diagramInfo);
+							}
+						}
+					}
 				}
 			}
 		}

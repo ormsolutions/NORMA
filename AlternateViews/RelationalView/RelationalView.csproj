@@ -72,6 +72,10 @@
     <EmbeddedResource Include="RelationalShape.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShapeModel\RelationalDiagram.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RelationalDiagram.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ORMPackage.snk">
@@ -126,6 +130,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>RelationalShape.SerializationExtensions.cs</LastGenOutput>
     </Content>
+    <Content Include="Resources\RelationalViewTabImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Version.cs">
@@ -181,6 +186,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RelationalShape.AttachRules.xml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\RelationalDiagram.cs" />
     <Compile Include="ShapeModel\ForeignKeyConnector.cs" />
     <Compile Include="ShapeModel\RelationalShape.cs" />
     <Compile Include="RelationalShape.SerializationExtensions.cs">

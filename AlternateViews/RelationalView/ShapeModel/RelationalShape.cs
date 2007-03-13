@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.OIALModel;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
@@ -34,7 +35,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	/// Based on the current version of DCIL.xsd.
 	/// </remarks>
 	internal partial class RelationalModel
-	{		
+	{
 		#region Validation Rules
 		/// <summary>
 		/// Generates the tables when the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/> has been added to the model.
@@ -392,7 +393,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 							break;
 						}
 					}
-					
+
 					// Ensures that the parents of all ConceptTypeChild objects in this UniquenessConstraint belong to this ConceptType
 					if (addConstraint)
 					{
@@ -831,7 +832,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			{
 				string word = splitStrings[i];
 				string firstLetter = word[0].ToString();
-				splitStrings[i] = string.Concat(firstLetter.ToUpper(), word.Remove(0,1));
+				splitStrings[i] = string.Concat(firstLetter.ToUpper(), word.Remove(0, 1));
 			}
 			return string.Concat(splitStrings);
 		}
@@ -945,69 +946,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		#endregion // Helper Methods
 	}
 
-	internal partial class RelationalDiagram
-	{
-		/// <summary>
-		/// Specifies the default name of the relational view tab.
-		/// </summary>
-		private const string DefaultName = "Relational View";
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public RelationalDiagram(Store store, params PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public RelationalDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-			this.Name = DefaultName;
-		}
-		/// <summary>
-		/// Stop all auto shape selection on transaction commit except when
-		/// the item is being dropped.
-		/// </summary>
-		public override IList FixUpDiagramSelection(ShapeElement newChildShape)
-		{
-			if (DropTargetContext.HasDropTargetContext(Store.TransactionManager.CurrentTransaction))
-			{
-				return base.FixUpDiagramSelection(newChildShape);
-			}
-			return null;
-		}
-		/// <summary>
-		/// Disallows changing the name of the Relational Diagram
-		/// </summary>
-		[RuleOn(typeof(RelationalDiagram))]
-		private sealed partial class NameChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
-			/// its default name if changed by a user.
-			/// </summary>
-			/// <param name="e"><see cref="Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs"/>.</param>
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				if (e.DomainProperty.Id == Diagram.NameDomainPropertyId)
-				{
-					RelationalDiagram diagram = e.ModelElement as RelationalDiagram;
-					if (diagram != null && diagram.Name != DefaultName)
-					{
-						diagram.Name = DefaultName;
-					}
-				}
-			}
-		}
-	}
 	internal partial class RelationalShapeDomainModel : IORMModelEventSubscriber
 	{
 		#region IORMModelEventSubscriber Implementation

@@ -453,7 +453,6 @@ namespace Neumont.Tools.ORM
 
 		#region Private resource ids
 		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";
-		private const string DiagramTabImage_Id = "Diagram.TabImage";
 		#endregion // Private resource ids
 
 		#region Public accessor properties
@@ -480,17 +479,6 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return GetObject(ResourceManagers.Diagram, FactEditorIntellisenseImageList_Id) as ImageListStreamer;
-			}
-		}
-		/// <summary>
-		/// The <see cref="System.Drawing.Bitmap"/> displayed on <see cref="Shell.ORMDesignerDocView"/> tabs for
-		/// <see cref="ORMDiagram"/>s.
-		/// </summary>
-		public static System.Drawing.Bitmap DiagramTabImage
-		{
-			get
-			{
-				return GetObject(ResourceManagers.Diagram, DiagramTabImage_Id) as System.Drawing.Bitmap;
 			}
 		}
 		#endregion // Public accessor properties
