@@ -1408,7 +1408,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int constraintCount = constraints.Count;
 				for (int k = 0; k < constraintCount; ++k)
 				{
-					if (constraints[k] is MandatoryConstraint)
+					MandatoryConstraint mandatoryConstraint;
+					if (null != (mandatoryConstraint = constraints[k] as MandatoryConstraint) &&
+						mandatoryConstraint.Modality == ConstraintModality.Alethic)
 					{
 						// The role must be part of a fact type that has a role in the preferred identifier.
 						if (preferredIdentifierRoles == null)
