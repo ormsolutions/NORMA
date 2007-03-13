@@ -39,9 +39,9 @@ using System.Xml.Serialization;
 
 namespace Neumont.Tools.ORM.DatabaseImport
 {
-    /// <summary>
-    /// Represents a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "schema", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilSchema : IXmlSerializable
 	{
@@ -49,17 +49,17 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		private IList<DcilTable> _tables;
 		private IList<DcilProcedure> _procedures;
 		private IDcilSchemaProvider _dataProvider;
-        /// <summary>
-        /// Namespaces that are associated with the Schema
-        /// </summary>
+		/// <summary>
+		/// Namespaces that are associated with the Schema
+		/// </summary>
 		[XmlNamespaceDeclarations]
 		public XmlSerializerNamespaces Namespaces;
-        /// <summary>
-        /// Serializes an instance of <see cref="DcilSchema"/>
-        /// </summary>
-        /// <param name="schema">The <see cref="DcilSchema"/> to Serialize</param>
-        /// <param name="writer">The <see cref="System.IO.TextWriter"/> to write to</param>
-		public static void Serialize(DcilSchema schema, System.IO.TextWriter writer)
+		/// <summary>
+		/// Serializes an instance of <see cref="DcilSchema"/>
+		/// </summary>
+		/// <param name="schema">The <see cref="DcilSchema"/> to Serialize</param>
+		/// <param name="stream">The <see cref="System.IO.MemoryStream"/> to write to</param>
+		public static void Serialize(DcilSchema schema, System.IO.MemoryStream stream)
 		{
 			schema.Namespaces = new XmlSerializerNamespaces();
 			schema.Namespaces.Add("dcl", "http://schemas.orm.net/DIL/DCIL");
@@ -69,74 +69,74 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			schema.Namespaces.Add("dml", "http://schemas.orm.net/DIL/DMIL");
 			schema.Namespaces.Add("ddl", "http://schemas.orm.net/DIL/DDIL");
 			XmlSerializer s = new XmlSerializer(typeof(DcilSchema));
-			s.Serialize(writer, schema);
+			s.Serialize(stream, schema);
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilSchema"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilSchema"/>
+		/// </summary>
 		public DcilSchema()
 		{
 			this._name = "UNKNOWN";
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilSchema"/>
-        /// </summary>
-        /// <param name="dataProvider"></param>
-        /// <param name="name"></param>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilSchema"/>
+		/// </summary>
+		/// <param name="dataProvider"></param>
+		/// <param name="name"></param>
 		public DcilSchema(IDcilSchemaProvider dataProvider, string name)
 		{
 			this._name = name;
 			this._dataProvider = dataProvider;
 		}
-        /// <summary>
-        /// Returns a <see cref="DcilSchema"/> object from given schema name
-        /// </summary>
-        /// <param name="schemaName">The name of the schema to load</param>
-        /// <param name="connection">The IDbConnection to use to retrieve the information</param>
-        /// <param name="dataProviderName">The invariant name of the Data Provider</param>
-        /// <exception cref="NotSupportedException"/>
-        /// <returns><see cref="DcilSchema"/></returns>
-        public static DcilSchema FromSchemaName(string schemaName, IDbConnection connection, string dataProviderName)
-        {
-            if (connection == null) throw new ArgumentNullException("connection");
-            if (String.IsNullOrEmpty(schemaName)) throw new ArgumentException("The name of the schema must not be empty", "schemaName");
-            IDcilSchemaProvider provider = GetDcilSchemaProvider(connection, dataProviderName);
-            return provider.LoadSchema(schemaName);
-        }
-        /// <summary>
-        /// Retrieves a list of available schema names for the given <see cref="System.Data.IDbConnection"/> and Data Provider
-        /// </summary>
-        /// <param name="connection">The IDbConnection to use to retrieve the information</param>
-        /// <param name="dataProviderName">The invariant name of the Data Provider</param>
-        /// <returns></returns>
-        public static IList<string> GetAvailableSchemaNames(System.Data.IDbConnection connection, string dataProviderName)
-        {
-            return GetDcilSchemaProvider(connection, dataProviderName).GetAvailableSchemaNames();
-        }
-        /// <summary>
-        /// Returns a <see cref="IDcilSchemaProvider"/> object from given connection and data provider
-        /// </summary>
-        /// <param name="connection">The IDbConnection to use to retrieve the information</param>
-        /// <param name="dataProviderName">The invariant name of the Data Provider</param>
-        /// <returns><see cref="IDcilSchemaProvider"/></returns>
-        public static IDcilSchemaProvider GetDcilSchemaProvider(IDbConnection connection, string dataProviderName)
-        {
-            IDcilSchemaProvider provider = null;
-            switch (dataProviderName)
-            {
-                case "MySql.Data.MySqlClient":
-                    provider = new MySqlDcilSchemaProvider(connection);
-                    break;
-                case "System.Data.SqlClient":
-                    provider = new SqlServer2005DcilSchemaProvider(connection);
-                    break;
-            }
-            if (provider == null) throw new NotSupportedException("The specified invariant name is not supported.");
-            return provider;
-        }
-        /// <summary>
-        /// Gets or Sets the Name of the Schema
-        /// </summary>
+		/// <summary>
+		/// Returns a <see cref="DcilSchema"/> object from given schema name
+		/// </summary>
+		/// <param name="schemaName">The name of the schema to load</param>
+		/// <param name="connection">The IDbConnection to use to retrieve the information</param>
+		/// <param name="dataProviderName">The invariant name of the Data Provider</param>
+		/// <exception cref="NotSupportedException"/>
+		/// <returns><see cref="DcilSchema"/></returns>
+		public static DcilSchema FromSchemaName(string schemaName, IDbConnection connection, string dataProviderName)
+		{
+			if (connection == null) throw new ArgumentNullException("connection");
+			if (String.IsNullOrEmpty(schemaName)) throw new ArgumentException("The name of the schema must not be empty", "schemaName");
+			IDcilSchemaProvider provider = GetDcilSchemaProvider(connection, dataProviderName);
+			return provider.LoadSchema(schemaName);
+		}
+		/// <summary>
+		/// Retrieves a list of available schema names for the given <see cref="System.Data.IDbConnection"/> and Data Provider
+		/// </summary>
+		/// <param name="connection">The IDbConnection to use to retrieve the information</param>
+		/// <param name="dataProviderName">The invariant name of the Data Provider</param>
+		/// <returns></returns>
+		public static IList<string> GetAvailableSchemaNames(System.Data.IDbConnection connection, string dataProviderName)
+		{
+			return GetDcilSchemaProvider(connection, dataProviderName).GetAvailableSchemaNames();
+		}
+		/// <summary>
+		/// Returns a <see cref="IDcilSchemaProvider"/> object from given connection and data provider
+		/// </summary>
+		/// <param name="connection">The IDbConnection to use to retrieve the information</param>
+		/// <param name="dataProviderName">The invariant name of the Data Provider</param>
+		/// <returns><see cref="IDcilSchemaProvider"/></returns>
+		public static IDcilSchemaProvider GetDcilSchemaProvider(IDbConnection connection, string dataProviderName)
+		{
+			IDcilSchemaProvider provider = null;
+			switch (dataProviderName)
+			{
+				case "MySql.Data.MySqlClient":
+					provider = new MySqlDcilSchemaProvider(connection);
+					break;
+				case "System.Data.SqlClient":
+					provider = new SqlServer2005DcilSchemaProvider(connection);
+					break;
+			}
+			if (provider == null) throw new NotSupportedException("The specified invariant name is not supported.");
+			return provider;
+		}
+		/// <summary>
+		/// Gets or Sets the Name of the Schema
+		/// </summary>
 		public string Name
 		{
 			get
@@ -153,9 +153,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				}
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the list of <see cref="DcilTable"/> objects that belong to this Schema
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the list of <see cref="DcilTable"/> objects that belong to this Schema
+		/// </summary>
 		public IList<DcilTable> Tables
 		{
 			get
@@ -167,9 +167,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				return this._tables;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the list of <see cref="DcilProcedure"/> objects that belong to this Schema
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the list of <see cref="DcilProcedure"/> objects that belong to this Schema
+		/// </summary>
 		public IList<DcilProcedure> Procedures
 		{
 			get
@@ -181,36 +181,36 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				return this._procedures;
 			}
 		}
-        /// <summary>
-        /// Returns the name of the Schema
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Returns the name of the Schema
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return _name;
 		}
 
 		#region IXmlSerializable Members
-        /// <summary>
-        /// This property is reserved, apply the <see cref="XmlSchemaProviderAttribute"/> to the class instead
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// This property is reserved, apply the <see cref="XmlSchemaProviderAttribute"/> to the class instead
+		/// </summary>
+		/// <returns></returns>
 		public XmlSchema GetSchema()
 		{
 			return null;
 		}
-        /// <summary>
-        /// Generates an object from its XML representation
-        /// </summary>
-        /// <param name="reader">The <see cref="XmlReader"/> stream from which the object is read</param>
+		/// <summary>
+		/// Generates an object from its XML representation
+		/// </summary>
+		/// <param name="reader">The <see cref="XmlReader"/> stream from which the object is read</param>
 		public void ReadXml(XmlReader reader)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
-        /// <summary>
-        /// Converts the object into its XML representation
-        /// </summary>
-        /// <param name="writer">The <see cref="XmlWriter"/> stream to which the object is written</param>
+		/// <summary>
+		/// Converts the object into its XML representation
+		/// </summary>
+		/// <param name="writer">The <see cref="XmlWriter"/> stream to which the object is written</param>
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _name);
@@ -224,9 +224,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		}
 		#endregion
 	}
-    /// <summary>
-    /// Represents a DCIL Table element of a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL Table element of a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "table", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilTable : IXmlSerializable
 	{
@@ -235,26 +235,26 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		private IList<DcilColumn> _columns;
 		private IList<DcilUniquenessConstraint> _uniConstraints;
 		private IList<DcilReferenceConstraint> _refConstraints;
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilTable"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilTable"/>
+		/// </summary>
 		public DcilTable()
 		{
 			this._schemaName = "UNKNOWN";
 			this._tableName = "UNKNOWN";
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilTable"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilTable"/>
+		/// </summary>
 		public DcilTable(IDcilSchemaProvider dataProvider, string schemaName, string tableName)
 		{
 			this._dataProvider = dataProvider;
 			this._schemaName = schemaName;
 			this._tableName = tableName;
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Schema to which the Table belongs to
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Schema to which the Table belongs to
+		/// </summary>
 		public string SchemaName
 		{
 			get
@@ -272,9 +272,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				}
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Table
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Table
+		/// </summary>
 		public string TableName
 		{
 			get
@@ -292,9 +292,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				}
 			}
 		}
-        /// <summary>
-        /// Gets the list of <see cref="DcilColumn"/> objects that belong to the Table
-        /// </summary>
+		/// <summary>
+		/// Gets the list of <see cref="DcilColumn"/> objects that belong to the Table
+		/// </summary>
 		public IList<DcilColumn> Columns
 		{
 			get
@@ -306,9 +306,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				return this._columns;
 			}
 		}
-        /// <summary>
-        /// Gets the list of <see cref="DcilUniquenessConstraint"/> objects that belong to the Table
-        /// </summary>
+		/// <summary>
+		/// Gets the list of <see cref="DcilUniquenessConstraint"/> objects that belong to the Table
+		/// </summary>
 		public IList<DcilUniquenessConstraint> UniquenessConstraints
 		{
 			get
@@ -320,9 +320,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				return this._uniConstraints;
 			}
 		}
-        /// <summary>
-        /// Gets the list of <see cref="DcilReferenceConstraint"/> objects that belong to the Table
-        /// </summary>
+		/// <summary>
+		/// Gets the list of <see cref="DcilReferenceConstraint"/> objects that belong to the Table
+		/// </summary>
 		public IList<DcilReferenceConstraint> ReferenceConstraints
 		{
 			get
@@ -334,40 +334,40 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				return this._refConstraints;
 			}
 		}
-        /// <summary>
-        /// Returns the Schema-qualified name of the Table
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Returns the Schema-qualified name of the Table
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return _schemaName + "." + _tableName;
 		}
 
 		#region IXmlSerializable Members
-        /// <summary>
-        /// This property is reserved, apply the <see cref="XmlSchemaProviderAttribute"/> to the class instead
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// This property is reserved, apply the <see cref="XmlSchemaProviderAttribute"/> to the class instead
+		/// </summary>
+		/// <returns></returns>
 		public XmlSchema GetSchema()
 		{
 			return null;
 		}
-        /// <summary>
-        /// Generates an object from its XML representation
-        /// </summary>
-        /// <param name="reader">The <see cref="XmlReader"/> stream from which the object is read</param>
+		/// <summary>
+		/// Generates an object from its XML representation
+		/// </summary>
+		/// <param name="reader">The <see cref="XmlReader"/> stream from which the object is read</param>
 		public void ReadXml(XmlReader reader)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
-        /// <summary>
-        /// Converts the object into its XML representation
-        /// </summary>
-        /// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
+		/// <summary>
+		/// Converts the object into its XML representation
+		/// </summary>
+		/// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _tableName);
-            writer.WriteAttributeString("oilRefName", _tableName);
+			writer.WriteAttributeString("oilRefName", _tableName);
 
 			IList<DcilColumn> columns = Columns;
 			int columnCount = columns.Count;
@@ -395,25 +395,25 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		}
 		#endregion
 	}
-    /// <summary>
-    /// Represents a DCIL Column element of a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL Column element of a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "column", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilColumn : IXmlSerializable
 	{
 		private string _name;
 		private bool _isNullable, _isIdentity;
 		private DcilDataType _dataType;
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilColumn"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilColumn"/>
+		/// </summary>
 		public DcilColumn()
 		{
 			this._name = "UNKNOWN";
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilColumn"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilColumn"/>
+		/// </summary>
 		public DcilColumn(string name, DcilDataType dataType, bool isNullable, bool isIdentity)
 		{
 			this._name = name;
@@ -421,9 +421,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._isNullable = isNullable;
 			this._isIdentity = isIdentity;
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Column
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Column
+		/// </summary>
 		public string Name
 		{
 			get
@@ -435,9 +435,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._name = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets a value indicating whether or not the Columns allows nulls
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets a value indicating whether or not the Columns allows nulls
+		/// </summary>
 		public bool IsNullable
 		{
 			get
@@ -449,9 +449,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._isNullable = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets a value indicating whether or not the Column has an Identity Specification
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets a value indicating whether or not the Column has an Identity Specification
+		/// </summary>
 		public bool IsIdentity
 		{
 			get
@@ -463,40 +463,40 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._isIdentity = value;
 			}
 		}
-        /// <summary>
-        /// Returns the name of the Column
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Returns the name of the Column
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return _name;
 		}
 
 		#region IXmlSerializable Members
-        /// <summary>
-        /// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+		/// </summary>
+		/// <returns></returns>
 		public XmlSchema GetSchema()
 		{
 			return null;
 		}
-        /// <summary>
-        /// Generates an object from its XML representation
-        /// </summary>
-        /// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
+		/// <summary>
+		/// Generates an object from its XML representation
+		/// </summary>
+		/// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
 		public void ReadXml(XmlReader reader)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
-        /// <summary>
-        /// Converts the object into its XML representation
-        /// </summary>
-        /// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
+		/// <summary>
+		/// Converts the object into its XML representation
+		/// </summary>
+		/// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _name);
-            writer.WriteAttributeString("oilRefName", _name);
+			writer.WriteAttributeString("oilRefName", _name);
 			writer.WriteAttributeString("isNullable", _isNullable.ToString().ToLowerInvariant());
 			writer.WriteAttributeString("isIdentity", _isIdentity.ToString().ToLowerInvariant());
 			XmlSerializer dataTypeSerializer = new XmlSerializer(typeof(DcilDataType));
@@ -504,9 +504,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		}
 		#endregion
 	}
-    /// <summary>
-    /// Represents a DCIL UniquenessConstraint element of a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL UniquenessConstraint element of a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "uniquenessConstraint", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilUniquenessConstraint : IXmlSerializable
 	{
@@ -514,9 +514,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		private string _name, _schema;
 		private string _parentTable, _parentTableSchema;
 		private StringCollection _columns;
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilUniquenessConstraint"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilUniquenessConstraint"/>
+		/// </summary>
 		public DcilUniquenessConstraint()
 		{
 			this._schema = "UNKNOWN";
@@ -524,9 +524,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._parentTable = "UNKNOWN";
 			this._parentTableSchema = "UNKNOWN";
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilUniquenessConstraint"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilUniquenessConstraint"/>
+		/// </summary>
 		public DcilUniquenessConstraint(string schema, string name, string parentTableSchema, string parentTable, StringCollection columns, bool isPrimary)
 		{
 			this._schema = schema;
@@ -536,9 +536,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._columns = columns;
 			this._isPrimary = isPrimary;
 		}
-        /// <summary>
-        /// Gets or Sets a value indicating whether or not the Column has an Identity Specification
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets a value indicating whether or not the Column has an Identity Specification
+		/// </summary>
 		public bool IsPrimary
 		{
 			get
@@ -550,9 +550,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._isPrimary = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Uniqueness Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Uniqueness Constraint
+		/// </summary>
 		public string Name
 		{
 			get
@@ -564,9 +564,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._name = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Schema to which the Uniqueness Constraint belongs to
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Schema to which the Uniqueness Constraint belongs to
+		/// </summary>
 		public string Schema
 		{
 			get
@@ -578,9 +578,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._schema = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Table to which the Uniqueness Constraint belongs to
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Table to which the Uniqueness Constraint belongs to
+		/// </summary>
 		public string ParentTable
 		{
 			get
@@ -592,9 +592,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._parentTable = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Schema of the parent Table to which the Uniqueness Constraint belongs to
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Schema of the parent Table to which the Uniqueness Constraint belongs to
+		/// </summary>
 		public string ParentTableSchema
 		{
 			get
@@ -606,9 +606,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._parentTableSchema = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets a collection of Column names
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets a collection of Column names
+		/// </summary>
 		public StringCollection Columns
 		{
 			get
@@ -620,36 +620,36 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._columns = value;
 			}
 		}
-        /// <summary>
-        /// Returns the Schema-qualified name of the Uniqueness Constraint
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Returns the Schema-qualified name of the Uniqueness Constraint
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return _schema + "." + _name;
 		}
 
 		#region IXmlSerializable Members
-        /// <summary>
-        /// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+		/// </summary>
+		/// <returns></returns>
 		public XmlSchema GetSchema()
 		{
 			return null;
 		}
-        /// <summary>
-        /// Generates an object from its XML representation
-        /// </summary>
-        /// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
+		/// <summary>
+		/// Generates an object from its XML representation
+		/// </summary>
+		/// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
 		public void ReadXml(XmlReader reader)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
-        /// <summary>
-        /// Converts the object into its XML representation
-        /// </summary>
-        /// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
+		/// <summary>
+		/// Converts the object into its XML representation
+		/// </summary>
+		/// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _name);
@@ -665,18 +665,18 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		}
 		#endregion
 	}
-    /// <summary>
-    /// Represents a DCIL ReferenceConstraint element of a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL ReferenceConstraint element of a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "referenceConstraint", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilReferenceConstraint : IXmlSerializable
 	{
 		private string _schema, _name;
 		private string _sourceTableSchema, _sourceTable, _targetTableSchema, _targetTable;
 		private StringCollection _sourceColumns, _targetColumns;
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilReferenceConstraint"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilReferenceConstraint"/>
+		/// </summary>
 		public DcilReferenceConstraint()
 		{
 			this._schema = "UNKNOWN";
@@ -686,9 +686,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._targetTable = "UNKNOWN";
 			this._targetTableSchema = "UNKNOWN";
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilReferenceConstraint"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilReferenceConstraint"/>
+		/// </summary>
 		public DcilReferenceConstraint(string schema, string name, string sourceTableSchema, string sourceTable, string targetTableSchema, string targetTable, StringCollection sourceColumns, StringCollection targetColumns)
 		{
 			this._schema = schema;
@@ -700,9 +700,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._sourceColumns = sourceColumns;
 			this._targetColumns = targetColumns;
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Schema to which the Reference Constraint belongs to
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Schema to which the Reference Constraint belongs to
+		/// </summary>
 		public string Schema
 		{
 			get
@@ -714,9 +714,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._schema = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the name of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the name of the Reference Constraint
+		/// </summary>
 		public string Name
 		{
 			get
@@ -728,9 +728,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._name = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the Schema of the Source Table of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the Schema of the Source Table of the Reference Constraint
+		/// </summary>
 		public string SourceTableSchema
 		{
 			get
@@ -742,9 +742,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._sourceTableSchema = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the Source Table of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the Source Table of the Reference Constraint
+		/// </summary>
 		public string SourceTable
 		{
 			get
@@ -756,9 +756,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._sourceTable = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the Schema of the Target Table of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the Schema of the Target Table of the Reference Constraint
+		/// </summary>
 		public string TargetTableSchema
 		{
 			get
@@ -770,9 +770,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._targetTableSchema = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the Target Table of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the Target Table of the Reference Constraint
+		/// </summary>
 		public string TargetTable
 		{
 			get
@@ -784,9 +784,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._targetTable = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the collection of Source Columns of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the collection of Source Columns of the Reference Constraint
+		/// </summary>
 		public StringCollection SourceColumns
 		{
 			get
@@ -798,9 +798,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._sourceColumns = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the collection of Target Columns of the Reference Constraint
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the collection of Target Columns of the Reference Constraint
+		/// </summary>
 		public StringCollection TargetColumns
 		{
 			get
@@ -812,36 +812,36 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._targetColumns = value;
 			}
 		}
-        /// <summary>
-        /// Returns the Schema-qualified name of the Reference Constraint
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Returns the Schema-qualified name of the Reference Constraint
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return _schema + "." + _name;
 		}
 
 		#region IXmlSerializable Members
-        /// <summary>
-        /// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+		/// </summary>
+		/// <returns></returns>
 		public XmlSchema GetSchema()
 		{
 			return null;
 		}
-        /// <summary>
-        /// Generates an object from its XML representation
-        /// </summary>
-        /// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
+		/// <summary>
+		/// Generates an object from its XML representation
+		/// </summary>
+		/// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
 		public void ReadXml(XmlReader reader)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
-        /// <summary>
-        /// Converts the object into its XML representation
-        /// </summary>
-        /// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
+		/// <summary>
+		/// Converts the object into its XML representation
+		/// </summary>
+		/// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteAttributeString("name", _name);
@@ -864,107 +864,107 @@ namespace Neumont.Tools.ORM.DatabaseImport
 
 		#endregion
 	}
-    /// <summary>
-    /// Represents a DCIL PredefinedDataType element of a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL PredefinedDataType element of a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "predefinedDataType", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilDataType : IXmlSerializable
 	{
-        /// <summary>
-        /// Represents a predefined data type as defined in the DILDT Scehma
-        /// </summary>
+		/// <summary>
+		/// Represents a predefined data type as defined in the DILDT Scehma
+		/// </summary>
 		public enum DCILType
 		{
-            /// <summary>
-            /// Fixed-length character data
-            /// </summary>
+			/// <summary>
+			/// Fixed-length character data
+			/// </summary>
 			CharacterLargeObject,
-            /// <summary>
-            /// Fixed-length character data
-            /// </summary>
+			/// <summary>
+			/// Fixed-length character data
+			/// </summary>
 			Character,
-            /// <summary>
-            /// Variable-length data
-            /// </summary>
+			/// <summary>
+			/// Variable-length data
+			/// </summary>
 			CharacterVarying,
-            /// <summary>
-            /// Binary data
-            /// </summary>
+			/// <summary>
+			/// Binary data
+			/// </summary>
 			BinaryLargeObject,
-            /// <summary>
-            /// Fixed precision and scale numeric data
-            /// </summary>
+			/// <summary>
+			/// Fixed precision and scale numeric data
+			/// </summary>
 			Numeric,
-            /// <summary>
-            /// Fixed precision and scale numeric data
-            /// </summary>
+			/// <summary>
+			/// Fixed precision and scale numeric data
+			/// </summary>
 			Decimal,
-            /// <summary>
-            /// Integer data from -2^15 through 2^15 - 1
-            /// </summary>
+			/// <summary>
+			/// Integer data from -2^15 through 2^15 - 1
+			/// </summary>
 			SmallInt,
-            /// <summary>
-            /// Integer data from -2^31 through 2^31 - 1
-            /// </summary>
+			/// <summary>
+			/// Integer data from -2^31 through 2^31 - 1
+			/// </summary>
 			Integer,
-            /// <summary>
-            /// Integer data from -2^63 through 2^63-1
-            /// </summary>
+			/// <summary>
+			/// Integer data from -2^63 through 2^63-1
+			/// </summary>
 			BigInt,
-            /// <summary>
-            /// Floating precision number data from -1.79E + 308 through 1.79E + 308
-            /// </summary>
+			/// <summary>
+			/// Floating precision number data from -1.79E + 308 through 1.79E + 308
+			/// </summary>
 			Float,
-            /// <summary>
-            /// Floating precision number data from -3.40E + 38 through 3.40E + 38
-            /// </summary>
+			/// <summary>
+			/// Floating precision number data from -3.40E + 38 through 3.40E + 38
+			/// </summary>
 			Real,
-            /// <summary>
-            /// Double precision number data
-            /// </summary>
+			/// <summary>
+			/// Double precision number data
+			/// </summary>
 			DoublePrecision,
-            /// <summary>
-            /// Boolean data
-            /// </summary>
+			/// <summary>
+			/// Boolean data
+			/// </summary>
 			Boolean,
-            /// <summary>
-            /// Date data
-            /// </summary>
+			/// <summary>
+			/// Date data
+			/// </summary>
 			Date,
-            /// <summary>
-            /// Time data
-            /// </summary>
+			/// <summary>
+			/// Time data
+			/// </summary>
 			Time,
-            /// <summary>
-            /// Date and time data
-            /// </summary>
+			/// <summary>
+			/// Date and time data
+			/// </summary>
 			Timestamp,
-            /// <summary>
-            /// Interval data
-            /// </summary>
+			/// <summary>
+			/// Interval data
+			/// </summary>
 			Interval
 		}
 
 		private DCILType _type;
 		private long _size, _scale;
 		private short _precision;
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilDataType"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilDataType"/>
+		/// </summary>
 		public DcilDataType()
 			: this(DCILType.CharacterVarying)
 		{
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilDataType"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilDataType"/>
+		/// </summary>
 		public DcilDataType(DCILType type)
 			: this(type, -1, -1, -1)
 		{
 		}
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DcilDataType"/>
-        /// </summary>
+		/// <summary>
+		/// Instantiates a new instance of <see cref="DcilDataType"/>
+		/// </summary>
 		public DcilDataType(DCILType type, long size, long scale, short precision)
 		{
 			this._type = type;
@@ -972,9 +972,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			this._scale = scale;
 			this._precision = precision;
 		}
-        /// <summary>
-        /// Gets or Sets the <see cref="DcilDataType.DCILType"/> of the DcilDataType
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the <see cref="DcilDataType.DCILType"/> of the DcilDataType
+		/// </summary>
 		public DCILType Type
 		{
 			get
@@ -986,9 +986,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._type = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the size of the Data Type
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the size of the Data Type
+		/// </summary>
 		public long Size
 		{
 			get
@@ -1000,9 +1000,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._size = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the scale of the Data Type
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the scale of the Data Type
+		/// </summary>
 		public long Scale
 		{
 			get
@@ -1014,9 +1014,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._scale = value;
 			}
 		}
-        /// <summary>
-        /// Gets or Sets the precision of the Data Type
-        /// </summary>
+		/// <summary>
+		/// Gets or Sets the precision of the Data Type
+		/// </summary>
 		public short Precision
 		{
 			get
@@ -1028,10 +1028,10 @@ namespace Neumont.Tools.ORM.DatabaseImport
 				this._precision = value;
 			}
 		}
-        /// <summary>
-        /// Converts the <see cref="DcilDataType.DCILType"/> of the DcilDataType to a <see cref="System.Data.DbType"/>
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Converts the <see cref="DcilDataType.DCILType"/> of the DcilDataType to a <see cref="System.Data.DbType"/>
+		/// </summary>
+		/// <returns></returns>
 		public DbType ConvertToADODataType()
 		{
 			switch (this._type)
@@ -1070,51 +1070,44 @@ namespace Neumont.Tools.ORM.DatabaseImport
 					return DbType.Object;
 			}
 		}
-        /// <summary>
-        /// Returns the string representation of the <see cref="DcilDataType.DCILType"/> of the DcilDataType
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// Returns the string representation of the <see cref="DcilDataType.DCILType"/> of the DcilDataType
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return _type.ToString();
 		}
 
 		#region IXmlSerializable Members
-        /// <summary>
-        /// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// This property is reserved, apply the <see cref="System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+		/// </summary>
+		/// <returns></returns>
 		public XmlSchema GetSchema()
 		{
 			return null;
 		}
-        /// <summary>
-        /// Generates an object from its XML representation
-        /// </summary>
-        /// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
+		/// <summary>
+		/// Generates an object from its XML representation
+		/// </summary>
+		/// <param name="reader">The <see cref="System.Xml.XmlReader"/> stream from which the object is read</param>
 		public void ReadXml(XmlReader reader)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
-        /// <summary>
-        /// Converts the object into its XML representation
-        /// </summary>
-        /// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
+		/// <summary>
+		/// Converts the object into its XML representation
+		/// </summary>
+		/// <param name="writer">The <see cref="System.Xml.XmlWriter"/> stream to which the object is written</param>
 		public void WriteXml(XmlWriter writer)
 		{
-            char[] charArray = new char[26];
-            for(int i = 0; i < 26; ++i)
-            {
-                charArray[i] = (char)(i + 65);
-            }
-
-            
-            string typeString = _type.ToString();
-            if (typeString.IndexOf("Int") == -1)
-            {
-                typeString = Regex.Replace(typeString, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
-            }
-            typeString = typeString.ToUpperInvariant();
+			string typeString = _type.ToString();
+			if (typeString.IndexOf("Int") == -1)
+			{
+				typeString = Regex.Replace(typeString, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+			}
+			typeString = typeString.ToUpperInvariant();
 
 			writer.WriteAttributeString("name", typeString);
 			if (_size != -1)
@@ -1132,9 +1125,9 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		}
 		#endregion
 	}
-    /// <summary>
-    /// Represents a DCIL Procedure element of a DCIL Document
-    /// </summary>
+	/// <summary>
+	/// Represents a DCIL Procedure element of a DCIL Document
+	/// </summary>
 	[XmlRoot(ElementName = "procedure", Namespace = "http://schemas.orm.net/DIL/DCIL")]
 	public sealed class DcilProcedure
 	{
