@@ -170,7 +170,7 @@
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NestedFactTypeDisplay" DefaultValue="" DisplayName="NestedFactType" Id="C003F8F1-368C-4058-A5F8-90EF63556743" Kind="CustomStorage">
+				<DomainProperty Name="NestedFactTypeDisplay" DefaultValue="" DisplayName="ObjectifiedFactType" Id="C003F8F1-368C-4058-A5F8-90EF63556743" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -304,7 +304,7 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NestingTypeDisplay" DefaultValue="" DisplayName="NestingType" Id="08C9243D-38BA-41E5-9864-5BBB8977B676" Kind="CustomStorage">
+				<DomainProperty Name="NestingTypeDisplay" DefaultValue="" DisplayName="ObjectifyingEntityType" Id="08C9243D-38BA-41E5-9864-5BBB8977B676" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>

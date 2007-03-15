@@ -220,10 +220,10 @@
     <value>&lt;Data Type Not Set&gt;</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText" xml:space="preserve">
-    <value>&lt;Nested Fact Type Not Set&gt;</value>
+    <value>&lt;Not Objectified&gt;</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText" xml:space="preserve">
-    <value>&lt;Nesting Type Not Set&gt;</value>
+    <value>&lt;No Objectification&gt;</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText" xml:space="preserve">
     <value>&lt;Role Player Not Set&gt;</value>

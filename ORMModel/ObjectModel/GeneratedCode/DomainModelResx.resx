@@ -222,11 +222,11 @@
     <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/NestedFactTypeDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactType</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectifiedFactType</value>
     <comment>Description for DomainProperty &apos;NestedFactTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/NestedFactTypeDisplay.DisplayName" xml:space="preserve">
-    <value>NestedFactType</value>
+    <value>ObjectifiedFactType</value>
     <comment>DisplayName for DomainProperty &apos;NestedFactTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.Description" xml:space="preserve">
@@ -334,11 +334,11 @@
     <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NestingTypeDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.NestingType</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactType.ObjectifyingEntityType</value>
     <comment>Description for DomainProperty &apos;NestingTypeDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NestingTypeDisplay.DisplayName" xml:space="preserve">
-    <value>NestingType</value>
+    <value>ObjectifyingEntityType</value>
     <comment>DisplayName for DomainProperty &apos;NestingTypeDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.Description" xml:space="preserve">

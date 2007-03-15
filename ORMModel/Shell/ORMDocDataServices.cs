@@ -57,37 +57,60 @@ namespace Neumont.Tools.ORM.Shell
 				if (mySurveyTree == null)
 				{
 					mySurveyTree = new VirtualTree();
-					Store store = Store;
-					List<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
-					List<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
-					ICollection<DomainModel> domainModels = store.DomainModels;
-					ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-					foreach (DomainModel domainModel in domainModels)
-					{
-						ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
-						if (nodeProvider != null)
-						{
-							nodeProviderList.Add(nodeProvider);
-						}
-						ISurveyQuestionProvider questionProvider = domainModel as ISurveyQuestionProvider;
-						if (questionProvider != null)
-						{
-							questionProviderList.Add(questionProvider);
-						}
-						IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
-						if (eventSubscriber != null)
-						{
-							eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
-							SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
-						}
-					}
-					myRootBranch = new MainList(nodeProviderList, questionProviderList);
-					mySurveyTree.Root = myRootBranch.RootBranch;
+					ReloadSurveyTree();
 				}
 				return mySurveyTree;
 			}
 		}
-
+		/// <summary>
+		/// Called on a file unload to force the survey tree to recreate
+		/// </summary>
+		private void UnloadSurveyTree()
+		{
+			ITree tree = mySurveyTree;
+			if (tree != null)
+			{
+				tree.Root = null;
+				myRootBranch = null;
+			}
+		}
+		/// <summary>
+		/// Force the survey tree to recreate its root branch if it has already been shown
+		/// </summary>
+		private void ReloadSurveyTree()
+		{
+			ITree tree = mySurveyTree;
+			if (tree != null)
+			{
+				Store store = Store;
+				List<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
+				List<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
+				ICollection<DomainModel> domainModels = store.DomainModels;
+				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
+				foreach (DomainModel domainModel in domainModels)
+				{
+					ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
+					if (nodeProvider != null)
+					{
+						nodeProviderList.Add(nodeProvider);
+					}
+					ISurveyQuestionProvider questionProvider = domainModel as ISurveyQuestionProvider;
+					if (questionProvider != null)
+					{
+						questionProviderList.Add(questionProvider);
+					}
+					IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
+					if (eventSubscriber != null)
+					{
+						eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
+						SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
+					}
+				}
+				MainList rootBranch = new MainList(nodeProviderList, questionProviderList);
+				myRootBranch = rootBranch;
+				tree.Root = rootBranch.RootBranch;
+			}
+		}
 		#endregion //SurveyTreeSetup
 		#region Store services passthrough
 		/// <summary>

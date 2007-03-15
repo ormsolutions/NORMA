@@ -705,6 +705,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			classInfo = directory.FindDomainClass(Objectification.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectificationAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectificationDeleted), action);
+			propertyInfo = directory.FindDomainProperty(Objectification.IsImpliedDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectificationChanged), action);
 			
 			//RolePlayerChanged
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationRolePlayerChanged), action);
@@ -1009,6 +1011,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!nestedFactType.IsDeleted)
 				{
 					eventNotify.ElementChanged(nestedFactType, questionTypes);
+				}
+			}
+		}
+		/// <summary>
+		/// Objectification property change.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
+		protected void ObjectificationChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			Objectification element = e.ModelElement as Objectification;
+			if (!element.IsDeleted &&
+				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				if (propertyId == Objectification.IsImpliedDomainPropertyId)
+				{
+					ObjectType nestingType = element.NestingType;
+					FactType nestedFactType = element.NestedFactType;
+					if (!nestingType.IsDeleted)
+					{
+						eventNotify.ElementChanged(nestingType, questionTypes);
+					}
+					if (!nestedFactType.IsDeleted)
+					{
+						eventNotify.ElementChanged(nestedFactType, questionTypes);
+					}
 				}
 			}
 		}

@@ -28,7 +28,7 @@ using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage")]
 	internal partial class RelationalDiagram
 	{
 		private const string NameResourceName = "Diagram.MenuDisplayName";

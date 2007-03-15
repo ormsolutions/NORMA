@@ -478,6 +478,7 @@ namespace Neumont.Tools.ORM.Shell
 					subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 				}
 			}
+			ReloadSurveyTree();
 			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
 			ManageTabRestoreEvents(eventManager, EventHandlerAction.Add);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
@@ -517,6 +518,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
+			UnloadSurveyTree();
 			if (addedPostLoad)
 			{
 				ManageTabRestoreEvents(eventManager, EventHandlerAction.Remove);
