@@ -297,7 +297,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								using (IEnumerator<ModelErrorUsage> errors = errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary).GetEnumerator())
 								{
 									retVal = !errors.MoveNext();
-								}
+						}
 							}
 						}
 						myIsValid = retVal;
@@ -669,6 +669,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (binaryLink != null)
 								{
 									binaryLink.RecalculateRoute();
+								}
+							}
+							foreach (ShapeElement childShape in factShape.RelativeChildShapes)
+							{
+								if (childShape is IProxyConnectorShape)
+								{
+									foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(childShape, LinkConnectsToNode.NodesDomainRoleId))
+									{
+										BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+										if (binaryLink != null)
+										{
+											binaryLink.RecalculateRoute();
+										}
+									}
 								}
 							}
 							SizeD oldSize = factShape.Size;

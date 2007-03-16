@@ -324,7 +324,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 						CheckLink(fromShape, shapeIsOriginal, BinaryLinkAnchor.FromShape, discludedShape);
 					}
 #else
-					foreach (ShapeElement linkShape in GetExistingLinks(shape, true, true))
+					foreach (ShapeElement linkShape in GetExistingLinks(shape, true, true, null))
 					{
 						BinaryLinkShapeBase link;
 						if ((link = linkShape as BinaryLinkShapeBase) != null)
@@ -549,7 +549,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 			double retVal = double.MaxValue;
 #endif //!LINKS_ALWAYS_CONNECT
 			//check each link to see if it connects to the opposite element
-			foreach (ShapeElement linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape))
+			foreach (ShapeElement linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape, currentLink.ModelElement))
 			{
 				//if the link is the one currently being configured, count it as not connected
 				if (linkShape == currentLink)
@@ -623,8 +623,9 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="shape">The shape to check</param>
 		/// <param name="getToLinks">True to collect all to role links</param>
 		/// <param name="getFromLinks">True to collect all from role links</param>
+		/// <param name="linkBackingElement">Only return links that have this element as the <see cref="PresentationElement.ModelElement">ModelElement</see>.</param>
 		/// <returns>The proxy connecter</returns>
-		private static IEnumerable<ShapeElement> GetExistingLinks(ShapeElement shape, bool getToLinks, bool getFromLinks)
+		private static IEnumerable<ShapeElement> GetExistingLinks(ShapeElement shape, bool getToLinks, bool getFromLinks, ModelElement linkBackingElement)
 		{
 			Debug.Assert(!(shape is IEnsureConnectorShapeForLink) || !(shape is IProvideConnectorShape),
 				"No class should implement both IEnsureConnectorShapeForLink and IProvideConnectorShape.");
@@ -636,14 +637,20 @@ namespace Neumont.Tools.Modeling.Diagrams
 				{
 					foreach (ShapeElement sel in nodeShape.ToRoleLinkShapes)
 					{
-						yield return sel;
+						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
+						{
+							yield return sel;
+						}
 					}
 				}
 				if (getFromLinks)
 				{
 					foreach (ShapeElement sel in nodeShape.FromRoleLinkShapes)
 					{
-						yield return sel;
+						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
+						{
+							yield return sel;
+						}
 					}
 				}
 			}
@@ -661,14 +668,20 @@ namespace Neumont.Tools.Modeling.Diagrams
 						{
 							foreach (ShapeElement sel in alternateConnector.ToRoleLinkShapes)
 							{
-								yield return sel;
+								if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
+								{
+									yield return sel;
+								}
 							}
 						}
 						if (getFromLinks)
 						{
 							foreach (ShapeElement sel in alternateConnector.FromRoleLinkShapes)
 							{
-								yield return sel;
+								if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
+								{
+									yield return sel;
+								}
 							}
 						}
 					}
@@ -683,14 +696,20 @@ namespace Neumont.Tools.Modeling.Diagrams
 				{
 					foreach (ShapeElement sel in alternateConnector.ToRoleLinkShapes)
 					{
-						yield return sel;
+						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
+						{
+							yield return sel;
+						}
 					}
 				}
 				if (getFromLinks)
 				{
 					foreach (ShapeElement sel in alternateConnector.FromRoleLinkShapes)
 					{
-						yield return sel;
+						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
+						{
+							yield return sel;
+						}
 					}
 				}
 			}
