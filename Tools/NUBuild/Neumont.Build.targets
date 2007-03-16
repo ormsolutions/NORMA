@@ -9,11 +9,11 @@
 
 	<!-- InstallInGac and GenerateNativeImage -->
 	<PropertyGroup>
-		<PostBuildDependsOn>
-			$(PostBuildDependsOn);
+		<PostBuildEventDependsOn>
+			$(PostBuildEventDependsOn);
 			InstallInGac;
 			GenerateNativeImage
-		</PostBuildDependsOn>
+		</PostBuildEventDependsOn>
 		<InstallInGacDependsOn>
 			$(InstallInGacDependsOn)
 		</InstallInGacDependsOn>
