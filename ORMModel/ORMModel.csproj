@@ -393,6 +393,8 @@
     <Compile Include="Framework\Diagrams\MultiShapeUtility.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
+    <Compile Include="ObjectModel\Design\Editors\ModelErrorDisplayFilterEditor.cs" />
+    <Compile Include="ObjectModel\ModelErrorDisplayFilter.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
     <Compile Include="ObjectModel\VerbalizationGenerator.cs">
@@ -409,6 +411,12 @@
     </Compile>
     <Compile Include="Shell\GenerateReportDialog.Designer.cs">
       <DependentUpon>GenerateReportDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\ModelErrorDisplayFilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shell\ModelErrorDisplayFilterForm.Designer.cs">
+      <DependentUpon>ModelErrorDisplayFilterForm.cs</DependentUpon>
     </Compile>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
@@ -536,6 +544,10 @@
     <EmbeddedResource Include="Shell\GenerateReportDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>GenerateReportDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shell\ModelErrorDisplayFilterForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ModelErrorDisplayFilterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shell\SamplePopulationEditor.resx">
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>

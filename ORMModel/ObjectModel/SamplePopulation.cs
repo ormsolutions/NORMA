@@ -29,6 +29,7 @@ using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region SamplePopulation ModelError Classes
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class TooFewEntityTypeRoleInstancesError
 	{
 		#region Base overrides
@@ -60,6 +61,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 	}
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class TooFewFactTypeRoleInstancesError
 	{
 		#region Base overrides
@@ -91,6 +93,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 	}
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class CompatibleValueTypeInstanceValueError
 	{
 		#region Base overrides
@@ -124,6 +127,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 	}
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class PopulationUniquenessError : IHasIndirectModelErrorOwner
 	{
 		/// <summary>
@@ -261,7 +265,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#endregion
 
 	}
-
+	[ModelErrorDisplayFilter(typeof(PopulationErrorCategory))]
 	public partial class PopulationMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides

@@ -28,6 +28,21 @@
 	<Classes>
 
 		<DomainClass Name="DelayValidateSignal" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C6D39CF7-E8AA-4BE7-AA79-7659FBD32E54" DisplayName="ORMModelElement" InheritanceModifier="Sealed" Description=""/>
+		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
+		<DomainClass Name="ModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
+			<Properties>
+				<DomainProperty Name="ExcludedCategories" DefaultValue="" DisplayName="ExcludedCategories" Id="46F355F4-001C-4A3F-8A0F-56BEC4EACDEB" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="PopulationErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="18C1AE31-7241-453E-9DCB-9409ACA41896" DisplayName="Sample Population Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
 
 		<DomainClass Name="ORMModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description="">
 			<Attributes>
@@ -63,6 +78,21 @@
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="ModelErrorDisplayFilterDisplay" DefaultValue="" DisplayName="ErrorDisplay" Id="C5A66492-0FFA-46F9-A64B-361E62D696B0" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ModelErrorDisplayFilterEditor)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelErrorDisplayFilter"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<ElementMergeDirectives>
 				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="true">
 					<Index>
@@ -3423,7 +3453,23 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		
+
+		<DomainRelationship Name="ModelHasModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="A8E175FA-A727-4909-8944-423EF0748E3D">
+			<Source>
+				<DomainRole Name="Model" PropertyName="ModelErrorDisplayFilter" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ModelErrorDisplayFilter" Id="69E39A5B-B394-4270-9C43-894E4516B177">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ModelErrorDisplayFilter" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Model" Id="BE9E525D-C456-40D9-8420-A0745FBED25A">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelErrorDisplayFilter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>
@@ -3444,6 +3490,7 @@
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="FactType"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceMode"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="DataType"/>
+		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ModelErrorDisplayFilter"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ObjectType"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceModeKind"/>
 		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="DerivationStorageType" Description="Used to specify how/whether the contents of the fact should be stored by generated systems.">

@@ -612,6 +612,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
 			}
 		}
+		/// <summary>Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</summary>
+		public static string ModelExceptionModelErrorCategoryInvalid
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</summary>
 		public static string ModelExceptionObjectificationImpliedElementModified
 		{
@@ -802,6 +810,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message");
+			}
+		}
+		/// <summary>Category name to display for uncategorized model errors.</summary>
+		public static string ModelErrorUncategorized
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.UncategorizedModelError.CategoryDisplayName");
 			}
 		}
 		/// <summary>Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</summary>

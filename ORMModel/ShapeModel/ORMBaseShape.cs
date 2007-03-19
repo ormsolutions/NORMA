@@ -265,14 +265,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				if (ModelError.HasErrors(ModelElement, ModelErrorUses.DisplayPrimary))
+				ORMDiagram diagram = Diagram as ORMDiagram;
+				ModelErrorDisplayFilter displayFilter = null;
+				if (diagram != null)
 				{
-					ORMDiagram diagram;
+					ORMModel model = diagram.ModelElement as ORMModel;
+					if (model != null)
+					{
+						displayFilter = model.ModelErrorDisplayFilter;
+					}
+				}
+				if (ModelError.HasErrors(ModelElement, ModelErrorUses.DisplayPrimary, displayFilter))
+				{
 					DiagramView view;
 					DiagramClientView clientView;
 					HighlightedShapesCollection highlightedShapes;
-					if (null != (diagram = Diagram as ORMDiagram) &&
-						null != (view = diagram.ActiveDiagramView) &&
+					if (null != (view = diagram.ActiveDiagramView) &&
 						null != (clientView = view.DiagramClientView) &&
 						null != (highlightedShapes = clientView.HighlightedShapes) &&
 						highlightedShapes.Count != 0 &&
@@ -391,24 +399,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						if (errorOwner != null)
 						{
+							ModelErrorDisplayFilter displayFilter = null;
+							ORMDiagram diagram;
+							ORMModel model;
+							if (null != (diagram = diagramItem.Diagram as ORMDiagram) &&
+								null != (model = diagram.ModelElement as ORMModel))
+							{
+								displayFilter = model.ModelErrorDisplayFilter;
+							}
 							foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 							{
-								if (activator.ActivateModelError(error))
+								if (displayFilter == null || displayFilter.ShouldDisplay(error))
 								{
-									// UNDONE: MSBUG Report Microsoft bug DiagramClientView.OnDoubleClick is checking
-									// for an active mouse action after the double click and clearing it if it is set.
-									// This may be appropriate if the mouse action was set before the subfield double
-									// click and did not change during the callback, but is definitely not appropriate
-									// if the double click activated the mouse action.
-									// Note that this bug makes it impossible to override OnDoubleClick and OnSubFieldDoubleClick
-									// because e.Handled cannot be reliably checked, so there is no way to call base.OnDoubleClick
-									// of base.OnSubFieldDoubleClick from a more derived class without attempting error activation
-									// twice. If this is fixed, then any OnDoubleClick/OnSubFieldDoubleClick implementation
-									// that simply defers to this method then calls the base can be eliminated in favor
-									// of the same methods here.
-									//e.Handled = true;
-									retVal = true;
-									break;
+									if (activator.ActivateModelError(error))
+									{
+										// UNDONE: MSBUG Report Microsoft bug DiagramClientView.OnDoubleClick is checking
+										// for an active mouse action after the double click and clearing it if it is set.
+										// This may be appropriate if the mouse action was set before the subfield double
+										// click and did not change during the callback, but is definitely not appropriate
+										// if the double click activated the mouse action.
+										// Note that this bug makes it impossible to override OnDoubleClick and OnSubFieldDoubleClick
+										// because e.Handled cannot be reliably checked, so there is no way to call base.OnDoubleClick
+										// of base.OnSubFieldDoubleClick from a more derived class without attempting error activation
+										// twice. If this is fixed, then any OnDoubleClick/OnSubFieldDoubleClick implementation
+										// that simply defers to this method then calls the base can be eliminated in favor
+										// of the same methods here.
+										//e.Handled = true;
+										retVal = true;
+										break;
+									}
 								}
 							}
 						}

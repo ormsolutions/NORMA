@@ -447,19 +447,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Rule to update error text on owner name change
-		#region Has Errors Static Function
+		#region HasErrors Static Function
 		/// <summary>
 		/// Checks to see if the Model Element contains errors
 		/// </summary>
+		/// <param name="modelElement">Any <see cref="ModelElement"/>. Errors may be reported if the element implements <see cref="IModelErrorOwner"/></param>
+		/// <param name="useFilter">The filter for the error being displayed. See <see cref="ModelErrorUses"/> for more information.</param>
+		/// <returns>Returns <see langword="true"/> if the errors are present for the provided filters</returns>
 		public static bool HasErrors(ModelElement modelElement, ModelErrorUses useFilter)
+		{
+			return HasErrors(modelElement, useFilter, null);
+		}
+		/// <summary>
+		/// Checks to see if the Model Element contains errors
+		/// </summary>
+		/// <param name="modelElement">Any <see cref="ModelElement"/>. Errors may be reported if the element implements <see cref="IModelErrorOwner"/></param>
+		/// <param name="useFilter">The filter for the error being displayed. See <see cref="ModelErrorUses"/> for more information.</param>
+		/// <param name="displayFilter">The <see cref="ModelErrorDisplayFilter"/> filter to determine if errors should be displayed or not.</param>
+		/// <returns>Returns <see langword="true"/> if the errors are present for the provided filters</returns>
+		public static bool HasErrors(ModelElement modelElement, ModelErrorUses useFilter, ModelErrorDisplayFilter displayFilter)
 		{
 			bool hasError = false;
 			IModelErrorOwner errorOwner = modelElement as IModelErrorOwner;
 			if (errorOwner != null)
 			{
-				using (IEnumerator<ModelErrorUsage> enumerator = errorOwner.GetErrorCollection(useFilter).GetEnumerator())
+				if (displayFilter == null)
 				{
-					hasError = enumerator.MoveNext();
+					using (IEnumerator<ModelErrorUsage> enumerator = errorOwner.GetErrorCollection(useFilter).GetEnumerator())
+					{
+						hasError = enumerator.MoveNext();
+					}
+				}
+				else
+				{
+					foreach (ModelErrorUsage usage in errorOwner.GetErrorCollection(useFilter))
+					{
+						if (displayFilter.ShouldDisplay(usage.Error))
+						{
+							hasError = true;
+							break;
+						}
+					}
 				}
 			}
 			return hasError;

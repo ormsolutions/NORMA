@@ -1341,14 +1341,25 @@ namespace Neumont.Tools.ORM.Shell
 							IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
 							if (errorOwner != null)
 							{
+								ModelErrorDisplayFilter displayFilter = null;
+								ORMDiagram diagram;
+								ORMModel model;
+								if (null != (diagram = docView.CurrentDiagram as ORMDiagram) &&
+									null != (model = diagram.ModelElement as ORMModel))
+								{
+									displayFilter = model.ModelErrorDisplayFilter;
+								}
 								foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 								{
-									if (errorIndex == 0)
+									if (displayFilter == null || displayFilter.ShouldDisplay(error))
 									{
-										errorText = error.ErrorText;
-										break;
+										if (errorIndex == 0)
+										{
+											errorText = error.ErrorText;
+											break;
+										}
+										--errorIndex;
 									}
-									--errorIndex;
 								}
 							}
 						}
@@ -2365,22 +2376,33 @@ namespace Neumont.Tools.ORM.Shell
 				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(selectedElements[i], false) as IModelErrorOwner;
 				if (errorOwner != null)
 				{
+					ModelErrorDisplayFilter displayFilter = null;
+					ORMDiagram diagram;
+					ORMModel model;
+					if (null != (diagram = this.CurrentDiagram as ORMDiagram) &&
+						null != (model = diagram.ModelElement as ORMModel))
+					{
+						displayFilter = model.ModelErrorDisplayFilter;
+					}
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
-						if (errorIndex == 0)
+						if (displayFilter == null || displayFilter.ShouldDisplay(error))
 						{
-							IORMToolTaskItem task;
-							IORMToolServices services;
-							IORMToolTaskProvider provider;
-							if (null != (task = error.TaskData as IORMToolTaskItem) &&
-								null != (services = error.Store as IORMToolServices) &&
-								null != (provider = services.TaskProvider))
+							if (errorIndex == 0)
 							{
-								provider.NavigateTo(task);
+								IORMToolTaskItem task;
+								IORMToolServices services;
+								IORMToolTaskProvider provider;
+								if (null != (task = error.TaskData as IORMToolTaskItem) &&
+									null != (services = error.Store as IORMToolServices) &&
+									null != (provider = services.TaskProvider))
+								{
+									provider.NavigateTo(task);
+								}
+								break;
 							}
-							break;
+							--errorIndex;
 						}
-						--errorIndex;
 					}
 					break;
 				}
@@ -3402,6 +3424,28 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
+		}
+		/// <summary>
+		/// Refresh all visible diagrams
+		/// </summary>
+		/// <param name="serviceProvider">Required <see cref="IServiceProvider"/></param>
+		public static void InvalidateAllDiagrams(IServiceProvider serviceProvider)
+		{
+			OptionsPage.NotifySettingsChange(
+				serviceProvider,
+				delegate(ORMDesignerDocData docData)
+				{
+					foreach (ORMDesignerDocView docView in docData.DocViews)
+					{
+						VSDiagramView view;
+						DiagramClientView clientView;
+						if (null != (view = docView.CurrentDesigner) &&
+							null != (clientView = view.DiagramClientView))
+						{
+							view.Invalidate(true);
+						}
+					}
+				});
 		}
 		#endregion // ORMDesignerDocView Specific
 	}

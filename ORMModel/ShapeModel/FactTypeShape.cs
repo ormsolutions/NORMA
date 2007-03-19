@@ -291,14 +291,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
-							IModelErrorOwner errorOwner = myFactConstraint.Constraint as IModelErrorOwner;
-							if (errorOwner != null)
-							{
-								using (IEnumerator<ModelErrorUsage> errors = errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary).GetEnumerator())
-								{
-									retVal = !errors.MoveNext();
-						}
-							}
+							IConstraint constraint = myFactConstraint.Constraint;
+							retVal = !ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, constraint.Model.ModelErrorDisplayFilter);
 						}
 						myIsValid = retVal;
 						return retVal;
@@ -1749,8 +1743,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 							}
 						}
-
-						if (ModelError.HasErrors(factConstraint.Constraint as ModelElement, ModelErrorUses.DisplayPrimary) && isInternalConstraint && !isSticky)
+						IConstraint constraint = factConstraint.Constraint;
+						if (ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, constraint.Model.ModelErrorDisplayFilter) && isInternalConstraint && !isSticky)
 						{
 							Brush backBrush;
 							if (factShapeHighlighted || isHighlighted || isSticky)
@@ -1765,7 +1759,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
-							if (isHighlighted || isSticky || ModelError.HasErrors(factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary))
+							FactType factType;
+							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 							{
 								factShape.DrawHighlight(g, boundsF, isSticky, factShapeHighlighted || isHighlighted);
 							}
@@ -2383,7 +2378,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							highlightThisRole = factShapeHighlighted || iRole == highlightRoleBox;
 
 							Brush roleCenterBrush;
-							if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary))
+							if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 							{
 								roleCenterBrush = styleSet.GetBrush(ORMDiagram.ErrorBackgroundResource);
 							}
@@ -2566,7 +2561,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								#endregion // Handling StickyObject highlighting and selection
 								else if (highlightThisRole)
 								{
-									if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary))
+									if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 									{
 										g.FillRectangle(styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource), roleBounds);
 									}
@@ -2991,7 +2986,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactType associatedFact = AssociatedFactType;
 				if (null == associatedFact ||
 					(null != (objectification = associatedFact.Objectification) && !objectification.IsImplied) ||
-					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary))
+					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary, associatedFact.Model.ModelErrorDisplayFilter))
 				{
 					return base.BackgroundBrushId;
 				}

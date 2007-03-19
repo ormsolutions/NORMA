@@ -135,6 +135,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#endregion // ErrorCollection
+		#region Custom storage accessor functions
+		private ModelErrorDisplayFilter GetModelErrorDisplayFilterDisplayValue()
+		{
+			return ModelErrorDisplayFilter;
+		}
+		private void SetModelErrorDisplayFilterDisplayValue(ModelErrorDisplayFilter newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				ModelErrorDisplayFilter = newValue;
+			}
+		}
+		#endregion // Custom storage accessor functions
 		#region MergeContext functions
 		private void MergeRelateObjectType(ModelElement sourceElement, ElementGroup elementGroup)
 		{

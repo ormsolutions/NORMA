@@ -269,7 +269,11 @@
     <value>Role '{0}' in fact '{1}' in model '{2}' requires a role player.</value>
     <comment>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
   </data>
-	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
+  <data name="ModelError.UncategorizedModelError.CategoryDisplayName" xml:space="preserve">
+    <value>Uncategorized Model Validation Errors</value>
+    <comment>Category name to display for uncategorized model errors.</comment>
+  </data>
+  <data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
     <value>The value constraint for '{0}' in model '{1}' has overlapping values.</value>
     <comment>ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.</comment>
   </data>
@@ -328,6 +332,10 @@
 	<data name="ModelException.FactType.EnforceRolePlayerNotNestingType" xml:space="preserve">
     <value>A role player cannot be the type objectifying the role's parent fact type.</value>
     <comment>Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
+  </data>
+	<data name="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory" xml:space="preserve">
+    <value>The type specified for the ModelErrorDisplayFilterAttribute must be derived from ModelErrorCategory.</value>
+    <comment>Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</comment>
   </data>
 	<data name="ModelException.Objectification.DirectModificationOfImpliedElement" xml:space="preserve">
     <value>Facts and constraints implied by an Objectification relationship cannot be directly modified.</value>

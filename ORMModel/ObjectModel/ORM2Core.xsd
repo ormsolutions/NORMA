@@ -38,6 +38,14 @@
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<!--End ORMModel-->
+	<xs:element name="ModelErrorDisplayFilter" type="ModelErrorDisplayFilterType"/>
+	<xs:complexType name="ModelErrorDisplayFilterType">
+		<!-- UNDONE: Temporary to pass XSD validation -->
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:any namespace="##any" processContents="skip"/>
+		</xs:choice>
+		<xs:anyAttribute namespace="##any" processContents="skip"/>
+	</xs:complexType>
 	<xs:complexType name="NotesType">
 		<xs:sequence minOccurs="0">
 			<xs:element name="Note" type="NoteType"/>

@@ -294,6 +294,9 @@
 	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle">
 		<comment type="summary">The window title for the model browser tool window</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory">
+		<comment type="summary">Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionObjectificationImpliedElementModified" model="Model" resourceName="ModelException.Objectification.DirectModificationOfImpliedElement">
 		<comment type="summary">Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
 	</ResourceString>
@@ -365,6 +368,9 @@
 	</ResourceString>
 	<ResourceString name="ModelErrorRoleValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message">
 		<comment type="summary">ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName">
+		<comment type="summary">Category name to display for uncategorized model errors.</comment>
 	</ResourceString>
 	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text">
 		<comment type="summary">Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>

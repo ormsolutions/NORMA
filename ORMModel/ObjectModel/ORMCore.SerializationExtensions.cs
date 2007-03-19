@@ -69,6 +69,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			retVal[dataDir.FindDomainRelationship(ModelNoteReferencesModelElement.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(JoinHasRole.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ORMModelElementHasJoinPath.DomainClassId)] = null;
+			retVal[dataDir.FindDomainRelationship(ModelHasModelErrorDisplayFilter.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(IntrinsicReferenceMode.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(Microsoft.VisualStudio.Modeling.Diagrams.PresentationViewsSubject.DomainClassId)] = null;
 			return retVal;
@@ -94,7 +95,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[]{
-				ORMModel.DomainClassId};
+				ORMModel.DomainClassId,
+				ModelErrorDisplayFilter.DomainClassId};
 		}
 		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
@@ -106,6 +108,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if ((elementName == "ORMModel") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-04/ORMCore"))
 			{
 				return ORMModel.DomainClassId;
+			}
+			if ((elementName == "ModelErrorDisplayFilter") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-04/ORMCore"))
+			{
+				return ModelErrorDisplayFilter.DomainClassId;
 			}
 			return default(Guid);
 		}
