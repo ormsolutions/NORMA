@@ -133,6 +133,38 @@
     <value>ORMModelElement</value>
     <comment>DisplayName for DomainClass &apos;DelayValidateSignal&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ModelErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.DisplayName" xml:space="preserve">
+    <value>ModelErrorCategory</value>
+    <comment>DisplayName for DomainClass &apos;ModelErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.DisplayName" xml:space="preserve">
+    <value>ModelErrorDisplayFilter</value>
+    <comment>DisplayName for DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedCategories.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.ExcludedCategories</value>
+    <comment>Description for DomainProperty &apos;ExcludedCategories&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedCategories.DisplayName" xml:space="preserve">
+    <value>ExcludedCategories</value>
+    <comment>DisplayName for DomainProperty &apos;ExcludedCategories&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.PopulationErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;PopulationErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.PopulationErrorCategory.DisplayName" xml:space="preserve">
+    <value>Sample Population Errors</value>
+    <comment>DisplayName for DomainClass &apos;PopulationErrorCategory&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElement.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ORMModelElement&apos;</comment>
@@ -164,6 +196,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel.DisplayName" xml:space="preserve">
     <value>ORMModel</value>
     <comment>DisplayName for DomainClass &apos;ORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMModel.ErrorDisplay</value>
+    <comment>Description for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.DisplayName" xml:space="preserve">
+    <value>ErrorDisplay</value>
+    <comment>DisplayName for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.Description" xml:space="preserve">
     <value></value>
@@ -4812,6 +4852,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleHasProjectionJoin/ProjectionJoin.PropertyDisplayName" xml:space="preserve">
     <value>Constraint Role Sequence Has Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;ProjectionJoin&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRoleHasProjectionJoin&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter</value>
+    <comment>Description for DomainClass &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.DisplayName" xml:space="preserve">
+    <value>Model Has Model Error Display Filter</value>
+    <comment>DisplayName for DomainClass &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/Model.DisplayName" xml:space="preserve">
+    <value>ModelErrorDisplayFilter</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Model Error Display Filter</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/ModelErrorDisplayFilter.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilter</value>
+    <comment>Description for DomainRole &apos;ModelErrorDisplayFilter&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/ModelErrorDisplayFilter.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ModelErrorDisplayFilter&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/ModelErrorDisplayFilter.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ModelErrorDisplayFilter&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>

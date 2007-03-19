@@ -66,6 +66,226 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainClass ModelErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("c9730e21-67a1-47e1-a065-b08c2b3815ce")]
+	public abstract partial class ModelErrorCategory : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ModelErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc9730e21, 0x67a1, 0x47e1, 0xa0, 0x65, 0xb0, 0x8c, 0x2b, 0x38, 0x15, 0xce);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ModelErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ModelErrorDisplayFilter
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("67cdce7b-3d28-4a92-b9eb-00418152a13f")]
+	public sealed partial class ModelErrorDisplayFilter : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ModelErrorDisplayFilter domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x67cdce7b, 0x3d28, 0x4a92, 0xb9, 0xeb, 0x00, 0x41, 0x81, 0x52, 0xa1, 0x3f);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ModelErrorDisplayFilter(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ModelErrorDisplayFilter(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ExcludedCategories domain property code
+		
+		/// <summary>
+		/// ExcludedCategories domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ExcludedCategoriesDomainPropertyId = new global::System.Guid(0x46f355f4, 0x001c, 0x4a3f, 0x8a, 0x0f, 0x56, 0xbe, 0xc4, 0xea, 0xcd, 0xeb);
+		
+		/// <summary>
+		/// Gets or sets the value of ExcludedCategories domain property.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.ExcludedCategories
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedCategories.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedCategories.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("46f355f4-001c-4a3f-8a0f-56bec4eacdeb")]
+		public global::System.String ExcludedCategories
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ExcludedCategoriesPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ExcludedCategoriesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ModelErrorDisplayFilter.ExcludedCategories domain property.
+		/// </summary>
+		internal sealed partial class ExcludedCategoriesPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelErrorDisplayFilter, global::System.String>
+		{
+			private ExcludedCategoriesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ModelErrorDisplayFilter.ExcludedCategories domain property value handler.
+			/// </summary>
+			public static readonly ExcludedCategoriesPropertyHandler Instance = new ExcludedCategoriesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ModelErrorDisplayFilter.ExcludedCategories domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ExcludedCategoriesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ModelErrorDisplayFilter element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ExcludedCategories because its Kind is
+				// set to CustomStorage. Please provide the GetExcludedCategoriesValue()
+				// method on the domain class.
+				return element.GetExcludedCategoriesValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ModelErrorDisplayFilter element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ExcludedCategories because its Kind is
+					// set to CustomStorage. Please provide the SetExcludedCategoriesValue()
+					// method on the domain class.
+					element.SetExcludedCategoriesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilter
+		/// </summary>
+		public ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId) as ORMModel;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass PopulationErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.PopulationErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.PopulationErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("18c1ae31-7241-453e-9dcb-9409aca41896")]
+	public abstract partial class PopulationErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PopulationErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x18c1ae31, 0x7241, 0x453e, 0x9d, 0xcb, 0x94, 0x09, 0xac, 0xa4, 0x18, 0x96);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected PopulationErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ORMModelElement
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ORMModelElement, Design.ORMModelElementTypeDescriptor<ORMModelElement>>))]
@@ -279,6 +499,97 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 		}
 		#endregion
+		#region ModelErrorDisplayFilterDisplay domain property code
+		
+		/// <summary>
+		/// ModelErrorDisplayFilterDisplay domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelErrorDisplayFilterDisplayDomainPropertyId = new global::System.Guid(0xc5a66492, 0x0ffa, 0x46f9, 0xa6, 0x4b, 0x36, 0x1e, 0x62, 0xd6, 0x96, 0xb0);
+		
+		/// <summary>
+		/// Gets or sets the value of ModelErrorDisplayFilterDisplay domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ORMModel.ErrorDisplay
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ModelErrorDisplayFilterEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("c5a66492-0ffa-46f9-a64b-361e62d696b0")]
+		public ModelErrorDisplayFilter ModelErrorDisplayFilterDisplay
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ModelErrorDisplayFilterDisplayPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ModelErrorDisplayFilterDisplayPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMModel.ModelErrorDisplayFilterDisplay domain property.
+		/// </summary>
+		internal sealed partial class ModelErrorDisplayFilterDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModel, ModelErrorDisplayFilter>
+		{
+			private ModelErrorDisplayFilterDisplayPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMModel.ModelErrorDisplayFilterDisplay domain property value handler.
+			/// </summary>
+			public static readonly ModelErrorDisplayFilterDisplayPropertyHandler Instance = new ModelErrorDisplayFilterDisplayPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMModel.ModelErrorDisplayFilterDisplay domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ModelErrorDisplayFilterDisplayDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ModelErrorDisplayFilter GetValue(ORMModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ModelErrorDisplayFilterDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetModelErrorDisplayFilterDisplayValue()
+				// method on the domain class.
+				return element.GetModelErrorDisplayFilterDisplayValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMModel element, ModelErrorDisplayFilter newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ModelErrorDisplayFilter oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ModelErrorDisplayFilterDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetModelErrorDisplayFilterDisplayValue()
+					// method on the domain class.
+					element.SetModelErrorDisplayFilterDisplayValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ObjectTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ObjectTypeCollection.
@@ -389,6 +700,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<ModelNote>(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.ModelDomainRoleId);
+			}
+		}
+		#endregion
+		#region ModelErrorDisplayFilter opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ModelErrorDisplayFilter.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.Model
+		/// </summary>
+		public virtual ModelErrorDisplayFilter ModelErrorDisplayFilter
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId) as ModelErrorDisplayFilter;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -1174,7 +1517,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NestedFactTypeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactType
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectifiedFactType
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -2765,7 +3108,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NestingTypeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.NestingType
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.ObjectifyingEntityType
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]

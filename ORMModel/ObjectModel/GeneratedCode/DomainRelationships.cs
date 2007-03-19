@@ -24879,3 +24879,262 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ModelHasModelErrorDisplayFilter
+	/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("a8e175fa-a727-4909-8944-423ef0748e3d")]
+	public partial class ModelHasModelErrorDisplayFilter : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ModelHasModelErrorDisplayFilter domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa8e175fa, 0xa727, 0x4909, 0x89, 0x44, 0x42, 0x3e, 0xf0, 0x74, 0x8e, 0x3d);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ModelHasModelErrorDisplayFilter link in the same Partition as the given ORMModel
+		/// </summary>
+		/// <param name="source">ORMModel to use as the source of the relationship.</param>
+		/// <param name="target">ModelErrorDisplayFilter to use as the target of the relationship.</param>
+		public ModelHasModelErrorDisplayFilter(ORMModel source, ModelErrorDisplayFilter target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelHasModelErrorDisplayFilter.ModelDomainRoleId, source), new DslModeling::RoleAssignment(ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelHasModelErrorDisplayFilter(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelHasModelErrorDisplayFilter(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelHasModelErrorDisplayFilter(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelHasModelErrorDisplayFilter(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x69e39a5b, 0xb394, 0x4270, 0x9c, 0x43, 0x89, 0x4e, 0x45, 0x16, 0xb1, 0x77);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ModelErrorDisplayFilter", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("69e39a5b-b394-4270-9c43-894e4516b177")]
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a ModelErrorDisplayFilter
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModel GetModel(ModelErrorDisplayFilter element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelErrorDisplayFilterDomainRoleId) as ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(ModelErrorDisplayFilter element, ORMModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelErrorDisplayFilterDomainRoleId, newModel);
+		}
+		#endregion
+		#region ModelErrorDisplayFilter domain role code
+		
+		/// <summary>
+		/// ModelErrorDisplayFilter domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelErrorDisplayFilterDomainRoleId = new global::System.Guid(0xbe9e525d, 0xc456, 0x40d9, 0x84, 0x20, 0xa0, 0x74, 0x5f, 0xbe, 0xd2, 0x5a);
+		
+		/// <summary>
+		/// DomainRole ModelErrorDisplayFilter
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilter
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/ModelErrorDisplayFilter.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/ModelErrorDisplayFilter.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter/ModelErrorDisplayFilter.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("be9e525d-c456-40d9-8420-a0745fbed25a")]
+		public virtual ModelErrorDisplayFilter ModelErrorDisplayFilter
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ModelErrorDisplayFilter)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelErrorDisplayFilterDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelErrorDisplayFilterDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ModelErrorDisplayFilter of a ORMModel
+		/// <summary>
+		/// Gets ModelErrorDisplayFilter.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ModelErrorDisplayFilter GetModelErrorDisplayFilter(ORMModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as ModelErrorDisplayFilter;
+		}
+		
+		/// <summary>
+		/// Sets ModelErrorDisplayFilter.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModelErrorDisplayFilter(ORMModel element, ModelErrorDisplayFilter newModelErrorDisplayFilter)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newModelErrorDisplayFilter);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the ModelHasModelErrorDisplayFilter link to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter GetLinkToModelErrorDisplayFilter (global::Neumont.Tools.ORM.ObjectModel.ORMModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter>(modelInstance, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ModelErrorDisplayFilter link accessor
+		/// <summary>
+		/// Get the ModelHasModelErrorDisplayFilter link to a ModelErrorDisplayFilter.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter GetLinkToModel (global::Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter modelErrorDisplayFilterInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter>(modelErrorDisplayFilterInstance, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ModelErrorDisplayFilter not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ModelHasModelErrorDisplayFilter instance accessors
+		
+		/// <summary>
+		/// Get any ModelHasModelErrorDisplayFilter links between a given ORMModel and a ModelErrorDisplayFilter.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter>(source, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter link in links )
+			{
+				if ( target.Equals(link.ModelErrorDisplayFilter) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ModelHasModelErrorDisplayFilter link between a given ORMModeland a ModelErrorDisplayFilter.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModel source, global::Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter>(source, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter link in links )
+			{
+				if ( target.Equals(link.ModelErrorDisplayFilter) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
