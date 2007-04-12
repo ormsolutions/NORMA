@@ -3190,6 +3190,10 @@ namespace Neumont.Tools.ORM.Shell
 						factTypeShape.DisplayOrientation = orientation;
 					}
 				}
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+				}
 			}
 		}
 		/// <summary>
@@ -3218,6 +3222,10 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						factTypeShape.ConstraintDisplayPosition = position;
 					}
+				}
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
 				}
 			}
 		}

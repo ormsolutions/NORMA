@@ -541,32 +541,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.ReverseRoleOrderTransactionName))
 			{
-				LinkedElementCollection<RoleBase> displayRoles = RoleDisplayOrderCollection;
-				int rolesCount = displayRoles.Count;
-				if (rolesCount == 0)
+				// Earlier code explicitly populated the collection in reverse, but we don't
+				// have any rules to handle adds to this collection that are not related to corresponding
+				// changes in the RoleCollection of the AssociatedFactType. Therefore, the reverse add
+				// triggered nothing to force a rebind or redraw.
+				// UNDONE: This collection is auto-managed. We should add a rule to make sure that noone
+				// else messes with it
+				LinkedElementCollection<RoleBase> displayRoles = EnsureDisplayOrderCollection();
+				int moveFrom = displayRoles.Count - 1;
+				for (int i = 0; i < moveFrom; ++i)
 				{
-					FactType fact = AssociatedFactType;
-					if (fact != null)
-					{
-						LinkedElementCollection<RoleBase> nativeRoles = fact.RoleCollection;
-						int nativeRoleCount = nativeRoles.Count;
-						if (nativeRoleCount > 1)
-						{
-							// Add them to the collection in reverse
-							for (int i = nativeRoleCount - 1; i >= 0; --i)
-							{
-								displayRoles.Add(nativeRoles[i].Role);
-							}
-						}
-					}
-				}
-				else
-				{
-					int moveFrom = rolesCount - 1;
-					for (int i = 0; i < moveFrom; ++i)
-					{
-						displayRoles.Move(moveFrom, i);
-					}
+					displayRoles.Move(moveFrom, i);
 				}
 				if (t.HasPendingChanges)
 				{
