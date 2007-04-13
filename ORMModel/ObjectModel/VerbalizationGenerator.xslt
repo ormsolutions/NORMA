@@ -4032,12 +4032,12 @@
 						</xsl:with-param>
 					</xsl:call-template>
 					<xsl:choose>
-						<xsl:when test="$ContextMatch='included' or $ContextMatch='setConstraintRoles'">
+						<xsl:when test="$ContextMatch='included' or $ContextMatch='constraintRoles'">
 							<plx:branch>
 								<plx:condition>
 									<plx:callInstance name="Contains" type="methodCall">
 										<plx:callObject>
-											<plx:nameRef name="includedFactRoles"/>
+											<plx:nameRef name="includedSequenceRoles"/>
 										</plx:callObject>
 										<plx:passParam>
 											<plx:callInstance name="Role" type="property">
@@ -4131,7 +4131,7 @@
 																	<plx:callObject>
 																		<plx:callInstance name=".implied" type="arrayIndexer">
 																			<plx:callObject>
-																				<plx:nameRef name="includedFactRoles"/>
+																				<plx:nameRef name="includedSequenceRoles"/>
 																			</plx:callObject>
 																			<plx:passParam>
 																				<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4153,7 +4153,7 @@
 																	<plx:callObject>
 																		<plx:callInstance name=".implied" type="indexerCall">
 																			<plx:callObject>
-																				<plx:nameRef name="includedFactRoles"/>
+																				<plx:nameRef name="includedSequenceRoles"/>
 																			</plx:callObject>
 																			<plx:passParam>
 																				<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4318,7 +4318,7 @@
 													<plx:callObject>
 														<plx:callInstance name=".implied" type="arrayIndexer">
 															<plx:callObject>
-																<plx:nameRef name="includedFactRoles"/>
+																<plx:nameRef name="includedSequenceRoles"/>
 															</plx:callObject>
 															<plx:passParam>
 																<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4340,7 +4340,7 @@
 													<plx:callObject>
 														<plx:callInstance name=".implied" type="indexerCall">
 															<plx:callObject>
-																<plx:nameRef name="includedFactRoles"/>
+																<plx:nameRef name="includedSequenceRoles"/>
 															</plx:callObject>
 															<plx:passParam>
 																<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4384,7 +4384,7 @@
 															<plx:callObject>
 																<plx:callInstance name=".implied" type="arrayIndexer">
 																	<plx:callObject>
-																		<plx:nameRef name="includedFactRoles"/>
+																		<plx:nameRef name="includedSequenceRoles"/>
 																	</plx:callObject>
 																	<plx:passParam>
 																		<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4406,7 +4406,7 @@
 															<plx:callObject>
 																<plx:callInstance name=".implied" type="indexerCall">
 																	<plx:callObject>
-																		<plx:nameRef name="includedFactRoles"/>
+																		<plx:nameRef name="includedSequenceRoles"/>
 																	</plx:callObject>
 																	<plx:passParam>
 																		<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4420,7 +4420,7 @@
 											<plx:passParam>
 												<plx:callInstance name=".implied" type="indexerCall">
 													<plx:callObject>
-														<plx:nameRef name="includedFactRoles"/>
+														<plx:nameRef name="includedSequenceRoles"/>
 													</plx:callObject>
 													<plx:passParam>
 														<xsl:choose>
@@ -4555,7 +4555,7 @@
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="ReadingFactTypeVariableName" select="$ReadingFactTypeVariableName"/>
 			<xsl:with-param name="ConditionalReadingOrderIndex">
-				<xsl:if test="$IteratorContext='setConstraintRoles'">
+				<xsl:if test="$IteratorContext='constraintRoles'">
 					<xsl:value-of select="concat($RoleIterVariablePart,$VariableDecorator)"/>
 				</xsl:if>
 			</xsl:with-param>
@@ -4639,7 +4639,7 @@
 																				<plx:callObject>
 																					<plx:callInstance name=".implied" type="arrayIndexer">
 																						<plx:callObject>
-																							<plx:nameRef name="includedFactRoles"/>
+																							<plx:nameRef name="includedSequenceRoles"/>
 																						</plx:callObject>
 																						<plx:passParam>
 																							<plx:nameRef name="{$IteratorVariableName}"/>
@@ -4917,7 +4917,7 @@
 					<xsl:text>allConstraintRoles</xsl:text>
 				</xsl:when>
 				<xsl:when test="$PatternGroup='SetComparisonConstraint' and $Match='included'">
-					<xsl:text>includedFactRoles</xsl:text>
+					<xsl:text>includedSequenceRoles</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>includedRoles</xsl:text>
@@ -4999,7 +4999,7 @@
 				</xsl:when>
 				<xsl:when test="$Match='included'">
 					<xsl:choose>
-						<xsl:when test="$IteratorContext='setConstraintRoles'">
+						<xsl:when test="$IteratorContext='constraintRoles'">
 							<!-- For the single column case, the included role is always a set consisting of the primary role only -->
 							<plx:binaryOperator type="identityEquality">
 								<plx:left>
@@ -5028,7 +5028,7 @@
 				</xsl:when>
 				<xsl:when test="$Match='excluded'">
 					<xsl:choose>
-						<xsl:when test="$IteratorContext='setConstraintRoles'">
+						<xsl:when test="$IteratorContext='constraintRoles'">
 							<!-- For the single column case, the included role is always a set consisting of the primary role only -->
 							<plx:binaryOperator type="identityInequality">
 								<plx:left>
@@ -5834,7 +5834,7 @@
 					<plx:nameRef name="{$IteratorVarName}"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<plx:local dataTypeName="IList" name="includedFactRoles">
+			<plx:local dataTypeName="IList" name="includedSequenceRoles">
 				<plx:passTypeParam dataTypeName="Role"/>
 				<plx:initialize>
 					<plx:callInstance name=".implied" type="indexerCall">
@@ -5847,15 +5847,17 @@
 					</plx:callInstance>
 				</plx:initialize>
 			</plx:local>
-			<plx:local name="roleArity" dataTypeName=".i4">
-				<plx:initialize>
-					<plx:callInstance name="Count" type="property">
-						<plx:callObject>
-							<plx:nameRef name="includedFactRoles"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:initialize>
-			</plx:local>
+			<xsl:if test="descendant::cvg:*[not(@pass='first')]">
+				<plx:local name="roleArity" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:nameRef name="includedSequenceRoles"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
 			<xsl:if test="not($ListStyle='null')">
 				<plx:local name="listSnippet" dataTypeName="{$VerbalizationTextSnippetType}"/>
 				<xsl:call-template name="PopulateListSnippet">
@@ -6031,7 +6033,7 @@
 							<plx:callObject>
 								<plx:callInstance name=".implied" type="indexerCall">
 									<plx:callObject>
-										<plx:nameRef name="includedFactRoles"/>
+										<plx:nameRef name="includedSequenceRoles"/>
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="i"/>
@@ -6073,7 +6075,7 @@
 										<plx:callObject>
 											<plx:callInstance name=".implied" type="indexerCall">
 												<plx:callObject>
-													<plx:nameRef name="includedFactRoles"/>
+													<plx:nameRef name="includedSequenceRoles"/>
 												</plx:callObject>
 												<plx:passParam>
 													<plx:nameRef name="j"/>
@@ -6166,7 +6168,7 @@
 							<plx:callObject>
 								<plx:callInstance name=".implied" type="indexerCall">
 									<plx:callObject>
-										<plx:nameRef name="includedFactRoles"/>
+										<plx:nameRef name="includedSequenceRoles"/>
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="i"/>
@@ -6208,7 +6210,7 @@
 										<plx:callObject>
 											<plx:callInstance name=".implied" type="indexerCall">
 												<plx:callObject>
-													<plx:nameRef name="includedFactRoles"/>
+													<plx:nameRef name="includedSequenceRoles"/>
 												</plx:callObject>
 												<plx:passParam>
 													<plx:nameRef name="j"/>
@@ -6567,7 +6569,7 @@
 					</plx:right>
 				</plx:assign>
 			</xsl:if>
-			<xsl:if test="$contextMatch='setConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasReferenceScheme'] or descendant::cvg:RoleName or descendant::cvg:IterateContextRoles or $IteratorContext">
+			<xsl:if test="$contextMatch='constraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasReferenceScheme'] or descendant::cvg:RoleName or descendant::cvg:IterateContextRoles or $IteratorContext">
 				<xsl:variable name="primaryRoleInitializerFragment">
 					<plx:callInstance name=".implied" type="arrayIndexer">
 						<plx:callObject>
@@ -6648,7 +6650,7 @@
 					</plx:local>
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				</xsl:when>
-				<xsl:when test="$contextMatch='setConstraintRoles' or $iterateFacts">
+				<xsl:when test="$contextMatch='constraintRoles' or $iterateFacts">
 					<plx:assign>
 						<plx:left>
 							<plx:nameRef name="parentFact"/>
@@ -7229,10 +7231,10 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
-					<xsl:when test="$ContextMatch='setConstraintRoles' and not($PatternGroup='SetComparisonConstraint')">
+					<xsl:when test="$ContextMatch='constraintRoles' and not($PatternGroup='SetComparisonConstraint')">
 						<xsl:text>constraintRoleArity</xsl:text>
 					</xsl:when>
-					<xsl:when test="$ContextMatch='setConstraintRoles' and $PatternGroup='SetComparisonConstraint'">
+					<xsl:when test="$ContextMatch='constraintRoles' and $PatternGroup='SetComparisonConstraint'">
 						<xsl:text>factArity</xsl:text>
 					</xsl:when>
 					<xsl:when test="$ContextMatch='excluded'">
@@ -7266,17 +7268,17 @@
 								<xsl:text>allConstraintRoles</xsl:text>
 							</xsl:when>
 							<xsl:when test="$PatternGroup='SetComparisonConstraint'">
-								<xsl:text>includedFactRoles</xsl:text>
+								<xsl:text>includedSequenceRoles</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:text>includedRoles</xsl:text>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
-					<xsl:when test="$ContextMatch='setConstraintRoles'">
+					<xsl:when test="$ContextMatch='constraintRoles'">
 						<xsl:choose>
 							<xsl:when test="$PatternGroup='SetComparisonConstraint'">
-								<xsl:text>includedFactRoles</xsl:text>
+								<xsl:text>includedSequenceRoles</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:text>allConstraintRoles</xsl:text>
@@ -7443,7 +7445,7 @@
 			<xsl:otherwise>
 				<xsl:variable name="roleIndexExpression">
 					<xsl:choose>
-						<xsl:when test="@match='included' or @match='setConstraintRoles'">
+						<xsl:when test="@match='included' or @match='constraintRoles'">
 							<!-- The role index needs to be retrieved from the all roles list -->
 							<plx:callStatic name="IndexOfRole" dataTypeName="FactType">
 								<plx:passParam>
@@ -7453,9 +7455,16 @@
 									<plx:callInstance name=".implied" type="arrayIndexer">
 										<plx:callObject>
 											<plx:nameRef name="includedRoles">
-												<xsl:if test="@match='setConstraintRoles' or $PatternGroup='InternalSetConstraint'">
+												<xsl:if test="@match='constraintRoles' or $PatternGroup='InternalSetConstraint'">
 													<xsl:attribute name="name">
-														<xsl:text>allConstraintRoles</xsl:text>
+														<xsl:choose>
+															<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+																<xsl:text>includedSequenceRoles</xsl:text>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:text>allConstraintRoles</xsl:text>
+															</xsl:otherwise>
+														</xsl:choose>
 													</xsl:attribute>
 												</xsl:if>
 											</plx:nameRef>
@@ -7475,7 +7484,7 @@
 				</xsl:variable>
 				<xsl:variable name="roleIndexReference">
 					<xsl:choose>
-						<xsl:when test="not($hyphenBind) or not(@match='included' or @match='setConstraintRoles')">
+						<xsl:when test="not($hyphenBind) or not(@match='included' or @match='constraintRoles')">
 							<xsl:copy-of select="$roleIndexExpression"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -7489,7 +7498,7 @@
 						<xsl:with-param name="ReadingChoice" select="readingContext/@match"/>
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="$hyphenBind and (@match='included' or @match='setConstraintRoles')">
+				<xsl:if test="$hyphenBind and (@match='included' or @match='constraintRoles')">
 					<plx:local name="{concat($ResolvedRoleVariablePart,$VariableDecorator)}" dataTypeName=".i4">
 						<plx:initialize>
 							<xsl:copy-of select="$roleIndexExpression"/>
@@ -8106,7 +8115,7 @@
 							</plx:local>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:if test="$contextMatch='setConstraintRoles' or $contextMatch='preferredIdentifier'">
+					<xsl:if test="$contextMatch='constraintRoles' or $contextMatch='preferredIdentifier'">
 						<plx:assign>
 							<plx:left>
 								<plx:nameRef name="parentFact"/>
@@ -8422,9 +8431,6 @@
 											</xsl:when>
 											<xsl:when test="$PatternGroup='SetComparisonConstraint'">
 												<plx:nameRef name="factRoles"/>
-												<!--<plx:cast dataTypeName="IList" dataTypeQualifier="System.Collections">
-													<plx:nameRef name="includedFactRoles"/>
-												</plx:cast>-->
 											</xsl:when>
 											<xsl:otherwise>
 												<plx:nameRef name="includedRoles"/>

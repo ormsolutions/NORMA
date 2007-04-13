@@ -447,9 +447,13 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string FontsAndColorsVerbalizerNotesItemColorId = "FontsAndColors.VerbalizerNotesItemColorId";
 		/// <summary>
-		/// Display Name of the Quantifier color
+		/// Display Name of the ref mode color
 		/// </summary>
 		public const string FontsAndColorsVerbalizerRefModeColorId = "FontsAndColors.VerbalizerRefModeColorId";
+		/// <summary>
+		/// Display Name of the instance value color
+		/// </summary>
+		public const string FontsAndColorsVerbalizerInstanceValueColorId = "FontsAndColors.VerbalizerInstanceValueColorId";
 		#endregion // FontsAndColors Ids
 		#endregion // Public resource ids
 

@@ -90,9 +90,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		VerbalizerRefMode,
 		/// <summary>
+		/// Used for picking color of instance value verbalization
+		/// </summary>
+		VerbalizerInstanceValue,
+		/// <summary>
 		/// Used for picking different category ranges out of a single enum
 		/// </summary>
-		LastVerbalizerColor = VerbalizerRefMode,
+		LastVerbalizerColor = VerbalizerInstanceValue,
 		// Items here must be in the same order as myDefaultColorSettings
 		// defined in the ORMDesignerFontsAndColors class. Also need to
 		// update NameFromItemIndex implementations when adding/removing items here.
@@ -239,6 +243,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// The unlocalized name for reference mode in the verbalizer
 		/// </summary>
 		public const string VerbalizerRefModeColorName = "ORM Verbalizer (Reference Mode)";
+		/// <summary>
+		/// The unlocalized name for instance value in the verbalizer
+		/// </summary>
+		public const string VerbalizerInstanceValueColorName = "ORM Verbalizer (Instance Value)";
 		#endregion // Constant definitions
 		#region Default Settings
 		/// <summary>
@@ -346,6 +354,13 @@ namespace Neumont.Tools.ORM.Shell
 			,new DefaultColorSetting(
 			VerbalizerRefModeColorName,
 			ResourceStrings.FontsAndColorsVerbalizerRefModeColorId,
+			(uint)COLORINDEX.CI_BROWN | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
+			false)
+			,new DefaultColorSetting(
+			VerbalizerInstanceValueColorName,
+			ResourceStrings.FontsAndColorsVerbalizerInstanceValueColorId,
 			(uint)COLORINDEX.CI_BROWN | StandardPaletteBit,
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
@@ -1287,6 +1302,9 @@ namespace Neumont.Tools.ORM.Shell
 						break;
 					case ORMDesignerColor.VerbalizerRefMode:
 						retVal = VerbalizerRefModeColorName;
+						break;
+					case ORMDesignerColor.VerbalizerInstanceValue:
+						retVal = VerbalizerInstanceValueColorName;
 						break;
 					default:
 						Debug.Fail("The cases may not match all of the ORMDesignerColor enums.");

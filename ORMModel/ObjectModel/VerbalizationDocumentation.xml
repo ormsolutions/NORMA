@@ -1773,7 +1773,7 @@
     <containedIn />
     <usedBy />
   </snippet>
-  <snippet name="VerbalizerDocumentHeader" replacementCount="12">
+  <snippet name="VerbalizerDocumentHeader" replacementCount="14">
     <statement>
 							Description: Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
 							{0} font-family
@@ -1788,6 +1788,8 @@
 							{9} note bold
 							{10} reference mode color
 							{11} reference mode bold
+							{12} instance value color
+							{13} instance value bold
 						</statement>
     <unformattedSnippet>
 
@@ -1809,7 +1811,7 @@
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
-		.instance {{ color: {10}; {11} }}
+		.instance {{ color: {12}; {13} }}
 	
 
 </unformattedSnippet>

@@ -311,7 +311,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		VerbalizerDecreaseIndent,
 		/// <summary>The 'VerbalizerDocumentFooter' simple snippet value.</summary>
 		VerbalizerDocumentFooter,
-		/// <summary>The 'VerbalizerDocumentHeader' format string snippet. Contains 12 replacement fields.</summary>
+		/// <summary>The 'VerbalizerDocumentHeader' format string snippet. Contains 14 replacement fields.</summary>
 		VerbalizerDocumentHeader,
 		/// <summary>The 'VerbalizerFontWeightBold' simple snippet value.</summary>
 		VerbalizerFontWeightBold,
@@ -409,20 +409,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"at least <span class=""objectType"">{0}</span>",
-				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span>",
-				@"at most <span class=""objectType"">{1}</span>",
-				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">below <span class=""instance"">{1}</span></span>",
 				@"<span class=""quantifier"">it is necessary that</span> {0}",
 				@"<span class=""quantifier"">it is possible that</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-				"{0}",
+				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
@@ -464,7 +464,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
-				"'{0}'",
+				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 				"<span>",
@@ -500,7 +500,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
-		.instance {{ color: {10}; {11} }}
+		.instance {{ color: {12}; {13} }}
 	</style>
 </head>
 <body>",
@@ -582,20 +582,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"at least <span class=""objectType"">{0}</span>",
-				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span>",
-				@"at most <span class=""objectType"">{1}</span>",
-				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">below <span class=""instance"">{1}</span></span>",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
 				@"<span class=""quantifier"">it is permitted that</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-				"{0}",
+				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
@@ -637,7 +637,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
-				"'{0}'",
+				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 				"<span>",
@@ -673,7 +673,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
-		.instance {{ color: {10}; {11} }}
+		.instance {{ color: {12}; {13} }}
 	</style>
 </head>
 <body>",
@@ -755,20 +755,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"at least <span class=""objectType"">{0}</span>",
-				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span>",
-				@"at most <span class=""objectType"">{1}</span>",
-				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">below <span class=""instance"">{1}</span></span>",
 				@"<span class=""quantifier"">it is necessary that</span> {0}",
 				@"<span class=""quantifier"">it is impossible that</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-				"{0}",
+				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
@@ -810,7 +810,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
-				"'{0}'",
+				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 				"<span>",
@@ -846,7 +846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
-		.instance {{ color: {10}; {11} }}
+		.instance {{ color: {12}; {13} }}
 	</style>
 </head>
 <body>",
@@ -928,20 +928,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"at least <span class=""objectType"">{0}</span>",
-				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-				@"above <span class=""objectType"">{0}</span>",
-				@"at most <span class=""objectType"">{1}</span>",
-				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">at least <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span> to below <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">above <span class=""instance"">{0}</span></span>",
+				@"<span class=""quantifier"">at most <span class=""instance"">{1}</span></span>",
+				@"<span class=""quantifier"">below <span class=""instance"">{1}</span></span>",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
 				@"<span class=""quantifier"">it is forbidden that</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-				"{0}",
+				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
@@ -983,7 +983,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">Each </span>{0} <span class=""quantifier"">is an instance of</span> {1}",
-				"'{0}'",
+				@"<span class=""instance"">'{0}'</span>",
 				"</span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 				"<span>",
@@ -1019,7 +1019,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
-		.instance {{ color: {10}; {11} }}
+		.instance {{ color: {12}; {13} }}
 	</style>
 </head>
 <body>",
@@ -1755,18 +1755,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace1 = null;
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -1782,11 +1782,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -1819,7 +1819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
@@ -1851,7 +1851,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
@@ -1866,18 +1866,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace2 = null;
 					for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -1893,11 +1893,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -1923,7 +1923,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							factRoles = currentFact.RoleCollection;
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
-							RoleBase primaryRole = includedFactRoles[FactIter2];
+							RoleBase primaryRole = includedSequenceRoles[FactIter2];
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
@@ -1935,7 +1935,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
 								if (currentRole == primaryRole)
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -1966,96 +1966,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace1 = null;
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
-						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
-						int currentSequenceFactCount = 0;
-						currentSequenceFactCount = 0;
-						for (int i = 0; i < roleArity; ++i)
-						{
-							FactType currentFact = includedFactRoles[i].FactType;
-							int j = 0;
-							for (; j < i; ++j)
-							{
-								if (currentFact == includedFactRoles[j].FactType)
-								{
-									break;
-								}
-							}
-							if (j == i)
-							{
-								++currentSequenceFactCount;
-							}
-						}
-						FactType[] currentSequenceFacts = new FactType[currentSequenceFactCount];
-						currentSequenceFacts = new FactType[currentSequenceFactCount];
-						currentSequenceFactCount = 0;
-						// Building the unique fact list.
-						for (int i = 0; i < roleArity; ++i)
-						{
-							FactType currentFact = includedFactRoles[i].FactType;
-							int j = 0;
-							for (; j < i; ++j)
-							{
-								if (currentFact == includedFactRoles[j].FactType)
-								{
-									break;
-								}
-							}
-							if (j == i)
-							{
-								currentSequenceFacts[currentSequenceFactCount] = currentFact;
-								++currentSequenceFactCount;
-							}
-						}
-						factArity = currentSequenceFacts.Length;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
 						if (sbTemp == null)
 						{
 							sbTemp = new StringBuilder();
 						}
-						else if (SequenceIter1 == 0)
+						else
 						{
 							sbTemp.Length = 0;
 						}
-						for (int FactIter1 = 0; FactIter1 < 1; ++FactIter1)
+						for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
 						{
-							FactType currentFact = currentSequenceFacts[FactIter1];
-							factRoles = currentFact.RoleCollection;
-							int currentRoleCount = factRoles.Count;
-							allReadingOrders = currentFact.ReadingOrderCollection;
-							snippet1Replace1Replace1 = null;
-							RoleBase rolePlayer = null;
-							for (int RoleIter = 0; RoleIter < currentRoleCount; ++RoleIter)
-							{
-								RoleBase currentRole = factRoles[RoleIter];
-								reading = currentFact.GetMatchingReading(allReadingOrders, null, currentRole, null, false, false, factRoles, false);
-								if (reading != null)
-								{
-									rolePlayer = currentRole;
-									break;
-								}
-							}
-							snippet1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
+							RoleBase primaryRole = includedSequenceRoles[RoleIter1];
+							parentFact = primaryRole.FactType;
+							factRoles = parentFact.RoleCollection;
+							allReadingOrders = parentFact.ReadingOrderCollection;
+							string[] basicRoleReplacements = allBasicRoleReplacements[allFacts.IndexOf(parentFact)];
+							sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, includedSequenceRoles[RoleIter1])]);
 						}
+						snippet1Replace1Replace1 = sbTemp.ToString();
 					}
-					snippet1Replace1Replace1 = sbTemp.ToString();
 					string snippet1Replace1Replace2 = null;
 					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.Conditional, isDeontic, isNegative);
 					string snippet1Replace1Replace2Replace1 = null;
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2071,11 +2018,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2101,7 +2048,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							factRoles = currentFact.RoleCollection;
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
-							RoleBase primaryRole = includedFactRoles[FactIter1];
+							RoleBase primaryRole = includedSequenceRoles[FactIter1];
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
@@ -2113,7 +2060,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter1], snippet1Replace1Replace2ReplaceFactRoleIter1);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter1], snippet1Replace1Replace2ReplaceFactRoleIter1);
 								if (currentRole == primaryRole)
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -2135,18 +2082,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace2Replace2 = null;
 					for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2162,11 +2109,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2192,7 +2139,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							factRoles = currentFact.RoleCollection;
 							int currentRoleCount = factRoles.Count;
 							allReadingOrders = currentFact.ReadingOrderCollection;
-							RoleBase primaryRole = includedFactRoles[FactIter2];
+							RoleBase primaryRole = includedSequenceRoles[FactIter2];
 							parentFact = primaryRole.FactType;
 							factRoles = parentFact.RoleCollection;
 							allReadingOrders = parentFact.ReadingOrderCollection;
@@ -2204,7 +2151,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter2];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter2], snippet1Replace1Replace2ReplaceFactRoleIter2);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter2], snippet1Replace1Replace2ReplaceFactRoleIter2);
 								if (currentRole == primaryRole)
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -2256,18 +2203,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace1 = null;
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2283,11 +2230,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2341,7 +2288,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
@@ -2360,18 +2307,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace2 = null;
 					for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2387,11 +2334,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2445,8 +2392,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
-								if (includedFactRoles.Contains(currentRole.Role))
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+								if (includedSequenceRoles.Contains(currentRole.Role))
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
@@ -2480,18 +2427,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace1 = null;
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2507,11 +2454,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2565,7 +2512,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1ReplaceFactRoleIter1], snippet1Replace1ReplaceFactRoleIter1);
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
@@ -2584,18 +2531,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace2 = null;
 					for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2611,11 +2558,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -2669,8 +2616,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
-								if (includedFactRoles.Contains(currentRole.Role))
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+								if (includedSequenceRoles.Contains(currentRole.Role))
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
@@ -6868,18 +6815,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -6895,11 +6842,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -6949,14 +6896,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
-							if (includedFactRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
+							if (includedSequenceRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
 							{
 								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 								{
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -6967,18 +6914,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -6994,11 +6941,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7024,7 +6971,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						factRoles = currentFact.RoleCollection;
 						int currentRoleCount = factRoles.Count;
 						allReadingOrders = currentFact.ReadingOrderCollection;
-						RoleBase primaryRole = includedFactRoles[FactIter1];
+						RoleBase primaryRole = includedSequenceRoles[FactIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						allReadingOrders = parentFact.ReadingOrderCollection;
@@ -7036,7 +6983,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter1];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter1], snippet1Replace1Replace2ReplaceFactRoleIter1);
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter1], snippet1Replace1Replace2ReplaceFactRoleIter1);
 							if (currentRole == primaryRole)
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -7058,18 +7005,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2Replace2 = null;
 				for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7085,11 +7032,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7115,7 +7062,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						factRoles = currentFact.RoleCollection;
 						int currentRoleCount = factRoles.Count;
 						allReadingOrders = currentFact.ReadingOrderCollection;
-						RoleBase primaryRole = includedFactRoles[FactIter2];
+						RoleBase primaryRole = includedSequenceRoles[FactIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						allReadingOrders = parentFact.ReadingOrderCollection;
@@ -7127,7 +7074,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter2], snippet1Replace1Replace2ReplaceFactRoleIter2);
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter2], snippet1Replace1Replace2ReplaceFactRoleIter2);
 							if (currentRole == primaryRole)
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -7159,18 +7106,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7186,11 +7133,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7240,14 +7187,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
-							if (includedFactRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
+							if (includedSequenceRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
 							{
 								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 								{
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7258,18 +7205,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7285,11 +7232,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7322,8 +7269,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter1];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter1], snippet1Replace1Replace2ReplaceFactRoleIter1);
-							if (includedFactRoles.Contains(currentRole.Role))
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter1], snippet1Replace1Replace2ReplaceFactRoleIter1);
+							if (includedSequenceRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -7344,18 +7291,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2Replace2 = null;
 				for (int SequenceIter2 = 1; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7371,11 +7318,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7408,8 +7355,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1Replace2ReplaceFactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter2], snippet1Replace1Replace2ReplaceFactRoleIter2);
-							if (includedFactRoles.Contains(currentRole.Role))
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1Replace2ReplaceFactRoleIter2], snippet1Replace1Replace2ReplaceFactRoleIter2);
+							if (includedSequenceRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -7440,18 +7387,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7467,11 +7414,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7521,14 +7468,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
-							if (includedFactRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
+							if (includedSequenceRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
 							{
 								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 								{
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7537,8 +7484,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2 = null;
 				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedSequenceRoles.Count;
 					CoreVerbalizationSnippetType listSnippet;
 					if (SequenceIter2 == 0)
 					{
@@ -7564,11 +7511,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7584,11 +7531,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7621,8 +7568,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
-							if (includedFactRoles.Contains(currentRole.Role))
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+							if (includedSequenceRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -7850,18 +7797,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7877,11 +7824,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7931,14 +7878,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
-							if (includedFactRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
+							if (includedSequenceRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
 							{
 								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 								{
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -7947,8 +7894,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2 = null;
 				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedSequenceRoles.Count;
 					CoreVerbalizationSnippetType listSnippet;
 					if (SequenceIter2 == 0)
 					{
@@ -7974,11 +7921,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -7994,11 +7941,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -8031,8 +7978,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
-							if (includedFactRoles.Contains(currentRole.Role))
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+							if (includedSequenceRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -8119,18 +8066,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace1Replace1Replace1 = null;
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8146,11 +8093,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8188,14 +8135,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace1Replace1 = allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 					string snippet1Replace1Replace1Replace2 = null;
 					for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						CoreVerbalizationSnippetType listSnippet;
 						if (SequenceIter2 == 0)
 						{
@@ -8221,11 +8168,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8241,11 +8188,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8278,7 +8225,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1Replace1ReplaceFactRoleIter2];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1Replace1ReplaceFactRoleIter2], snippet1Replace1Replace1ReplaceFactRoleIter2);
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1Replace1ReplaceFactRoleIter2], snippet1Replace1Replace1ReplaceFactRoleIter2);
 								roleReplacement = "";
 								if (roleReplacement == null)
 								{
@@ -8298,18 +8245,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8325,11 +8272,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8379,14 +8326,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 								{
 									listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 								}
-								if (includedFactRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
+								if (includedSequenceRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
 								{
 									if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 									{
 										sbTemp.Append(snippets.GetSnippet(listSnippet));
 										isFirstAppend = false;
 									}
-									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+									sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 								}
 							}
 						}
@@ -8398,18 +8345,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int SequenceIter2 = 0; SequenceIter2 < 1; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 						int currentSequenceFactCount = 0;
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8425,11 +8372,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8467,7 +8414,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									break;
 								}
 							}
-							snippet1Replace1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][includedFactRoles[FactIter2].FactType.RoleCollection.IndexOf(rolePlayer)];
+							snippet1Replace1Replace2 = allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][includedSequenceRoles[FactIter2].FactType.RoleCollection.IndexOf(rolePlayer)];
 						}
 					}
 				}
@@ -8475,8 +8422,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 					{
-						IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-						int roleArity = includedFactRoles.Count;
+						IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+						int roleArity = includedSequenceRoles.Count;
 						CoreVerbalizationSnippetType listSnippet;
 						if (SequenceIter2 == 0)
 						{
@@ -8502,11 +8449,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						currentSequenceFactCount = 0;
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8522,11 +8469,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Building the unique fact list.
 						for (int i = 0; i < roleArity; ++i)
 						{
-							FactType currentFact = includedFactRoles[i].FactType;
+							FactType currentFact = includedSequenceRoles[i].FactType;
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (currentFact == includedFactRoles[j].FactType)
+								if (currentFact == includedSequenceRoles[j].FactType)
 								{
 									break;
 								}
@@ -8559,8 +8506,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
-								if (includedFactRoles.Contains(currentRole.Role))
+								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+								if (includedSequenceRoles.Contains(currentRole.Role))
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
@@ -8593,18 +8540,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace1 = null;
 				for (int SequenceIter1 = 0; SequenceIter1 < 1; ++SequenceIter1)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter1];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter1];
+					int roleArity = includedSequenceRoles.Count;
 					// Iterate through the current sequence's fact, and retrieve the unique facts of that collection
 					int currentSequenceFactCount = 0;
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -8620,11 +8567,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -8674,14 +8621,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
-							if (includedFactRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
+							if (includedSequenceRoles.Contains(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role))
 							{
 								if ((isFirstAppend && (listSnippet == CoreVerbalizationSnippetType.SimpleLogicalAndListOpen)) || !(isFirstAppend))
 								{
 									sbTemp.Append(snippets.GetSnippet(listSnippet));
 									isFirstAppend = false;
 								}
-								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter1].FactType)][includedFactRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
+								sbTemp.Append(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter1].FactType)][includedSequenceRoles[FactIter1].FactType.RoleCollection.IndexOf(factRoles[snippet1Replace1ReplaceFactRoleIter1].Role)]);
 							}
 						}
 					}
@@ -8690,8 +8637,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1Replace2 = null;
 				for (int SequenceIter2 = 0; SequenceIter2 < constraintRoleArity; ++SequenceIter2)
 				{
-					IList<Role> includedFactRoles = allConstraintSequences[SequenceIter2];
-					int roleArity = includedFactRoles.Count;
+					IList<Role> includedSequenceRoles = allConstraintSequences[SequenceIter2];
+					int roleArity = includedSequenceRoles.Count;
 					CoreVerbalizationSnippetType listSnippet;
 					if (SequenceIter2 == 0)
 					{
@@ -8717,11 +8664,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					currentSequenceFactCount = 0;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -8737,11 +8684,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Building the unique fact list.
 					for (int i = 0; i < roleArity; ++i)
 					{
-						FactType currentFact = includedFactRoles[i].FactType;
+						FactType currentFact = includedSequenceRoles[i].FactType;
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (currentFact == includedFactRoles[j].FactType)
+							if (currentFact == includedSequenceRoles[j].FactType)
 							{
 								break;
 							}
@@ -8774,8 +8721,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedFactRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
-							if (includedFactRoles.Contains(currentRole.Role))
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[allFacts.IndexOf(includedSequenceRoles[FactIter2].FactType)][snippet1Replace1ReplaceFactRoleIter2], snippet1Replace1ReplaceFactRoleIter2);
+							if (includedSequenceRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}

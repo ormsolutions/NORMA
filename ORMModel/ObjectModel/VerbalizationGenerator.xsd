@@ -201,7 +201,7 @@
 			<xs:enumeration value="all"/>
 			<xs:enumeration value="included"/>
 			<xs:enumeration value="excluded"/>
-			<xs:enumeration value="setConstraintRoles"/>
+			<xs:enumeration value="constraintRoles"/>
 			<xs:enumeration value="preferredIdentifier"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -851,8 +851,8 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="IterateSequenceFacts" type="IterateRolesType"/>
+			<xs:element name="IterateRoles" type="IterateRolesType"/>
 		</xs:choice>
-		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>

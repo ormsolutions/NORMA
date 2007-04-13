@@ -394,6 +394,10 @@
     <value xml:space="preserve">Object Name</value>
     <comment xml:space="preserve">Display name for the color used to draw object names in the verbalizer</comment>
   </data>
+  <data name="FontsAndColors.VerbalizerInstanceValueColorId">
+     <value xml:space="preserve">Instance Value</value>
+     <comment xml:space="preserve">Display name for the color used to draw the instance value in the verbalizer</comment>
+  </data>
   <data name="FontsAndColors.VerbalizerFormalItemColor">
     <value xml:space="preserve">Formal Items</value>
     <comment xml:space="preserve">Display name for the color used to draw formal items in the verbalizer</comment>

@@ -79,7 +79,7 @@
 						<ReadingChoice match="RequireAllPrimaryLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="Conditional">
-									<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+									<IterateSequences listStyle="null" pass="first">
 										<IterateSequenceFacts listStyle="null">
 											<Fact>
 												<PredicateReplacement>
@@ -95,8 +95,8 @@
 											</Fact>
 										</IterateSequenceFacts>
 									</IterateSequences>
-									<IterateSequences match="setConstraintRoles" listStyle="null" pass="notFirst">
-										<IterateSequenceFacts match="setConstraintRoles" listStyle="null">
+									<IterateSequences listStyle="null" pass="notFirst">
+										<IterateSequenceFacts match="constraintRoles" listStyle="null">
 											<Fact>
 												<PredicateReplacement match="included">
 													<Snippet ref="DefiniteArticle"/>
@@ -114,13 +114,11 @@
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachIndentedQuantifier">
 									<IterateSequences listStyle="null" pass="first">
-										<IterateSequenceFacts match="included" listStyle="null" pass="first">
-											<RolePlayer pass="first"/>
-										</IterateSequenceFacts>
+										<IterateRoles match="constraintRoles" listStyle="null" pass="first"/>
 									</IterateSequences>
 									<Snippet ref="Conditional">
-										<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
-											<IterateSequenceFacts match="setConstraintRoles" listStyle="null" pass="first">
+										<IterateSequences listStyle="null" pass="first">
+											<IterateSequenceFacts match="constraintRoles" listStyle="null" pass="first">
 												<Fact readingChoice="PreferLeadReading">
 													<PredicateReplacement match="included">
 														<Snippet ref="DefiniteArticle"/>
@@ -131,8 +129,8 @@
 												</Fact>
 											</IterateSequenceFacts>
 										</IterateSequences>
-										<IterateSequences match="setConstraintRoles" listStyle="null" pass="notFirst">
-											<IterateSequenceFacts match="setConstraintRoles" listStyle="null">
+										<IterateSequences listStyle="null" pass="notFirst">
+											<IterateSequenceFacts match="constraintRoles" listStyle="null">
 												<Fact readingChoice="PreferLeadReading">
 													<PredicateReplacement match="included">
 														<Snippet ref="DefiniteArticle"/>
@@ -154,7 +152,7 @@
 						<ReadingChoice match="RequireAllPrimaryLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="Conditional">
-									<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+									<IterateSequences listStyle="null" pass="first">
 										<IterateSequenceFacts listStyle="CompoundList">
 											<Fact>
 												<PredicateReplacement>
@@ -163,7 +161,7 @@
 											</Fact>
 										</IterateSequenceFacts>
 									</IterateSequences>
-									<IterateSequences match="setConstraintRoles" listStyle="null">
+									<IterateSequences listStyle="null">
 										<IterateSequenceFacts listStyle="CompoundList">
 											<Fact>
 												<PredicateReplacement match="included">
@@ -181,7 +179,7 @@
 						<ReadingChoice>
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="Conditional">
-									<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+									<IterateSequences listStyle="null" pass="first">
 										<IterateSequenceFacts listStyle="CompoundList">
 											<Fact>
 												<PredicateReplacement>
@@ -190,7 +188,7 @@
 											</Fact>
 										</IterateSequenceFacts>
 									</IterateSequences>
-									<IterateSequences match="setConstraintRoles" listStyle="null">
+									<IterateSequences listStyle="null">
 										<IterateSequenceFacts listStyle="CompoundList">
 											<Fact>
 												<PredicateReplacement match="included">
@@ -462,7 +460,7 @@
 				<ConstrainedRoles sign="negative" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
-							<IterateRoles listStyle="null" match="setConstraintRoles" pass="first"/>
+							<IterateRoles listStyle="null" match="constraintRoles" pass="first"/>
 							<IterateFacts listStyle="IndentedCompoundList"/>
 						</Snippet>
 					</Snippet>
@@ -471,7 +469,7 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllLeadReadingNoFrontText">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="setConstraintRoles">
+								<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="constraintRoles">
 									<Fact readingChoice="Context">
 										<PredicateReplacement match="primary" pass="first">
 											<Snippet ref="UniversalQuantifier"/>
@@ -485,9 +483,9 @@
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles listStyle="null" pass="first" match="setConstraintRoles"/>
+								<IterateRoles listStyle="null" pass="first" match="constraintRoles"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
-									<IterateRoles listStyle="SimpleLogicalOrList" match="setConstraintRoles">
+									<IterateRoles listStyle="SimpleLogicalOrList" match="constraintRoles">
 										<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
@@ -504,7 +502,7 @@
 						<ReadingChoice match="RequireAllPrimaryLeadReadingNoFrontText">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<CompositeList listStyle="TopLevelIndentedLogicalOrList">
-									<IterateRoles minFactArity="2" match="setConstraintRoles">
+									<IterateRoles minFactArity="2" match="constraintRoles">
 										<Fact readingChoice="Context">
 											<PredicateReplacement match="primary" pass="first">
 												<Snippet ref="UniversalQuantifier"/>
@@ -517,7 +515,7 @@
 											</PredicateReplacement>
 										</Fact>
 									</IterateRoles>
-									<IterateRoles factArity="1" match="setConstraintRoles">
+									<IterateRoles factArity="1" match="constraintRoles">
 										<Fact readingChoice="Context">
 											<PredicateReplacement>
 												<Snippet ref="null"/>
@@ -529,10 +527,10 @@
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="setConstraintRoles" pass="first" listStyle="SimpleList"/>
+								<IterateRoles match="constraintRoles" pass="first" listStyle="SimpleList"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<CompositeList listStyle="IndentedLogicalOrList">
-										<IterateRoles match="setConstraintRoles" minFactArity="2">
+										<IterateRoles match="constraintRoles" minFactArity="2">
 											<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
 												<PredicateReplacement match="included">
 													<Snippet ref="DefiniteArticle"/>
@@ -542,7 +540,7 @@
 												</PredicateReplacement>
 											</Fact>
 										</IterateRoles>
-										<IterateRoles factArity="1" match="setConstraintRoles">
+										<IterateRoles factArity="1" match="constraintRoles">
 											<Fact>
 												<PredicateReplacement>
 													<Snippet ref="DefiniteArticle"/>
@@ -723,10 +721,10 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="setConstraintRoles" listStyle="SimpleList" hyphenBind="true">
+								<IterateRoles match="constraintRoles" listStyle="SimpleList" hyphenBind="true">
 									<ReadingContext match="PreferNonPrimaryLeadReadingNoFrontText"/>
 								</IterateRoles>
-								<IterateRoles match="setConstraintRoles" listStyle="IndentedList">
+								<IterateRoles match="constraintRoles" listStyle="IndentedList">
 									<Fact readingChoice="Context">
 										<PredicateReplacement match="excluded" pass="first">
 											<Snippet ref="AtMostOneQuantifier" />
@@ -750,9 +748,9 @@
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Snippet ref="UniversalQuantifier">
 										<Snippet ref="CombinationAssociation">
-											<IterateRoles match="setConstraintRoles" listStyle="CompactSimpleList"/>
+											<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
 											<Snippet ref="OneQuantifier">
-												<IterateRoles match="setConstraintRoles" pass="first" listStyle="null">
+												<IterateRoles match="constraintRoles" pass="first" listStyle="null">
 													<IterateContextRoles match="excluded" listStyle="SimpleList"/>
 												</IterateRoles>
 											</Snippet>
@@ -768,7 +766,7 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ModalPossibilityOperator">
-								<IterateRoles match="setConstraintRoles" listStyle="SimpleList">
+								<IterateRoles match="constraintRoles" listStyle="SimpleList">
 									<Fact readingChoice="Context">
 										<PredicateReplacement match="excluded" pass="first">
 											<Snippet ref="MoreThanOneQuantifier" />
@@ -792,10 +790,10 @@
 								<Snippet ref="ModalPossibilityOperator">
 									<Snippet ref="CombinationAssociation">
 										<Snippet ref="IdentityReferenceQuantifier">
-											<IterateRoles match="setConstraintRoles" listStyle="CompactSimpleList"/>
+											<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
 										</Snippet>
 										<Snippet ref="MoreThanOneQuantifier">
-											<IterateRoles match="setConstraintRoles" pass="first" listStyle="null">
+											<IterateRoles match="constraintRoles" pass="first" listStyle="null">
 												<IterateContextRoles match="excluded" listStyle="SimpleList"/>
 											</IterateRoles>
 										</Snippet>
@@ -916,8 +914,8 @@
 								</IterateSequenceFacts>
 							</IterateSequences>
 							<Snippet ref="Equality">
-								<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
-									<IterateSequenceFacts match="setConstraintRoles" listStyle="null" pass="first">
+								<IterateSequences listStyle="null" pass="first">
+									<IterateSequenceFacts match="constraintRoles" listStyle="null" pass="first">
 										<Fact>
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
@@ -928,8 +926,8 @@
 										</Fact>
 									</IterateSequenceFacts>
 								</IterateSequences>
-								<IterateSequences match="setConstraintRoles" listStyle="null" pass="notFirst">
-									<IterateSequenceFacts match="setConstraintRoles" listStyle="null">
+								<IterateSequences listStyle="null" pass="notFirst">
+									<IterateSequenceFacts match="constraintRoles" listStyle="null">
 										<Fact>
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
@@ -953,7 +951,7 @@
 								</IterateSequenceFacts>
 							</IterateSequences>
 							<Snippet ref="Equality">
-								<IterateSequences match="setConstraintRoles" listStyle="null" pass="first">
+								<IterateSequences listStyle="null" pass="first">
 									<IterateSequenceFacts match="included" listStyle="null" pass="first">
 										<Fact>
 											<PredicateReplacement match="included">
@@ -965,7 +963,7 @@
 										</Fact>
 									</IterateSequenceFacts>
 								</IterateSequences>
-								<IterateSequences match="setConstraintRoles" listStyle="null" pass="notFirst">
+								<IterateSequences listStyle="null" pass="notFirst">
 									<IterateSequenceFacts match="included" listStyle="null">
 										<Fact>
 											<PredicateReplacement match="included">
@@ -989,7 +987,7 @@
 									<RolePlayer/>
 								</IterateSequenceFacts>
 							</IterateSequences>
-							<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
+							<IterateSequences listStyle="SemiColonList">
 								<IterateSequenceFacts match="included" listStyle="null">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -1021,7 +1019,7 @@
 										<RolePlayer/>
 									</IterateSequenceFacts>
 								</IterateSequences>
-								<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
+								<IterateSequences listStyle="SemiColonList">
 									<IterateSequenceFacts match="included" listStyle="null">
 										<Fact>
 											<PredicateReplacement match="included">
@@ -1072,7 +1070,7 @@
 											<RolePlayer pass="notFirst"/>
 										</IterateSequenceFacts>
 									</IterateSequences>
-									<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
+									<IterateSequences listStyle="SemiColonList">
 										<IterateSequenceFacts match="included" listStyle="null">
 											<Fact>
 												<PredicateReplacement match="included">
@@ -1097,7 +1095,7 @@
 									<RolePlayer/>
 								</IterateSequenceFacts>
 							</IterateSequences>
-							<IterateSequences match="setConstraintRoles" listStyle="SemiColonList">
+							<IterateSequences listStyle="SemiColonList">
 								<IterateSequenceFacts match="included" listStyle="null">
 									<Fact>
 										<PredicateReplacement match="included">
