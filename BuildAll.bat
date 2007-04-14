@@ -1,7 +1,7 @@
 @ECHO OFF
 SETLOCAL
-IF NOT DEFINED FrameworkSDKDir (CALL "%VS80COMNTOOLS%\vsvars32.bat")
 SET RootDir=%~dp0.
+CALL "%RootDir%\SetupEnvironment.bat" %*
 MSBuild.exe /nologo "%RootDir%\ORMPackage.sln" %*
 MSBuild.exe /nologo "%RootDir%\ORMTestPackage.sln" %*
 MSBuild.exe /nologo "%RootDir%\AlternateViews\RelationalView\RelationalView.sln" %*

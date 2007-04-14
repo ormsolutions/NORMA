@@ -91,7 +91,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return 125;
+				return PackageResources.Id.ToolWindowIcons;
 			}
 		}
 		/// <summary>
@@ -101,7 +101,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return -1;
+				return PackageResources.ToolWindowIconIndex.None;
 			}
 		}
 		/// <summary>

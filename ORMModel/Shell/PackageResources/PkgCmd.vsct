@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" language="en-US">
+
+	<!-- Shell specified commands -->
+	<Extern href="stdidcmd.h"/>
+	<!-- Shell specified groups/guids -->
+	<Extern href="vsshlids.h"/>
+	<!-- Shell specified commands -->
+	<Extern href="msobtnid.h"/>
+
+	<Commands package="guidORMDesignerPackage">
+
+		<Menus>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdContextMenu" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="0"/>
+				<Strings>
+					<ButtonText>ORM Designer Context Menu</ButtonText>
+					<CommandName>ORMDesignerContextMenu</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar" priority="0x0000" type="ToolWindowToolbar">
+				<!-- UNDONE: Should this really be its own parent? -->
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
+				<Strings>
+					<ButtonText>ORM Verbalization Toolbar</ButtonText>
+					<CommandName>ORMDesignerVerbalizationToolbar</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdErrorList" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdErrorList"/>
+				<Strings>
+					<ButtonText>ORM Model Error List</ButtonText>
+					<CommandName>&amp;Validation Errors</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactShapeCommands"/>
+				<Strings>
+					<ButtonText>ORM Fact Type Shape Orientation Menu</ButtonText>
+					<CommandName>&amp;Orientation</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdToolWindows" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdToolWindows"/>
+				<Strings>
+					<ButtonText>ORM Tool Windows Menu</ButtonText>
+					<CommandName>ORM &amp;Tool Windows</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdDiagramList" priority="0x0100" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<Strings>
+					<ButtonText>ORM Diagram List</ButtonText>
+					<CommandName>Select on Dia&amp;gram</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdReadingEditorContextMenu" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="0"/>
+				<Strings>
+					<ButtonText>ORM Reading Editor Context Menu</ButtonText>
+					<CommandName>ORMReadingEditorContextMenu</CommandName>
+				</Strings>
+			</Menu>
+		</Menus>
+
+		<Groups>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDebugCommands" priority="0x1000">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdErrorList" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdToolWindows" priority="0x0020">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdRoleCommands" priority="0x0030">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext" priority="0x0040">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdFactCommands" priority="0x0050">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdFactShapeCommands" priority="0x0060">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdModelCommands" priority="0x0070">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDeleteContext" priority="0x0080">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdProperties" priority="0x0090">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdVerbalizationCommands" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextAddDelete" priority="0x0009">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdReadingEditorContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextReadingPromoteDemote" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdReadingEditorContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextOrderPromoteDemote" priority="0x0011">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdReadingEditorContextMenu"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdErrorListTest" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdErrorList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDiagramList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayConstraintPosition" priority="0x0020">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayReverseRoleOrder" priority="0x0030">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdToolWindows"/>
+			</Group>
+		</Groups>
+
+		<Buttons>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDebugViewStore" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDebugCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Debug: View Store...</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDebugViewTransactionLogs" priority="0x0020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDebugCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Debug: View Transactions...</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdExclusiveOrCoupler" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Com&amp;bine as Exclusive Or Constraint</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdExclusiveOrDecoupler" priority="0x0020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>S&amp;plit Exclusive Or Constraint</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdActivateRoleSequence" priority="0x0030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Edit Role Sequence</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDeleteRoleSequence" priority="0x0040" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Delete Role Sequence</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdEditExternalConstraint" priority="0x0050" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Edit &amp;Constraint</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdMoveRoleSequenceUp" priority="0x0060" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<Icon guid="guidOfficeIcon" id="msotcidUpArrow2"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Move Role Sequence U&amp;p</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdMoveRoleSequenceDown" priority="0x0070" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
+				<Icon guid="guidOfficeIcon" id="msotcidDownArrow2"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Move Role Sequence &amp;Down</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewReadingEditor" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactCommands"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowReadingEditor"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM Reading Ed&amp;itor</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdObjectifyFactType" priority="0x0020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Ob&amp;jectify Fact Type</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdGenerateReport" priority="0x0400" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Report Generator...</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdExtensionManager" priority="0x0500" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>E&amp;xtension Manager...</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdErrorList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdErrorListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No Errors &amp;Present</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDiagramList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No Other &amp;Diagrams</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorAddReading" priority="0x0710" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextAddDelete"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Add Reading</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorAddReadingOrder" priority="0x0720" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextAddDelete"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Add Reading &amp;Order</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorDeleteReading" priority="0x0730" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextAddDelete"/>
+				<Icon guid="guidOfficeIcon" id="msotcidDelete"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Delete Reading</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorPromoteReading" priority="0x0740" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextReadingPromoteDemote"/>
+				<Icon guid="guidOfficeIcon" id="msotcidUpArrow2"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Move Reading &amp;Up</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorDemoteReading" priority="0x0750" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextReadingPromoteDemote"/>
+				<Icon guid="guidOfficeIcon" id="msotcidDownArrow2"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Move Reading Dow&amp;n</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorPromoteReadingOrder" priority="0x0760" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextOrderPromoteDemote"/>
+				<Icon guid="guidOfficeIcon" id="msotcidUpArrow2"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Move Reading Order Up</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorDemoteReadingOrder" priority="0x0770" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextOrderPromoteDemote"/>
+				<Icon guid="guidOfficeIcon" id="msotcidDownArrow2"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Move Reading Order Down</ButtonText>
+				</Strings>
+			</Button>
+			<!-- UNDONE: Add menu options for: "Delete Reading Order", "Set as Primary Reading", and "Set as Primary Reading Order" -->
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewModelBrowser" priority="0x0100" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowModelBrowser"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM Model B&amp;rowser</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewVerbalizationBrowser" priority="0x0200" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowVerbalizationBrowser"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM Verbali&amp;zation Browser</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewFactEditor" priority="0x0300" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowFactEditor"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM &amp;Fact Editor</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" priority="0x0400" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM Sample Pop&amp;ulation Editor</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewNotesWindow" priority="0x0500" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowNotesEditor"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM &amp;Notes Editor</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" priority="0x0600" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowReferenceModeEditor"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM Refere&amp;nce Mode Editor</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdNewContextWindow" priority="0x0700" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ORM Conte&amp;xt Window</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdCopyImage" priority="0x0200" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<Icon guid="guidOfficeIcon" id="msotcidCamera"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Cop&amp;y Image</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdAutoLayout" priority="0x0300" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Auto &amp;Layout</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdToggleSimpleMandatory" priority="0x010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Is &amp;Mandatory</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdAddInternalUniqueness" priority="0x020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Add Uni&amp;queness Constraint</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdInsertRoleAfter" priority="0x030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<Icon guid="guidOfficeIcon" id="msotcidShapeRightArrow"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Insert Role &amp;After</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdInsertRoleBefore" priority="0x040" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<Icon guid="guidOfficeIcon" id="msotcidShapeLeftArrow"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Insert Role &amp;Before</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdMoveRoleLeft" priority="0x050" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>Move Role Le&amp;ft</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdMoveRoleRight" priority="0x060" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>Move Role Rig&amp;ht</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdShowPositiveVerbalization" priority="0x030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdVerbalizationCommands"/>
+				<Icon guid="guidORMVerbalizationToolbarImages" id="bmpIdShowPositiveVerbalization"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Show positive verbalizations</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdShowNegativeVerbalization" priority="0x040" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdVerbalizationCommands"/>
+				<Icon guid="guidORMVerbalizationToolbarImages" id="bmpIdShowNegativeVerbalization"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Show negative verbalizations, if available</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDeleteAlternate" priority="0x020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Delete Model Element</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayOrientationRotatedLeft" priority="0x010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Vertical Rotated &amp;Left</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayOrientationHorizontal" priority="0x020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Horizontal</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayOrientationRotatedRight" priority="0x030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Vertical Rotated &amp;Right</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayConstraintsOnTop" priority="0x010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayConstraintPosition"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Constraints On &amp;Top</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayConstraintsOnBottom" priority="0x020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayConstraintPosition"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Constraints On &amp;Bottom</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayReverseRoleOrder" priority="0x010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayReverseRoleOrder"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Re&amp;verse Role Order</ButtonText>
+				</Strings>
+			</Button>
+		</Buttons>
+
+		<!--<Combos/>-->
+
+		<Bitmaps>
+			<Bitmap guid="guidORMVerbalizationToolbarImages" resID="IDB_VERBALIZATIONTOOLBARIMAGES" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization"/>
+			<Bitmap guid="guidORMToolWindowIcons" resID="IDB_TOOLWINDOWICONS32" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor"/>
+		</Bitmaps>
+
+	</Commands>
+
+	<CommandPlacements>
+		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidDelete" priority="0x0010">
+			<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteContext"/>
+		</CommandPlacement>
+		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0010">
+			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
+		</CommandPlacement>
+	</CommandPlacements>
+
+	<!--<VisibilityConstraints/>-->
+
+	<KeyBindings>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdDeleteAlternate" editor="guidORMDesignerEditor" key1="VK_DELETE" mod1="Control"/>
+	</KeyBindings>
+
+	<Symbols>
+		<!-- Keep in sync with ORMPackage.cs -->
+		<GuidSymbol name="guidORMDesignerPackage" value="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"/>
+		<!-- Keep in sync with ORMEditorFactory.cs -->
+		<GuidSymbol name="guidORMDesignerEditor" value="{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}"/>
+		<!-- Keep in sync with ORMCommandSet.cs -->
+		<GuidSymbol name="guidORMDesignerCommandSet" value="{7C51C000-1EAD-4B39-89B5-42BC9F49EA24}">
+			<!-- Keep in sync with ORMCommandSet.cs -->
+
+			<!-- Menus (0x01__) -->
+			<IDSymbol value="0x0100" name="menuIdContextMenu"/>
+			<IDSymbol value="0x0101" name="menuIdVerbalizationToolBar"/>
+			<IDSymbol value="0x0102" name="menuIdErrorList"/>
+			<IDSymbol value="0x0103" name="menuIdReadingEditorContextMenu"/>
+			<IDSymbol value="0x0104" name="menuIdDisplayOrientation"/>
+			<IDSymbol value="0x0105" name="menuIdToolWindows"/>
+			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
+
+			<!-- Groups (0x10__) -->
+			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
+			<IDSymbol value="0x1000" name="groupIdDeleteContext"/>
+			<IDSymbol value="0x1001" name="groupIdFactCommands"/>
+			<IDSymbol value="0x1002" name="groupIdRoleCommands"/>
+			<IDSymbol value="0x1003" name="groupIdModelCommands"/>
+			<IDSymbol value="0x1004" name="groupIdConstraintEditContext"/>
+			<IDSymbol value="0x1005" name="groupIdVerbalizationCommands"/>
+			<IDSymbol value="0x1006" name="groupIdORMToolWindows"/>
+			<IDSymbol value="0x1007" name="groupIdErrorList"/>
+			<IDSymbol value="0x1008" name="groupIdErrorListTest"/>
+			<IDSymbol value="0x1009" name="groupIdReadingEditorContextAddDelete"/>
+			<IDSymbol value="0x100A" name="groupIdReadingEditorContextReadingPromoteDemote"/>
+			<IDSymbol value="0x100B" name="groupIdReadingEditorContextOrderPromoteDemote"/>
+			<IDSymbol value="0x100C" name="groupIdProperties"/>
+			<IDSymbol value="0x100D" name="groupIdFactShapeCommands"/>
+			<IDSymbol value="0x100E" name="groupIdDisplayOrientation"/>
+			<IDSymbol value="0x100F" name="groupIdDisplayConstraintPosition"/>
+			<IDSymbol value="0x1010" name="groupIdDisplayReverseRoleOrder"/>
+			<IDSymbol value="0x1011" name="groupIdToolWindows"/>
+			<IDSymbol value="0x1012" name="groupIdDiagramListTest"/>
+
+			<!-- Commands (0x2___) -->
+			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
+			<IDSymbol value="0x28FF" name="cmdIdDebugViewStore"/>
+			<IDSymbol value="0x2900" name="cmdIdViewModelBrowser"/>
+			<IDSymbol value="0x2901" name="cmdIdViewReadingEditor"/>
+			<IDSymbol value="0x2902" name="cmdIdViewReferenceModeEditor"/>
+			<IDSymbol value="0x2903" name="cmdIdInsertRoleAfter"/>
+			<IDSymbol value="0x2904" name="cmdIdInsertRoleBefore"/>
+			<IDSymbol value="0x2905" name="cmdIdViewFactEditor"/>
+			<IDSymbol value="0x2906" name="cmdIdActivateRoleSequence"/>
+			<IDSymbol value="0x2907" name="cmdIdDeleteRoleSequence"/>
+			<IDSymbol value="0x2908" name="cmdIdEditExternalConstraint"/>
+			<IDSymbol value="0x2909" name="cmdIdMoveRoleSequenceUp"/>
+			<IDSymbol value="0x290A" name="cmdIdMoveRoleSequenceDown"/>
+			<IDSymbol value="0x290B" name="cmdIdCopyImage"/>
+			<IDSymbol value="0x290C" name="cmdIdViewVerbalizationBrowser"/>
+			<IDSymbol value="0x290D" name="cmdIdShowPositiveVerbalization"/>
+			<IDSymbol value="0x290E" name="cmdIdShowNegativeVerbalization"/>
+			<IDSymbol value="0x290F" name="cmdIdAutoLayout"/>
+			<IDSymbol value="0x2910" name="cmdIdToggleSimpleMandatory"/>
+			<IDSymbol value="0x2911" name="cmdIdAddInternalUniqueness"/>
+			<IDSymbol value="0x2912" name="cmdIdExtensionManager"/>
+			<IDSymbol value="0x2913" name="cmdIdViewNotesWindow"/>
+			<IDSymbol value="0x2914" name="cmdIdDeleteAlternate"/>
+			<IDSymbol value="0x2915" name="cmdIdMoveRoleLeft"/>
+			<IDSymbol value="0x2916" name="cmdIdMoveRoleRight"/>
+			<IDSymbol value="0x2917" name="cmdIdNewContextWindow"/>
+			<IDSymbol value="0x2918" name="cmdIdReadingEditorAddReading"/>
+			<IDSymbol value="0x2919" name="cmdIdReadingEditorAddReadingOrder"/>
+			<IDSymbol value="0x291A" name="cmdIdReadingEditorDeleteReading"/>
+			<IDSymbol value="0x291B" name="cmdIdReadingEditorPromoteReading"/>
+			<IDSymbol value="0x291C" name="cmdIdReadingEditorDemoteReading"/>
+			<IDSymbol value="0x291D" name="cmdIdReadingEditorPromoteReadingOrder"/>
+			<IDSymbol value="0x291E" name="cmdIdReadingEditorDemoteReadingOrder"/>
+			<IDSymbol value="0x291F" name="cmdIdObjectifyFactType"/>
+			<IDSymbol value="0x2920" name="cmdIdViewSamplePopulationEditor"/>
+			<IDSymbol value="0x2921" name="cmdIdDisplayOrientationHorizontal"/>
+			<IDSymbol value="0x2922" name="cmdIdDisplayOrientationRotatedLeft"/>
+			<IDSymbol value="0x2923" name="cmdIdDisplayOrientationRotatedRight"/>
+			<IDSymbol value="0x2924" name="cmdIdDisplayConstraintsOnTop"/>
+			<IDSymbol value="0x2925" name="cmdIdDisplayConstraintsOnBottom"/>
+			<IDSymbol value="0x2926" name="cmdIdDisplayReverseRoleOrder"/>
+			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
+			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
+			<IDSymbol value="0x2929" name="cmdIdGenerateReport"/>
+			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
+			<!-- Reserve 2A__ range for errors, start additional commands after. -->
+			<IDSymbol value="0x2B00" name="cmdIdDiagramList"/>
+			<!-- Reserve 2B__ range for diagrams, start additional commands after. -->
+		</GuidSymbol>
+		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
+			<!-- Keep in sync with PackageResources.cs -->
+			<IDSymbol value="124" name="IDB_VERBALIZATIONTOOLBARIMAGES"/>
+			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>
+			<IDSymbol value="0x0002" name="bmpIdShowPositiveVerbalization"/>
+		</GuidSymbol>
+		<GuidSymbol name="guidORMToolWindowIcons" value="{EA662CED-462E-41EA-B0B5-42BF76C4B853}">
+			<!-- Keep in sync with PackageResources.cs -->
+			<IDSymbol value="125" name="IDB_TOOLWINDOWICONS"/>
+			<IDSymbol value="126" name="IDB_TOOLWINDOWICONS32"/>
+			<IDSymbol value="0x0001" name="bmpIdToolWindowVerbalizationBrowser"/>
+			<IDSymbol value="0x0002" name="bmpIdToolWindowReadingEditor"/>
+			<IDSymbol value="0x0003" name="bmpIdToolWindowReferenceModeEditor"/>
+			<IDSymbol value="0x0004" name="bmpIdToolWindowFactEditor"/>
+			<IDSymbol value="0x0005" name="bmpIdToolWindowModelBrowser"/>
+			<IDSymbol value="0x0006" name="bmpIdToolWindowNotesEditor"/>
+		</GuidSymbol>
+		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">
+			<IDSymbol value="Extern" name="cmdidDelete"/>
+			<IDSymbol value="Extern" name="cmdidPropertiesWindow"/>
+		</GuidSymbol>
+		<GuidSymbol name="guidOfficeIcon" value="Extern">
+			<IDSymbol value="Extern" name="msotcidNoIcon"/>
+			<IDSymbol value="Extern" name="msotcidDelete"/>
+			<IDSymbol value="Extern" name="msotcidUpArrow2"/>
+			<IDSymbol value="Extern" name="msotcidDownArrow2"/>
+			<IDSymbol value="Extern" name="msotcidShapeLeftArrow"/>
+			<IDSymbol value="Extern" name="msotcidShapeRightArrow"/>
+			<IDSymbol value="Extern" name="msotcidCamera"/>
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>

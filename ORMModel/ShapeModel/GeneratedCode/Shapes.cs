@@ -1465,19 +1465,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[DslModeling::DomainObjectId("0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3")]
 	public abstract partial class FloatingTextShape : ORMBaseShape
 	{
-		#region Shape size
-		
-		/// <summary>
-		/// Default size for this shape.
-		/// </summary>
-		public override DslDiagrams::SizeD DefaultSize
-		{
-			get
-			{
-				return new DslDiagrams::SizeD(1.5, 1);
-			}
-		}
-		#endregion
 		#region Shape styles
 		/// <summary>
 		/// Indicates whether this shape displays a background gradient.
@@ -1592,19 +1579,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
 		}
 		
-		#endregion
-		#region Shape size
-		
-		/// <summary>
-		/// Default size for this shape.
-		/// </summary>
-		public override DslDiagrams::SizeD DefaultSize
-		{
-			get
-			{
-				return new DslDiagrams::SizeD(1.5, 1);
-			}
-		}
 		#endregion
 		#region Shape styles
 		/// <summary>
@@ -1818,19 +1792,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
-		#region Shape size
-		
-		/// <summary>
-		/// Default size for this shape.
-		/// </summary>
-		public override DslDiagrams::SizeD DefaultSize
-		{
-			get
-			{
-				return new DslDiagrams::SizeD(1.5, 1);
-			}
-		}
-		#endregion
 		#region Shape styles
 		/// <summary>
 		/// Indicates whether this shape displays a background gradient.
@@ -1955,19 +1916,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
-		#region Shape size
-		
-		/// <summary>
-		/// Default size for this shape.
-		/// </summary>
-		public override DslDiagrams::SizeD DefaultSize
-		{
-			get
-			{
-				return new DslDiagrams::SizeD(1.5, 1);
-			}
-		}
-		#endregion
 		#region Shape styles
 		/// <summary>
 		/// Indicates whether this shape displays a background gradient.
@@ -2091,19 +2039,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
 		}
 		
-		#endregion
-		#region Shape size
-		
-		/// <summary>
-		/// Default size for this shape.
-		/// </summary>
-		public override DslDiagrams::SizeD DefaultSize
-		{
-			get
-			{
-				return new DslDiagrams::SizeD(1.5, 1);
-			}
-		}
 		#endregion
 		#region Shape styles
 		/// <summary>

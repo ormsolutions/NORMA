@@ -388,23 +388,23 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// returns int value for window icon
+		/// See <see cref="ToolWindow.BitmapResource"/>.
 		/// </summary>
-		protected override int BitmapResource //TODO: find correct bitmap resource to use
+		protected override int BitmapResource
 		{
 			get
 			{
-				return 125;
+				return PackageResources.Id.ToolWindowIcons;
 			}
 		}
 		/// <summary>
-		/// returns index for window icon
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
 		/// </summary>
-		protected override int BitmapIndex //TODO: find correct bitmap index to use
+		protected override int BitmapIndex
 		{
 			get
 			{
-				return 4;
+				return PackageResources.ToolWindowIconIndex.ModelBrowser;
 			}
 		}
 		/// <summary>

@@ -30,7 +30,7 @@ using Microsoft.VisualStudio;
 using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.Shell
-{	
+{
 	public partial class ORMDesignerDocView
 	{
 		/// <summary>
@@ -777,23 +777,23 @@ namespace Neumont.Tools.ORM.Shell
 					docView.OnMenuExclusiveOrDecoupler();
 				}
 			}
-            private void OnStatusGenerateReport(object sender, EventArgs e)
-            {
-                ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.GenerateReport);
-            }
-            /// <summary>
-            /// Menu handler
-            /// </summary>
-            private void OnMenuGenerateReport(object sender, EventArgs e)
-            {
-                ORMDesignerDocView docView = CurrentORMView;
-                if (docView != null)
-                {
-                    // Defer to the doc view
-                    docView.OnMenuGenerateReport();
-                }
-            }
-            /// <summary>
+			private void OnStatusGenerateReport(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.GenerateReport);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuGenerateReport(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuGenerateReport();
+				}
+			}
+			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusAlignShapes(object sender, EventArgs e)
@@ -916,7 +916,8 @@ namespace Neumont.Tools.ORM.Shell
 
 			private sealed class DynamicErrorCommand : DynamicStatusMenuCommand
 			{
-				public DynamicErrorCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id) : base(statusHandler, invokeHandler, id)
+				public DynamicErrorCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
 				{
 					//Declare class variable with object containing error list
 				}
@@ -924,8 +925,8 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					int baseCmdId = CommandID.ID;
 					int testId = cmdId - baseCmdId;
-					
-					
+
+
 					if (testId >= 0 && testId < ORMDesignerCommandIds.ErrorListLength)
 					{
 						MatchedCommandId = testId;
@@ -1204,7 +1205,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // Menu actions
 			#endregion // External Constraint editing menu options
-			
+
 			/// <summary>
 			/// Currently focused document
 			/// </summary>
@@ -1230,12 +1231,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// CommandIDs for the Application Designer package.
 		/// </summary>
-		public class ORMDesignerCommandIds
+		public static class ORMDesignerCommandIds
 		{
 			/// <summary>
 			/// The global identifier for the command set used by the ORM designer.
 			/// </summary>
-			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4b39-89B5-42BC9F49EA24");    // keep in sync with SatDll\PkgCmd.ctc
+			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4B39-89B5-42BC9F49EA24");    // keep in sync with PkgCmd.vsct
 			#region CommandID objects for commands
 			/// <summary>
 			/// A command to view transaction contents in debug mode
@@ -1394,11 +1395,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// Decouple disjunctive mandatory and exclusion constraints
 			/// </summary>
 			public static readonly CommandID ExclusiveOrDecoupler = new CommandID(guidORMDesignerCommandSet, cmdIdExclusiveOrDecoupler);
-            /// <summary>
-            /// Launch the Generate Report dialog
-            /// </summary>
-            public static readonly CommandID GenerateReport = new CommandID(guidORMDesignerCommandSet, cmdIdGenerateReport);
-            #endregion // CommandID objects for commands
+			/// <summary>
+			/// Launch the Generate Report dialog
+			/// </summary>
+			public static readonly CommandID GenerateReport = new CommandID(guidORMDesignerCommandSet, cmdIdGenerateReport);
+			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
 			/// The context menu for the diagram
@@ -1407,7 +1408,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The context menu for the ReadingEditor
 			/// </summary>
-			public static readonly CommandID ReadingEditorContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdReadingEditorContextMenu);		
+			public static readonly CommandID ReadingEditorContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdReadingEditorContextMenu);
 			/// <summary>
 			/// The toolbar for the verbalization window
 			/// </summary>
@@ -1450,7 +1451,7 @@ namespace Neumont.Tools.ORM.Shell
 			public const int DiagramListLength = cmdIdDiagramListEnd - cmdIdDiagramList + 1;
 			#endregion //CommandID objects for menus
 			#region cmdIds
-			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
+			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
 
 			/// <summary>
 			/// A command to view transaction contents in debug mode
@@ -1658,10 +1659,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// Decouple disjunctive mandatory and exclusion constraints
 			/// </summary>
 			private const int cmdIdExclusiveOrDecoupler = 0x2928;
-            /// <summary>
-            /// Launch the Generate Report dialog
-            /// </summary>
-            private const int cmdIdGenerateReport = 0x2929;
+			/// <summary>
+			/// Launch the Generate Report dialog
+			/// </summary>
+			private const int cmdIdGenerateReport = 0x2929;
 			#endregion
 		}
 	}

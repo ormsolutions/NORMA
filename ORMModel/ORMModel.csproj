@@ -412,6 +412,7 @@
     <Compile Include="Shell\GenerateReportDialog.Designer.cs">
       <DependentUpon>GenerateReportDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shell\PackageResources\PackageResources.cs" />
     <Compile Include="Shell\ModelErrorDisplayFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -637,6 +638,16 @@
     <None Include="Transforms\SurveyQuestionProvider.xsd">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CompileVsct Include="Shell\PackageResources\PkgCmd.vsct">
+      <ResourceName>1000</ResourceName>
+      <MergeTarget>Shell\PackageResources\VSPackage.resx</MergeTarget>
+    </CompileVsct>
+    <EmbeddedResource Include="Shell\PackageResources\VSPackage.resx">
+      <LogicalName>VSPackage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<metadata name="Common Public License Copyright Notice">
+		<value>
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</value>
+	</metadata>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="102">
+		<value>Object-Role Modeling File</value>
+		<comment>PackageResources.Id.ORMFileDisplayName</comment>
+  </data>
+	<data name="103">
+		<value>Object-Role Modeling File for Neumont ORM Architect</value>
+		<comment>PackageResources.Id.ORMFileDescription</comment>
+	</data>
+	<data name="104">
+		<value>ORMModel.orm</value>
+		<comment>PackageResources.Id.ORMModelBaseName</comment>
+	</data>
+	<data name="105">
+		<value>ORM Designer</value>
+		<comment>PackageResources.Id.OptionsCategory</comment>
+	</data>
+	<data name="106">
+		<value>General</value>
+		<comment>PackageResources.Id.OptionsGeneral</comment>
+	</data>
+	<data name="107">
+		<value>ORM</value>
+		<comment>PackageResources.Id.ORMProjectItems</comment>
+	</data>
+	<data name="108">
+		<value>ORM Designer</value>
+		<comment>PackageResources.Id.EditorName</comment>
+	</data>
+	<data name="109">
+		<value>ORM Fact Editor</value>
+		<comment>PackageResources.Id.FactEditorName</comment>
+	</data>
+	<data name="110" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>../../Resources/AboutBox.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+		<comment>PackageResources.Id.AboutBoxIcon</comment>
+	</data>
+	<data name="111" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>../../Resources/ORM.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+		<comment>PackageResources.Id.ORMFileIcon</comment>
+	</data>
+	<data name="124" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>../../Resources/VerbalizationToolbarImages.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+		<comment>PackageResources.Id.VerbalizationToolbarImages and IDB_VERBALIZATIONTOOLBARIMAGES</comment>
+	</data>
+	<data name="125" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>../../Resources/ToolWindowIcons.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+		<comment>PackageResources.Id.ToolWindowIcons and IDB_TOOLWINDOWICONS</comment>
+	</data>
+	<data name="126" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>../../Resources/ToolWindowIcons32.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+		<comment>PackageResources.Id.ToolWindowIcons32 and IDB_TOOLWINDOWICONS32</comment>
+	</data>
+	<data name="150">
+		<value>ETDZA3QMCCACH1EJAZZRDACMQQDZP1R0EHC9HJCQPZA0D3DZKTMCIEZIH3PJIKEPEJJ3A9K1PJP1MRR8J9IHC1HCM3RADIK9QMKCM8AEAHE8DMMCQ0AZITHAHQPMMZRT</value>
+		<comment>PackageResources.Id.PackageLoadKey</comment>
+	</data>
+</root>

@@ -443,7 +443,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return 125;
+				return PackageResources.Id.ToolWindowIcons;
 			}
 		}
 		/// <summary>
@@ -453,7 +453,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return 5;
+				return PackageResources.ToolWindowIconIndex.NotesEditor;
 			}
 		}
 		#endregion // ORMToolWindow Implementation

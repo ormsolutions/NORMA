@@ -54,6 +54,9 @@
     <None Include="Tasks\RegexCompilationInfo.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="Tasks\VsSDKLocator.cs" />
+    <Compile Include="Tasks\ResourceMergeTargetResolver.cs" />
+    <Compile Include="Tasks\ResourceMerger.cs" />
     <Compile Include="Tasks\CopyWithPreprocssing.cs" />
     <Compile Include="Tasks\Ngen.cs" />
     <Compile Include="Tasks\Gacutil.cs" />

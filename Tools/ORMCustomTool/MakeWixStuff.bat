@@ -43,7 +43,6 @@ GOTO:EOF
 
 :_GenerateMultiString
 ECHO 	^<Registry Type="multiString" Name="%~1"^> >> Output.WiX.xml
-::ECHO 		^<RegistryValue^> ^</RegistryValue^> >> Output.WiX.xml
 FOR /F "usebackq tokens=1-26 delims=\0" %%A IN ('%~2') DO (CALL:_GenerateMultiStringBody "%%A" "%%B" "%%C" "%%D" "%%E" "%%F" "%%G" "%%H" "%%I" "%%J" "%%K" "%%L" "%%M" "%%N" "%%O" "%%P" "%%Q" "%%R" "%%S" "%%T" "%%U" "%%V" "%%W" "%%X" "%%Y" "%%Z")
 ECHO 	^</Registry^> >> Output.WiX.xml
 GOTO:EOF

@@ -131,6 +131,8 @@ namespace Neumont.Xml
 			}
 			private static void SetupEvironmentVariables()
 			{
+				// Several of these are for compatibility with the Visual Studio XML Editor
+
 				SetEnvironmentVariable("System", Environment.SpecialFolder.System);
 				SetEnvironmentVariable("ProgramFiles", Environment.SpecialFolder.ProgramFiles);
 				SetEnvironmentVariable("Programs", Environment.SpecialFolder.Programs);
@@ -141,14 +143,18 @@ namespace Neumont.Xml
 
 				SetEnvironmentVariable("LCID", CultureInfo.CurrentUICulture.LCID.ToString(NumberFormatInfo.InvariantInfo));
 
-				if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("VsInstallDir")))
+				using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS", RegistryKeyPermissionCheck.ReadSubTree))
 				{
-					using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS", RegistryKeyPermissionCheck.ReadSubTree))
+					if (key != null)
 					{
-						if (key != null)
-						{
-							SetEnvironmentVariable("VsInstallDir", key.GetValue("ProductDir", null) as string);
-						}
+						string productDir = key.GetValue("ProductDir", null) as string;
+						// VsInstallDir is used in the original release of Visual Studio 2005
+						SetEnvironmentVariable("VsInstallDir", productDir);
+						// InstallRoot is used in Visual Studio 2005 with Service Pack 1 and later
+						SetEnvironmentVariable("InstallRoot", productDir);
+						// However, some of the MSDN documentation incorrectly refers to the new variable used as InstallDir rather than InstallRoot.
+						// We define this as well so that everything will still work for anyone who was misled by the documentation.
+						SetEnvironmentVariable("InstallDir", productDir);
 					}
 				}
 			}

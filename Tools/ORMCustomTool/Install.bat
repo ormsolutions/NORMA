@@ -1,22 +1,15 @@
 @ECHO OFF
 SETLOCAL
-
-IF NOT DEFINED FrameworkSDKDir (CALL "%VS80COMNTOOLS%\vsvars32.bat")
-
-FOR /F "usebackq skip=2 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
-SET XMLDir=%~dp0\..\..\XML
-SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
-SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
-SET DILTransformsDir=%CommonProgramFiles%\Neumont\DIL\Transforms
-SET PLiXDir=%CommonProgramFiles%\Neumont\PLiX
+SET RootDir=%~dp0.
+CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
+SET XMLDir=%TrunkDir%\XML
 
 :: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed).
 :: Note that this method of determining whether a native image already exists is an undocumented hack that is subject to change. It should not be used for anything where reliability matters.
-REG QUERY "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\NGENService\Roots\System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /v "Status" 1>NUL 2>&1
+REG QUERY "HKLM\SOFTWARE\Microsoft\.NETFramework\%FrameworkVersion%\NGENService\Roots\System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /v "Status" 1>NUL 2>&1
 IF ERRORLEVEL 1 (ngen.exe install "System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /nologo /verbose)
 
 :: Install Custom Tool DLL
-DEL /F /Q "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.ORMCustomTool.*" 1>NUL 2>&1
 DEL /F /Q "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
 IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll" (REN "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "Neumont.Tools.ORM.ORMCustomTool.dll.delete.%RANDOM%")
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "%NORMADir%\bin\"
@@ -25,8 +18,8 @@ XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.pdb" "%NORMADir%\bi
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.xml" "%NORMADir%\bin\" 2>NUL
 CALL:_InstallCustomToolReg "8.0"
 CALL:_InstallExtenderReg "8.0"
-CALL:_InstallCustomToolReg "8.0Exp"
-CALL:_InstallExtenderReg "8.0Exp"
+IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallCustomToolReg "8.0%VSRegistryRootSuffix%")
+IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallExtenderReg "8.0%VSRegistryRootSuffix%")
 
 :: Get rid of old transform registrations
 REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators" /f 1>NUL 2>&1
@@ -112,7 +105,7 @@ CALL:_AddXslORMGenerator "PHPDataLayerPLiXtoPHP" "PHP DataLayer PLiX to PHP" "Tr
 GOTO:EOF
 
 :_InstallCustomToolReg
-REG QUERY HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /v "CodeBase" 1>NUL 2>&1
+REG QUERY "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /v "CodeBase" 1>NUL 2>&1
 IF NOT ERRORLEVEL 1 (GOTO:EOF)
 CALL:_AddCustomToolReg "%~1"
 CALL:_AddRegGenerator "%~1" "{164b10b9-b200-11d0-8c61-00a0c91e29d5}"
@@ -121,7 +114,7 @@ CALL:_AddRegGenerator "%~1" "{e6fdf8b0-f3d1-11d4-8576-0002a516ece8}"
 GOTO:EOF
 
 :_InstallExtenderReg
-REG QUERY HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /v "CodeBase" 1>NUL 2>&1
+REG QUERY "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /v "CodeBase" 1>NUL 2>&1
 IF NOT ERRORLEVEL 1 (GOTO:EOF)
 CALL:_AddExtenderReg "%~1"
 CALL:_AddRegExtender "%~1" "{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}"
@@ -130,34 +123,34 @@ CALL:_AddRegExtender "%~1" "{E6FDF869-F3D1-11D4-8576-0002A516ECE8}"
 GOTO:EOF
 
 :_AddCustomToolReg
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /ve /d "%SystemRoot%\System32\mscoree.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "ThreadingModel" /d "Both"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "ThreadingModel" /d "Both"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 GOTO:EOF
 
 :_AddExtenderReg
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /ve /d "%SystemRoot%\System32\mscoree.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "ThreadingModel" /d "Both"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "ThreadingModel" /d "Both"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 GOTO:EOF
 
 :_AddRegGenerator
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\ORMCustomTool /f /ve /d "ORM Custom Tool"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\ORMCustomTool /f /v "CLSID" /d "{977BD01E-F2B4-4341-9C47-459420624A20}"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\.orm /f /ve /d "ORMCustomTool"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\ORMCustomTool" /f /ve /d "ORM Custom Tool"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\ORMCustomTool" /f /v "CLSID" /d "{977BD01E-F2B4-4341-9C47-459420624A20}"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Generators\%~2\.orm" /f /ve /d "ORMCustomTool"
 GOTO:EOF
 
 :_AddRegExtender
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Extenders\%~2\ORMCustomTool /f /ve /d "{6FDCC073-20C2-4435-9B2E-9E70451C81D8}"
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\Extenders\%~2\ORMCustomTool" /f /ve /d "{6FDCC073-20C2-4435-9B2E-9E70451C81D8}"
 GOTO:EOF
 
 :_AddXslORMGenerator

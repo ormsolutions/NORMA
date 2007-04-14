@@ -1,14 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Build System
+
+	Copyright © Neumont University. All rights reserved.
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<UsingTask TaskName="Gacutil" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
-	<UsingTask TaskName="Ngen" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
-	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
-	<UsingTask TaskName="RegexCompiler" AssemblyName="Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<PropertyGroup>
+		 <!-- The name of the assembly that contains the NUBuild Tasks. -->
+		<NUBuildTasksAssemblyName>Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildTasksAssemblyName>
+	</PropertyGroup>
+	
+	<UsingTask TaskName="Gacutil" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask TaskName="Ngen" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask TaskName="ResourceMergeTargetResolver" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask TaskName="ResourceMerger" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask TaskName="VsSDKLocator" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask TaskName="RegexCompiler" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+
+
+	<PropertyGroup Condition="Exists('$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets')">
+		 <!-- This forces a rebuild of a project if it references this targets file and this targets file changes. -->
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets</MSBuildAllProjects>
+	</PropertyGroup>
 
 
 	<!-- InstallInGac and GenerateNativeImage -->
 	<PropertyGroup>
+		<CoreBuildDependsOn>
+			$(CoreBuildDependsOn);
+			InstallInGac;
+			GenerateNativeImage
+		</CoreBuildDependsOn>
 		<PostBuildEventDependsOn>
 			$(PostBuildEventDependsOn);
 			InstallInGac;
@@ -107,6 +137,165 @@
 
 
 
+	<!--
+		This section supports merging one or more resource items into a compiled .resources file.
+		Items to be merged must have the following:
+			- an item name of MergeResource
+			- a metadata value for ResourceName, which indicates the name that the new resource should have
+			- a metadata value for MergeTarget, which indicates the ItemSpec for the file to which the new resource should be added
+		If the value specified for MergeTarget is a .resources file, the new resource will be added to that file.
+		If the value specified for MergeTarget is NOT a .resources file, the new resource will be added to the .resources file generated from the specified file.
+	-->
+	<PropertyGroup>
+		<PrepareResourcesDependsOn>
+			$(PrepareResourcesDependsOn);
+			MergeResources;
+			_MergeResourcesRecordCacheFileWrites
+		</PrepareResourcesDependsOn>
+		<MergeResourcesDependsOn>
+			$(MergeResourcesDependsOn);
+			ResGen;
+			_ResolveResourceMergeTargets
+		</MergeResourcesDependsOn>
+		<_ResolveResourceMergeTargetsDependsOn>
+			$(_ResolveResourceMergeTargetsDependsOn);
+			ResGen
+		</_ResolveResourceMergeTargetsDependsOn>
+		<_MergeResourcesRecordCacheFileWritesDependsOn>
+			$(_MergeResourcesRecordCacheFileWritesDependsOn);
+			MergeResources
+		</_MergeResourcesRecordCacheFileWritesDependsOn>
+	</PropertyGroup>
+
+	<Target
+		Name="_ResolveResourceMergeTargets"
+		DependsOnTargets="$(_ResolveResourceMergeTargetsDependsOn)"
+		Condition="'@(MergeResource)'!=''">
+
+		<ResourceMergeTargetResolver
+			MergeResources="@(MergeResource)" 
+			ManifestResources="@(ManifestResourceWithCulture);@(ManifestResourceWithNoCulture)">
+			<Output TaskParameter="MergeResourcesWithResolvedTargets" ItemName="_MergeResourceWithResolvedTarget"/>
+		</ResourceMergeTargetResolver>
+
+	</Target>
+
+	<Target
+		Name="MergeResources"
+		DependsOnTargets="$(MergeResourcesDependsOn)"
+		Inputs="@(_MergeResourceWithResolvedTarget);%(MergeTarget)"
+		Outputs="%(MergeTarget).cache"
+		Condition="'@(MergeResource)'!=''">
+
+		<ResourceMerger
+			MergeResources="@(_MergeResourceWithResolvedTarget)"
+			TargetManifestResource="%(MergeTarget)">
+			<Output TaskParameter="OutputResource" ItemName="FileWrites"/>
+		</ResourceMerger>
+
+		<Touch
+			AlwaysCreate="true"
+			Files="%(_MergeResourceWithResolvedTarget.MergeTarget).cache">
+			<Output TaskParameter="TouchedFiles" ItemName="FileWrites"/>
+		</Touch>
+
+	</Target>
+
+	<!-- This adds the .cache file to FileWrites regardless of whether MergeResources is up to date or not, in order to prevent IncrementalClean from deleting it. -->
+	<Target
+		Name="_MergeResourcesRecordCacheFileWrites"
+		DependsOnTargets="$(_MergeResourcesRecordCacheFileWritesDependsOn)"
+		Condition="'@(MergeResource)'!=''">
+
+		<CreateItem Include="%(_MergeResourceWithResolvedTarget.MergeTarget).cache" Condition="Exists('%(_MergeResourceWithResolvedTarget.MergeTarget).cache')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+		</CreateItem>
+
+	</Target>
+
+
+
+	<!-- Retrieves the location of various Visual Studio SDK directories and tools. -->
+	<PropertyGroup>
+		<LocateVisualStudioSDKDependsOn>
+			$(LocateVisualStudioSDKDependsOn)
+		</LocateVisualStudioSDKDependsOn>
+	</PropertyGroup>
+
+	<Target
+		Name="LocateVisualStudioSDK"
+		DependsOnTargets="$(LocateVisualStudioSDKDependsOn)">
+
+		<VsSDKLocator>
+			<Output TaskParameter="InstallationDirectory" PropertyName="VsSDKInstallationDir"/>
+			<Output TaskParameter="ToolsDirectory" PropertyName="VsSDKToolsDir"/>
+			<Output TaskParameter="IncludesDirectory" PropertyName="VsSDKIncludesDir"/>
+			<Output TaskParameter="VsctPath" PropertyName="VsSDKVsctPath"/>
+		</VsSDKLocator>
+
+	</Target>
+
+
+
+	<!-- Compiles .vsct files into .cto files. -->
+	<UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<ItemGroup>
+		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
+		<AvailableItemName Include="CompileVsct"/>
+	</ItemGroup>
+	
+	<PropertyGroup>
+		<VsctCompileDependsOn>
+			$(VsctCompileDependsOn);
+			LocateVisualStudioSDK
+		</VsctCompileDependsOn>
+		<MergeResourcesDependsOn>
+			$(MergeResourcesDependsOn);
+			VsctCompile
+		</MergeResourcesDependsOn>
+		<ResGenDependsOn>
+			$(ResGenDependsOn);
+			VsctCompile
+		</ResGenDependsOn>
+
+		<VsctIncludesDirs>$(VsctIncludesDirs)</VsctIncludesDirs>
+	</PropertyGroup>
+
+	<Target
+		Name="VsctCompile"
+		DependsOnTargets="$(VsctCompileDependsOn)"
+		Condition="'@(CompileVsct)'!=''">
+
+		<!-- We need to include the $(MSBuildProjectDirectory) in the IntermediateDirectory below because the VSCT compiler changes the current directory while it is running. -->
+		<VSCTCompiler
+			NoLogo="true"
+			MinimalRebuild="true"
+			IntermediateDirectory="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)"
+			AdditionalIncludeDirectories="$(VsctIncludesDirs);$(VsSDKIncludesDir);$(VsSDKIncludesDir)\office10"
+			Definitions="$(DefineConstants)"
+			Source="@(CompileVsct)"
+			OutputFile="%(FileName).cto"
+		/>
+
+		<!-- Add the generated .cto file to FileWrites and MergeResources. -->
+		<!-- NOTE: @(CompileVsct) is expected to already have the MergeTarget and ResourceName metadata values specified. -->
+		<CreateItem Include="@(CompileVsct->'$(IntermediateOutputPath)%(FileName).cto')" Condition="Exists('@(CompileVsct->'$(IntermediateOutputPath)%(FileName).cto')')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+			<Output TaskParameter="Include" ItemName="MergeResource"/>
+		</CreateItem>
+
+		<!-- The VSCT compiler uses these files for tracking its dependencies, so we need to include them in FileWrites. -->
+		<CreateItem Include="$(IntermediateOutputPath)VSCT.read.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.read.1.tlog')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+		</CreateItem>
+		<CreateItem Include="$(IntermediateOutputPath)VSCT.write.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.write.1.tlog')">
+			<Output TaskParameter="Include" ItemName="FileWrites"/>
+		</CreateItem>
+
+	</Target>
+
+
+
 	<!-- RegexCompiler -->
 	<PropertyGroup>
 		<!-- Regex compilation is set to default to being disabled for now, until we have finished developing it. -->
@@ -122,13 +311,13 @@
 			$(RegexCompileDependsOn);
 			ResolveKeySource
 		</RegexCompileDependsOn>
-		<!-- Default to true if we are compiling within Visual Studio -->
+		<!-- Default to true if we are compiling within Visual Studio. -->
 		<AlwaysCompileRegexInSeparateDomain Condition="'$(AlwaysCompileRegexInSeparateDomain)'==''">$(BuildingInsideVisualStudio)</AlwaysCompileRegexInSeparateDomain>
 		<RegexAssemblyName Condition="'$(RegexAssemblyName)'==''">$(AssemblyName).RegularExpressions</RegexAssemblyName>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true' and '$(DisableRegexCompilation)'!='true'">
-		<!-- Add the CompileRegex Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio. -->
+	<ItemGroup Condition="'$(DisableRegexCompilation)'!='true'">
+		<!-- Add the CompileRegex Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
 		<AvailableItemName Include="CompileRegex"/>
 	</ItemGroup>
 
@@ -155,7 +344,7 @@
 	<!-- XslCompiler (UNDONE) -->
 	<PropertyGroup>
 		<DisableXslCompilation Condition="'$(DisableXslCompilation)'==''">false</DisableXslCompilation>
-		<!-- Default to true if we are compiling within Visual Studio -->
+		<!-- Default to true if we are compiling within Visual Studio. -->
 		<AlwaysCompileXslInSeparateDomain Condition="'$(AlwaysCompileXslInSeparateDomain)'==''">$(BuildingInsideVisualStudio)</AlwaysCompileXslInSeparateDomain>
 	</PropertyGroup>
 

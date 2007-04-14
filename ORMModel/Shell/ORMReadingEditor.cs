@@ -68,7 +68,17 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return 125;
+				return PackageResources.Id.ToolWindowIcons;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return PackageResources.ToolWindowIconIndex.ReadingEditor;
 			}
 		}
 
@@ -92,16 +102,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 
-		/// <summary>
-		/// See <see cref="ToolWindow.BitmapIndex"/>.
-		/// </summary>
-		protected override int BitmapIndex
-		{
-			get
-			{
-				return 1;
-			}
-		}
 		/// <summary>
 		/// Gets the title that will be displayed on the tool window.
 		/// </summary>

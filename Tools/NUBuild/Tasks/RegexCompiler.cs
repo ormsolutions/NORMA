@@ -238,7 +238,7 @@ namespace Neumont.Build.Tasks
 
 			this._outputAssembly = new TaskItem(relativeAssemblyCodeBase);
 
-			return !base.Log.HasLoggedErrors;
+			return !log.HasLoggedErrors;
 		}
 		#endregion // Execute method
 
