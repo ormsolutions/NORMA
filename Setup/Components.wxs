@@ -66,13 +66,6 @@
 								</Registry>
 							</Component>
 
-							<Directory Id="LCIDDIR" Name="$(var.DefaultLCID)">
-								<Component Id="NORMAVSPackageSatelliteComponent_$(var.DefaultLCID)" Guid="1193038A-BC95-$(var.DefaultLCID)-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMUI.dll" Name="ORMUI.dll" LongName="Neumont.Tools.ORMUI.dll" src="..\ORMModelSatDll\bin\Neumont.Tools.ORMUI.dll"
-										DefaultVersion="$(var.ProductVersion)" KeyPath="yes"/>
-								</Component>
-							</Directory>
-
 							<Component Id="ORMCustomToolComponent" Guid="9B2F677A-1D14-4E9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" Name="ORMCstTl.dll" LongName="Neumont.Tools.ORM.ORMCustomTool.dll" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool.dll" AssemblyApplication="Neumont.Tools.ORM.ORMCustomTool.dll" ProcessorArchitecture="msil"/>

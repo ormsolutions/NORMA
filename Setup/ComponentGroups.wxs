@@ -19,7 +19,6 @@
 			<ComponentRef Id="LicenseFilesComponent"/>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
 			<ComponentRef Id="NORMAVSPackageRemoveUserFontAndColorsComponent"/>
-			<ComponentRef Id="NORMAVSPackageSatelliteComponent_$(var.DefaultLCID)"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSchemasLocalCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSettingsSchemaComponent"/>
