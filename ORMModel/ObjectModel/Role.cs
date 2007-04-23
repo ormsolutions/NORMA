@@ -1387,6 +1387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class RolePlayerRequiredError : IRepresentModelElements
 	{
 		#region Base overrides

@@ -1,3 +1,19 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,12 +29,13 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
+	#region ModelErrorDisplayFilterForm class
 	public partial class ModelErrorDisplayFilterForm : Form
 	{
+		#region Form fields and constructor
 		private ORMModel myModel;
 		private Category[] myCategories;
 		private Error[] myErrors;
-
 		/// <summary>
 		/// Creates a new form to filter errors for the given ORM model.
 		/// </summary>
@@ -35,7 +52,8 @@ namespace Neumont.Tools.ORM.Shell
 
 			this.virtualTreeControl.Tree = tree;
 		}
-
+		#endregion //Form fields and constructor
+		#region Load Categories
 		private void LoadCategories()
 		{
 			ModelErrorDisplayFilter filter = myModel.ModelErrorDisplayFilter;
@@ -151,7 +169,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return null;
 		}
-
+		#endregion //Load Categories
+		#region Branches
 		private class ErrorBranch : IBranch
 		{
 			private Category myCategory;
@@ -273,7 +292,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-
 		private class InitialCategoriesBranch : IBranch
 		{
 			private Category[] myCategories;
@@ -293,12 +311,11 @@ namespace Neumont.Tools.ORM.Shell
 						Category[] categories = myCategories;
 						if (row < categories.Length)
 						{
-							Category category = categories[row];
 							if (style == ObjectStyle.ExpandedBranch)
 							{
-								return new ErrorBranch(category, myErrors);
+								return new ErrorBranch(categories[row], myErrors);
 							}
-							return category;
+							return categories[row];
 						}
 						break;
 				}
@@ -350,6 +367,9 @@ namespace Neumont.Tools.ORM.Shell
 						case CheckState.Unchecked:
 							retVal.StateImageIndex = (short)StandardCheckBoxImage.Unchecked;
 							break;
+						case CheckState.Disabled:
+							retVal.StateImageIndex = (short)StandardCheckBoxImage.CheckedDisabled;
+							break;
 					}
 					return retVal;
 
@@ -362,7 +382,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
-				return true;
+				Category[] categories = myCategories;
+				if (row < categories.Length)
+				{
+					return categories[row].FirstError != -1;
+				}
+				return false;
 			}
 			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
@@ -414,36 +439,43 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return myCategories.Length;
+					Category[] categories = myCategories;
+					int numCategories = categories.Length;
+					int shortLength = numCategories - 1;
+					if (categories[shortLength].FirstError == -1)
+					{
+						return shortLength;
+					}
+					return numCategories;
 				}
 			}
 		}
-
+		#endregion //Branches
+		#region Inner Category and Error classes
 		private enum CheckState
 		{
 			Checked,
 			Unchecked,
-			Indeterminate
+			Indeterminate,
+			Disabled,
 		}
-
 		private class Category
 		{
 			public static int IndexOf(Category[] categories, Type categoryType)
 			{
-				Debug.Assert(categories.Length >= 1 && categories[0].Type == null);
+				int categoryCount = categories.Length - 1;
 				if (categoryType == null)
 				{
-					return 0; // Keep this consistent with sort
+					return categoryCount; // Keep this consistent with sort
 				}
-				int categoryCount = categories.Length;
-				for (int i = 1; i < categoryCount; ++i)
+				for (int i = 0; i < categoryCount; ++i)
 				{
 					if (categoryType == categories[i].Type)
 					{
 						return i;
 					}
 				}
-				return 0; // Return untyped if we can't find it
+				return categoryCount; // Return untyped if we can't find it
 			}
 			public static void Sort(Category[] categories)
 			{
@@ -454,17 +486,25 @@ namespace Neumont.Tools.ORM.Shell
 						Type categoryType2 = category2.Type;
 						if (category1.Type == null)
 						{
-							return categoryType2 == null ? 0 : -1;
+							return categoryType2 == null ? 0 : 1;
 						}
 						else if (categoryType2 == null)
 						{
-							return 1;
+							return -1;
 						}
 						return string.Compare(category1.DisplayName, category2.DisplayName, StringComparison.CurrentCultureIgnoreCase);
 					});
 			}
 			private int myFirstError;
 			private int myLastError;
+			public int FirstError
+			{
+				get { return myFirstError; }
+			}
+			public int LastError
+			{
+				get { return myLastError; }
+			}
 			public void BindErrorRange(int firstError, int lastError)
 			{
 				myFirstError = firstError;
@@ -473,6 +513,11 @@ namespace Neumont.Tools.ORM.Shell
 
 			public CheckState GetCheckState(Error[] errors)
 			{
+				if (myFirstError == -1)
+				{
+					return CheckState.Disabled;
+				}
+
 				bool excluded = false;
 				bool included = false;
 				for (int i = myFirstError; i <= myLastError; ++i)
@@ -514,6 +559,12 @@ namespace Neumont.Tools.ORM.Shell
 			public bool IsExcluded
 			{
 				get { return myIsExcluded; }
+				set { myIsExcluded = value; }
+			}
+			private bool myWasExcluded;
+			public bool WasExcluded
+			{
+				get { return myWasExcluded; }
 			}
 
 			private Type myType;
@@ -541,6 +592,7 @@ namespace Neumont.Tools.ORM.Shell
 					myDisplayName = ResourceStrings.ModelErrorUncategorized;
 				}
 				myIsExcluded = excluded;
+				myWasExcluded = excluded;
 				myFirstError = -1;
 				myLastError = -1;
 			}
@@ -549,24 +601,33 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myIsExcluded = !myIsExcluded;
 
-				for (int i = myFirstError; i <= myLastError; ++i)
+				if (myFirstError != -1)
 				{
-					allErrors[i].Toggle(myIsExcluded);
+					for (int i = myFirstError; i <= myLastError; ++i)
+					{
+						allErrors[i].Toggle(myIsExcluded);
+					}
 				}
 			}
 
-			internal Error[] GetErrors(Error[] allErrors)
+			public Error[] GetErrors(Error[] allErrors)
 			{
-				Error[] retVal = new Error[myLastError - myFirstError + 1];
-				int counter = -1;
-				for (int i = myFirstError; i <= myLastError; ++i)
+				if (myFirstError == -1)
 				{
-					retVal[++counter] = allErrors[i];
+					return new Error[0];
 				}
-				return retVal;
+				else
+				{
+					Error[] retVal = new Error[myLastError - myFirstError + 1];
+					int counter = -1;
+					for (int i = myFirstError; i <= myLastError; ++i)
+					{
+						retVal[++counter] = allErrors[i];
+					}
+					return retVal;
+				}
 			}
 		}
-
 		private class Error
 		{
 			private int myCategoryIndex;
@@ -583,6 +644,11 @@ namespace Neumont.Tools.ORM.Shell
 			public bool IsExcluded
 			{
 				get { return myIsExcluded; }
+			}
+			private bool myWasExcluded;
+			public bool WasExcluded
+			{
+				get { return myWasExcluded; }
 			}
 
 			private Type myType;
@@ -604,6 +670,7 @@ namespace Neumont.Tools.ORM.Shell
 				myDisplayName = classInfo.DisplayName;
 
 				myIsExcluded = excluded;
+				myWasExcluded = excluded;
 			}
 
 			public void Toggle()
@@ -616,39 +683,78 @@ namespace Neumont.Tools.ORM.Shell
 				myIsExcluded = excluded;
 			}
 		}
-
+		#endregion //Inner Category and Error classes
+		#region Save Changes
 		private void btnOK_Click(object sender, EventArgs e)
 		{
 			SaveChanges();
 		}
-
 		private void SaveChanges()
 		{
 			ORMModel model = myModel;
 			ModelErrorDisplayFilter filter = model.ModelErrorDisplayFilter;
 			Store store = model.Store;
-			// UNDONE: Localize the transaction name
-			using (Transaction t = store.TransactionManager.BeginTransaction("Change Error Display Filter"))
+			using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelErrorDisplayFilterChangeTransactionName))
 			{
-				bool noChanges = true;
+				bool deleteFilter = true, anyChanges = false;
 				Error[] errors = myErrors;
-				foreach (Error error in errors)
+				Category[] categories = myCategories;
+				foreach (Category category in categories)
 				{
-					if (error.IsExcluded)
+					bool allExcluded = true, allIncluded = true;
+
+					if (category.FirstError == -1)
 					{
-						noChanges = false;
-						break;
+						allExcluded = false;
+						allIncluded = true;
+					}
+					else
+					{
+						for (int i = category.FirstError; i <= category.LastError; ++i)
+						{
+							Error error = errors[i];
+							if (error.IsExcluded != error.WasExcluded)
+							{
+								anyChanges = true;
+							}
+							if (error.IsExcluded)
+							{
+								deleteFilter = false;
+
+								allIncluded = false;
+							}
+							else
+							{
+								allExcluded = false;
+							}
+
+							if (anyChanges && !deleteFilter && !allExcluded && !allIncluded)
+							{
+								break;
+							}
+						}
+					}
+
+					if (allIncluded)
+					{
+						category.IsExcluded = false;
+					}
+					else if (allExcluded)
+					{
+						category.IsExcluded = true;
 					}
 				}
 
-				if (noChanges)
+				if (deleteFilter)
 				{
+					//if all errors are included, we can delete the filter
+					anyChanges = true;
 					if (filter != null)
 					{
 						filter.Delete();
 					}
 				}
-				else
+				else if (anyChanges)
 				{
 					if (filter == null)
 					{
@@ -656,9 +762,8 @@ namespace Neumont.Tools.ORM.Shell
 						filter.Model = model;
 					}
 
-					foreach (Category category in myCategories)
+					foreach (Category category in categories)
 					{
-						bool exclude = category.IsExcluded;
 						if (category.Type != null)
 						{
 							filter.ToggleCategory(category.Type, category.IsExcluded);
@@ -669,12 +774,16 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						filter.ToggleError(error.Type, error.IsExcluded);
 					}
+
+					filter.CommitChanges();
 				}
-				if (t.HasPendingChanges)
+				if (anyChanges && t.HasPendingChanges)
 				{
 					t.Commit();
 				}
 			}
 		}
+		#endregion //Save Changes
 	}
+	#endregion //ModelErrorDisplayFilterForm class
 }

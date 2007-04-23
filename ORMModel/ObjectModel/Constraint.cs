@@ -6714,6 +6714,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // PreferredIdentifierFor implementation
 	#region ModelError classes
 	#region TooManyRoleSequencesError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class TooManyRoleSequencesError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -6771,6 +6772,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooManyRoleSequencesError class
 	#region TooFewRoleSequencesError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class TooFewRoleSequencesError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -6832,6 +6834,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooFewRoleSequencesError class
 	#region ExternalConstraintRoleSequenceArityMismatchError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class ExternalConstraintRoleSequenceArityMismatchError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -6877,6 +6880,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ExternalConstraintRoleSequenceArityMismatchError class
 	#region CompatibleRolePlayerTypeError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class CompatibleRolePlayerTypeError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -6951,6 +6955,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // CompatibleRolePlayerTypeError class
 	#region FrequencyConstraintMinMaxError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class FrequencyConstraintMinMaxError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -6996,6 +7001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FrequencyConstraintMinMaxError class
 	#region FrequencyConstraintContradictsInternalUniquenessConstraintError class
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -7042,6 +7048,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // FrequencyConstraintContradictsInternalUniquenessConstraintError class
 	#region ImpliedInternalUniquenessConstraintError class
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class ImpliedInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -7099,6 +7106,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ImpliedInternalUniquenessConstraintError class
 	#region EqualityImpliedByMandatoryError class
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class EqualityImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -7144,6 +7152,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EqualityImpliedByMandatoryError class
 	#region RingConstraintTypeNotSpecifiedError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class RingConstraintTypeNotSpecifiedError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -7195,6 +7204,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // RingConstraintTypeNotSpecifiedError class
 	#region ImplicationError
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class ImplicationError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -7256,6 +7266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class EqualityOrSubsetImpliedByMandatoryError
 	{
 		#region Base Overrides
@@ -7287,6 +7298,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion
 	#region ContradictionError
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class ContradictionError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -7357,6 +7369,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class ExclusionContradictsMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -7450,6 +7463,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion
 
+	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class NotWellModeledSubsetAndMandatoryError
 	{
 		#region Base overrides

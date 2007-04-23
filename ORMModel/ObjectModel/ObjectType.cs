@@ -2836,6 +2836,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ValueTypeHasDataType class
 	#region EntityTypeRequiresReferenceSchemeError class
+	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
 	partial class EntityTypeRequiresReferenceSchemeError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -2878,6 +2879,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeRequiresReferenceSchemeError class
 	#region ObjectTypeRequiresPrimarySupertypeError class
+	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
 	public partial class ObjectTypeRequiresPrimarySupertypeError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -2917,6 +2919,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ObjectTypeRequiresPrimarySupertypeError class
 	#region PreferredIdentifierRequiresMandatoryError class
+	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
 	public partial class PreferredIdentifierRequiresMandatoryError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -2952,6 +2955,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // PreferredIdentifierRequiresMandatoryError class
 	#region CompatibleSupertypesError class
+	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
 	public partial class CompatibleSupertypesError : IRepresentModelElements
 	{
 		#region Base Overrides

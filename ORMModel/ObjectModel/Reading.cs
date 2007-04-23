@@ -498,6 +498,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Reading class
 	#region TooFewReadingRolesError class
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class TooFewReadingRolesError : IRepresentModelElements
 	{
 		#region overrides
@@ -546,6 +547,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // TooFewReadingRolesError class
 	#region TooManyReadingRolesError class
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class TooManyReadingRolesError : IRepresentModelElements
 	{
 		#region overrides

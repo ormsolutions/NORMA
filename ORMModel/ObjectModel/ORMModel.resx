@@ -313,6 +313,10 @@
     <value>'{0}' instance '{1}' in model '{2}' does not participate in required fact type '{3}'.</value>
     <comment>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the name of the object type, field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
   </data>
+	<data name="ModelErrorDisplayFilter.ToStringOverrideText" xml:space="preserve">
+    <value>(Filtered)</value>
+    <comment>Text returned by the ModelErrorDisplayFilter's ToString override.</comment>
+  </data>
 	<data name="ModelException.Constraint.EnforceSingleFactForInternalConstraint" xml:space="preserve">
     <value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
     <comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>

@@ -36,9 +36,49 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="IncludedErrors" DefaultValue="" DisplayName="IncludedErrors" Id="D83D0737-79B4-415D-9C93-73442F3C606F" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="ExcludedErrors" DefaultValue="" DisplayName="ExcludedErrors" Id="593D1E1A-C01D-48E8-8385-1507C7F95A25" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 		<DomainClass Name="PopulationErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="18C1AE31-7241-453E-9DCB-9409ACA41896" DisplayName="Sample Population Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DataTypeAndValueErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D98CE8A4-2CB0-423E-80AC-4E4E7A963EC3" DisplayName="DataType and Value Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ConstraintImplicationAndContradictionErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A8846FAF-A765-4E39-A876-CFA09A1FFB3A" DisplayName="Constraint Implication and Contradiction Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ConstraintStructureErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FEABDE83-E7B0-44C1-B6C8-3F0EF3E09589" DisplayName="Constraint Structure Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="FactTypeDefinitionErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1360B437-C64F-4A30-956B-47D4F1C7E85B" DisplayName="Fact Type Definition Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ReferenceSchemeErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2F515685-36D3-4631-A6C4-572BD9644FD7" DisplayName="Reference Scheme Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="NameErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="57AE5888-89E0-4449-B0C8-80802DEB014C" DisplayName="Naming Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
@@ -681,25 +721,25 @@
 			</Properties>
 		</DomainClass>
 		
-		<DomainClass Name="TooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="TooFewRoleSequencesError" Description="">
+		<DomainClass Name="TooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1ADACF12-94F5-430D-9E14-6A3B0334139E" DisplayName="TooManyRoleSequencesError" Description="">
+		<DomainClass Name="TooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1ADACF12-94F5-430D-9E14-6A3B0334139E" DisplayName="Too Many Role Sequences" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectTypeDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="798D4CC7-1AD8-4A83-AFD5-5730AC342DC2" DisplayName="ObjectTypeDuplicateNameError" Description="">
+		<DomainClass Name="ObjectTypeDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="798D4CC7-1AD8-4A83-AFD5-5730AC342DC2" DisplayName="Duplicate ObjectType Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BA0A8F9E-91E1-4D56-8A44-9F49432C63C5" DisplayName="PopulationUniquenessError" Description="">
+		<DomainClass Name="PopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BA0A8F9E-91E1-4D56-8A44-9F49432C63C5" DisplayName="Population Violates Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -711,37 +751,37 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A57EA68-918D-4AE3-AF7F-D9F7CDB5AB34" DisplayName="ExclusionContradictsMandatoryError" Description="">
+		<DomainClass Name="ExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A57EA68-918D-4AE3-AF7F-D9F7CDB5AB34" DisplayName="Contradicting Exclusion and Mandatory Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionContradictsEqualityError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D8714F74-60B7-48F5-BF7D-88D8736CB22A" DisplayName="ExclusionContradictsEqualityError" Description="">
+		<DomainClass Name="ExclusionContradictsEqualityError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D8714F74-60B7-48F5-BF7D-88D8736CB22A" DisplayName="Contradicting Exclusion and Equality Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionContradictsSubsetError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F671FE6D-BA8A-4BF2-AFB6-BE5827996C50" DisplayName="ExclusionContradictsSubsetError" Description="">
+		<DomainClass Name="ExclusionContradictsSubsetError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F671FE6D-BA8A-4BF2-AFB6-BE5827996C50" DisplayName="Contradicting Exclusion and Subset Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2DECDC39-E109-4D59-8BF3-046E2CD8584C" DisplayName="NotWellModeledSubsetAndMandatoryError" Description="">
+		<DomainClass Name="NotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2DECDC39-E109-4D59-8BF3-046E2CD8584C" DisplayName="Contradicting Subset and Mandatory Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5B76CB18-90B2-4656-BB0D-0788460FDB70" DisplayName="PopulationMandatoryError" Description="">
+		<DomainClass Name="PopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5B76CB18-90B2-4656-BB0D-0788460FDB70" DisplayName="Missing Mandatory Sample Population" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ConstraintDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AA63E81B-6978-49A2-A4AC-86022A172EDD" DisplayName="ConstraintDuplicateNameError" Description="">
+		<DomainClass Name="ConstraintDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AA63E81B-6978-49A2-A4AC-86022A172EDD" DisplayName="Duplicate Constraint Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
@@ -753,49 +793,49 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooFewReadingRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1D2B23EF-456E-4E80-91D8-FB384F779A54" DisplayName="TooFewReadingRolesError" Description="">
+		<DomainClass Name="TooFewReadingRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1D2B23EF-456E-4E80-91D8-FB384F779A54" DisplayName="FactType has Fewer Roles than Reading Text" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooManyReadingRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="50C98172-412C-40C0-ADD3-82809C3D82F7" DisplayName="TooManyReadingRolesError" Description="">
+		<DomainClass Name="TooManyReadingRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="50C98172-412C-40C0-ADD3-82809C3D82F7" DisplayName="FactType has More Roles than Reading Text" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExternalConstraintRoleSequenceArityMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3DA5385A-D9DE-4F3D-9D2E-CA79F10AB542" DisplayName="ExternalConstraintRoleSequenceArityMismatchError" Description="">
+		<DomainClass Name="ExternalConstraintRoleSequenceArityMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3DA5385A-D9DE-4F3D-9D2E-CA79F10AB542" DisplayName="Constraint Role Sequences with Different Numbers of Roles" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FactTypeRequiresReadingError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3ECA7E92-45B2-45BD-BAD3-6AF0C4B40E70" DisplayName="FactTypeRequiresReadingError" Description="">
+		<DomainClass Name="FactTypeRequiresReadingError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3ECA7E92-45B2-45BD-BAD3-6AF0C4B40E70" DisplayName="FactType Requires Reading" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FactTypeRequiresInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="295D4B3D-1351-431D-B72F-28661D744B58" DisplayName="FactTypeRequiresInternalUniquenessConstraintError" Description="">
+		<DomainClass Name="FactTypeRequiresInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="295D4B3D-1351-431D-B72F-28661D744B58" DisplayName="FactType Requires Internal Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DataTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8AFA102F-529C-4896-AEB3-9D714E28FC61" DisplayName="DataTypeNotSpecifiedError" Description="">
+		<DomainClass Name="DataTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8AFA102F-529C-4896-AEB3-9D714E28FC61" DisplayName="DataType not Specified for ValueType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NMinusOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="497754B3-5176-4712-BC46-2E4377354C8B" DisplayName="NMinusOneError" Description="">
+		<DomainClass Name="NMinusOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="497754B3-5176-4712-BC46-2E4377354C8B" DisplayName="Insufficient Roles for Internal Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5C8D3150-2604-44FC-A468-B678F9B4206E" DisplayName="CompatibleRolePlayerTypeError" Description="">
+		<DomainClass Name="CompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5C8D3150-2604-44FC-A468-B678F9B4206E" DisplayName="Incompatible Constrained Role Players" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -809,25 +849,25 @@
 
 		</DomainClass>
 
-		<DomainClass Name="RolePlayerRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="59A21FDE-D979-4B18-9088-707B79FCE19E" DisplayName="RolePlayerRequiredError" Description="">
+		<DomainClass Name="RolePlayerRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="59A21FDE-D979-4B18-9088-707B79FCE19E" DisplayName="Role Player Required" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EqualityImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0809316F-AE25-4D6A-8FF2-8CE8A685D32D" DisplayName="EqualityImpliedByMandatoryError" Description="">
+		<DomainClass Name="EqualityImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0809316F-AE25-4D6A-8FF2-8CE8A685D32D" DisplayName="Equality Constraint Implied By Mandatory Constraint(s)" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityTypeRequiresReferenceSchemeError" Description="">
+		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityType Requiresa Reference Scheme" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintMinMaxError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5586C408-1A46-4CA7-8B0D-0462CD904009" DisplayName="FrequencyConstraintMinMaxError" Description="">
+		<DomainClass Name="FrequencyConstraintMinMaxError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5586C408-1A46-4CA7-8B0D-0462CD904009" DisplayName="Inconsistent Frequency Constraint Minimum and Maximum Values" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1219,7 +1259,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A18FA855-E7CA-4716-8E8D-1606C09B090A" DisplayName="ValueMismatchError" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A18FA855-E7CA-4716-8E8D-1606C09B090A" DisplayName="Value Constraint Value Invalid for DataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1237,19 +1277,19 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ImpliedInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B7381F8B-C95E-408D-9747-4B6BB35C1171" DisplayName="ImpliedInternalUniquenessConstraintError" Description="">
+		<DomainClass Name="ImpliedInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B7381F8B-C95E-408D-9747-4B6BB35C1171" DisplayName="FactType has Implied Internal Uniqueness Constraint(s)" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A080C2B2-F666-4689-A63E-BD97CB0491E2" DisplayName="FrequencyConstraintContradictsInternalUniquenessConstraintError" Description="">
+		<DomainClass Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A080C2B2-F666-4689-A63E-BD97CB0491E2" DisplayName="Contradicting Frequency and Internal Uniqueness Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RingConstraintTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="15026270-DFD6-470D-A997-233173E644DC" DisplayName="RingConstraintTypeNotSpecifiedError" Description="">
+		<DomainClass Name="RingConstraintTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="15026270-DFD6-470D-A997-233173E644DC" DisplayName="Ring Constraint Type Not Specified" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1267,7 +1307,7 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectTypeRequiresPrimarySupertypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C35DEE5A-63C5-457C-A015-6E988CBAB8C5" DisplayName="ObjectTypeRequiresPrimarySupertypeError" Description="">
+		<DomainClass Name="ObjectTypeRequiresPrimarySupertypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C35DEE5A-63C5-457C-A015-6E988CBAB8C5" DisplayName="ObjectType Requires Primary Supertype" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1305,31 +1345,31 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="70A9ED25-7A0E-4DEC-B39D-83BB1A6294B8" DisplayName="CompatibleSupertypesError" Description="">
+		<DomainClass Name="CompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="70A9ED25-7A0E-4DEC-B39D-83BB1A6294B8" DisplayName="Incompatible or Transitive Supertypes" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ImplicationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78026AEA-19EB-497A-A596-25C929F67AA8" DisplayName="ImplicationError" Description="">
+		<DomainClass Name="ImplicationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78026AEA-19EB-497A-A596-25C929F67AA8" DisplayName="Constraint Implied by Intersecting Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="80B1F784-858E-483B-91A5-E55CFEBA44B9" DisplayName="EqualityOrSubsetImpliedByMandatoryError" Description="">
+		<DomainClass Name="EqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="80B1F784-858E-483B-91A5-E55CFEBA44B9" DisplayName="Mandatory Constraint Implies Equality or Subset Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ImplicationError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="129CCE68-7CE9-4A97-BAD3-C36B4D372A77" DisplayName="PreferredIdentifierRequiresMandatoryError" Description="">
+		<DomainClass Name="PreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="129CCE68-7CE9-4A97-BAD3-C36B4D372A77" DisplayName="EntityType with Compound Preferred Identifier Requires Mandatory Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2CF1EE1A-1737-4868-9B5C-95B2C0F9488B" DisplayName="ValueRangeOverlapError" Description="">
+		<DomainClass Name="ValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2CF1EE1A-1737-4868-9B5C-95B2C0F9488B" DisplayName="Value Ranges Overlap" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1399,19 +1439,19 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="TooFewEntityTypeRoleInstancesError" Description="">
+		<DomainClass Name="TooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="Incomplete Sample Population to Identify EntityType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooFewFactTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BE44DD74-2569-421E-8E1B-ABCDC7810C92" DisplayName="TooFewFactTypeRoleInstancesError" Description="">
+		<DomainClass Name="TooFewFactTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BE44DD74-2569-421E-8E1B-ABCDC7810C92" DisplayName="Incomplete FactType Sample Population" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleValueTypeInstanceValueError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D5B21137-31E8-444D-BCD2-58BBF442B4C0" DisplayName="CompatibleValueTypeInstanceValueError" Description="">
+		<DomainClass Name="CompatibleValueTypeInstanceValueError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D5B21137-31E8-444D-BCD2-58BBF442B4C0" DisplayName="Sample Population Value Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>

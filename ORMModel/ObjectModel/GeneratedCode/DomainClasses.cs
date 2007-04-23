@@ -220,6 +220,188 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region IncludedErrors domain property code
+		
+		/// <summary>
+		/// IncludedErrors domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IncludedErrorsDomainPropertyId = new global::System.Guid(0xd83d0737, 0x79b4, 0x415d, 0x9c, 0x93, 0x73, 0x44, 0x2f, 0x3c, 0x60, 0x6f);
+		
+		/// <summary>
+		/// Gets or sets the value of IncludedErrors domain property.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.IncludedErrors
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/IncludedErrors.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/IncludedErrors.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("d83d0737-79b4-415d-9c93-73442f3c606f")]
+		public global::System.String IncludedErrors
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return IncludedErrorsPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IncludedErrorsPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ModelErrorDisplayFilter.IncludedErrors domain property.
+		/// </summary>
+		internal sealed partial class IncludedErrorsPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelErrorDisplayFilter, global::System.String>
+		{
+			private IncludedErrorsPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ModelErrorDisplayFilter.IncludedErrors domain property value handler.
+			/// </summary>
+			public static readonly IncludedErrorsPropertyHandler Instance = new IncludedErrorsPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ModelErrorDisplayFilter.IncludedErrors domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IncludedErrorsDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ModelErrorDisplayFilter element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for IncludedErrors because its Kind is
+				// set to CustomStorage. Please provide the GetIncludedErrorsValue()
+				// method on the domain class.
+				return element.GetIncludedErrorsValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ModelErrorDisplayFilter element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for IncludedErrors because its Kind is
+					// set to CustomStorage. Please provide the SetIncludedErrorsValue()
+					// method on the domain class.
+					element.SetIncludedErrorsValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ExcludedErrors domain property code
+		
+		/// <summary>
+		/// ExcludedErrors domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ExcludedErrorsDomainPropertyId = new global::System.Guid(0x593d1e1a, 0xc01d, 0x48e8, 0x83, 0x85, 0x15, 0x07, 0xc7, 0xf9, 0x5a, 0x25);
+		
+		/// <summary>
+		/// Gets or sets the value of ExcludedErrors domain property.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.ExcludedErrors
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedErrors.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedErrors.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("593d1e1a-c01d-48e8-8385-1507c7f95a25")]
+		public global::System.String ExcludedErrors
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ExcludedErrorsPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ExcludedErrorsPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ModelErrorDisplayFilter.ExcludedErrors domain property.
+		/// </summary>
+		internal sealed partial class ExcludedErrorsPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelErrorDisplayFilter, global::System.String>
+		{
+			private ExcludedErrorsPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ModelErrorDisplayFilter.ExcludedErrors domain property value handler.
+			/// </summary>
+			public static readonly ExcludedErrorsPropertyHandler Instance = new ExcludedErrorsPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ModelErrorDisplayFilter.ExcludedErrors domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ExcludedErrorsDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ModelErrorDisplayFilter element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ExcludedErrors because its Kind is
+				// set to CustomStorage. Please provide the GetExcludedErrorsValue()
+				// method on the domain class.
+				return element.GetExcludedErrorsValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ModelErrorDisplayFilter element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ExcludedErrors because its Kind is
+					// set to CustomStorage. Please provide the SetExcludedErrorsValue()
+					// method on the domain class.
+					element.SetExcludedErrorsValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Model.
@@ -277,6 +459,180 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
 		protected PopulationErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass DataTypeAndValueErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.DataTypeAndValueErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DataTypeAndValueErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("d98ce8a4-2cb0-423e-80ac-4e4e7a963ec3")]
+	public abstract partial class DataTypeAndValueErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DataTypeAndValueErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd98ce8a4, 0x2cb0, 0x423e, 0x80, 0xac, 0x4e, 0x4e, 0x7a, 0x96, 0x3e, 0xc3);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected DataTypeAndValueErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ConstraintImplicationAndContradictionErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintImplicationAndContradictionErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintImplicationAndContradictionErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("a8846faf-a765-4e39-a876-cfa09a1ffb3a")]
+	public abstract partial class ConstraintImplicationAndContradictionErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ConstraintImplicationAndContradictionErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa8846faf, 0xa765, 0x4e39, 0xa8, 0x76, 0xcf, 0xa0, 0x9a, 0x1f, 0xfb, 0x3a);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ConstraintImplicationAndContradictionErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ConstraintStructureErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintStructureErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintStructureErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("feabde83-e7b0-44c1-b6c8-3f0ef3e09589")]
+	public abstract partial class ConstraintStructureErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ConstraintStructureErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xfeabde83, 0xe7b0, 0x44c1, 0xb6, 0xc8, 0x3f, 0x0e, 0xf3, 0xe0, 0x95, 0x89);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ConstraintStructureErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass FactTypeDefinitionErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeDefinitionErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeDefinitionErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("1360b437-c64f-4a30-956b-47d4f1c7e85b")]
+	public abstract partial class FactTypeDefinitionErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// FactTypeDefinitionErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x1360b437, 0xc64f, 0x4a30, 0x95, 0x6b, 0x47, 0xd4, 0xf1, 0xc7, 0xe8, 0x5b);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected FactTypeDefinitionErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ReferenceSchemeErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceSchemeErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceSchemeErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("2f515685-36d3-4631-a6c4-572bd9644fd7")]
+	public abstract partial class ReferenceSchemeErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ReferenceSchemeErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x2f515685, 0x36d3, 0x4631, 0xa6, 0xc4, 0x57, 0x2b, 0xd9, 0x64, 0x4f, 0xd7);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ReferenceSchemeErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass NameErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.NameErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("57ae5888-89e0-4449-b0c8-80802deb014c")]
+	public abstract partial class NameErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// NameErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x57ae5888, 0x89e0, 0x4449, 0xb0, 0xc8, 0x80, 0x80, 0x2d, 0xeb, 0x01, 0x4c);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected NameErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}

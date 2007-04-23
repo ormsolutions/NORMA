@@ -67,6 +67,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(ModelErrorCategory),
 				typeof(ModelErrorDisplayFilter),
 				typeof(PopulationErrorCategory),
+				typeof(DataTypeAndValueErrorCategory),
+				typeof(ConstraintImplicationAndContradictionErrorCategory),
+				typeof(ConstraintStructureErrorCategory),
+				typeof(FactTypeDefinitionErrorCategory),
+				typeof(ReferenceSchemeErrorCategory),
+				typeof(NameErrorCategory),
 				typeof(ORMModelElement),
 				typeof(ORMNamedElement),
 				typeof(ORMModel),
@@ -292,6 +298,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DomainMemberInfo[]
 			{
 				new DomainMemberInfo(typeof(ModelErrorDisplayFilter), "ExcludedCategories", ModelErrorDisplayFilter.ExcludedCategoriesDomainPropertyId, typeof(ModelErrorDisplayFilter.ExcludedCategoriesPropertyHandler)),
+				new DomainMemberInfo(typeof(ModelErrorDisplayFilter), "IncludedErrors", ModelErrorDisplayFilter.IncludedErrorsDomainPropertyId, typeof(ModelErrorDisplayFilter.IncludedErrorsPropertyHandler)),
+				new DomainMemberInfo(typeof(ModelErrorDisplayFilter), "ExcludedErrors", ModelErrorDisplayFilter.ExcludedErrorsDomainPropertyId, typeof(ModelErrorDisplayFilter.ExcludedErrorsPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMNamedElement), "Name", ORMNamedElement.NameDomainPropertyId, typeof(ORMNamedElement.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(ORMModel), "ModelErrorDisplayFilterDisplay", ORMModel.ModelErrorDisplayFilterDisplayDomainPropertyId, typeof(ORMModel.ModelErrorDisplayFilterDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsExternal", ObjectType.IsExternalDomainPropertyId, typeof(ObjectType.IsExternalPropertyHandler)),
@@ -596,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(116);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(122);
 				createElementMap.Add(typeof(DelayValidateSignal), 0);
 				createElementMap.Add(typeof(ModelErrorDisplayFilter), 1);
 				createElementMap.Add(typeof(ORMModel), 2);

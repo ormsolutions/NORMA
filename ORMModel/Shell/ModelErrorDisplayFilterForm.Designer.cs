@@ -55,16 +55,16 @@ namespace Neumont.Tools.ORM.Shell
 			// 
 			// btnOK
 			// 
-			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			resources.ApplyResources(this.btnOK, "btnOK");
+			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.btnOK.Name = "btnOK";
 			this.btnOK.UseVisualStyleBackColor = true;
 			this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
 			// 
 			// btnCancel
 			// 
-			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			resources.ApplyResources(this.btnCancel, "btnCancel");
+			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			// 

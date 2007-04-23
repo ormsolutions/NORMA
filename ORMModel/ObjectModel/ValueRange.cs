@@ -1410,6 +1410,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// MinValueMismatchError class
 	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
 	public partial class MinValueMismatchError : IRepresentModelElements
 	{
 		/// <summary>
@@ -1460,6 +1461,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// MaxValueMismatchError class
 	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
 	public partial class MaxValueMismatchError : IRepresentModelElements
 	{
 		/// <summary>
@@ -1510,6 +1512,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// This is the model error message for value ranges that overlap
 	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
 	public partial class ValueRangeOverlapError : IRepresentModelElements
 	{
 		/// <summary>

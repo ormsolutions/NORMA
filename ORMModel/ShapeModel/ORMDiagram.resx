@@ -454,6 +454,10 @@
     <value xml:space="preserve">The only shape representing this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
   </data>
+  <data name="ModelErrorDisplayFilterChange.TransactionName">
+    <value xml:space="preserve">Change Error Display</value>
+    <comment xml:space="preserve">The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="ModelNoteConnectAction.TransactionName">
     <value xml:space="preserve">Associate Note</value>
     <comment xml:space="preserve">The transaction name used by the modelnote connect action. The text appears in the undo dropdown in the VS IDE.</comment>

@@ -53,6 +53,7 @@ namespace Neumont.Tools.ORM.Shell
 			AddedPreLoadEvents = 2,
 			AddedSurveyQuestionEvents = 4,
 			SaveDisabled = 8,
+			ErrorDisplayModified = 0x10,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -571,6 +572,21 @@ namespace Neumont.Tools.ORM.Shell
 			classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), action);
+
+			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelErrorDisplayFilter.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorDisplayChangedEvent), action);
+
+			classInfo = dataDirectory.FindDomainClass(ModelErrorDisplayFilter.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorDisplayChangedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
+
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ModelErrorDisplayFilter.ExcludedCategoriesDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
+			propertyInfo = dataDirectory.FindDomainProperty(ModelErrorDisplayFilter.ExcludedErrorsDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
+			propertyInfo = dataDirectory.FindDomainProperty(ModelErrorDisplayFilter.IncludedErrorsDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
+			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ErrorEventsEnded), action);
 		}
 		private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -593,6 +609,52 @@ namespace Neumont.Tools.ORM.Shell
 			if (taskData != null)
 			{
 				taskData.Text = error.ErrorText;
+			}
+		}
+
+		private void ErrorDisplayChangedEvent(object sender, ElementEventArgs e)
+		{
+			SetFlag(PrivateFlags.ErrorDisplayModified, true);
+		}
+		private void ErrorEventsEnded(object sender, ElementEventsEndedEventArgs e)
+		{
+			if (GetFlag(PrivateFlags.ErrorDisplayModified))
+			{
+				SetFlag(PrivateFlags.ErrorDisplayModified, false);
+
+				IORMToolServices toolServices = this as IORMToolServices;
+				IORMToolTaskProvider taskProvider = toolServices.TaskProvider;
+
+				//refresh diagrams
+				ORMDesignerDocView.InvalidateAllDiagrams(toolServices.ServiceProvider, this);
+
+				//refresh task list
+				foreach (ORMModel model in this.Store.ElementDirectory.FindElements<ORMModel>(true))
+				{
+					ModelErrorDisplayFilter filter = model.ModelErrorDisplayFilter;
+
+					foreach (ModelError error in model.ErrorCollection)
+					{
+						object taskData = error.TaskData;
+						if (filter == null || filter.ShouldDisplay(error))
+						{
+							if (taskData == null)
+							{
+								ModelError.AddToTaskProvider(error);
+							}
+						}
+						else if (taskData != null)
+						{
+							error.TaskData = null;
+							IORMToolTaskItem taskItem = taskData as IORMToolTaskItem;
+							if (taskItem != null)
+							{
+								taskProvider.RemoveTask(taskItem);
+							}
+						}
+					}
+					break;
+				}
 			}
 		}
 		#endregion // Error reporting

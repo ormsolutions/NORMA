@@ -157,6 +157,22 @@
     <value>ExcludedCategories</value>
     <comment>DisplayName for DomainProperty &apos;ExcludedCategories&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/IncludedErrors.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.IncludedErrors</value>
+    <comment>Description for DomainProperty &apos;IncludedErrors&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/IncludedErrors.DisplayName" xml:space="preserve">
+    <value>IncludedErrors</value>
+    <comment>DisplayName for DomainProperty &apos;IncludedErrors&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedErrors.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter.ExcludedErrors</value>
+    <comment>Description for DomainProperty &apos;ExcludedErrors&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelErrorDisplayFilter/ExcludedErrors.DisplayName" xml:space="preserve">
+    <value>ExcludedErrors</value>
+    <comment>DisplayName for DomainProperty &apos;ExcludedErrors&apos; on DomainClass &apos;ModelErrorDisplayFilter&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationErrorCategory.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;PopulationErrorCategory&apos;</comment>
@@ -164,6 +180,54 @@
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationErrorCategory.DisplayName" xml:space="preserve">
     <value>Sample Population Errors</value>
     <comment>DisplayName for DomainClass &apos;PopulationErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataTypeAndValueErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DataTypeAndValueErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataTypeAndValueErrorCategory.DisplayName" xml:space="preserve">
+    <value>DataType and Value Errors</value>
+    <comment>DisplayName for DomainClass &apos;DataTypeAndValueErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintImplicationAndContradictionErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ConstraintImplicationAndContradictionErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintImplicationAndContradictionErrorCategory.DisplayName" xml:space="preserve">
+    <value>Constraint Implication andContradiction Errors</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintImplicationAndContradictionErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintStructureErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ConstraintStructureErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintStructureErrorCategory.DisplayName" xml:space="preserve">
+    <value>Constraint Structure Errors</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintStructureErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeDefinitionErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;FactTypeDefinitionErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeDefinitionErrorCategory.DisplayName" xml:space="preserve">
+    <value>Fact Type Definition Errors</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeDefinitionErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceSchemeErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ReferenceSchemeErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceSchemeErrorCategory.DisplayName" xml:space="preserve">
+    <value>Reference Scheme Errors</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceSchemeErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;NameErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.NameErrorCategory.DisplayName" xml:space="preserve">
+    <value>Naming Errors</value>
+    <comment>DisplayName for DomainClass &apos;NameErrorCategory&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElement.Description" xml:space="preserve">
     <value></value>
@@ -706,7 +770,7 @@
     <comment>Description for DomainClass &apos;TooFewRoleSequencesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError.DisplayName" xml:space="preserve">
-    <value>TooFewRoleSequencesError</value>
+    <value>Too Few Role Sequences</value>
     <comment>DisplayName for DomainClass &apos;TooFewRoleSequencesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError.Description" xml:space="preserve">
@@ -714,7 +778,7 @@
     <comment>Description for DomainClass &apos;TooManyRoleSequencesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError.DisplayName" xml:space="preserve">
-    <value>TooManyRoleSequencesError</value>
+    <value>Too Many Role Sequences</value>
     <comment>DisplayName for DomainClass &apos;TooManyRoleSequencesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError.Description" xml:space="preserve">
@@ -722,7 +786,7 @@
     <comment>Description for DomainClass &apos;ObjectTypeDuplicateNameError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError.DisplayName" xml:space="preserve">
-    <value>ObjectTypeDuplicateNameError</value>
+    <value>Duplicate ObjectType Names</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeDuplicateNameError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError.Description" xml:space="preserve">
@@ -730,7 +794,7 @@
     <comment>Description for DomainClass &apos;PopulationUniquenessError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError.DisplayName" xml:space="preserve">
-    <value>PopulationUniquenessError</value>
+    <value>Population Violates Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;PopulationUniquenessError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ContradictionError.Description" xml:space="preserve">
@@ -746,7 +810,7 @@
     <comment>Description for DomainClass &apos;ExclusionContradictsMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsMandatoryError.DisplayName" xml:space="preserve">
-    <value>ExclusionContradictsMandatoryError</value>
+    <value>Contradicting Exclusion and Mandatory Constraints</value>
     <comment>DisplayName for DomainClass &apos;ExclusionContradictsMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.Description" xml:space="preserve">
@@ -754,7 +818,7 @@
     <comment>Description for DomainClass &apos;ExclusionContradictsEqualityError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsEqualityError.DisplayName" xml:space="preserve">
-    <value>ExclusionContradictsEqualityError</value>
+    <value>Contradicting Exclusion and Equality Constraints</value>
     <comment>DisplayName for DomainClass &apos;ExclusionContradictsEqualityError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.Description" xml:space="preserve">
@@ -762,7 +826,7 @@
     <comment>Description for DomainClass &apos;ExclusionContradictsSubsetError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionContradictsSubsetError.DisplayName" xml:space="preserve">
-    <value>ExclusionContradictsSubsetError</value>
+    <value>Contradicting Exclusion and Subset Constraints</value>
     <comment>DisplayName for DomainClass &apos;ExclusionContradictsSubsetError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NotWellModeledSubsetAndMandatoryError.Description" xml:space="preserve">
@@ -770,7 +834,7 @@
     <comment>Description for DomainClass &apos;NotWellModeledSubsetAndMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NotWellModeledSubsetAndMandatoryError.DisplayName" xml:space="preserve">
-    <value>NotWellModeledSubsetAndMandatoryError</value>
+    <value>Contradicting Subset and Mandatory Constraints</value>
     <comment>DisplayName for DomainClass &apos;NotWellModeledSubsetAndMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError.Description" xml:space="preserve">
@@ -778,7 +842,7 @@
     <comment>Description for DomainClass &apos;PopulationMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError.DisplayName" xml:space="preserve">
-    <value>PopulationMandatoryError</value>
+    <value>Missing Mandatory Sample Population</value>
     <comment>DisplayName for DomainClass &apos;PopulationMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError.Description" xml:space="preserve">
@@ -786,7 +850,7 @@
     <comment>Description for DomainClass &apos;ConstraintDuplicateNameError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError.DisplayName" xml:space="preserve">
-    <value>ConstraintDuplicateNameError</value>
+    <value>Duplicate Constraint Names</value>
     <comment>DisplayName for DomainClass &apos;ConstraintDuplicateNameError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DuplicateNameError.Description" xml:space="preserve">
@@ -802,7 +866,7 @@
     <comment>Description for DomainClass &apos;TooFewReadingRolesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewReadingRolesError.DisplayName" xml:space="preserve">
-    <value>TooFewReadingRolesError</value>
+    <value>FactType has Fewer Roles than Reading Text</value>
     <comment>DisplayName for DomainClass &apos;TooFewReadingRolesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooManyReadingRolesError.Description" xml:space="preserve">
@@ -810,7 +874,7 @@
     <comment>Description for DomainClass &apos;TooManyReadingRolesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooManyReadingRolesError.DisplayName" xml:space="preserve">
-    <value>TooManyReadingRolesError</value>
+    <value>FactType has More Roles than Reading Text</value>
     <comment>DisplayName for DomainClass &apos;TooManyReadingRolesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatchError.Description" xml:space="preserve">
@@ -818,7 +882,7 @@
     <comment>Description for DomainClass &apos;ExternalConstraintRoleSequenceArityMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatchError.DisplayName" xml:space="preserve">
-    <value>ExternalConstraintRoleSequenceArityMismatchError</value>
+    <value>Constraint Role Sequences with Different Numbers of Roles</value>
     <comment>DisplayName for DomainClass &apos;ExternalConstraintRoleSequenceArityMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRequiresReadingError.Description" xml:space="preserve">
@@ -826,7 +890,7 @@
     <comment>Description for DomainClass &apos;FactTypeRequiresReadingError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRequiresReadingError.DisplayName" xml:space="preserve">
-    <value>FactTypeRequiresReadingError</value>
+    <value>FactType Requires Reading</value>
     <comment>DisplayName for DomainClass &apos;FactTypeRequiresReadingError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError.Description" xml:space="preserve">
@@ -834,7 +898,7 @@
     <comment>Description for DomainClass &apos;FactTypeRequiresInternalUniquenessConstraintError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>FactTypeRequiresInternalUniquenessConstraintError</value>
+    <value>FactType Requires Internal Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;FactTypeRequiresInternalUniquenessConstraintError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError.Description" xml:space="preserve">
@@ -842,7 +906,7 @@
     <comment>Description for DomainClass &apos;DataTypeNotSpecifiedError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError.DisplayName" xml:space="preserve">
-    <value>DataTypeNotSpecifiedError</value>
+    <value>DataType not Specified for ValueType</value>
     <comment>DisplayName for DomainClass &apos;DataTypeNotSpecifiedError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NMinusOneError.Description" xml:space="preserve">
@@ -850,7 +914,7 @@
     <comment>Description for DomainClass &apos;NMinusOneError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.NMinusOneError.DisplayName" xml:space="preserve">
-    <value>NMinusOneError</value>
+    <value>Insufficient Roles for Internal Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;NMinusOneError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError.Description" xml:space="preserve">
@@ -858,7 +922,7 @@
     <comment>Description for DomainClass &apos;CompatibleRolePlayerTypeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError.DisplayName" xml:space="preserve">
-    <value>CompatibleRolePlayerTypeError</value>
+    <value>Incompatible Constrained Role Players</value>
     <comment>DisplayName for DomainClass &apos;CompatibleRolePlayerTypeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError/Column.Description" xml:space="preserve">
@@ -874,7 +938,7 @@
     <comment>Description for DomainClass &apos;RolePlayerRequiredError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RolePlayerRequiredError.DisplayName" xml:space="preserve">
-    <value>RolePlayerRequiredError</value>
+    <value>Role Player Required</value>
     <comment>DisplayName for DomainClass &apos;RolePlayerRequiredError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityImpliedByMandatoryError.Description" xml:space="preserve">
@@ -882,7 +946,7 @@
     <comment>Description for DomainClass &apos;EqualityImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>EqualityImpliedByMandatoryError</value>
+    <value>Equality Constraint Implied By Mandatory Constraint(s)</value>
     <comment>DisplayName for DomainClass &apos;EqualityImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.Description" xml:space="preserve">
@@ -890,7 +954,7 @@
     <comment>Description for DomainClass &apos;EntityTypeRequiresReferenceSchemeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.DisplayName" xml:space="preserve">
-    <value>EntityTypeRequiresReferenceSchemeError</value>
+    <value>EntityType Requiresa Reference Scheme</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeRequiresReferenceSchemeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError.Description" xml:space="preserve">
@@ -898,7 +962,7 @@
     <comment>Description for DomainClass &apos;FrequencyConstraintMinMaxError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError.DisplayName" xml:space="preserve">
-    <value>FrequencyConstraintMinMaxError</value>
+    <value>Inconsistent Frequency Constraint Minimum and Maximum Values</value>
     <comment>DisplayName for DomainClass &apos;FrequencyConstraintMinMaxError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelError.Description" xml:space="preserve">
@@ -1370,7 +1434,7 @@
     <comment>Description for DomainClass &apos;ValueMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueMismatchError.DisplayName" xml:space="preserve">
-    <value>ValueMismatchError</value>
+    <value>Value Constraint Value Invalid for DataType</value>
     <comment>DisplayName for DomainClass &apos;ValueMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MinValueMismatchError.Description" xml:space="preserve">
@@ -1394,7 +1458,7 @@
     <comment>Description for DomainClass &apos;ImpliedInternalUniquenessConstraintError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ImpliedInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>ImpliedInternalUniquenessConstraintError</value>
+    <value>FactType has Implied Internal Uniqueness Constraint(s)</value>
     <comment>DisplayName for DomainClass &apos;ImpliedInternalUniquenessConstraintError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError.Description" xml:space="preserve">
@@ -1402,7 +1466,7 @@
     <comment>Description for DomainClass &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>FrequencyConstraintContradictsInternalUniquenessConstraintError</value>
+    <value>Contradicting Frequency and Internal Uniqueness Constraints</value>
     <comment>DisplayName for DomainClass &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError.Description" xml:space="preserve">
@@ -1410,7 +1474,7 @@
     <comment>Description for DomainClass &apos;RingConstraintTypeNotSpecifiedError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError.DisplayName" xml:space="preserve">
-    <value>RingConstraintTypeNotSpecifiedError</value>
+    <value>Ring Constraint Type Not Specified</value>
     <comment>DisplayName for DomainClass &apos;RingConstraintTypeNotSpecifiedError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole.Description" xml:space="preserve">
@@ -1434,7 +1498,7 @@
     <comment>Description for DomainClass &apos;ObjectTypeRequiresPrimarySupertypeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySupertypeError.DisplayName" xml:space="preserve">
-    <value>ObjectTypeRequiresPrimarySupertypeError</value>
+    <value>ObjectType Requires Primary Supertype</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeRequiresPrimarySupertypeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Note.Description" xml:space="preserve">
@@ -1466,7 +1530,7 @@
     <comment>Description for DomainClass &apos;CompatibleSupertypesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleSupertypesError.DisplayName" xml:space="preserve">
-    <value>CompatibleSupertypesError</value>
+    <value>Incompatible or Transitive Supertypes</value>
     <comment>DisplayName for DomainClass &apos;CompatibleSupertypesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ImplicationError.Description" xml:space="preserve">
@@ -1474,7 +1538,7 @@
     <comment>Description for DomainClass &apos;ImplicationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ImplicationError.DisplayName" xml:space="preserve">
-    <value>ImplicationError</value>
+    <value>Constraint Implied by Intersecting Constraints</value>
     <comment>DisplayName for DomainClass &apos;ImplicationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityOrSubsetImpliedByMandatoryError.Description" xml:space="preserve">
@@ -1482,7 +1546,7 @@
     <comment>Description for DomainClass &apos;EqualityOrSubsetImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityOrSubsetImpliedByMandatoryError.DisplayName" xml:space="preserve">
-    <value>EqualityOrSubsetImpliedByMandatoryError</value>
+    <value>Mandatory Constraint Implies Equality or Subset Constraint</value>
     <comment>DisplayName for DomainClass &apos;EqualityOrSubsetImpliedByMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PreferredIdentifierRequiresMandatoryError.Description" xml:space="preserve">
@@ -1490,7 +1554,7 @@
     <comment>Description for DomainClass &apos;PreferredIdentifierRequiresMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.PreferredIdentifierRequiresMandatoryError.DisplayName" xml:space="preserve">
-    <value>PreferredIdentifierRequiresMandatoryError</value>
+    <value>EntityType with Compound Preferred Identifier Requires Mandatory Constraint</value>
     <comment>DisplayName for DomainClass &apos;PreferredIdentifierRequiresMandatoryError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError.Description" xml:space="preserve">
@@ -1498,7 +1562,7 @@
     <comment>Description for DomainClass &apos;ValueRangeOverlapError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError.DisplayName" xml:space="preserve">
-    <value>ValueRangeOverlapError</value>
+    <value>Value Ranges Overlap</value>
     <comment>DisplayName for DomainClass &apos;ValueRangeOverlapError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.Description" xml:space="preserve">
@@ -1578,7 +1642,7 @@
     <comment>Description for DomainClass &apos;TooFewEntityTypeRoleInstancesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewEntityTypeRoleInstancesError.DisplayName" xml:space="preserve">
-    <value>TooFewEntityTypeRoleInstancesError</value>
+    <value>Incomplete Sample Population to Identify EntityType</value>
     <comment>DisplayName for DomainClass &apos;TooFewEntityTypeRoleInstancesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewFactTypeRoleInstancesError.Description" xml:space="preserve">
@@ -1586,7 +1650,7 @@
     <comment>Description for DomainClass &apos;TooFewFactTypeRoleInstancesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.TooFewFactTypeRoleInstancesError.DisplayName" xml:space="preserve">
-    <value>TooFewFactTypeRoleInstancesError</value>
+    <value>Incomplete FactType Sample Population</value>
     <comment>DisplayName for DomainClass &apos;TooFewFactTypeRoleInstancesError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleValueTypeInstanceValueError.Description" xml:space="preserve">
@@ -1594,7 +1658,7 @@
     <comment>Description for DomainClass &apos;CompatibleValueTypeInstanceValueError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleValueTypeInstanceValueError.DisplayName" xml:space="preserve">
-    <value>CompatibleValueTypeInstanceValueError</value>
+    <value>Sample Population Value Invalid for DataType</value>
     <comment>DisplayName for DomainClass &apos;CompatibleValueTypeInstanceValueError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactConstraint.Description" xml:space="preserve">

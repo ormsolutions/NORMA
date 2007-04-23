@@ -1269,6 +1269,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 	}
 	#region Relationship-specific derivations of DuplicateNameError
+	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
 	public partial class ObjectTypeDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
 		/// <summary>
@@ -1316,6 +1317,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
+	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
 	public partial class ConstraintDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
 		/// <summary>

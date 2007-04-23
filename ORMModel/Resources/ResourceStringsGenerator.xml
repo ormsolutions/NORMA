@@ -261,6 +261,9 @@
 	<ResourceString name="ModelNoteConnectActionTransactionName" model="Diagram" resourceName="ModelNoteConnectAction.TransactionName">
 		<comment type="summary">The transaction name used by the model note connect action. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorDisplayFilterChangeTransactionName" model="Diagram" resourceName="ModelErrorDisplayFilterChange.TransactionName">
+		<comment type="summary">The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
 	<ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName">
 		<comment type="summary">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
@@ -371,6 +374,9 @@
 	</ResourceString>
 	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName">
 		<comment type="summary">Category name to display for uncategorized model errors.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText">
+		<comment type="summary">Text to display for the property for the ModelErrorDisplayFilter when it is filtered.</comment>
 	</ResourceString>
 	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text">
 		<comment type="summary">Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>

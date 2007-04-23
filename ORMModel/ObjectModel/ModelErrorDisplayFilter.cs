@@ -30,6 +30,7 @@ using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region ModelErrorDisplayFilterAttribute
 	/// <summary>
 	/// An attribute to specify on an type derived from <see cref="ModelError"/> to
 	/// model the error display information.
@@ -65,44 +66,62 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 	}
+	#endregion //ModelErrorDisplayFilterAttribute
+	#region ModelErrorDisplayFilter class
 	public partial class ModelErrorDisplayFilter : IXmlSerializable
 	{
-		const string XMLCategoriesElement = "Categories";
-		const string XMLIncludedErrorsElement = "IncludedErrors";
-		const string XMLExcludedErrorsElement = "ExcludedErrors";
-		const string XMLElement = "ModelErrorDisplayFilter";
-		const string XMLPrefix = "orm";
-		const string XMLModelReferenceAttribute = "ref";
-		const char listDelimiter = ' ';
-
-		private string myIncludedErrorsList = "";
-		private string myExcludedErrorsList = "";
-		private string myExcludedCategoriesList = "";
+		private const string XMLCategoriesElement = "Categories";
+		private const string XMLIncludedErrorsElement = "IncludedErrors";
+		private const string XMLExcludedErrorsElement = "ExcludedErrors";
+		private const string XMLElement = "ModelErrorDisplayFilter";
+		private const string XMLPrefix = "orm";
+		private const string XMLModelReferenceAttribute = "ref";
+		private const char ListDelimiter = ' ';
+		
+		private bool myIncludedErrorsChanged = false;
+		private bool myExcludedErrorsChanged = false;
+		private bool myExcludedCategoriesChanged = false;
+		private string myIncludedErrorsList = string.Empty;
+		private string myExcludedErrorsList = string.Empty;
+		private string myExcludedCategoriesList = string.Empty;
 		private Dictionary<Type, Type> myIncludedErrors;
 		private Dictionary<Type, Type> myExcludedErrors;
 		private Dictionary<Type, Type> myExcludedCategories;
+
 		private Dictionary<Type, Type> ExcludedCategoriesDictionary
 		{
 			get
 			{
-				return myExcludedCategories = parseList(myExcludedCategoriesList, myExcludedCategories);
+				if (!myExcludedCategoriesChanged)
+				{
+					myExcludedCategories = ParseList(myExcludedCategoriesList, myExcludedCategories);
+				}
+				return myExcludedCategories;
 			}
 		}
 		private Dictionary<Type, Type> IncludedErrorsDictionary
 		{
 			get
 			{
-				return myIncludedErrors = parseList(myIncludedErrorsList, myIncludedErrors);
+				if (!myIncludedErrorsChanged)
+				{
+					myIncludedErrors = ParseList(myIncludedErrorsList, myIncludedErrors);
+				}
+				return myIncludedErrors;
 			}
 		}
 		private Dictionary<Type, Type> ExcludedErrorsDictionary
 		{
 			get
 			{
-				return myExcludedErrors = parseList(myExcludedErrorsList, myExcludedErrors);
+				if (!myExcludedErrorsChanged)
+				{
+					myExcludedErrors = ParseList(myExcludedErrorsList, myExcludedErrors);
+				}
+				return myExcludedErrors;
 			}
 		}
-		private Dictionary<Type, Type> parseList(string list, Dictionary<Type, Type> cache)
+		private Dictionary<Type, Type> ParseList(string list, Dictionary<Type, Type> cache)
 		{
 			if (list.Length != 0)
 			{
@@ -113,8 +132,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (retVal.Count == 0)
 				{
+					//synchronize the cache with the string
 					DomainDataDirectory dataDir = Store.DomainDataDirectory;
-					string[] typeNames = list.Split(new char[] { listDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+					string[] typeNames = list.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
 					int typeCount = typeNames.Length;
 					for (int i = 0; i < typeCount; ++i)
 					{
@@ -126,97 +146,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return cache;
 		}
-		/// <summary>
-		/// Get the string for the current categories value
-		/// </summary>
 		private string GetExcludedCategoriesValue()
 		{
-			string retVal = myExcludedCategoriesList;
-			Dictionary<Type, Type> cache = myExcludedCategories;
-			if (cache != null && cache.Count > 0)
-			{
-				retVal = "";
-				foreach (Type category in cache.Keys)
-				{
-					retVal += category.FullName + listDelimiter;
-				}
-			}
-			return myExcludedCategoriesList = retVal;
-		}                                                           
+			return myExcludedCategoriesList;
+		}
 		private void SetExcludedCategoriesValue(string newValue)
 		{
 			myExcludedCategoriesList = newValue;
-			Dictionary<Type, Type> cache = myExcludedCategories;
+			Dictionary<Type, Type> cache = ExcludedCategoriesDictionary;
 			if (cache != null)
 			{
 				cache.Clear();
 			}
 		}
-		/// <summary>
-		/// Is the specified category type Excluded
-		/// </summary>
-		/// <param name="category">The type of a category</param>
-		/// <returns><see langword="true"/> if the error category is Excluded.</returns>
-		public bool IsCategoryExcluded(Type category)
+		private string GetExcludedErrorsValue()
 		{
-			Dictionary<Type, Type> dictionary = ExcludedCategoriesDictionary;
-			return dictionary != null && dictionary.ContainsKey(category);
+			return myExcludedErrorsList;
 		}
-		/// <summary>
-		/// Toggles an error category to include or exclude.
-		/// </summary>
-		/// <param name="category">The error category.</param>
-		/// <param name="exclude">True to exclude the error category.</param>
-		public void ToggleCategory(Type category, bool exclude)
+		private void SetExcludedErrorsValue(string newValue)
 		{
-			if (IsCategoryExcluded(category) != exclude)
+			myExcludedErrorsList = newValue;
+			Dictionary<Type, Type> cache = ExcludedErrorsDictionary;
+			if (cache != null)
 			{
-				ToggleCategory(category);
+				cache.Clear();
 			}
 		}
-		/// <summary>
-		/// Toggles an error category to switch its included/excluded state.
-		/// </summary>
-		/// <param name="category">The error category.</param>
-		public void ToggleCategory(Type category)
+		private string GetIncludedErrorsValue()
 		{
-			Dictionary<Type, Type> dictionary = ExcludedCategoriesDictionary;
-			if (dictionary == null)
+			return myIncludedErrorsList;
+		}
+		private void SetIncludedErrorsValue(string newValue)
+		{
+			myIncludedErrorsList = newValue;
+			Dictionary<Type, Type> cache = IncludedErrorsDictionary;
+			if (cache != null)
 			{
-				dictionary = myExcludedCategories = new Dictionary<Type, Type>();
+				cache.Clear();
 			}
-
-			if (dictionary.ContainsKey(category))
-			{
-				dictionary.Remove(category);
-				myExcludedCategoriesList = "";
-			}
-			else
-			{
-				dictionary.Add(category, null);
-				myExcludedCategoriesList = "";
-			}
-
-			RemoveErrors(ExcludedErrorsDictionary, category);
-			RemoveErrors(IncludedErrorsDictionary, category);
-			myExcludedErrorsList = "";
-			myIncludedErrorsList = "";
 		}
 
-		private void RemoveErrors(Dictionary<Type, Type> dictionary, Type category)
-		{
-			if (dictionary != null)
-			{
-				IList<Type> keys = new List<Type>(dictionary.Keys);
-				foreach (Type error in keys)
-				{
-					if (GetCategory(error) == category)
-					{
-						dictionary.Remove(error);
-					}
-				}
-			}
-		}
 		/// <summary>
 		/// Determines if an error should be displayed or not.
 		/// </summary>
@@ -224,7 +193,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>True if the error should be displayed.</returns>
 		public bool ShouldDisplay(ModelError error)
 		{
+			if (error == null)
+			{
+				throw new ArgumentNullException("error");
+			}
+
 			return !IsErrorExcluded(error.GetType());
+		}
+
+		/// <summary>
+		/// Toggles an error category to include or exclude.
+		/// </summary>
+		/// <param name="category">The error category.</param>
+		/// <param name="exclude">True to exclude the error category.</param>
+		public void ToggleCategory(Type category, bool exclude)
+		{
+			Dictionary<Type, Type> dictionary = ExcludedCategoriesDictionary;
+			if (dictionary == null)
+			{
+				dictionary = myExcludedCategories = new Dictionary<Type, Type>();
+			}
+
+			if (exclude)
+			{
+				if (!(dictionary.ContainsKey(category)))
+				{
+					myExcludedCategoriesChanged = true;
+					dictionary.Add(category, null);
+				}
+			}
+			else
+			{
+				if ((dictionary.ContainsKey(category)))
+				{
+					myExcludedCategoriesChanged = true;
+					dictionary.Remove(category);
+				}
+			}
 		}
 		/// <summary>
 		/// Toggles an error type to include or exclude.
@@ -233,47 +238,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="exclude">True to exclude the error type.</param>
 		public void ToggleError(Type error, bool exclude)
 		{
-			if (IsErrorExcluded(error) != exclude)
-			{
-				ToggleError(error);
-			}
-		}
-		/// <summary>
-		/// Determines if an error is excluded or not.
-		/// </summary>
-		/// <param name="error">The error type.</param>
-		/// <returns>True if the error is excluded.</returns>
-		public bool IsErrorExcluded(Type error)
-		{
-			return CheckError(error, false);
-		}
-		/// <summary>
-		/// Toggles an error type to switch its included/excluded state.
-		/// </summary>
-		/// <param name="error">The error type.</param>
-		public void ToggleError(Type error)
-		{
-			CheckError(error, true);
-		}
-
-		private bool CheckError(Type error, bool toggle)
-		{
 			Type category = GetCategory(error);
-
 			Dictionary<Type, Type> dictionary;
 
-			bool categoryExcluded = category != null && IsCategoryExcluded(category);
-			if (categoryExcluded)
+			if (IsCategoryExcluded(GetCategory(error)))
 			{
 				dictionary = IncludedErrorsDictionary;
 				if (dictionary == null)
 				{
 					dictionary = myIncludedErrors = new Dictionary<Type, Type>();
 				}
-				if (toggle)
-				{
-					myIncludedErrorsList = "";
-				}
+				myIncludedErrorsChanged = true;
+
+				//flip whether to include or exclude the error in the sub-list
+				exclude = !exclude;
 			}
 			else
 			{
@@ -282,28 +260,90 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					dictionary = myExcludedErrors = new Dictionary<Type, Type>();
 				}
-				if (toggle)
-				{
-					myExcludedErrorsList = "";
-				}
+				myExcludedErrorsChanged = true;
 			}
 
-			bool containsError = dictionary.ContainsKey(error);
-			if (toggle)
+			if (exclude)
 			{
-				if (containsError)
-				{
-					dictionary.Remove(error);
-				}
-				else
+				if (!(dictionary.ContainsKey(error)))
 				{
 					dictionary.Add(error, null);
 				}
 			}
-
-			return categoryExcluded ^ containsError;
+			else
+			{
+				if ((dictionary.ContainsKey(error)))
+				{
+					dictionary.Remove(error);
+				}
+			}
 		}
+		/// <summary>
+		/// Determines if an error category is excluded.
+		/// </summary>
+		/// <param name="type">The error category.</param>
+		/// <returns></returns>
+		public bool IsCategoryExcluded(Type type)
+		{
+			Dictionary<Type, Type> excludedCategories = ExcludedCategoriesDictionary;
+			return type != null && excludedCategories != null && excludedCategories.ContainsKey(type);
+		}
+		/// <summary>
+		/// Determines if an error type is excluded.
+		/// </summary>
+		/// <param name="error">The error type.</param>
+		/// <returns></returns>
+		public bool IsErrorExcluded(Type error)
+		{
+			if (IsCategoryExcluded(GetCategory(error)))
+			{
+				Dictionary<Type, Type> dictionary = IncludedErrorsDictionary;
+				return !(dictionary != null && dictionary.ContainsKey(error));
+			}
+			else
+			{
+				Dictionary<Type, Type> dictionary = ExcludedErrorsDictionary;
+				return (dictionary != null && dictionary.ContainsKey(error));
+			}
+		}
+		/// <summary>
+		/// Commit any changes pending from calls to ToggleCategory or ToggleError.
+		/// </summary>
+		public void CommitChanges()
+		{
+			if (myExcludedCategoriesChanged)
+			{
+				this.ExcludedCategories = GetValue(myExcludedCategoriesList, ref myExcludedCategories);
+			}
+			if (myExcludedErrorsChanged)
+			{
+				this.ExcludedErrors = GetValue(myExcludedErrorsList, ref myExcludedErrors);
+			}
+			if (myIncludedErrorsChanged)
+			{
+				this.IncludedErrors = GetValue(myIncludedErrorsList, ref myIncludedErrors);
+			}
 
+			myExcludedCategoriesChanged = false;
+			myExcludedErrorsChanged = false;
+			myIncludedErrorsChanged = false;
+		}
+		private string GetValue(string myList, ref Dictionary<Type, Type> myCache)
+		{
+			string retVal = myList;
+			Dictionary<Type, Type> cache;
+			if ((cache = myCache) == null)
+			{
+				cache = myCache = new Dictionary<Type, Type>();
+			}
+			//write the cache to a string
+			retVal = string.Empty;
+			foreach (Type type in cache.Keys)
+			{
+				retVal += type.FullName + ListDelimiter;
+			}
+			return retVal;
+		}
 		private Type GetCategory(Type error)
 		{
 			Type category = null;
@@ -320,6 +360,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			return category;
+		}
+
+		/// <summary>
+		/// returns string.Empty
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return ResourceStrings.ModelErrorDisplayFilteredText;
 		}
 
 		#region IXmlSerializable Implementation
@@ -371,9 +420,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Reads a list of types and returns them in a string.
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="namespaces"></param>
+		/// <returns></returns>
 		string readInnerXMLList(XmlReader reader, ref Dictionary<string, string> namespaces)
 		{
-			string retVal = "";
+			string retVal = string.Empty;
 
 			while (reader.Read())
 			{
@@ -382,6 +437,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (namespaces == null)
 					{
+						//synchronize namespaces
 						foreach (DomainModel model in Store.DomainModels)
 						{
 							IORMCustomSerializedDomainModel serializationInfo = model as IORMCustomSerializedDomainModel;
@@ -400,7 +456,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string readerNamespaceURI = reader.NamespaceURI;
 						if (namespaces.ContainsKey(readerNamespaceURI))
 						{
-							retVal += namespaces[readerNamespaceURI] + "." + reader.LocalName + listDelimiter;
+							retVal += namespaces[readerNamespaceURI] + "." + reader.LocalName + ListDelimiter;
 						}
 					}
 				}
@@ -421,35 +477,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			writer.WriteAttributeString(XMLModelReferenceAttribute, "_" + Model.Id.ToString("D"));
 
 			writer.WriteStartElement(XMLPrefix, XMLCategoriesElement, XmlNamespace);
-			Dictionary<Type, Type> dictionary = ExcludedCategoriesDictionary;
-			if (dictionary != null)
+			string[] types = myExcludedCategoriesList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < types.Length; ++i)
 			{
-				foreach (Type type in dictionary.Keys)
-				{
-					writer.WriteElementString(XMLPrefix, type.Name, XmlNamespace, string.Empty);
-				}
+				string type = types[i];
+				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
 			}
 			writer.WriteEndElement();
 
 			writer.WriteStartElement(XMLPrefix, XMLIncludedErrorsElement, XmlNamespace);
-			dictionary = IncludedErrorsDictionary;
-			if (dictionary != null)
+			types = myIncludedErrorsList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < types.Length; ++i)
 			{
-				foreach (Type type in dictionary.Keys)
-				{
-					writer.WriteElementString(XMLPrefix, type.Name, XmlNamespace, string.Empty);
-				}
+				string type = types[i];
+				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
 			}
 			writer.WriteEndElement();
 
 			writer.WriteStartElement(XMLPrefix, XMLExcludedErrorsElement, XmlNamespace);
-			dictionary = ExcludedErrorsDictionary;
-			if (dictionary != null)
+			types = myExcludedErrorsList.Split(new char[] { ListDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < types.Length; ++i)
 			{
-				foreach (Type type in dictionary.Keys)
-				{
-					writer.WriteElementString(XMLPrefix, type.Name, XmlNamespace, string.Empty);
-				}
+				string type = types[i];
+				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
 			}
 			writer.WriteEndElement();
 
@@ -457,4 +507,5 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IXmlSerializable Implementation
 	}
+	#endregion //ModelErrorDisplayFilter class
 }

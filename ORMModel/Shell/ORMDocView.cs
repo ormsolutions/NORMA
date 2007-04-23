@@ -384,7 +384,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
 					//If required but you only have 1 then disable delete
-					if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required)!= 0 && modelElements.Count <= 1)
+					if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required) != 0 && modelElements.Count <= 1)
 					{
 						//DISABLE DELETE
 						ToolStripMenuItem deletePageMenuItem = (ToolStripMenuItem)contextMenu.Items[ResourceStrings.DiagramCommandDeletePage];
@@ -1720,7 +1720,7 @@ namespace Neumont.Tools.ORM.Shell
 
 					IList selectedElements = SelectedElements;
 					// account for multiple selection
-					for (int i = selectedElements.Count - 1; i >=0; i--)
+					for (int i = selectedElements.Count - 1; i >= 0; i--)
 					{
 						object selectedObject = selectedElements[i];
 						ShapeElement pel; // just the shape
@@ -1877,8 +1877,8 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt &&
 										(int)DialogResult.No == VsShellUtilities.ShowMessageBox(ServiceProvider,
-										    string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
-										    string.Empty, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND))
+											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
+											string.Empty, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND))
 									{
 										continue;
 									}
@@ -1949,25 +1949,25 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-        /// <summary>
-        /// Run the report generator
-        /// </summary>
-        protected virtual void OnMenuGenerateReport()
-        {
-            Diagram diagram;
-            ORMModel model;
-            if (null != (diagram = CurrentDiagram) &&
-                null != (model = diagram.ModelElement as ORMModel))
-            {
-                IServiceProvider provider;
-                System.Windows.Forms.Design.IUIService uiService;
-                if (null != (provider = (model.Store as IORMToolServices).ServiceProvider) &&
-                        null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
-                {
-                    uiService.ShowDialog(new GenerateReportDialog(model));
-                }
-            }
-        }
+		/// <summary>
+		/// Run the report generator
+		/// </summary>
+		protected virtual void OnMenuGenerateReport()
+		{
+			Diagram diagram;
+			ORMModel model;
+			if (null != (diagram = CurrentDiagram) &&
+				null != (model = diagram.ModelElement as ORMModel))
+			{
+				IServiceProvider provider;
+				System.Windows.Forms.Design.IUIService uiService;
+				if (null != (provider = (model.Store as IORMToolServices).ServiceProvider) &&
+						null != (uiService = (System.Windows.Forms.Design.IUIService)provider.GetService(typeof(System.Windows.Forms.Design.IUIService))))
+				{
+					uiService.ShowDialog(new GenerateReportDialog(model));
+				}
+			}
+		}
 		/// <summary>
 		/// Execute the AutoLayout menu command
 		/// </summary>
@@ -1975,7 +1975,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ORMDesignerDocView.AutoLayoutDiagram(this.CurrentDiagram, this.SelectedElements);
 		}
-        /// <summary>
+		/// <summary>
 		/// Automatically lays out the <see cref="ShapeElement"/>s contained in <paramref name="shapeElementCollection"/> on
 		/// the <see cref="Diagram"/> specified by <paramref name="diagram"/>.
 		/// </summary>
@@ -3439,18 +3439,29 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="serviceProvider">Required <see cref="IServiceProvider"/></param>
 		public static void InvalidateAllDiagrams(IServiceProvider serviceProvider)
 		{
+			InvalidateAllDiagrams(serviceProvider, null);
+		}
+		/// <summary>
+		/// Refresh all visible diagrams
+		/// </summary>
+		/// <param name="serviceProvider">Required <see cref="IServiceProvider"/></param>
+		/// <param name="docData">A specific <see cref="ORMDesignerDocData"/></param>
+		public static void InvalidateAllDiagrams(IServiceProvider serviceProvider, ORMDesignerDocData docData)
+		{
 			OptionsPage.NotifySettingsChange(
 				serviceProvider,
-				delegate(ORMDesignerDocData docData)
+				delegate(ORMDesignerDocData docData2)
 				{
-					foreach (ORMDesignerDocView docView in docData.DocViews)
+					if (docData == docData2)
 					{
-						VSDiagramView view;
-						DiagramClientView clientView;
-						if (null != (view = docView.CurrentDesigner) &&
-							null != (clientView = view.DiagramClientView))
+						foreach (ORMDesignerDocView docView in docData2.DocViews)
 						{
-							view.Invalidate(true);
+							VSDiagramView view;
+							if (null != (view = docView.CurrentDesigner) &&
+								null != view.DiagramClientView)
+							{
+								view.Invalidate(true);
+							}
 						}
 					}
 				});

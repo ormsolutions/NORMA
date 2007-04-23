@@ -2555,6 +2555,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region FactType Model Validation Errors
 
 	#region class FactTypeRequiresReadingError
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	partial class FactTypeRequiresReadingError : IRepresentModelElements
 	{
 		#region overrides
@@ -2602,6 +2603,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // class FactTypeRequiresReadingError
 	#region class FactTypeRequiresInternalUniquenessConstraintError
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	partial class FactTypeRequiresInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region overrides
@@ -2650,6 +2652,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // class FactTypeRequiresInternalUniquenessConstraintError
 	#region class NMinusOneError
 
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class NMinusOneError : IRepresentModelElements
 	{
 		#region Base overrides

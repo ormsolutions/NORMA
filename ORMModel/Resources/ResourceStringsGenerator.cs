@@ -524,6 +524,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelNoteConnectAction.TransactionName");
 			}
 		}
+		/// <summary>The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</summary>
+		public static string ModelErrorDisplayFilterChangeTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelErrorDisplayFilterChange.TransactionName");
+			}
+		}
 		/// <summary>The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string OptionsPageChangeTransactionName
 		{
@@ -818,6 +826,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.UncategorizedModelError.CategoryDisplayName");
+			}
+		}
+		/// <summary>Text to display for the property for the ModelErrorDisplayFilter when it is filtered.</summary>
+		public static string ModelErrorDisplayFilteredText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelErrorDisplayFilter.ToStringOverrideText");
 			}
 		}
 		/// <summary>Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</summary>

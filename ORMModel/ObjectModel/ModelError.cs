@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If the model element can have child elements with errors this 
 		/// will let us filter out the child elements.
 		/// </summary>
-		DisplayPrimary = 4, 
+		DisplayPrimary = 4,
 	}
 	#endregion // ModelErrorUses enum
 	#region ModelErrorUsage struct
@@ -106,7 +106,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Create a ModelErrorUsage with default usage
 		/// </summary>
 		/// <param name="error">The error. Cannot be null.</param>
-		public ModelErrorUsage(ModelError error) : this(error, ModelErrorUses.Verbalize){}
+		public ModelErrorUsage(ModelError error) : this(error, ModelErrorUses.Verbalize) { }
 		/// <summary>
 		/// The ModelError
 		/// </summary>
@@ -328,18 +328,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="errorLink"></param>
 		public static void AddToTaskProvider(ModelHasError errorLink)
 		{
-			ModelError error = errorLink.Error;
+			AddToTaskProvider(errorLink.Error);
+		}
+		/// <summary>
+		/// Helper function to add an error to the task provider
+		/// when the error display filter changes.
+		/// </summary>
+		/// <param name="error"></param>
+		public static void AddToTaskProvider(ModelError error)
+		{
 			if (error.IsDeleted)
 			{
 				return;
 			}
+
 			IORMToolTaskProvider provider = (error.Store as IORMToolServices).TaskProvider;
 			IORMToolTaskItem newTask = provider.CreateTask();
 			newTask.ElementLocator = error as IRepresentModelElements;
 			newTask.Text = error.ErrorText;
 			Debug.Assert(error.TaskData == null);
 			error.TaskData = newTask;
-			provider.AddTask(newTask);
+
+			ModelErrorDisplayFilter filter = error.Model.ModelErrorDisplayFilter;
+			if (filter == null || filter.ShouldDisplay(error))
+			{
+				provider.AddTask(newTask);
+			}
 		}
 		/// <summary>
 		/// Called to set the name of the error.
@@ -372,7 +386,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// Create a new ModelErrorFixupListener
 			/// </summary>
-			public ModelErrorFixupListener() : base((int)ORMDeserializationFixupPhase.ValidateErrors)
+			public ModelErrorFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateErrors)
 			{
 			}
 			/// <summary>
@@ -495,4 +510,4 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion //Has Errors Static Function
 	}
 	#endregion // ModelError class
-} 
+}

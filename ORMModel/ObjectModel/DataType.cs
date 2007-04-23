@@ -260,6 +260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Custom CanParse implementations
 	#region DataTypeNotSpecified Error
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
 	public partial class DataTypeNotSpecifiedError : IRepresentModelElements
 	{
 		#region Accessor Properties
