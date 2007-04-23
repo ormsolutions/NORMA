@@ -1281,7 +1281,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (null != (docView = currentDocView as MultiDiagramDocView))
 			{
-				if (docView.ActivateDiagram(diagram))
+				if (docView.SelectDiagram(diagram))
 				{
 					selectOnView = docView.CurrentDesigner;
 				}
@@ -1327,7 +1327,7 @@ namespace Neumont.Tools.ORM.Shell
 								for (int j = 0; j < viewCount; ++j)
 								{
 									docView = views[j] as MultiDiagramDocView;
-									if (docView != null && docView.ActivateDiagram(diagram))
+									if (docView != null && docView.SelectDiagram(diagram))
 									{
 										docView.Show();
 										selectOnView = docView.CurrentDesigner;

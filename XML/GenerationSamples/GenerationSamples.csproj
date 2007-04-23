@@ -537,6 +537,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
 </Project>

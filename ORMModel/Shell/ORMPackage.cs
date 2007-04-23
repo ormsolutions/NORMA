@@ -51,10 +51,7 @@ namespace Neumont.Tools.ORM.Shell
 	// "ORM Designer" and "General" correspond and must be in sync with VSPackage.resx
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", PackageResources.Id.OptionsCategory, PackageResources.Id.OptionsGeneral, false)]
 	[ProvideEditorFactory(typeof(ORMDesignerEditorFactory), PackageResources.Id.EditorName, TrustLevel=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
-	// The following ProvideEditorExtension properties are for {General, Misc, Solution} Items, in that order
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=PackageResources.Id.ORMProjectItems, TemplateDir=@"..\ORMProjectItems\", ProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=PackageResources.Id.ORMProjectItems, TemplateDir=@"..\ORMProjectItems\", ProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=PackageResources.Id.ORMProjectItems, TemplateDir=@"..\ORMProjectItems\", ProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32)]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".xml", 0x10)]
 	[ProvideService(typeof(ORMDesignerFontsAndColors), ServiceName="OrmDesignerFontAndColorProvider")]
 	[ProvideLanguageService(typeof(FactLanguageService), "ORM Fact Editor", PackageResources.Id.FactEditorName, ShowCompletion=true, ShowSmartIndent=false, RequestStockColors=false, ShowHotURLs=false, DefaultToNonHotURLs=false, DefaultToInsertSpaces=false, ShowDropDownOptions=false, SingleCodeWindowOnly=true, EnableAdvancedMembersOption=false, SupportCopyPasteOfHTML=true)]
@@ -77,7 +74,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideMenuResource(PackageResources.Id.CTMenu, 1)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
-	[PackageRegistration(UseManagedResourcesOnly=true, RegisterUsing=RegistrationMethod.CodeBase)]
+	[PackageRegistration(UseManagedResourcesOnly=true, RegisterUsing=RegistrationMethod.Assembly)]
 	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName="Neumont ORM Architect")]
 	[ProvideLoadKey("Standard", "1.0", "Neumont ORM Architect for Visual Studio", "Neumont University", PackageResources.Id.PackageLoadKey)]
 	#endregion // Attributes
@@ -120,27 +117,26 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 
-		#region Assembly Resolve Hack
-		[EditorBrowsable(EditorBrowsableState.Never)] // Hide from IntelliSense
+		#region Assembly Resolve Handler
 		private static readonly Dictionary<string, Assembly> KnownAssemblies = GetKnownAssemblies();
-		[EditorBrowsable(EditorBrowsableState.Never)] // Hide from IntelliSense
 		private static Dictionary<string, Assembly> GetKnownAssemblies()
 		{
 			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(1, StringComparer.Ordinal);
 			Assembly packageAssembly = typeof(ORMDesignerPackage).Assembly;
 			knownAssemblies[packageAssembly.FullName] = packageAssembly;
+			// SECURITY: APTCA: If we ever allow partially-trusted callers, this will need to be altered so that
+			// they are not added to the assembly probing path.
 			AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs e)
 			{
-				// System.ComponentModel.TypeDescriptor is failing to find our TypeDescriptionProvider classes.
-				// This fixes it.
-				// UNDONE: This is first getting called with the OptionsPage on the call stack
+				// This supports retrieving types from our assembly and our extension assemblies,
+				// even if they aren't in the normal assembly probing path.
 				Assembly knownAssembly;
 				ORMDesignerPackage.KnownAssemblies.TryGetValue(e.Name, out knownAssembly);
 				return knownAssembly;
 			};
 			return knownAssemblies;
 		}
-		#endregion // Assembly Resolve Hack
+		#endregion // Assembly Resolve Handler
 
 		#region Properties
 		/// <summary>
@@ -281,7 +277,7 @@ namespace Neumont.Tools.ORM.Shell
 				((IServiceContainer)this).AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 
 				// setup commands
-				(myCommandSet = ORMDesignerDocView.CreateCommandSet(this)).Initialize(); ;
+				(myCommandSet = ORMDesignerDocView.CreateCommandSet(this)).Initialize();
 
 				// Create tool windows
 				AddToolWindow(typeof(ORMModelBrowserToolWindow));
@@ -894,6 +890,8 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (extensionType.IsSubclassOf(typeof(DomainModel)))
 						{
+							// SECURITY: APTCA: See the comment near our AssemblyResolve handler for information regarding
+							// changes that would be needed here in order to securely support partially-trusted callers.
 							ORMDesignerPackage.KnownAssemblies[extensionAssembly.FullName] = extensionAssembly;
 							return extensionType;
 						}

@@ -29,6 +29,8 @@
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:param name="EnableProcedureGeneration" select="false()"/>
+
 	<xsl:template match="oil:model">
 		<xsl:variable name="oilModel" select="."/>
 		<dcl:schema name="{dsf:makeValidIdentifier(@name)}">
@@ -65,32 +67,34 @@
 				<xsl:variable name="table" select="exsl:node-set($tableFragment)/child::*"/>
 				<xsl:copy-of select="$table"/>
 
-				<!--Generic Insert Procedure - Generate entire table (all column values except identity specified) insert-->
-				<xsl:apply-templates select="." mode="GenerateInsertProcedure">
-					<xsl:with-param name="Table" select="$table"/>
-					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
-				</xsl:apply-templates>
-				<!--Generic Delete Procedure - delete all rows matching <primary key values>-->
-				<xsl:apply-templates select="." mode="GenerateDeleteProcedure">
-					<xsl:with-param name="Table" select="$table"/>
-					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
-					<xsl:with-param name="OilModel" select="$oilModel"/>
-					<xsl:with-param name="DataTypes" select="$dataTypes"/>
-				</xsl:apply-templates>
-				<!--Generic Update procedures - update for single row matching <primary key values>-->
-				<xsl:apply-templates select="." mode="GenerateUpdateProcedures">
-					<xsl:with-param name="Table" select="$table"/>
-					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
-					<xsl:with-param name="OilModel" select="$oilModel"/>
-					<xsl:with-param name="DataTypes" select="$dataTypes"/>
-				</xsl:apply-templates>
-				<!--Generic Select procedures - select all rows that match <unique identifier>-->
-				<xsl:apply-templates select="." mode="GenerateSelectProcedures">
-					<xsl:with-param name="Table" select="$table"/>
-					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
-					<xsl:with-param name="OilModel" select="$oilModel"/>
-					<xsl:with-param name="DataTypes" select="$dataTypes"/>
-				</xsl:apply-templates>
+				<xsl:if test="$EnableProcedureGeneration">
+					<!--Generic Insert Procedure - Generate entire table (all column values except identity specified) insert-->
+					<xsl:apply-templates select="." mode="GenerateInsertProcedure">
+						<xsl:with-param name="Table" select="$table"/>
+						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+					</xsl:apply-templates>
+					<!--Generic Delete Procedure - delete all rows matching <primary key values>-->
+					<xsl:apply-templates select="." mode="GenerateDeleteProcedure">
+						<xsl:with-param name="Table" select="$table"/>
+						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="OilModel" select="$oilModel"/>
+						<xsl:with-param name="DataTypes" select="$dataTypes"/>
+					</xsl:apply-templates>
+					<!--Generic Update procedures - update for single row matching <primary key values>-->
+					<xsl:apply-templates select="." mode="GenerateUpdateProcedures">
+						<xsl:with-param name="Table" select="$table"/>
+						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="OilModel" select="$oilModel"/>
+						<xsl:with-param name="DataTypes" select="$dataTypes"/>
+					</xsl:apply-templates>
+					<!--Generic Select procedures - select all rows that match <unique identifier>-->
+					<xsl:apply-templates select="." mode="GenerateSelectProcedures">
+						<xsl:with-param name="Table" select="$table"/>
+						<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+						<xsl:with-param name="OilModel" select="$oilModel"/>
+						<xsl:with-param name="DataTypes" select="$dataTypes"/>
+					</xsl:apply-templates>
+				</xsl:if>
 			</xsl:for-each>
 
 		</dcl:schema>

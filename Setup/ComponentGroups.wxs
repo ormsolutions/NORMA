@@ -18,13 +18,14 @@
 		<ComponentGroup Id="MainFeatureComponents">
 			<ComponentRef Id="LicenseFilesComponent"/>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
+			<ComponentRef Id="NORMAVSPackageGACComponent"/>
 			<ComponentRef Id="NORMAVSPackageRemoveUserFontAndColorsComponent"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSchemasLocalCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSettingsSchemaComponent"/>
 			<ComponentRef Id="NORMAVSSettingsComponent"/>
 			<ComponentRef Id="NORMAVSConvertersComponent"/>
-			<ComponentRef Id="NORMAVSProjectItemsComponent"/>
+			<ComponentRef Id="NORMAVSProjectItemsGeneralComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVCSharpComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVJSharpComponent"/>

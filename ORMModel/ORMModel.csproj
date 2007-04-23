@@ -14,6 +14,7 @@
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <ApplicationIcon>Resources\ORM.ico</ApplicationIcon>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <InstallInGac>true</InstallInGac>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,6 +74,9 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -360,7 +364,6 @@
     <Compile Include="Shell\SamplePopulationEditor.Designer.cs">
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
     </Compile>
-    <None Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ObjectModel\VerbalizationGenerator.xsd">
@@ -412,6 +415,9 @@
     <Compile Include="Shell\GenerateReportDialog.Designer.cs">
       <DependentUpon>GenerateReportDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shell\ORMGeneralTemplateWizard.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Shell\PackageResources\PackageResources.cs" />
     <Compile Include="Shell\ModelErrorDisplayFilterForm.cs">
       <SubType>Form</SubType>
@@ -439,7 +445,6 @@
     </EmbeddedResource>
     <None Include="Shell\ProjectItems\CSharp.zip" />
     <None Include="Shell\ProjectItems\JSharp.zip" />
-    <None Include="Shell\ProjectItems\ORMModel.orm" />
     <None Include="Shell\ProjectItems\VisualBasic.zip" />
     <None Include="Shell\ProjectItems\VisualC.zip" />
     <None Include="Shell\ProjectItems\Web\CSharp.zip" />
@@ -635,6 +640,7 @@
     <None Include="Resources\DiagramTabImage.png" />
     <None Include="Resources\AboutBox.ico" />
     <None Include="Resources\ORM.ico" />
+    <None Include="Shell\ProjectItems\General.zip" />
     <None Include="Transforms\SurveyQuestionProvider.xsd">
       <SubType>Designer</SubType>
     </None>

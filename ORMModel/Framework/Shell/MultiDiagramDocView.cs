@@ -271,7 +271,7 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 			if (image != null)
 			{
-				imageList.Images.Add(key, image);
+				images.Add(key, image);
 			}
 		}
 		#endregion // RegisterImageForDiagramType method
@@ -478,52 +478,56 @@ namespace Neumont.Tools.Modeling.Shell
 			tabPage.Dispose();
 		}
 		#endregion // Remove methods
-		#region Activate Methods
+		#region Select methods
 		/// <summary>
-		/// Activate the <see cref="Diagram"/> specified by <paramref name="diagram"/> from this <see cref="MultiDiagramDocView"/>.
+		/// Selects the <see cref="Diagram"/> specified by <paramref name="diagram"/> for this <see cref="MultiDiagramDocView"/>.
 		/// </summary>
-		/// <param name="diagram">The <see cref="Diagram"/> to be activated.</param>
-		/// <returns>Returns true if activation succeeds</returns>
-		public bool ActivateDiagram(Diagram diagram)
+		/// <param name="diagram">The <see cref="Diagram"/> to be selected.</param>
+		/// <returns>
+		/// <see langword="true"/> if the <see cref="Diagram"/> is successfully selected; otherwise, <see langword="false"/>.
+		/// </returns>
+		public bool SelectDiagram(Diagram diagram)
 		{
 			if (diagram == null)
 			{
 				throw new ArgumentNullException("diagram");
 			}
 			MultiDiagramDocViewControl control = myDocViewControl;
-			bool retVal = false;
 			int index;
-			if (control != null &&
-				(index = control.IndexOf(diagram, 0)) >= 0)
+			if (control != null && (index = control.IndexOf(diagram, 0)) >= 0)
 			{
+				// Although a single Diagram could theoretically appear on multiple tabs,
+				// we only need to activate one.
 				control.SelectedIndex = index;
-				retVal = true;
+				return true;
 			}
-			return retVal;
+			return false;
 		}
 		/// <summary>
-		/// Activates the <see cref="DiagramView"/> specified by <paramref name="designer"/> from this <see cref="MultiDiagramDocView"/>.
+		/// Selects the <see cref="DiagramView"/> specified by <paramref name="designer"/> for this <see cref="MultiDiagramDocView"/>.
 		/// </summary>
-		/// <param name="designer">The <see cref="DiagramView"/> to be activated.</param>
-		/// <returns>Returns true if activation succeeds</returns>
-		public bool ActivateDesigner(DiagramView designer)
+		/// <param name="designer">The <see cref="DiagramView"/> to be selected.</param>
+		/// <returns>
+		/// <see langword="true"/> if the <see cref="DiagramView"/> is successfully selected; otherwise, <see langword="false"/>.
+		/// </returns>
+		public bool SelectDesigner(DiagramView designer)
 		{
 			if (designer == null)
 			{
 				throw new ArgumentNullException("designer");
 			}
 			MultiDiagramDocViewControl control = myDocViewControl;
-			bool retVal = false;
 			int index;
-			if (control != null &&
-				(index = control.IndexOf(designer, 0)) >= 0)
+			if (control != null && (index = control.IndexOf(designer, 0)) >= 0)
 			{
+				// Although a single DiagramView could theoretically appear on multiple tabs,
+				// we only need to activate one.
 				control.SelectedIndex = index;
-				retVal = true;
+				return true;
 			}
-			return retVal;
+			return false;
 		}
-		#endregion // Activate Methods
+		#endregion // Select methods
 		#region DiagramRemoved event handler
 		private void DiagramRemoved(object sender, ElementDeletedEventArgs e)
 		{

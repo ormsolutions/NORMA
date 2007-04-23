@@ -835,25 +835,6 @@
 				<plx:interfaceMember memberName="GetBlogEntryByBlogEntry_Id" dataTypeName="IBlogDemoContext" />
 				<plx:param name="BlogEntry_Id" dataTypeName=".i4" />
 				<plx:returns dataTypeName="BlogEntry" />
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:nameRef type="parameter" name="BlogEntry_Id" />
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword />
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:throw>
-						<plx:callNew dataTypeName="ArgumentNullException">
-							<plx:passParam>
-								<plx:string>BlogEntry_Id</plx:string>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:branch>
 				<plx:local name="command" dataTypeName="IDbCommand">
 					<plx:initialize>
 						<plx:callInstance type="methodCall" name="CreateCommand">

@@ -3421,7 +3421,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (null != (newView = pDocView as ORMDesignerDocView) &&
 						null != (selectDiagram = CurrentDiagram))
 					{
-						newView.ActivateDiagram(selectDiagram);
+						newView.SelectDiagram(selectDiagram);
 					}
 				}
 				finally

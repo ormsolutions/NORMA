@@ -14,7 +14,7 @@ CALL:_MakeDir "%NORMADir%\Xml\Schemas"
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
 CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Core"
 CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Report"
-CALL:_MakeDir "%NORMADir%\ORMProjectItems"
+CALL:_RemoveDir "%NORMADir%\ORMProjectItems"
 CALL:_RemoveDir "%ORMDir%\..\..\ORM"
 CALL:_MakeDir "%ORMDir%\Schemas"
 CALL:_MakeDir "%ORMDir%\Transforms"
@@ -27,8 +27,6 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\Neumont.Tools.ORM.pdb" "%NOR
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\Neumont.Tools.ORM.xml" "%NORMADir%\bin\"
 CALL:_CleanupFile "%NORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
 
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" "%NORMADir%\ORMProjectItems\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMModel.orm" "%NORMADir%\ORMProjectItems\"
 FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
 FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\Web\%%~nA\ORMModel.zip"
 
@@ -86,6 +84,7 @@ REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Category" /d "{66
 REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
+REG ADD "HKLM\%VSRegistryRoot%\ShellFileAssociations\.orm" /ve /d "ormfile" /f 1>NUL
 
 REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
 REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL

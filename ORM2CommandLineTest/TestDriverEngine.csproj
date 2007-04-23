@@ -91,9 +91,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestInterfaces.cs" />
-    <EmbeddedResource Include="..\ORMModel\Shell\ProjectItems\ORMModel.orm">
-      <Link>ORMModel.orm</Link>
-    </EmbeddedResource>
+    <EmbeddedResource Include="ORMModel.orm" />
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
@@ -113,6 +111,7 @@
     </None>
     <EmbeddedResource Include="ORMTestSuite.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
   </ItemGroup>

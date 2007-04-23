@@ -66,20 +66,30 @@
 	<Target
 		Name="InstallInGac"
 		DependsOnTargets="$(InstallInGacDependsOn)"
-		Condition="'$(InstallInGac)'=='true'">
+		Inputs="@(MainAssembly)"
+		Outputs="$(IntermediateOutputPath)%(MainAssembly.FileName)%(MainAssembly.Extension).InstallInGac.cache"
+		Condition="'@(MainAssembly)'!='' and '$(InstallInGac)'=='true'">
 
 		<Gacutil
-			Assembly="@(MainAssembly->'%(FullPath)')"
+			Assembly="%(MainAssembly.FullPath)"
 			Force="$(ForceInstallInGac)"
 			Uninstall="false"
 		/>
 
+		<Touch
+			AlwaysCreate="true"
+			Files="$(IntermediateOutputPath)%(MainAssembly.FileName)%(MainAssembly.Extension).InstallInGac.cache">
+			<Output TaskParameter="TouchedFiles" ItemName="FileWrites"/>
+		</Touch>
+		
 	</Target>
 
 	<Target
 		Name="GenerateNativeImage"
 		DependsOnTargets="$(GenerateNativeImagesDependsOn)"
-		Condition="'$(GenerateNativeImage)'=='true'">
+		Inputs="@(MainAssembly)"
+		Outputs="$(IntermediateOutputPath)%(MainAssembly.FileName)%(MainAssembly.Extension).GenerateNativeImage.cache"
+		Condition="'@(MainAssembly)'!='' and '$(GenerateNativeImage)'=='true'">
 
 		<GetAssemblyIdentity AssemblyFiles="@(MainAssembly)">
 			<Output TaskParameter="Assemblies" ItemName="_MainAssemblyIdentity"/>
@@ -90,6 +100,12 @@
 			NoDependencies="$(NativeImageExcludeDependencies)"
 			Uninstall="false"
 		/>
+
+		<Touch
+			AlwaysCreate="true"
+			Files="$(IntermediateOutputPath)%(MainAssembly.FileName)%(MainAssembly.Extension).GenerateNativeImage.cache">
+			<Output TaskParameter="TouchedFiles" ItemName="FileWrites"/>
+		</Touch>
 
 	</Target>
 
