@@ -118,7 +118,7 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDesignerDocData currentDoc = CurrentDocument;
 					if (currentDoc != null)
 					{
-						AttachEventHandlers(currentDoc.Store);
+						AttachEventHandlers(currentDoc);
 						OnORMSelectionContainerChanged();
 					}
 				}

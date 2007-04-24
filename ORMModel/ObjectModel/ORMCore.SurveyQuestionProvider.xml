@@ -1,15 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" class="ORMCoreDomainModel">
-	<qp:provideSurveyQuestion questionType="ElementType">
-		<qp:displaySupport displayCategory="Grouping"/>
-		<qp:displaySupport displayCategory="Sorting"/>
-	</qp:provideSurveyQuestion>
-	<qp:provideSurveyQuestion questionType="ErrorState">
-		<qp:displaySupport displayCategory="Overlay"/>
-	</qp:provideSurveyQuestion>
-	<qp:provideSurveyQuestion questionType="SurveyQuestionGlyph">
-		<qp:displaySupport displayCategory="Glyph"/>
-	</qp:provideSurveyQuestion>
+<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="ORMCoreDomainModel">
+	<qp:surveyQuestions>
+		<qp:surveyQuestion questionType="ElementType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="ErrorState">
+			<qp:displaySupport displayCategory="Overlay"/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyQuestionGlyph">
+			<qp:displaySupport displayCategory="Glyph"/>
+		</qp:surveyQuestion>
+	</qp:surveyQuestions>
+	<qp:imageInformation>
+		<plx:return>
+			<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+		</plx:return>
+	</qp:imageInformation>
 </qp:surveyQuestionProvider>
 
 

@@ -249,6 +249,8 @@ namespace Neumont.Tools.ORM.Shell
 				//{9} notes item bold
 				//{10} refmode item color
 				//{11} refmode item bold
+				//{12} instance value item color
+				//{13} instance value item bold
 				IORMFontAndColorService colorService = ((IORMToolServices)element.Store).FontAndColorService;
 				string boldWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightBold);
 				string normalWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightNormal);

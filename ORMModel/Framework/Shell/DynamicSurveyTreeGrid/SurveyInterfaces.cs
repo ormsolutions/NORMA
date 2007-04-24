@@ -23,56 +23,91 @@ using System.Windows.Forms;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	#region ISurveyQuestionProvider
+	#region SurveyQuestionUISupport enum
+	/// <summary>
+	/// Survey question ui support. Indicates how answers to this
+	/// questions may be used when presenting elements that answer
+	/// the associated <see cref="SurveyQuestion"/>
+	/// </summary>
+	[Flags]
+	public enum SurveyQuestionUISupport
+	{
+		/// <summary>
+		/// If nothing is supported by question
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// If sorting is supported by question
+		/// </summary>
+		Sorting = 1,
+		/// <summary>
+		/// If grouping is supported, implies that sorting is also supported
+		/// </summary>
+		Grouping = 2,
+		/// <summary>
+		/// Answers to the question can be resolved to an image index that is
+		/// used for a primary glyph. Index resolution is performed with the
+		/// <see cref="ISurveyQuestionTypeInfo.MapAnswerToImageIndex"/> method.
+		/// </summary>
+		Glyph = 4,
+		/// <summary>
+		/// Answers to the question can be resolved to an image index that is
+		/// used as an overlay glyph. Index resolution is performed with the
+		/// <see cref="ISurveyQuestionTypeInfo.MapAnswerToImageIndex"/> method.
+		/// </summary>
+		Overlay = 8,
+	}
+	#endregion // SurveyQuestionUISupport enum
+	#region ISurveyQuestionProvider interface
 	/// <summary>
 	/// An ISurveyQuestionProvider can return an array of ISurveyQuestionTypeInfo
 	/// </summary>
 	public interface ISurveyQuestionProvider
 	{
 		/// <summary>
-		/// Get an array of ISurveyQuestionTypeInfo
+		/// Retrieve the supported <see cref="ISurveyQuestionTypeInfo"/> instances
 		/// </summary>
-		/// <returns>Array of interfaces representing all available questions in the system</returns>
-		ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo();
-
+		/// <returns><see cref="IEnumerable{ISurveyQuestionTypeInfo}"/> representing questions supported by this provider</returns>
+		IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions();
 		/// <summary>
-		/// Gets the image list.
+		/// The <see cref="ImageList"/> associated with answers to all supported questions
 		/// </summary>
-		/// <value>The image list.</value>
-		ImageList ImageList { get;}
-	
+		ImageList SurveyQuestionImageList { get;}
 	}
-
-	#endregion
-	#region ISurveyQuestionTypeInfo
+	#endregion // ISurveyQuestionProvider interface
+	#region ISurveyQuestionTypeInfo interface
 	/// <summary>
 	/// Holds a reference to a specific type of question and method for asking question of objects
 	/// </summary>
 	public interface ISurveyQuestionTypeInfo
 	{
 		/// <summary>
-		/// The type of question that this ISurveyQuestionTypeInfo represents
+		/// The type of question that this ISurveyQuestionTypeInfo represents.
+		/// The return type must be an <see cref="Enum"/>
 		/// </summary>
 		Type QuestionType { get; }
 		/// <summary>
 		/// Retrieve the answer of any object to my question
 		/// </summary>
-		/// <param name="data">if object does not implement IAnswerSurveyQuestion return is not applicable</param>
-		/// <returns>integer answer to question, -1 if not applicable</returns>
+		/// <param name="data">The data object to query for an answer to this question.</param>
+		/// <returns>Answer to question, or -1 if the provided <paramref name="data"/>
+		/// object does not implement <see cref="IAnswerSurveyQuestion{T}"/> or returns
+		/// a not applicable answer for the <see cref="QuestionType"/> associated with
+		/// this implementation of <see cref="ISurveyQuestionTypeInfo"/></returns>
 		int AskQuestion(object data);
-
 		/// <summary>
-		/// Maps the index of the answer to image.
+		/// Maps the index of the answer to an image in the <see cref="ImageList"/> provided
+		/// by the <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/> property.
 		/// </summary>
-		/// <param name="answer">The answer.</param>
-		/// <returns></returns>
+		/// <param name="answer">A value from the enum type returned by the <see cref="QuestionType"/> property.</param>
+		/// <returns>0-based index into the image list.</returns>
 		int MapAnswerToImageIndex(int answer);
 		/// <summary>
 		/// UISupport for Question
 		/// </summary>
 		SurveyQuestionUISupport UISupport { get;}
 	}
-	#endregion
+	#endregion // ISurveyQuestionTypeInfo interface
 	#region IAnswerSurveyQuestion<T>
 	/// <summary>
 	/// Any object which is going to be displayed in the survey tree must implement this interface

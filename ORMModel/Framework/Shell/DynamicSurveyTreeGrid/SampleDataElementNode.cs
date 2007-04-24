@@ -30,9 +30,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		[DebuggerDisplay("{myDisplayText} {(myElement != null) ? myElement.GetType().Name : @\"\"\"\"}")]
 		public struct SampleDataElementNode : IEquatable<SampleDataElementNode>
 		{
+			#region Member Variables
 			private readonly object myElement;
 			private int myNodeData;
 			private string myDisplayText; // Cache this so it is fast and stable over time
+			#endregion // Member Variables
+			#region Constructors
 			/// <summary>
 			/// public constructor
 			/// </summary>
@@ -54,6 +57,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				ISurveyNode node = element as ISurveyNode;
 				myDisplayText = (node != null) ? node.SurveyName : element.ToString();
 			}
+			#endregion // Constructors
+			#region Accessor Properties
 			/// <summary>
 			/// returns object wrapped by this node
 			/// </summary>
@@ -78,6 +83,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					myNodeData = value;
 				}
 			}
+			#endregion // Accessor Properties
 			#region ISurveyNode property wrappers
 			/// <summary>
 			/// returns name of the wrapped element
@@ -132,9 +138,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			#endregion
-
 			#region Infrastructure Methods
-
 			/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
 			public override int GetHashCode()
 			{
@@ -166,7 +170,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				return !left.Equals(right);
 			}
-
 			#endregion // Infrastructure Methods
 			#region InitializeNodes
 			/// <summary>

@@ -943,6 +943,8 @@
 							{9} note bold
 							{10} reference mode color
 							{11} reference mode bold
+							{12} instance value color
+							{13} instance value bold
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

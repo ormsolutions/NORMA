@@ -1850,49 +1850,39 @@ namespace Neumont.Tools.ORM.Shell
 			file.WriteStartElement(RootXmlPrefix, RootXmlElementName, RootXmlNamespace);
 
 			//serialize namespaces
-			foreach (DomainModel value in values)
+			foreach (IORMCustomSerializedDomainModel ns in Utility.EnumerateDomainModels<IORMCustomSerializedDomainModel>(values))
 			{
-				IORMCustomSerializedDomainModel ns = value as IORMCustomSerializedDomainModel;
+				string[,] namespaces = ns.GetCustomElementNamespaces();
 
-				if (ns != null)
+				for (int index = 0, count = namespaces.GetLength(0); index < count; ++index)
 				{
-					string[,] namespaces = ns.GetCustomElementNamespaces();
-
-					for (int index = 0, count = namespaces.GetLength(0); index < count; ++index)
-					{
-						//if (/*namespaces[index].Length==2 && */namespaces[index,0] != null && namespaces[index,1] != null)
-						file.WriteAttributeString("xmlns", namespaces[index, 0], null, namespaces[index, 1]);
-					}
+					//if (/*namespaces[index].Length==2 && */namespaces[index,0] != null && namespaces[index,1] != null)
+					file.WriteAttributeString("xmlns", namespaces[index, 0], null, namespaces[index, 1]);
 				}
 			}
 
 			//serialize all root elements
 			IElementDirectory elementDir = myStore.ElementDirectory;
-			foreach (DomainModel value in values)
+			foreach (IORMCustomSerializedDomainModel ns in Utility.EnumerateDomainModels<IORMCustomSerializedDomainModel>(values))
 			{
-				IORMCustomSerializedDomainModel ns = value as IORMCustomSerializedDomainModel;
-
-				if (ns != null)
+				Guid[] metaClasses = ns.GetRootElementClasses();
+				if (metaClasses != null)
 				{
-					Guid[] metaClasses = ns.GetRootElementClasses();
-					if (metaClasses != null)
+					for (int i = 0; i < metaClasses.Length; ++i)
 					{
-						for (int i = 0; i < metaClasses.Length; ++i)
+						ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(metaClasses[i]);
+						int elementCount = elements.Count;
+						for (int j = 0; j < elementCount; ++j)
 						{
-							ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(metaClasses[i]);
-							int elementCount = elements.Count;
-							for (int j = 0; j < elementCount; ++j)
+							ModelElement element = elements[j];
+							System.Xml.Serialization.IXmlSerializable serializableElement = element as System.Xml.Serialization.IXmlSerializable;
+							if (serializableElement != null)
 							{
-								ModelElement element = elements[j];
-								System.Xml.Serialization.IXmlSerializable serializableElement = element as System.Xml.Serialization.IXmlSerializable;
-								if (serializableElement != null)
-								{
-									serializableElement.WriteXml(file);
-								}
-								else
-								{
-									SerializeElement(file, elements[j]);
-								}
+								serializableElement.WriteXml(file);
+							}
+							else
+							{
+								SerializeElement(file, elements[j]);
 							}
 						}
 					}
@@ -2208,23 +2198,19 @@ namespace Neumont.Tools.ORM.Shell
 			// Extract namespace and schema information from the different meta models
 			ICollection<DomainModel> domainModels = myStore.DomainModels;
 			Dictionary<string, IORMCustomSerializedDomainModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedDomainModel>();
-			foreach (DomainModel domainModel in domainModels)
+			foreach (IORMCustomSerializedDomainModel customSerializedDomainModel in Utility.EnumerateDomainModels<IORMCustomSerializedDomainModel>(domainModels))
 			{
-				IORMCustomSerializedDomainModel customSerializedDomainModel = domainModel as IORMCustomSerializedDomainModel;
-				if (customSerializedDomainModel != null)
+				string[,] namespaces = customSerializedDomainModel.GetCustomElementNamespaces();
+				int namespaceCount = namespaces.GetLength(0);
+				for (int i = 0; i < namespaceCount; ++i)
 				{
-					string[,] namespaces = customSerializedDomainModel.GetCustomElementNamespaces();
-					int namespaceCount = namespaces.GetLength(0);
-					for (int i = 0; i < namespaceCount; ++i)
+					string namespaceURI = namespaces[i, 1];
+					namespaceToModelMap.Add(namespaceURI, customSerializedDomainModel);
+					string schemaFile = namespaces[i, 2];
+					if (schemaFile != null && schemaFile.Length != 0)
 					{
-						string namespaceURI = namespaces[i, 1];
-						namespaceToModelMap.Add(namespaceURI, customSerializedDomainModel);
-						string schemaFile = namespaces[i, 2];
-						if (schemaFile != null && schemaFile.Length != 0)
-						{
-							schemaResourcePathType = domainModel.GetType();
-							schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
-						}
+						schemaResourcePathType = customSerializedDomainModel.GetType();
+						schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
 					}
 				}
 			}

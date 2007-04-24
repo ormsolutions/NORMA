@@ -831,20 +831,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// wired on SurveyQuestionLoad as event handler for ElementChanged events
-		/// </summary>
-		protected void ModelElementChanged(object sender, ElementPropertyChangedEventArgs e)
-		{
-			INotifySurveyElementChanged eventNotify;
-			ModelElement element = e.ModelElement;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
-			{
-				ObjectType link = e.ModelElement as ObjectType;
-				ISurveyQuestionTypeInfo[] effectedQuestions = (this as ISurveyQuestionProvider).GetSurveyQuestionTypeInfo();
-				eventNotify.ElementChanged(link);
-			}
-		}
-		/// <summary>
 		/// wired on SurveyQuestionLoad as event handler for ElementPropertyChanged events
 		/// </summary>
 		protected void ModelElementNameChanged(object sender, ElementPropertyChangedEventArgs e)

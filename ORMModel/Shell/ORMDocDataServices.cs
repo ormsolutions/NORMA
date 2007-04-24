@@ -87,26 +87,14 @@ namespace Neumont.Tools.ORM.Shell
 				List<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
 				ICollection<DomainModel> domainModels = store.DomainModels;
 				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-				foreach (DomainModel domainModel in domainModels)
+				MainList rootBranch = new MainList(
+					Utility.EnumerateDomainModels<ISurveyNodeProvider>(domainModels),
+					Utility.EnumerateDomainModels<ISurveyQuestionProvider>(domainModels));
+				foreach (IORMModelEventSubscriber eventSubscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(domainModels))
 				{
-					ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
-					if (nodeProvider != null)
-					{
-						nodeProviderList.Add(nodeProvider);
-					}
-					ISurveyQuestionProvider questionProvider = domainModel as ISurveyQuestionProvider;
-					if (questionProvider != null)
-					{
-						questionProviderList.Add(questionProvider);
-					}
-					IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
-					if (eventSubscriber != null)
-					{
-						eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
-						SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
-					}
+					eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
 				}
-				MainList rootBranch = new MainList(nodeProviderList, questionProviderList);
+				SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 				myRootBranch = rootBranch;
 				tree.Root = rootBranch.RootBranch;
 			}

@@ -71,7 +71,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="docView">The doc view.</param>
 		private void SetCurrentDocument(ORMDesignerDocData docData, DiagramDocView docView)
 		{
-			if (myCurrentDocument == docData)
+			ORMDesignerDocData oldDocData = myCurrentDocument;
+			if (oldDocData == docData)
 			{
 				if (myCurrentDocumentView != docView)
 				{
@@ -80,21 +81,21 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return;
 			}
-			if (myCurrentDocument != null && myCurrentDocument.Store != null)	// If the current document is not null
+			if (oldDocData != null)	// If the current document is not null
 			{
 				// If we get to this point, we know that the document window
 				// has really changed, so we need to unwire the event handlers
 				// from the model store.
-				DetachEventHandlers(myCurrentDocument.Store);
+				DetachEventHandlers(oldDocData);
 			}
 			myCurrentDocument = docData;
 			myCurrentDocumentView = docView;
 			if (docData != null)	// If the new DocData is actually an ORMDesignerDocData,
 			{
 				Store newStore = docData.Store;
-				if (newStore != null)
+				if (newStore != null && !newStore.Disposed)
 				{
-					AttachEventHandlers(newStore);	// wire the event handlers to the model store.
+					AttachEventHandlers(docData);	// wire the event handlers to the model store.
 				}
 				else
 				{
@@ -109,6 +110,24 @@ namespace Neumont.Tools.ORM.Shell
 				OnORMSelectionContainerChanged();
 			}
 			OnCurrentDocumentChanged();
+		}
+		private void DocumentReloading(object sender, EventArgs e)
+		{
+			ORMDesignerDocData docData;
+			if (null != (docData  = sender as ORMDesignerDocData))
+			{
+				DetachEventHandlers(docData);
+				docData.DocumentReloaded += new EventHandler(DocumentReloaded);
+			}
+		}
+		private void DocumentReloaded(object sender, EventArgs e)
+		{
+			ORMDesignerDocData docData;
+			if (null != (docData = sender as ORMDesignerDocData))
+			{
+				docData.DocumentReloaded -= new EventHandler(DocumentReloaded);
+				AttachEventHandlers(docData);
+			}
 		}
 		/// <summary>
 		/// Get the current DiagramDocView. This will be null if CurrentDocument is null.
@@ -379,18 +398,28 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // ISelectionContainer overrides
 		#region ORMToolWindow specific
 		/// <summary>
-		/// Attach <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/>. Defers to <see cref="ManageEventHandlers"/>.
+		/// Attach <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/> associated with the <see cref="ORMDesignerDocData"/>. Defers to <see cref="ManageEventHandlers"/>.
 		/// </summary>
-		protected void AttachEventHandlers(Store store)
+		protected void AttachEventHandlers(ORMDesignerDocData docData)
 		{
-			ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Add);
+			docData.DocumentReloading += new EventHandler(DocumentReloading);
+			Store store = docData.Store;
+			if (null != store && !store.Disposed)
+			{
+				ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Add);
+			}
 		}
 		/// <summary>
-		/// Detach <see cref="EventHandler{TEventArgs}"/>s from the <see cref="Store"/>. Defers to <see cref="ManageEventHandlers"/>.
+		/// Detach <see cref="EventHandler{TEventArgs}"/>s from the <see cref="Store"/> associated with the <see cref="ORMDesignerDocData"/>. Defers to <see cref="ManageEventHandlers"/>.
 		/// </summary>
-		protected void DetachEventHandlers(Store store)
+		protected void DetachEventHandlers(ORMDesignerDocData docData)
 		{
-			ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Remove);
+			docData.DocumentReloading -= new EventHandler(DocumentReloading);
+			Store store = docData.Store;
+			if (store != null && !store.Disposed)
+			{
+				ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Remove);
+			}
 		}
 		#endregion // ORMToolWindow specific
 	}

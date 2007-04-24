@@ -21,33 +21,6 @@ using System.Windows.Forms;
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	/// <summary>
-	/// survey question ui support enum
-	/// </summary>
-	[Flags]
-	public enum SurveyQuestionUISupport
-	{
-		/// <summary>
-		/// If nothing is supported by question
-		/// </summary>
-		None = 0,
-		/// <summary>
-		/// If sorting is supported by question
-		/// </summary>
-		Sorting = 1,
-		/// <summary>
-		/// If grouping is supported, defaults to sorting supported too
-		/// </summary>
-		Grouping = 2,
-		/// <summary>
-		/// If question supports glyphs
-		/// </summary>
-		Glyph = 4,
-		/// <summary>
-		/// If overlay is supported by question
-		/// </summary>
-		Overlay = 8,
-	}
-	/// <summary>
 	/// question list of all questions returned by the doc data
 	/// </summary>
 	public class Survey
@@ -77,18 +50,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			int imageOffset = 0;
 			foreach (ISurveyQuestionProvider provider in providers)
 			{
-				ISurveyQuestionTypeInfo[] currentQuestions = provider.GetSurveyQuestionTypeInfo();
-				
-				for (int i = 0; i < currentQuestions.Length; ++i)
+				foreach (ISurveyQuestionTypeInfo currentQuestionTypeInfo in provider.GetSurveyQuestions())
 				{
-					SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestions[i], imageOffset);
+					SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestionTypeInfo, imageOffset);
 					currentQuestion.Shift = totalShift;
 					currentQuestion.Mask = GenerateMask(currentQuestion.BitCount, currentQuestion.Shift);
 					currentQuestion.QuestionList = this;
 					totalShift += currentQuestion.BitCount;
 					myQuestions.Add(currentQuestion);
 				}
-				ImageList currentImageList = provider.ImageList;
+				ImageList currentImageList = provider.SurveyQuestionImageList;
 				if (currentImageList != null)
 				{
 					ImageList.ImageCollection currentImages = currentImageList.Images;

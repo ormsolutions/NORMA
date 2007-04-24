@@ -453,13 +453,9 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-			foreach (DomainModel domainModel in store.DomainModels)
+			foreach (IORMModelEventSubscriber subscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(Store.DomainModels))
 			{
-				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
-				if (subscriber != null)
-				{
-					subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
-				}
+				subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 			}
 			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
 		}
@@ -471,13 +467,9 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-			foreach (DomainModel domainModel in store.DomainModels)
+			foreach (IORMModelEventSubscriber subscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(Store.DomainModels))
 			{
-				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
-				if (subscriber != null)
-				{
-					subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
-				}
+				subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Add);
 			}
 			ReloadSurveyTree();
 			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
@@ -500,23 +492,19 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-			foreach (DomainModel domainModel in store.DomainModels)
+			foreach (IORMModelEventSubscriber subscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(Store.DomainModels))
 			{
-				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
-				if (subscriber != null)
+				if (addedPreLoad)
 				{
-					if (addedPreLoad)
-					{
-						subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
-					}
-					if (addedPostLoad)
-					{
-						subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
-					}
-					if (addedSurveyQuestion)
-					{
-						subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Remove);
-					}
+					subscriber.ManagePreLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
+				}
+				if (addedPostLoad)
+				{
+					subscriber.ManagePostLoadModelingEventHandlers(eventManager, EventHandlerAction.Remove);
+				}
+				if (addedSurveyQuestion)
+				{
+					subscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Remove);
 				}
 			}
 			UnloadSurveyTree();
@@ -708,15 +696,11 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				foreach (DomainModel domainModel in Store.DomainModels)
+				foreach (IDeserializationFixupListenerProvider provider in Utility.EnumerateDomainModels<IDeserializationFixupListenerProvider>(Store.DomainModels))
 				{
-					IDeserializationFixupListenerProvider provider = domainModel as IDeserializationFixupListenerProvider;
-					if (provider != null)
+					foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
 					{
-						foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
-						{
-							yield return listener;
-						}
+						yield return listener;
 					}
 				}
 			}

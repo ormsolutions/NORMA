@@ -26,59 +26,64 @@
 		<plx:root>
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.Windows.Forms"/>
+			<plx:namespaceImport name="System.Collections.Generic"/>
 			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="deferToPartial">
 					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider"/>
-					<plx:field name="SurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+					<plx:field name="mySurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
 						<plx:initialize>
 							<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
 								<plx:arrayInitializer>
-									<xsl:for-each select="qp:provideSurveyQuestion">
+									<xsl:for-each select="qp:surveyQuestions/qp:surveyQuestion">
 										<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
 									</xsl:for-each>
 								</plx:arrayInitializer>
 							</plx:callNew>
 						</plx:initialize>
 					</plx:field>
-					<plx:function visibility="protected" modifier="static" name="GetSurveyQuestionTypeInfo">
+					<plx:function visibility="protected" modifier="static" name="GetSurveyQuestions">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Returns an array of ISurveyQuestionTypeInfo representing the questions that can be asked of objects in this DomainModel</summary>
+								<summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetSurveyQuestionTypeInfo"/>
-						<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetSurveyQuestions"/>
+						<plx:returns dataTypeName="IEnumerable">
+							<plx:passTypeParam dataTypeName="ISurveyQuestionTypeInfo"/>
+						</plx:returns>
 						<plx:return>
-							<plx:cast type="exceptionCast" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
-								<plx:callInstance name="Clone">
-									<plx:callObject>
-										<plx:callStatic type="field" dataTypeName="{@class}" name="SurveyQuestionTypeInfo"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:cast>
+							<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo"/>
 						</plx:return>
 					</plx:function>
-					<plx:property name="ImageList" visibility ="public">
+					<plx:property name="SurveyQuestionImageList" visibility="protected">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Getter for ImageList </summary>
-								<value>ImageList</value>
+								<summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/></summary>
 							</plx:docComment>
 						</plx:leadingInfo>
+						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="SurveyQuestionImageList"/>
 						<plx:returns dataTypeName="ImageList"/>
 						<plx:get>
-							<plx:return>
-								<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
-							</plx:return>
+							<xsl:variable name="imageSnippet" select="qp:imageInformation/child::plx:*"/>
+							<xsl:choose>
+								<xsl:when test="$imageSnippet">
+									<xsl:copy-of select="$imageSnippet"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:return>
+										<plx:nullKeyword/>
+									</plx:return>
+								</xsl:otherwise>
+							</xsl:choose>
 						</plx:get>
 					</plx:property>
-					<xsl:apply-templates select="qp:provideSurveyQuestion"/>
+					<xsl:apply-templates select="qp:surveyQuestions/qp:surveyQuestion"/>
 				</plx:class>
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>
-	<xsl:template match="qp:provideSurveyQuestion">
+	<xsl:template match="qp:surveyQuestion">
 		<plx:class name="ProvideSurveyQuestionFor{@questionType}" visibility="private" modifier="sealed">
 			<plx:implementsInterface dataTypeName="ISurveyQuestionTypeInfo"/>
 			<plx:function name=".construct" visibility="private"/>

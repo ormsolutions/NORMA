@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private const string XMLPrefix = "orm";
 		private const string XMLModelReferenceAttribute = "ref";
 		private const char ListDelimiter = ' ';
-		
+
 		private bool myIncludedErrorsChanged = false;
 		private bool myExcludedErrorsChanged = false;
 		private bool myExcludedCategoriesChanged = false;
@@ -95,9 +95,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!myExcludedCategoriesChanged)
 				{
 					myExcludedCategories = ParseList(myExcludedCategoriesList, myExcludedCategories);
-				}
-				return myExcludedCategories;
 			}
+				return myExcludedCategories;
+		}
 		}
 		private Dictionary<Type, Type> IncludedErrorsDictionary
 		{
@@ -106,9 +106,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!myIncludedErrorsChanged)
 				{
 					myIncludedErrors = ParseList(myIncludedErrorsList, myIncludedErrors);
-				}
-				return myIncludedErrors;
 			}
+				return myIncludedErrors;
+		}
 		}
 		private Dictionary<Type, Type> ExcludedErrorsDictionary
 		{
@@ -117,9 +117,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!myExcludedErrorsChanged)
 				{
 					myExcludedErrors = ParseList(myExcludedErrorsList, myExcludedErrors);
-				}
-				return myExcludedErrors;
 			}
+				return myExcludedErrors;
+		}
 		}
 		private Dictionary<Type, Type> ParseList(string list, Dictionary<Type, Type> cache)
 		{
@@ -151,14 +151,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return myExcludedCategoriesList;
 		}
 		private void SetExcludedCategoriesValue(string newValue)
-		{
+			{
 			myExcludedCategoriesList = newValue;
 			Dictionary<Type, Type> cache = ExcludedCategoriesDictionary;
 			if (cache != null)
-			{
+				{
 				cache.Clear();
+				}
 			}
-		}
 		private string GetExcludedErrorsValue()
 		{
 			return myExcludedErrorsList;
@@ -217,20 +217,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (exclude)
 			{
 				if (!(dictionary.ContainsKey(category)))
-				{
-					myExcludedCategoriesChanged = true;
-					dictionary.Add(category, null);
-				}
-			}
-			else
 			{
-				if ((dictionary.ContainsKey(category)))
-				{
 					myExcludedCategoriesChanged = true;
-					dictionary.Remove(category);
-				}
+				dictionary.Add(category, null);
 			}
 		}
+			else
+		{
+				if ((dictionary.ContainsKey(category)))
+			{
+					myExcludedCategoriesChanged = true;
+					dictionary.Remove(category);
+					}
+				}
+			}
 		/// <summary>
 		/// Toggles an error type to include or exclude.
 		/// </summary>
@@ -252,7 +252,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				//flip whether to include or exclude the error in the sub-list
 				exclude = !exclude;
-			}
+				}
 			else
 			{
 				dictionary = ExcludedErrorsDictionary;
@@ -264,7 +264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			if (exclude)
-			{
+				{
 				if (!(dictionary.ContainsKey(error)))
 				{
 					dictionary.Add(error, null);
@@ -300,12 +300,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Dictionary<Type, Type> dictionary = IncludedErrorsDictionary;
 				return !(dictionary != null && dictionary.ContainsKey(error));
 			}
-			else
-			{
+				else
+				{
 				Dictionary<Type, Type> dictionary = ExcludedErrorsDictionary;
 				return (dictionary != null && dictionary.ContainsKey(error));
+				}
 			}
-		}
 		/// <summary>
 		/// Commit any changes pending from calls to ToggleCategory or ToggleError.
 		/// </summary>
@@ -400,13 +400,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 									switch (reader.LocalName)
 									{
 										case XMLCategoriesElement:
-											myExcludedCategoriesList = readInnerXMLList(reader, ref namespaces);
+											myExcludedCategoriesList = ReadInnerXMLList(reader, ref namespaces);
 											break;
 										case XMLIncludedErrorsElement:
-											myIncludedErrorsList = readInnerXMLList(reader, ref namespaces);
+											myIncludedErrorsList = ReadInnerXMLList(reader, ref namespaces);
 											break;
 										case XMLExcludedErrorsElement:
-											myExcludedErrorsList = readInnerXMLList(reader, ref namespaces);
+											myExcludedErrorsList = ReadInnerXMLList(reader, ref namespaces);
 											break;
 									}
 								}
@@ -426,7 +426,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="reader"></param>
 		/// <param name="namespaces"></param>
 		/// <returns></returns>
-		string readInnerXMLList(XmlReader reader, ref Dictionary<string, string> namespaces)
+		private string ReadInnerXMLList(XmlReader reader, ref Dictionary<string, string> namespaces)
 		{
 			string retVal = string.Empty;
 
@@ -438,17 +438,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (namespaces == null)
 					{
 						//synchronize namespaces
-						foreach (DomainModel model in Store.DomainModels)
+						foreach (IORMCustomSerializedDomainModel serializationInfo in Utility.EnumerateDomainModels<IORMCustomSerializedDomainModel>(Store.DomainModels))
 						{
-							IORMCustomSerializedDomainModel serializationInfo = model as IORMCustomSerializedDomainModel;
-							if (serializationInfo != null)
+							if (namespaces == null)
 							{
-								if (namespaces == null)
-								{
-									namespaces = new Dictionary<string, string>();
-								}
-								namespaces.Add(serializationInfo.GetCustomElementNamespaces()[0, 1], model.GetType().Namespace);
+								namespaces = new Dictionary<string, string>();
 							}
+							namespaces.Add(serializationInfo.GetCustomElementNamespaces()[0, 1], serializationInfo.GetType().Namespace);
 						}
 					}
 					if (namespaces != null)
@@ -482,7 +478,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				string type = types[i];
 				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
-			}
+				}
 			writer.WriteEndElement();
 
 			writer.WriteStartElement(XMLPrefix, XMLIncludedErrorsElement, XmlNamespace);
@@ -491,7 +487,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				string type = types[i];
 				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
-			}
+				}
 			writer.WriteEndElement();
 
 			writer.WriteStartElement(XMLPrefix, XMLExcludedErrorsElement, XmlNamespace);
@@ -500,7 +496,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				string type = types[i];
 				writer.WriteElementString(XMLPrefix, type.Substring(type.LastIndexOf('.') + 1), XmlNamespace, string.Empty);
-			}
+				}
 			writer.WriteEndElement();
 
 			writer.WriteEndElement();

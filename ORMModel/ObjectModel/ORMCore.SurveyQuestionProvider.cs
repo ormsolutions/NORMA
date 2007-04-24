@@ -1,30 +1,37 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	partial class ORMCoreDomainModel : ISurveyQuestionProvider
 	{
-		private static readonly ISurveyQuestionTypeInfo[] SurveyQuestionTypeInfo = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForElementType.Instance,
 			ProvideSurveyQuestionForErrorState.Instance,
 			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
-		/// <summary>Returns an array of ISurveyQuestionTypeInfo representing the questions that can be asked of objects in this DomainModel</summary>
-		protected static ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo()
+		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
+		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions()
 		{
-			return (ISurveyQuestionTypeInfo[])ORMCoreDomainModel.SurveyQuestionTypeInfo.Clone();
+			return mySurveyQuestionTypeInfo;
 		}
-		ISurveyQuestionTypeInfo[] ISurveyQuestionProvider.GetSurveyQuestionTypeInfo()
+		IEnumerable<ISurveyQuestionTypeInfo> ISurveyQuestionProvider.GetSurveyQuestions()
 		{
-			return GetSurveyQuestionTypeInfo();
+			return GetSurveyQuestions();
 		}
-		/// <summary>Getter for ImageList </summary>
-		/// <value>ImageList</value>
-		public ImageList ImageList
+		/// <summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/></summary>
+		protected ImageList SurveyQuestionImageList
 		{
 			get
 			{
 				return ResourceStrings.SurveyTreeImageList;
+			}
+		}
+		ImageList ISurveyQuestionProvider.SurveyQuestionImageList
+		{
+			get
+			{
+				return this.SurveyQuestionImageList;
 			}
 		}
 		private sealed class ProvideSurveyQuestionForElementType : ISurveyQuestionTypeInfo

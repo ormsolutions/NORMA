@@ -110,17 +110,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 			{
 				throw new ArgumentNullException("store");
 			}
-			ICollection<DomainModel> domainModels = store.DomainModels;
-			List<ILayoutEngineProvider> providers = new List<ILayoutEngineProvider>(domainModels.Count);
-			foreach (DomainModel domainModel in domainModels)
-			{
-				ILayoutEngineProvider provider = domainModel as ILayoutEngineProvider;
-				if (provider != null)
-				{
-					providers.Add(provider);
-				}
-			}
-			return CreateLayoutEngineDictionary(providers);
+			return CreateLayoutEngineDictionary(Utility.EnumerateDomainModels<ILayoutEngineProvider>(store.DomainModels));
 		}
 	}
 	#endregion

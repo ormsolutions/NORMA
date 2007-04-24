@@ -24,17 +24,34 @@
 	</xs:annotation>
 	<xs:element name="surveyQuestionProvider" type="surveyQuestionProviderType"/>
 	<xs:complexType name="surveyQuestionProviderType">
+		<xs:all>
+			<xs:element ref="surveyQuestions"/>
+			<xs:element ref="imageInformation" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="class" type="xs:token" use="required" />
+	</xs:complexType>
+	<xs:element name="imageInformation" type="imageInformationType"/>
+	<xs:complexType name="imageInformationType">
+		<xs:sequence minOccurs="0">
+			<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>One or more PLiX elements forming a code snippet to retrieve the ImageList from this class. The final statement should be a return. Used as the body of the SurveyQuestionImageList property getter.</xs:documentation>
+				</xs:annotation>
+			</xs:any>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="surveyQuestions" type="surveyQuestionsType"/>
+	<xs:complexType name="surveyQuestionsType">
 		<xs:sequence>
-			<xs:element maxOccurs="unbounded" name="provideSurveyQuestion" type="provideSurveyQuestionType">
+			<xs:element maxOccurs="unbounded" name="surveyQuestion" type="surveyQuestionType">
 				<xs:unique name="UniqueDisplayType">
 					<xs:selector xpath="qp:displaySupport"/>
 					<xs:field xpath="@displayCategory"/>
 				</xs:unique>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="class" type="xs:token" use="required" />
 	</xs:complexType>
-	<xs:complexType name="provideSurveyQuestionType">
+	<xs:complexType name="surveyQuestionType">
 		<xs:sequence>
 			<xs:element ref="displaySupport" maxOccurs="unbounded"/>
 		</xs:sequence>

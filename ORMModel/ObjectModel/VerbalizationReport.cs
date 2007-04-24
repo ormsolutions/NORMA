@@ -615,9 +615,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 			//{9} notes item bold
 			//{10} refmode item color
 			//{11} refmode item bold
+			//{12} instance value item color
+			//{13} instance value item bold
 			string boldWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightBold);
 			string normalWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightNormal);
-			retVal = new string[] { "Tahoma", "8", "darkgreen", normalWeight, "purple", normalWeight, "mediumblue", boldWeight, "brown", normalWeight, "darkgray", normalWeight };
+			retVal = new string[] { "Tahoma", "8", "darkgreen", normalWeight, "purple", normalWeight, "mediumblue", boldWeight, "brown", normalWeight, "darkgray", normalWeight, "brown", normalWeight };
 			using (Font font = colorService.GetFont(ORMDesignerColorCategory.Verbalizer))
 			{
 				retVal[0] = font.FontFamily.Name;
@@ -632,6 +634,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 				retVal[9] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerNotesItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
 				retVal[10] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerRefMode));
 				retVal[11] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerRefMode) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				retVal[12] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerInstanceValue));
+				retVal[13] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerInstanceValue) & FontStyle.Bold)) ? boldWeight : normalWeight;
 			}
 			return retVal;
 		}

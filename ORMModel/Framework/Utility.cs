@@ -183,5 +183,24 @@ namespace Neumont.Tools.Modeling
 			return unchecked((int)(((uint)value >> places) | ((uint)value << (32 - places))));
 		}
 		#endregion // RotateRight method
+		#region EnumerateDomainModels methods
+		/// <summary>
+		/// Enumerate the provided domain models, filtering on the specifies type
+		/// </summary>
+		/// <typeparam name="T">The type of interface to test support for on the element</typeparam>
+		/// <param name="domainModels">An enumeration of domain models</param>
+		/// <returns>Enumerable set with element type of <typeparamref name="T"/></returns>
+		public static IEnumerable<T> EnumerateDomainModels<T>(IEnumerable<DomainModel> domainModels) where T : class
+		{
+			foreach (DomainModel domainModel in domainModels)
+			{
+				T typedModel = domainModel as T;
+				if (typedModel != null)
+				{
+					yield return typedModel;
+				}
+			}
+		}
+		#endregion // EnumerateDomainModels methods
 	}
 }
