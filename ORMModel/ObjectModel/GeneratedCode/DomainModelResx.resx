@@ -194,7 +194,7 @@
     <comment>Description for DomainClass &apos;ConstraintImplicationAndContradictionErrorCategory&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintImplicationAndContradictionErrorCategory.DisplayName" xml:space="preserve">
-    <value>Constraint Implication andContradiction Errors</value>
+    <value>Constraint Implication and Contradiction Errors</value>
     <comment>DisplayName for DomainClass &apos;ConstraintImplicationAndContradictionErrorCategory&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintStructureErrorCategory.Description" xml:space="preserve">
@@ -954,7 +954,7 @@
     <comment>Description for DomainClass &apos;EntityTypeRequiresReferenceSchemeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.DisplayName" xml:space="preserve">
-    <value>EntityType Requiresa Reference Scheme</value>
+    <value>EntityType Requires Reference Scheme</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeRequiresReferenceSchemeError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError.Description" xml:space="preserve">
@@ -1442,7 +1442,7 @@
     <comment>Description for DomainClass &apos;MinValueMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MinValueMismatchError.DisplayName" xml:space="preserve">
-    <value>MinValueMismatchError</value>
+    <value>Minimum Bound of Value Range Invalid for DataType</value>
     <comment>DisplayName for DomainClass &apos;MinValueMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError.Description" xml:space="preserve">
@@ -1450,7 +1450,7 @@
     <comment>Description for DomainClass &apos;MaxValueMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError.DisplayName" xml:space="preserve">
-    <value>MaxValueMismatchError</value>
+    <value>Maximum Bound of Value Range Invalid for DataType</value>
     <comment>DisplayName for DomainClass &apos;MaxValueMismatchError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ImpliedInternalUniquenessConstraintError.Description" xml:space="preserve">

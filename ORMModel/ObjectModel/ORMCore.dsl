@@ -861,7 +861,7 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityType Requiresa Reference Scheme" Description="">
+		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityType Requires Reference Scheme" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1265,13 +1265,13 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="MinValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7E0D53CF-D374-4EDA-B6A6-04D381AA0DC5" DisplayName="MinValueMismatchError" Description="">
+		<DomainClass Name="MinValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7E0D53CF-D374-4EDA-B6A6-04D381AA0DC5" DisplayName="Minimum Bound of Value Range Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueMismatchError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="MaxValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CCE42465-23A0-4726-8881-3ADB48E2CC67" DisplayName="MaxValueMismatchError" Description="">
+		<DomainClass Name="MaxValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CCE42465-23A0-4726-8881-3ADB48E2CC67" DisplayName="Maximum Bound of Value Range Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueMismatchError"/>
 			</BaseClass>
