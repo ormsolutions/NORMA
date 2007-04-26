@@ -55,6 +55,17 @@
 				<Registry Name="orm" Value="50" Type="integer"/>
 				<Registry Name="xml" Value="16" Type="integer"/>
 			</Registry>
+			<Registry Key="LogicalViews">
+				<Registry Name="{$(var.VSLogicalViewDesignerGuid)}" Value="Designer" Type="string"/>
+			</Registry>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="XmlDesigners\{$(var.NORMAVSEditorGuid)}">
+			<Registry Value="ORM Designer" Type="string"/>
+			<Registry Name="Editor" Value="$(var.NORMAVSEditorGuid)" Type="string"/>
+			<Registry Name="Extension" Value="orm" Type="string"/>
+			<Registry Name="LogicalView" Value="$(var.VSLogicalViewDesignerGuid)" Type="string"/>
+			<Registry Name="Namespace" Value="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" Type="string"/>
 		</Registry>
 
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="ToolsOptionsPages\ORM Designer">

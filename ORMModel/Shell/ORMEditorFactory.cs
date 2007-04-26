@@ -15,27 +15,21 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Design;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling.Shell;
 using VsShell = Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
+
 namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
-	/// Editor factory for ORM Designer. 
+	/// <see cref="ModelingEditorFactory"/> for the ORM Designer.
 	/// </summary>
-	[Guid(ORMDesignerEditorFactory.GuidString)]
 	[CLSCompliant(false)]
+	[Guid(ORMDesignerEditorFactory.GuidString)]
 	public class ORMDesignerEditorFactory : ModelingEditorFactory
 	{
-		// Keep in sync with PkgCmd.ctc
+		// Keep in sync with PkgCmd.vsct
 		/// <summary>
 		/// The <see cref="String"/> form of the <see cref="Guid"/> for <see cref="ORMDesignerEditorFactory"/>.
 		/// </summary>
@@ -47,7 +41,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#region Construction/destruction
 		/// <summary>
-		/// Public constructor for our editor factory.
+		/// Initializes a new instance of <see cref="ORMDesignerEditorFactory"/>.
 		/// </summary>
 		public ORMDesignerEditorFactory(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
@@ -55,37 +49,48 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Construction/destruction
 		#region Base overrides
 		/// <summary>
-		/// This method is called before the EditorFactory.CreateEditorInstance method to allow us to map LOGICAL views to PHYSICAL ones.  Our Editor Factory supports unlimited physical views.
-		/// NOTE: Physical views are identified by a string of our choice with the one constraint that the default/primary physical view for an editor *MUST* use an empty ("") string as its physical view name (return "").
+		/// This method is called before the <see cref="ModelingEditorFactory.CreateEditorInstance"/> method to allow us
+		/// to map LOGICAL views to PHYSICAL ones.
 		/// </summary>
-		/// <param name="logicalView">Guid</param>
-		/// <param name="viewContext">Context</param>
-		/// <returns>The physical view name</returns>
+		/// <remarks>
+		/// Physical views are identified by a string of our choice with the one constraint that the default/primary
+		/// physical view for an editor MUST use an empty string (<see cref="String.Empty"/>) or <see langword="null"/>
+		/// as its physical view name.
+		/// </remarks>
+		/// <returns>The physical view name.</returns>
+		/// <seealso cref="ModelingEditorFactory.MapLogicalView(Guid,Object)"/>
 		protected override string MapLogicalView(Guid logicalView, object viewContext)
 		{
-			return String.Empty;
+			// We only support the Primary and Designer logical views. Others, like the Code logical view,
+			// are handled by other editors (hence the NotImplementedException).
+			if (logicalView == VSConstants.LOGVIEWID_Primary || logicalView == VSConstants.LOGVIEWID_Designer)
+			{
+				return null;
+			}
+			throw new NotImplementedException();
 		}
 		/// <summary>
-		/// Standard override. Create an ORMDesignerDocData
+		/// Creates an <see cref="ORMDesignerDocData"/>.
+		/// See <see cref="ModelingEditorFactory.CreateDocData(String,VsShell.IVsHierarchy,UInt32)"/>.
 		/// </summary>
-		/// <param name="fileName">The document file</param>
-		/// <param name="hierarchy">The project/solution hierarchy to include the file in</param>
-		/// <param name="itemId">The identifier for the new item</param>
-		/// <returns>ORMDesignerDocData</returns>
+		/// <param name="fileName">The document file.</param>
+		/// <param name="hierarchy">The project/solution <see cref="VsShell.IVsHierarchy"/> to include the file in.</param>
+		/// <param name="itemId">The identifier for the new item.</param>
+		/// <returns>A new instance of <see cref="ORMDesignerDocData"/>.</returns>
 		protected override ModelingDocData CreateDocData(string fileName, VsShell.IVsHierarchy hierarchy, uint itemId)
 		{
-			return new ORMDesignerDocData(this.ServiceProvider, Id);
+			return new ORMDesignerDocData(this.ServiceProvider, ORMDesignerEditorFactory.Id);
 		}
 		/// <summary>
-		/// Create a view on an ORMDesignerDocData
+		/// Creates an <see cref="ORMDesignerDocView"/>. See <see cref="ModelingEditorFactory.CreateDocView"/>.
 		/// </summary>
-		/// <param name="docData">The document, created by CreateDocData</param>
-		/// <param name="physicalView">The name of the view to created</param>
-		/// <param name="editorCaption">The editor caption</param>
-		/// <returns>ORMDesignerDocView</returns>
+		/// <param name="docData">The document, created by <see cref="CreateDocData"/>.</param>
+		/// <param name="physicalView">The name of the view to created.</param>
+		/// <param name="editorCaption">The editor caption.</param>
+		/// <returns>A new instance of <see cref="ORMDesignerDocView"/>.</returns>
 		protected override ModelingDocView CreateDocView(ModelingDocData docData, string physicalView, out string editorCaption)
 		{
-			editorCaption = String.Empty;
+			editorCaption = null;
 			return new ORMDesignerDocView(docData, this.ServiceProvider);
 		}
 		#endregion // Base overrides

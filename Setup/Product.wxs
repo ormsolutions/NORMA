@@ -38,6 +38,9 @@
 			<UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" MigrateFeatures="yes"/>
 		</Upgrade>
 
+		<!-- Our commit custom action DevEnvSetupCustomAction will not be run if rollback is disabled. Therefore, we require that rollback NOT be disabled. -->
+		<Condition Message="$(loc.RollbackMustNotBeDisabled)">NOT RollbackDisabled</Condition>
+
 		<Condition Message="$(loc.Windows2000OrHigherRequired)">VersionNT >= 500</Condition>
 
 		<Property Id="VSPRODUCTDIR">
@@ -108,7 +111,7 @@
 		</AdvertiseExecuteSequence>
 
 		<CustomAction Id="ArpInstallLocationCustomAction" Property="ARPINSTALLLOCATION" Value="[$(var.DefaultShortProductDir)]"/>
-		<CustomAction Id="DevEnvSetupCustomAction" Property="VSENVIRONMENTPATH" ExeCommand="$(var.RootSuffixCmd)/Setup" Return="ignore" Impersonate="no" Execute="deferred"/>
+		<CustomAction Id="DevEnvSetupCustomAction" Property="VSENVIRONMENTPATH" ExeCommand="$(var.RootSuffixCmd)/Setup" Return="ignore" Impersonate="no" Execute="commit"/>
 		<InstallExecuteSequence>
 			<RemoveExistingProducts Before="ArpInstallLocationCustomAction"/>
 			<Custom Before="InstallInitialize" Action="ArpInstallLocationCustomAction"/>

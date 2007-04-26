@@ -559,8 +559,8 @@
 		<!--<Combos/>-->
 
 		<Bitmaps>
-			<Bitmap guid="guidORMVerbalizationToolbarImages" resID="IDB_VERBALIZATIONTOOLBARIMAGES" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization"/>
-			<Bitmap guid="guidORMToolWindowIcons" resID="IDB_TOOLWINDOWICONS32" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor"/>
+			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.bmp" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization"/>
+			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons32.bmp" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor"/>
 		</Bitmaps>
 
 	</Commands>
@@ -671,15 +671,12 @@
 			<!-- Reserve 2B__ range for diagrams, start additional commands after. -->
 		</GuidSymbol>
 		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
-			<!-- Keep in sync with PackageResources.cs -->
-			<IDSymbol value="124" name="IDB_VERBALIZATIONTOOLBARIMAGES"/>
 			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>
 			<IDSymbol value="0x0002" name="bmpIdShowPositiveVerbalization"/>
 		</GuidSymbol>
 		<GuidSymbol name="guidORMToolWindowIcons" value="{EA662CED-462E-41EA-B0B5-42BF76C4B853}">
 			<!-- Keep in sync with PackageResources.cs -->
-			<IDSymbol value="125" name="IDB_TOOLWINDOWICONS"/>
-			<IDSymbol value="126" name="IDB_TOOLWINDOWICONS32"/>
+			<!-- Note that the values here are the values from PackageResources.cs plus one. -->
 			<IDSymbol value="0x0001" name="bmpIdToolWindowVerbalizationBrowser"/>
 			<IDSymbol value="0x0002" name="bmpIdToolWindowReadingEditor"/>
 			<IDSymbol value="0x0003" name="bmpIdToolWindowReferenceModeEditor"/>

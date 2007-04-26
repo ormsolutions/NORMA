@@ -78,25 +78,6 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 
-			// If for any reason we can't tell whether we should set the SuppressOpeningItems flag, we assume that we DO need to.
-			DTE application = automationObject as DTE;
-			if (application != null)
-			{
-				Document activeDocument = application.ActiveDocument;
-				if (activeDocument != null)
-				{
-					ProjectItem projectItem = activeDocument.ProjectItem;
-					if (projectItem != null)
-					{
-						Project project = projectItem.ContainingProject;
-						if (project != null && !string.IsNullOrEmpty(project.FullName))
-						{
-							return;
-						}
-					}
-				}
-			}
-
 			if (!replacementsDictionary.ContainsKey(SuppressOpeningItems))
 			{
 				// The value that we add doesn't really matter (only the key does),
@@ -173,10 +154,8 @@ namespace Neumont.Tools.ORM.Shell
 				if (windowFrame != null)
 				{
 					object pVar;
-					ErrorHandler.ThrowOnFailure(windowFrame.GetProperty((int)__VSFPROPID.VSFPROPID_OwnerCaption, out pVar));
+					ErrorHandler.ThrowOnFailure(uiHierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_Caption, out pVar));
 					string caption = pVar as string;
-					// Make sure the backend document and the window currently have the same caption.
-					Debug.Assert(ErrorHandler.Succeeded(uiHierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_Caption, out pVar)) && caption == pVar as string);
 					if (!string.IsNullOrEmpty(caption))
 					{
 						try

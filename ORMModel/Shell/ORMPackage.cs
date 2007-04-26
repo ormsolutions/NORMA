@@ -51,6 +51,7 @@ namespace Neumont.Tools.ORM.Shell
 	// "ORM Designer" and "General" correspond and must be in sync with VSPackage.resx
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", PackageResources.Id.OptionsCategory, PackageResources.Id.OptionsGeneral, false)]
 	[ProvideEditorFactory(typeof(ORMDesignerEditorFactory), PackageResources.Id.EditorName, TrustLevel=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
+	[ProvideEditorLogicalView(typeof(ORMDesignerEditorFactory), LogicalViewID.Designer)]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32)]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".xml", 0x10)]
 	[ProvideService(typeof(ORMDesignerFontsAndColors), ServiceName="OrmDesignerFontAndColorProvider")]

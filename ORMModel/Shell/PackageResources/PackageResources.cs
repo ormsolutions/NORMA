@@ -21,12 +21,7 @@ namespace Neumont.Tools.ORM.Shell
 			public const int AboutBoxIcon = 110;
 			public const int ORMFileIcon = 111;
 
-			// Corresponds to IDB_VERBALIZATIONTOOLBARIMAGES in PkgCmd.vsct.
-			public const int VerbalizationToolbarImages = 124;
-			// Corresponds to IDB_TOOLWINDOWICONS in PkgCmd.vsct.
 			public const int ToolWindowIcons = 125;
-			// Corresponds to IDB_TOOLWINDOWICONS32 in PkgCmd.vsct.
-			public const int ToolWindowIcons32 = 126;
 
 			public const int PackageLoadKey = 150;
 

@@ -114,17 +114,9 @@
 		<value>../../Resources/ORM.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 		<comment>PackageResources.Id.ORMFileIcon</comment>
 	</data>
-	<data name="124" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>../../Resources/VerbalizationToolbarImages.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-		<comment>PackageResources.Id.VerbalizationToolbarImages and IDB_VERBALIZATIONTOOLBARIMAGES</comment>
-	</data>
 	<data name="125" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>../../Resources/ToolWindowIcons.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 		<comment>PackageResources.Id.ToolWindowIcons and IDB_TOOLWINDOWICONS</comment>
-	</data>
-	<data name="126" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>../../Resources/ToolWindowIcons32.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-		<comment>PackageResources.Id.ToolWindowIcons32 and IDB_TOOLWINDOWICONS32</comment>
 	</data>
 	<data name="150">
 		<value>ETDZA3QMCCACH1EJAZZRDACMQQDZP1R0EHC9HJCQPZA0D3DZKTMCIEZIH3PJIKEPEJJ3A9K1PJP1MRR8J9IHC1HCM3RADIK9QMKCM8AEAHE8DMMCQ0AZITHAHQPMMZRT</value>
