@@ -22,14 +22,15 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class FactType : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
+	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
-		int IAnswerSurveyQuestion<ErrorState>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 
 			return AskErrorQuestion();
@@ -40,12 +41,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? ErrorState.HasError : ErrorState.NoError);
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
 
 		#endregion
 		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<ElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -55,7 +56,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskElementQuestion()
 		{
-			return (int)ElementType.FactType;
+			return (int)SurveyElementType.FactType;
 		}
 
 		#endregion
@@ -154,6 +155,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
+		/// <summary>
+		/// The key used to retrieve expansion details for the model browser
+		/// </summary>
+		public static readonly object SurveyExpansionKey = new object();
+		/// <summary>
+		/// Implements <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
+		/// </summary>		
+		protected static object SurveyNodeExpansionKey
+		{
+			get
+			{
+				return SurveyExpansionKey;
+			}
+		}
+		object ISurveyNode.SurveyNodeExpansionKey
+		{
+			get
+			{
+				return SurveyNodeExpansionKey;
+			}
+		}
 		#endregion
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Members
 
@@ -187,6 +209,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
+		}
+		#endregion
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Members
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion()
+		{
+			return AskFactTypeDetailQuestion();
+		}
+		/// <summary>
+		/// returns answer to IAnswerSurveyQuestion for fact type details
+		/// </summary>
+		protected int AskFactTypeDetailQuestion()
+		{
+			// If this question is being asked, then we must be an implicit fact type
+			Debug.Assert(this.ImpliedByObjectification != null);
+			return (int)SurveyFactTypeDetailType.ImpliedFactType;
 		}
 		#endregion
 	}

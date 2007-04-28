@@ -22,13 +22,13 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	public partial class MainList
+	partial class SurveyTree
 	{
 		/// <summary>
 		/// wrapper for objects to be dispalyed in the Survey Tree
 		/// </summary>
 		[DebuggerDisplay("{myDisplayText} {(myElement != null) ? myElement.GetType().Name : @\"\"\"\"}")]
-		public struct SampleDataElementNode : IEquatable<SampleDataElementNode>
+		private struct SampleDataElementNode : IEquatable<SampleDataElementNode>
 		{
 			#region Member Variables
 			private readonly object myElement;
@@ -137,6 +137,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					return (node != null) ? node.SurveyNodeDataObject : null;
 				}
 			}
+			/// <summary>
+			/// Returns the expansion key for this node
+			/// </summary>
+			public object SurveyNodeExpansionKey
+			{
+				get
+				{
+					ISurveyNode node = myElement as ISurveyNode;
+					return (node != null) ? node.SurveyNodeExpansionKey : null;
+				}
+			}
 			#endregion
 			#region Infrastructure Methods
 			/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
@@ -190,9 +201,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					for (int j = 0; j < questionCount; ++j)
 					{
 						SurveyQuestion currentQuestion = survey[j];
-							int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
-							data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
-						
+						int currentAnswer = currentQuestion.Question.AskQuestion(nodeElement);
+						data |= (currentAnswer << currentQuestion.Shift) & currentQuestion.Mask;
+
 					}
 					currentNode.NodeData = data;
 					nodeList[i] = currentNode;

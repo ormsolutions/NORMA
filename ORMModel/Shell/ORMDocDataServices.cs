@@ -45,8 +45,8 @@ namespace Neumont.Tools.ORM.Shell
 	public partial class ORMDesignerDocData : IORMToolServices
 	{
 		#region SurveyTreeSetup
-		private ITree mySurveyTree = null;
-		private MainList myRootBranch;
+		private ITree myVirtualTree = null;
+		private SurveyTree mySurveyTree;
 		/// <summary>
 		/// property to return the survey tree associated with this DocData
 		/// </summary>
@@ -54,12 +54,12 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				if (mySurveyTree == null)
+				if (myVirtualTree == null)
 				{
-					mySurveyTree = new VirtualTree();
+					myVirtualTree = new VirtualTree();
 					ReloadSurveyTree();
 				}
-				return mySurveyTree;
+				return myVirtualTree;
 			}
 		}
 		/// <summary>
@@ -67,11 +67,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void UnloadSurveyTree()
 		{
-			ITree tree = mySurveyTree;
+			ITree tree = myVirtualTree;
 			if (tree != null)
 			{
 				tree.Root = null;
-				myRootBranch = null;
+				mySurveyTree = null;
 			}
 		}
 		/// <summary>
@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void ReloadSurveyTree()
 		{
-			ITree tree = mySurveyTree;
+			ITree tree = myVirtualTree;
 			if (tree != null)
 			{
 				Store store = Store;
@@ -87,7 +87,7 @@ namespace Neumont.Tools.ORM.Shell
 				List<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
 				ICollection<DomainModel> domainModels = store.DomainModels;
 				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
-				MainList rootBranch = new MainList(
+				SurveyTree rootBranch = new SurveyTree(
 					Utility.EnumerateDomainModels<ISurveyNodeProvider>(domainModels),
 					Utility.EnumerateDomainModels<ISurveyQuestionProvider>(domainModels));
 				foreach (IORMModelEventSubscriber eventSubscriber in Utility.EnumerateDomainModels<IORMModelEventSubscriber>(domainModels))
@@ -95,8 +95,8 @@ namespace Neumont.Tools.ORM.Shell
 					eventSubscriber.ManageSurveyQuestionModelingEventHandlers(eventManager, EventHandlerAction.Add);
 				}
 				SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
-				myRootBranch = rootBranch;
-				tree.Root = rootBranch.RootBranch;
+				mySurveyTree = rootBranch;
+				tree.Root = rootBranch.CreateRootBranch();
 			}
 		}
 		#endregion //SurveyTreeSetup
@@ -1169,7 +1169,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return this.myRootBranch as INotifySurveyElementChanged;
+				return this.mySurveyTree as INotifySurveyElementChanged;
 			}
 		}
 		INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged

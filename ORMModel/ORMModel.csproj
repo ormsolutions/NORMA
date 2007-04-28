@@ -400,6 +400,7 @@
     <Compile Include="ObjectModel\ModelErrorDisplayFilter.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\RoleAnswers.cs" />
     <Compile Include="ObjectModel\VerbalizationGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationGenerator.xml</DependentUpon>

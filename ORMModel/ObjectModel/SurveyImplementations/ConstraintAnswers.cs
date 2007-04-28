@@ -26,11 +26,11 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class SetConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
+	public partial class SetConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
-		int IAnswerSurveyQuestion<ErrorState>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -40,12 +40,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? ErrorState.HasError : ErrorState.NoError);
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
 
 		#endregion
 		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<ElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -55,9 +55,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskElementQuestion()
 		{
-			return (int)ElementType.Constraint;
+			return (int)SurveyElementType.ExternalConstraint;
 		}
 
+		#endregion
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Members
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion()
+		{
+			return AskFactTypeDetailQuestion();
+		}
+		/// <summary>
+		/// returns answer to IAnswerSurveyQuestion for fact type details
+		/// </summary>
+		protected int AskFactTypeDetailQuestion()
+		{
+			return (int)SurveyFactTypeDetailType.InternalConstraint;
+		}
 		#endregion
 		#region ISurveyNode Members
 		/// <summary>
@@ -251,11 +264,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#endregion
 	}
-	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
+	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
-		int IAnswerSurveyQuestion<ErrorState>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -265,12 +278,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? ErrorState.HasError : ErrorState.NoError);
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
 
 		#endregion
 		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<ElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -281,7 +294,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected int AskElementQuestion()
 		{
 
-			return (int)ElementType.Constraint;
+			return (int)SurveyElementType.ExternalConstraint;
 		}
 
 		#endregion

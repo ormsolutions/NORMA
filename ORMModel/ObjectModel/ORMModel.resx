@@ -748,7 +748,25 @@
     <value>Xml Schema validation of the .ORM file has failed.&#xd;&#xa;You can attempt to open the file without schema validation by reattempting the File/Open command while holding down the shift key.&#xd;&#xa;Detailed exception information:&#xd;&#xa;&#xd;&#xa;{0}</value>
     <comment>Text used to display instructions when a load fails due to schema validation issues</comment>  
   </data>
-	<data name="Verbalization.SnippetsDefaultDescription" xml:space="preserve">
+  <data name="SurveyElementType.ExternalConstraint" xml:space="preserve">
+    <value>External Constraints</value>
+  </data>
+  <data name="SurveyElementType.FactType" xml:space="preserve">
+    <value>Fact Types</value>
+  </data>
+  <data name="SurveyElementType.ObjectType" xml:space="preserve">
+    <value>Object Types</value>
+  </data>
+  <data name="SurveyFactTypeDetailType.Role" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="SurveyFactTypeDetailType.InternalConstraint" xml:space="preserve">
+    <value>Internal Constraints</value>
+  </data>
+  <data name="SurveyFactTypeDetailType.ImpliedFactType" xml:space="preserve">
+    <value>Implied Fact Types</value>
+  </data>
+  <data name="Verbalization.SnippetsDefaultDescription" xml:space="preserve">
     <value>Default Verbalization</value>
     <comment>The description for the default verbalization snippets for the core model.</comment>
   </data>

@@ -22,13 +22,49 @@
 			You must not remove this notice, or any other, from this software.
 		</xs:appinfo>
 	</xs:annotation>
-	<xs:element name="surveyQuestionProvider" type="surveyQuestionProviderType"/>
+	<xs:element name="surveyQuestionProvider" type="surveyQuestionProviderType">
+		<xs:key name="uniqueQuestionType">
+			<xs:selector xpath="qp:surveyQuestions/qp:surveyQuestion"/>
+			<xs:field xpath="@questionType"/>
+		</xs:key>
+		<xs:keyref name="groupingQuestionTypeRef" refer="uniqueQuestionType">
+			<xs:selector xpath="qp:groupings/qp:grouping/qp:surveyQuestion"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="surveyQuestionProviderType">
 		<xs:all>
 			<xs:element ref="surveyQuestions"/>
+			<xs:element ref="groupings" minOccurs="0"/>
 			<xs:element ref="imageInformation" minOccurs="0"/>
 		</xs:all>
 		<xs:attribute name="class" type="xs:token" use="required" />
+	</xs:complexType>
+	<xs:element name="groupings" type="groupingsType"/>
+	<xs:complexType name="groupingsType">
+		<xs:sequence>
+			<xs:element name="grouping" type="groupingType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="groupingType">
+		<xs:sequence>
+			<xs:element name="expansionKey" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX">
+							<xs:annotation>
+								<xs:documentation>A plix expression forming a code snippet to retrieve the expansion key used for this construct.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="surveyQuestion" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:token" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="imageInformation" type="imageInformationType"/>
 	<xs:complexType name="imageInformationType">
@@ -54,8 +90,53 @@
 	<xs:complexType name="surveyQuestionType">
 		<xs:sequence>
 			<xs:element ref="displaySupport" maxOccurs="unbounded"/>
+			<xs:element ref="imageMap" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="questionType" type="xs:string" use="required" />
+	</xs:complexType>
+	<xs:complexType name="imageMapType"/>
+	<xs:element name="imageMap" abstract="true" type="imageMapType"/>
+	<xs:element name="sequentialImageMap" type="sequentialImageMapType" substitutionGroup="imageMap">
+	</xs:element>
+	<xs:complexType name="sequentialImageMapType">
+		<xs:annotation>
+			<xs:documentation>Enum values in this question type map directly to image indices in the image list.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="imageMapType">
+				<xs:sequence>
+					<xs:element name="offset" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX">
+									<xs:annotation>
+										<xs:documentation>A plix expression forming a code snippet to use as the base offset for the image map.</xs:documentation>
+									</xs:annotation>
+								</xs:any>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="explicitImageMap" type="explicitImageMapType" substitutionGroup="imageMap"/>
+	<xs:complexType name="explicitImageMapType">
+		<xs:annotation>
+			<xs:documentation>Enum values in this question type require custom mapping to image indices.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="imageMapType">
+				<xs:sequence>
+					<xs:element name="map" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:attribute name="imageIndex" type="xs:nonNegativeInteger" use="required"/>
+							<xs:attribute name="enumValue" type="xs:token" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="displaySupport" type="displaySupportType"/>
 	<xs:complexType name="displaySupportType">

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
+using System.ComponentModel;
 
 namespace Neumont.Tools.Modeling
 {
@@ -202,5 +203,39 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		#endregion // EnumerateDomainModels methods
+		#region GetLocalizedEnumName method
+		/// <summary>
+		/// Retrieve localized names for all values in an <paramref name="enumType"/>
+		/// </summary>
+		/// <typeparam name="EnumType">The type of an <see cref="Enum"/></typeparam>
+		/// <param name="value">A value from the <typeparamref name="EnumType"/> enumeration.</param>
+		/// <returns>A <see cref="String"/> corresponding to the localized enum name</returns>
+		public static string GetLocalizedEnumName<EnumType>(EnumType value) where EnumType : struct
+		{
+			return TypeDescriptor.GetConverter(typeof(EnumType)).ConvertToString(value);
+		}
+		#endregion // GetLocalizedEnumName method
+		#region GetLocalizedEnumNames method
+		/// <summary>
+		/// Retrieve localized names for all values in an <paramref name="enumType"/>
+		/// </summary>
+		/// <param name="enumType">A <see cref="Type"/> to retrieve values for.</param>
+		/// <param name="isSequential">Set to <see langword="true"/> if the enum is sequential and starts
+		/// with the 0 value. If this is set, then the returned array will be sorted by the enum value.</param>
+		/// <returns>A <see cref="String"/> array of enum names</returns>
+		public static string[] GetLocalizedEnumNames(Type enumType, bool isSequential)
+		{
+			Array values = Enum.GetValues(enumType);
+			TypeConverter converter = TypeDescriptor.GetConverter(enumType);
+			int valueCount = values.Length;
+			string[] retVal = new string[valueCount];
+			for (int i = 0; i < valueCount; ++i)
+			{
+				object value = values.GetValue(i);
+				retVal[isSequential ? (int)value : i] = converter.ConvertToString(value);
+			}
+			return retVal;
+		}
+		#endregion // GetLocalizedEnumNames method
 	}
 }

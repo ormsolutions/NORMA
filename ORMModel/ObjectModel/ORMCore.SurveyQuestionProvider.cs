@@ -6,18 +6,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	partial class ORMCoreDomainModel : ISurveyQuestionProvider
 	{
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo = new ISurveyQuestionTypeInfo[]{
-			ProvideSurveyQuestionForElementType.Instance,
-			ProvideSurveyQuestionForErrorState.Instance,
+		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo[]{
+			ProvideSurveyQuestionForSurveyElementType.Instance,
+			ProvideSurveyQuestionForSurveyErrorState.Instance,
+			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo[]{
+			ProvideSurveyQuestionForSurveyFactTypeDetailType.Instance,
+			ProvideSurveyQuestionForSurveyErrorState.Instance,
 			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
 		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
-		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions()
+		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey)
 		{
-			return mySurveyQuestionTypeInfo;
+			if (expansionKey == null)
+			{
+				return mySurveyQuestionTypeInfo1;
+			}
+			else if (expansionKey == FactType.SurveyExpansionKey)
+			{
+				return mySurveyQuestionTypeInfo2;
+			}
+			return null;
 		}
-		IEnumerable<ISurveyQuestionTypeInfo> ISurveyQuestionProvider.GetSurveyQuestions()
+		IEnumerable<ISurveyQuestionTypeInfo> ISurveyQuestionProvider.GetSurveyQuestions(object expansionKey)
 		{
-			return GetSurveyQuestions();
+			return GetSurveyQuestions(expansionKey);
 		}
 		/// <summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/></summary>
 		protected ImageList SurveyQuestionImageList
@@ -34,42 +46,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.SurveyQuestionImageList;
 			}
 		}
-		private sealed class ProvideSurveyQuestionForElementType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyElementType : ISurveyQuestionTypeInfo
 		{
-			private ProvideSurveyQuestionForElementType()
+			private ProvideSurveyQuestionForSurveyElementType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForElementType();
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyElementType();
 			public Type QuestionType
 			{
 				get
 				{
-					return typeof(ElementType);
+					return typeof(SurveyElementType);
 				}
 			}
 			public int AskQuestion(object data)
 			{
-				IAnswerSurveyQuestion<ElementType> typedData = data as IAnswerSurveyQuestion<ElementType>;
+				IAnswerSurveyQuestion<SurveyElementType> typedData = data as IAnswerSurveyQuestion<SurveyElementType>;
 				if (typedData != null)
 				{
 					return typedData.AskQuestion();
 				}
-				else
-				{
-					return -1;
-				}
+				return -1;
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				if ((this.UISupport & SurveyQuestionUISupport.Glyph) != SurveyQuestionUISupport.None)
-				{
-					SurveyQuestionGlyph t = (SurveyQuestionGlyph)answer;
-					return (int)t;
-				}
-				else
-				{
-					return -1;
-				}
+				return -1;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -79,42 +80,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForErrorState : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyErrorState : ISurveyQuestionTypeInfo
 		{
-			private ProvideSurveyQuestionForErrorState()
+			private ProvideSurveyQuestionForSurveyErrorState()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForErrorState();
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyErrorState();
 			public Type QuestionType
 			{
 				get
 				{
-					return typeof(ErrorState);
+					return typeof(SurveyErrorState);
 				}
 			}
 			public int AskQuestion(object data)
 			{
-				IAnswerSurveyQuestion<ErrorState> typedData = data as IAnswerSurveyQuestion<ErrorState>;
+				IAnswerSurveyQuestion<SurveyErrorState> typedData = data as IAnswerSurveyQuestion<SurveyErrorState>;
 				if (typedData != null)
 				{
 					return typedData.AskQuestion();
 				}
-				else
-				{
-					return -1;
-				}
+				return -1;
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				if ((this.UISupport & SurveyQuestionUISupport.Glyph) != SurveyQuestionUISupport.None)
-				{
-					SurveyQuestionGlyph t = (SurveyQuestionGlyph)answer;
-					return (int)t;
-				}
-				else
-				{
-					return -1;
-				}
+				return -1;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -144,28 +134,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return typedData.AskQuestion();
 				}
-				else
-				{
-					return -1;
-				}
+				return -1;
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				if ((this.UISupport & SurveyQuestionUISupport.Glyph) != SurveyQuestionUISupport.None)
-				{
-					SurveyQuestionGlyph t = (SurveyQuestionGlyph)answer;
-					return (int)t;
-				}
-				else
-				{
-					return -1;
-				}
+				return answer;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
 				{
 					return SurveyQuestionUISupport.Glyph;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyFactTypeDetailType : ISurveyQuestionTypeInfo
+		{
+			private ProvideSurveyQuestionForSurveyFactTypeDetailType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyFactTypeDetailType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyFactTypeDetailType);
+				}
+			}
+			public int AskQuestion(object data)
+			{
+				IAnswerSurveyQuestion<SurveyFactTypeDetailType> typedData = data as IAnswerSurveyQuestion<SurveyFactTypeDetailType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion();
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return -1;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
 				}
 			}
 		}

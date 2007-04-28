@@ -1,17 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="ORMCoreDomainModel">
 	<qp:surveyQuestions>
-		<qp:surveyQuestion questionType="ElementType">
+		<qp:surveyQuestion questionType="SurveyElementType">
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
 		</qp:surveyQuestion>
-		<qp:surveyQuestion questionType="ErrorState">
+		<qp:surveyQuestion questionType="SurveyErrorState">
 			<qp:displaySupport displayCategory="Overlay"/>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyQuestionGlyph">
 			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:sequentialImageMap/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyFactTypeDetailType">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
 		</qp:surveyQuestion>
 	</qp:surveyQuestions>
+	<qp:groupings>
+		<qp:grouping>
+			<qp:surveyQuestion ref="SurveyElementType"/>
+			<qp:surveyQuestion ref="SurveyErrorState"/>
+			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="FactType" name="SurveyExpansionKey" type="property"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyFactTypeDetailType"/>
+			<qp:surveyQuestion ref="SurveyErrorState"/>
+			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+		</qp:grouping>
+	</qp:groupings>
 	<qp:imageInformation>
 		<plx:return>
 			<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>

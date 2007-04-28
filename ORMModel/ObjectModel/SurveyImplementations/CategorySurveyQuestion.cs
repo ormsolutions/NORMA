@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Neumont.Tools.Modeling.Design;
+using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -25,7 +27,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// element type enum question answers
 	/// </summary>
-	public enum ElementType
+	[TypeConverter(typeof(EnumConverter<SurveyElementType, ORMModel>))]
+	public enum SurveyElementType
 	{
 		/// <summary>
 		/// ORM element Object Type
@@ -38,14 +41,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// ORM element Constraint
 		/// </summary>
-		Constraint,
+		ExternalConstraint,
 	}
 	#endregion // Element Type question
+	#region FactType Detail Question
+	/// <summary>
+	/// FactType detail survey answers
+	/// </summary>
+	[TypeConverter(typeof(EnumConverter<SurveyFactTypeDetailType, ORMModel>))]
+	public enum SurveyFactTypeDetailType
+	{
+		/// <summary>
+		/// A Role node
+		/// </summary>
+		Role,
+		/// <summary>
+		/// An internal constraint node
+		/// </summary>
+		InternalConstraint,
+		/// <summary>
+		/// A list of implicit fact types
+		/// </summary>
+		ImpliedFactType,
+	}
+	#endregion // FactType Detail Question
 	#region Error State question
 	/// <summary>
 	/// error state enum question answers
 	/// </summary>
-	public enum ErrorState
+	public enum SurveyErrorState
 	{
 		/// <summary>
 		/// ORM element contains error
@@ -55,10 +79,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// ORM element does not contain an error
 		/// </summary>
 		NoError,
-		/// <summary>
-		/// can not be determined whether the ORM element contains an error
-		/// </summary>
-		Inconclusive,
 	}
 	#endregion // Error State question
 	#region Survey Glyph questions

@@ -29,6 +29,7 @@ using System.Xml;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel.Design
 {
@@ -384,17 +385,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					string[] retVal = myTargetDisplayNames;
 					if (retVal == null)
 					{
-						Type targetType = typeof(VerbalizationTarget);
-						Array values = Enum.GetValues(targetType);
-						TypeConverter converter = TypeDescriptor.GetConverter(targetType);
-						int valueCount = values.Length;
-						retVal = new string[valueCount];
-						for (int i = 0; i < valueCount; ++i)
-						{
-							object value = values.GetValue(i);
-							retVal[(int)value] = converter.ConvertToString(value);
-						}
-						myTargetDisplayNames = retVal;
+						myTargetDisplayNames = retVal = Utility.GetLocalizedEnumNames(typeof(VerbalizationTarget), true);
 					}
 					return retVal;
 				}

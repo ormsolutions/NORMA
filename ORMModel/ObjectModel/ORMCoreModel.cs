@@ -675,6 +675,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			classInfo = directory.FindDomainClass(ModelHasFactType.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRemoved), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeAdded), action);
+
 			//Set Constraint
 			classInfo = directory.FindDomainClass(ModelHasSetConstraint.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetConstraintAdded), action);
@@ -695,6 +696,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			classInfo = directory.FindDomainClass(FactTypeHasRole.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAdded), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleDeleted), action);
+
+			//Role
+			propertyInfo = directory.FindDomainProperty(Role.NameDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChanged), action);
 
 			//ValueTypeHasDataType
 			classInfo = directory.FindDomainClass(ValueTypeHasDataType.DomainClassId);
@@ -773,33 +778,65 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IVerbalizationSnippetsProvider Implementation
 		#region ISurveyNodeProvider Implementation
-		IEnumerable<object> ISurveyNodeProvider.GetSurveyNodes()
+		IEnumerable<object> ISurveyNodeProvider.GetSurveyNodes(object context, object expansionKey)
 		{
-			return this.GetSurveyNodes();
+			return this.GetSurveyNodes(context, expansionKey);
 		}
 		/// <summary>
 		/// Provides an <see cref="IEnumerable{SampleDataElementNode}"/> for the <see cref="SurveyTreeContainer"/>.
 		/// </summary>
-		protected IEnumerable<object> GetSurveyNodes()
+		protected IEnumerable<object> GetSurveyNodes(object context, object expansionKey)
 		{
-			IElementDirectory elementDirectory = Store.ElementDirectory;
-			foreach (FactType element in elementDirectory.FindElements<FactType>(true))
+			if (expansionKey == null)
 			{
-				yield return element;
-			}
-			foreach (ObjectType element in elementDirectory.FindElements<ObjectType>(true))
-			{
-				yield return element;
-			}
+				IElementDirectory elementDirectory = Store.ElementDirectory;
+				foreach (FactType element in elementDirectory.FindElements<FactType>(true))
+				{
+					if (null == element.ImpliedByObjectification)
+					{
+						yield return element;
+					}
+				}
+				foreach (ObjectType element in elementDirectory.FindElements<ObjectType>(true))
+				{
+					yield return element;
+				}
 
-			foreach (SetConstraint element in elementDirectory.FindElements<SetConstraint>(true))
-			{
-				yield return element;
-			}
+				foreach (SetConstraint element in elementDirectory.FindElements<SetConstraint>(true))
+				{
+					if (!((IConstraint)element).ConstraintIsInternal)
+					{
+						yield return element;
+					}
+				}
 
-			foreach (SetComparisonConstraint element in elementDirectory.FindElements<SetComparisonConstraint>(true))
+				foreach (SetComparisonConstraint element in elementDirectory.FindElements<SetComparisonConstraint>(true))
+				{
+					yield return element;
+				}
+			}
+			else if (expansionKey == FactType.SurveyExpansionKey)
 			{
-				yield return element;
+				FactType factType = context as FactType;
+				if (factType != null)
+				{
+					foreach (RoleBase role in factType.RoleCollection)
+					{
+						yield return role;
+					}
+					foreach (SetConstraint element in factType.GetInternalConstraints<SetConstraint>())
+					{
+						yield return element;
+					}
+					Objectification objectification = factType.Objectification;
+					if (objectification != null)
+					{
+						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
+						{
+							yield return impliedFactType;
+						}
+					}
+				}
 			}
 		}
 		#endregion // ISurveyNodeProvider Implementation
@@ -814,7 +851,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				ModelHasObjectType link = element as ModelHasObjectType;
-				eventNotify.ElementAdded(link.ObjectType);
+				eventNotify.ElementAdded(link.ObjectType, null);
 			}
 		}
 		/// <summary>
@@ -843,6 +880,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for changes to a Role
+		/// </summary>
+		protected void RoleNameChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted && null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				Role role = (Role)element;
+				eventNotify.ElementRenamed(role);
+				RoleProxy proxy = role.Proxy;
+				if (proxy != null)
+				{
+					eventNotify.ElementRenamed(proxy);
+				}
+			}
+		}
+		/// <summary>
 		/// wired on SurveyQuestionLoad as event handler for FactType Name change events (custom events)
 		/// </summary>
 		protected void FactTypeRemoved(object sender, ElementDeletedEventArgs e)
@@ -860,11 +915,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void FactTypeAdded(object sender, ElementAddedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
-			ModelHasFactType element = e.ModelElement as ModelHasFactType;		
-				if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
-				{
-					eventNotify.ElementAdded(element.FactType);
-				}
+			ModelHasFactType element = e.ModelElement as ModelHasFactType;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				FactType factType = element.FactType;
+				Objectification objectification = factType.ImpliedByObjectification;
+				eventNotify.ElementAdded(factType, (objectification != null) ? objectification.NestedFactType : null);
+			}
 		}
 		/// <summary>
 		/// Set Constraint added
@@ -876,11 +933,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				//do not add mandatory constraint if it's part of ExclusiveOr
-				if (null != (element as MandatoryConstraint) &&  null != (element as MandatoryConstraint).ExclusiveOrExclusionConstraint)
+				switch (((IConstraint)element).ConstraintType)
 				{
-					return;
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.InternalUniqueness:
+						LinkedElementCollection<FactType> factTypes = element.FactTypeCollection;
+						if (factTypes.Count == 1)
+						{
+							// Add as a detail on the FactType, not the main list
+							eventNotify.ElementAdded(element, factTypes[0]);
+						}
+						return;
+					case ConstraintType.DisjunctiveMandatory:
+						if ((element as MandatoryConstraint).ExclusiveOrExclusionConstraint != null)
+						{
+							return;
+						}
+						break;
 				}
-				eventNotify.ElementAdded(element);
+				eventNotify.ElementAdded(element, null);
 			}
 		}
 		/// <summary>
@@ -910,7 +981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return;
 				}
-				eventNotify.ElementAdded(element);
+				eventNotify.ElementAdded(element, null);
 			}
 		}
 		/// <summary>
@@ -937,7 +1008,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactTypeHasRole element = e.ModelElement as FactTypeHasRole;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementChanged(element.FactType, typeof(SurveyQuestionGlyph));
+				FactType factType = element.FactType;
+				eventNotify.ElementChanged(factType, typeof(SurveyQuestionGlyph));
+				Role role = element.Role as Role;
+				if (role != null) // ProxyRole is only added as part of an implicit fact type, don't notify separately
+				{
+					eventNotify.ElementAdded(role, factType);
+				}
 			}
 		}
 
@@ -956,8 +1033,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!factType.IsDeleted)
 				{
 					eventNotify.ElementChanged(factType, questionTypes);
+					Role role = element.Role as Role;
+					if (role != null)
+					{
+						eventNotify.ElementDeleted(role);
+					}
 				}
-				
 			}
 		}
 		/// <summary>
@@ -1140,7 +1221,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
-				eventNotify.ElementAdded(coupler.ExclusionConstraint);
+				eventNotify.ElementAdded(coupler.ExclusionConstraint, null);
 				eventNotify.ElementDeleted(coupler.MandatoryConstraint);
 				eventNotify.ElementChanged(coupler.ExclusionConstraint, questionTypes);
 			}
@@ -1160,7 +1241,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
 				if (!coupler.ExclusionConstraint.IsDeleted)
 				{
-					eventNotify.ElementAdded(coupler.MandatoryConstraint);
+					eventNotify.ElementAdded(coupler.MandatoryConstraint, null);
 					eventNotify.ElementChanged(coupler.ExclusionConstraint, questionTypes);
 				}
 			}

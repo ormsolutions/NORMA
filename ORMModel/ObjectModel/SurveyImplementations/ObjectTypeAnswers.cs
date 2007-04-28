@@ -23,12 +23,12 @@ using System.Windows.Forms;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ObjectType : IAnswerSurveyQuestion<ErrorState>, IAnswerSurveyQuestion<ElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
+	public partial class ObjectType : IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
 
 		#region IAnswerSurveyQuestion<ErrorState> Members
 
-		int IAnswerSurveyQuestion<ErrorState>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -38,13 +38,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? ErrorState.HasError : ErrorState.NoError);
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
 
 		#endregion
 		#region IAnswerSurveyQuestion<ElementType> Members
 
-		int IAnswerSurveyQuestion<ElementType>.AskQuestion()
+		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskElementQuestion()
 		{
-			return (int)ElementType.ObjectType;
+			return (int)SurveyElementType.ObjectType;
 		}
 
 		#endregion

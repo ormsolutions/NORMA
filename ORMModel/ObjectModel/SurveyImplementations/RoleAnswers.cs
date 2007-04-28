@@ -16,16 +16,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ORMNamedElement : ISurveyNode
+	public partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ICustomComparableSurveyNode
 	{
-		#region ISurveyNode Implementation
+		#region ISurveyNode Members
 		bool ISurveyNode.IsSurveyNameEditable
 		{
 			get
@@ -40,7 +43,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, ORMNamedElement.NameDomainPropertyId).IsReadOnly;
+				return !DomainTypeDescriptor.CreatePropertyDescriptor(this, FactType.NameDomainPropertyId).IsReadOnly;
 			}
 		}
 		string ISurveyNode.SurveyName
@@ -53,11 +56,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyName"/>
 		/// </summary>
-		protected string SurveyName //TODO: this may need to be updated to return the more descriptive element name (componentName)?
+		protected string SurveyName
 		{
 			get
 			{
-				return this.Name;
+				Role role = Role;
+				string retVal = role.Name;
+				if (string.IsNullOrEmpty(retVal))
+				{
+					// UNDONE: Use a better name here
+					retVal = TypeDescriptor.GetClassName(role);
+				}
+				return retVal;
 			}
 		}
 		string ISurveyNode.EditableSurveyName
@@ -78,22 +88,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return this.Name; 
+				return Role.Name;
 			}
 			set
 			{
-				DomainTypeDescriptor.CreatePropertyDescriptor(this, ORMNamedElement.NameDomainPropertyId).SetValue(this, value);
+				Role role = Role;
+				DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.NameDomainPropertyId).SetValue(role, value);
 			}
 		}
-
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
-		protected static object SurveyNodeDataObject
+		protected object SurveyNodeDataObject
 		{
 			get
 			{
-				return null;
+				Role role = Role;
+				FactType resolvedFactType = role.FactType;
+				Objectification objectification;
+				if (null != (objectification = resolvedFactType.ImpliedByObjectification))
+				{
+					resolvedFactType = objectification.NestedFactType;
+				}
+				DataObject retVal = new DataObject();
+				retVal.SetData(typeof(FactType), resolvedFactType);
+				return retVal;
 			}
 		}
 		object ISurveyNode.SurveyNodeDataObject
@@ -105,7 +124,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
-		/// </summary>
+		/// </summary>		
 		protected static object SurveyNodeExpansionKey
 		{
 			get
@@ -120,6 +139,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return SurveyNodeExpansionKey;
 			}
 		}
-		#endregion // ISurveyNode Implementation
+		#endregion
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Members
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion()
+		{
+			return AskFactTypeDetailQuestion();
+		}
+		/// <summary>
+		/// returns answer to IAnswerSurveyQuestion for fact type details
+		/// </summary>
+		protected int AskFactTypeDetailQuestion()
+		{
+			return (int)SurveyFactTypeDetailType.Role;
+		}
+		#endregion
+		#region ICustomComparableSurveyNode Members
+		int ICustomComparableSurveyNode.CompareToSurveyNode(object other)
+		{
+			return CompareToSurveyNode(other);
+		}
+		/// <summary>
+		/// Implements <see cref="ICustomComparableSurveyNode.CompareToSurveyNode"/>. Roles
+		/// compare based on order in the FactType.RoleCollection. 0 (no information) is
+		/// returned for a comparison to all other element types.
+		/// </summary>
+		protected int CompareToSurveyNode(object other)
+		{
+			RoleBase otherRole;
+			FactType factType;
+			if (null != (otherRole = other as RoleBase) &&
+				null != (factType = FactType))
+			{
+				LinkedElementCollection<RoleBase> allRoles = factType.RoleCollection;
+				int roleCount = allRoles.Count;
+				for (int i = 0; i < roleCount; ++i)
+				{
+					RoleBase testRole = allRoles[i];
+					if (testRole == other)
+					{
+						return 1;
+					}
+					else if (testRole == this)
+					{
+						return -1;
+					}
+				}
+			}
+			// For this comparison, this implies no information is available
+			return 0;
+		}
+		#endregion
 	}
 }
