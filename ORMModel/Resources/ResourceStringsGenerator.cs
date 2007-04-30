@@ -412,6 +412,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifyFactType.TransactionName");
 			}
 		}
+		/// <summary>The name given to the transaction used when unobjectifying a fact type.</summary>
+		public static string UnobjectifyFactTypeTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "UnobjectifyFactType.TransactionName");
+			}
+		}
 		/// <summary>The transaction name used by ExclusiveOrCoupler command.</summary>
 		public static string ExclusiveOrCouplerTransactionName
 		{
@@ -650,6 +658,14 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to operate on an implied objectification by a method that only accepts explicit objectifications.</summary>
+		public static string ModelExceptionObjectificationImpliedObjectificationNotAllowed
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedObjectificationNotAllowed");
 			}
 		}
 		/// <summary>The error message to return when an attempt is made to change the IsPrimary property of a reading to false.</summary>

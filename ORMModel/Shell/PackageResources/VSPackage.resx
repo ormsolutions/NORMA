@@ -82,10 +82,6 @@
 		<value>Object-Role Modeling File for Neumont ORM Architect</value>
 		<comment>PackageResources.Id.ORMFileDescription</comment>
 	</data>
-	<data name="104">
-		<value>ORMModel.orm</value>
-		<comment>PackageResources.Id.ORMModelBaseName</comment>
-	</data>
 	<data name="105">
 		<value>ORM Designer</value>
 		<comment>PackageResources.Id.OptionsCategory</comment>
@@ -93,10 +89,6 @@
 	<data name="106">
 		<value>General</value>
 		<comment>PackageResources.Id.OptionsGeneral</comment>
-	</data>
-	<data name="107">
-		<value>ORM</value>
-		<comment>PackageResources.Id.ORMProjectItems</comment>
 	</data>
 	<data name="108">
 		<value>ORM Designer</value>

@@ -90,6 +90,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Ensure that the <see cref="ObjectType.ValueRangeText"/> property is read-only when
 		/// <see cref="ObjectType.IsValueType"/> is <see langword="false"/> and
 		/// <see cref="ObjectType.HasReferenceMode"/> is <see langword="false"/>.
+		/// Ensure that the <see cref="ObjectType.NestedFactTypeDisplay"/> and
+		/// <see cref="ObjectType.ReferenceModeDisplay"/> properties are read-only
+		/// when <see cref="ObjectType.Objectification"/> is not <see langword="null"/> and
+		/// <see cref="Objectification.IsImplied"/> is <see langword="true"/>.
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
@@ -114,6 +118,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 				{
 					return !objectType.AllowIsIndependent(false);
 				}
+			}
+			else if (propertyId.Equals(ObjectType.NestedFactTypeDisplayDomainPropertyId) ||
+				propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
+			{
+				Objectification objectification = objectType.Objectification;
+				return objectification != null && objectification.IsImplied;
 			}
 			else
 			{

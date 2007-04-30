@@ -225,6 +225,10 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusGenerateReport), 
 						new EventHandler(OnMenuGenerateReport),
 						ORMDesignerCommandIds.GenerateReport)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusUnobjectifyFactType), 
+						new EventHandler(OnMenuUnobjectifyFactType),
+						ORMDesignerCommandIds.UnobjectifyFactType)
 						// Alignment Commands
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAlignShapes),
@@ -791,6 +795,22 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuGenerateReport();
+				}
+			}
+			private void OnStatusUnobjectifyFactType(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.UnobjectifyFactType);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuUnobjectifyFactType(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuUnobjectifyFactType();
 				}
 			}
 			/// <summary>
@@ -1399,6 +1419,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// Launch the Generate Report dialog
 			/// </summary>
 			public static readonly CommandID GenerateReport = new CommandID(guidORMDesignerCommandSet, cmdIdGenerateReport);
+			/// <summary>
+			/// Unobjectifies the fact type.
+			/// </summary>
+			public static readonly CommandID UnobjectifyFactType = new CommandID(guidORMDesignerCommandSet, cmdIdUnobjectifyFactType);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -1663,6 +1687,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// Launch the Generate Report dialog
 			/// </summary>
 			private const int cmdIdGenerateReport = 0x2929;
+			/// <summary>
+			/// Unobjectifies the fact type.
+			/// </summary>
+			private const int cmdIdUnobjectifyFactType = 0x292A;
 			#endregion
 		}
 	}

@@ -49,194 +49,199 @@ namespace Neumont.Tools.ORM.Shell
 	/// Valid commands
 	/// </summary>
 	[Flags]
+	[Serializable]
 	public enum ORMDesignerCommands : long
 	{
 		/// <summary>
 		/// Commands not set
 		/// </summary>
-		None = 0,
+		None = 0L,
 		/// <summary>
 		/// Deletion of one or more object types is enabled
 		/// </summary>
-		DeleteObjectType = 1,
+		DeleteObjectType = 1L << 0,
 		/// <summary>
 		/// Deletion of one or more fact types is enabled
 		/// </summary>
-		DeleteFactType = 2,
+		DeleteFactType = 1L << 1,
 		/// <summary>
 		/// Deletion of one or more constraints is enabled
 		/// </summary>
-		DeleteConstraint = 4,
+		DeleteConstraint = 1L << 2,
 		/// <summary>
 		/// Display the readings toolwindow
 		/// </summary>
-		DisplayReadingsWindow = 8,
+		DisplayReadingsWindow = 1L << 3,
 		/// <summary>
 		/// Display the Custom Reference Mode window
 		/// </summary>
-		DisplayCustomReferenceModeWindow = 0x10,
+		DisplayCustomReferenceModeWindow = 1L << 4,
 		/// <summary>
 		/// Insert a role before or after the current role
 		/// </summary>
-		InsertRole = 0x20,
+		InsertRole = 1L << 5,
 		/// <summary>
 		/// Delete the current role
 		/// </summary>
-		DeleteRole = 0x40,
+		DeleteRole = 1L << 6,
 		/// <summary>
 		/// Display the fact editor toolwindow
 		/// </summary>
-		DisplayFactEditorWindow = 0x80,
+		DisplayFactEditorWindow = 1L << 7,
 		/// <summary>
 		/// Activate editing for the RoleSequence
 		/// </summary>
-		ActivateRoleSequence = 0x100,
+		ActivateRoleSequence = 1L << 8,
 		/// <summary>
 		/// Delete the RoleSequence
 		/// </summary>
-		DeleteRoleSequence = 0x200,
+		DeleteRoleSequence = 1L << 9,
 		/// <summary>
 		/// Roll the RoleSequence up (lower number) in the active Constraint's RoleSequenceCollection
 		/// </summary>
-		MoveRoleSequenceUp = 0x400,
+		MoveRoleSequenceUp = 1L << 10,
 		/// <summary>
 		/// Roll the RoleSequence down (higher number) in the active Constraint's RoleSequenceCollection
 		/// </summary>
-		MoveRoleSequenceDown = 0x800,
+		MoveRoleSequenceDown = 1L << 11,
 		/// <summary>
 		/// Activate editing for the ExternalConstraint
 		/// </summary>
-		EditExternalConstraint = 0x1000,
+		EditExternalConstraint = 1L << 12,
 		/// <summary>
 		/// Display standard toolwindows that we never disable.
 		/// This currently maps to the Verbalization and Model Browser windows
 		/// </summary>
-		DisplayStandardWindows = 0x2000,
+		DisplayStandardWindows = 1L << 13,
 		/// <summary>
 		/// Select all top level selectable elements on the current diagram
 		/// </summary>
-		SelectAll = 0x4000,
+		SelectAll = 1L << 14,
 		/// <summary>
 		/// Special command used in addition to the specific Delete elements.
 		/// DeleteAny will survive most complex multi-select cases whereas the Delete
 		/// will not. This is handled specially for the delete case.
 		/// </summary>
-		DeleteAny = 0x8000,
+		DeleteAny = 1L << 15,
 		/// <summary>
 		/// Apply an auto-layout algorithm to the selection. Applies to top-level objects.
 		/// </summary>
-		AutoLayout = 0x10000,
+		AutoLayout = 1L << 16,
 		/// <summary>
 		/// Toggle the IsMandatory property on the selected role. Applies to a single role.
 		/// </summary>
-		ToggleSimpleMandatory = 0x20000,
+		ToggleSimpleMandatory = 1L << 17,
 		/// <summary>
 		/// Add an internal uniqueness constraint for the selected roles.
 		/// Applies to one or more roles from the same fact type.
 		/// </summary>
-		AddInternalUniqueness = 0x40000,
+		AddInternalUniqueness = 1L << 18,
 		/// <summary>
 		/// Display the ExtensionManager dialog
 		/// </summary>
-		ExtensionManager = 0x80000,
+		ExtensionManager = 1L << 19,
 		/// <summary>
 		/// Support the CopyImage command
 		/// </summary>
-		CopyImage = 0x100000,
+		CopyImage = 1L << 20,
 		/// <summary>
 		/// Delete an object shape
 		/// </summary>
-		DeleteObjectShape = 0x200000,
+		DeleteObjectShape = 1L << 21,
 		/// <summary>
 		/// Delete a fact shape
 		/// </summary>
-		DeleteFactShape = 0x400000,
+		DeleteFactShape = 1L << 22,
 		/// <summary>
 		/// Delete a constraint shape
 		/// </summary>
-		DeleteConstraintShape = 0x800000,
+		DeleteConstraintShape = 1L << 23,
 		/// <summary>
 		/// Special command used in addition to the specific Delete*Shape elements.
 		/// DeleteAnyShape will survive most complex multi-select cases whereas the Delete*Shape
 		/// will not. This is handled specially for the delete case.
 		/// </summary>
-		DeleteAnyShape = 0x1000000,
+		DeleteAnyShape = 1L << 24,
 		/// <summary>
 		/// Align top level shape elements. Applies to all of the standard Format.Align commands.
 		/// </summary>
-		AlignShapes = 0x2000000,
+		AlignShapes = 1L << 25,
 		/// <summary>
 		/// Move a role's order to the left within the fact type.
 		/// </summary>
-		MoveRoleLeft = 0x4000000,
+		MoveRoleLeft = 1L << 26,
 		/// <summary>
 		/// Move a role's order to the right within the fact type.
 		/// </summary>
-		MoveRoleRight = 0x8000000,
+		MoveRoleRight = 1L << 27,
 		/// <summary>
 		/// Expand the error list for the selected object
 		/// </summary>
-		ErrorList = 0x10000000,
+		ErrorList = 1L << 28,
 		/// <summary>
 		/// Objectifies the fact type.
 		/// </summary>
-		ObjectifyFactType = 0x20000000,
+		ObjectifyFactType = 1L << 29,
 		/// <summary>
 		/// Delete Model Note
 		/// </summary>
-		DeleteModelNote = 0x40000000,
+		DeleteModelNote = 1L << 30,
 		/// <summary>
 		/// Delete Model Note Shape
 		/// </summary>
-		DeleteModelNoteShape = 0x80000000,
+		DeleteModelNoteShape = 1L << 31,
 		/// <summary>
 		/// Delete Model Note Reference
 		/// </summary>
-		DeleteModelNoteReference = 0x100000000,
+		DeleteModelNoteReference = 1L << 32,
 		/// <summary>
 		/// Rotate a fact type shape to a horizontal orientation
 		/// </summary>
-		DisplayOrientationHorizontal = 0x200000000,
+		DisplayOrientationHorizontal = 1L << 33,
 		/// <summary>
 		/// Rotate a fact type shape to a left vertical orientation
 		/// </summary>
-		DisplayOrientationRotatedLeft = 0x400000000,
+		DisplayOrientationRotatedLeft = 1L << 34,
 		/// <summary>
 		/// Rotate a fact type shape to a right vertical orientation
 		/// </summary>
-		DisplayOrientationRotatedRight = 0x800000000,
+		DisplayOrientationRotatedRight = 1L << 35,
 		/// <summary>
 		/// Display constraints on the top of the fact type shape
 		/// </summary>
-		DisplayConstraintsOnTop = 0x1000000000,
+		DisplayConstraintsOnTop = 1L << 36,
 		/// <summary>
 		/// Display constraints on the bottom of the fact type shape
 		/// </summary>
-		DisplayConstraintsOnBottom = 0x2000000000,
+		DisplayConstraintsOnBottom = 1L << 37,
 		/// <summary>
 		/// Reverse the role order on the fact type shape
 		/// </summary>
-		DisplayReverseRoleOrder = 0x4000000000,
+		DisplayReverseRoleOrder = 1L << 38,
 		/// <summary>
 		/// Couple a MandatoryConstraint and an ExclusionConstraint into an ExclusiveOr constraint
 		/// </summary>
-		ExclusiveOrCoupler = 0x8000000000,
+		ExclusiveOrCoupler = 1L << 39,
 		/// <summary>
 		/// Separate an ExclusiveOr constraint coupling
 		/// </summary>
-		ExclusiveOrDecoupler = 0x10000000000,
+		ExclusiveOrDecoupler = 1L << 40,
 		/// <summary>
 		/// Support label editing
 		/// </summary>
-		EditLabel = 0x20000000000,
+		EditLabel = 1L << 41,
 		/// <summary>
 		/// Expand the diagram list for the selected shape
 		/// </summary>
-		DiagramList = 0x40000000000,
+		DiagramList = 1L << 42,
 		/// <summary>
 		/// Run the report generator
 		/// </summary>
-		GenerateReport = 0x80000000000,
+		GenerateReport = 1L << 43,
+		/// <summary>
+		/// Unobjectifies the fact type.
+		/// </summary>
+		UnobjectifyFactType = 1L << 44,
 		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
@@ -265,7 +270,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <see cref="DiagramDocView"/> designed to contain multiple <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
-	public partial class ORMDesignerDocView : Neumont.Tools.Modeling.Shell.MultiDiagramDocView, IORMSelectionContainer
+	public partial class ORMDesignerDocView : MultiDiagramDocView, IORMSelectionContainer
 	{
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
@@ -869,6 +874,11 @@ namespace Neumont.Tools.ORM.Shell
 					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
 					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
 				}
+				else
+				{
+					visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+				}
 				FactTypeShape factShape;
 				if (null != (factShape = presentationElement as FactTypeShape))
 				{
@@ -889,6 +899,12 @@ namespace Neumont.Tools.ORM.Shell
 			else if (null != (objectType = element as ObjectType))
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
+				Objectification objectification = objectType.Objectification;
+				if (objectification != null && !objectification.IsImplied)
+				{
+					visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+				}
 				if (presentationElement is ObjectTypeShape)
 				{
 					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
@@ -1004,6 +1020,11 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
 					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
+				}
+				else
+				{
+					visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
 				}
 
 				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
@@ -3355,6 +3376,48 @@ namespace Neumont.Tools.ORM.Shell
 								t.Commit();
 								myEnabledCommands &= ~ORMDesignerCommands.ObjectifyFactType;
 								myVisibleCommands &= ~ORMDesignerCommands.ObjectifyFactType;
+								myEnabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+								myVisibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
+							}
+						}
+						// Once we've objectified a fact type, we're done
+						break;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Unobjectifies the selected fact type or object type.
+		/// </summary>
+		protected virtual void OnMenuUnobjectifyFactType()
+		{
+			ORMDiagram diagram = CurrentDiagram as ORMDiagram;
+			if (diagram != null)
+			{
+				IList selectedElements = SelectedElements;
+				int selectedElementsCount = selectedElements.Count;
+				for (int i = 0; i < selectedElementsCount; i++)
+				{
+					// ResolveContextFactType will resolve an ObjectType to the FactType that it nests,
+					// so we don't need to worry about doing that ourselves.
+					FactType factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i]);
+					if (factType != null)
+					{
+						Store store = factType.Store;
+						using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.UnobjectifyFactTypeTransactionName))
+						{
+							Objectification objectification = factType.Objectification;
+							Debug.Assert(objectification != null && !objectification.IsImplied);
+
+							Objectification.RemoveExplicitObjectification(objectification);
+
+							if (t.HasPendingChanges)
+							{
+								t.Commit();
+								myEnabledCommands &= ~ORMDesignerCommands.UnobjectifyFactType;
+								myVisibleCommands &= ~ORMDesignerCommands.UnobjectifyFactType;
+								myEnabledCommands |= ORMDesignerCommands.ObjectifyFactType;
+								myVisibleCommands |= ORMDesignerCommands.ObjectifyFactType;
 							}
 						}
 						// Once we've objectified a fact type, we're done

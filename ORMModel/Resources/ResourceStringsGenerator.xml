@@ -219,6 +219,9 @@
 	<ResourceString name="ObjectifyFactTypeTransactionName" model="Diagram" resourceName="ObjectifyFactType.TransactionName">
 		<comment type="summary">The name given to the transaction used when objectifying a fact type.</comment>
 	</ResourceString>
+	<ResourceString name="UnobjectifyFactTypeTransactionName" model="Diagram" resourceName="UnobjectifyFactType.TransactionName">
+		<comment type="summary">The name given to the transaction used when unobjectifying a fact type.</comment>
+	</ResourceString>
 	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName">
 		<comment type="summary">The transaction name used by ExclusiveOrCoupler command.</comment>
 	</ResourceString>
@@ -308,6 +311,9 @@
 	</ResourceString>
 	<ResourceString name="ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" model="Model" resourceName="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact">
 		<comment type="summary">Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent or plays a Role in a non-implied FactType.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionObjectificationImpliedObjectificationNotAllowed" model="Model" resourceName="ModelException.Objectification.ImpliedObjectificationNotAllowed">
+		<comment type="summary">Exception message when an attempt is made to operate on an implied objectification by a method that only accepts explicit objectifications.</comment>
 	</ResourceString>
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse">
 		<comment type="summary">The error message to return when an attempt is made to change the IsPrimary property of a reading to false.</comment>

@@ -4785,9 +4785,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								foreach (RolePlayerLink rolePlayer in PresentationViewsSubject.GetPresentation(modelLink))
+								LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
+								for (int i = presentationElements.Count - 1; i >= 0; i--)
 								{
-									NodeShape objShape = (rolePlayer.Diagram as ORMDiagram).FindShapeForElement<NodeShape>(nestingType);
+									RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
+									if (rolePlayer == null)
+									{
+										continue;
+									}
+									NodeShape objShape = ((ORMDiagram)rolePlayer.Diagram).FindShapeForElement<NodeShape>(nestingType);
 									if (objShape != null)
 									{
 										rolePlayer.ToShape = objShape;

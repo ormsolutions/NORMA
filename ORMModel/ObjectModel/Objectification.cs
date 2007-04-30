@@ -267,7 +267,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (objectification.IsImplied)
 					{
 						ObjectType nestingType = objectification.NestingType;
-						if (nestingType != null && (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
+						if (nestingType != null && ((nestingType.AllowIsIndependent(false) && !nestingType.IsIndependent) || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
 						{
 							throw InvalidImpliedObjectificationException();
 						}
@@ -810,7 +810,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Objectification implied facts and constraints pattern enforcement
 		#region Helper functions
 		/// <summary>
-		/// If a newly played Role is in a non-implied FactType, then the role player cannot be an implied objectifying ObjectType
+		/// Determines if the specified <see cref="FactType"/> requires an implied <see cref="Objectification"/>,
+		/// ignoring any <see cref="Objectification"/> that is already present.
+		/// </summary>
+		/// <remarks>
+		/// A <see cref="FactType"/> is considered to require an implied <see cref="Objectification"/> if it has
+		/// more than two <see cref="Role"/>s or if it has an <see cref="ConstraintModality.Alethic"/>
+		/// <see cref="UniquenessConstraint"/> that spans more than one role.
+		/// </remarks>
+		private static bool IsImpliedObjectificationRequired(FactType factType)
+		{
+			// See if we have more than two roles
+			if (factType.RoleCollection.Count > 2)
+			{
+				return true;
+			}
+
+			// See if we have an "internal" alethic uniqueness constraint that spans more than one role
+			foreach (UniquenessConstraint uniquenessConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
+			{
+				if (uniquenessConstraint.Modality == ConstraintModality.Alethic &&
+					uniquenessConstraint.RoleCollection.Count > 1)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+		/// <summary>
+		/// If a newly played <see cref="Role"/> is in a non-implied <see cref="FactType"/>, then the role player
+		/// cannot be an implied objectifying <see cref="ObjectType"/>.
 		/// </summary>
 		private static void ProcessNewPlayedRoleForImpliedObjectification(Role playedRole)
 		{
@@ -879,24 +909,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Objectification objectification = factType.Objectification;
 			if (objectification != null)
 			{
-				if (objectification.IsImplied)
+				if (objectification.IsImplied && !IsImpliedObjectificationRequired(factType))
 				{
-					// See if we have more than two roles
-					if (factType.RoleCollection.Count > 2)
-					{
-						return;
-					}
-					// Make sure that we still have a uniqueness constraint that implies the objectification
-					foreach (UniquenessConstraint uniquenessConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
-					{
-						if (uniquenessConstraint.Modality == ConstraintModality.Alethic &&
-							uniquenessConstraint.RoleCollection.Count > 1)
-						{
-							return;
-						}
-					}
-					// We don't have enough roles or a uniqueness constraint that implies the objectification, so get rid of
-					// the implied objectification
+					// The objectification is no longer implied, so get rid of it.
 					if (throwOnFailure)
 					{
 						throw InvalidImpliedObjectificationException();
@@ -909,31 +924,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				// See if we have more than two roles
-				if (factType.RoleCollection.Count > 2)
+				if (IsImpliedObjectificationRequired(factType))
 				{
-					CreateObjectificationForFactType(factType, true, null);
-					return;
-				}
-				// See if we now have a uniqueness constraint that implies an objectification
-				foreach (UniquenessConstraint uniquenessConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
-				{
-					if (uniquenessConstraint.Modality == ConstraintModality.Alethic &&
-						uniquenessConstraint.RoleCollection.Count > 1)
-					{
-						// We now have a uniqueness constraint that implies an objectification, so create it
-						CreateObjectificationForFactType(factType, true, null);
-						return;
-					}
+					// An objectification is now implied, so create it.
+					CreateObjectificationForFactTypeInternal(factType, true, null);
 				}
 			}
 		}
 		/// <summary>
 		/// Creates an <see cref="Objectification"/> for the specified <see cref="FactType"/>.
-		/// NOTE: If <paramref name="isImplied"/> is <see langword="true"/>, it is the caller's responsibility to ensure that the
-		/// specified <see cref="FactType"/> matches the implied <see cref="Objectification"/> pattern.
 		/// </summary>
 		public static void CreateObjectificationForFactType(FactType factType, bool isImplied, INotifyElementAdded notifyAdded)
+		{
+			if (factType == null)
+			{
+				throw new ArgumentNullException("factType");
+			}
+			if (isImplied && !IsImpliedObjectificationRequired(factType))
+			{
+				throw InvalidImpliedObjectificationException();
+			}
+			CreateObjectificationForFactTypeInternal(factType, isImplied, notifyAdded);
+		}
+		/// <summary>
+		/// Creates an <see cref="Objectification"/> for the specified <see cref="FactType"/>.
+		/// </summary>
+		/// <remarks>
+		/// If <paramref name="isImplied"/> is <see langword="true"/>, it is the caller's responsibility to ensure that the
+		/// specified <see cref="FactType"/> matches the implied <see cref="Objectification"/> pattern.
+		/// </remarks>
+		private static void CreateObjectificationForFactTypeInternal(FactType factType, bool isImplied, INotifyElementAdded notifyAdded)
 		{
 			// If the implied fact has a single internal uniqueness constraint
 			// then automatically use it as the preferred identifier.
@@ -1115,11 +1135,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return impliedFact;
 		}
 		/// <summary>
-		/// Creates an Objectification between the specified FactType and ObjectType. If the FactType already has an implied
-		/// Objectification, it will be merged with the new objectifying ObjectType.
+		/// Creates an <see cref="Objectification"/> between the specified <see cref="FactType"/> and <see cref="ObjectType"/>. If the
+		/// <see cref="FactType"/> already has an implied <see cref="Objectification"/>, it will be merged with the new objectifying
+		/// <see cref="ObjectType"/>.
 		/// </summary>
 		public static void CreateExplicitObjectification(FactType nestedFactType, ObjectType nestingType)
 		{
+			if (nestedFactType == null)
+			{
+				throw new ArgumentNullException("nestedFactType");
+			}
 			Objectification objectification = nestedFactType.Objectification;
 			if (objectification != null && objectification.IsImplied)
 			{
@@ -1176,6 +1201,190 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				// We don't have an implied Objectification, so we don't need to do anything special.
 				nestedFactType.NestingType = nestingType;
+			}
+		}
+		/// <summary>
+		/// Removes the explicit <see cref="Objectification"/> specified by <paramref name="explicitObjectification"/>.
+		/// </summary>
+		/// <remarks>
+		/// If it is determined that the <see cref="ObjectType"/> that results from the <see cref="Objectification"/> is
+		/// used elsewhere in the model, it will be separated from the <see cref="Objectification"/>. Otherwise, the
+		/// <see cref="ObjectType"/> will be used as part of the implied <see cref="Objectification"/> (if one is needed),
+		/// or it will be deleted.
+		/// </remarks>
+		/// <param name="explicitObjectification">The <see cref="Objectification"/> to be removed.</param>
+		public static void RemoveExplicitObjectification(Objectification explicitObjectification)
+		{
+			if (explicitObjectification == null)
+			{
+				throw new ArgumentNullException("explicitObjectification");
+			}
+			if (explicitObjectification.IsImplied)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedObjectificationNotAllowed);
+			}
+
+			// There are two questions that we need to consider when unobjectifying, which lead to four possible scenarios:
+			// 1) Will the fact type need an implied objectification once the explicit objectification has been removed?
+			// 2) Does the objectifing object type still need to exist when the process is complete?
+			// Currently, we determine the answer to the second question based on whether the object type plays roles in
+			// any fact types other than those implied by the objectification. In the future, we may want to consider other
+			// criteria as well (such as if the object type is specifically referred to by any constraints or rules, and,
+			// depending on the answer to the first question, if it would make sense for these references to be to an
+			// object type that results from an implied objectification).
+
+
+			FactType factType = explicitObjectification.NestedFactType;
+			ObjectType objectType = explicitObjectification.NestingType;
+			Debug.Assert(factType != null && objectType != null);
+
+			// Determine if the object type needs to survive this process (see comment above).
+			bool objectTypeMustSurvive = false;
+			foreach (Role playedRole in objectType.PlayedRoleCollection)
+			{
+				FactType playedFactType = playedRole.FactType;
+				Debug.Assert(playedFactType != null);
+				if (playedFactType.ImpliedByObjectification != explicitObjectification)
+				{
+					objectTypeMustSurvive = true;
+					break;
+				}
+			}
+
+			// Branch based on whether the fact type needs an implied objectification once the explicit objectification is removed.
+			if (IsImpliedObjectificationRequired(factType))
+			{
+				LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
+				int factTypeRolesCount = factTypeRoles.Count;
+
+				// To determine if the implied objectification will result in an independent object type, we need check whether the
+				// fact type has an alethic uniqueness constraint that spans all of its roles.
+				bool isIndependent = false;
+				foreach (UniquenessConstraint uniquenessConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
+				{
+					if (uniquenessConstraint.Modality == ConstraintModality.Alethic &&
+						uniquenessConstraint.RoleCollection.Count == factTypeRolesCount)
+					{
+						isIndependent = true;
+						break;
+					}
+				}
+
+				if (objectTypeMustSurvive)
+				{
+					// Since the existing object type needs to survive and the fact type needs an implied objectification,
+					// we'll have to create a new object type to take over the objectification duties from the old one.
+					ObjectType newObjectifyingType = new ObjectType(explicitObjectification.Partition,
+						new PropertyAssignment(ObjectType.NameDomainPropertyId, factType.Name),
+						new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isIndependent));
+
+					// For each fact type implied by the objectification, reassign the role played by the old object type
+					// to the new object type.
+					foreach (FactType impliedFactType in explicitObjectification.ImpliedFactTypeCollection)
+					{
+						LinkedElementCollection<RoleBase> roles = impliedFactType.RoleCollection;
+						Debug.Assert(roles.Count == 2);
+						Role role = roles[1] as Role ?? roles[0] as Role;
+						Debug.Assert(role != null && role.RolePlayer == objectType);
+
+						role.RolePlayer = newObjectifyingType;
+					}
+
+					// Reassign the objectification itself to the new object type.
+					explicitObjectification.NestingType = newObjectifyingType;
+
+					// Determine whether either of the object types can keep the preferred identifier, if we have one.
+					EntityTypeHasPreferredIdentifier preferredIdentifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(objectType);
+					if (preferredIdentifierLink != null)
+					{
+						LinkedElementCollection<Role> preferredIdentifierRoles = preferredIdentifierLink.PreferredIdentifier.RoleCollection;
+						bool oldObjectTypeCanKeepPreferredIdentifier = true;
+						bool newObjectTypeCanTakePreferredIdentifier = true;
+						foreach (Role preferredIdentifierRole in preferredIdentifierRoles)
+						{
+							if (factTypeRoles.Contains(preferredIdentifierRole))
+							{
+								// If the preferred identifier role is in the fact type being objectified,
+								// the old objectifying type cannot keep the identifier.
+								oldObjectTypeCanKeepPreferredIdentifier = false;
+							}
+							else
+							{
+								// If the preferred identifier role is not in the fact type being objectified,
+								// the new objectifying type cannot take the identifier.
+								newObjectTypeCanTakePreferredIdentifier = false;
+							}
+							
+							// If we've already determined that neither object type can have the preferred
+							// identifier, we don't need to check the rest of the roles.
+							if (!oldObjectTypeCanKeepPreferredIdentifier && !newObjectTypeCanTakePreferredIdentifier)
+							{
+								break;
+							}
+						}
+
+						if (newObjectTypeCanTakePreferredIdentifier)
+						{
+							preferredIdentifierLink.PreferredIdentifierFor = newObjectifyingType;
+							// If we previously determined that the new objectifying type should be independent,
+							// but the new preferred identifier does not have the same number of roles as the
+							// fact type being objectified, we need to set IsIndependent back to false.
+							if (isIndependent && preferredIdentifierRoles.Count != factTypeRolesCount)
+							{
+								newObjectifyingType.IsIndependent = false;
+							}
+						}
+						else
+						{
+							// In this case, we can just let our delay process method figure out which uniqueness constraint (if any)
+							// should be used by the new objectifying type as its preferred identifier.
+							ORMCoreDomainModel.DelayValidateElement(newObjectifyingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+							if (!oldObjectTypeCanKeepPreferredIdentifier)
+							{
+								preferredIdentifierLink.Delete();
+							}
+						}
+					}
+
+					explicitObjectification.IsImplied = true;
+
+					Dictionary<object, object> contextInfo = explicitObjectification.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+					try
+					{
+						contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+						newObjectifyingType.Model = factType.Model;
+					}
+					finally
+					{
+						contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+					}
+				}
+				else
+				{
+					if (isIndependent)
+					{
+						// If we previously determined that the implied objectifying type should be independent,
+						// but the preferred identifier does not have the same number of roles as the
+						// fact type being objectified, we should not set IsIndependent to true.
+						UniquenessConstraint preferredIdentifier = objectType.PreferredIdentifier;
+						if (preferredIdentifier != null && preferredIdentifier.RoleCollection.Count == factTypeRolesCount)
+						{
+							objectType.IsIndependent = true;
+						}
+					}
+					// Since we determined the object type doesn't need to survive, we can just make the objectification implicit.
+					explicitObjectification.IsImplied = true;
+				}
+			}
+			else
+			{
+				// Since the fact type does not need an implied objectification, we can just delete the existing objectification.
+				explicitObjectification.Delete();
+				if (!objectTypeMustSurvive)
+				{
+					// Since we determined the object type doesn't need to survive, we can just delete it as well.
+					objectType.Delete();
+				}
 			}
 		}
 		/// <summary>
@@ -1626,7 +1835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (impliedRequired)
 					{
-						CreateObjectificationForFactType(element, true, notifyAdded);
+						CreateObjectificationForFactTypeInternal(element, true, notifyAdded);
 					}
 				}
 			}

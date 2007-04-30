@@ -239,6 +239,14 @@
 					<ButtonText>Ob&amp;jectify Fact Type</ButtonText>
 				</Strings>
 			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdUnobjectifyFactType" priority="0x0030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;Unobjectify Fact Type</ButtonText>
+				</Strings>
+			</Button>
 
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdGenerateReport" priority="0x0400" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
@@ -665,6 +673,7 @@
 			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
 			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
 			<IDSymbol value="0x2929" name="cmdIdGenerateReport"/>
+			<IDSymbol value="0x292A" name="cmdIdUnobjectifyFactType"/>
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
 			<!-- Reserve 2A__ range for errors, start additional commands after. -->
 			<IDSymbol value="0x2B00" name="cmdIdDiagramList"/>
