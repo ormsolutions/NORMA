@@ -335,15 +335,9 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion //LoadWindow method
 		#region ORMToolWindow overrides
-		///// <summary>
-		///// currently unimplemented, all events handled by tree directly
-		///// </summary>
 		/// <summary>
-		/// Attaches custom <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/>.  This method must be overridden.
+		/// Required override. Attach handlers for ElementEventsBegun and ElementEventsEnded.
 		/// </summary>
-		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
-		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
-		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		protected override void ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store store, Neumont.Tools.Modeling.ModelingEventManager eventManager, Neumont.Tools.Modeling.EventHandlerAction action)
 		{
 			// Track Currently Executing Events
@@ -368,7 +362,6 @@ namespace Neumont.Tools.ORM.Shell
 				tree.DelayRedraw = false;
 			}
 		}
-
 		/// <summary>
 		/// called when document current selected document changes
 		/// </summary>

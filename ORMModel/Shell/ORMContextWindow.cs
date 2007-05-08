@@ -587,6 +587,16 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion
 		#region ORMToolWindow Implementation
 		/// <summary>
+		/// Clear a covered window when the document changes and when the selection changes.
+		/// </summary>
+		protected override CoveredFrameContentActions CoveredFrameContentActions
+		{
+			get
+			{
+				return CoveredFrameContentActions.ClearContentsOnSelectionChanged | CoveredFrameContentActions.ClearContentsOnDocumentChanged;
+			}
+		}
+		/// <summary>
 		/// Provide a notification when the selection container has been modified. The
 		/// default implemention is empty.
 		/// </summary>
@@ -642,6 +652,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 		#endregion // ORMToolWindow Implementation
+		#region HierarchyContextPlacePrioritySortComparer class
 		private sealed class HierarchyContextPlacePrioritySortComparer : IComparer<IHierarchyContextEnabled>
 		{
 			private HierarchyContextPlacePrioritySortComparer() { }
@@ -655,5 +666,6 @@ namespace Neumont.Tools.ORM.Shell
 				return (priorityDifference == 0) ? x.Id.CompareTo(y.Id) : priorityDifference;
 			}
 		}
+		#endregion // HierarchyContextPlacePrioritySortComparer class
 	}
 }

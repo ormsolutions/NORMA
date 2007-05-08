@@ -83,6 +83,21 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 				}
 			}
 		}
+		/// <summary>
+		/// Ensure that the <see cref="ObjectType.IsIndependent"/> property displayed
+		/// as a top-level property is read-only when the <see cref="ObjectType"/> is
+		/// part of an implied objectification or the <see cref="ObjectType.AllowIsIndependent"/>
+		/// returns <see langword="false"/>
+		/// </summary>
+		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
+		{
+			if (propertyDescriptor.DomainPropertyInfo.Id == ObjectType.IsIndependentDomainPropertyId)
+			{
+				ObjectType objectType = ModelElement.NestingType;
+				return !(objectType.IsIndependent || objectType.AllowIsIndependent(false));
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
 		private static Attribute[] ProcessAttributes(Attribute[] attributes)
 		{
 			// Remove the EditorAtttribute if it is present

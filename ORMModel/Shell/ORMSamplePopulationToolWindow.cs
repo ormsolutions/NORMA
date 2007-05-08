@@ -204,6 +204,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			set
 			{
+				if (FrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedValueType)
+				{
+					NullSelection();
+					return;
+				}
 				myEditor.SelectedValueType = value;
 			}
 		}
@@ -219,6 +224,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			set
 			{
+				if (FrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedEntityType)
+				{
+					NullSelection();
+					return;
+				}
 				myEditor.SelectedEntityType = value;
 			}
 		}
@@ -234,6 +244,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			set
 			{
+				if (FrameVisibility == FrameVisibility.Covered && value != myEditor.SelectedFactType)
+				{
+					NullSelection();
+					return;
+				}
 				myEditor.SelectedFactType = value;
 			}
 		}
@@ -245,6 +260,10 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Debug.Assert(myEditor != null, "Don't call before editor is initialized");
 			myEditor.NullSelection();
+			if (FrameVisibility == FrameVisibility.Covered)
+			{
+				ClearContents();
+			}
 		}
 		#endregion // Properties
 		#region PopulationMandatoryError Fixup

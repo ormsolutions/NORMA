@@ -90,6 +90,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Ensure that the <see cref="ObjectType.ValueRangeText"/> property is read-only when
 		/// <see cref="ObjectType.IsValueType"/> is <see langword="false"/> and
 		/// <see cref="ObjectType.HasReferenceMode"/> is <see langword="false"/>.
+		/// Ensure that the <see cref="ObjectType.IsIndependent"/> property is read-only when
+		/// the <see cref="ObjectType"/> is part of an implied objectification or the
+		/// <see cref="ObjectType.AllowIsIndependent"/> returns <see langword="false"/>
 		/// Ensure that the <see cref="ObjectType.NestedFactTypeDisplay"/> and
 		/// <see cref="ObjectType.ReferenceModeDisplay"/> properties are read-only
 		/// when <see cref="ObjectType.Objectification"/> is not <see langword="null"/> and

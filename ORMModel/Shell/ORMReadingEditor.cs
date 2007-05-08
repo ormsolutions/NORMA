@@ -167,6 +167,16 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Reading activation helper
 		#region Selection Monitoring
 		/// <summary>
+		/// Clear a covered window when the document changes and when the selection changes.
+		/// </summary>
+		protected override CoveredFrameContentActions CoveredFrameContentActions
+		{
+			get
+			{
+				return CoveredFrameContentActions.ClearContentsOnSelectionChanged | CoveredFrameContentActions.ClearContentsOnDocumentChanged;
+			}
+		}
+		/// <summary>
 		/// Update our reading to reflect the current selection
 		/// </summary>
 		protected override void OnORMSelectionContainerChanged()
@@ -262,7 +272,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Selection Monitoring
-
 		#region properties
 
 		/// <summary>
@@ -285,7 +294,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion
-
 		#region nested class ReadingsViewForm
 		private sealed class ReadingsViewForm : ContainerControl
 		{

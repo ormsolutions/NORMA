@@ -541,6 +541,16 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Verbalization Implementation
 		#region ORMToolWindow Implementation
 		/// <summary>
+		/// Clear a covered window when the document changes and when the selection changes.
+		/// </summary>
+		protected override CoveredFrameContentActions CoveredFrameContentActions
+		{
+			get
+			{
+				return CoveredFrameContentActions.ClearContentsOnSelectionChanged | CoveredFrameContentActions.ClearContentsOnDocumentChanged;
+			}
+		}
+		/// <summary>
 		/// Update verbalization when the selection changes
 		/// </summary>
 		protected override void OnORMSelectionContainerChanged()

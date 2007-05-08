@@ -398,6 +398,16 @@ namespace Neumont.Tools.ORM.Shell
 			PopulateSelectedNoteOwners();
 		}
 		/// <summary>
+		/// Clear a covered window when the document changes and when the selection changes.
+		/// </summary>
+		protected override CoveredFrameContentActions CoveredFrameContentActions
+		{
+			get
+			{
+				return CoveredFrameContentActions.ClearContentsOnSelectionChanged | CoveredFrameContentActions.ClearContentsOnDocumentChanged;
+			}
+		}
+		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> so that the <see cref="ORMNotesToolWindow"/>
 		/// contents can be updated to reflect any model changes.
 		/// </summary>
