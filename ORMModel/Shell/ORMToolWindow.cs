@@ -104,8 +104,13 @@ namespace Neumont.Tools.ORM.Shell
 			Visible = FrameVisibility.Visible,
 			Covered = FrameVisibility.Covered,
 			FrameVisibilityMask = Hidden | Visible | Covered,
-			PendingHiddenMeansCovered = 4,
-			PendingHiddenMeansClosed = 8,
+			PendingHiddenMeansCovered = 1 << 2,
+			PendingHiddenMeansClosed = 1 << 3,
+			// The rest of this is a hack because OnShow is getting called with a TabDeactivated/WinHidden
+			// when a tab is dragged to a new docking location, but is not called again to reshow the
+			// window when the drag is completed
+			HasBeenVisible = 1 << 4,
+			PersistentFlagsMask = HasBeenVisible,
 		}
 		#endregion // FrameVisibilityFlags enum
 		#region Member Variables
@@ -130,6 +135,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Current frame visibility state
 		/// </summary>
 		private FrameVisibilityFlags myFrameVisibility;
+		/// <summary>
+		/// Track the last frame mode. Hack because OnShow is not called enough.
+		/// </summary>
+		private VSFRAMEMODE myLastFrameMode;
 		#endregion // Member Variables
 		#region Properties for CurrentDocument and CurrentORMSelectionContainer
 		/// <summary>
@@ -280,6 +289,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected ORMToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
+			myLastFrameMode = (VSFRAMEMODE)(-1);
 			myCtorServiceProvider = serviceProvider;
 		}
 		/// <summary>
@@ -330,14 +340,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void ClearContents()
 		{
-			switch (myFrameVisibility & FrameVisibilityFlags.FrameVisibilityMask)
+			FrameVisibilityFlags flags = myFrameVisibility;
+			switch (flags & FrameVisibilityFlags.FrameVisibilityMask)
 			{
 				case FrameVisibilityFlags.Covered:
 				case FrameVisibilityFlags.Visible:
 					IMonitorSelectionService monitor = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
 					monitor.SelectionChanged -= new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged -= new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-					myFrameVisibility = FrameVisibilityFlags.Hidden;
+					myFrameVisibility = FrameVisibilityFlags.Hidden | (flags & FrameVisibilityFlags.PersistentFlagsMask);
 					SetCurrentDocument(null, null);
 					CurrentORMSelectionContainer = null;
 					break;
@@ -345,10 +356,11 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void ShowContents()
 		{
-			switch (myFrameVisibility & FrameVisibilityFlags.FrameVisibilityMask)
+			FrameVisibilityFlags flags = myFrameVisibility;
+			switch (flags & FrameVisibilityFlags.FrameVisibilityMask)
 			{
 				case FrameVisibilityFlags.Covered:
-					myFrameVisibility = FrameVisibilityFlags.Visible;
+					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
 					break;
 				case FrameVisibilityFlags.Hidden:
 					IMonitorSelectionService monitor = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
@@ -363,7 +375,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						// Swallow, this will occasionally be initialized when the document is shutting down
 					}
-					myFrameVisibility = FrameVisibilityFlags.Visible;
+					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
 					break;
 			}
 		}
@@ -371,8 +383,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Implements <see cref="IVsWindowFrameNotify3.OnDockableChange"/>
 		/// </summary>
-		protected static int OnDockableChange(int fDockable, int x, int y, int w, int h)
+		protected int OnDockableChange(int fDockable, int x, int y, int w, int h)
 		{
+			HandlePossibleFrameModeChange();
 			return VSConstants.S_OK;
 		}
 		int IVsWindowFrameNotify3.OnDockableChange(int fDockable, int x, int y, int w, int h)
@@ -382,9 +395,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Implements <see cref="IVsWindowFrameNotify3.OnMove"/>
 		/// </summary>
-		protected static int OnMove(int x, int y, int w, int h)
+		protected int OnMove(int x, int y, int w, int h)
 		{
+			HandlePossibleFrameModeChange();
 			return VSConstants.S_OK;
+		}
+		private void HandlePossibleFrameModeChange()
+		{
+			object frameModeObj;
+			VSFRAMEMODE frameMode;
+			if (VSConstants.S_OK == Frame.GetProperty((int)__VSFPROPID.VSFPROPID_FrameMode, out frameModeObj) &&
+				myLastFrameMode != (frameMode = (VSFRAMEMODE)frameModeObj))
+			{
+				myLastFrameMode = frameMode;
+				FrameVisibilityFlags flags = myFrameVisibility;
+				if ((flags & FrameVisibilityFlags.FrameVisibilityMask) != FrameVisibilityFlags.Visible &&
+					0 != (flags & FrameVisibilityFlags.HasBeenVisible))
+				{
+					OnShow((int)__FRAMESHOW.FRAMESHOW_WinShown);
+				}
+			}
 		}
 		int IVsWindowFrameNotify3.OnMove(int x, int y, int w, int h)
 		{
@@ -419,10 +449,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected int OnShow(int fShow)
 		{
-			FrameVisibilityFlags startFlags = myFrameVisibility & ~FrameVisibilityFlags.FrameVisibilityMask;
-			bool coverPending = 0 != (myFrameVisibility & FrameVisibilityFlags.PendingHiddenMeansCovered);
-			bool closePending = !coverPending && 0 != (myFrameVisibility & FrameVisibilityFlags.PendingHiddenMeansCovered);
-			myFrameVisibility &= FrameVisibilityFlags.FrameVisibilityMask;
+			FrameVisibilityFlags flags = myFrameVisibility;
+			FrameVisibilityFlags startFlags = flags & ~(FrameVisibilityFlags.FrameVisibilityMask | FrameVisibilityFlags.PersistentFlagsMask);
+			bool coverPending = 0 != (flags & FrameVisibilityFlags.PendingHiddenMeansCovered);
+			bool closePending = !coverPending && 0 != (flags & FrameVisibilityFlags.PendingHiddenMeansCovered);
+			myFrameVisibility &= FrameVisibilityFlags.FrameVisibilityMask | FrameVisibilityFlags.PersistentFlagsMask;
 			switch ((__FRAMESHOW)fShow)
 			{
 				case (__FRAMESHOW)__FRAMESHOW2.FRAMESHOW_BeforeWinHidden:
@@ -454,7 +485,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					if (cover)
 					{
-						myFrameVisibility = FrameVisibilityFlags.Covered;
+						myFrameVisibility = FrameVisibilityFlags.Covered | (flags & FrameVisibilityFlags.PersistentFlagsMask);
 					}
 					else
 					{
