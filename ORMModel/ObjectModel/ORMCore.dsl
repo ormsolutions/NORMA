@@ -240,24 +240,6 @@
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NestedFactTypeDisplay" DefaultValue="" DisplayName="ObjectifiedFactType" Id="C003F8F1-368C-4058-A5F8-90EF63556743" Kind="CustomStorage">
-					<Attributes>
-						<ClrAttribute Name="global::System.ComponentModel.Editor">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker)"/>
-								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
-							</Parameters>
-						</ClrAttribute>
-						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
-							<Parameters>
-								<AttributeParameter Value="false"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
-					</Type>
-				</DomainProperty>
 				<DomainProperty Name="ReferenceModeDisplay" DefaultValue="" DisplayName="RefMode" Id="2E56D25A-BD96-4478-A55C-9F17A15C94B6" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
@@ -372,24 +354,6 @@
 				<DomainProperty Name="NameChanged" DefaultValue="" DisplayName="NameChanged" Id="20A75B4B-69D4-4D1B-BEB5-9B0D66FDB1F3" IsBrowsable="false" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int64"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="NestingTypeDisplay" DefaultValue="" DisplayName="ObjectifyingEntityType" Id="08C9243D-38BA-41E5-9864-5BBB8977B676" Kind="CustomStorage">
-					<Attributes>
-						<ClrAttribute Name="global::System.ComponentModel.Editor">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker)"/>
-								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
-							</Parameters>
-						</ClrAttribute>
-						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
-							<Parameters>
-								<AttributeParameter Value="false"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage">
@@ -1621,14 +1585,42 @@
 				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
+				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" PropertyDisplayName="ObjectifiedFactType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter"/>
+					</Attributes>
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
+				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" PropertyDisplayName="ObjectifyingEntityType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter"/>
+					</Attributes>
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>

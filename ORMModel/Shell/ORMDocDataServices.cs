@@ -888,30 +888,6 @@ namespace Neumont.Tools.ORM.Shell
 		#region ORMPropertyProviderService class
 		private sealed class ORMPropertyProviderService : IORMPropertyProviderService, IDisposable
 		{
-			#region RuntimeTypeHandleEqualityComparer class
-			/// <summary>
-			/// <see cref="RuntimeTypeHandle"/> has a strongly-typed <c>Equals</c> method (<see cref="RuntimeTypeHandle.Equals(RuntimeTypeHandle)"/>),
-			/// but does not implement <see cref="IEquatable{RuntimeTypeHandle}"/>. Therefore, we use this <see cref="IEqualityComparer{RuntimeTypeHandle}"/>
-			/// implementation (which defers to that method) in order to avoid boxing.
-			/// </summary>
-			private sealed class RuntimeTypeHandleEqualityComparer : IEqualityComparer<RuntimeTypeHandle>
-			{
-				private RuntimeTypeHandleEqualityComparer()
-					: base()
-				{
-				}
-				public static readonly RuntimeTypeHandleEqualityComparer Instance = new RuntimeTypeHandleEqualityComparer();
-				public bool Equals(RuntimeTypeHandle x, RuntimeTypeHandle y)
-				{
-					return x.Equals(y);
-				}
-				public int GetHashCode(RuntimeTypeHandle obj)
-				{
-					return obj.GetHashCode();
-				}
-			}
-			#endregion // RuntimeTypeHandleEqualityComparer class
-
 			private readonly Store myStore;
 			private readonly Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> myProvisioningDictionary;
 
@@ -920,7 +896,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				Debug.Assert(store != null);
 				this.myStore = store;
-				this.myProvisioningDictionary = new Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning>(RuntimeTypeHandleEqualityComparer.Instance);
+				this.myProvisioningDictionary = new Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning>(RuntimeTypeHandleComparer.Instance);
 			}
 
 			public void Dispose()

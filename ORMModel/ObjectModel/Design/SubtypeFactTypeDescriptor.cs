@@ -67,15 +67,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// Hide the <see cref="FactType.NestingTypeDisplay"/> property.
+		/// Hide the <see cref="FactType.NestingType"/> property (and any other role player properties).
 		/// </summary>
-		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
 		{
-			if (domainProperty.Id.Equals(FactType.NestingTypeDisplayDomainPropertyId))
-			{
-				return false;
-			}
-			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+			return false;
 		}
 
 		/// <summary>

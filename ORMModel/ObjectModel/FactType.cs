@@ -531,11 +531,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == FactType.NestingTypeDisplayDomainPropertyId)
-				{
-					Objectification.CreateExplicitObjectification(e.ModelElement as FactType, e.NewValue as ObjectType);
-				}
-				else if (attributeGuid == FactType.DerivationRuleDisplayDomainPropertyId)
+				if (attributeGuid == FactType.DerivationRuleDisplayDomainPropertyId)
 				{
 					FactType factType = e.ModelElement as FactType;
 					string newVal = e.NewValue as string;

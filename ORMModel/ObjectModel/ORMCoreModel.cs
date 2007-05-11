@@ -315,7 +315,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				domainModelsCollection.CopyTo(domainModelsArray, 0);
 				myDomainModels = domainModelsArray;
 			}
-			#region IComparable<ElementValidator> Implementation
+			#region IComparer<ElementValidator> Implementation
 			public int Compare(ElementValidator validator1, ElementValidator validator2)
 			{
 				ElementValidatorOrder order1 = validator1.OrderInformation;
@@ -344,7 +344,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return -1;
 			}
-			#endregion // IComparable<ElementValidator> Implementation
+			#endregion // IComparer<ElementValidator> Implementation
 		}
 		private struct ElementValidatorOrder : IEquatable<ElementValidatorOrder>
 		{
@@ -486,30 +486,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				this.Validation(this.Element);
 			}
-			#region RuntimeMethodHandleEqualityComparer class
-			/// <summary>
-			/// <see cref="RuntimeTypeHandle"/> has a strongly-typed <c>Equals</c> method (<see cref="RuntimeTypeHandle.Equals(RuntimeTypeHandle)"/>),
-			/// but does not implement <see cref="IEquatable{RuntimeTypeHandle}"/>. Therefore, we use this <see cref="IEqualityComparer{RuntimeTypeHandle}"/>
-			/// implementation (which defers to that method) in order to avoid boxing.
-			/// </summary>
-			private sealed class RuntimeMethodHandleEqualityComparer : IEqualityComparer<RuntimeMethodHandle>
-			{
-				private RuntimeMethodHandleEqualityComparer()
-					: base()
-				{
-				}
-				public static readonly RuntimeMethodHandleEqualityComparer Instance = new RuntimeMethodHandleEqualityComparer();
-				public bool Equals(RuntimeMethodHandle x, RuntimeMethodHandle y)
-				{
-					return x.Equals(y);
-				}
-				public int GetHashCode(RuntimeMethodHandle obj)
-				{
-					return obj.GetHashCode();
-				}
-			}
-			#endregion // RuntimeMethodHandleEqualityComparer class
-			private static Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache> myMethodToElementValidatorOrderCacheMap = new Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache>(RuntimeMethodHandleEqualityComparer.Instance);
+			private static Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache> myMethodToElementValidatorOrderCacheMap =
+				new Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache>(RuntimeMethodHandleComparer.Instance);
 			/// <summary>
 			/// Get the order information associated with this validator
 			/// </summary>

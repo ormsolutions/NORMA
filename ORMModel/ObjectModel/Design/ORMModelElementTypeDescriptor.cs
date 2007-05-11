@@ -48,7 +48,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// <summary>
 		/// Adds extension properties to the <see cref="PropertyDescriptorCollection"/> before returning it.
 		/// </summary>
-		/// <seealso cref="ElementTypeDescriptor.GetProperties(Attribute[])"/>.
+		/// <seealso cref="ElementTypeDescriptor{TModelElement}.GetProperties(Attribute[])"/>
+		/// <seealso cref="ICustomTypeDescriptor.GetProperties(Attribute[])"/>
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection properties = base.GetProperties(attributes);
@@ -71,8 +72,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			// UNDONE: We may want to lose the *Display properties. Need a way to filter
 			// the contents of a RolePlayerPropertyDescriptor dropdown list
-			// UNDONE: MSBUG RolePlayerPropertyDescriptor should respect the System.ComponentModel.EditorAttribute on the
-			// generated property.
 			return false;
 		}
 	}

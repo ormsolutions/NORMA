@@ -21,6 +21,7 @@ using System.Globalization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
@@ -73,6 +74,35 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
+
+		/// <summary>
+		/// Allow <see cref="RolePlayerPropertyDescriptor"/>s.
+		/// </summary>
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Only create <see cref="RolePlayerPropertyDescriptor"/>s for <see cref="Objectification.NestingType"/>.
+		/// </summary>
+		protected override bool ShouldCreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo sourceRole)
+		{
+			return Utility.IsDescendantOrSelf(sourceRole, Objectification.NestedFactTypeDomainRoleId);
+		}
+
+		/// <summary>
+		/// Returns an instance of <see cref="ObjectificationRolePlayerPropertyDescriptor"/> for <see cref="Objectification.NestingType"/>.
+		/// </summary>
+		protected override RolePlayerPropertyDescriptor CreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo targetRoleInfo, Attribute[] sourceDomainRoleInfoAttributes)
+		{
+			if (Utility.IsDescendantOrSelf(targetRoleInfo, Objectification.NestingTypeDomainRoleId))
+			{
+				return new ObjectificationRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
+			}
+			return base.CreateRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
+		}
+
 
 		/// <summary>
 		/// Distinguish between objectified and non-objectified <see cref="FactType"/>s in the property grid display.

@@ -21,6 +21,7 @@ using System.Globalization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
@@ -58,8 +59,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return objectType.HasReferenceMode;
 			}
-			else if (propertyId.Equals(ObjectType.NestedFactTypeDisplayDomainPropertyId) ||
-				propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
+			else if (propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
 			{
 				return !objectType.IsValueType;
 			}
@@ -72,6 +72,34 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 			}
+		}
+
+		/// <summary>
+		/// Allow <see cref="RolePlayerPropertyDescriptor"/>s if this isn't a ValueType.
+		/// </summary>
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
+		{
+			return !this.ModelElement.IsValueType;
+		}
+
+		/// <summary>
+		/// Only create <see cref="RolePlayerPropertyDescriptor"/>s for <see cref="Objectification.NestedFactType"/>.
+		/// </summary>
+		protected override bool ShouldCreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo sourceRole)
+		{
+			return Utility.IsDescendantOrSelf(sourceRole, Objectification.NestingTypeDomainRoleId);
+		}
+
+		/// <summary>
+		/// Returns an instance of <see cref="ObjectificationRolePlayerPropertyDescriptor"/> for <see cref="Objectification.NestedFactType"/>.
+		/// </summary>
+		protected override RolePlayerPropertyDescriptor CreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo targetRoleInfo, Attribute[] sourceDomainRoleInfoAttributes)
+		{
+			if (Utility.IsDescendantOrSelf(targetRoleInfo, Objectification.NestedFactTypeDomainRoleId))
+			{
+				return new ObjectificationRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
+			}
+			return base.CreateRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 		}
 
 		/// <summary>
@@ -91,10 +119,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// <see cref="ObjectType.IsValueType"/> is <see langword="false"/> and
 		/// <see cref="ObjectType.HasReferenceMode"/> is <see langword="false"/>.
 		/// Ensure that the <see cref="ObjectType.IsIndependent"/> property is read-only when
-		/// the <see cref="ObjectType"/> is part of an implied objectification or the
+		/// when <see cref="ObjectType.Objectification"/> is not <see langword="null"/> and
+		/// <see cref="Objectification.IsImplied"/> is <see langword="true"/>, or
 		/// <see cref="ObjectType.AllowIsIndependent"/> returns <see langword="false"/>
-		/// Ensure that the <see cref="ObjectType.NestedFactTypeDisplay"/> and
-		/// <see cref="ObjectType.ReferenceModeDisplay"/> properties are read-only
+		/// Ensure that the <see cref="ObjectType.ReferenceModeDisplay"/> property is read-only
 		/// when <see cref="ObjectType.Objectification"/> is not <see langword="null"/> and
 		/// <see cref="Objectification.IsImplied"/> is <see langword="true"/>.
 		/// </summary>
@@ -122,8 +150,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 					return !objectType.AllowIsIndependent(false);
 				}
 			}
-			else if (propertyId.Equals(ObjectType.NestedFactTypeDisplayDomainPropertyId) ||
-				propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
+			else if (propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
 			{
 				Objectification objectification = objectType.Objectification;
 				return objectification != null && objectification.IsImplied;

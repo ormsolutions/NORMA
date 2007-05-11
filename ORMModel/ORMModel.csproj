@@ -386,6 +386,7 @@
     <Compile Include="Framework\Design\Editors\FlagsEnumListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Framework\Design\RolePlayerElementPropertyDescriptor.cs" />
     <Compile Include="Framework\Diagnostics\TransactionLogViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -396,6 +397,7 @@
     <Compile Include="Framework\Diagrams\MultiShapeUtility.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
+    <Compile Include="ObjectModel\Design\ObjectificationRolePlayerPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\Editors\ModelErrorDisplayFilterEditor.cs" />
     <Compile Include="ObjectModel\ModelErrorDisplayFilter.cs" />
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />

@@ -1026,18 +1026,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeGuid == ObjectType.NestedFactTypeDisplayDomainPropertyId)
-				{
-					FactType nestedFactType = e.NewValue as FactType;
-					if (nestedFactType != null)
-					{
-						Objectification.CreateExplicitObjectification(e.NewValue as FactType, e.ModelElement as ObjectType);
-					}
-					else
-					{
-						(e.ModelElement as ObjectType).NestedFactType = null;
-					}
-				}
 				else if (attributeGuid == ObjectType.NameDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;

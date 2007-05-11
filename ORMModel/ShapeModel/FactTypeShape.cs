@@ -4542,9 +4542,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					SubtypeFact subType = playedRole.FactType as SubtypeFact;
 					if (subType != null)
 					{
-						foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(subType))
+						LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(subType);
+						for (int i = presentationElements.Count - 1; i >= 0; i--)
 						{
-							SubtypeLink subtypeLink = obj as SubtypeLink;
+							SubtypeLink subtypeLink = presentationElements[i] as SubtypeLink;
 							if (subtypeLink != null)
 							{
 								ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
@@ -4572,9 +4573,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else
 					{
-						foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(modelLink))
+						LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
+						for (int i = presentationElements.Count - 1; i >= 0; i--)
 						{
-							RolePlayerLink rolePlayer = obj as RolePlayerLink;
+							RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
 							if (rolePlayer != null)
 							{
 								ORMDiagram currentDiagram = rolePlayer.Diagram as ORMDiagram;

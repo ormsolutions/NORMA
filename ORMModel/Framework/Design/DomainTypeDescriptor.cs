@@ -17,7 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
@@ -32,6 +35,8 @@ namespace Neumont.Tools.Modeling.Design
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public static class DomainTypeDescriptor
 	{
+		#region TypeDescriptorContext support
+
 		#region TypeDescriptorContext class
 		/// <summary>
 		/// Simple implementation of <see cref="ITypeDescriptorContext"/> for a
@@ -112,72 +117,66 @@ namespace Neumont.Tools.Modeling.Design
 			/// </summary>
 			public object GetService(Type serviceType)
 			{
-				ModelElement instance = myInstance;
+				ModelElement instance = this.myInstance;
 				if (instance != null)
 				{
 					return instance.Store.GetService(serviceType);
 				}
 				return null;
 			}
-			/// <summary>Does nothing.</summary>
-			/// <value>Always returns <see langword="null"/>.</value>
+			/// <summary>
+			/// Returns the result of calling <see cref="GetService"/> for
+			/// <see cref="IContainer"/>.
+			/// </summary>
 			IContainer ITypeDescriptorContext.Container
 			{
 				get
 				{
-					return null;
+					return this.GetService(typeof(IContainer)) as IContainer;
 				}
 			}
-			/// <summary>Does nothing.</summary>
+			/// <summary>
+			/// Attempts to notify the <see cref="IComponentChangeService"/> via
+			/// <see cref="IComponentChangeService.OnComponentChanged"/>.
+			/// </summary>
 			void ITypeDescriptorContext.OnComponentChanged()
 			{
+				IComponentChangeService componentChangeService = this.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+				if (componentChangeService != null)
+				{
+					componentChangeService.OnComponentChanged(this.myInstance, this.myPropertyDescriptor, null, null);
+				}
 			}
-			/// <summary>Does nothing.</summary>
-			/// <returns>Always returns <see langword="false"/>.</returns>
+			/// <summary>
+			/// Attempts to notify the <see cref="IComponentChangeService"/> via
+			/// <see cref="IComponentChangeService.OnComponentChanging"/>.
+			/// </summary>
+			/// <returns>
+			/// <see langword="true"/> if the component can be changed; otherwise,
+			/// <see langword="false"/>.
+			/// </returns>
 			bool ITypeDescriptorContext.OnComponentChanging()
 			{
-				return false;
+				IComponentChangeService componentChangeService = this.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+				if (componentChangeService != null)
+				{
+					try
+					{
+						componentChangeService.OnComponentChanging(this.myInstance, this.myPropertyDescriptor);
+					}
+					catch (CheckoutException ex)
+					{
+						if (ex != CheckoutException.Canceled)
+						{
+							throw;
+						}
+						return false;
+					}
+				}
+				return true;
 			}
 		}
 		#endregion // TypeDescriptorContext class
-
-		#region GetMemberAttributes method
-		/// <summary>
-		/// Returns the custom <see cref="Attribute"/>s from <paramref name="memberInfo"/>.
-		/// </summary>
-		/// <param name="memberInfo">
-		/// The <see cref="MemberInfo"/> for which the custom <see cref="Attribute"/>s are desired.
-		/// </param>
-		/// <returns>
-		/// The custom <see cref="Attribute"/>s from <paramref name="memberInfo"/>.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		/// <paramref name="memberInfo"/> is <see langword="null"/>.
-		/// </exception>
-		public static Attribute[] GetMemberAttributes(MemberInfo memberInfo)
-		{
-			if (memberInfo == null)
-			{
-				throw new ArgumentNullException("memberInfo");
-			}
-			object[] attributeObjects = memberInfo.GetCustomAttributes(true);
-			Attribute[] attributes = new Attribute[attributeObjects.Length];
-			int targetIndex = 0;
-			for (int sourceIndex = 0; sourceIndex < attributeObjects.Length; sourceIndex++)
-			{
-				Attribute attribute = attributeObjects[sourceIndex] as Attribute;
-				if (attribute != null)
-				{
-					attributes[targetIndex++] = attribute;
-				}
-			}
-			if (targetIndex != attributes.Length)
-			{
-				Array.Resize(ref attributes, targetIndex);
-			}
-			return attributes;
-		}
-		#endregion // GetMemberAttributes method
 
 		#region CreateTypeDescriptorContext method
 		/// <summary>
@@ -210,7 +209,306 @@ namespace Neumont.Tools.Modeling.Design
 		}
 		#endregion // CreateTypeDescriptorContext method
 
-		#region CreatePropertyDescriptor methods
+		#endregion // TypeDescriptorContext support
+
+		#region GetRawAttributes support
+
+		#region MemberInfoKey struct
+		[Serializable]
+		[StructLayout(LayoutKind.Auto)]
+		[DebuggerDisplay(@"\{{System.Type.GetTypeFromHandle(DeclaringType).Name,nq}.{Name,nq} : {System.Type.GetTypeFromHandle(MemberType).Name,nq}\}")]
+		private struct MemberInfoKey : IEquatable<MemberInfoKey>
+		{
+			public readonly string Name;
+			public readonly RuntimeTypeHandle DeclaringType;
+			public readonly RuntimeTypeHandle MemberType;
+
+			public MemberInfoKey(string name, RuntimeTypeHandle declaringType, RuntimeTypeHandle memberType)
+			{
+				this.Name = name;
+				this.DeclaringType = declaringType;
+				this.MemberType = memberType;
+			}
+
+			public override bool Equals(object obj)
+			{
+				return obj is MemberInfoKey && this.Equals((MemberInfoKey)obj);
+			}
+			public bool Equals(MemberInfoKey other)
+			{
+				return this.DeclaringType.Value == other.DeclaringType.Value &&
+					this.MemberType.Value == other.MemberType.Value &&
+					this.Name == other.Name;
+			}
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(
+					(int)this.DeclaringType.Value,
+					(int)this.MemberType.Value,
+					this.Name.GetHashCode());
+			}
+		}
+		#endregion // MemberInfoKey struct
+
+		#region MemberInfoKeyEqualityComparer class
+		[Serializable]
+		private sealed class MemberInfoKeyEqualityComparer : EqualityComparer<MemberInfoKey>
+		{
+			private MemberInfoKeyEqualityComparer()
+				: base()
+			{
+			}
+			public static readonly MemberInfoKeyEqualityComparer Instance = new MemberInfoKeyEqualityComparer();
+			public sealed override bool Equals(MemberInfoKey x, MemberInfoKey y)
+			{
+				return x.DeclaringType.Value == y.DeclaringType.Value &&
+					x.MemberType.Value == y.MemberType.Value &&
+					x.Name == y.Name;
+			}
+			public sealed override int GetHashCode(MemberInfoKey obj)
+			{
+				return Utility.GetCombinedHashCode(
+					(int)obj.DeclaringType.Value,
+					(int)obj.MemberType.Value,
+					obj.Name.GetHashCode());
+			}
+		}
+		#endregion // MemberInfoKeyEqualityComparer class
+
+		#region GetRawAttributes(EventInfo) support
+
+		private static readonly Dictionary<MemberInfoKey, AttributeCollection> EventInfoAttributesCache =
+			new Dictionary<MemberInfoKey, AttributeCollection>(MemberInfoKeyEqualityComparer.Instance);
+
+		#region GetRawAttributes(EventInfo) method
+		/// <summary>
+		/// Returns the <see cref="Attribute"/>s for <paramref name="eventInfo"/>.
+		/// </summary>
+		/// <param name="eventInfo">
+		/// The <see cref="EventInfo"/> for which the <see cref="Attribute"/>s are desired.
+		/// </param>
+		/// <returns>
+		/// The <see cref="Attribute"/>s for <paramref name="eventInfo"/>.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method bypasses the normal <c>ComponentModel</c> <see cref="Attribute"/> lookup
+		/// mechanisms for events, and is only intended for use by <see cref="EventDescriptor"/>
+		/// implementations. For other scenarios, <see cref="Attribute"/>s should be obtained via the
+		/// appropriate <see cref="EventDescriptor"/> obtained through the <see cref="TypeDescriptor"/>
+		/// class.
+		/// </para>
+		/// <para>
+		/// The <see cref="Attribute"/>s returned will include any <see cref="Attribute"/>s applied to:
+		/// <list type="number">
+		/// <item><description><paramref name="eventInfo"/></description></item>
+		/// <item><description>
+		/// any public events in the base types of the <see cref="MemberInfo.DeclaringType"/>
+		/// of <paramref name="eventInfo"/> with the same <see cref="MemberInfo.Name"/> as
+		/// <paramref name="eventInfo"/>
+		/// </description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="eventInfo"/> is <see langword="null"/>.
+		/// </exception>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		[HostProtection(SecurityAction.LinkDemand, Synchronization = true)]
+		[ReflectionPermission(SecurityAction.LinkDemand, Flags = ReflectionPermissionFlag.MemberAccess)]
+		public static AttributeCollection GetRawAttributes(EventInfo eventInfo)
+		{
+			if (eventInfo == null)
+			{
+				throw new ArgumentNullException("eventInfo");
+			}
+
+			string name = eventInfo.Name;
+			Type declaringType = eventInfo.DeclaringType.UnderlyingSystemType;
+			Type memberType = eventInfo.EventHandlerType.UnderlyingSystemType;
+			MemberInfoKey memberInfoKey = new MemberInfoKey(name, declaringType.TypeHandle, memberType.TypeHandle);
+
+			Dictionary<MemberInfoKey, AttributeCollection> attributesCache = DomainTypeDescriptor.EventInfoAttributesCache;
+			AttributeCollection attributeCollection;
+			if (!attributesCache.TryGetValue(memberInfoKey, out attributeCollection))
+			{
+				lock (attributesCache)
+				{
+					if (!attributesCache.TryGetValue(memberInfoKey, out attributeCollection))
+					{
+						attributesCache[memberInfoKey] = attributeCollection =
+							TypeDescriptor.CreateEvent(declaringType, name, memberType, null).Attributes;
+					}
+				}
+			}
+			return attributeCollection;
+		}
+		#endregion // GetRawAttributes(EventInfo) method
+		#endregion // GetRawAttributes(EventInfo) support
+
+		#region GetRawAttributes(PropertyInfo) support
+
+		private static readonly Dictionary<MemberInfoKey, AttributeCollection> PropertyInfoAttributesCache =
+			new Dictionary<MemberInfoKey, AttributeCollection>(MemberInfoKeyEqualityComparer.Instance);
+		private static readonly Dictionary<RuntimeTypeHandle, List<MemberInfoKey>> PropertyTypeDependencies =
+			DomainTypeDescriptor.InitializePropertyTypeDependencies();
+
+		private static Dictionary<RuntimeTypeHandle, List<MemberInfoKey>> InitializePropertyTypeDependencies()
+		{
+			TypeDescriptor.Refreshed += TypeDescriptorRefreshed;
+			return new Dictionary<RuntimeTypeHandle, List<MemberInfoKey>>(RuntimeTypeHandleComparer.Instance);
+		}
+		private static void TypeDescriptorRefreshed(RefreshEventArgs e)
+		{
+			if (e.ComponentChanged != null)
+			{
+				// We don't care about component changes, since they don't impact what attributes are provided for a property.
+				return;
+			}
+			RuntimeTypeHandle typeChangedHandle = e.TypeChanged.TypeHandle;
+			Dictionary<RuntimeTypeHandle, List<MemberInfoKey>> dependencies = DomainTypeDescriptor.PropertyTypeDependencies;
+			if (dependencies.ContainsKey(typeChangedHandle))
+			{
+				Dictionary<MemberInfoKey, AttributeCollection> attributesCache = DomainTypeDescriptor.PropertyInfoAttributesCache;
+				lock (attributesCache)
+				{
+					foreach (MemberInfoKey memberInfoKey in dependencies[typeChangedHandle])
+					{
+						// Clear out the attributes cache for every property that is dependent on the type that was refreshed.
+						attributesCache[memberInfoKey] = null;
+					}
+				}
+			}
+		}
+
+		#region GetRawAttributes(PropertyInfo) method
+		/// <summary>
+		/// Returns the <see cref="Attribute"/>s for <paramref name="propertyInfo"/>.
+		/// </summary>
+		/// <param name="propertyInfo">
+		/// The <see cref="PropertyInfo"/> for which the <see cref="Attribute"/>s are desired.
+		/// </param>
+		/// <returns>
+		/// The <see cref="Attribute"/>s for <paramref name="propertyInfo"/>.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method bypasses the normal <c>ComponentModel</c> <see cref="Attribute"/> lookup
+		/// mechanisms for properties, and is only intended for use by <see cref="PropertyDescriptor"/>
+		/// implementations. For other scenarios, <see cref="Attribute"/>s should be obtained via the
+		/// appropriate <see cref="PropertyDescriptor"/> obtained through the <see cref="TypeDescriptor"/>
+		/// class.
+		/// </para>
+		/// <para>
+		/// The <see cref="Attribute"/>s returned will include any <see cref="Attribute"/>s applied to:
+		/// <list type="number">
+		/// <item><description><paramref name="propertyInfo"/></description></item>
+		/// <item><description>
+		/// any properties in the base types of the <see cref="MemberInfo.DeclaringType"/>
+		/// of <paramref name="propertyInfo"/> with the same <see cref="MemberInfo.Name"/> as
+		/// <paramref name="propertyInfo"/>
+		/// </description></item>
+		/// <item><description>
+		/// the <see cref="PropertyInfo.PropertyType"/> of <paramref name="propertyInfo"/>
+		/// </description></item>
+		/// <item><description>
+		/// the base types of the <see cref="PropertyInfo.PropertyType"/> of
+		/// <paramref name="propertyInfo"/> 
+		/// </description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="propertyInfo"/> is <see langword="null"/>.
+		/// </exception>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		[HostProtection(SecurityAction.LinkDemand, Synchronization = true)]
+		[ReflectionPermission(SecurityAction.LinkDemand, Flags = ReflectionPermissionFlag.MemberAccess)]
+		public static AttributeCollection GetRawAttributes(PropertyInfo propertyInfo)
+		{
+			if (propertyInfo == null)
+			{
+				throw new ArgumentNullException("propertyInfo");
+			}
+
+			string name = propertyInfo.Name;
+			Type declaringType = propertyInfo.DeclaringType.UnderlyingSystemType;
+			Type memberType = propertyInfo.PropertyType.UnderlyingSystemType;
+			MemberInfoKey memberInfoKey = new MemberInfoKey(name, declaringType.TypeHandle, memberType.TypeHandle);
+
+			Dictionary<MemberInfoKey, AttributeCollection> attributesCache = DomainTypeDescriptor.PropertyInfoAttributesCache;
+			AttributeCollection attributeCollection;
+			if (!attributesCache.TryGetValue(memberInfoKey, out attributeCollection) || attributeCollection == null)
+			{
+				lock (attributesCache)
+				{
+					// If there is an entry in the cache for this property, then the dependencies for it
+					// have already been calculated previously.
+					bool dependenciesAlreadyCalculated = attributesCache.TryGetValue(memberInfoKey, out attributeCollection);
+					if (!dependenciesAlreadyCalculated || attributeCollection == null)
+					{
+						// This property either hasn't had its attributes retrieved, or one of the types on which
+						// it is dependent has been refreshed since the attributes were last retrieved. Either way,
+						// we need to recalculate the attributes for this property.
+						attributesCache[memberInfoKey] = attributeCollection =
+							TypeDescriptor.CreateProperty(declaringType, name, memberType, null).Attributes;
+
+						if (!dependenciesAlreadyCalculated)
+						{
+							// Since we haven't calculated the dependencies of this property before, we need to do
+							// so now so that we know what properties to update when the TypeDescriptor.Refreshed
+							// event is raised.
+							Dictionary<RuntimeTypeHandle, List<MemberInfoKey>> dependencies = DomainTypeDescriptor.PropertyTypeDependencies;
+							while (memberType != null)
+							{
+								RuntimeTypeHandle memberTypeHandle = memberType.TypeHandle;
+								List<MemberInfoKey> dependentProperties;
+								if (!dependencies.TryGetValue(memberTypeHandle, out dependentProperties))
+								{
+									dependencies[memberTypeHandle] = dependentProperties = new List<MemberInfoKey>();
+								}
+
+								dependentProperties.Add(memberInfoKey);
+								memberType = memberType.BaseType;
+							}
+						}
+					}
+				}
+			}
+			return attributeCollection;
+		}
+		#endregion // GetRawAttributes(PropertyInfo) method
+		#endregion // GetRawAttributes(PropertyInfo) support
+		#endregion // GetRawAttributes support
+
+		#region AttributeCollectionToArray method
+		/// <summary>
+		/// Converts the <see cref="AttributeCollection"/> specified by <paramref name="attributeCollection"/>
+		/// to an array of type <see cref="Attribute"/>.
+		/// </summary>
+		/// <param name="attributeCollection">
+		/// The <see cref="AttributeCollection"/> which should be converted to an array of type <see cref="Attribute"/>.
+		/// </param>
+		/// <returns>
+		/// An array of type <see cref="Attribute"/> for the <see cref="AttributeCollection"/> specified by
+		/// <paramref name="attributeCollection"/>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="attributeCollection"/> is <see langword="null"/>.
+		/// </exception>
+		public static Attribute[] AttributeCollectionToArray(AttributeCollection attributeCollection)
+		{
+			if (attributeCollection == null)
+			{
+				throw new ArgumentNullException("attributeCollection");
+			}
+			Attribute[] attributeArray = new Attribute[attributeCollection.Count];
+			attributeCollection.CopyTo(attributeArray, 0);
+			return attributeArray;
+		}
+		#endregion // AttributeCollectionToArray method
+
+		#region CreateNamePropertyDescriptor method
 		/// <summary>
 		/// Creates a <see cref="PropertyDescriptor"/> for the <c>Name</c> property of <paramref name="element"/>.
 		/// </summary>
@@ -248,36 +546,52 @@ namespace Neumont.Tools.Modeling.Design
 			}
 			return DomainTypeDescriptor.CreatePropertyDescriptor(element, nameDomainPropertyInfo);
 		}
+		#endregion // CreateNamePropertyDescriptor method
+
+		#region CreatePropertyDescriptor methods
 		/// <summary>
-		/// Creates a <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/> with a
-		/// <see cref="DomainObjectInfo.Id"/> equal to <paramref name="domainPropertyId"/>.
+		/// Creates a <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/> or
+		/// <see cref="DomainRoleInfo"/> with a <see cref="DomainObjectInfo.Id"/> equal to
+		/// <paramref name="domainPropertyOrRoleId"/>.
 		/// </summary>
 		/// <param name="element">
 		/// The instance of <see cref="ModelElement"/> containing the property for which a
 		/// <see cref="PropertyDescriptor"/> should be created.
 		/// </param>
-		/// <param name="domainPropertyId">
-		/// The <see cref="DomainObjectInfo.Id"/> of the <see cref="DomainPropertyInfo"/> for which a
-		/// <see cref="PropertyDescriptor"/> should be created.
+		/// <param name="domainPropertyOrRoleId">
+		/// The <see cref="DomainObjectInfo.Id"/> of the <see cref="DomainPropertyInfo"/> or
+		/// <see cref="DomainRoleInfo"/> for which a <see cref="PropertyDescriptor"/> should
+		/// be created.
 		/// </param>
 		/// <returns>
-		/// A <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/> with a
-		/// <see cref="DomainObjectInfo.Id"/> equal to <paramref name="domainPropertyId"/>.
+		/// A <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/> or
+		/// <see cref="DomainRoleInfo"/> with a <see cref="DomainObjectInfo.Id"/> equal to
+		/// <paramref name="domainPropertyOrRoleId"/>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		/// <paramref name="element"/> is <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="DomainDataNotFoundException">
-		/// A <see cref="DomainPropertyInfo"/> with a <see cref="DomainObjectInfo.Id"/> equal to
-		/// <paramref name="domainPropertyId"/> could not be found.
+		/// Neither a <see cref="DomainPropertyInfo"/> nor a <see cref="DomainRoleInfo"/>
+		/// with a <see cref="DomainObjectInfo.Id"/> equal to
+		/// <paramref name="domainPropertyOrRoleId"/> could be found.
 		/// </exception>
-		public static PropertyDescriptor CreatePropertyDescriptor(ModelElement element, Guid domainPropertyId)
+		public static PropertyDescriptor CreatePropertyDescriptor(ModelElement element, Guid domainPropertyOrRoleId)
 		{
 			if (element == null)
 			{
 				throw new ArgumentNullException("element");
 			}
-			return DomainTypeDescriptor.CreatePropertyDescriptor(element, element.Store.DomainDataDirectory.GetDomainProperty(domainPropertyId));
+			DomainDataDirectory domainDataDirectory = element.Store.DomainDataDirectory;
+			DomainPropertyInfo domainPropertyInfo = domainDataDirectory.FindDomainProperty(domainPropertyOrRoleId);
+			if (domainPropertyInfo != null)
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(element, domainPropertyInfo);
+			}
+			else
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(element, domainDataDirectory.GetDomainRole(domainPropertyOrRoleId));
+			}
 		}
 		/// <summary>
 		/// Creates a <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/> specified
@@ -304,26 +618,208 @@ namespace Neumont.Tools.Modeling.Design
 			{
 				throw new ArgumentNullException("domainPropertyInfo");
 			}
+			Type propertyType = domainPropertyInfo.PropertyType;
+			string propertyName = domainPropertyInfo.Name;
+			Guid domainPropertyId = domainPropertyInfo.Id;
+			PropertyDescriptor propertyDescriptor;
+			Type elementType;
+
 			if (element != null)
 			{
-				ICustomTypeDescriptor typeDescriptor = TypeDescriptor.GetProvider(element).GetTypeDescriptor(element.GetType(), element);
-				Type propertyType = domainPropertyInfo.PropertyType;
-				string propertyName = domainPropertyInfo.Name;
-				Guid domainPropertyId = domainPropertyInfo.Id;
-				PropertyDescriptorCollection propertyDescriptors = typeDescriptor.GetProperties();
-				foreach (PropertyDescriptor propertyDescriptor in propertyDescriptors)
+				// Try the default type descriptor for the element (including custom type descriptors).
+				propertyDescriptor = DomainTypeDescriptor.FindPropertyDescriptorInternal(TypeDescriptor.GetProperties(element, false), propertyType, propertyName, domainPropertyId);
+				if (propertyDescriptor != null)
 				{
-					ElementPropertyDescriptor elementPropertyDescriptor = propertyDescriptor as ElementPropertyDescriptor;
-					if ((elementPropertyDescriptor != null && elementPropertyDescriptor.DomainPropertyInfo.Id == domainPropertyId) ||
-						(propertyDescriptor.PropertyType == propertyType && propertyDescriptor.Name == propertyName))
-					{
-						return propertyDescriptor;
-					}
+					return propertyDescriptor;
 				}
+				// Try the default type descriptor for the element (excluding custom type descriptors, in case it is filtering out the property we want).
+				propertyDescriptor = DomainTypeDescriptor.FindPropertyDescriptorInternal(TypeDescriptor.GetProperties(element, true), propertyType, propertyName, domainPropertyId);
+				if (propertyDescriptor != null)
+				{
+					return propertyDescriptor;
+				}
+				elementType = element.GetType();
 			}
-			return new ElementPropertyDescriptor(element, domainPropertyInfo, GetMemberAttributes(domainPropertyInfo.PropertyInfo));
+			else
+			{
+				elementType = domainPropertyInfo.DomainClass.ImplementationClass;
+			}
+
+			// Try the default type descriptor for the Type of the element.
+			propertyDescriptor = DomainTypeDescriptor.FindPropertyDescriptorInternal(TypeDescriptor.GetProperties(elementType), propertyType, propertyName, domainPropertyId);
+			if (propertyDescriptor != null)
+			{
+				return propertyDescriptor;
+			}
+
+			// GetRawAttributes(PropertyInfo) has a LinkDemand for ReflectionPermission with MemberAccess. In order to avoid any security
+			// issues, we do a full Demand for the same permission here. We could have instead put the same LinkDemand on this method,
+			// but in the majority of cases this permission won't actually be necessary. By doing it this way, callers without this
+			// permission can still successfully use this method as long as the PropertyDescriptor is found before this point.
+			new ReflectionPermission(ReflectionPermissionFlag.MemberAccess).Demand();
+
+			// Since we couldn't find a PropertyDescriptor, we'll have to construct one ourselves.
+			return new ElementPropertyDescriptor(element, domainPropertyInfo,
+				DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo)));
+		}
+		/// <summary>
+		/// Creates a <see cref="PropertyDescriptor"/> for the <see cref="DomainRoleInfo"/> specified
+		/// by <paramref name="domainRoleInfo"/>.
+		/// </summary>
+		/// <param name="element">
+		/// The instance of <see cref="ModelElement"/> playing the <see cref="DomainRoleInfo"/> specified by 
+		/// <paramref name="domainRoleInfo"/> for which a <see cref="PropertyDescriptor"/> should be created.
+		/// </param>
+		/// <param name="domainRoleInfo">
+		/// The <see cref="DomainRoleInfo"/> for which a <see cref="PropertyDescriptor"/> should be created.
+		/// </param>
+		/// <returns>
+		/// A <see cref="PropertyDescriptor"/> for the <see cref="DomainRoleInfo"/> specified by
+		/// <paramref name="domainRoleInfo"/> played by the <see cref="ModelElement"/> specified by
+		/// <paramref name="element"/>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="element"/> is <see langword="null"/>.
+		/// </exception>
+		/// /// <exception cref="ArgumentNullException">
+		/// <paramref name="domainRoleInfo"/> is <see langword="null"/>.
+		/// </exception>
+		public static PropertyDescriptor CreatePropertyDescriptor(ModelElement element, DomainRoleInfo domainRoleInfo)
+		{
+			if (element == null)
+			{
+				throw new ArgumentNullException("element");
+			}
+			if (domainRoleInfo == null)
+			{
+				throw new ArgumentNullException("domainRoleInfo");
+			}
+			PropertyInfo linkPropertyInfo = domainRoleInfo.LinkPropertyInfo;
+			Type propertyType = linkPropertyInfo.PropertyType;
+			string propertyName = domainRoleInfo.PropertyName;
+			DomainRoleInfo oppositeDomainRoleInfo = domainRoleInfo.OppositeDomainRole;
+			Guid oppositeDomainRoleId = oppositeDomainRoleInfo.Id;
+			PropertyDescriptor propertyDescriptor;
+
+			// Try the default type descriptor for the element (including custom type descriptors).
+			propertyDescriptor = DomainTypeDescriptor.FindRolePlayerPropertyDescriptorInternal(TypeDescriptor.GetProperties(element, false), propertyType, propertyName, oppositeDomainRoleId);
+			if (propertyDescriptor != null)
+			{
+				return propertyDescriptor;
+			}
+			// Try the default type descriptor for the element (excluding custom type descriptors, in case it is filtering out the property we want).
+			propertyDescriptor = DomainTypeDescriptor.FindRolePlayerPropertyDescriptorInternal(TypeDescriptor.GetProperties(element, true), propertyType, propertyName, oppositeDomainRoleId);
+			if (propertyDescriptor != null)
+			{
+				return propertyDescriptor;
+			}
+			// Try the default type descriptor for the Type of the element.
+			propertyDescriptor = DomainTypeDescriptor.FindRolePlayerPropertyDescriptorInternal(TypeDescriptor.GetProperties(element.GetType()), propertyType, propertyName, oppositeDomainRoleId);
+			if (propertyDescriptor != null)
+			{
+				return propertyDescriptor;
+			}
+
+			// GetRawAttributes(PropertyInfo) has a LinkDemand for ReflectionPermission with MemberAccess. In order to avoid any security
+			// issues, we do a full Demand for the same permission here. We could have instead put the same LinkDemand on this method,
+			// but in the majority of cases this permission won't actually be necessary. By doing it this way, callers without this
+			// permission can still successfully use this method as long as the PropertyDescriptor is found before this point.
+			new ReflectionPermission(ReflectionPermissionFlag.MemberAccess).Demand();
+
+			// Since we couldn't find a PropertyDescriptor, we'll have to construct one ourselves.
+			return new RolePlayerPropertyDescriptor(element, oppositeDomainRoleInfo,
+				DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(linkPropertyInfo)));
 		}
 		#endregion // CreatePropertyDescriptor methods
+
+		#region FindPropertyDescriptor methods
+		/// <summary>
+		/// Attempts to locate a <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/>
+		/// specified by <paramref name="domainPropertyInfo"/> in the <see cref="PropertyDescriptorCollection"/>
+		/// specified by <paramref name="propertyDescriptors"/>.
+		/// </summary>
+		/// <param name="propertyDescriptors">
+		/// The <see cref="PropertyDescriptorCollection"/> in which to search for a <see cref="PropertyDescriptor"/>
+		/// for the <see cref="DomainPropertyInfo"/> specified by <paramref name="domainPropertyInfo"/>.
+		/// </param>
+		/// <param name="domainPropertyInfo">
+		/// The <see cref="DomainPropertyInfo"/> for which a <see cref="PropertyDescriptor"/> should be searched for
+		/// in the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="propertyDescriptors"/>.
+		/// </param>
+		/// <returns>
+		/// A <see cref="PropertyDescriptor"/> for the <see cref="DomainPropertyInfo"/> specified by
+		/// <paramref name="domainPropertyInfo"/> if one could be located in the <see cref="PropertyDescriptorCollection"/>
+		/// specified by <paramref name="propertyDescriptors"/>; otherwise, <see langword="null"/>.
+		/// </returns>
+		public static PropertyDescriptor FindPropertyDescriptor(PropertyDescriptorCollection propertyDescriptors, DomainPropertyInfo domainPropertyInfo)
+		{
+			if (propertyDescriptors == null)
+			{
+				throw new ArgumentNullException("propertyDescriptors");
+			}
+			if (domainPropertyInfo == null)
+			{
+				throw new ArgumentNullException("domainPropertyInfo");
+			}
+			return DomainTypeDescriptor.FindPropertyDescriptorInternal(propertyDescriptors, domainPropertyInfo.PropertyType, domainPropertyInfo.Name, domainPropertyInfo.Id);
+		}
+		/// <summary>
+		/// Attempts to locate a <see cref="PropertyDescriptor"/> for the <see cref="DomainRoleInfo"/>
+		/// specified by <paramref name="domainRoleInfo"/> in the <see cref="PropertyDescriptorCollection"/>
+		/// specified by <paramref name="propertyDescriptors"/>.
+		/// </summary>
+		/// <param name="propertyDescriptors">
+		/// The <see cref="PropertyDescriptorCollection"/> in which to search for a <see cref="PropertyDescriptor"/>
+		/// for the <see cref="DomainPropertyInfo"/> specified by <paramref name="domainPropertyInfo"/>.
+		/// </param>
+		/// <param name="domainRoleInfo">
+		/// The <see cref="DomainRoleInfo"/> for which a <see cref="PropertyDescriptor"/> should be searched for
+		/// in the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="propertyDescriptors"/>.
+		/// </param>
+		/// <returns>
+		/// A <see cref="PropertyDescriptor"/> for the <see cref="DomainRoleInfo"/> specified by
+		/// <paramref name="domainRoleInfo"/> if one could be located in the <see cref="PropertyDescriptorCollection"/>
+		/// specified by <paramref name="propertyDescriptors"/>; otherwise, <see langword="null"/>.
+		/// </returns>
+		public static PropertyDescriptor FindPropertyDescriptor(PropertyDescriptorCollection propertyDescriptors, DomainRoleInfo domainRoleInfo)
+		{
+			if (propertyDescriptors == null)
+			{
+				throw new ArgumentNullException("propertyDescriptors");
+			}
+			if (domainRoleInfo == null)
+			{
+				throw new ArgumentNullException("domainRoleInfo");
+			}
+			return DomainTypeDescriptor.FindRolePlayerPropertyDescriptorInternal(propertyDescriptors, domainRoleInfo.LinkPropertyInfo.PropertyType, domainRoleInfo.PropertyName, domainRoleInfo.OppositeDomainRole.Id);
+		}
+		private static PropertyDescriptor FindPropertyDescriptorInternal(PropertyDescriptorCollection propertyDescriptors, Type propertyType, string propertyName, Guid domainPropertyId)
+		{
+			foreach (PropertyDescriptor propertyDescriptor in propertyDescriptors)
+			{
+				ElementPropertyDescriptor elementPropertyDescriptor = propertyDescriptor as ElementPropertyDescriptor;
+				if ((elementPropertyDescriptor != null && elementPropertyDescriptor.DomainPropertyInfo.Id == domainPropertyId) ||
+					(propertyDescriptor.PropertyType == propertyType && propertyDescriptor.Name == propertyName))
+				{
+					return propertyDescriptor;
+				}
+			}
+			return null;
+		}
+		private static PropertyDescriptor FindRolePlayerPropertyDescriptorInternal(PropertyDescriptorCollection propertyDescriptors, Type propertyType, string propertyName, Guid oppositeDomainRoleId)
+		{
+			foreach (PropertyDescriptor propertyDescriptor in propertyDescriptors)
+			{
+				RolePlayerPropertyDescriptor rolePlayerPropertyDescriptor = propertyDescriptor as RolePlayerPropertyDescriptor;
+				if ((rolePlayerPropertyDescriptor != null && rolePlayerPropertyDescriptor.DomainRoleInfo.Id == oppositeDomainRoleId) ||
+					(propertyDescriptor.PropertyType == propertyType && propertyDescriptor.Name == propertyName))
+				{
+					return propertyDescriptor;
+				}
+			}
+			return null;
+		}
+		#endregion // FindPropertyDescriptor methods
 
 		#region GetDisplayName methods
 		/// <summary>

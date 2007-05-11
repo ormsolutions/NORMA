@@ -184,6 +184,85 @@ namespace Neumont.Tools.Modeling
 			return unchecked((int)(((uint)value >> places) | ((uint)value << (32 - places))));
 		}
 		#endregion // RotateRight method
+		#region IsDescendantOrSelf methods
+		/// <summary>
+		/// Determines if the <see cref="DomainRoleInfo"/> specified by <paramref name="domainRole"/> is
+		/// or dervies from the <see cref="DomainRoleInfo"/> with the <see cref="DomainObjectInfo.Id"/>
+		/// specified by <paramref name="desiredDomainRoleId"/>.
+		/// </summary>
+		/// <param name="domainRole">
+		/// The <see cref="DomainRoleInfo"/> to be evaluated as to whether it is or derives from the
+		/// <see cref="DomainRoleInfo"/> with the <see cref="DomainObjectInfo.Id"/> specified by
+		/// <paramref name="desiredDomainRoleId"/>
+		/// </param>
+		/// <param name="desiredDomainRoleId">
+		/// The <see cref="DomainObjectInfo.Id"/> of the <see cref="DomainRoleInfo"/> against which
+		/// <paramref name="domainRole"/> should be evaluated.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="domainRole"/> is <see langword="null"/>.
+		/// </exception>
+		public static bool IsDescendantOrSelf(DomainRoleInfo domainRole, Guid desiredDomainRoleId)
+		{
+			if (domainRole == null)
+			{
+				throw new ArgumentNullException("domainRole");
+			}
+
+			do
+			{
+				if (domainRole.Id == desiredDomainRoleId)
+				{
+					return true;
+				}
+				domainRole = domainRole.BaseDomainRole;
+			}
+			while (domainRole != null);
+
+			return false;
+		}
+		/// <summary>
+		/// Determines if the <see cref="DomainRoleInfo"/> specified by <paramref name="domainRole"/> is
+		/// or dervies from one of the <see cref="DomainRoleInfo"/>s with the <see cref="DomainObjectInfo.Id"/>s
+		/// specified by <paramref name="desiredDomainRoleIds"/>.
+		/// </summary>
+		/// <param name="domainRole">
+		/// The <see cref="DomainRoleInfo"/> to be evaluated as to whether it is or derives from one of
+		/// the <see cref="DomainRoleInfo"/>s with the <see cref="DomainObjectInfo.Id"/>s specified by
+		/// <paramref name="desiredDomainRoleIds"/>
+		/// </param>
+		/// <param name="desiredDomainRoleIds">
+		/// The <see cref="DomainObjectInfo.Id"/>s of the <see cref="DomainRoleInfo"/>s against which
+		/// <paramref name="domainRole"/> should be evaluated.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="domainRole"/> is <see langword="null"/>.
+		/// </exception>
+		public static bool IsDescendantOrSelf(DomainRoleInfo domainRole, params Guid[] desiredDomainRoleIds)
+		{
+			if (domainRole == null)
+			{
+				throw new ArgumentNullException("domainRole");
+			}
+			if (desiredDomainRoleIds == null || desiredDomainRoleIds.Length <= 0)
+			{
+				return false;
+			}
+
+			Array.Sort<Guid>(desiredDomainRoleIds);
+			do
+			{
+				if (Array.BinarySearch<Guid>(desiredDomainRoleIds, domainRole.Id) >= 0)
+				{
+					return true;
+				}
+				domainRole = domainRole.BaseDomainRole;
+			}
+			while (domainRole != null);
+
+			return false;
+		}
+		#endregion // IsDescendantOrSelf methods
 		#region EnumerateDomainModels methods
 		/// <summary>
 		/// Enumerate the provided domain models, filtering on the specifies type

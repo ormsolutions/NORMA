@@ -1695,6 +1695,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// DomainRole NestingType
 		/// Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestingType
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[global::System.ComponentModel.TypeConverter()]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NestedFactType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
@@ -1746,6 +1749,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// DomainRole NestedFactType
 		/// Description for Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactType
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[global::System.ComponentModel.TypeConverter()]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "NestingType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]

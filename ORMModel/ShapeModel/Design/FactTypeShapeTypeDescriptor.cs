@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Diagrams.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.ShapeModel.Design
@@ -46,6 +47,22 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		{
 		}
 
+		/// <summary>
+		/// Ensure that the <see cref="ObjectType.IsIndependent"/> property displayed
+		/// as a top-level property is read-only when the <see cref="ObjectType"/> is
+		/// part of an implied objectification or <see cref="ObjectType.AllowIsIndependent"/>
+		/// returns <see langword="false"/>
+		/// </summary>
+		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
+		{
+			if (propertyDescriptor.DomainPropertyInfo.Id == ObjectType.IsIndependentDomainPropertyId)
+			{
+				ObjectType objectType = ModelElement.NestingType;
+				return !(objectType.IsIndependent || objectType.AllowIsIndependent(false));
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
+
 		private static readonly object LockObject = new object();
 		private static volatile bool Initialized;
 		private static DomainPropertyInfo ConstraintDisplayPositionDomainPropertyInfo;
@@ -58,10 +75,10 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		private static Attribute[] NameDomainPropertyAttributes;
 		private static DomainPropertyInfo IsIndependentDomainPropertyInfo;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
-		private static DomainPropertyInfo NestedFactTypeDisplayDomainPropertyInfo;
-		private static Attribute[] NestedFactTypeDisplayDomainPropertyAttributes;
-		private static DomainPropertyInfo NestingTypeDisplayDomainPropertyInfo;
-		private static Attribute[] NestingTypeDisplayDomainPropertyAttributes;
+		private static DomainRoleInfo NestedFactTypeDomainRoleInfo;
+		private static Attribute[] NestedFactTypeDomainRoleAttributes;
+		private static DomainRoleInfo NestingTypeDomainRoleInfo;
+		private static Attribute[] NestingTypeDomainRoleAttributes;
 
 		private void EnsureDomainPropertiesInitialized(DomainDataDirectory domainDataDirectory)
 		{
@@ -76,52 +93,26 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(DisplayRoleNamesDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(NameDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(IsIndependentDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
-						NestedFactTypeDisplayDomainPropertyAttributes = ProcessAttributes(GetDomainPropertyAttributes(NestedFactTypeDisplayDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.NestedFactTypeDisplayDomainPropertyId)));
-						NestingTypeDisplayDomainPropertyAttributes = ProcessAttributes(GetDomainPropertyAttributes(NestingTypeDisplayDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactType.NestingTypeDisplayDomainPropertyId)));
+						NestedFactTypeDomainRoleAttributes = ProcessAttributes(GetRolePlayerPropertyAttributes(NestedFactTypeDomainRoleInfo = domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId)));
+						NestingTypeDomainRoleAttributes = ProcessAttributes(GetRolePlayerPropertyAttributes(NestingTypeDomainRoleInfo = domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId)));
 						Initialized = true;
 					}
 				}
 			}
 		}
-		/// <summary>
-		/// Ensure that the <see cref="ObjectType.IsIndependent"/> property displayed
-		/// as a top-level property is read-only when the <see cref="ObjectType"/> is
-		/// part of an implied objectification or the <see cref="ObjectType.AllowIsIndependent"/>
-		/// returns <see langword="false"/>
-		/// </summary>
-		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
-		{
-			if (propertyDescriptor.DomainPropertyInfo.Id == ObjectType.IsIndependentDomainPropertyId)
-			{
-				ObjectType objectType = ModelElement.NestingType;
-				return !(objectType.IsIndependent || objectType.AllowIsIndependent(false));
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
-		}
 		private static Attribute[] ProcessAttributes(Attribute[] attributes)
 		{
-			// Remove the EditorAtttribute if it is present
-			int editorAttributeIndex = -1;
-			for (int i = 0; i < attributes.Length; i++)
+			List<Attribute> newAttributes = new List<Attribute>(attributes.Length + 1);
+			foreach (Attribute attribute in attributes)
 			{
-				if (attributes[i] is EditorAttribute)
+				// Don't add the EditorAttribute and TypeConverterAttribute
+				if (!(attribute is EditorAttribute) && !(attribute is TypeConverterAttribute))
 				{
-					editorAttributeIndex = i;
-					break;
+					newAttributes.Add(attribute);
 				}
 			}
-			Attribute[] newAttributes = new Attribute[attributes.Length + (editorAttributeIndex < 0 ? 1 : 0)];
-			int destIndex = 0;
-			for (int sourceIndex = 0; sourceIndex < attributes.Length; sourceIndex++)
-			{
-				if (sourceIndex != editorAttributeIndex)
-				{
-					newAttributes[destIndex++] = attributes[sourceIndex];
-				}
-			}
-			// Add the TypeConverterAttribute
-			newAttributes[destIndex] = new TypeConverterAttribute(typeof(ExpandableElementConverter));
-			return newAttributes;
+			newAttributes.Add(new TypeConverterAttribute(typeof(ExpandableElementConverter)));
+			return newAttributes.ToArray();
 		}
 
 		/// <summary>
@@ -144,8 +135,8 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 					CreatePropertyDescriptor(factTypeShape, DisplayRoleNamesDomainPropertyInfo, DisplayRoleNamesDomainPropertyAttributes),
 					CreatePropertyDescriptor(nestingType, NameDomainPropertyInfo, NameDomainPropertyAttributes),
 					CreatePropertyDescriptor(nestingType, IsIndependentDomainPropertyInfo, IsIndependentDomainPropertyAttributes),
-					CreatePropertyDescriptor(factType, NestingTypeDisplayDomainPropertyInfo, NestingTypeDisplayDomainPropertyAttributes),
-					CreatePropertyDescriptor(nestingType, NestedFactTypeDisplayDomainPropertyInfo, NestedFactTypeDisplayDomainPropertyAttributes)
+					new ObjectificationRolePlayerPropertyDescriptor(factType, NestingTypeDomainRoleInfo, NestedFactTypeDomainRoleAttributes),
+					new ObjectificationRolePlayerPropertyDescriptor(nestingType, NestedFactTypeDomainRoleInfo, NestingTypeDomainRoleAttributes)
 				});
 			}
 			return base.GetProperties(attributes);

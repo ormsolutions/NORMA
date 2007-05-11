@@ -621,7 +621,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return ResourceStrings.ToolboxDefaultTabName;
+				return ORMShapeToolboxHelper.DefaultToolboxTabName;
 			}
 		}
 
@@ -632,10 +632,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				// Returning something other than 0 from this property as well as a non-empty string from
-				// DefaultToolboxTabName causes the base class to select the appropriate toolbox tab when
-				// this view receives focus.
-				return 1;
+				return ORMShapeToolboxHelper.DefaultToolboxTabToolboxItemsCount;
 			}
 		}
 
