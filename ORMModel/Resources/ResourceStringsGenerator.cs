@@ -1636,6 +1636,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.Message");
 			}
 		}
+		/// <summary>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</summary>
+		public static string ModelErrorReadingRequiresUserModificationMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.RequiresUserModification.Message");
+			}
+		}
 		/// <summary>Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</summary>
 		public static string ModelErrorReadingTooManyRolesMessage
 		{

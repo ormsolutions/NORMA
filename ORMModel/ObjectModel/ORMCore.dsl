@@ -837,6 +837,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="ReadingRequiresUserModificationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="56D0B016-EAF3-4E4F-B17A-7F7987EBC0CB" DisplayName="Reading Text Automatically Modified" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ModelError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="16DF5C5E-83EF-4EDC-B54A-56D58D62D982" DisplayName="ModelError" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
@@ -2319,6 +2325,26 @@
 				<DomainRole Name="TooFewRolesError" PropertyName="Reading" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="TooFewRolesError" Id="19BFCFE6-EC81-48DC-9B4E-D026F1040AE1">
 					<RolePlayer>
 						<DomainClassMoniker Name="TooFewReadingRolesError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ReadingHasReadingRequiresUserModificationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3B7E4BBF-06B6-489E-BDF5-72EDEE5B87F4">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Reading" PropertyName="RequiresUserModificationError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Reading" Id="1258A048-1355-406C-A9F4-49BCF704927F">
+					<RolePlayer>
+						<DomainClassMoniker Name="Reading"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RequiresUserModificationError" PropertyName="Reading" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RequiresUserModificationError" Id="31EE8A7B-0A15-40E8-ACEB-30E3A2138F93">
+					<RolePlayer>
+						<DomainClassMoniker Name="ReadingRequiresUserModificationError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

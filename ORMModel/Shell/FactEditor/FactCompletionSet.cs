@@ -452,7 +452,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 				myObjectEntries.Insert((newIndex < 0) ? ~newIndex : newIndex, objectType);
 			}
 		}
-		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}", RegexOptions.Compiled);
+
 		void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
 			IVsTextLines textLines = null;
@@ -502,16 +502,14 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			{
 				LinkedElementCollection<RoleBase> roles = readingOrder.RoleCollection;
 				int roleCount = roles.Count;
-				fullReading = regCountPlaces.Replace(
+				fullReading = Reading.ReplaceFields(
 					reading.Text,
-					delegate(Match m)
+					delegate(int index)
 					{
 						string retval = null;
-						string matchText = m.Value;
-						int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
-						if (roleCount > rolePosition)
+						if (roleCount > index)
 						{
-							ObjectType player = roles[rolePosition].Role.RolePlayer;
+							ObjectType player = roles[index].Role.RolePlayer;
 							if (player != null)
 							{
 								string refModeString = player.ReferenceModeString;

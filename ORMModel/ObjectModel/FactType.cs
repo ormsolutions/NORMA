@@ -684,25 +684,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			}
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			{
+				foreach (ReadingOrder readingOrder in ReadingOrderCollection)
 				{
-					foreach (ReadingOrder readingOrder in ReadingOrderCollection)
+					foreach (Reading reading in readingOrder.ReadingCollection)
 					{
-						foreach (Reading reading in readingOrder.ReadingCollection)
+						foreach (ModelErrorUsage readingErrorUsage in (reading as IModelErrorOwner).GetErrorCollection(filter))
 						{
-							foreach (ModelError readingError in (reading as IModelErrorOwner).GetErrorCollection(filter))
+							if (0 != (readingErrorUsage.UseFor & filter))
 							{
-								if (readingError is TooFewReadingRolesError)
-								{
-									if (0 != (filter & ModelErrorUses.BlockVerbalization))
-									{
-										yield return new ModelErrorUsage(readingError, ModelErrorUses.BlockVerbalization);
-									}
-								}
-								else if (0 != (filter & ModelErrorUses.Verbalize))
-								{
-									yield return new ModelErrorUsage(readingError, ModelErrorUses.Verbalize);
-								}
+								yield return readingErrorUsage;
 							}
 						}
 					}
@@ -2569,7 +2562,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
@@ -2617,7 +2610,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{

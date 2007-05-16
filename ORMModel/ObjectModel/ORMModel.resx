@@ -238,8 +238,8 @@
 		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.EntityType.RequiresReferenceScheme.Message" xml:space="preserve">
-		<value>Entity type '{0}' in model '{1}' requires a primary reference scheme.</value>
-		<comment>An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
+		<value>Entity type '{0}' in model '{1}' requires a preferred reference scheme.</value>
+		<comment>An entity type must have a preferred reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</data>
 	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message" xml:space="preserve">
 		<value>Entity type '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
@@ -296,6 +296,10 @@
 	<data name="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message" xml:space="preserve">
 		<value>Object type '{0}' in model '{1}' has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
 		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError.</comment>
+	</data>
+	<data name="ModelError.Reading.RequiresUserModification.Message" xml:space="preserve">
+		<value>Fact type '{0}' in model '{1}' requires user modification of the reading text '{2}'.</value>
+		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</data>
 	<data name="ModelError.Reading.TooFewRoles.Message" xml:space="preserve">
 		<value>Fact '{0}' in model '{1}' has too few roles for the reading with text '{2}'.</value>

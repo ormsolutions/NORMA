@@ -25,6 +25,7 @@ using System.Globalization;
 using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region IReading interface
 	/// <summary>
 	/// An abstract form of a <see cref="Reading"/> element. Designed
 	/// to allow pseudo-readings that are not stored with the model, such
@@ -47,6 +48,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		bool IsEditable { get;}
 	}
+	#endregion // IReading interface
+	#region Reading text utility delegates
+	/// <summary>
+	/// A callback function for use with the <see cref="Reading.ReplaceFields(string,ReadingTextReplace)"/> method. Provides
+	/// a replacement string for the provided <paramref name="index"/>.
+	/// </summary>
+	/// <param name="index">The zero-based index of the replacement field. The index is relative to the <see cref="ReadingOrder.RoleCollection"/>
+	/// for the <see cref="ReadingOrder"/> associated with the <see cref="Reading"/> that owns this text. The index is not guaranteed to be in range.</param>
+	/// <returns>A string to replace the placeholder for the given index. Return <see langword="null"/> to leave the replacement field.</returns>
+	public delegate string ReadingTextReplace(int index);
+	/// <summary>
+	/// A callback function for use with the <see cref="Reading.ReplaceFields(string,ReadingTextReplaceWithFieldGroup)"/> method. Provides
+	/// a replacement string for the provided <paramref name="index"/>.
+	/// </summary>
+	/// <param name="index">The zero-based index of the replacement field. The index is relative to the <see cref="ReadingOrder.RoleCollection"/>
+	/// for the <see cref="ReadingOrder"/> associated with the <see cref="Reading"/> that owns this text. The index is not guaranteed to be in range.</param>
+	/// <param name="match">The <see cref="Match"/> information for this replacement. Contains information about the replacement location in the provided reading text.</param>
+	/// <returns>A string to replace the placeholder for the given index. Return <see langword="null"/> to leave the replacement field.</returns>
+	public delegate string ReadingTextReplaceWithFieldGroup(int index, Match match);
+	/// <summary>
+	/// A callback function for use with the <see cref="Reading.VisitFields"/> method. Called once for
+	/// each integer replacement field.
+	/// </summary>
+	/// <param name="index">The zero-based index of the replacement field. The index is relative to the <see cref="ReadingOrder.RoleCollection"/>
+	/// for the <see cref="ReadingOrder"/> associated with the <see cref="Reading"/> that owns this text. The index is not guaranteed to be in range, and
+	/// the same index may be returned multiple times.</param>
+	/// <returns><see langword="true"/> to continue, or <see langword="false"/> to stop visiting.</returns>
+	public delegate bool ReadingTextVisit(int index);
+	#endregion // Reading text utility delegates
 	#region Reading class
 	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner, IReading
 	{
@@ -92,7 +122,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 		#region IsValidReadingText methods
-		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
 		/// <summary>
 		/// Does some testing to see if the reading text is appropriate for the current
 		/// set of roles assigned to it. Would eventually be more useful if it provided
@@ -119,7 +148,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			bool retval = true;
 
-			MatchCollection matches = regCountPlaces.Matches(testText);
+			MatchCollection matches = FieldRegex.Matches(testText);
 
 			#region testing placehold and role player counts
 			if (matches.Count != roleCount)
@@ -134,8 +163,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int[] nrList = new int[listCount];
 			for (int i = 0; i < listCount; ++i)
 			{
-
-				nrList[i] = int.Parse(matches[i].Groups["placeHolderNr"].Value, CultureInfo.InvariantCulture);
+				nrList[i] = int.Parse(matches[i].Groups[ReplaceFieldsMatchIndexGroupName].Value, CultureInfo.InvariantCulture);
 			}
 			Array.Sort<int>(nrList);
 			int last = int.MinValue;
@@ -178,7 +206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static int PlaceholderCount(string textText)
 		{
-			return regCountPlaces.Matches(textText).Count;
+			return FieldRegex.Matches(textText).Count;
 		}
 		#endregion
 		#region CustomStorage handlers
@@ -202,6 +230,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Handled by ReadingPropertiesChanged
 		}
 		#endregion // CustomStorage handlers
+		#region Reading Specific Methods
+		/// <summary>
+		/// The Text property has been automatically modified by another rule
+		/// </summary>
+		public void SetAutoText(string value)
+		{
+			ReadingOrder order;
+			FactType factType;
+			ORMModel model;
+			if (!string.IsNullOrEmpty(value) &&
+				null != (order = ReadingOrder) &&
+				null != (factType = order.FactType) &&
+				null != (model = factType.Model))
+			{
+				Store store = Store;
+				RuleManager ruleManager = store.RuleManager;
+				Type ruleType = typeof(ReadingPropertiesChanged);
+				ruleManager.DisableRule(ruleType);
+				try
+				{
+					// Explicitly call helper that is called by the change rule
+					ReadingTextChanged(value);
+
+					// Set text property here. We do this after the modifications
+					// were made that would normally trigger the ReadingTextChanged
+					// so that this change is made early
+					Text = value;
+
+					// Create the error if we don't already have one. GenerateErrorText
+					// will be called automatically because changing any reading text triggers
+					// a FactTypeNamePartChanged and this error includes the fact type name.
+					if (RequiresUserModificationError == null)
+					{
+						ReadingRequiresUserModificationError newError = new ReadingRequiresUserModificationError(store);
+						newError.Reading = this;
+						newError.Model = model;
+						newError.GenerateErrorText();
+					}
+				}
+				finally
+				{
+					ruleManager.EnableRule(ruleType);
+				}
+			}
+			else
+			{
+				Text = value;
+			}
+		}
+		#endregion // Reading Specific Methods
 		#region rule classes and helpers
 		/// <summary>
 		/// Delay validation callback for <see cref="ValidateRoleCountError"/> method
@@ -344,18 +422,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == Reading.TextDomainPropertyId)
 				{
-					string newValue = (string)e.NewValue;
-					if (newValue.Length == 0)
+					changedReading.ReadingTextChanged((string)e.NewValue);
+					if (!changedReading.IsDeleted)
 					{
-						changedReading.Delete();
-					}
-					else
-					{
-						ORMCoreDomainModel.DelayValidateElement(changedReading, DelayValidateRoleCountError);
+						ReadingRequiresUserModificationError modificationError;
+						if (null != (modificationError = changedReading.RequiresUserModificationError))
+						{
+							modificationError.Delete();
+						}
 					}
 				}
 			}
 		}
+
+		/// <summary>
+		/// Removes empty readings or calls delay validate.
+		/// </summary>
+		/// <param name="newValue">The new string value. This may be called before the
+		/// Text property is changed, so the value needs to be provided separately.</param>
+		private void ReadingTextChanged(string newValue)
+		{
+			if (string.IsNullOrEmpty(newValue))
+			{
+				Delete();
+			}
+			else
+			{
+				ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRoleCountError);
+			}
+		}
+
 		#endregion // ReadingPropertiesChanged rule class
 		#region ReadingOrderHasRoleRemoved rule class
 		[RuleOn(typeof(ReadingOrderHasRole))] // DeleteRule
@@ -392,7 +488,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				TooFewReadingRolesError tooFew;
 				if (null != (tooFew = TooFewRolesError))
 				{
-					yield return new ModelErrorUsage(tooFew, ModelErrorUses.BlockVerbalization);
+					yield return new ModelErrorUsage(tooFew, ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary);
 				}
 			}
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
@@ -400,7 +496,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				TooManyReadingRolesError tooMany;
 				if (null != (tooMany = TooManyRolesError))
 				{
-					yield return new ModelErrorUsage(tooMany, ModelErrorUses.Verbalize);
+					yield return new ModelErrorUsage(tooMany, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+				}
+				ReadingRequiresUserModificationError userModificationRequired;
+				if (null != (userModificationRequired = RequiresUserModificationError))
+				{
+					yield return new ModelErrorUsage(userModificationRequired, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
 				}
 			}
 			// Get errors off the base
@@ -495,6 +596,121 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // IReading Implementation
+		#region Reading text utility fields and methods
+		/// <summary>
+		/// Named field for the <see cref="Match"/> passed to the <see cref="ReadingTextReplaceWithFieldGroup"/> delegate.
+		/// Represents the entire replacement field, including the curly braces.
+		/// </summary>
+		public const string ReplaceFieldsMatchFieldGroupName = "Field";
+		/// <summary>
+		/// Named field for the <see cref="Match"/> passed to the <see cref="ReadingTextReplaceWithFieldGroup"/> delegate.
+		/// Represents the index portion of the  replacement field, not including the curly braces.
+		/// </summary>
+		public const string ReplaceFieldsMatchIndexGroupName = "Index";
+		private static Regex myFieldRegex;
+
+		/// <summary>
+		/// Visits the fields in the reading to verify the text can be correctly modified.
+		/// </summary>
+		/// <param name="readingText">The reading text.<see cref="Reading"/></param>
+		/// <param name="visitCallback">The visit callback.</param>
+		/// <returns><see langword="true"/> to continue, or <see langword="false"/> to stop visiting.</returns>
+		public static bool VisitFields(string readingText, ReadingTextVisit visitCallback)
+		{
+			Match visitMatch = FieldRegex.Match(readingText);
+			while (visitMatch.Success)
+			{
+				int index;
+				if (int.TryParse(visitMatch.Groups[ReplaceFieldsMatchIndexGroupName].Value, NumberStyles.None, CultureInfo.InvariantCulture, out index))
+				{
+					if (!visitCallback(index))
+					{
+						return false;
+					}
+				}
+				visitMatch = visitMatch.NextMatch();
+			}
+			return true;
+		}
+		/// <summary>
+		/// Replaces the fields in the reading text.
+		/// </summary>
+		/// <param name="readingText">The reading text.</param>
+		/// <param name="replacementText">Text to replace the fields with.</param>
+		/// <returns>Reading text with modified replacement fields.</returns>
+		public static string ReplaceFields(string readingText, string replacementText)
+		{
+			return FieldRegex.Replace(readingText, replacementText);
+		}
+		/// <summary>
+		/// Replaces the fields in the reading text.
+		/// </summary>
+		/// <param name="readingText">The reading text.</param>
+		/// <param name="replaceCallback">The replace callback. See <see cref="ReadingTextReplace"/>.</param>
+		/// <returns>Reading text with modified replacement fields.</returns>
+		public static string ReplaceFields(string readingText, ReadingTextReplace replaceCallback)
+		{
+			return FieldRegex.Replace(
+				readingText,
+				delegate(Match match)
+				{
+					int index;
+					string retVal = null;
+					if (int.TryParse(match.Groups[ReplaceFieldsMatchIndexGroupName].Value, NumberStyles.None, CultureInfo.InvariantCulture, out index))
+					{
+						//Index param to the delegate
+						retVal = replaceCallback(index);
+					}
+					return (retVal != null) ? retVal : match.Value;
+				});
+		}
+		/// <summary>
+		/// Replaces the fields in the reading text.
+		/// </summary>
+		/// <param name="readingText">The reading text. See <see cref="ReadingTextReplaceWithFieldGroup"/>.</param>
+		/// <param name="replaceCallback">The replace callback.</param>
+		/// <returns>Reading text with modified replacement fields.</returns>
+		public static string ReplaceFields(string readingText, ReadingTextReplaceWithFieldGroup replaceCallback)
+		{
+			return FieldRegex.Replace(
+				readingText,
+				delegate(Match match)
+				{
+					int index;
+					string retVal = null;
+					if (int.TryParse(match.Groups[ReplaceFieldsMatchIndexGroupName].Value, NumberStyles.None, CultureInfo.InvariantCulture, out index))
+					{
+						//Index param to the delegate
+						retVal = replaceCallback(index, match);
+					}
+					return (retVal != null) ? retVal : match.Value;
+				});
+		}
+		/// <summary>
+		/// The regular expression used to find fields and indices in
+		/// a reading format string. Captures named groups corresponding
+		/// to the <see cref="ReplaceFieldsMatchFieldGroupName"/> and <see cref="ReplaceFieldsMatchIndexGroupName"/>
+		/// constants.
+		/// </summary>
+		private static Regex FieldRegex
+		{
+			get
+			{
+				Regex retVal = myFieldRegex;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myFieldRegex,
+						new Regex(
+							@"(?n)\.*?(?<Field>((?<!\{)\{)(?<Index>[0-9]+)(\}(?!\})))",
+							RegexOptions.Compiled),
+						null);
+					retVal = myFieldRegex;
+				}
+				return retVal;
+			}
+		}
+		#endregion // Reading text utility fields and methods
 	}
 	#endregion // Reading class
 	#region TooFewReadingRolesError class
@@ -518,11 +734,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
-			get 
+			get
 			{
 				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}
@@ -538,7 +754,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new ModelElement[] { this.Reading };
 		}
 
-		ModelElement[]  IRepresentModelElements.GetRepresentedElements()
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
 			return GetRepresentedElements();
 		}
@@ -567,7 +783,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
@@ -594,4 +810,74 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // TooManyReadingRolesError class
+	#region ReadingRequiresUserModificationError class
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
+	public partial class ReadingRequiresUserModificationError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Creates the error text.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			Reading reading = Reading;
+			if (reading != null)
+			{
+				ReadingOrder order = reading.ReadingOrder;
+				string newText = string.Format(
+					CultureInfo.InvariantCulture,
+					ResourceStrings.ModelErrorReadingRequiresUserModificationMessage,
+					order.FactType.Name,
+					Model.Name,
+					GenerateReadingText(reading.Text, order));
+				if (ErrorText != newText)
+				{
+					ErrorText = newText;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets regenerate to ModelNameChange | OwnerNameChange
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+
+		private static string GenerateReadingText(string readingText, ReadingOrder order)
+		{
+			LinkedElementCollection<RoleBase> roles = order.RoleCollection;
+			int roleCount = roles.Count;
+			return Reading.ReplaceFields(
+				readingText,
+				delegate(int index)
+				{
+					if (index < roleCount)
+					{
+						ObjectType rolePlayer = roles[index].Role.RolePlayer;
+						return (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+					}
+					return null;
+				});
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { Reading };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // ReadingHasReadingRequiresUserModificationError class
 }

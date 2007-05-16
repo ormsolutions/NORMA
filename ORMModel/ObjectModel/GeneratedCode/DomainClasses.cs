@@ -9285,6 +9285,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainClass ReadingRequiresUserModificationError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("56d0b016-eaf3-4e4f-b17a-7f7987ebc0cb")]
+	public partial class ReadingRequiresUserModificationError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ReadingRequiresUserModificationError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x56d0b016, 0xeaf3, 0x4e4f, 0xb1, 0x7a, 0x7f, 0x79, 0x87, 0xeb, 0xc0, 0xcb);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ReadingRequiresUserModificationError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ReadingRequiresUserModificationError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Reading opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Reading.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationError
+		/// </summary>
+		public virtual Reading Reading
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId) as Reading;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ModelError
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -11602,6 +11673,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region RequiresUserModificationError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RequiresUserModificationError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.Reading
+		/// </summary>
+		public virtual ReadingRequiresUserModificationError RequiresUserModificationError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId) as ReadingRequiresUserModificationError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId, value);
 				}
 			}
 		}

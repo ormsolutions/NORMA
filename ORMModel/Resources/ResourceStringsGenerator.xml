@@ -678,6 +678,9 @@
 	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message">
 		<comment type="summary">Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message">
+		<comment type="summary">Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</comment>
+	</ResourceString>
 	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message">
 		<comment type="summary">Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</ResourceString>

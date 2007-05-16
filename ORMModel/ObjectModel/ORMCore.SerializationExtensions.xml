@@ -412,6 +412,7 @@
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="TooManyRolesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="TooFewRolesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ReadingHasReadingRequiresUserModificationError" RoleName="RequiresUserModificationError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Role-->
 	<se:Element Class="Role" Override="true" SortChildElements="true">
@@ -638,6 +639,9 @@
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>
+	</se:Element>
+	<se:Element Class="ReadingRequiresUserModificationError" Override="true">
+		<se:Link RelationshipName="ReadingHasReadingRequiresUserModificationError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
 	<se:Element Class="TooFewRoleSequencesError" Override="true">
 		<se:Link RelationshipName="SetComparisonConstraintHasTooFewRoleSequencesError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>

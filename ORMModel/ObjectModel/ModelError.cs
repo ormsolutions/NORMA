@@ -34,18 +34,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Error text is not regenerated
 		/// </summary>
-		None,
+		None = 0,
 		/// <summary>
 		/// Regenerate the error text when the model
 		/// name changes
 		/// </summary>
-		ModelNameChange,
+		ModelNameChange = 1 << 0,
 		/// <summary>
 		/// Regenerate the error text when the parent
 		/// object changes. The parent object is identified
 		/// via the IModelErrorOwner interface.
 		/// </summary>
-		OwnerNameChange,
+		OwnerNameChange = 1 << 1,
 	}
 	#endregion // RegenerateErrorTextEvents enum
 	#region ModelErrorUses enum

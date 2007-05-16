@@ -59,7 +59,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static AutoSizeTextField myTextShapeField;
 		private static DirectionIndicatorField myLeftDirectionIndicator;
 		private static DirectionIndicatorField myRightDirectionIndicator;
-		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}", RegexOptions.Compiled);
 		private static readonly string ellipsis = ResourceStrings.ReadingShapeEllipsis;
 		private static readonly char c_ellipsis = ellipsis[0];
 		private string myDisplayText;
@@ -513,7 +512,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (null != (matchingOrder = factShape.FindMatchingReadingOrder(false)) ||
 							null != (matchingOrder = factShape.FindMatchingReadingOrder(true)))
 						{
-							retVal = regCountPlaces.Replace(matchingOrder.ReadingText, ellipsis).Trim();
+							retVal = Reading.ReplaceFields(matchingOrder.ReadingText, ellipsis).Trim();
 						}
 						else
 						{
@@ -584,7 +583,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static string EllipsizeReadingFormatString(string formatString, int roleCount)
 		{
-			string retVal = regCountPlaces.Replace(formatString, ellipsis).Trim();
+			string retVal = Reading.ReplaceFields(formatString,ellipsis).Trim();
 			int retValLength = retVal.Length;
 			if (retValLength != 0)
 			{

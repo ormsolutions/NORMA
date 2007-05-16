@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using System.Globalization;
+using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -84,7 +85,6 @@ namespace Neumont.Tools.ORM.Shell
 		private string myLastText;
 		private string myLastRtf;
 		private bool myAllowedProtectedEdit;
-		private static Regex myFieldRegex;
 		private static Regex myDetectNonSpaceRegex;
 		#endregion // Member variables
 		#region Constructors
@@ -99,32 +99,6 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Constructors
 		#region ReadingRichText specific
-		private const string FieldGroup = "Field";
-		private const string IndexGroup = "Index";
-		/// <summary>
-		/// The regular expression used to find fields and indices in
-		/// a reading format string. Captures named groups corresponding
-		/// to the <see cref="FieldGroup"/> and <see cref="IndexGroup"/>
-		/// constants.
-		/// </summary>
-		private static Regex FieldRegex
-		{
-			get
-			{
-				Regex retVal = myFieldRegex;
-				if (retVal == null)
-				{
-					System.Threading.Interlocked.CompareExchange<Regex>(
-						ref myFieldRegex,
-						new Regex(
-							@"(?n)\.*?(?<Field>((?<!\{)\{)(?<Index>[0-9]+)(\}(?!\})))",
-							RegexOptions.Compiled),
-						null);
-					retVal = myFieldRegex;
-				}
-				return retVal;
-			}
-		}
 		/// <summary>
 		/// Regular expression to determine if a reading format
 		/// string contains anything other than space characters
@@ -165,41 +139,45 @@ namespace Neumont.Tools.ORM.Shell
 			// needs to be directly edited.
 			int replacementCount = fieldReplacements.Length;
 			int[] foundReplacements = new int[replacementCount];
-			Match countMatch = FieldRegex.Match(readingText);
 			int fieldCount = 0;
-			while (countMatch.Success)
-			{
-				int index;
-				if (int.TryParse(countMatch.Groups[IndexGroup].Value, NumberStyles.None, CultureInfo.InvariantCulture, out index) &&
-					index < replacementCount)
+			bool allFieldsVisited;
+			allFieldsVisited = Reading.VisitFields(
+				readingText,
+				delegate(int index)
 				{
-					int currentCount = foundReplacements[index];
-					switch (currentCount)
+					if (index < replacementCount)
 					{
-						case 0:
-							++fieldCount;
-							break;
-						case 1:
-							--fieldCount;
-							break;
+						int currentCount = foundReplacements[index];
+						switch (currentCount)
+						{
+							case 0:
+								++fieldCount;
+								break;
+							case 1:
+								--fieldCount;
+								break;
+						}
+						foundReplacements[index] = currentCount + 1;
+						//Keep going
+						return true;
 					}
-					foundReplacements[index] = currentCount + 1;
-				}
-				countMatch = countMatch.NextMatch();
-			}
-			if (fieldCount != 0)
+					else
+					{
+						return false;
+					}
+				});
+			if (fieldCount != 0 && allFieldsVisited)
 			{
 				LockedField[] fields = new LockedField[fieldCount];
 				int offsetAdjustment = 0;
 				int currentField = 0;
-				string modifiedString = FieldRegex.Replace(
+				string modifiedString = 
+					Reading.ReplaceFields(
 					readingText,
-					delegate(Match match)
+					delegate(int index, Match match)
 					{
-						Group fieldGroup = match.Groups[FieldGroup];
-						int index;
-						if (int.TryParse(match.Groups[IndexGroup].Value, NumberStyles.None, CultureInfo.InvariantCulture, out index) &&
-							index < replacementCount &&
+						Group fieldGroup = match.Groups[Reading.ReplaceFieldsMatchFieldGroupName];
+						if (index < replacementCount &&
 							foundReplacements[index] == 1)
 						{
 							string replacement = fieldReplacements[index];
@@ -209,7 +187,7 @@ namespace Neumont.Tools.ORM.Shell
 							++currentField;
 							return replacement;
 						}
-						return fieldGroup.Value;
+						return null;
 					});
 				FinishInitialize(modifiedString, fields, predicateColor, replacementColor);
 			}

@@ -192,6 +192,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("PopulationMandatoryError", PopulationMandatoryError.DomainClassId);
 				classNameMap.Add("PopulationUniquenessError", PopulationUniquenessError.DomainClassId);
 				classNameMap.Add("TooFewReadingRolesError", TooFewReadingRolesError.DomainClassId);
+				classNameMap.Add("ReadingRequiresUserModificationError", ReadingRequiresUserModificationError.DomainClassId);
 				classNameMap.Add("TooFewRoleSequencesError", TooFewRoleSequencesError.DomainClassId);
 				classNameMap.Add("TooManyReadingRolesError", TooManyReadingRolesError.DomainClassId);
 				classNameMap.Add("TooManyRoleSequencesError", TooManyRoleSequencesError.DomainClassId);
@@ -3168,6 +3169,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == ReadingHasTooFewRolesError.TooFewRolesErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -6622,6 +6627,68 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // TooFewReadingRolesError serialization
+	#region ReadingRequiresUserModificationError serialization
+	partial class ReadingRequiresUserModificationError : IORMCustomSerializedElement
+	{
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "Reading", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ReadingRequiresUserModificationError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Reading", match);
+				ReadingRequiresUserModificationError.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			if (!(childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal)))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // ReadingRequiresUserModificationError serialization
 	#region TooFewRoleSequencesError serialization
 	partial class TooFewRoleSequencesError : IORMCustomSerializedElement
 	{

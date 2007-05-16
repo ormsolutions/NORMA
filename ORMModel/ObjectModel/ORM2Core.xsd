@@ -824,6 +824,7 @@
 			<xs:element name="TooFewEntityTypeRoleInstancesError" type="TooFewEntityTypeRoleInstancesError"/>
 			<xs:element name="TooFewFactTypeRoleInstancesError" type="TooFewFactTypeRoleInstancesError"/>
 			<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError"/>
+			<xs:element name="ReadingRequiresUserModificationError" type="ReadingRequiresUserModificationError"/>
 			<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError"/>
 			<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError"/>
 			<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError"/>
@@ -935,6 +936,17 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Reading" type="ReadingRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReadingRequiresUserModificationError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:choice>
+						<xs:element name="Reading" type="ReadingRef"/>
+					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

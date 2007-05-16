@@ -3874,6 +3874,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			PopulationMandatoryError mandatory;
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
+			ReadingRequiresUserModificationError userModification;
 			FactTypeRequiresReadingError noReading;
 			FactTypeRequiresInternalUniquenessConstraintError noUniqueness;
 			NMinusOneError nMinusOne;
@@ -3911,6 +3912,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMReadingEditorToolWindow newWindow = ORMDesignerPackage.ReadingEditorWindow;
 				newWindow.Show();
 				newWindow.ActivateReading(fact);
+			}
+			else if (null != (userModification = error as ReadingRequiresUserModificationError))
+			{
+				reading = userModification.Reading;
 			}
 			else if (null != (noUniqueness = error as FactTypeRequiresInternalUniquenessConstraintError))
 			{

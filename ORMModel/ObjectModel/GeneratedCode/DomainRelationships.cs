@@ -10678,6 +10678,266 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ReadingHasReadingRequiresUserModificationError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("3b7e4bbf-06b6-489e-bdf5-72edee5b87f4")]
+	public partial class ReadingHasReadingRequiresUserModificationError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ReadingHasReadingRequiresUserModificationError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x3b7e4bbf, 0x06b6, 0x489e, 0xbd, 0xf5, 0x72, 0xed, 0xee, 0x5b, 0x87, 0xf4);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ReadingHasReadingRequiresUserModificationError link in the same Partition as the given Reading
+		/// </summary>
+		/// <param name="source">Reading to use as the source of the relationship.</param>
+		/// <param name="target">ReadingRequiresUserModificationError to use as the target of the relationship.</param>
+		public ReadingHasReadingRequiresUserModificationError(Reading source, ReadingRequiresUserModificationError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId, source), new DslModeling::RoleAssignment(ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReadingHasReadingRequiresUserModificationError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReadingHasReadingRequiresUserModificationError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReadingHasReadingRequiresUserModificationError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReadingHasReadingRequiresUserModificationError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Reading domain role code
+		
+		/// <summary>
+		/// Reading domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ReadingDomainRoleId = new global::System.Guid(0x1258a048, 0x1355, 0x406c, 0xa9, 0xf4, 0x49, 0xbc, 0xf7, 0x04, 0x92, 0x7f);
+		
+		/// <summary>
+		/// DomainRole Reading
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.Reading
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/Reading.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/Reading.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RequiresUserModificationError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/Reading.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("1258a048-1355-406c-a9f4-49bcf704927f")]
+		public virtual Reading Reading
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Reading)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReadingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ReadingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Reading of a ReadingRequiresUserModificationError
+		/// <summary>
+		/// Gets Reading.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Reading GetReading(ReadingRequiresUserModificationError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RequiresUserModificationErrorDomainRoleId) as Reading;
+		}
+		
+		/// <summary>
+		/// Sets Reading.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetReading(ReadingRequiresUserModificationError element, Reading newReading)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RequiresUserModificationErrorDomainRoleId, newReading);
+		}
+		#endregion
+		#region RequiresUserModificationError domain role code
+		
+		/// <summary>
+		/// RequiresUserModificationError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RequiresUserModificationErrorDomainRoleId = new global::System.Guid(0x31ee8a7b, 0x0a15, 0x40e8, 0xac, 0xeb, 0x30, 0xe3, 0xa2, 0x13, 0x8f, 0x93);
+		
+		/// <summary>
+		/// DomainRole RequiresUserModificationError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/RequiresUserModificationError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/RequiresUserModificationError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Reading", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/RequiresUserModificationError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("31ee8a7b-0a15-40e8-aceb-30e3a2138f93")]
+		public virtual ReadingRequiresUserModificationError RequiresUserModificationError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ReadingRequiresUserModificationError)DslModeling::DomainRoleInfo.GetRolePlayer(this, RequiresUserModificationErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RequiresUserModificationErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RequiresUserModificationError of a Reading
+		/// <summary>
+		/// Gets RequiresUserModificationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ReadingRequiresUserModificationError GetRequiresUserModificationError(Reading element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReadingDomainRoleId) as ReadingRequiresUserModificationError;
+		}
+		
+		/// <summary>
+		/// Sets RequiresUserModificationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRequiresUserModificationError(Reading element, ReadingRequiresUserModificationError newRequiresUserModificationError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReadingDomainRoleId, newRequiresUserModificationError);
+		}
+		#endregion
+		#region Reading link accessor
+		/// <summary>
+		/// Get the ReadingHasReadingRequiresUserModificationError link to a Reading.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError GetLinkToRequiresUserModificationError (global::Neumont.Tools.ORM.ObjectModel.Reading readingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError>(readingInstance, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Reading not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region RequiresUserModificationError link accessor
+		/// <summary>
+		/// Get the ReadingHasReadingRequiresUserModificationError link to a ReadingRequiresUserModificationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError GetLinkToReading (global::Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError requiresUserModificationErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError>(requiresUserModificationErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RequiresUserModificationError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ReadingHasReadingRequiresUserModificationError instance accessors
+		
+		/// <summary>
+		/// Get any ReadingHasReadingRequiresUserModificationError links between a given Reading and a ReadingRequiresUserModificationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.Reading source, global::Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError>(source, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError link in links )
+			{
+				if ( target.Equals(link.RequiresUserModificationError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ReadingHasReadingRequiresUserModificationError link between a given Readingand a ReadingRequiresUserModificationError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError GetLink( global::Neumont.Tools.ORM.ObjectModel.Reading source, global::Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError>(source, global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.ReadingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError link in links )
+			{
+				if ( target.Equals(link.RequiresUserModificationError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError
 	/// Description for
 	/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError

@@ -2841,7 +2841,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{

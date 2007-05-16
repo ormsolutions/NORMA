@@ -138,25 +138,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // EnforceNoEmptyReadingOrderRolePlayerChange rule class
 		#region ReadingOrderHasRoleRemoving rule class
-		private static Regex myIndexMapRegex;
-		private static Regex IndexMapRegex
-		{
-			get
-			{
-				Regex regexIndexMap = myIndexMapRegex;
-				if (regexIndexMap == null)
-				{
-					System.Threading.Interlocked.CompareExchange<Regex>(
-						ref myIndexMapRegex,
-						new Regex(
-							@"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
-							RegexOptions.Compiled),
-						null);
-					regexIndexMap = myIndexMapRegex;
-				}
-				return regexIndexMap;
-			}
-		}
 		/// <summary>
 		/// Handles the clean up of the readings that the role is involved in by replacing
 		/// the place holder with the text {{deleted}}
@@ -191,17 +172,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int iReading = 0; iReading < numReadings; ++iReading)
 					{
 						Reading linkReading = readings[iReading];
-
 						if (!linkReading.IsDeleting)
 						{
 							Debug.Assert(!linkReading.IsDeleted);
 							string text = linkReading.Text;
 							IFormatProvider formatProvider = CultureInfo.InvariantCulture;
-							linkReading.Text = IndexMapRegex.Replace(
+							linkReading.SetAutoText(Reading.ReplaceFields(
 								linkReading.Text,
-								delegate(Match match)
+								delegate(int replaceIndex)
 								{
-									int replaceIndex = int.Parse(match.Groups["ReplaceIndex"].Value, formatProvider);
 									if (replaceIndex == pos)
 									{
 										return ResourceStrings.ModelReadingRoleDeletedRoleText;
@@ -210,9 +189,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 									{
 										return "{" + (replaceIndex - 1).ToString(formatProvider) + "}";
 									}
-									return match.Value;
-								});
-							//UNDONE:add entry to task list service to let user know reading text might need some fixup
+									return null;
+								}
+								));
 						}
 					}
 				}
@@ -311,7 +290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						for (int i = 0; i < readingCount; ++i)
 						{
 							Reading reading = readings[i];
-							reading.Text = reading.Text + appendText;
+							reading.SetAutoText(reading.Text + appendText);
 						}
 					}
 				}

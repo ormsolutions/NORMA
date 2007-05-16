@@ -949,6 +949,14 @@
     <value>Inconsistent Frequency Constraint Minimum and Maximum Values</value>
     <comment>DisplayName for DomainClass &apos;FrequencyConstraintMinMaxError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError.DisplayName" xml:space="preserve">
+    <value>Reading Text Requires User Modification</value>
+    <comment>DisplayName for DomainClass &apos;ReadingRequiresUserModificationError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelError&apos;</comment>
@@ -3044,6 +3052,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError/TooFewRolesError.PropertyDisplayName" xml:space="preserve">
     <value>Reading</value>
     <comment>PropertyDisplayName for DomainRole &apos;TooFewRolesError&apos; on DomainRelationship &apos;ReadingHasTooFewRolesError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError</value>
+    <comment>Description for DomainClass &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.DisplayName" xml:space="preserve">
+    <value>Reading Has Reading Requires User Modification Error</value>
+    <comment>DisplayName for DomainClass &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/Reading.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.Reading</value>
+    <comment>Description for DomainRole &apos;Reading&apos; on DomainRelationship &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/Reading.DisplayName" xml:space="preserve">
+    <value>Reading</value>
+    <comment>DisplayName for DomainRole &apos;Reading&apos; on DomainRelationship &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/Reading.PropertyDisplayName" xml:space="preserve">
+    <value>Requires User Modification Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Reading&apos; on DomainRelationship &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/RequiresUserModificationError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationError</value>
+    <comment>Description for DomainRole &apos;RequiresUserModificationError&apos; on DomainRelationship &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/RequiresUserModificationError.DisplayName" xml:space="preserve">
+    <value>RequiresUserModificationError</value>
+    <comment>DisplayName for DomainRole &apos;RequiresUserModificationError&apos; on DomainRelationship &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError/RequiresUserModificationError.PropertyDisplayName" xml:space="preserve">
+    <value>Reading</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RequiresUserModificationError&apos; on DomainRelationship &apos;ReadingHasReadingRequiresUserModificationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError</value>
