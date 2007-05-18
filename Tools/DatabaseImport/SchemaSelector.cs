@@ -53,6 +53,8 @@ namespace Neumont.Tools.ORM.DatabaseImport
 		private void btnSelect_Click(object sender, EventArgs e)
 		{			
 			mySelectedSchema = cbxSelectSchema.Items[cbxSelectSchema.SelectedIndex].ToString();
+			DialogResult = DialogResult.OK;
+			Close();
 		}
 
 		private void Form1_Load(object sender, EventArgs e)

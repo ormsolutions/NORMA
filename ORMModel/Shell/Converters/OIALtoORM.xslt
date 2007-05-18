@@ -19,50 +19,117 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="odt oil">
+	<xsl:variable name="GenerateUserModificationRequiredErrorsFragment">
+		<xsl:apply-templates select="." mode="GenerateUserModificationRequiredErrors"/>
+	</xsl:variable>
+	<xsl:variable name="GenerateUserModificationRequiredErrors" select="boolean(exsl:node-set($GenerateUserModificationRequiredErrorsFragment)/node())"/>
+	<xsl:template match="*" mode="GenerateUserModificationRequiredErrors">
+		<!-- To override this, import this template and redefine this template with no contents-->
+		<xsl:text>Do It</xsl:text>
+	</xsl:template>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:template match="oil:model">
-		<orm:ORMModel id="{@sourceRef}" Name="{@name}">
-			<orm:Objects>
-				<xsl:apply-templates select="oil:conceptType" mode="GenerateObjectTypes"/>
-			</orm:Objects>
-			<orm:Constraints>
-				<xsl:apply-templates mode="GenerateConstraints" select="oil:conceptType/child::oil:*"/>
-			</orm:Constraints>
-			<orm:Facts>
-				<xsl:apply-templates mode="GenerateFacts" select="oil:conceptType/child::oil:*"/>
-			</orm:Facts>
-			<orm:DataTypes>
-				<xsl:if test="oil:informationTypeFormats/child::odt:string">
-					<orm:VariableLengthTextDataType id="VariableLengthTextDataType" />
+		<xsl:variable name="dirtyOrmIdsFragment">
+			<orm:ORMModel id="{@sourceRef}" Name="{@name}">
+				<orm:Objects>
+					<xsl:apply-templates select="oil:conceptType" mode="GenerateObjectTypes"/>
+				</orm:Objects>
+				<orm:Constraints>
+					<xsl:apply-templates mode="GenerateConstraints" select="oil:conceptType/child::oil:*"/>
+				</orm:Constraints>
+				<xsl:variable name="allFactTypesFragment">
+					<xsl:apply-templates mode="GenerateFacts" select="oil:conceptType/child::oil:*"/>
+				</xsl:variable>
+				<orm:Facts>
+					<xsl:copy-of select="$allFactTypesFragment"/>
+				</orm:Facts>
+				<xsl:if test="$GenerateUserModificationRequiredErrors">
+					<orm:ModelErrors>
+						<xsl:for-each select="exsl:node-set($allFactTypesFragment)/child::orm:Fact/orm:ReadingOrders/orm:ReadingOrder/orm:Readings/orm:Reading">
+							<orm:ReadingRequiresUserModificationError Name="" id="{@id}usermodificationerror">
+								<orm:Reading ref="{@id}"/>
+							</orm:ReadingRequiresUserModificationError>
+						</xsl:for-each>
+					</orm:ModelErrors>
 				</xsl:if>
-				<xsl:if test="boolean(oil:informationTypeFormats/child::odt:decimalNumber) or boolean(oil:informationTypeFormats/child::odt:floatingPointNumber) or boolean(oil:informationTypeFormats/child::odt:identity)">
-					<orm:DecimalNumericDataType id="DecimalNumericDataType" />
-				</xsl:if>
-				<xsl:if test="oil:informationTypeFormats/child::odt:binary">
-					<orm:LargeLengthRawDataDataType id="LargeLengthRawDataDataType" />
-				</xsl:if>
-				<xsl:if test="oil:informationTypeFormats/child::odt:boolean">
-					<orm:TrueOrFalseLogicalDataType id="TrueOrFalseLogicalDataType"/>
-				</xsl:if>
-			</orm:DataTypes>
-			<orm:ReferenceModeKinds>
-				<orm:ReferenceModeKind id="_94F6CC9F-76A2-461B-A031-E13A5FA5B9C9" ReferenceModeType="General">
-					<xsl:attribute name="FormatString">
-						<xsl:text>{1}</xsl:text>
-					</xsl:attribute>
-				</orm:ReferenceModeKind>
-				<orm:ReferenceModeKind id="_54981962-590F-428B-92C0-3430BC951E3F" ReferenceModeType="Popular">
-					<xsl:attribute name="FormatString">
-						<xsl:text>{0}_{1}</xsl:text>
-					</xsl:attribute>
-				</orm:ReferenceModeKind>
-				<orm:ReferenceModeKind id="_401C5824-3C4A-4514-AE6D-0454546E52AC" ReferenceModeType="UnitBased">
-					<xsl:attribute name="FormatString">
-						<xsl:text>{1}Value</xsl:text>
-					</xsl:attribute>
-				</orm:ReferenceModeKind>
-			</orm:ReferenceModeKinds>
-		</orm:ORMModel>
+				<orm:DataTypes>
+					<xsl:if test="oil:informationTypeFormats/child::odt:string">
+						<orm:VariableLengthTextDataType id="VariableLengthTextDataType" />
+					</xsl:if>
+					<xsl:if test="boolean(oil:informationTypeFormats/child::odt:decimalNumber) or boolean(oil:informationTypeFormats/child::odt:floatingPointNumber) or boolean(oil:informationTypeFormats/child::odt:identity)">
+						<orm:DecimalNumericDataType id="DecimalNumericDataType" />
+					</xsl:if>
+					<xsl:if test="oil:informationTypeFormats/child::odt:binary">
+						<orm:LargeLengthRawDataDataType id="LargeLengthRawDataDataType" />
+					</xsl:if>
+					<xsl:if test="oil:informationTypeFormats/child::odt:boolean">
+						<orm:TrueOrFalseLogicalDataType id="TrueOrFalseLogicalDataType"/>
+					</xsl:if>
+				</orm:DataTypes>
+				<orm:ReferenceModeKinds>
+					<orm:ReferenceModeKind id="_94F6CC9F-76A2-461B-A031-E13A5FA5B9C9" ReferenceModeType="General">
+						<xsl:attribute name="FormatString">
+							<xsl:text>{1}</xsl:text>
+						</xsl:attribute>
+					</orm:ReferenceModeKind>
+					<orm:ReferenceModeKind id="_54981962-590F-428B-92C0-3430BC951E3F" ReferenceModeType="Popular">
+						<xsl:attribute name="FormatString">
+							<xsl:text>{0}_{1}</xsl:text>
+						</xsl:attribute>
+					</orm:ReferenceModeKind>
+					<orm:ReferenceModeKind id="_401C5824-3C4A-4514-AE6D-0454546E52AC" ReferenceModeType="UnitBased">
+						<xsl:attribute name="FormatString">
+							<xsl:text>{1}Value</xsl:text>
+						</xsl:attribute>
+					</orm:ReferenceModeKind>
+				</orm:ReferenceModeKinds>
+			</orm:ORMModel>
+		</xsl:variable>
+		<xsl:call-template name="NormalizeIds">
+			<xsl:with-param name="context" select="exsl:node-set($dirtyOrmIdsFragment)/child::*"/>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="NormalizeIds">
+		<xsl:param name="context" select="."/>
+		<xsl:for-each select="$context">
+			<xsl:variable name="newIdsFragment">
+				<xsl:apply-templates select="." mode="CollectIds"/>
+			</xsl:variable>
+			<xsl:apply-templates mode="ReplaceIds" select=".">
+				<xsl:with-param name="IdMap" select="exsl:node-set($newIdsFragment)/child::*"/>
+			</xsl:apply-templates>
+		</xsl:for-each>
+	</xsl:template>
+	<xsl:template match="*" mode="CollectIds">
+		<xsl:param name="ParentPath" select="concat('_',position())"/>
+		<xsl:variable name="idValue" select="string(@id)"/>
+		<xsl:variable name="MyPath" select="concat($ParentPath,'_',position())"/>
+		<xsl:if test="$idValue">
+			<idMap oldId="{$idValue}" newId="{$MyPath}"/>
+		</xsl:if>
+		<xsl:apply-templates select="*" mode="CollectIds">
+			<xsl:with-param name="ParentPath" select="$MyPath"/>
+		</xsl:apply-templates>
+	</xsl:template>
+	<xsl:template match="*" mode="ReplaceIds">
+		<xsl:param name="IdMap"/>
+		<xsl:copy>
+			<xsl:apply-templates select="@*" mode="ReplaceIds">
+				<xsl:with-param name="IdMap" select="$IdMap"/>
+			</xsl:apply-templates>
+			<xsl:apply-templates select="*|text()" mode="ReplaceIds">
+				<xsl:with-param name="IdMap" select="$IdMap"/>
+			</xsl:apply-templates>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="@*" mode="ReplaceIds">
+		<xsl:copy-of select="."/>
+	</xsl:template>
+	<xsl:template match="@ref | @id" mode="ReplaceIds">
+		<xsl:param name="IdMap"/>
+		<xsl:attribute name="{local-name()}">
+			<xsl:value-of select="$IdMap[@oldId=current()]/@newId"/>
+		</xsl:attribute>
 	</xsl:template>
 	<!-- Match conceptTypeRef or informationType and generate the appropriate FactType -->
 	<xsl:template mode="GenerateFacts" match="*"/>
