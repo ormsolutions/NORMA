@@ -15,4 +15,5 @@
 #endregion
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ORMShape.dsl';generatedResourceFile='ShapeDomainModelResx';validation=''" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>
 <#@ include file="Dsl\ConnectionBuilder.tt" #>

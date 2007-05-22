@@ -15,3 +15,4 @@
 #endregion
 <#@ include file="Dsl\DomainModelCodeGenerator.tt" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ORMCore.dsl';generatedResourceFile='CoreDomainModelResx';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>

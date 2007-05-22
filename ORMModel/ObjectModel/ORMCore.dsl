@@ -3531,20 +3531,6 @@
 	</Relationships>
 
 	<Types>
-		<ExternalType Namespace="System" Name="Object"/>
-		<ExternalType Namespace="System" Name="Boolean"/>
-		<ExternalType Namespace="System" Name="String"/>
-		<ExternalType Namespace="System" Name="Char"/>
-		<ExternalType Namespace="System" Name="Byte"/>
-		<ExternalType Namespace="System" Name="Int16"/>
-		<ExternalType Namespace="System" Name="Int32"/>
-		<ExternalType Namespace="System" Name="Int64"/>
-		<ExternalType Namespace="System" Name="SByte"/>
-		<ExternalType Namespace="System" Name="UInt16"/>
-		<ExternalType Namespace="System" Name="UInt32"/>
-		<ExternalType Namespace="System" Name="UInt64"/>
-		<ExternalType Namespace="System" Name="Single"/>
-		<ExternalType Namespace="System" Name="Double"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="FactType"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceMode"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="DataType"/>

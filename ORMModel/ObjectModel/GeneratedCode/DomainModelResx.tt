@@ -1,5 +1,6 @@
 <#@ include file="Dsl\DslResxGenerator.tt" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ORMCore.dsl';generatedResourceFile='CoreDomainModelResx';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>
 <!-- Common Public License Copyright Notice -->
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio

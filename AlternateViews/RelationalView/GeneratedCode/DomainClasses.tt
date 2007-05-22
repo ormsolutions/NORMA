@@ -17,3 +17,4 @@
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../RelationalShape.dsl';validation=''" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../OIALModel/OIALModel.dsl';validation=''" provides="dslLibrary='OIALModelDslLibrary'" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>

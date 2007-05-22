@@ -562,6 +562,7 @@
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Framework\SystemCore.dsl" />
     <None Include="ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd">
       <SubType>Designer</SubType>
     </None>
