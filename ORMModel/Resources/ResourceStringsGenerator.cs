@@ -2173,6 +2173,30 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "SchemaValidationFailure.Instructions");
 			}
 		}
+		/// <summary>Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</summary>
+		public static string ImplicitBooleanValueTypeRestriction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.Restriction");
+			}
+		}
+		/// <summary>Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</summary>
+		public static string ImplicitBooleanValueTypePropertyRestriction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.PropertyRestriction");
+			}
+		}
+		/// <summary>The format string for naming an implicit boolean value type when there are no readings on the fact type.</summary>
+		public static string ImplicitBooleanValueTypeNoReadingFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.NoReadingFormatString");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

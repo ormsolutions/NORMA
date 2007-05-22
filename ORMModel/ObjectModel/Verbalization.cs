@@ -223,183 +223,183 @@ namespace Neumont.Tools.ORM.ObjectModel
 		CustomChildVerbalizer FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative);
 	}
 	#endregion // IVerbalizeFilterChildren interface
-    #region IVerbalizationSets interface
-    /// <summary>A base interface for the generic VerbalizationSets interface.</summary>
-    public interface IVerbalizationSets
-    {
-    }
-    #endregion // IVerbalizationSets interface
-    #region IVerbalizationSets interface
-    /// <summary>An interface representing generic verbalization sets.</summary>
-    /// <typeParam name="TEnum">An enumeration representing the verbalization sets</typeParam>
-    public interface IVerbalizationSets<TEnum> : IVerbalizationSets
-        where TEnum : struct
-    {
-        /// <summary>Retrieve a snippet for the specified type and criteria.</summary>
-        /// <param name="snippetType">A value from the TEnum enum.</param>
-        /// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
-        /// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
-        /// <returns>Snippet string</returns>
-        string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative);
-        /// <summary>Retrieve a snippet for the specified type with default criteria.</summary>
-        /// <param name="snippetType">A value from the TEnum enum.</param>
-        /// <returns>Snippet string</returns>
-        string GetSnippet(TEnum snippetType);
-    }
-    #endregion // Genereic IVerbalizationSets interface
-    #region Generic VerbalizationSets class
-    /// <summary>A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.</summary>
-    /// <typeparam name="TEnum">The enumeration type of snippet set</typeparam>
-    public abstract class VerbalizationSets<TEnum> : IVerbalizationSets<TEnum>
-        where TEnum : struct
-    {
-        #region VerbalizationSet class
-        /// <summary>An abstract class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.</summary>
-        protected abstract class VerbalizationSet
-        {
-            /// <summary>Retrieve a snippet value</summary>
-            /// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
-            /// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
-            /// <returns>Snippet string</returns>
-            public abstract string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner);
-        }
-        #endregion // VerbalizationSet class
-        #region ArrayVerbalizationSet class
-        /// <summary>A class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.</summary>
-        protected class ArrayVerbalizationSet : VerbalizationSet
-        {
-            private string[] mySnippets;
-            /// <summary>VerbalizationSet constructor.</summary>
-            /// <param name="snippets">An array of strings with one string for each value in the CoreVerbalizationSnippetType enum.</param>
-            public ArrayVerbalizationSet(string[] snippets)
-            {
-                this.mySnippets = snippets;
-            }
-            /// <summary>Retrieve a snippet value</summary>
-            /// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
-            /// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
-            /// <returns>Snippet string</returns>
-            public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
-            {
-                return this.mySnippets[owner.ValueToIndex(snippetType)];
-            }
-        }
-        #endregion // ArrayVerbalizationSet class
-        #region DictionaryVerbalizationSet class
-        /// <summary>A class holding dictionary items that refer to values from the enumeration of CoreVerbalizationSnippetType.</summary>
-        protected class DictionaryVerbalizationSet : VerbalizationSet
-        {
-            private Dictionary<TEnum, string> mySnippets;
-            /// <summary>Retrieves all of the IDictionary snippets in the snippet set</summary>
-            public IDictionary<TEnum, string> Dictionary
-            {
-                get
-                {
-                    return mySnippets;
-                }
-            }
-            /// <summary>VerbalizationSet constructor.</summary>
-            public DictionaryVerbalizationSet()
-            {
-                this.mySnippets = new Dictionary<TEnum, string>();
-            }
-            /// <summary>Retrieve a snippet value</summary>
-            /// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
-            /// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
-            /// <returns>Snippet string</returns>
-            public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
-            {
-                string retVal = null;
-                this.mySnippets.TryGetValue(snippetType, out retVal);
-                return retVal;
-            }
-        }
-        #endregion // DictionaryVerbalizationSet class
-        #region IVerbalizationSets<TEnum> Implementation
-        private VerbalizationSet[] mySets;
-        /// <summary>Retrieve a snippet for the specified type with default criteria.</summary>
-        /// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
-        /// <returns>Snippet string</returns>
-        protected string GetSnippet(TEnum snippetType)
-        {
-            return this.GetSnippet(snippetType, false, false);
-        }
-        string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType)
-        {
-            return this.GetSnippet(snippetType);
-        }
-        /// <summary>Retrieve a snippet for the specified type and criteria.</summary>
-        /// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
-        /// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
-        /// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
-        /// <returns>Snippet string</returns>
-        protected string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
-        {
-            VerbalizationSet set = this.mySets[VerbalizationSets<TEnum>.GetSetIndex(isDeontic, isNegative)];
-            if (set != null)
-            {
-                return set.GetSnippet(snippetType, this);
-            }
-            else
-            {
-                return null;
-            }
-        }
-        string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
-        {
-            return this.GetSnippet(snippetType, isDeontic, isNegative);
-        }
-        #endregion // IVerbalizationSets<TEnum> Implementation
-        #region VerbalizationSets Specific
-        /// <summary>Get the snippet index of the deontic/negative VerbalizationSet</summary>
-        /// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
-        /// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
-        /// <returns>0-based index</returns>
-        protected static int GetSetIndex(bool isDeontic, bool isNegative)
-        {
-            int setIndex = 0;
-            if (isDeontic)
-            {
-                setIndex = setIndex + 1;
-            }
-            if (isNegative)
-            {
-                setIndex = setIndex + 2;
-            }
-            return setIndex;
-        }
-        /// <summary>Method to populate verbalization sets of an abstract VerbalizationSets object.</summary>
-        /// <param name="sets">The empty verbalization sets to be populated</param>
-        /// <param name="userData">User-defined data passed to the Create method</param>
-        protected abstract void PopulateVerbalizationSets(VerbalizationSet[] sets, object userData);
-        /// <summary>Method to convert enum value to integer index value</summary>
-        /// <param name="enumValue">The enum value to be converted</param>
-        /// <returns>integer value of enum type</returns>
-        protected abstract int ValueToIndex(TEnum enumValue);
-        /// <summary>Creates an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.</summary>
-        /// <typeparam name="DerivedType">Name of class to instantiate that derives from VerbalizationSets.</typeparam>
-        /// <param name="userPopulationData">User-defined data passed forward to PopulateVerbalizationSets</param>
-        /// <returns>Returns a generic VerbalizationSetsobject with snippet sets</returns>
-        public static VerbalizationSets<TEnum> Create<DerivedType>(object userPopulationData)
-            where DerivedType : VerbalizationSets<TEnum>, new()
-        {
-            VerbalizationSets<TEnum> retVal = new DerivedType();
-            Initialize(retVal, userPopulationData);
-            return retVal;
-        }
-        /// <summary>Initializes an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.</summary>
-        /// <param name="target">The newly created object to populate.</param>
-        /// <param name="userPopulationData">User-defined data passed forward to PopulateVerbalizationSets</param>
-        /// <returns>Returns a generic VerbalizationSets object with snippet sets</returns>
-        public static void Initialize(VerbalizationSets<TEnum> target, object userPopulationData)
-        {
-            VerbalizationSet[] newSets = new VerbalizationSet[4];
-            target.PopulateVerbalizationSets(newSets, userPopulationData);
-            target.mySets = newSets;
-        }
-        #endregion // VerbalizationSets Specific
-    }
-    #endregion // Generic VerbalizationSets class
+	#region IVerbalizationSets interface
+	/// <summary>A base interface for the generic VerbalizationSets interface.</summary>
+	public interface IVerbalizationSets
+	{
+	}
+	#endregion // IVerbalizationSets interface
+	#region IVerbalizationSets interface
+	/// <summary>An interface representing generic verbalization sets.</summary>
+	/// <typeParam name="TEnum">An enumeration representing the verbalization sets</typeParam>
+	public interface IVerbalizationSets<TEnum> : IVerbalizationSets
+		where TEnum : struct
+	{
+		/// <summary>Retrieve a snippet for the specified type and criteria.</summary>
+		/// <param name="snippetType">A value from the TEnum enum.</param>
+		/// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+		/// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+		/// <returns>Snippet string</returns>
+		string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative);
+		/// <summary>Retrieve a snippet for the specified type with default criteria.</summary>
+		/// <param name="snippetType">A value from the TEnum enum.</param>
+		/// <returns>Snippet string</returns>
+		string GetSnippet(TEnum snippetType);
+	}
+	#endregion // Genereic IVerbalizationSets interface
+	#region Generic VerbalizationSets class
+	/// <summary>A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.</summary>
+	/// <typeparam name="TEnum">The enumeration type of snippet set</typeparam>
+	public abstract class VerbalizationSets<TEnum> : IVerbalizationSets<TEnum>
+		where TEnum : struct
+	{
+		#region VerbalizationSet class
+		/// <summary>An abstract class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.</summary>
+		protected abstract class VerbalizationSet
+		{
+			/// <summary>Retrieve a snippet value</summary>
+			/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+			/// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
+			/// <returns>Snippet string</returns>
+			public abstract string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner);
+		}
+		#endregion // VerbalizationSet class
+		#region ArrayVerbalizationSet class
+		/// <summary>A class holding an array of strings. Strings are retrieved with values from CoreVerbalizationSnippetType.</summary>
+		protected class ArrayVerbalizationSet : VerbalizationSet
+		{
+			private string[] mySnippets;
+			/// <summary>VerbalizationSet constructor.</summary>
+			/// <param name="snippets">An array of strings with one string for each value in the CoreVerbalizationSnippetType enum.</param>
+			public ArrayVerbalizationSet(string[] snippets)
+			{
+				this.mySnippets = snippets;
+			}
+			/// <summary>Retrieve a snippet value</summary>
+			/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+			/// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
+			/// <returns>Snippet string</returns>
+			public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
+			{
+				return this.mySnippets[owner.ValueToIndex(snippetType)];
+			}
+		}
+		#endregion // ArrayVerbalizationSet class
+		#region DictionaryVerbalizationSet class
+		/// <summary>A class holding dictionary items that refer to values from the enumeration of CoreVerbalizationSnippetType.</summary>
+		protected class DictionaryVerbalizationSet : VerbalizationSet
+		{
+			private Dictionary<TEnum, string> mySnippets;
+			/// <summary>Retrieves all of the IDictionary snippets in the snippet set</summary>
+			public IDictionary<TEnum, string> Dictionary
+			{
+				get
+				{
+					return mySnippets;
+				}
+			}
+			/// <summary>VerbalizationSet constructor.</summary>
+			public DictionaryVerbalizationSet()
+			{
+				this.mySnippets = new Dictionary<TEnum, string>();
+			}
+			/// <summary>Retrieve a snippet value</summary>
+			/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+			/// <param name="owner">The VerbalizationSets object that is the owner of the snippet sets.</param>
+			/// <returns>Snippet string</returns>
+			public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
+			{
+				string retVal = null;
+				this.mySnippets.TryGetValue(snippetType, out retVal);
+				return retVal;
+			}
+		}
+		#endregion // DictionaryVerbalizationSet class
+		#region IVerbalizationSets<TEnum> Implementation
+		private VerbalizationSet[] mySets;
+		/// <summary>Retrieve a snippet for the specified type with default criteria.</summary>
+		/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+		/// <returns>Snippet string</returns>
+		protected string GetSnippet(TEnum snippetType)
+		{
+			return this.GetSnippet(snippetType, false, false);
+		}
+		string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType)
+		{
+			return this.GetSnippet(snippetType);
+		}
+		/// <summary>Retrieve a snippet for the specified type and criteria.</summary>
+		/// <param name="snippetType">A value from the CoreVerbalizationSnippetType enum representing the snippet string to retrieve.</param>
+		/// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+		/// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+		/// <returns>Snippet string</returns>
+		protected string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
+		{
+			VerbalizationSet set = this.mySets[VerbalizationSets<TEnum>.GetSetIndex(isDeontic, isNegative)];
+			if (set != null)
+			{
+				return set.GetSnippet(snippetType, this);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
+		{
+			return this.GetSnippet(snippetType, isDeontic, isNegative);
+		}
+		#endregion // IVerbalizationSets<TEnum> Implementation
+		#region VerbalizationSets Specific
+		/// <summary>Get the snippet index of the deontic/negative VerbalizationSet</summary>
+		/// <param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+		/// <param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+		/// <returns>0-based index</returns>
+		protected static int GetSetIndex(bool isDeontic, bool isNegative)
+		{
+			int setIndex = 0;
+			if (isDeontic)
+			{
+				setIndex = setIndex + 1;
+			}
+			if (isNegative)
+			{
+				setIndex = setIndex + 2;
+			}
+			return setIndex;
+		}
+		/// <summary>Method to populate verbalization sets of an abstract VerbalizationSets object.</summary>
+		/// <param name="sets">The empty verbalization sets to be populated</param>
+		/// <param name="userData">User-defined data passed to the Create method</param>
+		protected abstract void PopulateVerbalizationSets(VerbalizationSet[] sets, object userData);
+		/// <summary>Method to convert enum value to integer index value</summary>
+		/// <param name="enumValue">The enum value to be converted</param>
+		/// <returns>integer value of enum type</returns>
+		protected abstract int ValueToIndex(TEnum enumValue);
+		/// <summary>Creates an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.</summary>
+		/// <typeparam name="DerivedType">Name of class to instantiate that derives from VerbalizationSets.</typeparam>
+		/// <param name="userPopulationData">User-defined data passed forward to PopulateVerbalizationSets</param>
+		/// <returns>Returns a generic VerbalizationSetsobject with snippet sets</returns>
+		public static VerbalizationSets<TEnum> Create<DerivedType>(object userPopulationData)
+			where DerivedType : VerbalizationSets<TEnum>, new()
+		{
+			VerbalizationSets<TEnum> retVal = new DerivedType();
+			Initialize(retVal, userPopulationData);
+			return retVal;
+		}
+		/// <summary>Initializes an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.</summary>
+		/// <param name="target">The newly created object to populate.</param>
+		/// <param name="userPopulationData">User-defined data passed forward to PopulateVerbalizationSets</param>
+		/// <returns>Returns a generic VerbalizationSets object with snippet sets</returns>
+		public static void Initialize(VerbalizationSets<TEnum> target, object userPopulationData)
+		{
+			VerbalizationSet[] newSets = new VerbalizationSet[4];
+			target.PopulateVerbalizationSets(newSets, userPopulationData);
+			target.mySets = newSets;
+		}
+		#endregion // VerbalizationSets Specific
+	}
+	#endregion // Generic VerbalizationSets class
 	#region Static verbalization helpers on FactType class
 	public partial class FactType
 	{
@@ -417,7 +417,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching <see cref="IReading"/> instance. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public IReading GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, LinkedElementCollection<RoleBase> defaultRoleOrder, bool allowAnyOrder)
+		public IReading GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, IList<RoleBase> defaultRoleOrder, bool allowAnyOrder)
 		{
 			int orderCount = readingOrders.Count;
 			IReading retVal = null;
@@ -585,7 +585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="matchingReading">The matching reading. Can be non-null to start with</param>
 		/// <returns>true if an optimal match was found. retVal will be false if a match is found but
 		/// a more optimal match is possible</returns>
-		private static bool GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, LinkedElementCollection<RoleBase> defaultRoleOrder, bool testNoFrontText, bool requireNoFrontText, ref Reading matchingReading)
+		private static bool GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, IList<RoleBase> defaultRoleOrder, bool testNoFrontText, bool requireNoFrontText, ref Reading matchingReading)
 		{
 			ReadingOrder matchingOrder = null;
 			int orderCount = readingOrders.Count;
@@ -687,7 +687,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the equality operator (Equals method, etc) (undesirable because we often
 		/// do need to know the difference), this means that factRoles.IndexOf(role)
 		/// will return a false negative, so we write our own helper function.</remarks>
-		public static int IndexOfRole(LinkedElementCollection<RoleBase> factRoles, Role role)
+		public static int IndexOfRole(IList<RoleBase> factRoles, Role role)
 		{
 			int roleCount = factRoles.Count;
 			for (int i = 0; i < roleCount; ++i)
@@ -707,7 +707,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="roleReplacements">The replacement fields. The length of the replacement array can be greater than
 		/// the number of roles in the defaultOrder collection</param>
 		/// <returns>The populated predicate text</returns>
-		public static string PopulatePredicateText(IReading reading, LinkedElementCollection<RoleBase> defaultOrder, string[] roleReplacements)
+		public static string PopulatePredicateText(IReading reading, IList<RoleBase> defaultOrder, string[] roleReplacements)
 		{
 			string retVal = null;
 			if (reading != null)
@@ -715,35 +715,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] useReplacements = roleReplacements;
 				int roleCount = defaultOrder.Count;
 				IList<RoleBase> readingRoles = reading.RoleCollection;
-				Debug.Assert(readingRoles.Count >= roleCount);
-				// First, see if anything is out of order
-				int i;
-				for (i = 0; i < roleCount; ++i)
+				int readingRoleCount = readingRoles.Count;
+				if (readingRoleCount == 1)
 				{
-					RoleBase testRole = readingRoles[i];
-					if (testRole != defaultOrder[i])
+					try
 					{
-						// Now we need a copy
-						useReplacements = new string[roleCount];
-						for (int j = 0; j < i; ++j)
-						{
-							useReplacements[j] = roleReplacements[j];
-						}
-						for (int j = i; j < roleCount; ++j)
-						{
-							useReplacements[j] = roleReplacements[defaultOrder.IndexOf(readingRoles[j])];
-						}
-						break;
+						retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, roleReplacements[defaultOrder.IndexOf(readingRoles[0])]);
+					}
+					catch (FormatException ex)
+					{
+						// UNDONE: Localize
+						retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, ex.Message);
 					}
 				}
-				try
+				else
 				{
-					retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, useReplacements);
-				}
-				catch (FormatException ex)
-				{
-					// UNDONE: Localize
-					retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, ex.Message);
+					Debug.Assert(readingRoles.Count >= roleCount);
+					// First, see if anything is out of order
+					int i;
+					for (i = 0; i < roleCount; ++i)
+					{
+						RoleBase testRole = readingRoles[i];
+						if (testRole != defaultOrder[i])
+						{
+							// Now we need a copy
+							useReplacements = new string[roleCount];
+							for (int j = 0; j < i; ++j)
+							{
+								useReplacements[j] = roleReplacements[j];
+							}
+							for (int j = i; j < roleCount; ++j)
+							{
+								useReplacements[j] = roleReplacements[defaultOrder.IndexOf(readingRoles[j])];
+							}
+							break;
+						}
+					}
+					try
+					{
+						retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, useReplacements);
+					}
+					catch (FormatException ex)
+					{
+						// UNDONE: Localize
+						retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, ex.Message);
+					}
 				}
 			}
 			return retVal;
@@ -872,85 +888,88 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static Regex myIndexMapRegex;
 		#endregion // Member Variables
-        #region Regex properties
-        private static Regex MainRegex
-        {
-            get
-            {
-                #region Commented main regex pattern
-                //            string mainPatternCommented = @"(?xn)
-                //\G
-                //# Test if there is a hyphen binding match before the next format replacement field
-                //(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
-                //	# If there is a hyphen bind before the next replacement field then use it
-                //	((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))
-                //	|
-                //	# Otherwise, pick up all text before the next format replacement field
-                //	((?<BeforeLeftHyphenWord>.*?))
-                //)
-                //# Get the format replacement field
-                //((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))
-                //# Get any trailing information if it exists prior to the next format field
-                //(
-                //	(?=
-                //		# Positive lookahead to see if there is a next format string
-                //		(?(.+(?<!\{)\{\d+\}(?!\}))
-                //			# Check before if there is a next format string
-                //			(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))
-                //			|
-                //			# Get any trailer if there is not a next format string
-                //			([^\-]*?\s-\S.*?)
-                //		)
-                //	)
-                //	# Get the before hyphen and right hyphen word if the look ahead succeeded
-                //	(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+)
-                //)?";
-                #endregion // Commented main regex pattern
-                Regex regexMain = myMainRegex;
-                if (regexMain == null)
-                {
-                    System.Threading.Interlocked.CompareExchange<Regex>(
-                        ref myMainRegex,
-                        new Regex(
-                            @"(?n)\G(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
-                            RegexOptions.Compiled),
-                        null);
-                    regexMain = myMainRegex;
-                }
-                return regexMain;
-            }
-        }
-        private static Regex IndexMapRegex
-        {
-            get
-            {
-                Regex regexIndexMap = myIndexMapRegex;
-                if (regexIndexMap == null)
-                {
-                    System.Threading.Interlocked.CompareExchange<Regex>(
-                        ref myIndexMapRegex,
-                        new Regex(
-                            @"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
-                            RegexOptions.Compiled),
-                        null);
-                    regexIndexMap = myIndexMapRegex;
-                }
-                return regexIndexMap;
-            }
-        }
-        #endregion // Regex properties
-        #region Constructor
-        /// <summary>
+		#region Regex properties
+		private static Regex MainRegex
+		{
+			get
+			{
+				#region Commented main regex pattern
+				//            string mainPatternCommented = @"(?xn)
+				//\G
+				//# Test if there is a hyphen binding match before the next format replacement field
+				//(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
+				//	# If there is a hyphen bind before the next replacement field then use it
+				//	((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))
+				//	|
+				//	# Otherwise, pick up all text before the next format replacement field
+				//	((?<BeforeLeftHyphenWord>.*?))
+				//)
+				//# Get the format replacement field
+				//((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))
+				//# Get any trailing information if it exists prior to the next format field
+				//(
+				//	(?=
+				//		# Positive lookahead to see if there is a next format string
+				//		(?(.+(?<!\{)\{\d+\}(?!\}))
+				//			# Check before if there is a next format string
+				//			(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))
+				//			|
+				//			# Get any trailer if there is not a next format string
+				//			([^\-]*?\s-\S.*?)
+				//		)
+				//	)
+				//	# Get the before hyphen and right hyphen word if the look ahead succeeded
+				//	(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+)
+				//)?";
+				#endregion // Commented main regex pattern
+				Regex regexMain = myMainRegex;
+				if (regexMain == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myMainRegex,
+						new Regex(
+							@"(?n)\G(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
+							RegexOptions.Compiled),
+						null);
+					regexMain = myMainRegex;
+				}
+				return regexMain;
+			}
+		}
+		private static Regex IndexMapRegex
+		{
+			get
+			{
+				Regex regexIndexMap = myIndexMapRegex;
+				if (regexIndexMap == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myIndexMapRegex,
+						new Regex(
+							@"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
+							RegexOptions.Compiled),
+						null);
+					regexIndexMap = myIndexMapRegex;
+				}
+				return regexIndexMap;
+			}
+		}
+		#endregion // Regex properties
+		#region Constructor
+		/// <summary>
 		/// Initialize a structure to hyphen-bind the verbalization for a reading
 		/// </summary>
 		/// <param name="reading">The reading to test.</param>
 		/// <param name="defaultOrder">The roles from the parent fact type. Provides the order of the expected replacement fields.</param>
+		/// <param name="unaryRoleIndex">Treat as a unary role if this index is set.</param>
 		/// <param name="replacementFormatString">The string used to format replacement fields. The format string is used to build another
 		/// format string with one replacement field. It must consist of a {{0}} representing the eventual replacement field, a {0} for the leading
 		/// hyphen-bound text, and a {1} for the trailing hyphen-bound text.</param>
-		public VerbalizationHyphenBinder(IReading reading, LinkedElementCollection<RoleBase> defaultOrder, string replacementFormatString)
+		public VerbalizationHyphenBinder(IReading reading, IList<RoleBase> defaultOrder, int? unaryRoleIndex, string replacementFormatString)
 		{
 			string readingText;
+			int roleCount;
+			int[] indexMap = null;
 
 			// First test if there is any hyphen to look for
 			if (reading == null ||
@@ -960,42 +979,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 				myFormatReplacementFields = null;
 				return;
 			}
-			
-			// Now see the reading has the same order as the fact. If not,
-			// create an indexMap array that maps the reading role order to
-			// the fact role order.
-			int roleCount = defaultOrder.Count;
-			IList<RoleBase> readingRoles = reading.RoleCollection;
-			Debug.Assert(readingRoles.Count == roleCount);
-			int[] indexMap = null;
-			int firstIndexChange = -1;
-			for (int i = 0; i < roleCount; ++i)
+			else if (unaryRoleIndex.HasValue)
 			{
-				RoleBase readingRole = readingRoles[i];
-				if (readingRole == defaultOrder[i])
+				roleCount = 1;
+			}
+			else
+			{
+
+				// Now see the reading has the same order as the fact. If not,
+				// create an indexMap array that maps the reading role order to
+				// the fact role order.
+				roleCount = defaultOrder.Count;
+				IList<RoleBase> readingRoles = reading.RoleCollection;
+				Debug.Assert(readingRoles.Count == roleCount);
+				int firstIndexChange = -1;
+				for (int i = 0; i < roleCount; ++i)
 				{
-					if (indexMap != null)
+					RoleBase readingRole = readingRoles[i];
+					if (readingRole == defaultOrder[i])
 					{
-						indexMap[i] = i;
+						if (indexMap != null)
+						{
+							indexMap[i] = i;
+						}
+						continue;
 					}
-					continue;
-				}
-				if (indexMap == null)
-				{
-					indexMap = new int[roleCount];
-					// Catch up to where we are now
-					for (int j = 0; j < i; ++j)
+					if (indexMap == null)
 					{
-						indexMap[j] = j;
+						indexMap = new int[roleCount];
+						// Catch up to where we are now
+						for (int j = 0; j < i; ++j)
+						{
+							indexMap[j] = j;
+						}
+						firstIndexChange = i;
 					}
-					firstIndexChange = i;
-				}
-				for (int j = firstIndexChange; j < roleCount; ++j)
-				{
-					if (readingRole == defaultOrder[j])
+					for (int j = firstIndexChange; j < roleCount; ++j)
 					{
-						indexMap[i] = j;
-						break;
+						if (readingRole == defaultOrder[j])
+						{
+							indexMap[i] = j;
+							break;
+						}
 					}
 				}
 			}
@@ -1101,7 +1126,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="roleReplacements">The replacement fields</param>
 		/// <param name="unmodifiedRoleReplacements">The roleReplacements array have not been modified with the HyphenBindRoleReplacement method</param>
 		/// <returns>The populated predicate text</returns>
-		public string PopulatePredicateText(IReading reading, LinkedElementCollection<RoleBase> defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
+		public string PopulatePredicateText(IReading reading, IList<RoleBase> defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
 		{
 			string formatText = myModifiedReadingText;
 			if (formatText == null)
@@ -1128,38 +1153,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Member Functions
-        #region Static Functions
-        /// <summary>
-        /// Determines whether or not the given predicate is hyphen bound.
-        /// </summary>
-        /// <param name="reading">The reading to test.</param>
-        /// <returns>True if the predicate is hyphen bound</returns>
-        public static bool IsHyphenBound(IReading reading)
-        {
-            string readingText;
+		#region Static Functions
+		/// <summary>
+		/// Determines whether or not the given predicate is hyphen bound.
+		/// </summary>
+		/// <param name="reading">The reading to test.</param>
+		/// <returns>True if the predicate is hyphen bound</returns>
+		public static bool IsHyphenBound(IReading reading)
+		{
+			string readingText;
 
-            // First test if there is any hyphen to look for
-            if (reading == null ||
-                -1 == (readingText = reading.Text).IndexOf('-'))
-            {
-                return false;
-            }
+			// First test if there is any hyphen to look for
+			if (reading == null ||
+				-1 == (readingText = reading.Text).IndexOf('-'))
+			{
+				return false;
+			}
 
-            Match match = MainRegex.Match(readingText);
-            while (match.Success)
-            {
-                GroupCollection groups = match.Groups;
-                string leftWord = groups["LeftHyphenWord"].Value;
-                string rightWord = groups["RightHyphenWord"].Value;
-                if (leftWord.Length != 0 || rightWord.Length != 0)
-                {
-                    return true;
-                }
-                match = match.NextMatch();
-            }
-            return false;
-        }
-        #endregion
-    }
+			Match match = MainRegex.Match(readingText);
+			while (match.Success)
+			{
+				GroupCollection groups = match.Groups;
+				string leftWord = groups["LeftHyphenWord"].Value;
+				string rightWord = groups["RightHyphenWord"].Value;
+				if (leftWord.Length != 0 || rightWord.Length != 0)
+				{
+					return true;
+				}
+				match = match.NextMatch();
+			}
+			return false;
+		}
+		#endregion
+	}
 	#endregion // VerbalizationHyphenBinder struct
 }

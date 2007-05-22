@@ -726,15 +726,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public bool ShouldDisplayObjectType(ObjectType typeElement)
 		{
 			// We don't ever display a nesting ObjectType, even if the Objectification is not drawn.
-			if (typeElement.NestedFactType == null)
+            // This also applies to Implicit Boolean ValueTypes (those that are part of a binarized unary).
+			if (typeElement.NestedFactType == null && !typeElement.IsImplicitBooleanValue)
 			{
 				return ShouldDisplayPartOfReferenceMode(typeElement);
 			}
-			else
-			{
-				return false;
-			}
-		}
+            return false;
+        }
 		/// <summary>
 		/// Function to determine if a fact type, which may be participating
 		/// in a reference mode pattern, should be displayed.

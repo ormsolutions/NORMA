@@ -125,10 +125,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				retval = new ReadingOrder(Store);
 				LinkedElementCollection<RoleBase> readingRoles = retval.RoleCollection;
-				int numRoles = roleOrder.Count;
-				for (int i = 0; i < numRoles; ++i)
+				Role unaryRole;
+				if (null != (unaryRole = UnaryRole))
 				{
-					readingRoles.Add(roleOrder[i]);
+					readingRoles.Add(unaryRole);
+				}
+				else
+				{
+					int numRoles = roleOrder.Count;
+					for (int i = 0; i < numRoles; ++i)
+					{
+						readingRoles.Add(roleOrder[i]);
+					}
 				}
 				ReadingOrderCollection.Add(retval);
 			}
@@ -718,11 +726,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			if (filter == (ModelErrorUses)(- 1))
+			if (filter == (ModelErrorUses)(-1))
 			{
 				LinkedElementCollection<FactTypeInstance> factTypeInstances = this.FactTypeInstanceCollection;
 				int factTypeInstanceCount = factTypeInstances.Count;
-				for(int i = 0; i < factTypeInstanceCount; ++i)
+				for (int i = 0; i < factTypeInstanceCount; ++i)
 				{
 					FactTypeInstance factTypeInstance = factTypeInstances[i];
 					foreach (ModelErrorUsage usage in (factTypeInstance as IModelErrorOwner).GetErrorCollection(filter))
@@ -1268,6 +1276,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int rolesCount = roles.Count;
 				if (rolesCount != 0)
 				{
+					//used for naming binarized unaries
+					bool applyValueText = false;
+					if (this.RoleCollection.Count == 2 && this.UnaryRole != null)
+					{
+						rolesCount = 1;
+						applyValueText = readingOrdersCount == 0;
+					}
 					string[] replacements = new string[rolesCount];
 					for (int k = 0; k < rolesCount; ++k)
 					{
@@ -1280,6 +1295,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (!string.IsNullOrEmpty(retVal))
 					{
 						retVal = retVal.Replace(" ", null);
+					}
+					if (applyValueText)
+					{
+						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ImplicitBooleanValueTypeNoReadingFormatString, retVal);
 					}
 				}
 			}
@@ -2155,7 +2174,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool lookForCombined = !isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
 
 				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
-				if (2 == factRoles.Count)
+				bool isUnaryFactType = FactType.GetUnaryRoleIndex(factRoles).HasValue;
+				if (!isUnaryFactType && 2 == factRoles.Count)
 				{
 					// UNDONE: Internal verbalization of proxy roles
 					Role[] roles = new Role[2];
@@ -2367,7 +2387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						yield return new CustomChildVerbalizer(verbalizer, true);
 					}
 				}
-				else
+				else if (!isUnaryFactType)
 				{
 					// Easy case, just verbalize all internal constraints as entered
 					for (int i = 0; i < setConstraintCount; ++i)
@@ -2539,6 +2559,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return HierarchyContextPlacementPriority; }
 		}
 		#endregion
+		#endregion
+		#region UnaryFactTypeFixupListener
+		/// <summary>
+		/// This fixup listener handles the automatic binarization of unary facts that are stored as single-role facts.
+		/// </summary>
+		public static IDeserializationFixupListener UnaryFixupListener
+		{
+			get { return new UnaryFactTypeFixupListener(); }
+		}
+		private sealed class UnaryFactTypeFixupListener : DeserializationFixupListener<FactType>
+		{
+			public UnaryFactTypeFixupListener() : base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements) { }
+
+			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				// Binarize any fact that is stored as a unary
+				if (element.RoleCollection != null && element.RoleCollection.Count == 1)
+				{
+					UnaryBinarizationUtility.BinarizeUnary(element, notifyAdded);
+				}
+				else if (element.UnaryRole != null)
+				{
+					// Validate and fix any binarized unary facts
+					UnaryBinarizationUtility.ProcessFactType(element);
+				}
+			}
+		}
 		#endregion
 	}
 	#region FactType Model Validation Errors

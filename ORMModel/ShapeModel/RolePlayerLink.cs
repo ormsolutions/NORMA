@@ -264,9 +264,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool retVal = false;
 				ObjectTypePlaysRole link;
 				Role role;
+				FactType factType;
 				if ((null != (link = AssociatedRolePlayerLink)) &&
 					(null != (role = link.PlayedRole)) &&
-					role.IsMandatory)
+					role.IsMandatory &&
+					// Do not draw the dot on a Binarized Unary
+					!(null != (factType = role.FactType) && factType.UnaryRole != null))
 				{
 					retVal = true;
 				}

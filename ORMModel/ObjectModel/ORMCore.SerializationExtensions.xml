@@ -130,6 +130,13 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="IsImplicitBooleanValue">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsImplicitBooleanValue" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
 		</se:Container>

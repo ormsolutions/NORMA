@@ -501,6 +501,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							doNamedReplacement = true;
 						}
+						else if (factType.UnaryRole != null)
+						{
+							// Do not ellipsize unary reading role placeholders when the role is at the beginning
+							retVal = Reading.ReplaceFields(
+								readingFormatString,
+								delegate(int index, Match match)
+								{
+									return (match.Index == 0) ? string.Empty : ellipsis;
+								}).Trim();
+						}
 						else
 						{
 							retVal = EllipsizeReadingFormatString(readingFormatString, roleCount);
@@ -583,7 +593,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static string EllipsizeReadingFormatString(string formatString, int roleCount)
 		{
-			string retVal = Reading.ReplaceFields(formatString,ellipsis).Trim();
+			string retVal = Reading.ReplaceFields(formatString, ellipsis).Trim();
 			int retValLength = retVal.Length;
 			if (retValLength != 0)
 			{
@@ -940,7 +950,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
 		private sealed partial class RoleDisplayOrderPositionChanged : RolePlayerPositionChangeRule
 		{
-			public override void  RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
 
 				FactTypeShape factShape = e.SourceElement as FactTypeShape;

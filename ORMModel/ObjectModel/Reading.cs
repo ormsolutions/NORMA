@@ -301,7 +301,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				TooFewReadingRolesError tooFewError;
 				TooManyReadingRolesError tooManyError;
 				ReadingOrder readingOrder = ReadingOrder;
-				ORMModel theModel = readingOrder.FactType.Model;
+				FactType factType = readingOrder.FactType;
+				ORMModel theModel = factType.Model;
 				Store store = Store;
 				LinkedElementCollection<RoleBase> orderRoles = readingOrder.RoleCollection;
 				int numRoles = orderRoles.Count;
@@ -345,20 +346,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else
 				{
 					removeTooFew = true;
-					if (null == (tooManyError = TooManyRolesError))
+					if (factType.UnaryRole == null)
 					{
-						tooManyError = new TooManyReadingRolesError(store);
-						tooManyError.Reading = this;
-						tooManyError.Model = theModel;
-						tooManyError.GenerateErrorText();
-						if (notifyAdded != null)
+						if (null == (tooManyError = TooManyRolesError))
 						{
-							notifyAdded.ElementAdded(tooManyError, true);
+							tooManyError = new TooManyReadingRolesError(store);
+							tooManyError.Reading = this;
+							tooManyError.Model = theModel;
+							tooManyError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(tooManyError, true);
+							}
 						}
-					}
-					else
-					{
-						tooManyError.GenerateErrorText();
+						else
+						{
+							tooManyError.GenerateErrorText();
+						}
 					}
 				}
 

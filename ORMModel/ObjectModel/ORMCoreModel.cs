@@ -58,7 +58,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // InitializingToolboxItems property
 		#region TransactionRulesFixupHack class
-		[RuleOn(typeof(CoreDomainModel))]
+		[RuleOn(typeof(CoreDomainModel))] // TransactionBeginningRule
 		private sealed class TransactionRulesFixupHack : TransactionBeginningRule
 		{
 			// UNDONE: There are still a few situations that this doesn't handle:
@@ -517,9 +517,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (explicitDomainModelType != null)
 						{
-							Guid domainModelId = explicitDomainModelType.GUID;
-							retVal = new ElementValidatorOrder(store.GetDomainModel(domainModelId), priority);
-							myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(domainModelId, priority);
+							DomainModelInfo explicitModelInfo = store.DomainDataDirectory.GetDomainModel(explicitDomainModelType);
+							retVal = new ElementValidatorOrder(store.GetDomainModel(explicitModelInfo.Id), priority);
+							myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(explicitModelInfo.Id, priority);
 						}
 						else
 						{

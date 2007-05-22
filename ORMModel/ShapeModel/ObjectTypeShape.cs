@@ -352,7 +352,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// when we've renamed a value type that is bound to the reference scheme
 					// of an entity type.
 					changeType = e.ModelElement as ObjectType;
-		
+
 					if (changeType.IsValueType)
 					{
 						LinkedElementCollection<Role> playedRoles = changeType.PlayedRoleCollection;
@@ -689,7 +689,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// preferred identifier, so there is no notification to the shape that the refmode is gone.
 		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime=TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed partial class RolePlayerDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -849,7 +849,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			/// <param name="fieldName">Non-localized name for the field</param>
 			public ObjectNameTextField(string fieldName)
-			    : base(fieldName)
+				: base(fieldName)
 			{
 			}			/// <summary>
 			/// Modify the display text for independent object types.

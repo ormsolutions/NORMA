@@ -127,4 +127,26 @@
 		</se:Container>
 		<se:Link Name="Role" RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrder"/>
 	</se:Element>
+	<se:Element Class="FactTypeShapeHasRoleDisplayOrder">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:binaryOperator type="inequality">
+					<plx:left>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:callInstance name="RoleDisplayOrderCollection" type="property">
+									<plx:callObject>
+										<plx:callThis name="FactTypeShape" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:value data="1" type="i4"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
+	</se:Element>
 </se:CustomSerializedElements>

@@ -296,6 +296,11 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="IsImplicitBooleanValue" DefaultValue="false" DisplayName="IsImplicitBooleanValue" Id="AE665FCF-B90A-41BD-B3E9-8611B42E668C" IsBrowsable="false">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 
@@ -496,12 +501,6 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
-		</DomainClass>
-		
-		<DomainClass Name="ImplicitBooleanRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B97EE72A-4030-4508-AFE3-C595B8DCA0AB" DisplayName="ImplicitBooleanRole" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="Role"/>
-			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="EqualityConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4F8E935-C07C-4269-81E3-978110F6DC68" DisplayName="EqualityConstraint" Description="">

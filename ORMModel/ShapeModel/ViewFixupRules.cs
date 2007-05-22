@@ -384,6 +384,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
+
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
 					FactTypeShape shape = pel as FactTypeShape;
@@ -392,10 +393,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 						//This part handles inserting the role in the correct location if the facttypeshape has 
 						//a different display order for the roles than the native one.
 						LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
+
+						RoleBase newRole = link.Role;
+						if (factType.UnaryRole != null)
+						{
+							ObjectType rolePlayer;
+							if (!(null != (rolePlayer = newRole.Role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
+							{
+								if (!roles.Contains(newRole))
+								{
+									roles.Add(newRole);
+								}
+							}
+							return;
+						}
 						if (roles.Count != 0)
 						{
 							Store store = shape.Store;
-							RoleBase newRole = link.Role;
 							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 							int insertIndex = -1;
 							if (contextInfo.ContainsKey(FactTypeShape.InsertAfterRoleKey))
@@ -442,6 +456,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 						FactTypeShape shape = pel as FactTypeShape;
 						if (shape != null)
 						{
+							if (factType.UnaryRole != null)
+							{
+								Role unaryRole = factType.UnaryRole;
+								LinkedElementCollection<RoleBase> displayOrder = shape.RoleDisplayOrderCollection;
+								if (!displayOrder.Contains(unaryRole))
+								{
+									displayOrder.Add(factType.UnaryRole);
+								}
+							}
 							shape.AutoResize();
 						}
 					}
@@ -1027,6 +1050,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
+		#region DisplayFactTypeFixupListener class
+		/// <summary>
+		/// Processes Unary FactTypes so that they display the correct number of roles
+		/// </summary>
+		private sealed class DisplayUnaryFactTypeFixupListener : DeserializationFixupListener<FactType>
+		{
+			/// <summary>
+			/// Create a new DisplayUnaryFactTypeFixupListener
+			/// </summary>
+			public DisplayUnaryFactTypeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+
+			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
+				{
+					FactTypeShape shape = pel as FactTypeShape;
+					if (shape != null)
+					{
+						// Create a DisplayedRoleOrder for Unary FactTypes
+						LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
+
+						if (element.UnaryRole != null)
+						{
+							roles.Add(element.UnaryRole);
+							shape.AutoResize();
+							return;
+						}
+					}
+				}
+			}
+		}
+		#endregion // DisplayFactTypeFixupListener class
 		#region ModelNote fixup
 		#region ModelNoteAdded class
 		[RuleOn(typeof(ModelHasModelNote), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule

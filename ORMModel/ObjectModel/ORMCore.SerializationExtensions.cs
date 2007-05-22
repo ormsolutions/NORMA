@@ -897,6 +897,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == ObjectType.IsImplicitBooleanValueDomainPropertyId)
+			{
+				if (!(this.IsImplicitBooleanValue))
+				{
+					return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -1110,6 +1118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				customSerializedAttributes.Add("IsIndependent", ObjectType.IsIndependentDomainPropertyId);
 				customSerializedAttributes.Add("IsExternal", ObjectType.IsExternalDomainPropertyId);
 				customSerializedAttributes.Add("IsPersonal", ObjectType.IsPersonalDomainPropertyId);
+				customSerializedAttributes.Add("IsImplicitBooleanValue", ObjectType.IsImplicitBooleanValueDomainPropertyId);
 				ObjectType.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

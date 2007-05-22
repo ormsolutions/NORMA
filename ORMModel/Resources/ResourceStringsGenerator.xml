@@ -880,4 +880,13 @@
 	<ResourceString name="SchemaValidationFailureInstructions" model="Model" resourceName="SchemaValidationFailure.Instructions">
 		<comment type="summary">Text used to display instructions when a load fails due to schema validation issues</comment>
 	</ResourceString>
+	<ResourceString name="ImplicitBooleanValueTypeRestriction" model="Model" resourceName="ImplicitBooleanValueType.Restriction">
+		<comment type="summary">Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</comment>
+	</ResourceString>
+	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction">
+		<comment type="summary">Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</comment>
+	</ResourceString>
+	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString">
+		<comment type="summary">The format string for naming an implicit boolean value type when there are no readings on the fact type.</comment>
+	</ResourceString>
 </ResourceStrings>

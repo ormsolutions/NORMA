@@ -130,7 +130,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			ObjectType objectType = ModelElement;
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
-			if (propertyId.Equals(ObjectType.IsValueTypeDomainPropertyId))
+			if (objectType.IsImplicitBooleanValue)
+			{
+				return true;
+			}
+			else if (propertyId.Equals(ObjectType.IsValueTypeDomainPropertyId))
 			{
 				return objectType.NestedFactType != null || objectType.PreferredIdentifier != null || objectType.IsSubtypeOrSupertype;
 			}

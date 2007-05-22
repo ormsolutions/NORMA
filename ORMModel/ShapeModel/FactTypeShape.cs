@@ -1044,6 +1044,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool haveExternals = internalsCount < significantConstraintCount;
 				bool haveInternals = internalsCount > 0;
 
+
+				// Hide the internal if we're walking a unary
+				if (parentFact.UnaryRole != null)
+				{
+					constraintBoxes[0].IsHidden = true;
+					haveInternals = false;
+				}
+
 				// Hide all the internals if we're walking the wrong box
 				ConstraintDisplayPosition currentDisplayPosition = ConstraintDisplayPosition;
 				if (displayPosition != currentDisplayPosition)
@@ -2247,7 +2255,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			public sealed override int GetAccessibleChildCount(ShapeElement parentShape)
 			{
-				return (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count;
+				// Use the DisplayedRoleOrder here to account for unary binarization
+				return (parentShape as FactTypeShape).DisplayedRoleOrder.Count;
 			}
 			/// <summary>
 			/// Return the RoleSubField corresponding to the role at the requested index
@@ -2265,7 +2274,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				FactTypeShape factTypeShape = (parentShape as FactTypeShape);
 				double margin = factTypeShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
-				double width = FactTypeShape.RoleBoxWidth * Math.Max(1, factTypeShape.AssociatedFactType.RoleCollection.Count) + margin;
+				double width = FactTypeShape.RoleBoxWidth * Math.Max(1, factTypeShape.DisplayedRoleOrder.Count) + margin;
 				double height = FactTypeShape.RoleBoxHeight + margin;
 				return (factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ? new SizeD(width, height) : new SizeD(height, width);
 			}
@@ -3560,7 +3569,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									case 1:
 										factRoles = DisplayedRoleOrder;
 										factRoleCount = factRoles.Count;
-										roleIndex = factRoles.IndexOf(roles[0]);
+										roleIndex = 0;
 										break;
 									case 2:
 										{
@@ -5067,6 +5076,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FactTypeShapeChangeRule class
+		#region ImplicitBooleanValueChangeRule class
+		[RuleOn(typeof(ObjectType))] // ChangeRule
+		private sealed partial class ImplicitBooleanValueChangeRule : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ObjectType.IsImplicitBooleanValueDomainPropertyId)
+				{
+					if ((bool)e.OldValue)
+					{
+						FactType factType;
+						LinkedElementCollection<Role> playedRoles = (e.ModelElement as ObjectType).PlayedRoleCollection;
+						if (playedRoles.Count != 0 &&
+							null != (factType = playedRoles[0].FactType))
+						{
+							foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+							{
+								FactTypeShape shape = pel as FactTypeShape;
+								if (shape != null)
+								{
+									// When a binarized Unary Fact is not longer a unary, clear the displayed role orders
+									shape.RoleDisplayOrderCollection.Clear();
+									shape.AutoResize();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // ImplicitBooleanValueChangeRule class
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>

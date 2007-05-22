@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// An array of one element containing the singleton ExternalConstraintConnectionType instance
 			/// </summary>
-			public static readonly ConnectionType[] InstanceArray = {Instance};
+			public static readonly ConnectionType[] InstanceArray = { Instance };
 			/// <summary>
 			/// Called as the pointer is moved over potential targets after a source is selected
 			/// So should be pretty quick
@@ -254,7 +254,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 								else
 								{
-									roles.Add(selectedRole);
+									// Redirect connection of an external uniqueness constraint on a binarized unary
+									if (constraint is UniquenessConstraint && selectedRole.FactType.UnaryRole != null)
+									{
+										Role oppositeRole = selectedRole.OppositeRole.Role;
+										if (!roles.Contains(oppositeRole))
+										{
+											roles.Add(oppositeRole);
+										}
+									}
+									else if (!roles.Contains(selectedRole))
+									{
+										roles.Add(selectedRole);
+									}
 								}
 								++existingRolesCount;
 							}
@@ -303,7 +315,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private ExternalConstraintShape mySourceShape;
 		private IConstraint myActiveConstraint;
 		private DiagramItem myLastMouseMoveItem;
-		private static readonly ConnectionType[] EmptyConnectionTypes = {};
+		private static readonly ConnectionType[] EmptyConnectionTypes = { };
 		private enum OnClickedAction
 		{
 			Normal,
@@ -319,7 +331,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// action per diagram should be sufficient.
 		/// </summary>
 		/// <param name="diagram">The hosting diagram</param>
-		public ExternalConstraintConnectAction(Diagram diagram) : base(diagram, true)
+		public ExternalConstraintConnectAction(Diagram diagram)
+			: base(diagram, true)
 		{
 			Reset();
 		}
@@ -804,7 +817,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// deactivating it.
 		/// </summary>
 		/// <param name="diagram">The owning diagram</param>
-		public ExternalConstraintAction(Diagram diagram) : base(diagram)
+		public ExternalConstraintAction(Diagram diagram)
+			: base(diagram)
 		{
 			Reset();
 		}

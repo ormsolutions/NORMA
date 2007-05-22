@@ -381,6 +381,14 @@
     <value>IsPersonal</value>
     <comment>DisplayName for DomainProperty &apos;IsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsImplicitBooleanValue.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsImplicitBooleanValue</value>
+    <comment>Description for DomainProperty &apos;IsImplicitBooleanValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsImplicitBooleanValue.DisplayName" xml:space="preserve">
+    <value>IsImplicitBooleanValue</value>
+    <comment>DisplayName for DomainProperty &apos;IsImplicitBooleanValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;FactType&apos;</comment>
@@ -548,14 +556,6 @@
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.DisplayName" xml:space="preserve">
     <value>ImpliedRoleName</value>
     <comment>DisplayName for DomainProperty &apos;ObjectificationOppositeRoleName&apos; on DomainClass &apos;Role&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ImplicitBooleanRole.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;ImplicitBooleanRole&apos;</comment>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ImplicitBooleanRole.DisplayName" xml:space="preserve">
-    <value>ImplicitBooleanRole</value>
-    <comment>DisplayName for DomainClass &apos;ImplicitBooleanRole&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraint.Description" xml:space="preserve">
     <value></value>
@@ -954,7 +954,7 @@
     <comment>Description for DomainClass &apos;ReadingRequiresUserModificationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReadingRequiresUserModificationError.DisplayName" xml:space="preserve">
-    <value>Reading Text Requires User Modification</value>
+    <value>Reading Text Automatically Modified</value>
     <comment>DisplayName for DomainClass &apos;ReadingRequiresUserModificationError&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelError.Description" xml:space="preserve">

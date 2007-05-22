@@ -35,6 +35,7 @@ using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -233,7 +234,7 @@ namespace Neumont.Tools.ORM.Shell
 				//selection could change between the shapes that are related to the fact
 				else if (theFact != currentFact || secondaryFact != currentImpliedFact)
 				{
-					LinkedElementCollection<RoleBase> displayOrder = null;
+					ReadOnlyCollection<RoleBase> displayOrder = null;
 					ORMDesignerDocView docView = CurrentORMSelectionContainer as ORMDesignerDocView;
 					if (docView != null)
 					{
@@ -259,7 +260,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							if (factShape != null)
 							{
-								displayOrder = factShape.DisplayedRoleOrder;
+								displayOrder = new ReadOnlyCollection<RoleBase>(factShape.DisplayedRoleOrder);
 							}
 						}
 					}

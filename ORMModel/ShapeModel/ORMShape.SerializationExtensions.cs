@@ -134,6 +134,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				classNameMap.Add("ValueConstraintShape", ValueConstraintShape.DomainClassId);
 				classNameMap.Add("RoleNameShape", RoleNameShape.DomainClassId);
 				classNameMap.Add("FactTypeShape", FactTypeShape.DomainClassId);
+				classNameMap.Add("FactTypeShapeHasRoleDisplayOrder", FactTypeShapeHasRoleDisplayOrder.DomainClassId);
 				ORMShapeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -953,4 +954,108 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // FactTypeShape serialization
+	#region FactTypeShapeHasRoleDisplayOrder serialization
+	partial class FactTypeShapeHasRoleDisplayOrder : IORMCustomSerializedElement
+	{
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return ORMCustomSerializedElementSupportedOperations.None;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			throw new NotSupportedException();
+		}
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return default(ORMCustomSerializedElementMatch);
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
+		protected bool ShouldSerialize()
+		{
+			return this.FactTypeShape.RoleDisplayOrderCollection.Count != 1;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
+	#endregion // FactTypeShapeHasRoleDisplayOrder serialization
 }

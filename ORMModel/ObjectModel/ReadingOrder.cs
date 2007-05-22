@@ -166,6 +166,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);
 				if (pos >= 0)
 				{
+					bool isUnaryFactType = factType.UnaryRole != null;
 					LinkedElementCollection<Reading> readings = linkReadingOrder.ReadingCollection;
 					int numReadings = readings.Count;
 					int roleCount = linkReadingOrder.RoleCollection.Count;
@@ -183,7 +184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								{
 									if (replaceIndex == pos)
 									{
-										return ResourceStrings.ModelReadingRoleDeletedRoleText;
+										return isUnaryFactType ? "" : ResourceStrings.ModelReadingRoleDeletedRoleText;
 									}
 									else if (replaceIndex > pos)
 									{
@@ -276,21 +277,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
 
 			LinkedElementCollection<ReadingOrder> readingOrders = theFact.ReadingOrderCollection;
-			foreach (ReadingOrder ord in readingOrders)
+			int orderCount = readingOrders.Count;
+			if (orderCount != 0)
 			{
-				LinkedElementCollection<RoleBase> roles = ord.RoleCollection;
-				if (!roles.Contains(addedRole))
+				bool isUnaryFactType = theFact.UnaryRole != null;
+				for (int i = 0; i < orderCount; ++i)
 				{
-					ord.RoleCollection.Add(addedRole);
-					LinkedElementCollection<Reading> readings = ord.ReadingCollection;
-					int readingCount = readings.Count;
-					if (readingCount != 0)
+					ReadingOrder ord = readingOrders[i];
+					LinkedElementCollection<RoleBase> roles = ord.RoleCollection;
+					if (!roles.Contains(addedRole) && !isUnaryFactType)
 					{
-						string appendText = String.Concat("  {", (roles.Count - 1).ToString(CultureInfo.InvariantCulture), "}");
-						for (int i = 0; i < readingCount; ++i)
+						ord.RoleCollection.Add(addedRole);
+						LinkedElementCollection<Reading> readings = ord.ReadingCollection;
+						int readingCount = readings.Count;
+						if (readingCount != 0)
 						{
-							Reading reading = readings[i];
-							reading.SetAutoText(reading.Text + appendText);
+							string appendText = String.Concat("  {", (roles.Count - 1).ToString(CultureInfo.InvariantCulture), "}");
+							for (int j = 0; j < readingCount; ++j)
+							{
+								Reading reading = readings[j];
+								reading.SetAutoText(reading.Text + appendText);
+							}
 						}
 					}
 				}

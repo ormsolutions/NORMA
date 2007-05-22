@@ -46,6 +46,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(FactTypeShape).GetNestedType("DerivationRuleDelete", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ImplicitBooleanValueChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ObjectificationIsImpliedChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ObjectificationRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChanged", BindingFlags.Public | BindingFlags.NonPublic),
@@ -131,7 +132,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 64; ++i)
+			for (int i = 0; i < 65; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -258,6 +259,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		partial class FactTypeShapeChangeRule
 		{
 			public FactTypeShapeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class FactTypeShape
+	{
+		partial class ImplicitBooleanValueChangeRule
+		{
+			public ImplicitBooleanValueChangeRule()
 			{
 				base.IsEnabled = false;
 			}

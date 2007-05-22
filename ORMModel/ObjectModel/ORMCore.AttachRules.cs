@@ -86,6 +86,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(FactType).GetNestedType("ModelHasInternalConstraintDeleteRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ReadingOrderHasReadingAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ReadingOrderHasReadingDeleteRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeHasRoleDeleting", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeNameChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ValidateFactNameForObjectificationAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ValidateFactNameForObjectificationDelete", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ValidateFactNameForObjectificationRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic),
@@ -385,14 +393,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[118],
 						customDomainModelTypes[119],
 						customDomainModelTypes[120],
+						customDomainModelTypes[121],
+						customDomainModelTypes[122],
 						customDomainModelTypes[123],
 						customDomainModelTypes[124],
 						customDomainModelTypes[125],
 						customDomainModelTypes[126],
 						customDomainModelTypes[127],
 						customDomainModelTypes[128],
-						customDomainModelTypes[129],
-						customDomainModelTypes[130],
 						customDomainModelTypes[131],
 						customDomainModelTypes[132],
 						customDomainModelTypes[133],
@@ -475,7 +483,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[210],
 						customDomainModelTypes[211],
 						customDomainModelTypes[212],
-						customDomainModelTypes[213]};
+						customDomainModelTypes[213],
+						customDomainModelTypes[214],
+						customDomainModelTypes[215],
+						customDomainModelTypes[216],
+						customDomainModelTypes[217],
+						customDomainModelTypes[218],
+						customDomainModelTypes[219],
+						customDomainModelTypes[220],
+						customDomainModelTypes[221]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -508,7 +524,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.InitiallyDisabledRuleTypes;
-			for (int i = 0; i < 212; ++i)
+			for (int i = 0; i < 220; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1037,6 +1053,110 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public ReadingOrderHasReadingDeleteRuleModelValidation()
 			{
 				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class ConstraintRoleSequenceHasRoleAdded
+			{
+				public ConstraintRoleSequenceHasRoleAdded()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class ConstraintRoleSequenceHasRoleDeleted
+			{
+				public ConstraintRoleSequenceHasRoleDeleted()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class FactTypeHasRoleAdded
+			{
+				public FactTypeHasRoleAdded()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class FactTypeHasRoleDeleting
+			{
+				public FactTypeHasRoleDeleting()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class FactTypeNameChanged
+			{
+				public FactTypeNameChanged()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class ObjectTypePlaysRoleAdded
+			{
+				public ObjectTypePlaysRoleAdded()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class ObjectTypePlaysRoleDeleted
+			{
+				public ObjectTypePlaysRoleDeleted()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	partial class FactType
+	{
+		partial class UnaryBinarizationUtility
+		{
+			partial class ObjectTypePlaysRoleRolePlayerChanged
+			{
+				public ObjectTypePlaysRoleRolePlayerChanged()
+				{
+					base.IsEnabled = false;
+				}
 			}
 		}
 	}

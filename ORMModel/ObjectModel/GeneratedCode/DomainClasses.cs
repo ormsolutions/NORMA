@@ -2497,6 +2497,94 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region IsImplicitBooleanValue domain property code
+		
+		/// <summary>
+		/// IsImplicitBooleanValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsImplicitBooleanValueDomainPropertyId = new global::System.Guid(0xae665fcf, 0xb90a, 0x41bd, 0xb3, 0xe9, 0x86, 0x11, 0xb4, 0x2e, 0x66, 0x8c);
+		
+		/// <summary>
+		/// Storage for IsImplicitBooleanValue
+		/// </summary>
+		private global::System.Boolean isImplicitBooleanValuePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsImplicitBooleanValue domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsImplicitBooleanValue
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsImplicitBooleanValue.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/IsImplicitBooleanValue.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("ae665fcf-b90a-41bd-b3e9-8611b42e668c")]
+		public global::System.Boolean IsImplicitBooleanValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isImplicitBooleanValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsImplicitBooleanValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.IsImplicitBooleanValue domain property.
+		/// </summary>
+		internal sealed partial class IsImplicitBooleanValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
+		{
+			private IsImplicitBooleanValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.IsImplicitBooleanValue domain property value handler.
+			/// </summary>
+			public static readonly IsImplicitBooleanValuePropertyHandler Instance = new IsImplicitBooleanValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.IsImplicitBooleanValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsImplicitBooleanValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isImplicitBooleanValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isImplicitBooleanValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region DataType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets DataType.
@@ -5037,45 +5125,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new DslModeling::ReadOnlyLinkedElementCollection<Join>(this, global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.RoleDomainRoleId);
 			}
-		}
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// DomainClass ImplicitBooleanRole
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ImplicitBooleanRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ImplicitBooleanRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("b97ee72a-4030-4508-afe3-c595b8dca0ab")]
-	public partial class ImplicitBooleanRole : Role
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// ImplicitBooleanRole domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb97ee72a, 0x4030, 0x4508, 0xaf, 0xe3, 0xc5, 0x95, 0xb8, 0xdc, 0xa0, 0xab);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ImplicitBooleanRole(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ImplicitBooleanRole(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
 		}
 		#endregion
 	}

@@ -295,7 +295,7 @@
 							<plx:callThis name="FactType" type="property" />
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+					<plx:local name="factRoles" dataTypeName="IList">
 						<plx:passTypeParam dataTypeName="RoleBase"/>
 						<plx:initialize>
 							<plx:callInstance name="RoleCollection" type="property">
@@ -305,13 +305,15 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="unaryRoleIndex" dataTypeName="Nullable">
+						<plx:passTypeParam dataTypeName=".i4"/>
+						<plx:initialize>
+							<xsl:call-template name="InitializeUnaryRoleIndex"/>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="factArity" dataTypeName=".i4">
 						<plx:initialize>
-							<plx:callInstance name="Count" type="property">
-								<plx:callObject>
-									<plx:nameRef name="factRoles"/>
-								</plx:callObject>
-							</plx:callInstance>
+							<xsl:call-template name="InitializeFactArity"/>
 						</plx:initialize>
 					</plx:local>
 					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
@@ -411,19 +413,21 @@
 				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<!-- Don't proceed with verbalization if blocking errors are present -->
 				<xsl:call-template name="CheckErrorConditions"/>
-				<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+				<plx:local name="factRoles" dataTypeName="IList">
 					<plx:passTypeParam dataTypeName="RoleBase"/>
 					<plx:initialize>
 						<plx:callThis name="RoleCollection" type="property"/>
 					</plx:initialize>
 				</plx:local>
+				<plx:local name="unaryRoleIndex" dataTypeName="Nullable">
+					<plx:passTypeParam dataTypeName=".i4"/>
+					<plx:initialize>
+						<xsl:call-template name="InitializeUnaryRoleIndex"/>
+					</plx:initialize>
+				</plx:local>
 				<plx:local name="factArity" dataTypeName=".i4">
 					<plx:initialize>
-						<plx:callInstance name="Count" type="property">
-							<plx:callObject>
-								<plx:nameRef name="factRoles"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<xsl:call-template name="InitializeFactArity"/>
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="parentFact" dataTypeName="FactType">
@@ -733,7 +737,7 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="not($isValueTypeValueConstraint)">
-					<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+					<plx:local name="factRoles" dataTypeName="IList">
 						<plx:passTypeParam dataTypeName="RoleBase"/>
 						<plx:initialize>
 							<xsl:choose>
@@ -750,15 +754,24 @@
 							</xsl:choose>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="unaryRoleIndex" dataTypeName="Nullable">
+						<plx:passTypeParam dataTypeName=".i4"/>
+						<plx:initialize>
+							<xsl:choose>
+								<xsl:when test="$isInternal">
+									<xsl:call-template name="InitializeUnaryRoleIndex"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nullKeyword/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="factArity" dataTypeName=".i4">
 						<plx:initialize>
 							<xsl:choose>
 								<xsl:when test="$isInternal">
-									<plx:callInstance name="Count" type="property">
-										<plx:callObject>
-											<plx:nameRef name="factRoles"/>
-										</plx:callObject>
-									</plx:callInstance>
+									<xsl:call-template name="InitializeFactArity"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<plx:value data="0" type="i4"/>
@@ -1084,14 +1097,18 @@
 							</plx:assign>
 							<plx:assign>
 								<plx:left>
+									<plx:nameRef name="unaryRoleIndex"/>
+								</plx:left>
+								<plx:right>
+									<xsl:call-template name="InitializeUnaryRoleIndex"/>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
 									<plx:nameRef name="factArity"/>
 								</plx:left>
 								<plx:right>
-									<plx:callInstance name="Count" type="property">
-										<plx:callObject>
-											<plx:nameRef name="factRoles"/>
-										</plx:callObject>
-									</plx:callInstance>
+									<xsl:call-template name="InitializeFactArity"/>
 								</plx:right>
 							</plx:assign>
 							<!-- Track the min and max values for our current fact arity -->
@@ -1289,6 +1306,36 @@
 		<xsl:call-template name="ConstraintConditions">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="InitializeUnaryRoleIndex">
+		<plx:callStatic dataTypeName="FactType" name="GetUnaryRoleIndex">
+			<plx:passParam>
+				<plx:nameRef name="factRoles"/>
+			</plx:passParam>
+		</plx:callStatic>
+	</xsl:template>
+	<xsl:template name="InitializeFactArity">
+		<plx:inlineStatement dataTypeName=".i4">
+			<plx:conditionalOperator>
+				<plx:condition>
+					<plx:callInstance name="HasValue" type="property">
+						<plx:callObject>
+							<plx:nameRef name="unaryRoleIndex"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:condition>
+				<plx:left>
+					<plx:value data="1" type="i4"/>
+				</plx:left>
+				<plx:right>
+					<plx:callInstance name="Count" type="property">
+						<plx:callObject>
+							<plx:nameRef name="factRoles"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:right>
+			</plx:conditionalOperator>
+		</plx:inlineStatement>
 	</xsl:template>
 	<xsl:template name="CheckErrorConditions">
 		<xsl:param name="Primary" select="true()"/>
@@ -2444,7 +2491,7 @@
 							</plx:left>
 							<plx:right>
 								<plx:nullKeyword/>
-						</plx:right>
+							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
 					<plx:local name="instanceValue" dataTypeName="string"/>
@@ -3662,8 +3709,14 @@
 	</xsl:template>
 	<xsl:template name="DeclareVariablesForFact">
 		<xsl:param name="NestedFact" select="false()"/>
-		<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+		<plx:local name="factRoles" dataTypeName="IList">
 			<plx:passTypeParam dataTypeName="RoleBase"/>
+			<plx:initialize>
+				<plx:nullKeyword/>
+			</plx:initialize>
+		</plx:local>
+		<plx:local name="unaryRoleIndex" dataTypeName="Nullable">
+			<plx:passTypeParam dataTypeName=".i4"/>
 			<plx:initialize>
 				<plx:nullKeyword/>
 			</plx:initialize>
@@ -3706,14 +3759,18 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
+						<plx:nameRef name="unaryRoleIndex"/>
+					</plx:left>
+					<plx:right>
+						<xsl:call-template name="InitializeUnaryRoleIndex"/>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
 						<plx:nameRef name="factArity"/>
 					</plx:left>
 					<plx:right>
-						<plx:callInstance name="Count" type="property">
-							<plx:callObject>
-								<plx:nameRef name="factRoles"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<xsl:call-template name="InitializeFactArity"/>
 					</plx:right>
 				</plx:assign>
 				<plx:assign>
@@ -6258,7 +6315,7 @@
 			<!-- End Unique Fact Build -->
 			<plx:assign>
 				<plx:left>
-					<plx:nameRef name="factArity" type="local"/>
+					<plx:nameRef name="factArity"/>
 				</plx:left>
 				<plx:right>
 					<plx:callInstance name="Length" type="property">
@@ -6547,15 +6604,51 @@
 						</plx:callInstance>
 					</plx:right>
 				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="unaryRoleIndex"/>
+					</plx:left>
+					<plx:right>
+						<xsl:call-template name="InitializeUnaryRoleIndex"/>
+					</plx:right>
+				</plx:assign>
 				<plx:local name="currentRoleCount" dataTypeName=".i4">
 					<plx:initialize>
-						<plx:callInstance name="Count" type="property">
-							<plx:callObject>
-								<plx:nameRef name="factRoles"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<xsl:call-template name="InitializeFactArity"/>
 					</plx:initialize>
 				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:callInstance name="HasValue" type="property">
+							<plx:callObject>
+								<plx:nameRef name="unaryRoleIndex"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="factRoles"/>
+						</plx:left>
+						<plx:right>
+							<plx:callNew dataTypeName="RoleBase" dataTypeIsSimpleArray="true">
+								<plx:arrayInitializer>
+									<plx:callInstance name=".implied" type="indexerCall">
+										<plx:callObject>
+											<plx:nameRef name="factRoles"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callInstance name="Value" type="property">
+												<plx:callObject>
+													<plx:nameRef name="unaryRoleIndex"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:arrayInitializer>
+							</plx:callNew>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="allReadingOrders"/>
@@ -6614,7 +6707,7 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+					<plx:local name="factRoles" dataTypeName="IList">
 						<plx:passTypeParam dataTypeName="RoleBase"/>
 						<plx:initialize>
 							<plx:callInstance name="RoleCollection" type="property">
@@ -6624,13 +6717,15 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
+					<plx:local name="unaryRoleIndex" dataTypeName="Nullable">
+						<plx:passTypeParam dataTypeName=".i4"/>
+						<plx:initialize>
+							<xsl:call-template name="InitializeUnaryRoleIndex"/>
+						</plx:initialize>
+					</plx:local>
 					<plx:local name="factArity" dataTypeName=".i4">
 						<plx:initialize>
-							<plx:callInstance name="Count" type="property">
-								<plx:callObject>
-									<plx:nameRef name="factRoles"/>
-								</plx:callObject>
-							</plx:callInstance>
+							<xsl:call-template name="InitializeFactArity"/>
 						</plx:initialize>
 					</plx:local>
 					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
@@ -6692,14 +6787,18 @@
 					<xsl:if test="not($PatternGroup='SetComparisonConstraint')">
 						<plx:assign>
 							<plx:left>
+								<plx:nameRef name="unaryRoleIndex"/>
+							</plx:left>
+							<plx:right>
+								<xsl:call-template name="InitializeUnaryRoleIndex"/>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
 								<plx:nameRef name="factArity"/>
 							</plx:left>
 							<plx:right>
-								<plx:callInstance name="Count" type="property">
-									<plx:callObject>
-										<plx:nameRef name="factRoles"/>
-									</plx:callObject>
-								</plx:callInstance>
+								<xsl:call-template name="InitializeFactArity"/>
 							</plx:right>
 						</plx:assign>
 					</xsl:if>
@@ -8142,14 +8241,18 @@
 						</plx:assign>
 						<plx:assign>
 							<plx:left>
+								<plx:nameRef name="unaryRoleIndex"/>
+							</plx:left>
+							<plx:right>
+								<xsl:call-template name="InitializeUnaryRoleIndex"/>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
 								<plx:nameRef name="factArity"/>
 							</plx:left>
 							<plx:right>
-								<plx:callInstance name="Count" type="property">
-									<plx:callObject>
-										<plx:nameRef name="factRoles"/>
-									</plx:callObject>
-								</plx:callInstance>
+								<xsl:call-template name="InitializeFactArity"/>
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -8360,6 +8463,9 @@
 								<plx:nameRef name="factRoles"/>
 							</plx:passParam>
 							<plx:passParam>
+								<plx:nameRef name="unaryRoleIndex"/>
+							</plx:passParam>
+							<plx:passParam>
 								<xsl:call-template name="SnippetFor">
 									<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
 								</xsl:call-template>
@@ -8430,7 +8536,9 @@
 												<plx:nameRef name="allConstraintRoles"/>
 											</xsl:when>
 											<xsl:when test="$PatternGroup='SetComparisonConstraint'">
-												<plx:nameRef name="factRoles"/>
+												<plx:cast dataTypeName="IList" dataTypeQualifier="System.Collections">
+													<plx:nameRef name="factRoles"/>
+												</plx:cast>
 											</xsl:when>
 											<xsl:otherwise>
 												<plx:nameRef name="includedRoles"/>
@@ -8494,6 +8602,9 @@
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef name="factRoles"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="unaryRoleIndex"/>
 								</plx:passParam>
 								<plx:passParam>
 									<xsl:call-template name="SnippetFor">

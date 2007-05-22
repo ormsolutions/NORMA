@@ -967,9 +967,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == ObjectType.IsValueTypeDomainPropertyId)
+				ObjectType objectType = e.ModelElement as ObjectType;
+				if (objectType.IsImplicitBooleanValue && e.ChangeSource != ChangeSource.Rule)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
+					// UNDONE: This should only allow rules from our domain model.
+					// We also allow rules from any other domain model with the current ChangeSource check
+					throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypeRestriction);
+				}
+				else if (attributeGuid == ObjectType.IsValueTypeDomainPropertyId)
+				{
 					bool newValue = (bool)e.NewValue;
 					DataType dataType = null;
 					if (newValue)
@@ -980,7 +986,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.ScaleDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueTypeHasDataType link = objectType.GetDataTypeLink();
 					// No effect for non-value types
 					if (link != null)
@@ -998,7 +1003,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.DataTypeDisplayDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					//If this objectype has a reference mode, return the datatype corresponding
 					//to the ref mode's datatype.
 					ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
@@ -1010,7 +1014,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.LengthDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueTypeHasDataType link = objectType.GetDataTypeLink();
 					// No effect for non-value types
 					if (link != null)
@@ -1028,7 +1031,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.NameDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					UniquenessConstraint prefConstraint = objectType.PreferredIdentifier;
 
 					if (prefConstraint != null && prefConstraint.IsInternal)
@@ -1054,12 +1056,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.ReferenceModeDisplayDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string, true);
 				}
 				else if (attributeGuid == ObjectType.ReferenceModeStringDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					string newName = (string)e.NewValue;
 
 					// Find the unique reference mode for this object type and reference mode string
@@ -1079,18 +1079,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.ReferenceModeDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null, false);
 				}
 				else if (attributeGuid == ObjectType.ValueRangeTextDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
 					valueConstraint.Text = (string)e.NewValue;
 				}
 				else if (attributeGuid == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
 				{
-					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueTypeValueConstraint valueConstraint = objectType.FindValueTypeValueConstraint(true);
 					if (valueConstraint != null)
 					{
@@ -1101,7 +1098,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					// cache the text.
 					string newText = (string)e.NewValue;
-					ObjectType objectType = e.ModelElement as ObjectType;
 					// Get the note if it exists
 					Note note = objectType.Note;
 					if (note != null)
@@ -1124,6 +1120,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						(e.ModelElement as ObjectType).AllowIsIndependent(true);
 					}
+				}
+				else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId && e.ChangeSource != ChangeSource.Rule)
+				{
+					throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypePropertyRestriction);
 				}
 			}
 			/// <summary>

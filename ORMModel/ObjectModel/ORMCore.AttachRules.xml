@@ -68,6 +68,14 @@
 		<arg:Rule class="FactType.ModelHasInternalConstraintDeleteRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingDeleteRuleModelValidation"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleDeleted"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.FactTypeHasRoleAdded"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.FactTypeHasRoleDeleting"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.FactTypeNameChanged"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleAdded"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleDeleted"/>
+		<arg:Rule class="FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleRolePlayerChanged"/>
 		<arg:Rule class="FactType.ValidateFactNameForObjectificationAdded"/>
 		<arg:Rule class="FactType.ValidateFactNameForObjectificationDelete"/>
 		<arg:Rule class="FactType.ValidateFactNameForObjectificationRolePlayerChange"/>

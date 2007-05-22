@@ -136,6 +136,7 @@
 					<xs:element name="Instances" type="ValueTypeInstances" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
+				<xs:attribute name="IsImplicitBooleanValue" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

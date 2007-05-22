@@ -106,7 +106,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private readonly FactType myFactType;
 		private readonly FactType myImpliedFactType;
-		private readonly LinkedElementCollection<RoleBase> myDisplayOrder;
+		private readonly IList<RoleBase> myDisplayOrder;
 		/// <summary>
 		/// Set the active fact type to just use the native role order for its display order
 		/// </summary>
@@ -118,7 +118,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="factType">A fact type. Can be null.</param>
 		/// <param name="displayOrder">A custom order representing
 		/// the display order for a graphical representation of the fact</param>
-		public ActiveFactType(FactType factType, LinkedElementCollection<RoleBase> displayOrder) : this(factType, null, displayOrder) { }
+		public ActiveFactType(FactType factType, IList<RoleBase> displayOrder) : this(factType, null, displayOrder) { }
 		/// <summary>
 		/// Set the active fact type and an implied fact to just use the native role order for its display order
 		/// </summary>
@@ -132,13 +132,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="impliedFactType">A fact type implied by the main fact type. Can be null;</param>
 		/// <param name="displayOrder">A custom order representing
 		/// the display order for a graphical representation of the fact</param>
-		public ActiveFactType(FactType factType, FactType impliedFactType, LinkedElementCollection<RoleBase> displayOrder)
+		public ActiveFactType(FactType factType, FactType impliedFactType, IList<RoleBase> displayOrder)
 		{
 			myFactType = factType;
 			if (factType != null)
 			{
 				myImpliedFactType = impliedFactType;
-				myDisplayOrder = (displayOrder != null) ? displayOrder : factType.RoleCollection;
+				myDisplayOrder = (displayOrder != null) ? displayOrder : GetReadingRoleCollection(factType, true);
 			}
 			else
 			{
@@ -169,7 +169,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Get the current display order
 		/// </summary>
-		public LinkedElementCollection<RoleBase> DisplayOrder
+		public IList<RoleBase> DisplayOrder
 		{
 			get
 			{
@@ -207,7 +207,7 @@ namespace Neumont.Tools.ORM.Shell
 				myImpliedFactType == obj.myImpliedFactType &&
 				AreDisplayOrdersEqual(myDisplayOrder, obj.myDisplayOrder));
 		}
-		private static bool AreDisplayOrdersEqual(LinkedElementCollection<RoleBase> order1, LinkedElementCollection<RoleBase> order2)
+		private static bool AreDisplayOrdersEqual(IList<RoleBase> order1, IList<RoleBase> order2)
 		{
 			if (order1 == order2)
 			{
@@ -239,7 +239,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (fact != null)
 			{
 				hashCode = fact.GetHashCode();
-				LinkedElementCollection<RoleBase> order = myDisplayOrder;
+				IList<RoleBase> order = myDisplayOrder;
 				int count = order.Count;
 				for (int i = 0; i < count; ++i)
 				{
@@ -253,6 +253,26 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return hashCode;
 		}
+		#region Reading role order collection helper
+		private static IList<RoleBase> GetReadingRoleCollection(FactType factType)
+		{
+			return GetReadingRoleCollection(factType, false);
+		}
+		private static IList<RoleBase> GetReadingRoleCollection(FactType factType, bool snapshot)
+		{
+			// Return a single-element collection for binarized unaries
+			Role unaryRole = factType.UnaryRole;
+			if (unaryRole != null)
+			{
+				return new RoleBase[] { unaryRole };
+			}
+			else if (snapshot)
+			{
+				return factType.RoleCollection.ToArray();
+			}
+			return factType.RoleCollection;
+		}
+		#endregion
 	}
 	#endregion // ActiveFactType structure
 
@@ -543,7 +563,7 @@ namespace Neumont.Tools.ORM.Shell
 			void AddNewReadingOrder();
 			void DemoteSelectedReading(int readingItemLocation, int orderItemLocation);
 			void DemoteSelectedReadingOrder(int itemLocation);
-			void EditReadingOrder(LinkedElementCollection<RoleBase> collection);
+			void EditReadingOrder(IList<RoleBase> collection);
 			bool IsAdding { get; }
 			void PromoteSelectedReading(int readingItemLocation, int orderItemLocation);
 			void PromoteSelectedReadingOrder(int itemLocation);
@@ -603,7 +623,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member Variables
 		private FactType myFact;
 		private FactType mySecondaryFact;
-		private LinkedElementCollection<RoleBase> myDisplayRoleOrder;
+		private IList<RoleBase> myDisplayRoleOrder;
 		private ImageList myImageList;
 		private ReadingEditorCommands myVisibleCommands;
 		private bool myInEvents;
@@ -665,7 +685,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The role order we're using to display the current fact.
 		/// </summary>
-		public LinkedElementCollection<RoleBase> DisplayRoleOrder
+		public IList<RoleBase> DisplayRoleOrder
 		{
 			get
 			{
@@ -737,9 +757,13 @@ namespace Neumont.Tools.ORM.Shell
 		private void PopulateControl()
 		{
 			Debug.Assert(myFact != null);
-			if (myDisplayRoleOrder != null && myDisplayRoleOrder.Count != myFact.RoleCollection.Count)
+			if (myDisplayRoleOrder != null)
 			{
-				myDisplayRoleOrder = null;
+				LinkedElementCollection<RoleBase> roles = myFact.RoleCollection;
+				if ((FactType.GetUnaryRoleIndex(roles).HasValue ? 1 : roles.Count) != myDisplayRoleOrder.Count)
+				{
+					myDisplayRoleOrder = null;
+				}
 			}
 
 			ReadingVirtualTree rvt = null;
@@ -792,7 +816,21 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion //PopulateControl and helpers
-
+		#region Reading role order collection helper
+		private static IList<RoleBase> GetReadingRoleCollection(FactType fact)
+		{
+			// Return a single-element collection for binarized unaries
+			Role unaryRole = fact.UnaryRole;
+			if (unaryRole != null)
+			{
+				return new RoleBase[] { unaryRole };
+			}
+			else
+			{
+				return fact.RoleCollection;
+			}
+		}
+		#endregion // Reading role order collection helper
 		#region Reading activation helper
 		/// <summary>
 		/// Select the current reading in the window. The
@@ -803,8 +841,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ReadingOrder order;
 			FactType factType;
-			if (null != (order = reading.ReadingOrder) 
-				&& null != (factType = order.FactType) 
+			if (null != (order = reading.ReadingOrder)
+				&& null != (factType = order.FactType)
 				&& (factType == myFact || factType == mySecondaryFact))
 			{
 				if (TreeControl.SelectObject(myMainBranch, reading, (int)ObjectStyle.TrackingObject, 0))
@@ -825,7 +863,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (fact == myFact || fact == mySecondaryFact)
 			{
-				myMainBranch.EditReadingOrder(myFact.RoleCollection);
+				myMainBranch.EditReadingOrder(GetReadingRoleCollection(fact));
 			}
 		}
 		/// <summary>
@@ -858,7 +896,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else
 			{
-				myVisibleCommands = ReadingEditorCommands.None;  
+				myVisibleCommands = ReadingEditorCommands.None;
 			}
 		}
 		/// <summary>
@@ -935,7 +973,7 @@ namespace Neumont.Tools.ORM.Shell
 		public void OnMennuPromoteReadingOrder()
 		{
 			VirtualTreeItemInfo itemInfo;
-			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder)) 
+			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 			{
 				(itemInfo.Branch as IReadingEditorBranch).PromoteSelectedReadingOrder(itemInfo.Row);
 			}
@@ -969,7 +1007,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="itemInfo">VitrualTreeItemInfo out</param>
 		/// <param name="column">Column to generate the itemInfo for (always uses the CurrentIndex of the tree control)</param>
 		/// <returns>true if the itemInfo.branch is a top level branch</returns>
-		private bool GetItemInfo(out VirtualTreeItemInfo itemInfo, ColumnIndex column )
+		private bool GetItemInfo(out VirtualTreeItemInfo itemInfo, ColumnIndex column)
 		{
 			itemInfo = TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)column, true);
 			if (itemInfo.Branch.GetType() == typeof(ReadingOrderBranch) || itemInfo.Branch.GetType() == typeof(FactTypeBranch))
@@ -1154,7 +1192,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#region FactType Event Handlers
 		private void FactTypeHasRoleAddedOrDeletedEvent(object sender, ElementEventArgs e)
-		{ 
+		{
 			if (myFact != null && myFact == ((FactTypeHasRole)e.ModelElement).FactType && !myFact.IsDeleted && !myFact.IsDeleting)
 			{
 				this.PopulateControl();
@@ -1172,7 +1210,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				this.PopulateControl();
 			}
-			else if(myFact !=null && myFact == link.FactType)
+			else if (myFact != null && myFact == link.FactType)
 			{
 				ITree currentTree = this.vtrReadings.Tree;
 				if (currentTree != null)
@@ -1213,7 +1251,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return LabelEditResult.CancelEdit;
 			}
-			public  BranchFeatures Features
+			public BranchFeatures Features
 			{
 				get
 				{
@@ -1469,7 +1507,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
 			/// </summary>
 			/// <param name="collection"><see cref="LinkedElementCollection{RoleBase}"/> collection</param>
-			public void EditReadingOrder(LinkedElementCollection<RoleBase> collection)
+			public void EditReadingOrder(IList<RoleBase> collection)
 			{
 				this.OrderBranch.EditReadingOrder(collection); //only need to call on order branch as you cannot create a new order (as they already exist) for  an implied fact 
 			}
@@ -1565,22 +1603,22 @@ namespace Neumont.Tools.ORM.Shell
 			private readonly FactType myFact;
 			private readonly ReadingOrderKeyedCollection myReadingOrderKeyedCollection;
 			private ReadingOrderKeyedCollection myReadingOrderPermutations;
-			private readonly LinkedElementCollection<RoleBase> myRoleDisplayOrder;
+			private readonly IList<RoleBase> myRoleDisplayOrder;
 			private string[] myRoleNames;
 			private int myInsertedRow = -1;
 
 			#region Construction
-			public ReadingOrderBranch(FactType fact, LinkedElementCollection<RoleBase> roleDisplayOrder)
+			public ReadingOrderBranch(FactType fact, IList<RoleBase> roleDisplayOrder)
 			{
 				myFact = fact; //impliedbyobjectification
 				myReadingOrderKeyedCollection = new ReadingOrderKeyedCollection();
-				myRoleDisplayOrder = roleDisplayOrder ?? fact.RoleCollection;
+				myRoleDisplayOrder = roleDisplayOrder != null && roleDisplayOrder.Count > 0 ? roleDisplayOrder : GetReadingRoleCollection(fact);
 				this.PopulateReadingOrderInfo(-1); //Populate for all readings
 			}
 			#endregion
 
 			#region Branch Properties
-			private LinkedElementCollection<RoleBase> DisplayOrder
+			private IList<RoleBase> DisplayOrder
 			{
 				get
 				{
@@ -1625,7 +1663,7 @@ namespace Neumont.Tools.ORM.Shell
 							myReadingOrderPermutations.Add(roi);
 						}
 					}
-					TypeEditorHost host = TypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this,  ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
+					TypeEditorHost host = TypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this, ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
 					host.Flags = VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents | VirtualTreeInPlaceControlFlags.SizeToText;
 
 					return new VirtualTreeLabelEditData(
@@ -1724,7 +1762,7 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						break;
 					case ObjectStyle.TrackingObject:
-						if (row == this.VisibleItemCount -1)
+						if (row == this.VisibleItemCount - 1)
 						{
 							return new object(); //just need somthing which is not null
 						}
@@ -2033,11 +2071,15 @@ namespace Neumont.Tools.ORM.Shell
 			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
 			/// </summary>
 			/// <param name="collection">The <see cref="LinkedElementCollection{RoleBase}"/> to use</param>
-			public void EditReadingOrder(LinkedElementCollection<RoleBase> collection)
+			public void EditReadingOrder(IList<RoleBase> collection)
 			{
 				Debug.Assert(collection != null, "LinkedElementCollection<RoleBase> is null");
 
-				RoleBase[] roles = collection.ToArray();
+				RoleBase[] roles = new RoleBase[collection.Count];
+				for (int i = 0; i < collection.Count; ++i)
+				{
+					roles[i] = collection[i];
+				}
 
 				ReadingOrderInformation orderInfo = new ReadingOrderInformation(this, roles);
 				if (!myReadingOrderKeyedCollection.Contains(orderInfo))
@@ -2197,7 +2239,7 @@ namespace Neumont.Tools.ORM.Shell
 				string[] retVal = myRoleNames;
 				if (retVal == null)
 				{
-					LinkedElementCollection<RoleBase> factRoles = myFact.RoleCollection;
+					IList<RoleBase> factRoles = GetReadingRoleCollection(myFact);
 					ObjectType rolePlayer;
 					int factArity = factRoles.Count;
 					if (factArity == 1)
@@ -2207,7 +2249,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					else
 					{
-						LinkedElementCollection<RoleBase> roleDisplayOrder = myRoleDisplayOrder;
+						IList<RoleBase> roleDisplayOrder = myRoleDisplayOrder;
 						ObjectType[] rolePlayers = new ObjectType[factArity];
 						for (int i = 0; i < factArity; ++i)
 						{
@@ -2490,7 +2532,10 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					myParentBranch = parentBranch;
 					myReadingOrder = readingOrder;
-					myRoleOrder = readingOrder.RoleCollection;
+					if (readingOrder != null)
+					{
+						myRoleOrder = readingOrder.RoleCollection;
+					}
 				}
 
 				/// <summary>
@@ -2554,7 +2599,7 @@ namespace Neumont.Tools.ORM.Shell
 						string retVal = myText;
 						if ((object)retVal == null)
 						{
-							return myText = string.Join(CultureInfo.CurrentCulture.TextInfo.ListSeparator, OrderedReplacementFields); 
+							return myText = string.Join(CultureInfo.CurrentCulture.TextInfo.ListSeparator, OrderedReplacementFields);
 						}
 						return retVal;
 					}
@@ -2570,7 +2615,7 @@ namespace Neumont.Tools.ORM.Shell
 						if (retVal == null)
 						{
 							string[] roleNames = myParentBranch.GetRoleNames();
-							LinkedElementCollection<RoleBase> displayOrder = myParentBranch.DisplayOrder;
+							IList<RoleBase> displayOrder = myParentBranch.DisplayOrder;
 							int arity = roleNames.Length;
 							Debug.Assert(roleNames.Length == displayOrder.Count);
 							IList<RoleBase> roles = myRoleOrder;
@@ -2580,9 +2625,16 @@ namespace Neumont.Tools.ORM.Shell
 									retVal = new string[] { roleNames[0] };
 									break;
 								case 2:
-									retVal = new string[]{
+									if (roles[0].FactType.UnaryRole != null)
+									{
+										retVal = new string[] { roleNames[0] };
+									}
+									else
+									{
+										retVal = new string[]{
 										roleNames[displayOrder.IndexOf(roles[0])],
 										roleNames[displayOrder.IndexOf(roles[1])]};
+									}
 									break;
 								case 3:
 									retVal = new string[]{

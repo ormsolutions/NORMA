@@ -1005,9 +1005,9 @@ namespace Neumont.Tools.ORM.Shell
 					checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				}
 
-				// Disable role deletion if the role count == 1
+				// Disable role deletion if the FactType is a unary
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
-				if (fact.RoleCollection.Count == 1)
+				if (fact.UnaryRole != null)
 				{
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
 				}

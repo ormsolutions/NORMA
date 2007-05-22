@@ -37,6 +37,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				yield return new DisplayRoleValueConstraintFixupListener();
 				yield return new DisplayValueTypeValueConstraintFixupListener();
 				yield return new DisplayRoleNameFixupListener();
+				yield return new DisplayUnaryFactTypeFixupListener();
 				yield return new DisplayModelNoteLinksFixupListener();
 			}
 		}

@@ -163,6 +163,18 @@
 		<value>Remove Implied Internal Uniqueness Constraints</value>
 		<comment>The message of the auto-fix message box for implied internal constraints</comment>
 	</data>
+	<data name="ImplicitBooleanValueType.PropertyRestriction" xml:space="preserve">
+		<value>The modification of the IsImplicitBooleanValue property on a ValueType is not allowed.</value>
+		<comment>Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</comment>
+	</data>
+	<data name="ImplicitBooleanValueType.Restriction" xml:space="preserve">
+		<value>The modification of properties on an Implicit Boolean ValueType is not allowed.</value>
+		<comment>Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</comment>
+	</data>
+	<data name="ImplicitBooleanValueType.NoReadingFormatString" xml:space="preserve">
+		<value>{0}Value</value>
+		<comment>The format string for naming an implicit boolean value type when there are no readings on the fact type.</comment>
+	</data>
 	<data name="ImpliedFactType.PredicateInverseReading" xml:space="preserve">
 		<value>{0} involves {1}</value>
 		<comment>The inverse reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
