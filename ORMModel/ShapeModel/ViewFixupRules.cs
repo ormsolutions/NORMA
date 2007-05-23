@@ -1050,7 +1050,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
-		#region DisplayFactTypeFixupListener class
+		#region DisplayUnaryFactTypeFixupListener class
 		/// <summary>
 		/// Processes Unary FactTypes so that they display the correct number of roles
 		/// </summary>
@@ -1066,25 +1066,43 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
+				Role unaryRole = element.UnaryRole;
+				if (unaryRole != null)
 				{
-					FactTypeShape shape = pel as FactTypeShape;
-					if (shape != null)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
 					{
-						// Create a DisplayedRoleOrder for Unary FactTypes
-						LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
-
-						if (element.UnaryRole != null)
+						FactTypeShape shape = pel as FactTypeShape;
+						if (shape != null)
 						{
-							roles.Add(element.UnaryRole);
+							// Create a RoleDisplayOrder for Unary FactTypes.
+							LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
+							switch (roles.Count)
+							{
+								case 0:
+									// The RoleDisplayOrder is empty, so we don't need to do anything.
+									break;
+								case 1:
+									// We already have only one role in the RoleDisplayOrder, so all
+									// we have to do is make sure it is the right one.
+									if (roles[0] != unaryRole)
+									{
+										roles[0] = unaryRole;
+									}
+									continue;
+								default:
+									// We have more than one role in the RoleDisplayOrder, so we
+									// have to clear it.
+									roles.Clear();
+									break;
+							}
+							roles.Add(unaryRole);
 							shape.AutoResize();
-							return;
 						}
 					}
 				}
 			}
 		}
-		#endregion // DisplayFactTypeFixupListener class
+		#endregion // DisplayUnaryFactTypeFixupListener class
 		#region ModelNote fixup
 		#region ModelNoteAdded class
 		[RuleOn(typeof(ModelHasModelNote), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule

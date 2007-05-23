@@ -1688,7 +1688,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							if (constraintBox.IsAntiSpanning)
 							{
-								constraintPen.DashStyle = DashStyle.Dash;
+								constraintPen.DashStyle = DashStyle.Dot;
 							}
 						}
 
@@ -1829,7 +1829,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											else
 											{
 												Debug.Assert(currentActivity == ConstraintBoxRoleActivity.Inactive); // enforces if statement above
-												constraintPen.DashStyle = DashStyle.Dash;
+												constraintPen.DashStyle = DashStyle.Dot;
 											}
 											//draw constraint
 											if (constraintHasDrawn)
@@ -3569,7 +3569,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 									case 1:
 										factRoles = DisplayedRoleOrder;
 										factRoleCount = factRoles.Count;
-										roleIndex = 0;
+										// The index here will be -1 for some constraints
+										// that connect to the implicit boolean role on a
+										// binarized unary fact type.
+										roleIndex = (roleIndex = factRoles.IndexOf(roles[0])) == -1 ? 0 : roleIndex;
 										break;
 									case 2:
 										{

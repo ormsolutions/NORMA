@@ -176,11 +176,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				implicitBooleanValueType.DataType = store.ElementDirectory.FindElements<TrueOrFalseLogicalDataType>(false)[0];
 
+				// Set value constraint on implicit boolean ValueType for open-world assumption
+				ValueTypeValueConstraint implicitBooleanValueConstraint = implicitBooleanValueType.ValueConstraint
+					= new ValueTypeValueConstraint(implicitBooleanValueType.Store, null);
+
+				// Add the true-only ValueRange to the value constraint for open-world assumption
+				implicitBooleanValueConstraint.ValueRangeCollection.Add(new ValueRange(store,
+					new PropertyAssignment(ValueRange.MinValueDomainPropertyId, bool.TrueString),
+					new PropertyAssignment(ValueRange.MaxValueDomainPropertyId, bool.TrueString)));
+
 				// Make the boolean value type the role player for the implicit boolean role
 				implicitBooleanRole.RolePlayer = implicitBooleanValueType;
-				// Set value constraint on implicit boolean ValueType for open-world assumption
-				implicitBooleanValueType.ValueConstraint = new ValueTypeValueConstraint(implicitBooleanValueType.Store, null);
-				implicitBooleanValueType.ValueConstraint.Text = "{True}";
 
 				LinkedElementCollection<ReadingOrder> readings = unaryFactType.ReadingOrderCollection;
 				int readingCount = readings.Count;
@@ -380,7 +386,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			private static bool ValidateImplictBooleanValueType(ObjectType implicitBooleanValueType)
 			{
-				if (!implicitBooleanValueType.IsValueType || implicitBooleanValueType.IsIndependent ||
+				if (!implicitBooleanValueType.IsValueType || !implicitBooleanValueType.IsImplicitBooleanValue || implicitBooleanValueType.IsIndependent ||
 					implicitBooleanValueType.PlayedRoleCollection.Count != 1 || !(implicitBooleanValueType.DataType is TrueOrFalseLogicalDataType))
 				{
 					return false;
@@ -392,15 +398,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// UNDONE: We need to check for alethic here once ValueTypeValueConstraint supports Modality...
 					LinkedElementCollection<ValueRange> valueRangeCollection = valueConstraint.ValueRangeCollection;
 					ValueRange valueRange;
+					bool value;
 					if (valueRangeCollection.Count != 1 ||
-						!string.Equals((valueRange = valueRangeCollection[0]).MinValue, "TRUE", StringComparison.OrdinalIgnoreCase) ||
-						!string.Equals(valueRange.MaxValue, "TRUE", StringComparison.OrdinalIgnoreCase))
+						!bool.TryParse((valueRange = valueRangeCollection[0]).MinValue, out value) || !value ||
+						!bool.TryParse(valueRange.MaxValue, out value) || !value)
 					{
 						return false;
 					}
 				}
 				else
+				{
+					// UNDONE: We are only allowing open-world assumption for now, so the value constraint is required.
 					return false;
+				}
 
 				return true;
 			}
