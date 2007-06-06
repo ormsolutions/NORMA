@@ -5478,6 +5478,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				NMinusOneError error = NMinusOneError;
 				FactType fact;
 				if (IsInternal &&
+					Modality == ConstraintModality.Alethic &&
 					1 == (facts = FactTypeCollection).Count &&
 					RoleCollection.Count < (fact = facts[0]).RoleCollection.Count - 1)
 				{
@@ -5535,7 +5536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
-				if (constraint != null && constraint.IsInternal)
+				if (constraint != null && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
 				{
 					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 				}
@@ -5551,7 +5552,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
-				if (constraint != null && !constraint.IsDeleted && constraint.IsInternal)
+				if (constraint != null && !constraint.IsDeleted && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
 				{
 					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 				}
@@ -5572,7 +5573,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
 					{
-						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+						if (constraint.Modality == ConstraintModality.Alethic)
+						{
+							ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+						}
 					}
 				}
 			}
@@ -5592,7 +5596,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
 					{
-						if (!constraint.IsDeleted)
+						if (!constraint.IsDeleted && constraint.Modality == ConstraintModality.Alethic)
 						{
 							ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 						}
@@ -5691,6 +5695,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						constraint.PreferredIdentifierFor = null;
 					}
+				}
+				else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
+				{
+					ORMCoreDomainModel.DelayValidateElement(e.ModelElement as UniquenessConstraint, DelayValidateNMinusOneError);
 				}
 				else if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
 				{

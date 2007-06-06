@@ -366,18 +366,29 @@ namespace Neumont.Tools.ORM.Shell
 					IMonitorSelectionService monitor = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
 					monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-					try
-					{
-						SetCurrentDocument(monitor.CurrentDocument as ORMDesignerDocData, monitor.CurrentDocumentView as DiagramDocView);
-						CurrentORMSelectionContainer = monitor.CurrentSelectionContainer as IORMSelectionContainer;
-					}
-					catch (System.Runtime.InteropServices.COMException)
-					{
-						// Swallow, this will occasionally be initialized when the document is shutting down
-					}
+					SetCurrentDocument(SafeGetCurrentDocument(monitor) as ORMDesignerDocData, monitor.CurrentDocumentView as DiagramDocView);
+					CurrentORMSelectionContainer = monitor.CurrentSelectionContainer as IORMSelectionContainer;
 					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
 					break;
 			}
+		}
+		/// <summary>
+		/// Helper method to prevent the debugger from breaking when a common
+		/// exception is through retrieving the CurrentDocument from a <see cref="IMonitorSelectionService"/>
+		/// </summary>
+		[DebuggerStepThrough]
+		private static object SafeGetCurrentDocument(IMonitorSelectionService monitor)
+		{
+			object retVal = null;
+			try
+			{
+				retVal = monitor.CurrentDocument;
+			}
+			catch (System.Runtime.InteropServices.COMException)
+			{
+				// Swallow, this will occasionally be initialized when the document is shutting down
+			}
+			return retVal;
 		}
 		#region Other notifications we don't care about
 		/// <summary>

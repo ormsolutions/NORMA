@@ -463,7 +463,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (string.IsNullOrEmpty(generatedName))
 				{
 					generatedName = GenerateName();
-					GeneratedNamePropertyHandler.SetGeneratedName(this, "", generatedName);
+					if (!string.IsNullOrEmpty(generatedName))
+					{
+						GeneratedNamePropertyHandler.SetGeneratedName(this, "", generatedName);
+					}
 				}
 				return generatedName;
 			}
@@ -1240,7 +1243,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private string GenerateName()
 		{
 			string retVal = "";
-			if (!IsDeleted)
+			if (!IsDeleted && !IsDeleting)
 			{
 				if (HasImplicitReadings)
 				{
