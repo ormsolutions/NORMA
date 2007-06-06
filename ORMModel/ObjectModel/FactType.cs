@@ -2165,7 +2165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for internal constraints, combinations of internals, and defaults
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
 			LinkedElementCollection<SetConstraint> setConstraints = SetConstraintCollection;
 			int setConstraintCount = setConstraints.Count;
@@ -2180,7 +2180,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isUnaryFactType = FactType.GetUnaryRoleIndex(factRoles).HasValue;
 				if (!isUnaryFactType && 2 == factRoles.Count)
 				{
-					// UNDONE: Internal verbalization of proxy roles
 					Role[] roles = new Role[2];
 					RoleProxy proxy = null;
 					int primaryRoleCount;
@@ -2221,7 +2220,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						SetConstraint constraint = setConstraints[i];
 						IConstraint iConstraint = constraint.Constraint;
-						if (iConstraint.ConstraintIsInternal)
+						if (iConstraint.ConstraintIsInternal &&
+							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
 						{
 							LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
 							if (constraintRoles.Count == 1)
@@ -2396,7 +2396,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int i = 0; i < setConstraintCount; ++i)
 					{
 						SetConstraint constraint = setConstraints[i];
-						if (constraint.Constraint.ConstraintIsInternal)
+						if (constraint.Constraint.ConstraintIsInternal &&
+							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
 						{
 							yield return new CustomChildVerbalizer((IVerbalize)constraint);
 						}
@@ -2420,9 +2421,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
-			return GetCustomChildVerbalizations(isNegative);
+			return GetCustomChildVerbalizations(filter, isNegative);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region DefaultBinaryMissingUniquenessVerbalizer

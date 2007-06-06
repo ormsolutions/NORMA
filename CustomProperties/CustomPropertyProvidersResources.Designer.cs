@@ -86,5 +86,23 @@ namespace Neumont.Tools.ORM.CustomProperties {
                 return ResourceManager.GetString("DisplayName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Verbalization.
+        /// </summary>
+        internal static string Verbalization_CustomPropertiesSnippetsDefaultDescription {
+            get {
+                return ResourceManager.GetString("Verbalization.CustomPropertiesSnippetsDefaultDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Properties Verbalization.
+        /// </summary>
+        internal static string Verbalization_CustomPropertiesSnippetsTypeDescription {
+            get {
+                return ResourceManager.GetString("Verbalization.CustomPropertiesSnippetsTypeDescription", resourceCulture);
+            }
+        }
     }
 }

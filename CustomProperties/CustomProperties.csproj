@@ -110,6 +110,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CustomPropertyProvidersResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="CustomPropertyVerbalizationGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CustomPropertyVerbalizationGenerator.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceStrings.cs" />
+    <Compile Include="Resources\ResourceStringsGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -139,6 +148,9 @@
       <Link>ORMPackage.snk</Link>
     </None>
     <None Include="Install.bat" />
+    <None Include="VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="CustomProperty.SerializationExtensions.xml">
@@ -146,6 +158,17 @@
       <LastGenOutput>CustomProperty.SerializationExtensions.cs</LastGenOutput>
     </Content>
     <Content Include="Plix.xml" />
+    <Content Include="CustomPropertyVerbalizationGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>CustomPropertyVerbalizationGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="CustomPropertyVerbalizationGenerator.xslt" />
+    <Content Include="Resources\ResourceStringsGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\ResourceStringsGenerator.xslt" />
+    <Content Include="VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomPropertiesManager.resx">

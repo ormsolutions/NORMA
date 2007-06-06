@@ -211,6 +211,9 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					taskProvider.RemoveAllTasks();
 				}
+
+				// Remove the cached verbalization snippets, this set will change
+				myTargetedVerbalizationSnippets = null;
 			}
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;

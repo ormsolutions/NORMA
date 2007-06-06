@@ -51,6 +51,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactTypeRelationshipLinkClose,
 		/// <summary>The 'FactTypeRelationshipLinkOpen' format string snippet. Contains 1 replacement field.</summary>
 		FactTypeRelationshipLinkOpen,
+		/// <summary>The 'GenericConstraintHeader' simple snippet value.</summary>
+		GenericConstraintHeader,
 		/// <summary>The 'GenericConstraintListClose' simple snippet value.</summary>
 		GenericConstraintListClose,
 		/// <summary>The 'GenericConstraintListItemClose' simple snippet value.</summary>
@@ -109,6 +111,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ReportDocumentFooter,
 		/// <summary>The 'ReportDocumentHeader' format string snippet. Contains 1 replacement field.</summary>
 		ReportDocumentHeader,
+		/// <summary>The 'VerbalizerNewLine' simple snippet value.</summary>
+		VerbalizerNewLine,
 	}
 	#endregion // ReportVerbalizationSnippetType enum
 	#region ReportVerbalizationSets class
@@ -190,6 +194,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			",
 				"</a></span>",
 				@"<a href=""../FactTypes/{0}.html"">",
+				@"
+				Constraints
+			",
 				@"
 				
 					</div>
@@ -341,13 +348,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"
 				
 				<li><a href=""ObjectTypeList.html"">Object Types</a></li>
-				<li><a href=""ConstraintValidationReport.html"">Constraint Validation</a></li>",
+				<li><a href=""ConstraintValidationReport.html"">Constraint Validation</a></li>
+			",
 				@"
 				
-				<li><a href=""ObjectTypeList.html"">Object Types</a></li>",
+				<li><a href=""ObjectTypeList.html"">Object Types</a></li>
+			",
 				@"
 				
-				<li><a href=""ConstraintValidationReport.html"">Constraint Validation</a></li>",
+				<li><a href=""ConstraintValidationReport.html"">Constraint Validation</a></li>
+			",
 				@"
 				</body>
 				</html>
@@ -509,7 +519,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							</style>
 						</head>
 						<body>
-			"});
+			",
+				"<br/>"});
 			sets[1] = sets[0];
 			sets[2] = sets[0];
 			sets[3] = sets[0];

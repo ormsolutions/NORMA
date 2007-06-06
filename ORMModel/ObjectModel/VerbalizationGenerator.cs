@@ -1040,7 +1040,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactType : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -1053,7 +1053,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -1111,7 +1111,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
-			beginVerbalization(VerbalizationContent.Normal);
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 			hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 			FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
@@ -1139,9 +1139,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // FactType verbalization
@@ -1149,7 +1149,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SubtypeFact : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected new bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected new bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -1162,7 +1162,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -1199,7 +1199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			const bool isDeontic = false;
 			if (!(isNegative))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
@@ -1237,9 +1237,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // SubtypeFact verbalization
@@ -1247,7 +1247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ObjectType : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -1260,7 +1260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -1305,7 +1305,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.ValueTypeVerbalization;
 			}
-			beginVerbalization(VerbalizationContent.Normal);
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
 			string variableSnippet1Replace1 = null;
 			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
@@ -1481,9 +1481,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // ObjectType verbalization
@@ -1491,7 +1491,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Note : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -1504,7 +1504,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -1539,7 +1539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			const bool isDeontic = false;
-			beginVerbalization(VerbalizationContent.Normal);
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.NotesVerbalization, isDeontic, isNegative);
 			string snippet1Replace1 = null;
 			snippet1Replace1 = this.Text;
@@ -1568,9 +1568,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // Note verbalization
@@ -1578,7 +1578,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SubsetConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -1591,7 +1591,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -1652,7 +1652,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -1684,7 +1684,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
-								beginVerbalization(VerbalizationContent.ErrorReport);
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 							}
 							else
@@ -1754,7 +1754,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading1))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.Conditional, isDeontic, isNegative);
@@ -1983,7 +1983,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
@@ -2232,7 +2232,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading1))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.Conditional, isDeontic, isNegative);
@@ -2468,7 +2468,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.Conditional, isDeontic, isNegative);
@@ -2727,9 +2727,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // SubsetConstraint verbalization
@@ -2762,7 +2762,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
@@ -2803,7 +2803,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 					if (reading != null)
 					{
-						beginVerbalization(VerbalizationContent.Normal);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace1 = null;
 						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -2834,7 +2834,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 						if (reading != null)
 						{
-							beginVerbalization(VerbalizationContent.Normal);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 							string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 							string snippet1Replace1 = null;
 							if (sbTemp == null)
@@ -2947,7 +2947,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, factRoles, true);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -3017,9 +3017,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 	}
@@ -3053,7 +3053,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
@@ -3094,7 +3094,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 					if (reading != null)
 					{
-						beginVerbalization(VerbalizationContent.Normal);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace1 = null;
 						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -3125,7 +3125,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 						if (reading != null)
 						{
-							beginVerbalization(VerbalizationContent.Normal);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 							string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 							string snippet1Replace1 = null;
 							if (sbTemp == null)
@@ -3199,9 +3199,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 	}
@@ -3235,7 +3235,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
@@ -3271,7 +3271,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				VerbalizationHyphenBinder hyphenBinder;
 				if ((factArity == 2) && !(isNegative))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, true, false, factRoles, true);
@@ -3300,9 +3300,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 	}
@@ -3336,7 +3336,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
@@ -3377,7 +3377,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 					if (reading != null)
 					{
-						beginVerbalization(VerbalizationContent.Normal);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace1 = null;
 						for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -3408,7 +3408,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 						if (reading != null)
 						{
-							beginVerbalization(VerbalizationContent.Normal);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 							string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 							string snippet1Replace1 = null;
 							if (sbTemp == null)
@@ -3482,9 +3482,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 	}
@@ -3493,7 +3493,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MandatoryConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -3506,7 +3506,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -3560,7 +3560,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -3592,7 +3592,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
-								beginVerbalization(VerbalizationContent.ErrorReport);
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 							}
 							else
@@ -3699,7 +3699,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				parentFact = allFacts[0];
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative);
@@ -3718,7 +3718,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 				if (reading != null)
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -3749,7 +3749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 					if (reading != null)
 					{
-						beginVerbalization(VerbalizationContent.Normal);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 						string snippet1Replace1 = null;
 						if (sbTemp == null)
@@ -3829,7 +3829,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 				if (reading != null)
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -3860,7 +3860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 					if (reading != null)
 					{
-						beginVerbalization(VerbalizationContent.Normal);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
 						string snippet1Replace1 = null;
 						if (sbTemp == null)
@@ -3934,7 +3934,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (isNegative && (maxFactArity <= 1))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.NegativeReadingForUnaryOnlyDisjunctiveMandatory, isDeontic, isNegative);
@@ -4032,7 +4032,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading1))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -4109,7 +4109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -4224,7 +4224,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading1))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					int snippet1ReplaceCompositeCount1 = 0;
@@ -4396,7 +4396,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -4613,9 +4613,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // MandatoryConstraint verbalization
@@ -4623,7 +4623,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class UniquenessConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -4636,7 +4636,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -4690,7 +4690,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -4722,7 +4722,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
-								beginVerbalization(VerbalizationContent.ErrorReport);
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 							}
 							else
@@ -4776,7 +4776,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				parentFact = allFacts[0];
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.OccursInPopulation, isDeontic, isNegative);
@@ -4835,7 +4835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.OccursInPopulation, isDeontic, isNegative);
@@ -4891,7 +4891,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				parentFact = allFacts[0];
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				if (sbTemp == null)
@@ -5019,7 +5019,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.OccursInPopulation, isDeontic, isNegative);
@@ -5082,7 +5082,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 				if (reading != null)
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -5113,7 +5113,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 					if (reading != null)
 					{
-						beginVerbalization(VerbalizationContent.Normal);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 						string snippet1Replace1 = null;
 						if (sbTemp == null)
@@ -5228,7 +5228,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, factRoles, true);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				if (sbTemp == null)
@@ -5300,7 +5300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				parentFact = allFacts[0];
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
@@ -5333,7 +5333,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				allReadingOrders = parentFact.ReadingOrderCollection;
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				if (sbTemp == null)
@@ -5422,7 +5422,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading1))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -5552,7 +5552,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ContextScope, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -5723,7 +5723,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading1))
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -5804,7 +5804,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					beginVerbalization(VerbalizationContent.Normal);
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ContextScope, isDeontic, isNegative);
 					string snippet1Replace1 = null;
 					if (sbTemp == null)
@@ -5978,9 +5978,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // UniquenessConstraint verbalization
@@ -5988,7 +5988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RoleValueConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -6001,7 +6001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -6056,7 +6056,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -6102,7 +6102,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
 			}
-			beginVerbalization(VerbalizationContent.Normal);
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
 			string variableSnippet1Replace1 = null;
 			if ((factArity == 2) && (valueRole.Name.Length != 0))
@@ -6290,9 +6290,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // RoleValueConstraint verbalization
@@ -6300,7 +6300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueTypeValueConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -6313,7 +6313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -6360,7 +6360,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
 			}
-			beginVerbalization(VerbalizationContent.Normal);
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
 			string variableSnippet1Replace1 = null;
 			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
@@ -6480,9 +6480,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // ValueTypeValueConstraint verbalization
@@ -6490,7 +6490,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RingConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -6503,7 +6503,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -6557,7 +6557,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -6589,7 +6589,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
-								beginVerbalization(VerbalizationContent.ErrorReport);
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 							}
 							else
@@ -6671,7 +6671,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				parentFact = allFacts[0];
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				if (sbTemp == null)
@@ -6737,9 +6737,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // RingConstraint verbalization
@@ -6747,7 +6747,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EqualityConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -6760,7 +6760,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -6821,7 +6821,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -6853,7 +6853,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
-								beginVerbalization(VerbalizationContent.ErrorReport);
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 							}
 							else
@@ -6904,7 +6904,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			VerbalizationHyphenBinder hyphenBinder;
 			if ((columnArity == 1) && ((constraintRoleArity == 2) && !(isNegative)))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
@@ -7213,7 +7213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if ((constraintRoleArity == 2) && !(isNegative))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
@@ -7512,7 +7512,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if ((constraintRoleArity >= 3) && !(isNegative))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.EqualityForEachIndentedQuantifier, isDeontic, isNegative);
@@ -7760,9 +7760,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // EqualityConstraint verbalization
@@ -7770,7 +7770,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExclusionConstraint : IVerbalize
 	{
 		/// <summary>IVerbalize.GetVerbalization implementation</summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
 			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -7783,7 +7783,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
@@ -7844,7 +7844,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 						}
 						else
@@ -7876,7 +7876,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
-								beginVerbalization(VerbalizationContent.ErrorReport);
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
 							}
 							else
@@ -7927,7 +7927,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			VerbalizationHyphenBinder hyphenBinder;
 			if ((columnArity == 1) && ((constraintRoleArity >= 2) && !(isNegative)))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				CoreVerbalizationSnippetType snippet1ReplaceSnippetType1 = 0;
@@ -8162,7 +8162,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if ((allFactsCount == 2) && ((columnArity == 2) && ((constraintRoleArity == 2) && !(isNegative))))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				bool isBinaryLeadReading = false;
@@ -8721,7 +8721,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if ((constraintRoleArity >= 2) && !(isNegative))
 			{
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ExclusionForEachIndentedQuantifier, isDeontic, isNegative);
@@ -8969,9 +8969,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 		}
 	}
 	#endregion // ExclusionConstraint verbalization
@@ -9004,15 +9004,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceBlockStart, false, false));
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 		#endregion // FactType verbalization block start
@@ -9047,15 +9047,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceBlockEnd, false, false));
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 		#endregion // FactType verbalization block start
@@ -9091,7 +9091,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -9104,7 +9104,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 						}
 						else
@@ -9187,7 +9187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					basicRoleReplacements[i] = basicReplacement;
 				}
-				beginVerbalization(VerbalizationContent.Normal);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative));
 				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
@@ -9215,9 +9215,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 		#endregion // FactType Instance Verbalization
@@ -9253,7 +9253,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>IVerbalize.GetVerbalization implementation</summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				IModelErrorOwner errorOwner = this as IModelErrorOwner;
@@ -9266,7 +9266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
 							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
 						}
 						else
@@ -9365,9 +9365,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return true;
 			}
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
 			{
-				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
 			}
 		}
 		#endregion // ObjectType Instance Verbalization

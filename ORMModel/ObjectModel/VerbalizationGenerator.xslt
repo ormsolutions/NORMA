@@ -124,7 +124,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
@@ -207,7 +207,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
@@ -279,7 +279,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
@@ -403,7 +403,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
@@ -487,7 +487,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
@@ -533,7 +533,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
@@ -616,7 +616,7 @@
 					<plx:passTypeParam dataTypeName="Type"/>
 					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
 				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
@@ -1427,9 +1427,9 @@
 				</plx:assign>
 				<xsl:choose>
 					<xsl:when test="$BeginVerbalization">
-						<plx:callInstance name=".implied" type="delegateCall">
+						<plx:callInstance name="BeginVerbalization">
 							<plx:callObject>
-								<plx:nameRef type="parameter" name="beginVerbalization"/>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
@@ -3831,9 +3831,9 @@
 					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:callInstance name=".implied" type="delegateCall">
+					<plx:callInstance name="BeginVerbalization">
 						<plx:callObject>
-							<plx:nameRef type="parameter" name="beginVerbalization"/>
+							<plx:nameRef name="verbalizationContext" type="parameter"/>
 						</plx:callObject>
 						<plx:passParam>
 							<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>
@@ -4595,9 +4595,9 @@
 					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:callInstance name=".implied" type="delegateCall">
+					<plx:callInstance name="BeginVerbalization">
 						<plx:callObject>
-							<plx:nameRef type="parameter" name="beginVerbalization"/>
+							<plx:nameRef name="verbalizationContext" type="parameter"/>
 						</plx:callObject>
 						<plx:passParam>
 							<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>
@@ -6425,9 +6425,9 @@
 					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:callInstance name=".implied" type="delegateCall">
+					<plx:callInstance name="BeginVerbalization">
 						<plx:callObject>
-							<plx:nameRef type="parameter" name="beginVerbalization"/>
+							<plx:nameRef name="verbalizationContext" type="parameter"/>
 						</plx:callObject>
 						<plx:passParam>
 							<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>
@@ -7094,9 +7094,9 @@
 					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:callInstance name=".implied" type="delegateCall">
+					<plx:callInstance name="BeginVerbalization">
 						<plx:callObject>
-							<plx:nameRef type="parameter" name="beginVerbalization"/>
+							<plx:nameRef name="verbalizationContext" type="parameter"/>
 						</plx:callObject>
 						<plx:passParam>
 							<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>
@@ -7858,9 +7858,9 @@
 					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:callInstance name=".implied" type="delegateCall">
+					<plx:callInstance name="BeginVerbalization">
 						<plx:callObject>
-							<plx:nameRef type="parameter" name="beginVerbalization"/>
+							<plx:nameRef name="verbalizationContext" type="parameter"/>
 						</plx:callObject>
 						<plx:passParam>
 							<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>

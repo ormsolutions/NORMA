@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<!-- This schemaLocation needs to be adjusted to reflect the final location of the Binary file. -->
+	<xs:redefine schemaLocation="../VerbalizationUntypedSnippets.xsd">
+		<xs:simpleType name="SnippetTypeEnum">
+			<xs:restriction base="SnippetTypeEnum">
+				<xs:enumeration value="CustomPropertiesVerbalization">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes the text specified for a custom defined property. {0} = Property Name, {1} = Property Value, {2} = Property Group Name, {3} = Property Description</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:redefine>
+</xs:schema>

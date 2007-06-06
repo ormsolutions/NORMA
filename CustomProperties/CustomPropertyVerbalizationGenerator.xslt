@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -15,20 +14,20 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	xmlns:rvg="http://schemas.neumont.edu/ORM/SDK/ReportVerbalizationGenerator"
+	xmlns:cpvg="http://schemas.neumont.edu/ORM/SDK/CustomPropertyVerbalizationGenerator"
 	xmlns:exsl="http://exslt.org/common"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="rvg">
+	exclude-result-prefixes="cpvg">
 
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
-	<xsl:param name="CustomToolNamespace" select="'Neumont.Tools.ORM.ObjectModel'"/>
+	<xsl:param name="CustomToolNamespace" select="'Neumont.Tools.ORM.CustomProperties'"/>
 
 	<!-- Names of the different classes we generate -->
-	<xsl:param name="ReportVerbalizationSnippetType" select="'ReportVerbalizationSnippetType'"/>
-	<xsl:param name="ReportVerbalizationSets" select="'ReportVerbalizationSets'"/>
-	<xsl:include href="VerbalizationGenerator.Sets.xslt"/>
+	<xsl:param name="CustomPropertyVerbalizationSnippetType" select="'CustomPropertyVerbalizationSnippetType'"/>
+	<xsl:param name="CustomPropertyVerbalizationSets" select="'CustomPropertyVerbalizationSets'"/>
+	<xsl:include href="..\ORMModel\ObjectModel\VerbalizationGenerator.Sets.xslt"/>
 
 	<xsl:template match="/">
 		<plx:root>
@@ -37,15 +36,16 @@
 			<plx:namespaceImport name="System.Text"/>
 			<plx:namespaceImport name="System.Collections.Generic"/>
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
+			<plx:namespaceImport name="Neumont.Tools.ORM.ObjectModel"/>
 			<plx:namespace name="{$CustomToolNamespace}">
-				<xsl:for-each select="rvg:*">
-					<xsl:if test="rvg:Copyright">
+				<xsl:for-each select="cpvg:*">
+					<xsl:if test="cpvg:Copyright">
 						<plx:leadingInfo>
 							<plx:comment blankLine="true"/>
 							<plx:comment>
-								<xsl:value-of select="rvg:Copyright/@name"/>
+								<xsl:value-of select="cpvg:Copyright/@name"/>
 							</plx:comment>
-							<xsl:for-each select="rvg:Copyright/rvg:CopyrightLine">
+							<xsl:for-each select="cpvg:Copyright/cpvg:CopyrightLine">
 								<plx:comment>
 									<xsl:value-of select="."/>
 								</plx:comment>
@@ -55,8 +55,8 @@
 					</xsl:if>
 					<!-- Generate verbalization set classes and default populations -->
 					<xsl:call-template name="GenerateVerbalizationSets">
-						<xsl:with-param name="SnippetEnumTypeName" select="$ReportVerbalizationSnippetType"/>
-						<xsl:with-param name="VerbalizationSetName" select="$ReportVerbalizationSets"/>
+						<xsl:with-param name="SnippetEnumTypeName" select="$CustomPropertyVerbalizationSnippetType"/>
+						<xsl:with-param name="VerbalizationSetName" select="$CustomPropertyVerbalizationSets"/>
 						<xsl:with-param name="SnippetsLocation" select="@snippetsLocation"/>
 					</xsl:call-template>
 				</xsl:for-each>

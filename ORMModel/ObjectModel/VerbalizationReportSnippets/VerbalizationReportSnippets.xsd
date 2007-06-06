@@ -244,6 +244,16 @@
 						<xs:documentation>Description: Snippet used to create a link to the Constraint Validation section of the Verbalization Report</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="VerbalizerNewLine">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used to create a new line in the document.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GenericConstraintHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Snippet used as a header for the constraints section in a generic list.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

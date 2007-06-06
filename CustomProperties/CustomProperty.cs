@@ -42,4 +42,17 @@ namespace Neumont.Tools.ORM.CustomProperties
 		}
 		#endregion
 	}
+	partial class CustomProperty : IVerbalize
+	{
+		#region IVerbalize Members
+		bool IVerbalize.GetVerbalization(System.IO.TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		{
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			IVerbalizationSets<CustomPropertyVerbalizationSnippetType> snippets = (IVerbalizationSets<CustomPropertyVerbalizationSnippetType>)snippetsDictionary[typeof(CustomPropertyVerbalizationSnippetType)];
+			CustomPropertyDefinition defn = CustomPropertyDefinition;
+			writer.Write(string.Format(snippets.GetSnippet(CustomPropertyVerbalizationSnippetType.CustomPropertiesVerbalization), defn.Name, Value.ToString(), defn.CustomPropertyGroup.Name, defn.Description));
+			return true;
+		}
+		#endregion
+	}
 }

@@ -1,3 +1,19 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,63 +45,51 @@ using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
-    /// <summary>
-    /// Provides a configuration for the Verbalization Report Generator
-    /// </summary>
-    public partial class GenerateReportDialog : Form
-    {
-        private ORMModel myModel;
-
-        /// <summary>
-        /// Initializes a new instance of GenerateReportDialog
-        /// </summary>
-        public GenerateReportDialog(ORMModel model)
-        {
-            InitializeComponent();
-            myModel = model;
-            chkLbOptions.Sorted = true;
-            chkLbOptions.Value = VerbalizationReportContent.All;
-        }
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                txtOutputDirectory.Text = folderBrowserDialog1.SelectedPath;    
-            }
-        }
-
-        private void btnGenerate_Click(object sender, EventArgs e)
-        {
-            if (Directory.Exists(txtOutputDirectory.Text))
-            {
-                VerbalizationReportContent reportContent = 0;
-                CheckedListBox.CheckedItemCollection checkedItems = chkLbOptions.CheckedItems;
-                int itemCount = checkedItems.Count;
-                for (int i = 0; i < itemCount; ++i)
-                {
-                    reportContent |= (VerbalizationReportContent)checkedItems[i];
-                }
-                ObjectModel.Verbalization.VerbalizationReportGenerator.GenerateReport(myModel, reportContent, txtOutputDirectory.Text);
-                System.Diagnostics.Process.Start(txtOutputDirectory.Text);
-                DialogResult = DialogResult.OK;
-            }
-            else DialogResult = DialogResult.None;
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtOutputDirectory_TextChanged(object sender, EventArgs e)
-        {
-            btnGenerate.Enabled = Directory.Exists(txtOutputDirectory.Text);
-        }
-
-        private void lblOutput_Click(object sender, EventArgs e)
-        {
-
-        }
-    }
+	/// <summary>
+	/// Provides a configuration for the Verbalization Report Generator
+	/// </summary>
+	public partial class GenerateReportDialog : Form
+	{
+		private ORMModel myModel;
+		/// <summary>
+		/// Initializes a new instance of GenerateReportDialog
+		/// </summary>
+		public GenerateReportDialog(ORMModel model)
+		{
+			InitializeComponent();
+			myModel = model;
+			chkLbOptions.Sorted = true;
+			chkLbOptions.Value = VerbalizationReportContent.All;
+		}
+		private void btnBrowse_Click(object sender, EventArgs e)
+		{
+			if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+			{
+				txtOutputDirectory.Text = folderBrowserDialog1.SelectedPath;
+			}
+		}
+		private void btnGenerate_Click(object sender, EventArgs e)
+		{
+			if (Directory.Exists(txtOutputDirectory.Text))
+			{
+				VerbalizationReportContent reportContent = 0;
+				CheckedListBox.CheckedItemCollection checkedItems = chkLbOptions.CheckedItems;
+				int itemCount = checkedItems.Count;
+				for (int i = 0; i < itemCount; ++i)
+				{
+					reportContent |= (VerbalizationReportContent)checkedItems[i];
+				}
+				ObjectModel.Verbalization.VerbalizationReportGenerator.GenerateReport(myModel, reportContent, txtOutputDirectory.Text);
+				System.Diagnostics.Process.Start(txtOutputDirectory.Text);
+				DialogResult = DialogResult.OK;
+			}
+			else DialogResult = DialogResult.None;
+		}
+		private void btnCancel_Click(object sender, EventArgs e) { }
+		private void txtOutputDirectory_TextChanged(object sender, EventArgs e)
+		{
+			btnGenerate.Enabled = Directory.Exists(txtOutputDirectory.Text);
+		}
+		private void lblOutput_Click(object sender, EventArgs e) { }
+	}
 }

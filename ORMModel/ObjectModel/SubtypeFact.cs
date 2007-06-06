@@ -880,13 +880,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides
 		/// implementation in <see cref="FactType"/>
 		/// </summary>
-		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
+		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
 			yield break;
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
-			return GetCustomChildVerbalizations(isNegative);
+			return GetCustomChildVerbalizations(filter, isNegative);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> implementation

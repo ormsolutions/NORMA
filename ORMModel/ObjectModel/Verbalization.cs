@@ -43,14 +43,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ErrorReport = 1,
 	}
 	/// <summary>
-	/// A callback delegate enabling a verbalizer to tell
-	/// the hosting window that it is about to begin verbalizing.
-	/// This enables the host window to delay writing content outer
-	/// content until it knows that text is about to be written by
-	/// the verbalizer to the writer
+	/// An Interface to provide context services to <see cref="IVerbalize.GetVerbalization"/>. Allows elements
+	/// being verbalized to call back to the outer verbalization engine to do a natural inline verbalization
+	/// of a referenced element.
 	/// </summary>
-	/// <param name="content">The style of verbalization content</param>
-	public delegate void NotifyBeginVerbalization(VerbalizationContent content);
+	public interface IVerbalizationContext
+	{
+		/// <summary>
+		/// Called by implementations of <see cref="IVerbalize.GetVerbalization"/> to inform
+		/// the verbalization context that it is about to begin verbalizing.
+		/// This enables the host window to delay writing outer
+		/// content until it knows that text is about to be written by
+		/// the verbalizer to the writer
+		/// </summary>
+		/// <param name="content">The style of verbalization content</param>
+		void BeginVerbalization(VerbalizationContent content);
+		/// <summary>
+		/// Defer verbalization at this point to the target object.
+		/// </summary>
+		/// <param name="target">
+		/// Any instance that implements disjunctive mandatory combinations of 
+		/// <see cref="IVerbalize"/>, <see cref="IRedirectVerbalization"/>,
+		/// <see cref="IVerbalizeChildren"/>, and <see cref="IVerbalizeCustomChildren"/>
+		/// </param>
+		/// <param name="childFilter">the filter used to remove aggregates.</param>
+		void DeferVerbalization(object target, IVerbalizeFilterChildren childFilter);
+	}
 	/// <summary>
 	/// Interface for verbalization
 	/// </summary>
@@ -61,10 +79,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="writer">The output text writer</param>
 		/// <param name="snippetsDictionary">The IVerbalizationSets to use</param>
-		/// <param name="beginVerbalization">A callback function to notify when verbalization is starting</param>
+		/// <param name="verbalizationContext">A set callback function to interact with the outer verbalization context</param>
 		/// <param name="isNegative">true for a negative reading</param>
 		/// <returns>true to continue with child verbalization, otherwise false</returns>
-		bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative);
+		bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative);
 	}
 	/// <summary>
 	/// Interface to redirect verbalization. Called for top-level selected objects only
@@ -93,6 +111,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// </summary>
 	public struct CustomChildVerbalizer : IEquatable<CustomChildVerbalizer>
 	{
+		private sealed class BlockVerbalize : IVerbalize
+		{
+			#region IVerbalize Implementation
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			{
+				Debug.Fail("Placeholder instance, should not be called");
+				return false;
+			}
+			#endregion // IVerbalize Implementation
+		}
 		private readonly IVerbalize myInstance;
 		private readonly bool myOptions;
 		/// <summary>
@@ -100,13 +128,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public readonly static CustomChildVerbalizer Empty = default(CustomChildVerbalizer);
 		/// <summary>
+		/// A verbalization structure that explicitly blocks the element from verbalizing
+		/// </summary>
+		public readonly static CustomChildVerbalizer Block = new CustomChildVerbalizer(new BlockVerbalize(), false);
+		/// <summary>
 		/// Test if the structure is empty
 		/// </summary>
 		public bool IsEmpty
 		{
 			get
 			{
-				return myInstance == null;
+				// Access the property here to deal with the Block value
+				return Instance == null;
+			}
+		}
+		/// <summary>
+		/// Test if the structure is blocked. Note that <see cref="IsEmpty"/> will always
+		/// be true if IsBlocked is true.
+		/// </summary>
+		public bool IsBlocked
+		{
+			get
+			{
+				return myInstance == Block.myInstance;
 			}
 		}
 		/// <summary>
@@ -132,7 +176,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return myInstance;
+				IVerbalize retVal = myInstance;
+				// Careful, access field on Block directly
+				return (retVal == Block.myInstance) ? null : retVal;
 			}
 		}
 		/// <summary>
@@ -199,9 +245,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve children to verbalize that are not part of the standard
 		/// verbalization.
 		/// </summary>
+		/// <param name="filter">A <see cref="IVerbalizeFilterChildren"/> instance. Can be <see langword="null"/>.
+		/// If the <see cref="IVerbalizeFilterChildren.FilterChildVerbalizer">FilterChildVerbalizer</see> method returns
+		/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
+		/// then that custom child should not be created</param>
 		/// <param name="isNegative">true if a negative verbalization is being requested</param>
 		/// <returns>IEnumerable of CustomChildVerbalizer structures</returns>
-		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative);
+		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative);
 	}
 	#endregion // IVerbalizeCustomChildren interface
 	#region IVerbalizeFilterChildren interface
@@ -215,12 +265,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Provides an opportunity for a parent object to filter the
 		/// verbalization of aggregated child verbalization implementations
 		/// </summary>
-		/// <param name="childVerbalizer"></param>
+		/// <param name="child">A direct or indirect child object.</param>
 		/// <param name="isNegative">true if a negative verbalization is being requested</param>
 		/// <returns>Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
 		/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
 		/// this is true.</returns>
-		CustomChildVerbalizer FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative);
+		CustomChildVerbalizer FilterChildVerbalizer(object child, bool isNegative);
 	}
 	#endregion // IVerbalizeFilterChildren interface
 	#region IVerbalizationSets interface

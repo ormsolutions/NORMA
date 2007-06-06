@@ -39,6 +39,7 @@
 			<ComponentRef Id="NORMAVSOIALModelExtensionComponent"/>
 			<ComponentRef Id="NORMAVSRelationalViewExtensionComponent"/>
 			<ComponentRef Id="NORMAVSCustomPropertiesExtensionComponent"/>
+			<ComponentRef Id="NORMAVSCustomPropertiesVerbalizationComponent"/>
 			<ComponentRef Id="ORMSchemaCatalogComponent"/>
 			<ComponentRef Id="ORMSchemasComponent"/>
 			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>
@@ -73,6 +74,6 @@
 			<ComponentRef Id="DILSchemaCatalogComponent"/>
 			<ComponentRef Id="DILSchemasComponent"/>
 			<ComponentRef Id="DILTransformsComponent"/>
-		</ComponentGroup>		
+		</ComponentGroup>
 	</Fragment>
 </Wix>

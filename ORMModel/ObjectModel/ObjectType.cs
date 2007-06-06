@@ -2755,20 +2755,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for instance verbalizations
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
 			ObjectTypeInstance[] instances = (IsValueType ? (ObjectTypeInstance[])ValueTypeInstanceCollection.ToArray() : (ObjectTypeInstance[])EntityTypeInstanceCollection.ToArray());
 			int instanceCount = instances.Length;
 			if (instanceCount > 0)
 			{
-				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
-				verbalizer.Initialize(this, instances);
-				yield return new CustomChildVerbalizer(verbalizer, true);
+				if (filter == null || !filter.FilterChildVerbalizer(instances[0], isNegative).IsBlocked)
+				{
+					ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
+					verbalizer.Initialize(this, instances);
+					yield return new CustomChildVerbalizer(verbalizer, true);
+				}
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
 		{
-			return GetCustomChildVerbalizations(isNegative);
+			return GetCustomChildVerbalizations(filter, isNegative);
 		}
 
 		#endregion

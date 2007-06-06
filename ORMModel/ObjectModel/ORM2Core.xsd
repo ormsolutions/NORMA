@@ -1345,6 +1345,7 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
+						<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="Name" type="xs:string" use="required"/>
 					<xs:attribute name="id" type="xs:ID" use="required"/>
@@ -1358,6 +1359,7 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
+						<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="id" type="xs:ID" use="required"/>
 					<xs:attribute name="Name" type="xs:string" use="required"/>

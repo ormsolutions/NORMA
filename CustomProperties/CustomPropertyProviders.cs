@@ -28,6 +28,7 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.CustomProperties
 {
+	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	sealed partial class CustomPropertiesDomainModel : IORMModelEventSubscriber
 	{
 		#region CustomPropertyProviders class
@@ -147,6 +148,28 @@ namespace Neumont.Tools.ORM.CustomProperties
 		}
 		#endregion
 
+		#region IVerbalizationSnippetsProvider Implementation
+		private class VerbalizationSnippets : IVerbalizationSnippetsProvider
+		{
+			/// <summary>
+			/// IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets
+			/// </summary>
+			VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
+			{
+				return new VerbalizationSnippetsData[]
+				{
+					new VerbalizationSnippetsData(
+						typeof(CustomPropertyVerbalizationSnippetType),
+						CustomPropertyVerbalizationSets.Default,
+						"CustomProperties",
+						ResourceStrings.CustomPropertiesSnippetsTypeDescription,
+						ResourceStrings.CustomPropertiesSnippetsDefaultDescription
+					),
+				};
+			}
+		}
+		#endregion // IVerbalizationSnippetsProvider Implementation
+
 		private sealed class CustomPropertiesEditorPropertyDescriptor : PropertyDescriptor
 		{
 			private sealed class CustomPropertiesEditorUITypeEditor : UITypeEditor
@@ -176,7 +199,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 			}
 
 			public static readonly CustomPropertiesEditorPropertyDescriptor Instance = new CustomPropertiesEditorPropertyDescriptor();
-			private CustomPropertiesEditorPropertyDescriptor()	: base("CustomPropertiesEditor", null)
+			private CustomPropertiesEditorPropertyDescriptor()
+				: base("CustomPropertiesEditor", null)
 			{
 			}
 

@@ -215,6 +215,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectTypeRelationshipValueLink"><![CDATA[<span class="objectType"><a href="../ObjectTypes/{0}.html">{0}</a></span>]]></Snippet>
 			<Snippet type="FactTypeRelationshipLinkOpen"><![CDATA[<a href="../FactTypes/{0}.html">]]></Snippet>
 			<Snippet type="FactTypeRelationshipLinkClose"><![CDATA[</a></span>]]></Snippet>
+			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="ReportDocumentHeader">
 				<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 						<html xmlns="http://www.w3.org/1999/xhtml">
@@ -410,13 +411,19 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ReportDocumentContentsReplacementAll">
 				<![CDATA[
 				<li><a href="ObjectTypeList.html">Object Types</a></li>
-				<li><a href="ConstraintValidationReport.html">Constraint Validation</a></li>]]></Snippet>
+				<li><a href="ConstraintValidationReport.html">Constraint Validation</a></li>]]>
+			</Snippet>
 			<Snippet type="ReportDocumentContentsReplacementObject">
 				<![CDATA[
-				<li><a href="ObjectTypeList.html">Object Types</a></li>]]></Snippet>
+				<li><a href="ObjectTypeList.html">Object Types</a></li>]]>
+			</Snippet>
 			<Snippet type="ReportDocumentContentsReplacementValidation">
 				<![CDATA[
-				<li><a href="ConstraintValidationReport.html">Constraint Validation</a></li>]]></Snippet>
+				<li><a href="ConstraintValidationReport.html">Constraint Validation</a></li>]]>
+			</Snippet>
+			<Snippet type="GenericConstraintHeader">
+				<![CDATA[Constraints]]>
+			</Snippet>
 		</Snippets>
 	</Language>
 </Languages>

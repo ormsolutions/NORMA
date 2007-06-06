@@ -126,4 +126,12 @@
   <data name="DisplayName" xml:space="preserve">
     <value>PropertiesEditor</value>
   </data>
+  <data name="Verbalization.CustomPropertiesSnippetsDefaultDescription" xml:space="preserve">
+    <value>Default Verbalization</value>
+    <comment>The description for the snippets associated with the custom properties verbalization.</comment>
+  </data>
+  <data name="Verbalization.CustomPropertiesSnippetsTypeDescription" xml:space="preserve">
+    <value>Custom Properties Verbalization</value>
+    <comment>The description for the default custom properties verbalization snippets.</comment>
+  </data>
 </root>

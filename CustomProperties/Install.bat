@@ -4,9 +4,15 @@ SET RootDir=%~dp0.
 CALL "%RootDir%\..\SetupEnvironment.bat" %*
 
 IF NOT EXIST "%NORMAExtensionsDir%" (MKDIR "%NORMAExtensionsDir%")
+IF NOT EXIST "%NORMADir%\Xml\Verbalization\CustomProperties" (MKDIR "%NORMADir%\Xml\Verbalization\CustomProperties")
 
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\Neumont.Tools.ORM.CustomProperties.dll" "%NORMAExtensionsDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\Neumont.Tools.ORM.CustomProperties.pdb" "%NORMAExtensionsDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\VerbalizationSnippets\*.x??" "%NORMADir%\Xml\Verbalization\CustomProperties\"
+IF EXIST "%NORMADir%\Xml\Verbalization\CustomProperties\CustomPropertyVerbalizationSnippets.xml" (
+	IF EXIST "%NORMADir%\Xml\Verbalization\CustomProperties\_default.xml" (DEL /F /Q "%NORMADir%\Xml\Verbalization\CustomProperties\_default.xml")
+	REN "%NORMADir%\Xml\Verbalization\CustomProperties\CustomPropertyVerbalizationSnippets.xml" "_default.xml"
+)
 
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/Preview/CustomProperties" /v "Class" /d "Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel" /f 1>NUL
 REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/Preview/CustomProperties" /v "CodeBase" /d "%NORMAExtensionsDir%\Neumont.Tools.ORM.CustomProperties.dll" /f 1>NUL

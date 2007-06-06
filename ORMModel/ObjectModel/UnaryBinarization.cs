@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						Role implicitBooleanRole;
 						ObjectType rolePlayer;
-						if (null != (implicitBooleanRole = roleCollection[i].Role) &&
+						if (null != (implicitBooleanRole = (roleCollection[i] as Role)) &&
 							null != (rolePlayer = implicitBooleanRole.RolePlayer) &&
 							rolePlayer.IsImplicitBooleanValue)
 						{
@@ -107,7 +107,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						Role implicitBooleanRole;
 						ObjectType rolePlayer;
-						if (null != (implicitBooleanRole = roleCollection[i].Role) &&
+						if (null != (implicitBooleanRole = (roleCollection[i] as Role)) &&
 							null != (rolePlayer = implicitBooleanRole.RolePlayer) &&
 							rolePlayer.IsImplicitBooleanValue)
 						{

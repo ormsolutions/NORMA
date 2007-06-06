@@ -341,6 +341,39 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+		private sealed class VerbalizationContextImpl : IVerbalizationContext
+		{
+			/// <summary>
+			/// A callback delegate enabling a verbalizer to tell
+			/// the hosting window that it is about to begin verbalizing.
+			/// This enables the host window to delay writing content outer
+			/// content until it knows that text is about to be written by
+			/// the verbalizer to the writer
+			/// </summary>
+			/// <param name="content">The style of verbalization content</param>
+			public delegate void NotifyBeginVerbalization(VerbalizationContent content);
+			public delegate void NotifyDeferVerbalization(object target, IVerbalizeFilterChildren childFilter);
+			private NotifyBeginVerbalization myBeginCallback;
+			private NotifyDeferVerbalization myDeferCallback;
+			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback)
+			{
+				myBeginCallback = beginCallback;
+				myDeferCallback = deferCallback;
+			}
+			#region IVerbalizationContext Implementation
+			void IVerbalizationContext.BeginVerbalization(VerbalizationContent content)
+			{
+				myBeginCallback(content);
+			}
+			void IVerbalizationContext.DeferVerbalization(object target, IVerbalizeFilterChildren childFilter)
+			{
+				if (myDeferCallback != null)
+				{
+					myDeferCallback(target, childFilter);
+				}
+			}
+			#endregion // IVerbalizationContext Implementation
+		}
 		/// <summary>
 		/// Determine the indentation level for verbalizing a ModelElement, and fire
 		/// the delegate for verbalization
@@ -373,6 +406,7 @@ namespace Neumont.Tools.ORM.Shell
 					bool retVal = verbalizer.GetVerbalization(
 						writer,
 						snippetsDictionary,
+						new VerbalizationContextImpl(
 						delegate(VerbalizationContent content)
 						{
 							// Prepare for verbalization on this element. Everything
@@ -414,6 +448,7 @@ namespace Neumont.Tools.ORM.Shell
 								} while (lastLevel != indentationLevel);
 							}
 						},
+						null),
 						isNegative);
 					if (retVal)
 					{
@@ -501,7 +536,7 @@ namespace Neumont.Tools.ORM.Shell
 					IVerbalizeCustomChildren customChildren = parentVerbalize as IVerbalizeCustomChildren;
 					if (customChildren != null)
 					{
-						foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(isNegative))
+						foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(filter, isNegative))
 						{
 							IVerbalize childVerbalize = customChild.Instance;
 							if (childVerbalize != null)

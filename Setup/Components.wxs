@@ -24,7 +24,7 @@
 						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 			</Directory>
-			
+
 			<Directory Id="$(var.ProgramFilesFolder)">
 				<Directory Id="$(var.DefaultCompanyDir)" Name="$(var.DefaultCompanyDir)">
 					<Directory Id="$(var.DefaultShortProductDir)" Name="$(var.DefaultShortProductDir)" LongName="$(var.DefaultProductDir)">
@@ -64,7 +64,7 @@
 									<Registry Type="string" Name="ProductVersion" Value="$(var.ProductVersion)"/>
 								</Registry>
 							</Component>
-							
+
 							<Component Id="NORMAVSPackageRemoveUserFontAndColorsComponent" Guid="EC20B922-0564-4988-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<Registry Root="HKCU" Key="$(var.VSRegRoot)">
 									<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
@@ -187,9 +187,9 @@
 										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.CustomProperties.dll]"/>
 									</Registry>
 								</Component>
-								
+
 							</Directory>
-							
+
 						</Directory>
 
 						<Directory Id="Help" Name="Help">
@@ -240,7 +240,7 @@
 								<Component Id="NORMAVSVerbalizationComponent"  Guid="C39EDC6D-03BA-4519-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="VerbalizationUntypedSnippets.xsd" Name="VrbUnSnp.xsd" LongName="VerbalizationUntypedSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-										<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="VerbalizationDir" Value="[Verbalization]"/>
+									<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="VerbalizationDir" Value="[Verbalization]"/>
 								</Component>
 								<Directory Id="CoreVerbalization" Name="Core">
 									<Component Id="NORMAVSVerbalizationCoreComponent" Guid="45D2041A-3025-41E6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
@@ -262,6 +262,14 @@
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 									</Component>
 								</Directory>
+								<Directory Id="CustomPropertiesVerbalization"  Name="CustProp" LongName="CustomProperties">
+									<Component Id="NORMAVSCustomPropertiesVerbalizationComponent" Guid="513D5A05-8FAC-4614-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+										<File Id="CpVrbDef.xml" Name="_default.xml" src="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
+										<File Id="CustomPropertyVerbalizationSnippets.xsd" Name="CpVrbSnp.xsd" LongName="CustomPropertyVerbalizationSnippets.xsd" src="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xsd"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties.dll"/>
+									</Component>
+								</Directory>
 							</Directory>
 						</Directory>
 
@@ -270,11 +278,11 @@
 								DefaultLanguage="0" KeyPath="yes"/>
 							<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="SettingsPath" Value="[#ORMDesignerSettings.xml]"/>
 						</Component>
-						
+
 					</Directory>
 				</Directory>
 			</Directory>
-			
+
 			<Directory Id="$(var.CommonFilesFolder)">
 				<Directory Id="NEUMONTCOMMONFILESDIR" Name="Neumont">
 					<Directory Id="ORMCOMMONFILESDIR" Name="ORM">
@@ -305,7 +313,7 @@
 							</Component>
 						</Directory>
 						<Directory Id="ORMCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
-							
+
 							<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="CoRefORM.xslt" Name="CoRefORM.xsl" LongName="CoRefORM.xslt" src="..\XML\OIAL\CoRefORM.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
@@ -321,7 +329,7 @@
 									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
 								</Registry>
 							</Component>
-							
+
 							<Component Id="OIALTransformsComponent" Guid="165ED455-31BE-4E30-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="ORMtoOIAL.xslt" Name="ORM2OIAL.xsl" LongName="ORMtoOIAL.xslt" src="..\XML\OIAL\ORMtoOIAL.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
@@ -337,7 +345,7 @@
 									<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
 								</Registry>
 							</Component>
-							
+
 							<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIALtoCLIProperties.xslt" Name="OIL2CLIP.xsl" LongName="OIALtoCLIProperties.xslt" src="..\XML\OIALtoPLiX\OIALtoCLIProperties.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
@@ -359,7 +367,7 @@
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
 								<File Id="OIALtoPLiX_GlobalSupportParameters.xslt" Name="O2P_GSP.xsl" LongName="OIALtoPLiX_GlobalSupportParameters.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								
+
 								<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Name="O2P_GGSC.xsl" LongName="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXSupport">
@@ -515,7 +523,7 @@
 										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
 										<Registry Type="integer" Name="GeneratesSupportFile" Value="1"/>
 									</Registry>
-									
+
 									<File Id="PHP_PHPServices.xslt" Name="PHPServ.xsl" LongName="PHPServices.xslt" src="..\XML\OIALtoPLiX\PHP\PHPServices.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
 									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPServicesPLiX">
@@ -659,7 +667,7 @@
 
 						</Directory>
 					</Directory>
-					
+
 					<Directory Id="DILCOMMONFILESDIR" Name="DIL">
 						<Directory Id="DILCOMMONSCHEMASDIR" Name="Schemas">
 							<Component Id="DILSchemasComponent" Guid="BC36206D-B106-42E0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
@@ -864,7 +872,7 @@
 					</Directory>
 				</Directory>
 			</Directory>
-			
+
 			<Directory Id="VSPRODUCTDIR">
 				<Directory Id="VSXMLDIR" Name="Xml">
 					<Directory Id="VSXMLSCHEMASDIR" Name="Schemas">
@@ -884,7 +892,7 @@
 					</Directory>
 				</Directory>
 			</Directory>
-			
+
 		</Directory>
 	</Fragment>
 </Wix>

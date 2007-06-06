@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is a proxy for the original file in the ORMModel\ObjectModel directory.
+It is here so that the VerbalizatioSnippets\CustomPropertyVerbalizationSnippets.xsd file
+can resolves its reference to this schema file. This file should be updated when the original changes. -->
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<xs:simpleType name="ModalityEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="alethic"/>
+			<xs:enumeration value="deontic"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SignEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="positive"/>
+			<xs:enumeration value="negative"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SnippetTypeEnum">
+		<xs:restriction base="xs:token"/>
+	</xs:simpleType>
+	<xs:complexType name="LanguageType">
+		<xs:sequence>
+			<xs:element name="Snippets" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Snippet" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="type" type="SnippetTypeEnum" use="required"/>
+										<xs:attribute name="modality" type="ModalityEnum" use="optional"/>
+										<xs:attribute name="sign" type="SignEnum" use="optional"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="baseSnippetsLanguage" type="xs:language" default="en-US">
+						<xs:annotation>
+							<xs:documentation>Snippets are uniquely identified by language combined with snippetsId. The default (en-US) refers to the default set of snippets compiled into the tool.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="baseSnippetsName" default="_default">
+						<xs:annotation>
+							<xs:documentation>Snippets are uniquely identified by language combined with snippetsId. The default value (_default) refers to the default set of snippets compiled into the tool for the en-US language.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:pattern value="(_default)|([^_][\p{L}]+)"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="name" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:pattern value="(_default)|([^_][\p{L}]+)"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="description" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:minLength value="5"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="target" use="optional">
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="VerbalizationBrowser">
+									<xs:annotation>
+										<xs:documentation>Specifies the verbalization snippet set to be used with the ORM Verbalization Browser. This is the default value.</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+								<xs:enumeration value="Report">
+									<xs:annotation>
+										<xs:documentation>Specifies the verbalization snippet set to be used with the Verbalization Reports.</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+				<xs:key name="SnippetsNameKey">
+					<xs:selector xpath="ve:Snippets"/>
+					<xs:field xpath="@name"/>
+				</xs:key>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute ref="xml:lang" use="required"/>
+	</xs:complexType>
+	<xs:element name="Languages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="LanguageType" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="LanguageCodeKey">
+			<xs:selector xpath="ve:Language"/>
+			<xs:field xpath="@xml:lang"/>
+		</xs:key>
+	</xs:element>
+</xs:schema>
