@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.orm.net/OIAL/Datatypes/Core"
+	xmlns:odt="http://schemas.orm.net/OIAL/Datatypes/Core"
+	xmlns:oil="http://schemas.orm.net/OIAL/Core"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="0.9">
+
+	<xs:annotation>
+		<xs:appinfo>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:dcterms="http://purl.org/dc/terms/">
+				<rdf:Description rdf:about="http://schemas.orm.net/OIAL/Datatypes/Core">
+					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/OIAL"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/OIAL/Core"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/OIAL/Core"/>
+					<dc:title>ORM Intermediate Abstraction Language Datatypes</dc:title>
+					<dc:creator>Kevin M. Owen</dc:creator>
+					<dc:contributor>Corey Kaylor</dc:contributor>
+					<dc:contributor>Korvyn Dornseif</dc:contributor>
+					<dc:contributor>Jaron Briggs</dc:contributor>
+					<dc:contributor>Terry Halpin</dc:contributor>
+					<dc:contributor>Matthew Curland</dc:contributor>
+					<dc:contributor>David DeWinter</dc:contributor>
+					<dc:contributor>Brice Lambson</dc:contributor>
+					<dc:contributor>Sterling Bates</dc:contributor>
+					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
+					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
+					<dcterms:license>
+						This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+						Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+						1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+						2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+						3. This notice may not be removed or altered from any source distribution.
+					</dcterms:license>
+				</rdf:Description>
+			</rdf:RDF>
+		</xs:appinfo>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.orm.net/OIAL/Core"/>
+
+	<xs:simpleType name="clusivity">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="inclusive"/>
+			<xs:enumeration value="exclusive"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="bound">
+		<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="clusivity" use="required" type="odt:clusivity"/>
+	</xs:complexType>
+	<xs:complexType name="enumeration">
+		<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+	</xs:complexType>
+
+	<xs:simpleType name="regex">
+		<xs:annotation>
+			<xs:documentation>A regular expression conforming to the Perl-compatible regular expressions (PCRE) standard (with some exceptions).</xs:documentation>
+			<xs:documentation>Note: The anchoring behavior defined in the W3C Recommendation for XML Schema language is used for regular expressions in this schema.</xs:documentation>
+			<xs:documentation>That is, this schema implicitly anchors all regular expressions at the head and tail.</xs:documentation>
+			<xs:documentation>For additional information, including how to obtain standard PCRE behavior for anchoring, see http://www.w3.org/TR/xmlschema-2/#regexs.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+
+	<xs:complexType name="dataType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="oil:identified"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="dataType" type="odt:dataType" abstract="true"/>
+
+	
+	<xs:complexType name="boolean">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:attribute name="fixed" use="optional" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>If present, this attribute indicates that only the value specified in it is allowed.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="boolean" type="odt:boolean" substitutionGroup="odt:dataType"/>
+	
+	<xs:complexType name="decimalNumberBound">
+		<xs:complexContent>
+			<xs:restriction base="odt:bound">
+				<xs:attribute name="value" use="required" type="xs:decimal"/>
+				<xs:attribute name="clusivity" use="required" type="odt:clusivity"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="decimalNumber">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="range">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="lowerBound" minOccurs="0" type="odt:decimalNumberBound"/>
+								<xs:element name="upperBound" minOccurs="0" type="odt:decimalNumberBound"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="enumeration">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:restriction base="odt:enumeration">
+									<xs:attribute name="value" use="required" type="xs:decimal"/>
+								</xs:restriction>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:attribute name="totalDigits" use="optional" type="xs:positiveInteger">
+					<xs:annotation>
+						<xs:documentation>The maximum number of decimal digits allowed in the number (both before and after the decimal separator).</xs:documentation>
+						<xs:documentation>If not specified, the number is considered to not have a fixed upper bound, and can be arbitrarily large.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="fractionDigits" use="optional" type="xs:nonNegativeInteger">
+					<xs:annotation>
+						<xs:documentation>The maximum number of decimal digits allowed in the fractional part of the number (the part after the decimal separator).</xs:documentation>
+						<xs:documentation>If both fractionDigits and totalDigits are specified, the value specified for fractionDigits must be less than or equal to the value specified for totalDigits.</xs:documentation>
+						<xs:documentation>If fractionDigits is not specified and totalDigits is specified, fractionDigits is considered to have the same value as specified for totalDigits.</xs:documentation>
+						<xs:documentation>If 0 (zero) is specified for fractionDigits, the number must be an integer.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="decimalNumber" type="odt:decimalNumber" substitutionGroup="odt:dataType"/>
+	
+	<xs:complexType name="floatingPointNumberBound">
+		<xs:complexContent>
+			<xs:restriction base="odt:bound">
+				<xs:attribute name="value" use="required" type="xs:double"/>
+				<xs:attribute name="clusivity" use="required" type="odt:clusivity"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="floatingPointNumber">
+		<xs:annotation>
+			<xs:documentation>A floating point (AKA approximate) numeric data type.</xs:documentation>
+			<xs:documentation>For most implementations, this will map to a data type specified by the IEEE Standard for Binary Floating-Point Arithmetic (ANSI/IEEE Std 754-1985, hereafter IEEE 754).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="range">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="lowerBound" minOccurs="0" type="odt:floatingPointNumberBound"/>
+								<xs:element name="upperBound" minOccurs="0" type="odt:floatingPointNumberBound"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="enumeration">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:restriction base="odt:enumeration">
+									<xs:attribute name="value" use="required" type="xs:double"/>
+								</xs:restriction>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:attribute name="precision" use="required">
+					<xs:annotation>
+						<xs:documentation>The IEEE 754 precision of the number, or the minimum number of binary digits in the significand (AKA mantissa) of the number.</xs:documentation>
+						<xs:documentation>Instances of this data type with a numeric precision in these ranges (inclusive) will typically map as follows for targets that support IEEE 754:</xs:documentation>
+						<xs:documentation>Precisions 1 (one) to 11 (eleven) ⇒ IEEE 754 half precision</xs:documentation>
+						<xs:documentation>Precisions 12 (twelve) to 24 (twenty-four) ⇒ IEEE 754 single precision</xs:documentation>
+						<xs:documentation>Precisions 25 (twenty-five) to 53 (fifty-three) ⇒ IEEE 754 double precision</xs:documentation>
+						<xs:documentation>Precisions 54 (fifty-four) to 113 (one hundred thirteen) ⇒ IEEE 754 quad precision</xs:documentation>
+						<xs:documentation>Recommended mappings for precisions greater than 113 are not defined in the current revision of this schema.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:union memberTypes="xs:positiveInteger">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="half">
+										<xs:annotation>
+											<xs:documentation>IEEE 754 half precision.</xs:documentation>
+											<xs:documentation>For targets that do not support IEEE 754, this will typically map as 11 (eleven) binary digits in the significand.</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="single">
+										<xs:annotation>
+											<xs:documentation>IEEE 754 single precision.</xs:documentation>
+											<xs:documentation>For targets that do not support IEEE 754, this will typically map as 24 (twenty-four) binary digits in the significand.</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="double">
+										<xs:annotation>
+											<xs:documentation>IEEE 754 double precision.</xs:documentation>
+											<xs:documentation>For targets that do not support IEEE 754, this will typically map as 53 (fifty-three) binary digits in the significand.</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="quad">
+										<xs:annotation>
+											<xs:documentation>IEEE 754 quad precision.</xs:documentation>
+											<xs:documentation>For targets that do not support IEEE 754, this will typically map as 113 (one hundred thirteen) binary digits in the significand.</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:union>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="floatingPointNumber" type="odt:floatingPointNumber" substitutionGroup="odt:dataType"/>
+	
+	<xs:complexType name="string">
+		<xs:annotation>
+			<xs:documentation>A sequence of Unicode code points.</xs:documentation>
+			<xs:documentation>All restrictions and operations on strings assume that they are in Normalization Form C (NFC) as specified in Unicode Standard Annex #15 Unicode Normalization Forms.</xs:documentation>
+			<xs:documentation>'Abstract character' is used as defined in the Unicode Standard to refer to "a unit of information used for the organization, control, or representation of textual data."</xs:documentation>
+			<xs:documentation>'Code point' is used as defined in the Unicode Standard to refer to "any value in the Unicode codespace; that is, the range of integers from 0 to 10FFFF₁₆ "(in hexadecimal notation, 0x00 to 0x10FFFF).</xs:documentation>
+			<xs:documentation>Because information represented by this schema is always stored as UCS (Universal Character Set, ISO/IEC 10646), the convention used by the SQL Standard for 'abstract character' can be used. That is, an abstract character "can be thought of as that which is represented by one code point."</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Any patterns and enumerations to be matched are ORed together. In other words, satisfying at least one causes a value to be considered valid.</xs:documentation>
+					</xs:annotation>
+					<xs:element name="pattern">
+						<xs:complexType>
+							<xs:attribute name="value" use="required" type="odt:regex">
+								<xs:annotation>
+									<xs:documentation>A regular expression that values conforming to this data type must match.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="enumeration">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:restriction base="odt:enumeration">
+									<xs:attribute name="value" use="required" type="xs:string"/>
+								</xs:restriction>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:attribute name="minLength" use="optional" type="xs:positiveInteger">
+					<xs:annotation>
+						<xs:documentation>The minimum number of code points (abstract characters) required in the string.</xs:documentation>
+						<xs:documentation>If not specified, minLength is considered to be 0 (zero).</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="maxLength" use="optional" type="xs:positiveInteger">
+					<xs:annotation>
+						<xs:documentation>The maximum number of code points (abstract characters) allowed in the string.</xs:documentation>
+						<xs:documentation>If not specified, the string is considered to not have a fixed maximum length, and can be arbitrarily large.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="string" type="odt:string" substitutionGroup="odt:dataType"/>
+	
+	<xs:complexType name="binary">
+		<xs:annotation>
+			<xs:documentation>A sequence of bytes (octets, 8-bit sequences).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:attribute name="minLength" use="optional" type="xs:positiveInteger">
+					<xs:annotation>
+						<xs:documentation>The minimum number of bytes required in the binary sequence.</xs:documentation>
+						<xs:documentation>If not specified, minLength is considered to be 0 (zero).</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="maxLength" use="optional" type="xs:positiveInteger">
+					<xs:annotation>
+						<xs:documentation>The maximum number of bytes allowed in the binary sequence.</xs:documentation>
+						<xs:documentation>If not specified, the binary sequence is considered to not have a fixed maximum length, and can be arbitrarily large.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="binary" type="odt:binary" substitutionGroup="odt:dataType"/>
+
+</xs:schema>

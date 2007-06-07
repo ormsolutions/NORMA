@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.orm.net/OIAL/Core"
+	xmlns:oil="http://schemas.orm.net/OIAL/Core"
+	xmlns:odt="http://schemas.orm.net/OIAL/Datatypes/Core"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="1.0">
+
+	<xs:annotation>
+		<xs:appinfo>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:dcterms="http://purl.org/dc/terms/">
+				<rdf:Description rdf:about="http://schemas.orm.net/OIAL/Core">
+					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/OIAL"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/OIAL/Datatypes/Core"/>
+					<dcterms:requires rdf:resource="http://schemas.orm.net/OIAL/Datatypes/Core"/>
+					<dc:title>ORM Intermediate Abstraction Language</dc:title>
+					<dc:creator>Kevin M. Owen</dc:creator>
+					<dc:contributor>Corey Kaylor</dc:contributor>
+					<dc:contributor>Korvyn Dornseif</dc:contributor>
+					<dc:contributor>Jaron Briggs</dc:contributor>
+					<dc:contributor>Terry Halpin</dc:contributor>
+					<dc:contributor>Matthew Curland</dc:contributor>
+					<dc:contributor>David DeWinter</dc:contributor>
+					<dc:contributor>Brice Lambson</dc:contributor>
+					<dc:contributor>Sterling Bates</dc:contributor>
+					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
+					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
+					<dcterms:license>
+						This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+						Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+						1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+						2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+						3. This notice may not be removed or altered from any source distribution.
+					</dcterms:license>
+				</rdf:Description>
+			</rdf:RDF>
+		</xs:appinfo>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+	<xs:import namespace="http://schemas.orm.net/OIAL/Datatypes/Core"/>
+
+	<xs:simpleType name="trueOnlyBoolean">
+		<xs:annotation>
+			<xs:documentation>Only true is allowed for this simple type.</xs:documentation>
+			<xs:documentation>That is, this simple type can only contain the set of literals {true, 1}, and cannot contain the set of literals {false, 0}.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:boolean">
+			<xs:pattern value="true|1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="name">
+		<xs:restriction base="xs:token"/>
+	 </xs:simpleType>
+
+	<xs:element name="model">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="oil:identified">
+					<xs:sequence>
+						<xs:element name="informationTypeFormats">
+							<xs:annotation>
+								<xs:documentation>Information type formats are essentially analogous to the terms 'data type' (as used in XML and OOP) and 'DOMAIN' (as used in SQL).</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="odt:dataType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="oil:conceptType"/>
+							<!-- KL stuff might go here. -->
+						</xs:choice>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:unique name="anyXmlIdUnique">
+			<xs:selector xpath=".//*"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:unique>
+		<xs:key name="modelIdKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+		<xs:key name="modelNameKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="informationTypeFormatIdKey">
+			<xs:selector xpath="oil:informationTypeFormats/*"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+		<xs:key name="informationTypeFormatNameKey">
+			<xs:selector xpath="oil:informationTypeFormats/*"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="conceptTypeIdKey">
+			<xs:selector xpath="oil:conceptType"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+		<xs:key name="conceptTypeNameKey">
+			<xs:selector xpath="oil:conceptType"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="modelConceptTypeChildIdKey">
+			<xs:selector xpath="oil:conceptType/oil:informationType | oil:conceptType/oil:relatedConceptType | oil:conceptType/oil:assimilatedConceptType"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="conceptType">
+		<xs:annotation>
+			<xs:documentation>A concept type represents an abstract or physical concept (e.g. a person, a name, an idea).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="oil:identified">
+					<xs:sequence>
+						<xs:element name="association" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>If present, indicates that the containing concept type resulted from an association.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="oil:openAttributes">
+										<xs:sequence>
+											<xs:element name="associationChild" minOccurs="1" maxOccurs="unbounded" type="oil:conceptTypeChildRef">
+												<xs:annotation>
+													<xs:documentation>Indicates one of the concept type children that was part of the association that resulted in the creation of the containing concept type.</xs:documentation>
+													<xs:documentation>If the concept type child referred to is contained within another concept type, it must be a related concept type or an assimilated concept type (not an information type).</xs:documentation>
+												</xs:annotation>
+												<xs:keyref name="associationChildRefTargetKeyRef" refer="oil:modelConceptTypeChildIdKey">
+													<xs:selector xpath="."/>
+													<xs:field xpath="@ref"/>
+												</xs:keyref>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="informationType" type="oil:informationType">
+								<xs:keyref name="informationTypeFormatRef" refer="oil:informationTypeFormatIdKey">
+									<xs:selector xpath="."/>
+									<xs:field xpath="@formatRef"/>
+								</xs:keyref>
+							</xs:element>
+							<xs:element name="relatedConceptType" type="oil:conceptTypeRef">
+								<xs:keyref name="relatedConceptTypeRef" refer="oil:conceptTypeIdKey">
+									<xs:selector xpath="."/>
+									<xs:field xpath="@ref"/>
+								</xs:keyref>
+							</xs:element>
+							<xs:element name="assimilatedConceptType">
+								<xs:annotation>
+									<xs:documentation>It is alethicly mandatory that all instances of the concept type to which this assimilated concept type refers participate in this relationship.</xs:documentation>
+									<xs:documentation>Also, all instances of the concept type to which this assimilated concept type refers uniquely identify an instance of the containing concept type.</xs:documentation>
+									<xs:documentation>(In other words, the "far role" of this relationship is alethicly mandatory and alethicly unique.)</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="oil:conceptTypeRef">
+											<xs:attribute name="refersToSubtype" use="optional" type="oil:trueOnlyBoolean">
+												<xs:annotation>
+													<xs:documentation>If present, indicates that this concept type assimilation represents a subtyping relationship.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="isPreferredForTarget" use="optional" type="oil:trueOnlyBoolean">
+												<xs:annotation>
+													<xs:documentation>If present, indicates that the implied alethic uniqueness constraint on this concept type assimilation represents the preferred identifier for the concept type being assimilated.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="isPreferredForParent" use="optional" type="oil:trueOnlyBoolean">
+												<xs:annotation>
+													<xs:documentation>If present, indicates that the implied alethic uniqueness constraint on this concept type assimilation represents the preferred identifier for the containing concept type.</xs:documentation>
+													<xs:documentation>This attribute must not be present if refersToSubtype is present. A subtype cannot be the preferred identifier of its supertype.</xs:documentation>
+													<xs:documentation>This attribute must not be present if isPreferredForTarget is present. A single binary relationship cannot provide the preferred identifier for both parties in that relationship.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+								<xs:keyref name="assimilatedConceptTypeRef" refer="oil:conceptTypeIdKey">
+									<xs:selector xpath="."/>
+									<xs:field xpath="@ref"/>
+								</xs:keyref>
+							</xs:element>
+							<xs:element name="uniqueness">
+								<xs:annotation>
+									<xs:documentation>Indicates a unique combination of one or more of the children of the containing concept type.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="oil:identified">
+											<xs:sequence>
+												<xs:element name="uniquenessChild" minOccurs="1" maxOccurs="unbounded" type="oil:conceptTypeChildRef">
+													<xs:keyref name="uniquenessChildRef" refer="oil:informationTypeAndRelatedConceptTypeIdKey">
+														<xs:annotation>
+															<xs:documentation>Since concept type assimilations always uniquely identify the containing concept type, they can not be included in a uniqueness (since it would be implied).</xs:documentation>
+															<xs:documentation>Implementation Note: Depending on what we choose to do in the future with implied / derived uniqueness constraints, this restriction may need to be relaxed.</xs:documentation>
+														</xs:annotation>
+														<xs:selector xpath="."/>
+														<xs:field xpath="@ref"/>
+													</xs:keyref>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="isPreferred" use="optional" type="oil:trueOnlyBoolean">
+												<xs:annotation>
+													<xs:documentation>If present, indicates that this uniqueness represents the preferred identifier for the containing concept type.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+							<!-- KL stuff might go here. -->
+						</xs:choice>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:key name="conceptTypeChildIdKey">
+			<xs:selector xpath="oil:informationType | oil:relatedConceptType | oil:assimilatedConceptType"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+		<xs:key name="conceptTypeChildNameKey">
+			<xs:selector xpath="oil:informationType | oil:relatedConceptType | oil:assimilatedConceptType"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="assimilatedConceptTypeRefKey">
+			<xs:annotation>
+				<xs:documentation>We can only assimilate a given concept type at most once.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="oil:assimilatedConceptType"/>
+			<xs:field xpath="@ref"/>
+		</xs:key>
+		<xs:unique name="assimilatedConceptTypeIsPreferredForParentUnique">
+			<xs:annotation>
+				<xs:documentation>We can only have at most one preferred concept type assimilation.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="oil:assimilatedConceptType"/>
+			<xs:field xpath="@isPreferredForParent"/>
+		</xs:unique>
+		<xs:key name="informationTypeAndRelatedConceptTypeIdKey">
+			<xs:selector xpath="oil:informationType | oil:relatedConceptType"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+		<xs:key name="informationTypeAndRelatedConceptTypeNameKey">
+			<xs:selector xpath="oil:informationType | oil:relatedConceptType"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="uniquenessIdKey">
+			<xs:selector xpath="oil:uniqueness"/>
+			<xs:field xpath="@xml:id"/>
+		</xs:key>
+		<xs:key name="uniquenessNameKey">
+			<xs:selector xpath="oil:uniqueness"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:unique name="uniquenessIsPreferredUnique">
+			<xs:annotation>
+				<xs:documentation>We can only have at most one preferred uniqueness.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="oil:uniqueness"/>
+			<xs:field xpath="@isPreferred"/>
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="openAttributes" abstract="true">
+		<xs:anyAttribute processContents="lax" namespace="##other"/>
+	</xs:complexType>
+
+	<xs:complexType name="identified" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="oil:openAttributes">
+				<xs:attribute ref="xml:id" use="required"/>
+				<xs:attribute name="name" use="required" type="oil:name"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="conceptTypeChild" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="oil:identified">
+				<xs:attribute name="isMandatory" use="optional" type="oil:trueOnlyBoolean">
+					<xs:annotation>
+						<xs:documentation>If present, indicates that this concept type child is alethicly mandatory.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="conceptTypeRef">
+		<xs:complexContent>
+			<xs:extension base="oil:conceptTypeChild">
+				<xs:attribute name="ref" use="required" type="xs:IDREF">
+					<xs:annotation>
+						<xs:documentation>The xml:id of the concept type being referred to.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="oppositeName" use="required" type="oil:name">
+					<xs:annotation>
+						<xs:documentation>The name used to refer to this relationship by the concept type being referred to.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="informationType">
+		<xs:complexContent>
+			<xs:extension base="oil:conceptTypeChild">
+				<xs:attribute name="formatRef" use="required" type="xs:IDREF">
+					<xs:annotation>
+						<xs:documentation>The xml:id of the information type format used by this information type.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="conceptTypeChildRef">
+		<xs:complexContent>
+			<xs:extension base="oil:openAttributes">
+				<xs:attribute name="ref" use="required" type="xs:IDREF">
+					<xs:annotation>
+						<xs:documentation>The xml:id of the concept type child being referred to.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

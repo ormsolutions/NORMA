@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<oil:model xmlns:oil="http://schemas.orm.net/OIAL/Core" xmlns:odt="http://schemas.orm.net/OIAL/Datatypes/Core" xml:id="OIALMetaModel" name="OIALMetaModel">
+
+	<oil:informationTypeFormats>
+		<odt:string xml:id="OIALName" name="OIALName"/>
+		<odt:string xml:id="NCName" name="NCName">
+			<odt:pattern value="[\i-[:]][\c-[:]]*"/>
+		</odt:string>
+		<odt:string xml:id="ConceptTypeChildKindName" name="ConceptTypeChildKindName">
+			<odt:enumeration value="informationType"/>
+			<odt:enumeration value="relation"/>
+			<odt:enumeration value="assimilation"/>
+		</odt:string>
+		<odt:boolean xml:id="Boolean" name="Boolean"/>
+	</oil:informationTypeFormats>
+	
+	<oil:conceptType xml:id="OIALModel" name="OIALModel">
+		<oil:informationType xml:id="OIALModel.id" name="id" formatRef="NCName" isMandatory="true"/>
+		<oil:uniqueness xml:id="OIALModel.id.uniqueness" name="id.uniqueness" isPreferred="true">
+			<oil:uniquenessChild ref="OIALModel.id"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="OIALModel.name" name="name" formatRef="OIALName" isMandatory="true"/>
+		<oil:uniqueness xml:id="OIALModel.name.uniqueness" name="name.uniqueness">
+			<oil:uniquenessChild ref="OIALModel.name"/>
+		</oil:uniqueness>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="InformationTypeFormat" name="InformationTypeFormat">
+		<oil:informationType xml:id="InformationTypeFormat.id" name="id" formatRef="NCName" isMandatory="true"/>
+		<oil:uniqueness xml:id="InformationTypeFormat.id.uniqueness" name="id.uniqueness" isPreferred="true">
+			<oil:uniquenessChild ref="InformationTypeFormat.id"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="InformationTypeFormat.name" name="name" formatRef="OIALName" isMandatory="true"/>
+		<oil:relatedConceptType xml:id="InformationTypeFormat.model" name="model" oppositeName="informationTypeFormat" ref="OIALModel" isMandatory="true"/>
+		<oil:uniqueness xml:id="InformationTypeFormat.nameModel.uniqueness" name="nameModel.uniqueness">
+			<oil:uniquenessChild ref="InformationTypeFormat.name"/>
+			<oil:uniquenessChild ref="InformationTypeFormat.model"/>
+		</oil:uniqueness>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="ConceptType" name="ConceptType">
+		<oil:informationType xml:id="ConceptType.id" name="id" formatRef="NCName" isMandatory="true"/>
+		<oil:uniqueness xml:id="ConceptType.id.uniqueness" name="id.uniqueness" isPreferred="true">
+			<oil:uniquenessChild ref="ConceptType.id"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="ConceptType.name" name="name" formatRef="OIALName" isMandatory="true"/>
+		<oil:relatedConceptType xml:id="ConceptType.model" name="model" oppositeName="conceptType" ref="OIALModel" isMandatory="true"/>
+		<oil:uniqueness xml:id="ConceptType.nameModel.uniqueness" name="nameModel.uniqueness">
+			<oil:uniquenessChild ref="ConceptType.name"/>
+			<oil:uniquenessChild ref="ConceptType.model"/>
+		</oil:uniqueness>
+	 </oil:conceptType>
+
+	<oil:conceptType xml:id="ConceptTypeChild" name="ConceptTypeChild">
+		<oil:informationType xml:id="ConceptTypeChild.id" name="id" formatRef="NCName" isMandatory="true"/>
+		<oil:uniqueness xml:id="ConceptTypeChild.id.uniqueness" name="id.uniqueness" isPreferred="true">
+			<oil:uniquenessChild ref="ConceptTypeChild.id"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="ConceptTypeChild.name" name="name" formatRef="OIALName" isMandatory="true"/>
+		<oil:relatedConceptType xml:id="ConceptTypeChild.parentConceptType" name="parentConceptType" oppositeName="conceptTypeChild" ref="ConceptType" isMandatory="true"/>
+		<oil:uniqueness xml:id="ConceptTypeChild.nameParent.uniqueness" name="nameParent.uniqueness">
+			<oil:uniquenessChild ref="ConceptTypeChild.name"/>
+			<oil:uniquenessChild ref="ConceptTypeChild.parentConceptType"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="ConceptTypeChild.kind" name="kind" formatRef="ConceptTypeChildKindName" isMandatory="true"/>
+		<oil:informationType xml:id="ConceptTypeChild.isMandatory" name="isMandatory" formatRef="Boolean" isMandatory="true"/>
+
+		<oil:relatedConceptType xml:id="ConceptTypeChild.associationConceptType" name="associationConceptType" oppositeName="associationChild" ref="ConceptType"/>
+
+		<oil:assimilatedConceptType xml:id="ConceptTypeChild.InformationType" name="InformationType" oppositeName="ConceptTypeChild" ref="InformationType" refersToSubtype="true" isPreferredForTarget="true"/>
+		<oil:assimilatedConceptType xml:id="ConceptTypeChild.ConceptTypeReference" name="ConceptTypeReference" oppositeName="ConceptTypeChild" ref="ConceptTypeReference" refersToSubtype="true" isPreferredForTarget="true"/>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="InformationType" name="InformationType">
+		<oil:relatedConceptType xml:id="InformationType.format" name="format" oppositeName="informationType" ref="InformationTypeFormat" isMandatory="true"/>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="ConceptTypeReference" name="ConceptTypeReference">
+		<oil:informationType xml:id="ConceptTypeReference.oppositeName" name="oppositeName" formatRef="OIALName" isMandatory="true"/>
+		<oil:relatedConceptType xml:id="ConceptTypeReference.referencedConceptType" name="referencedConceptType" oppositeName="conceptTypeReference" ref="ConceptType" isMandatory="true"/>
+		<oil:uniqueness xml:id="ConceptTypeReference.oppositeNameReferencedConceptType.uniqueness" name="oppositeNameReferencedConceptType.uniqueness">
+			<oil:uniquenessChild ref="ConceptTypeReference.oppositeName"/>
+			<oil:uniquenessChild ref="ConceptTypeReference.referencedConceptType"/>
+		</oil:uniqueness>
+
+		<oil:assimilatedConceptType xml:id="ConceptTypeReference.ConceptTypeRelation" name="ConceptTypeRelation" oppositeName="ConceptTypeReference" ref="ConceptTypeRelation" refersToSubtype="true" isPreferredForTarget="true"/>
+		<oil:assimilatedConceptType xml:id="ConceptTypeReference.ConceptTypeAssimilation" name="ConceptTypeAssimilation" oppositeName="ConceptTypeReference" ref="ConceptTypeAssimilation" refersToSubtype="true" isPreferredForTarget="true"/>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="ConceptTypeRelation" name="ConceptTypeRelation"/>
+
+	<oil:conceptType xml:id="ConceptTypeAssimilation" name="ConceptTypeAssimilation">
+		<oil:informationType xml:id="ConceptTypeAssimilation.refersToSubtype" name="refersToSubtype" formatRef="Boolean" isMandatory="true"/>
+		<oil:informationType xml:id="ConceptTypeAssimilation.isPreferredForTarget" name="isPreferredForTarget" formatRef="Boolean" isMandatory="true"/>
+		<oil:informationType xml:id="ConceptTypeAssimilation.isPreferredForParent" name="isPreferredForParent" formatRef="Boolean" isMandatory="true"/>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="InformationTypeOrConceptTypeRelation" name="InformationTypeOrConceptTypeRelation"/>
+
+	<oil:conceptType xml:id="Uniqueness" name="Uniqueness">
+		<oil:informationType xml:id="Uniqueness.id" name="id" formatRef="NCName" isMandatory="true"/>
+		<oil:uniqueness xml:id="Uniqueness.id.uniqueness" name="id.uniqueness" isPreferred="true">
+			<oil:uniquenessChild ref="Uniqueness.id"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="Uniqueness.name" name="name" formatRef="OIALName" isMandatory="true"/>
+		<oil:relatedConceptType xml:id="Uniqueness.identifiedConceptType" name="identifiedConceptType" oppositeName="uniqueness" ref="ConceptType" isMandatory="true"/>
+		<oil:uniqueness xml:id="Uniqueness.nameIdentifiedConceptType.uniqueness" name="nameIdentifiedConceptType.uniqueness">
+			<oil:uniquenessChild ref="Uniqueness.name"/>
+			<oil:uniquenessChild ref="Uniqueness.identifiedConceptType"/>
+		</oil:uniqueness>
+
+		<oil:informationType xml:id="Uniqueness.isPreferred" name="isPreferred" formatRef="Boolean" isMandatory="true"/>
+	</oil:conceptType>
+
+	<oil:conceptType xml:id="UniquenessChild" name="UniquenessChild">
+		<oil:association>
+			<oil:associationChild ref="UniquenessChild.uniqueness"/>
+			<oil:associationChild ref="UniquenessChild.child"/>
+		</oil:association>
+		<oil:relatedConceptType xml:id="UniquenessChild.uniqueness" name="uniqueness" oppositeName="uniquenessChild" ref="Uniqueness" isMandatory="true"/>
+		<oil:relatedConceptType xml:id="UniquenessChild.child" name="child" oppositeName="uniquenessChild" ref="InformationTypeOrConceptTypeRelation" isMandatory="true"/>
+		<oil:uniqueness xml:id="UniquenessChild.uniquenessChild.uniqueness" name="uniquenessChild.uniqueness" isPreferred="true">
+			<oil:uniquenessChild ref="UniquenessChild.uniqueness"/>
+			<oil:uniquenessChild ref="UniquenessChild.child"/>
+		</oil:uniqueness>
+	</oil:conceptType>
+
+</oil:model>

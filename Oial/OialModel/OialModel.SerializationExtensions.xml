@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<se:CustomSerializedElements
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<se:Copyright name="Common Public License Copyright Notice">
+		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
+		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
+		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
+		<se:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</se:CopyrightLine>
+		<se:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</se:CopyrightLine>
+		<se:CopyrightLine>* the terms of this license.                                               *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
+		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
+	</se:Copyright>
+	<se:DomainModel Class="OialDomainModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="oil" URI="http://schemas.orm.net/OIAL/Core" SchemaFile="OIAL.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="odt" URI="http://schemas.orm.net/OIAL/Datatypes/Core" SchemaFile="OIALDatatypes.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="OialModel" Name="model"/>
+		</se:RootElements>
+	</se:DomainModel>
+	<!-- OialModel -->
+	<se:Element Class="OialModel" Name="model" SortChildElements="false" Override="false" Sealed="true">
+		<se:Attribute ID="Name" Name="name"/>
+		<se:Container Name="informationTypeFormats">
+			<se:Embed RelationshipName="OialModelHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
+		</se:Container>
+		<se:Link Name="conceptType" RelationshipName="OialModelHasConceptType" RoleName="ConceptType"/>
+	</se:Element>
+	<!-- InformationTypeFormats -->
+	<se:Element Class="InformationTypeFormat" Prefix="odt" Override="false">
+		<se:Attribute Name="name" ID="Name"/>
+		<se:Link Name="ConceptType" RelationshipName="InformationType" RoleName="ConceptType" WriteStyle="NotWritten"/>
+		<se:Link Name="Parent" RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
+	</se:Element>
+	<!-- Uniqueness elements -->
+	<se:Element Class="Uniqueness" Name="uniqueness" SortChildElements="false" Override="false" Sealed="true">
+		<!-- We write the value of the Preferred property only if it is true -->
+		<se:Attribute ID="IsPreferred" Name="isPreferred">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPreferred" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute Name="name" ID="Name" WriteStyle="Attribute"/>
+		<se:Link Name="uniquenessChild" RelationshipName="UniquenessIncludesConceptTypeChild" RoleName="ConceptTypeChild" />
+	</se:Element>
+	<!-- Concept Types -->
+	<se:Element Class="ConceptType" Name="conceptType" SortChildElements="false" Override="false" Sealed="true">
+		<se:Attribute Name="name" ID="Name" WriteStyle="Attribute"/>
+		<se:Link Name="informationType" RelationshipName="InformationType" RoleName="InformationTypeFormat" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="uniqueness" RelationshipName="ConceptTypeHasUniqueness" RoleName="Uniqueness" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="relatedConceptType" RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatedConceptType" WriteStyle="PrimaryLinkElement" />
+		<se:Link Name="assimilatedConceptType" RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatedConceptType" WriteStyle="PrimaryLinkElement" />
+		<se:Link Name="associationChild" RelationshipName="ConceptTypeHasChildAsPartOfAssociation" RoleName="Target"/>
+		<se:Container Name="association">
+			<se:Embed RoleName="Target" RelationshipName="ConceptTypeHasChildAsPartOfAssociation"/>
+		</se:Container>
+
+		<se:Link RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeChild" RoleName="Target" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatingConceptType" WriteStyle="NotWritten" />
+		<se:Link RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatorConceptType" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeReferencesConceptType" RoleName="ReferencedConceptType" WriteStyle="NotWritten" />
+		<se:Link RelationshipName="ConceptTypeReferencesConceptType" RoleName="ReferencingConceptType" WriteStyle="NotWritten" />
+	</se:Element>
+	<se:Element Class="ConceptTypeChild" SortChildElements="false" Override="false" LinkOnly="true">
+		<!-- We write the value of the Mandatory property if and only if it is not "NotMandatory" -->
+		<se:Attribute ID="IsMandatory" Name="isMandatory">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsMandatory" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute Name="name" ID="Name"/>
+		<se:Link RelationshipName="UniquenessIncludesConceptTypeChild" RoleName="Uniqueness" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeHasChildAsPartOfAssociation" RoleName="Parent" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="InformationType" Name="informationType" SortChildElements="false" Override="true" LinkOnly="true" Sealed="true"/>
+	<se:Element Class="ConceptTypeReferencesConceptType" SortChildElements="false" Override="true" LinkOnly="true">
+		<se:Attribute Name="oppositeName" ID="OppositeName"/>
+	</se:Element>
+	<se:Element Class="ConceptTypeRelatesToConceptType" Name="relatedConceptType" SortChildElements="false" Override="true" LinkOnly="true" Sealed="true"/>
+	<!-- Assimilated concept types -->
+	<se:Element Class="ConceptTypeAssimilatesConceptType" Name="assimiliatedConceptType" SortChildElements="false" Override="true" LinkOnly="true" Sealed="true">
+		<se:Attribute Name="refersToSubtype" ID="RefersToSubtype">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="RefersToSubtype" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute Name="isPreferredForTarget" ID="IsPreferredForTarget">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPreferredForTarget" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute Name="isPreferredForParent" ID="IsPreferredForParent">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPreferredForParent" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
+	<!-- Associated concept types -->
+	<se:Element Class="ConceptTypeHasChildAsPartOfAssociation" Override="false" Sealed="true"/>
+	<se:Element Class="ConceptTypeHasUniqueness" Override="false" Sealed="true"/>
+	<se:Element Class="UniquenessIncludesConceptTypeChild" Override="false" Sealed="true"/>
+	<se:Element Class="OialModelHasConceptType" Override="false" Sealed="true"/>
+	<se:Element Class="OialModelHasInformationTypeFormat" Override="false" Sealed="true"/>
+</se:CustomSerializedElements>

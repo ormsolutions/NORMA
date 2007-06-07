@@ -406,7 +406,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ObjectType unattachedRolePlayer;
 				WalkDescendedValueRoles(
-					(unattachedRole != null) ? new Role[]{unattachedRole} as IList<Role> : anchorType.PlayedRoleCollection,
+					(unattachedRole != null) ? new Role[] { unattachedRole } as IList<Role> : anchorType.PlayedRoleCollection,
 					dataTypeLink,
 					anchorType.ValueConstraint,
 					null,
@@ -1316,6 +1316,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				return retVal;
+			}
+		}
+		/// <summary>
+		/// Used as a shortcut to find the the binarized version of the FactType that this
+		/// role belongs to.
+		/// </summary>
+		public FactType BinarizedFactType
+		{
+			get
+			{
+				RoleProxy proxy;
+				Role role = this as Role;
+				if (role != null)
+				{
+					proxy = role.Proxy;
+					if (proxy != null)
+					{
+						return proxy.FactType;
+					}
+					return role.FactType;
+				}
+				else
+				{
+					proxy = this as RoleProxy;
+					Debug.Assert(proxy != null);
+					return proxy.FactType;
+				}
 			}
 		}
 		/// <summary>

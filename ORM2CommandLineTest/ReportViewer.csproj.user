@@ -1,17 +1,17 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\ORMTestReportViewer.exe</StartProgram>
+    <StartProgram>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\ORMTestReportViewer.exe</StartProgram>
     <StartArguments>TestSuites\SampleSuites.xml</StartArguments>
     <StartWorkingDirectory>$(SolutionDir)</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\ORMTestReportViewer.exe</StartProgram>
+    <StartProgram>$(ProgramFiles)\Neumont\ORM Architect for Visual Studio\bin\ORMTestReportViewer.exe</StartProgram>
     <StartArguments>TestSuites\SampleSuites.xml</StartArguments>
     <StartWorkingDirectory>$(SolutionDir)</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
 </Project>
