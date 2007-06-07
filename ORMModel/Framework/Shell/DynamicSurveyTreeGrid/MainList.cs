@@ -67,6 +67,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			private ListGrouper myRootGrouper;
 			private SurveyTree mySurveyTree;
 			private object myContextElement;
+			private int[] myOverlayIndices;
 			/// <summary>
 			/// Public constructor
 			/// </summary>
@@ -310,28 +311,84 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				int nodeData = myNodes[row].NodeData;
 				int questionCount = mySurvey.Count;
 				int image = -1;
+
+				int overlayImage = -1;
+				int overlayBitField = -1;
 				for (int i = 0; i < questionCount; i++)
 				{
 					SurveyQuestion question = mySurvey[i];
 					if (0 != (question.Question.UISupport & SurveyQuestionUISupport.Glyph))
 					{
 						int answer;
-						if (SurveyQuestion.NeutralAnswer != (answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData)) &&
+						if (image == -1 &&
+							SurveyQuestion.NeutralAnswer != (answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData)) &&
 							0 <= (image = question.Question.MapAnswerToImageIndex(answer)))
 						{
 							image += question.ProviderImageListOffset;
-							break;
 						}
 					}
-
+					else if (0 != (question.Question.UISupport & SurveyQuestionUISupport.Overlay))
+					{
+						int answer;
+						if (SurveyQuestion.NeutralAnswer != (answer = myCurrentDisplays[i].Question.ExtractAnswer(nodeData)) &&
+							0 <= (answer = question.Question.MapAnswerToImageIndex(answer)))
+						{
+							if (overlayImage == -1)
+							{
+								overlayImage = answer;
+							}
+							else
+							{
+								if (overlayBitField == -1)
+								{
+									overlayBitField = 0;
+									AddToOverlayList(overlayImage, ref overlayBitField);
+								}
+								AddToOverlayList(answer, ref overlayBitField);
+							}
+						}
+					}
 				}
+
 				if (0 <= image)
 				{
 					retVal.ImageList = mySurvey.MainImageList;
 					retVal.SelectedImage = retVal.Image = (short)image;
 				}
-				retVal.OverlayIndex = -1; //TODO: ask Matt about overlays.
+
+				if (overlayBitField == -1)
+				{
+					retVal.OverlayIndex = (short)overlayImage;
+				}
+				else
+				{
+					retVal.OverlayIndices = myOverlayIndices;
+					retVal.OverlayIndex = (short)overlayBitField;
+				}
+
 				return retVal;
+			}
+			private void AddToOverlayList(int answer, ref int overlayBitField)
+			{
+				int[] overlayIndices = myOverlayIndices;
+				if (overlayIndices == null)
+				{
+					myOverlayIndices = overlayIndices = new int[8];
+				}
+
+				int curBit = 1;
+				for (int i = 0; i < 8; ++i)
+				{
+					if ((overlayBitField & curBit) == 0)
+					{
+						overlayIndices[i] = answer;
+						break;
+					}
+
+					curBit <<= 1;
+				}
+
+				overlayBitField |= curBit;
 			}
 			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
@@ -735,4 +792,3 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		}
 	}
 }
-

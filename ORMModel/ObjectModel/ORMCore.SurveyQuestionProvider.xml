@@ -5,8 +5,15 @@
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
 		</qp:surveyQuestion>
-		<qp:surveyQuestion questionType="SurveyErrorState">
+		<qp:surveyQuestion questionType="SurveyErrorState" isErrorDisplay="true">
 			<qp:displaySupport displayCategory="Overlay"/>
+			<qp:explicitImageMap>
+				<qp:map enumValue="HasError" imageIndex=".custom">
+					<plx:cast dataTypeName=".i4">
+						<plx:callStatic dataTypeName="SurveyQuestionGlyph" name="Last" type="field"/>
+					</plx:cast>
+				</qp:map>
+			</qp:explicitImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyQuestionGlyph">
 			<qp:displaySupport displayCategory="Glyph"/>

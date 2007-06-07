@@ -935,7 +935,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("7a4d2b10-43f3-475f-aa0a-8f880b9a1e4b")]
-	public partial class ORMModelElementHasExtensionModelError : DslModeling::ElementLink
+	public partial class ORMModelElementHasExtensionModelError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -1050,6 +1050,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExtensionModelErrorDomainRoleId, newExtendedElement);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExtendedElement domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExtendedElement;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExtendedElement = (ORMModelElement)value;
+			}
+		}
+		
+		#endregion
 		#region ExtensionModelError domain role code
 		
 		/// <summary>
@@ -1091,6 +1113,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<ModelError>(element, ExtendedElementDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExtensionModelError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExtensionModelError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExtensionModelError = value;
+			}
+		}
+		
 		#endregion
 		#region ExtendedElement link accessor
 		/// <summary>
@@ -5115,7 +5159,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("3167f5d3-c234-46e3-aac2-4ceb791dfb9c")]
-	public partial class SetComparisonConstraintHasTooFewRoleSequencesError : DslModeling::ElementLink
+	public partial class SetComparisonConstraintHasTooFewRoleSequencesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -5230,6 +5274,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewRoleSequencesErrorDomainRoleId, newSetComparisonConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region TooFewRoleSequencesError domain role code
 		
 		/// <summary>
@@ -5281,6 +5347,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newTooFewRoleSequencesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooFewRoleSequencesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooFewRoleSequencesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooFewRoleSequencesError = (TooFewRoleSequencesError)value;
+			}
+		}
+		
 		#endregion
 		#region SetComparisonConstraint link accessor
 		/// <summary>
@@ -5375,7 +5463,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e7c33130-2d1f-4f95-b988-bd7608cf2d1c")]
-	public partial class SetComparisonConstraintHasTooManyRoleSequencesError : DslModeling::ElementLink
+	public partial class SetComparisonConstraintHasTooManyRoleSequencesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -5490,6 +5578,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooManyRoleSequencesErrorDomainRoleId, newSetComparisonConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region TooManyRoleSequencesError domain role code
 		
 		/// <summary>
@@ -5541,6 +5651,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newTooManyRoleSequencesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooManyRoleSequencesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooManyRoleSequencesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooManyRoleSequencesError = (TooManyRoleSequencesError)value;
+			}
+		}
+		
 		#endregion
 		#region SetComparisonConstraint link accessor
 		/// <summary>
@@ -5875,7 +6007,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("5dbe50cd-a939-484d-9b96-700cb6cc7813")]
-	public abstract partial class RoleInstanceHasPopulationUniquenessError : DslModeling::ElementLink
+	public abstract partial class RoleInstanceHasPopulationUniquenessError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -5929,6 +6061,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::ReadOnlyLinkedElementCollection<RoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing RoleInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RoleInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RoleInstance = (RoleInstance)value;
+			}
+		}
+		
+		#endregion
 		#region PopulationUniquenessError domain role code
 		
 		/// <summary>
@@ -5972,6 +6126,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newPopulationUniquenessError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing PopulationUniquenessError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PopulationUniquenessError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PopulationUniquenessError = (PopulationUniquenessError)value;
+			}
+		}
+		
 		#endregion
 		#region RoleInstance link accessor
 		/// <summary>
@@ -6539,7 +6715,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a1d4a389-9d19-4921-bd0d-d965b53897e3")]
-	public abstract partial class SetComparisonConstraintHasContradictionError : DslModeling::ElementLink
+	public abstract partial class SetComparisonConstraintHasContradictionError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -6593,6 +6769,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::ReadOnlyLinkedElementCollection<SetComparisonConstraint>(element, ContradictionErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ContradictionError domain role code
 		
 		/// <summary>
@@ -6626,6 +6824,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::ReadOnlyLinkedElementCollection<ContradictionError>(element, SetComparisonConstraintDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ContradictionError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ContradictionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ContradictionError = (ContradictionError)value;
+			}
+		}
+		
 		#endregion
 		#region SetComparisonConstraint link accessor
 		/// <summary>
@@ -7228,7 +7448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e638e328-24a9-42c0-bbb1-f1ebc4b6e218")]
-	public partial class ExclusionConstraintHasExclusionContradictsMandatoryError : DslModeling::ElementLink
+	public partial class ExclusionConstraintHasExclusionContradictsMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -7333,6 +7553,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<ExclusionConstraint>(element, ExclusionContradictsMandatoryErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExclusionConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExclusionConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExclusionConstraint = (ExclusionConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ExclusionContradictsMandatoryError domain role code
 		
 		/// <summary>
@@ -7384,6 +7626,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExclusionConstraintDomainRoleId, newExclusionContradictsMandatoryError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExclusionContradictsMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExclusionContradictsMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExclusionContradictsMandatoryError = (ExclusionContradictsMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region ExclusionConstraint link accessor
 		/// <summary>
@@ -7469,7 +7733,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6cdda5a5-c6fe-4e9b-9248-17512f9c891a")]
-	public partial class MandatoryConstraintHasExclusionContradictsMandatoryError : DslModeling::ElementLink
+	public partial class MandatoryConstraintHasExclusionContradictsMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -7574,6 +7838,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<MandatoryConstraint>(element, ExclusionContradictsMandatoryErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing MandatoryConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MandatoryConstraint = (MandatoryConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ExclusionContradictsMandatoryError domain role code
 		
 		/// <summary>
@@ -7625,6 +7911,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, MandatoryConstraintDomainRoleId, newExclusionContradictsMandatoryError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExclusionContradictsMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExclusionContradictsMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExclusionContradictsMandatoryError = (ExclusionContradictsMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region MandatoryConstraint link accessor
 		/// <summary>
@@ -7710,7 +8018,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("4ba72b40-a736-49d4-9fde-8b07ee4a61a6")]
-	public partial class SubsetConstraintHasNotWellModeledSubsetAndMandatoryError : DslModeling::ElementLink
+	public partial class SubsetConstraintHasNotWellModeledSubsetAndMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -7825,6 +8133,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, NotWellModeledSubsetAndMandatoryErrorDomainRoleId, newSubsetConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SubsetConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SubsetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SubsetConstraint = (SubsetConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region NotWellModeledSubsetAndMandatoryError domain role code
 		
 		/// <summary>
@@ -7876,6 +8206,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SubsetConstraintDomainRoleId, newNotWellModeledSubsetAndMandatoryError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing NotWellModeledSubsetAndMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.NotWellModeledSubsetAndMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.NotWellModeledSubsetAndMandatoryError = (NotWellModeledSubsetAndMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region SubsetConstraint link accessor
 		/// <summary>
@@ -7970,7 +8322,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("475557a9-6e11-4d1c-a5a0-9d06daed3ee5")]
-	public partial class MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError : DslModeling::ElementLink
+	public partial class MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -8085,6 +8437,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, NotWellModeledSubsetAndMandatoryErrorDomainRoleId, newMandatoryConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing MandatoryConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MandatoryConstraint = (MandatoryConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region NotWellModeledSubsetAndMandatoryError domain role code
 		
 		/// <summary>
@@ -8136,6 +8510,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, MandatoryConstraintDomainRoleId, newNotWellModeledSubsetAndMandatoryError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing NotWellModeledSubsetAndMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.NotWellModeledSubsetAndMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.NotWellModeledSubsetAndMandatoryError = (NotWellModeledSubsetAndMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region MandatoryConstraint link accessor
 		/// <summary>
@@ -8230,7 +8626,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("9a93dd53-8683-47f4-9ee7-4f1f244a218e")]
-	public partial class MandatoryConstraintHasPopulationMandatoryError : DslModeling::ElementLink
+	public partial class MandatoryConstraintHasPopulationMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -8345,6 +8741,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, PopulationMandatoryErrorDomainRoleId, newMandatoryConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing MandatoryConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MandatoryConstraint = (ConstraintRoleSequence)value;
+			}
+		}
+		
+		#endregion
 		#region PopulationMandatoryError domain role code
 		
 		/// <summary>
@@ -8386,6 +8804,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(element, MandatoryConstraintDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing PopulationMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PopulationMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PopulationMandatoryError = (PopulationMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region MandatoryConstraint link accessor
 		/// <summary>
@@ -8471,7 +8911,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e0f0750e-47cb-44c6-b348-a9a1101475a7")]
-	public partial class ObjectTypeInstanceHasPopulationMandatoryError : DslModeling::ElementLink
+	public partial class ObjectTypeInstanceHasPopulationMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -8586,6 +9026,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, PopulationMandatoryErrorDomainRoleId, newObjectTypeInstance);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectTypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectTypeInstance = (ObjectTypeInstance)value;
+			}
+		}
+		
+		#endregion
 		#region PopulationMandatoryError domain role code
 		
 		/// <summary>
@@ -8627,6 +9089,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(element, ObjectTypeInstanceDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing PopulationMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PopulationMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PopulationMandatoryError = (PopulationMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region ObjectTypeInstance link accessor
 		/// <summary>
@@ -10169,7 +10653,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("d2116bc7-25a8-455e-9347-414bd03b7546")]
-	public partial class ReadingHasTooManyRolesError : DslModeling::ElementLink
+	public partial class ReadingHasTooManyRolesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -10284,6 +10768,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooManyRolesErrorDomainRoleId, newReading);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Reading domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Reading;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Reading = (Reading)value;
+			}
+		}
+		
+		#endregion
 		#region TooManyRolesError domain role code
 		
 		/// <summary>
@@ -10335,6 +10841,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReadingDomainRoleId, newTooManyRolesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooManyRolesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooManyRolesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooManyRolesError = (TooManyReadingRolesError)value;
+			}
+		}
+		
 		#endregion
 		#region Reading link accessor
 		/// <summary>
@@ -10428,7 +10956,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("fc3e0a3c-40ce-4ded-8a6b-241c7b51c099")]
-	public partial class ReadingHasTooFewRolesError : DslModeling::ElementLink
+	public partial class ReadingHasTooFewRolesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -10542,6 +11070,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewRolesErrorDomainRoleId, newReading);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Reading domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Reading;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Reading = (Reading)value;
+			}
+		}
+		
+		#endregion
 		#region TooFewRolesError domain role code
 		
 		/// <summary>
@@ -10593,6 +11143,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReadingDomainRoleId, newTooFewRolesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooFewRolesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooFewRolesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooFewRolesError = (TooFewReadingRolesError)value;
+			}
+		}
+		
 		#endregion
 		#region Reading link accessor
 		/// <summary>
@@ -10687,7 +11259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("3b7e4bbf-06b6-489e-bdf5-72edee5b87f4")]
-	public partial class ReadingHasReadingRequiresUserModificationError : DslModeling::ElementLink
+	public partial class ReadingHasReadingRequiresUserModificationError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -10802,6 +11374,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, RequiresUserModificationErrorDomainRoleId, newReading);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Reading domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Reading;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Reading = (Reading)value;
+			}
+		}
+		
+		#endregion
 		#region RequiresUserModificationError domain role code
 		
 		/// <summary>
@@ -10853,6 +11447,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReadingDomainRoleId, newRequiresUserModificationError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing RequiresUserModificationError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RequiresUserModificationError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RequiresUserModificationError = (ReadingRequiresUserModificationError)value;
+			}
+		}
+		
 		#endregion
 		#region Reading link accessor
 		/// <summary>
@@ -10947,7 +11563,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("c5a25732-f5a7-409e-b56a-6419a951fb13")]
-	public partial class SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError : DslModeling::ElementLink
+	public partial class SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -11062,6 +11678,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ArityMismatchErrorDomainRoleId, newConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Constraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Constraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Constraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ArityMismatchError domain role code
 		
 		/// <summary>
@@ -11113,6 +11751,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConstraintDomainRoleId, newArityMismatchError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ArityMismatchError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ArityMismatchError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ArityMismatchError = (ExternalConstraintRoleSequenceArityMismatchError)value;
+			}
+		}
+		
 		#endregion
 		#region Constraint link accessor
 		/// <summary>
@@ -11198,6 +11858,227 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ElementAssociatedWithModelError
+	/// Description for Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("5e4032b3-ef22-447b-9732-f25caca1e613")]
+	public partial class ElementAssociatedWithModelError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementAssociatedWithModelError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5e4032b3, 0xef22, 0x447b, 0x97, 0x32, 0xf2, 0x5c, 0xac, 0xa1, 0xe6, 0x13);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementAssociatedWithModelError link in the same Partition as the given ModelElement
+		/// </summary>
+		/// <param name="source">ModelElement to use as the source of the relationship.</param>
+		/// <param name="target">ModelError to use as the target of the relationship.</param>
+		public ElementAssociatedWithModelError(global::Microsoft.VisualStudio.Modeling.ModelElement source, ModelError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementAssociatedWithModelError.AssociatedElementDomainRoleId, source), new DslModeling::RoleAssignment(ElementAssociatedWithModelError.ModelErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementAssociatedWithModelError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementAssociatedWithModelError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementAssociatedWithModelError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementAssociatedWithModelError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region AssociatedElement domain role code
+		
+		/// <summary>
+		/// AssociatedElement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AssociatedElementDomainRoleId = new global::System.Guid(0x58fbb087, 0x5a43, 0x482b, 0x95, 0x65, 0x5b, 0x84, 0x51, 0xf9, 0xac, 0x8f);
+		
+		/// <summary>
+		/// DomainRole AssociatedElement
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/AssociatedElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/AssociatedElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AssociatedModelErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/AssociatedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("58fbb087-5a43-482b-9565-5b8451f9ac8f")]
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, AssociatedElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AssociatedElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AssociatedElementCollection of a ModelError
+		/// <summary>
+		/// Gets a list of AssociatedElementCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> GetAssociatedElementCollection(ModelError element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(element, ModelErrorDomainRoleId);
+		}
+		#endregion
+		#region ModelError domain role code
+		
+		/// <summary>
+		/// ModelError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelErrorDomainRoleId = new global::System.Guid(0x9b58a0ff, 0x46e2, 0x487b, 0x80, 0x32, 0x1a, 0x99, 0x22, 0x85, 0x8d, 0x2f);
+		
+		/// <summary>
+		/// DomainRole ModelError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/ModelError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/ModelError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AssociatedElementCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/ModelError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("9b58a0ff-46e2-487b-8032-1a9922858d2f")]
+		public virtual ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ModelError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AssociatedModelErrorCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of AssociatedModelErrorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ModelError> GetAssociatedModelErrorCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::LinkedElementCollection<ModelError>(element, AssociatedElementDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement link accessor
+		/// <summary>
+		/// Get the list of ElementAssociatedWithModelError links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError> GetLinksToAssociatedModelErrorCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement associatedElementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError>(associatedElementInstance, global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElementDomainRoleId);
+		}
+		#endregion
+		#region ModelError link accessor
+		/// <summary>
+		/// Get the list of ElementAssociatedWithModelError links to a ModelError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError> GetLinksToAssociatedElementCollection ( global::Neumont.Tools.ORM.ObjectModel.ModelError modelErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError>(modelErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelErrorDomainRoleId);
+		}
+		#endregion
+		#region ElementAssociatedWithModelError instance accessors
+		
+		/// <summary>
+		/// Get any ElementAssociatedWithModelError links between a given ModelElement and a ModelError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError> GetLinks( global::Microsoft.VisualStudio.Modeling.ModelElement source, global::Neumont.Tools.ORM.ObjectModel.ModelError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError>(source, global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElementDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError link in links )
+			{
+				if ( target.Equals(link.ModelError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementAssociatedWithModelError link between a given ModelElementand a ModelError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError GetLink( global::Microsoft.VisualStudio.Modeling.ModelElement source, global::Neumont.Tools.ORM.ObjectModel.ModelError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError>(source, global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElementDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError link in links )
+			{
+				if ( target.Equals(link.ModelError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship FactTypeHasFactTypeRequiresReadingError
 	/// Description for
 	/// Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError
@@ -11207,7 +12088,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("eec8eb82-5b15-4b61-8737-da1a54199a13")]
-	public partial class FactTypeHasFactTypeRequiresReadingError : DslModeling::ElementLink
+	public partial class FactTypeHasFactTypeRequiresReadingError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -11322,6 +12203,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReadingRequiredErrorDomainRoleId, newFactType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FactType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FactType = (FactType)value;
+			}
+		}
+		
+		#endregion
 		#region ReadingRequiredError domain role code
 		
 		/// <summary>
@@ -11373,6 +12276,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeDomainRoleId, newReadingRequiredError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ReadingRequiredError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ReadingRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ReadingRequiredError = (FactTypeRequiresReadingError)value;
+			}
+		}
+		
 		#endregion
 		#region FactType link accessor
 		/// <summary>
@@ -11467,7 +12392,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("dd5ff7f8-7169-489b-9b8a-ede3772f52be")]
-	public partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError : DslModeling::ElementLink
+	public partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -11582,6 +12507,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, InternalUniquenessConstraintRequiredErrorDomainRoleId, newFactType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FactType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FactType = (FactType)value;
+			}
+		}
+		
+		#endregion
 		#region InternalUniquenessConstraintRequiredError domain role code
 		
 		/// <summary>
@@ -11633,6 +12580,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeDomainRoleId, newInternalUniquenessConstraintRequiredError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing InternalUniquenessConstraintRequiredError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.InternalUniquenessConstraintRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.InternalUniquenessConstraintRequiredError = (FactTypeRequiresInternalUniquenessConstraintError)value;
+			}
+		}
+		
 		#endregion
 		#region FactType link accessor
 		/// <summary>
@@ -12484,7 +13453,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("f2a79e36-a317-4c36-81da-d562d2afbf09")]
-	public partial class ValueTypeHasUnspecifiedDataTypeError : DslModeling::ElementLink
+	public partial class ValueTypeHasUnspecifiedDataTypeError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -12599,6 +13568,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, DataTypeNotSpecifiedErrorDomainRoleId, newValueTypeHasDataType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueTypeHasDataType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueTypeHasDataType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueTypeHasDataType = (ValueTypeHasDataType)value;
+			}
+		}
+		
+		#endregion
 		#region DataTypeNotSpecifiedError domain role code
 		
 		/// <summary>
@@ -12650,6 +13641,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeHasDataTypeDomainRoleId, newDataTypeNotSpecifiedError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DataTypeNotSpecifiedError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DataTypeNotSpecifiedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DataTypeNotSpecifiedError = (DataTypeNotSpecifiedError)value;
+			}
+		}
+		
 		#endregion
 		#region ValueTypeHasDataType link accessor
 		/// <summary>
@@ -12744,7 +13757,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("13410c4f-ffed-4b0f-ad0b-bd48d09b4310")]
-	public partial class SetComparisonConstraintHasCompatibleRolePlayerTypeError : DslModeling::ElementLink
+	public partial class SetComparisonConstraintHasCompatibleRolePlayerTypeError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -12859,6 +13872,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibleRolePlayerTypeErrorDomainRoleId, newSetComparisonConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region CompatibleRolePlayerTypeError domain role code
 		
 		/// <summary>
@@ -12900,6 +13935,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<CompatibleRolePlayerTypeError>(element, SetComparisonConstraintDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing CompatibleRolePlayerTypeError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CompatibleRolePlayerTypeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CompatibleRolePlayerTypeError = (CompatibleRolePlayerTypeError)value;
+			}
+		}
+		
 		#endregion
 		#region SetComparisonConstraint link accessor
 		/// <summary>
@@ -12985,7 +14042,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("91cde095-28d9-4852-b171-430fe5a29429")]
-	public partial class SetConstraintHasCompatibleRolePlayerTypeError : DslModeling::ElementLink
+	public partial class SetConstraintHasCompatibleRolePlayerTypeError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -13100,6 +14157,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibleRolePlayerTypeErrorDomainRoleId, newSetConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetConstraint = (SetConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region CompatibleRolePlayerTypeError domain role code
 		
 		/// <summary>
@@ -13151,6 +14230,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newCompatibleRolePlayerTypeError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing CompatibleRolePlayerTypeError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CompatibleRolePlayerTypeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CompatibleRolePlayerTypeError = (CompatibleRolePlayerTypeError)value;
+			}
+		}
+		
 		#endregion
 		#region SetConstraint link accessor
 		/// <summary>
@@ -13245,7 +14346,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("429f7144-1227-4d0e-b4f8-59ad6ffc7eb3")]
-	public partial class UniquenessConstraintHasNMinusOneError : DslModeling::ElementLink
+	public partial class UniquenessConstraintHasNMinusOneError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -13360,6 +14461,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, NMinusOneErrorDomainRoleId, newConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Constraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Constraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Constraint = (UniquenessConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region NMinusOneError domain role code
 		
 		/// <summary>
@@ -13411,6 +14534,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConstraintDomainRoleId, newNMinusOneError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing NMinusOneError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.NMinusOneError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.NMinusOneError = (NMinusOneError)value;
+			}
+		}
+		
 		#endregion
 		#region Constraint link accessor
 		/// <summary>
@@ -13504,7 +14649,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("09e6ac31-2ca1-4126-8c95-bfc571088b2d")]
-	public partial class RoleHasRolePlayerRequiredError : DslModeling::ElementLink
+	public partial class RoleHasRolePlayerRequiredError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -13619,6 +14764,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePlayerRequiredErrorDomainRoleId, newRole);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Role domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Role = (Role)value;
+			}
+		}
+		
+		#endregion
 		#region RolePlayerRequiredError domain role code
 		
 		/// <summary>
@@ -13670,6 +14837,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleDomainRoleId, newRolePlayerRequiredError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing RolePlayerRequiredError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RolePlayerRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RolePlayerRequiredError = (RolePlayerRequiredError)value;
+			}
+		}
+		
 		#endregion
 		#region Role link accessor
 		/// <summary>
@@ -13764,7 +14953,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0d352e42-06d6-4ad1-aace-3ea5aacde302")]
-	public partial class EqualityConstraintHasEqualityImpliedByMandatoryError : DslModeling::ElementLink
+	public partial class EqualityConstraintHasEqualityImpliedByMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -13879,6 +15068,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, EqualityImpliedByMandatoryErrorDomainRoleId, newEqualityConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing EqualityConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.EqualityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.EqualityConstraint = (EqualityConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region EqualityImpliedByMandatoryError domain role code
 		
 		/// <summary>
@@ -13930,6 +15141,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, EqualityConstraintDomainRoleId, newEqualityImpliedByMandatoryError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing EqualityImpliedByMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.EqualityImpliedByMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.EqualityImpliedByMandatoryError = (EqualityImpliedByMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region EqualityConstraint link accessor
 		/// <summary>
@@ -14024,7 +15257,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("1b6cbb8c-d1a6-4949-ac4d-596dc1ce147f")]
-	public partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError : DslModeling::ElementLink
+	public partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -14139,6 +15372,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReferenceSchemeErrorDomainRoleId, newObjectType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectType = (ObjectType)value;
+			}
+		}
+		
+		#endregion
 		#region ReferenceSchemeError domain role code
 		
 		/// <summary>
@@ -14190,6 +15445,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newReferenceSchemeError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ReferenceSchemeError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ReferenceSchemeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ReferenceSchemeError = (EntityTypeRequiresReferenceSchemeError)value;
+			}
+		}
+		
 		#endregion
 		#region ObjectType link accessor
 		/// <summary>
@@ -14284,7 +15561,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("2e851b91-fcb9-4b3c-9276-2c2e3a1972c9")]
-	public partial class FrequencyConstraintHasFrequencyConstraintMinMaxError : DslModeling::ElementLink
+	public partial class FrequencyConstraintHasFrequencyConstraintMinMaxError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -14399,6 +15676,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintMinMaxErrorDomainRoleId, newFrequencyConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraint = (FrequencyConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region FrequencyConstraintMinMaxError domain role code
 		
 		/// <summary>
@@ -14450,6 +15749,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintDomainRoleId, newFrequencyConstraintMinMaxError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraintMinMaxError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraintMinMaxError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraintMinMaxError = (FrequencyConstraintMinMaxError)value;
+			}
+		}
+		
 		#endregion
 		#region FrequencyConstraint link accessor
 		/// <summary>
@@ -14783,7 +16104,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("1d2620be-40ac-4f10-b420-5cd52687dd49")]
-	public partial class ValueRangeHasMaxValueMismatchError : DslModeling::ElementLink
+	public partial class ValueRangeHasMaxValueMismatchError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -14898,6 +16219,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, MaxValueMismatchErrorDomainRoleId, newValueRange);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueRange domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueRange;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueRange = (ValueRange)value;
+			}
+		}
+		
+		#endregion
 		#region MaxValueMismatchError domain role code
 		
 		/// <summary>
@@ -14949,6 +16292,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueRangeDomainRoleId, newMaxValueMismatchError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing MaxValueMismatchError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MaxValueMismatchError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MaxValueMismatchError = (MaxValueMismatchError)value;
+			}
+		}
+		
 		#endregion
 		#region ValueRange link accessor
 		/// <summary>
@@ -15042,7 +16407,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0e8be672-bcbe-412b-9589-76bfa88fde38")]
-	public partial class ValueRangeHasMinValueMismatchError : DslModeling::ElementLink
+	public partial class ValueRangeHasMinValueMismatchError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -15157,6 +16522,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, MinValueMismatchErrorDomainRoleId, newValueRange);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueRange domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueRange;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueRange = (ValueRange)value;
+			}
+		}
+		
+		#endregion
 		#region MinValueMismatchError domain role code
 		
 		/// <summary>
@@ -15208,6 +16595,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueRangeDomainRoleId, newMinValueMismatchError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing MinValueMismatchError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MinValueMismatchError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MinValueMismatchError = (MinValueMismatchError)value;
+			}
+		}
+		
 		#endregion
 		#region ValueRange link accessor
 		/// <summary>
@@ -15302,7 +16711,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("32d5a7e1-5a80-44ab-bc2e-96a15a4d92cb")]
-	public partial class FactTypeHasImpliedInternalUniquenessConstraintError : DslModeling::ElementLink
+	public partial class FactTypeHasImpliedInternalUniquenessConstraintError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -15417,6 +16826,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImpliedInternalUniquenessConstraintErrorDomainRoleId, newFactType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FactType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FactType = (FactType)value;
+			}
+		}
+		
+		#endregion
 		#region ImpliedInternalUniquenessConstraintError domain role code
 		
 		/// <summary>
@@ -15468,6 +16899,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeDomainRoleId, newImpliedInternalUniquenessConstraintError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ImpliedInternalUniquenessConstraintError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ImpliedInternalUniquenessConstraintError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ImpliedInternalUniquenessConstraintError = (ImpliedInternalUniquenessConstraintError)value;
+			}
+		}
+		
 		#endregion
 		#region FactType link accessor
 		/// <summary>
@@ -15562,7 +17015,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6409dbe5-5c44-42af-b0c6-fb1ee7e3af2a")]
-	public partial class SetConstraintHasTooFewRoleSequencesError : DslModeling::ElementLink
+	public partial class SetConstraintHasTooFewRoleSequencesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -15677,6 +17130,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewRoleSequencesErrorDomainRoleId, newSetConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetConstraint = (SetConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region TooFewRoleSequencesError domain role code
 		
 		/// <summary>
@@ -15728,6 +17203,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newTooFewRoleSequencesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooFewRoleSequencesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooFewRoleSequencesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooFewRoleSequencesError = (TooFewRoleSequencesError)value;
+			}
+		}
+		
 		#endregion
 		#region SetConstraint link accessor
 		/// <summary>
@@ -15822,7 +17319,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("d54eb064-7fc6-4bcd-af30-c73e2d586fc4")]
-	public partial class SetConstraintHasTooManyRoleSequencesError : DslModeling::ElementLink
+	public partial class SetConstraintHasTooManyRoleSequencesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -15937,6 +17434,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooManyRoleSequencesErrorDomainRoleId, newSetConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetConstraint = (SetConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region TooManyRoleSequencesError domain role code
 		
 		/// <summary>
@@ -15988,6 +17507,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newTooManyRoleSequencesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooManyRoleSequencesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooManyRoleSequencesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooManyRoleSequencesError = (TooManyRoleSequencesError)value;
+			}
+		}
+		
 		#endregion
 		#region SetConstraint link accessor
 		/// <summary>
@@ -16082,7 +17623,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("78716ce5-db71-4367-a912-9b622a3c480b")]
-	public partial class FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError : DslModeling::ElementLink
+	public partial class FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -16197,6 +17738,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, newFrequencyConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraint = (FrequencyConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region FrequencyConstraintContradictsInternalUniquenessConstraintError domain role code
 		
 		/// <summary>
@@ -16238,6 +17801,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError>(element, FrequencyConstraintDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraintContradictsInternalUniquenessConstraintError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraintContradictsInternalUniquenessConstraintError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraintContradictsInternalUniquenessConstraintError = (FrequencyConstraintContradictsInternalUniquenessConstraintError)value;
+			}
+		}
+		
 		#endregion
 		#region FrequencyConstraint link accessor
 		/// <summary>
@@ -16323,7 +17908,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("57656c65-6812-4e80-ab3c-199deb82b3ef")]
-	public partial class FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError : DslModeling::ElementLink
+	public partial class FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -16438,6 +18023,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, newFactType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FactType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FactType = (FactType)value;
+			}
+		}
+		
+		#endregion
 		#region FrequencyConstraintContradictsInternalUniquenessConstraintError domain role code
 		
 		/// <summary>
@@ -16479,6 +18086,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError>(element, FactTypeDomainRoleId);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraintContradictsInternalUniquenessConstraintError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraintContradictsInternalUniquenessConstraintError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraintContradictsInternalUniquenessConstraintError = (FrequencyConstraintContradictsInternalUniquenessConstraintError)value;
+			}
+		}
+		
 		#endregion
 		#region FactType link accessor
 		/// <summary>
@@ -16564,7 +18193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("62e65e16-efa7-43d0-9759-8715d0c8b914")]
-	public partial class RingConstraintHasRingConstraintTypeNotSpecifiedError : DslModeling::ElementLink
+	public partial class RingConstraintHasRingConstraintTypeNotSpecifiedError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -16679,6 +18308,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, RingConstraintTypeNotSpecifiedErrorDomainRoleId, newRingConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing RingConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RingConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RingConstraint = (RingConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region RingConstraintTypeNotSpecifiedError domain role code
 		
 		/// <summary>
@@ -16730,6 +18381,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, RingConstraintDomainRoleId, newRingConstraintTypeNotSpecifiedError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing RingConstraintTypeNotSpecifiedError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RingConstraintTypeNotSpecifiedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RingConstraintTypeNotSpecifiedError = (RingConstraintTypeNotSpecifiedError)value;
+			}
+		}
+		
 		#endregion
 		#region RingConstraint link accessor
 		/// <summary>
@@ -16824,7 +18497,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("3d69f8de-6075-432b-8843-e8babc677457")]
-	public partial class ValueConstraintHasDuplicateNameError : DslModeling::ElementLink
+	public partial class ValueConstraintHasDuplicateNameError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -16929,6 +18602,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return new DslModeling::LinkedElementCollection<ValueConstraint>(element, DuplicateNameErrorDomainRoleId);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueConstraint = (ValueConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region DuplicateNameError domain role code
 		
 		/// <summary>
@@ -16980,6 +18675,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newDuplicateNameError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (ConstraintDuplicateNameError)value;
+			}
+		}
+		
 		#endregion
 		#region ValueConstraint link accessor
 		/// <summary>
@@ -17065,7 +18782,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("2231fc51-1b87-45a5-af53-5a95f1b68e04")]
-	public partial class ObjectTypeHasObjectTypeRequiresPrimarySupertypeError : DslModeling::ElementLink
+	public partial class ObjectTypeHasObjectTypeRequiresPrimarySupertypeError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -17180,6 +18897,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeRequiresPrimarySupertypeErrorDomainRoleId, newObjectType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectType = (ObjectType)value;
+			}
+		}
+		
+		#endregion
 		#region ObjectTypeRequiresPrimarySupertypeError domain role code
 		
 		/// <summary>
@@ -17231,6 +18970,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newObjectTypeRequiresPrimarySupertypeError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectTypeRequiresPrimarySupertypeError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectTypeRequiresPrimarySupertypeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectTypeRequiresPrimarySupertypeError = (ObjectTypeRequiresPrimarySupertypeError)value;
+			}
+		}
+		
 		#endregion
 		#region ObjectType link accessor
 		/// <summary>
@@ -18679,7 +20440,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("4a739f80-00fa-4f02-bd81-ed60c79defc3")]
-	public partial class ObjectTypeHasCompatibleSupertypesError : DslModeling::ElementLink
+	public partial class ObjectTypeHasCompatibleSupertypesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -18794,6 +20555,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibleSupertypesErrorDomainRoleId, newObjectType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectType = (ObjectType)value;
+			}
+		}
+		
+		#endregion
 		#region CompatibleSupertypesError domain role code
 		
 		/// <summary>
@@ -18845,6 +20628,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newCompatibleSupertypesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing CompatibleSupertypesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CompatibleSupertypesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CompatibleSupertypesError = (CompatibleSupertypesError)value;
+			}
+		}
+		
 		#endregion
 		#region ObjectType link accessor
 		/// <summary>
@@ -18938,7 +20743,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("7dea2631-58ef-46a6-b9e1-a8eda2948ae3")]
-	public partial class SetConstraintHasImplicationError : DslModeling::ElementLink
+	public partial class SetConstraintHasImplicationError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -19053,6 +20858,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImplicationErrorDomainRoleId, newSetConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetConstraint = (SetConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ImplicationError domain role code
 		
 		/// <summary>
@@ -19104,6 +20931,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newImplicationError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ImplicationError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ImplicationError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ImplicationError = (ImplicationError)value;
+			}
+		}
+		
 		#endregion
 		#region SetConstraint link accessor
 		/// <summary>
@@ -19198,7 +21047,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6f9e9e77-3da6-4b01-b3ab-f46fb4c43ca8")]
-	public partial class SetComparisonConstraintHasImplicationError : DslModeling::ElementLink
+	public partial class SetComparisonConstraintHasImplicationError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -19313,6 +21162,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ImplicationErrorDomainRoleId, newSetComparisonConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SetComparisonConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SetComparisonConstraint = (SetComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ImplicationError domain role code
 		
 		/// <summary>
@@ -19364,6 +21235,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newImplicationError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ImplicationError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ImplicationError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ImplicationError = (ImplicationError)value;
+			}
+		}
+		
 		#endregion
 		#region SetComparisonConstraint link accessor
 		/// <summary>
@@ -19740,7 +21633,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("31a1bff6-47dc-4f00-955b-1935082a3f25")]
-	public partial class ObjectTypeHasPreferredIdentifierRequiresMandatoryError : DslModeling::ElementLink
+	public partial class ObjectTypeHasPreferredIdentifierRequiresMandatoryError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -19855,6 +21748,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, PreferredIdentifierRequiresMandatoryErrorDomainRoleId, newObjectType);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectType domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectType = (ObjectType)value;
+			}
+		}
+		
+		#endregion
 		#region PreferredIdentifierRequiresMandatoryError domain role code
 		
 		/// <summary>
@@ -19906,6 +21821,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newPreferredIdentifierRequiresMandatoryError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing PreferredIdentifierRequiresMandatoryError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PreferredIdentifierRequiresMandatoryError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PreferredIdentifierRequiresMandatoryError = (PreferredIdentifierRequiresMandatoryError)value;
+			}
+		}
+		
 		#endregion
 		#region ObjectType link accessor
 		/// <summary>
@@ -20000,7 +21937,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("9044be08-d88b-4bca-b261-0841e1c73b5d")]
-	public partial class ValueConstraintHasValueRangeOverlapError : DslModeling::ElementLink
+	public partial class ValueConstraintHasValueRangeOverlapError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -20115,6 +22052,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueRangeOverlapErrorDomainRoleId, newValueConstraint);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueConstraint domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueConstraint = (ValueConstraint)value;
+			}
+		}
+		
+		#endregion
 		#region ValueRangeOverlapError domain role code
 		
 		/// <summary>
@@ -20166,6 +22125,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newValueRangeOverlapError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueRangeOverlapError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueRangeOverlapError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueRangeOverlapError = (ValueRangeOverlapError)value;
+			}
+		}
+		
 		#endregion
 		#region ValueConstraint link accessor
 		/// <summary>
@@ -23080,7 +25061,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("922e0a74-9384-4d25-9c38-e0ab709fee8f")]
-	public partial class EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError : DslModeling::ElementLink
+	public partial class EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -23195,6 +25176,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewEntityTypeRoleInstancesErrorDomainRoleId, newEntityTypeInstance);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing EntityTypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.EntityTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.EntityTypeInstance = (EntityTypeInstance)value;
+			}
+		}
+		
+		#endregion
 		#region TooFewEntityTypeRoleInstancesError domain role code
 		
 		/// <summary>
@@ -23246,6 +25249,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeInstanceDomainRoleId, newTooFewEntityTypeRoleInstancesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooFewEntityTypeRoleInstancesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooFewEntityTypeRoleInstancesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooFewEntityTypeRoleInstancesError = (TooFewEntityTypeRoleInstancesError)value;
+			}
+		}
+		
 		#endregion
 		#region EntityTypeInstance link accessor
 		/// <summary>
@@ -23340,7 +25365,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6ac86dd8-1766-472e-b70f-b788c04ed688")]
-	public partial class FactTypeInstanceHasTooFewFactTypeRoleInstancesError : DslModeling::ElementLink
+	public partial class FactTypeInstanceHasTooFewFactTypeRoleInstancesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -23455,6 +25480,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewFactTypeRoleInstancesErrorDomainRoleId, newFactTypeInstance);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FactTypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FactTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FactTypeInstance = (FactTypeInstance)value;
+			}
+		}
+		
+		#endregion
 		#region TooFewFactTypeRoleInstancesError domain role code
 		
 		/// <summary>
@@ -23506,6 +25553,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeInstanceDomainRoleId, newTooFewFactTypeRoleInstancesError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing TooFewFactTypeRoleInstancesError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.TooFewFactTypeRoleInstancesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.TooFewFactTypeRoleInstancesError = (TooFewFactTypeRoleInstancesError)value;
+			}
+		}
+		
 		#endregion
 		#region FactTypeInstance link accessor
 		/// <summary>
@@ -23600,7 +25669,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a8af2a8f-cdd0-41cb-b8cd-60cf28277288")]
-	public partial class ValueTypeInstanceHasCompatibleValueTypeInstanceValueError : DslModeling::ElementLink
+	public partial class ValueTypeInstanceHasCompatibleValueTypeInstanceValueError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -23715,6 +25784,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibleValueTypeInstanceValueErrorDomainRoleId, newValueTypeInstance);
 		}
 		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueTypeInstance domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueTypeInstance = (ValueTypeInstance)value;
+			}
+		}
+		
+		#endregion
 		#region CompatibleValueTypeInstanceValueError domain role code
 		
 		/// <summary>
@@ -23766,6 +25857,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeInstanceDomainRoleId, newCompatibleValueTypeInstanceValueError);
 		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing CompatibleValueTypeInstanceValueError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CompatibleValueTypeInstanceValueError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CompatibleValueTypeInstanceValueError = (CompatibleValueTypeInstanceValueError)value;
+			}
+		}
+		
 		#endregion
 		#region ValueTypeInstance link accessor
 		/// <summary>

@@ -49,7 +49,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		private IEnumerable<ISurveyQuestionProvider> myQuestionProviderList;
 		private Dictionary<object, MainList> myMainListDictionary;
 		private Dictionary<object, NodeLocation> myNodeDictionary;
-		private Dictionary<object, Survey> mySurveyDictionary; 
+		private Dictionary<object, Survey> mySurveyDictionary;
+		private Type[] myErrorDisplayTypes;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -84,6 +85,34 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				myMainListDictionary.Add(TopLevelExpansionKey, mainList = new MainList(this, null, null));
 			}
 			return mainList.CreateRootBranch();
+		}
+		/// <summary>
+		/// Update the error display for the specified element.
+		/// </summary>
+		public void UpdateErrorDisplay(object element)
+		{
+			this.ElementChanged(element, ErrorDisplayTypes);
+		}
+		private Type[] ErrorDisplayTypes
+		{
+			get
+			{
+				Type[] retVal = myErrorDisplayTypes;
+				if (retVal == null)
+				{
+					List<Type> displayTypes = new List<Type>();
+					foreach (ISurveyQuestionProvider questionProvider in myQuestionProviderList)
+					{
+						IEnumerable<Type> providerDisplayTypes = questionProvider.GetErrorDisplayTypes();
+						if (providerDisplayTypes != null)
+						{
+							displayTypes.AddRange(providerDisplayTypes);
+						}
+					}
+					myErrorDisplayTypes = retVal = displayTypes.ToArray();
+				}
+				return retVal;
+			}
 		}
 		#endregion // Accessor Properties
 		#region Methods

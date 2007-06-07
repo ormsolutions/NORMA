@@ -44,7 +44,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					ResourceManager resMgr = ORMCoreDomainModel.SingletonResourceManager;
 					regex = System.Threading.Interlocked.CompareExchange<Regex>(
 						ref objectTypeRegex,
-						new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", resMgr.GetString("Neumont.Tools.ORM.ObjectModel.ValueType"), resMgr.GetString("Neumont.Tools.ORM.ObjectModel.EntityType")), RegexOptions.Compiled | RegexOptions.IgnoreCase),
+						// UNDONE: Redirect the strings to a real resource in the core dll, it isn't here at the moment.
+						//new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", resMgr.GetString("Neumont.Tools.ORM.ObjectModel.ValueType"), resMgr.GetString("Neumont.Tools.ORM.ObjectModel.EntityType")), RegexOptions.Compiled | RegexOptions.IgnoreCase),
+						new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", "ValueType", "EntityType"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
 						null);
 					regex = objectTypeRegex;
 				}

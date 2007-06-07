@@ -305,6 +305,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ModelElement ElementDisplayedAs(ModelElement element);
 	}
 	#endregion // IProxyDisplayProvider
+	#region AssociatedErrorElementCallback delegate
+	/// <summary>
+	/// Used with the <see cref="ModelError.WalkAssociatedElements(AssociatedErrorElementCallback)"/> and
+	/// <see cref="ModelError.WalkAssociatedElements(ModelElement, AssociatedErrorElementCallback)"/> methods.
+	/// </summary>
+	/// <param name="associatedElement"></param>
+	public delegate void AssociatedErrorElementCallback(ModelElement associatedElement);
+	#endregion // AssociatedErrorElementCallback
 	#region ModelError class
 	public abstract partial class ModelError
 	{
@@ -462,6 +470,70 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Rule to update error text on owner name change
+		#region WalkAssociatedElements method
+		/// <summary>
+		/// Walk all elements directly or indirectly associated with this model error
+		/// </summary>
+		/// <param name="callback"><see cref="AssociatedErrorElementCallback"/> delegate</param>
+		public void WalkAssociatedElements(AssociatedErrorElementCallback callback)
+		{
+			foreach (ModelElement element in this.AssociatedElementCollection)
+			{
+				WalkAssociatedElements(element, callback);
+			}
+		}
+		/// <summary>
+		/// Walk all elements directly or indirectly associated with a model error,
+		/// starting with the specified associated element
+		/// </summary>
+		/// <param name="associatedElement">The associated <see cref="ModelElement"/></param>
+		/// <param name="callback"><see cref="AssociatedErrorElementCallback"/> delegate</param>
+		public static void WalkAssociatedElements(ModelElement associatedElement, AssociatedErrorElementCallback callback)
+		{
+			callback(associatedElement);
+
+			ElementLink elementLink;
+			IElementLinkRoleHasIndirectModelErrorOwner indirectOwnerLink;
+			if (null != (elementLink = associatedElement as ElementLink) &&
+				null != (indirectOwnerLink = elementLink as IElementLinkRoleHasIndirectModelErrorOwner))
+			{
+				Guid[] guids;
+				int roleCount;
+				if (null != (guids = indirectOwnerLink.GetIndirectModelErrorOwnerElementLinkRoles()) &&
+					0 != (roleCount = guids.Length))
+				{
+					for (int i = 0; i < roleCount; ++i)
+					{
+						WalkAssociatedElementsHelper(DomainRoleInfo.GetRolePlayer(elementLink, guids[i]), callback);
+					}
+				}
+			}
+		}
+		private static void WalkAssociatedElementsHelper(ModelElement element, AssociatedErrorElementCallback callback)
+		{
+			if (element is IModelErrorOwner)
+			{
+				callback(element);
+			}
+			IHasIndirectModelErrorOwner indirectOwner;
+			if (null != (indirectOwner = element as IHasIndirectModelErrorOwner))
+			{
+				Guid[] indirectRoles;
+				int indirectRoleCount;
+				if (null != (indirectRoles = indirectOwner.GetIndirectModelErrorOwnerLinkRoles()) &&
+					0 != (indirectRoleCount = indirectRoles.Length))
+				{
+					for (int i = 0; i < indirectRoleCount; ++i)
+					{
+						foreach (ModelElement linkedElement in element.Store.DomainDataDirectory.FindDomainRole(indirectRoles[i]).GetLinkedElements(element))
+						{
+							WalkAssociatedElementsHelper(linkedElement, callback);
+						}
+					}
+				}
+			}
+		}
+		#endregion // WalkAssociatedElements method
 		#region HasErrors Static Function
 		/// <summary>
 		/// Checks to see if the Model Element contains errors

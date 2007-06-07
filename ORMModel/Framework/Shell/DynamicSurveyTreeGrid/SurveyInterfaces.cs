@@ -76,6 +76,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// The <see cref="ImageList"/> associated with answers to all supported questions
 		/// </summary>
 		ImageList SurveyQuestionImageList { get;}
+        /// <summary>
+        /// Get the list of types for this survey provider that correspond to
+        /// error state display changes. Each returned type should correspond to one
+        /// of the <see cref="ISurveyQuestionTypeInfo.QuestionType"/> types returned
+        /// by the <see cref="GetSurveyQuestions"/>
+        /// </summary>
+        /// <returns><see cref="IEnumerable{Type}"/> or null</returns>
+        IEnumerable<Type> GetErrorDisplayTypes();
 	}
 	#endregion // ISurveyQuestionProvider interface
 	#region ISurveyQuestionTypeInfo interface

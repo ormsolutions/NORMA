@@ -3117,6 +3117,38 @@
     <value>Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ArityMismatchError&apos; on DomainRelationship &apos;SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError</value>
+    <comment>Description for DomainClass &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.DisplayName" xml:space="preserve">
+    <value>Element Associated With Model Error</value>
+    <comment>DisplayName for DomainClass &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/AssociatedElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement</value>
+    <comment>Description for DomainRole &apos;AssociatedElement&apos; on DomainRelationship &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/AssociatedElement.DisplayName" xml:space="preserve">
+    <value>AssociatedElement</value>
+    <comment>DisplayName for DomainRole &apos;AssociatedElement&apos; on DomainRelationship &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/AssociatedElement.PropertyDisplayName" xml:space="preserve">
+    <value>Associated Model Error Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AssociatedElement&apos; on DomainRelationship &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/ModelError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError</value>
+    <comment>Description for DomainRole &apos;ModelError&apos; on DomainRelationship &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/ModelError.DisplayName" xml:space="preserve">
+    <value>ModelError</value>
+    <comment>DisplayName for DomainRole &apos;ModelError&apos; on DomainRelationship &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError/ModelError.PropertyDisplayName" xml:space="preserve">
+    <value>Associated Element Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ModelError&apos; on DomainRelationship &apos;ElementAssociatedWithModelError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError</value>
     <comment>Description for DomainClass &apos;FactTypeHasFactTypeRequiresReadingError&apos;</comment>

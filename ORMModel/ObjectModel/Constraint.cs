@@ -3668,7 +3668,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IConstraint curConstraint,
 			bool hasErrorDefault)
 		{
-			Guid domainRoleErrorId = validationInfo.DomainRoleFromError; ;
+			Guid domainRoleErrorId = validationInfo.DomainRoleFromError;
 			IList<IConstraint> constrFound = null;
 			bool hasError = hasErrorDefault;
 

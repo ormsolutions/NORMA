@@ -46,6 +46,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.SurveyQuestionImageList;
 			}
 		}
+		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetErrorDisplayTypes"/></summary>
+		protected static IEnumerable<Type> GetErrorDisplayTypes()
+		{
+			return new Type[]{
+				typeof(SurveyErrorState)};
+		}
+		IEnumerable<Type> ISurveyQuestionProvider.GetErrorDisplayTypes()
+		{
+			return GetErrorDisplayTypes();
+		}
 		private sealed class ProvideSurveyQuestionForSurveyElementType : ISurveyQuestionTypeInfo
 		{
 			private ProvideSurveyQuestionForSurveyElementType()
@@ -104,7 +114,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return -1;
+				int retVal;
+				switch ((SurveyErrorState)answer)
+				{
+					case SurveyErrorState.HasError:
+						retVal = (int)SurveyQuestionGlyph.Last + 1;
+						break;
+					default:
+						retVal = -1;
+						break;
+				}
+				return retVal;
 			}
 			public SurveyQuestionUISupport UISupport
 			{

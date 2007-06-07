@@ -25,9 +25,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ObjectType : IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{
-
-		#region IAnswerSurveyQuestion<ErrorState> Members
-
+		#region IAnswerSurveyQuestion<ErrorState> Implementation
 		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
@@ -38,10 +36,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+			if (Model == null)
+				return -1;
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}
-
-		#endregion
+		#endregion // IAnswerSurveyQuestion<ErrorState> Implementation
 		#region IAnswerSurveyQuestion<ElementType> Members
 
 		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
@@ -94,7 +93,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				
+
 				DataObject retVal = new DataObject();
 				Objectification objectification;
 				if (null != (objectification = Objectification))
@@ -117,7 +116,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 
-		
+
 	}
 
 }

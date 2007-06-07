@@ -27,10 +27,9 @@ using System.Diagnostics;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class SetConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode
-	{
-		#region IAnswerSurveyQuestion<ErrorState> Members
-
-		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+    {
+        #region IAnswerSurveyQuestion<ErrorState> Implementation
+        int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -40,12 +39,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
-		}
-
-		#endregion
-		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+			if (Model == null)
+				return -1;
+            return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+        }
+        #endregion // IAnswerSurveyQuestion<ErrorState> Implementation
+        #region IAnswerSurveyQuestion<ElementType> Members
+        int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}
@@ -265,10 +265,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 	public partial class SetComparisonConstraint : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
-	{
-		#region IAnswerSurveyQuestion<ErrorState> Members
-
-		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
+    {
+        #region IAnswerSurveyQuestion<ErrorState> Implementation
+        int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion()
 		{
 			return AskErrorQuestion();
 		}
@@ -278,12 +277,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected int AskErrorQuestion()
 		{
-			return (int)(ModelError.HasErrors(this, ModelErrorUses.None) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
-		}
-
-		#endregion
-		#region IAnswerSurveyQuestion<ElementType> Members
-		int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
+			if (Model == null)
+				return -1;
+			return (int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, Model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+        }
+        #endregion // IAnswerSurveyQuestion<ErrorState> Implementation
+        #region IAnswerSurveyQuestion<ElementType> Members
+        int IAnswerSurveyQuestion<SurveyElementType>.AskQuestion()
 		{
 			return AskElementQuestion();
 		}

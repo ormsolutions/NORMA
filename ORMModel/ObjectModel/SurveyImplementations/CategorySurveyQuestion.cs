@@ -72,13 +72,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public enum SurveyErrorState
 	{
 		/// <summary>
-		/// ORM element contains error
-		/// </summary>
-		HasError,
-		/// <summary>
 		/// ORM element does not contain an error
 		/// </summary>
 		NoError,
+		/// <summary>
+		/// ORM element contains error
+		/// </summary>
+		HasError,
 	}
 	#endregion // Error State question
 	#region Survey Glyph questions
@@ -299,6 +299,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Secondary SubType Relationship
 		/// </summary>
 		SecondarySubtypeRelationship,
+        /// <summary>
+        /// The last glyph
+        /// </summary>
+        Last = SecondarySubtypeRelationship,
 	}
 	#endregion // Survey Glyph questions
 }

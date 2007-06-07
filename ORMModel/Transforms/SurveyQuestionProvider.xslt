@@ -145,6 +145,35 @@
 							</xsl:choose>
 						</plx:get>
 					</plx:property>
+					<plx:function visibility="protected" name="GetErrorDisplayTypes" modifier="static">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>Implements <see cref="ISurveyQuestionProvider.GetErrorDisplayTypes"/>
+								</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetErrorDisplayTypes"/>
+						<plx:returns dataTypeName="IEnumerable">
+							<plx:passTypeParam dataTypeName="Type"/>
+						</plx:returns>
+						<plx:return>
+							<xsl:variable name="errorTypeNames" select="qp:surveyQuestions/qp:surveyQuestion[@isErrorDisplay='true' or @isErrorDisplay='1']/@questionType"/>
+							<xsl:choose>
+								<xsl:when test="$errorTypeNames">
+									<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
+										<plx:arrayInitializer>
+											<xsl:for-each select="$errorTypeNames">
+												<plx:typeOf dataTypeName="{.}"/>
+											</xsl:for-each>
+										</plx:arrayInitializer>
+									</plx:callNew>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nullKeyword/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:return>
+					</plx:function>
 					<xsl:apply-templates select="qp:surveyQuestions/qp:surveyQuestion"/>
 				</plx:class>
 			</plx:namespace>
@@ -251,7 +280,21 @@
 													<plx:nameRef name="retVal"/>
 												</plx:left>
 												<plx:right>
-													<plx:value data="{@imageIndex}" type="i4"/>
+													<xsl:choose>
+														<xsl:when test="@imageIndex='.custom'">
+															<plx:binaryOperator type="add">
+																<plx:left>
+																	<xsl:copy-of select="child::plx:*"/>
+																</plx:left>
+																<plx:right>
+																	<plx:value data="1" type="i4"/>
+																</plx:right>
+															</plx:binaryOperator>
+														</xsl:when>
+														<xsl:otherwise>
+															<plx:value data="{@imageIndex}" type="i4"/>
+														</xsl:otherwise>
+													</xsl:choose>
 												</plx:right>
 											</plx:assign>
 										</plx:case>

@@ -34,6 +34,7 @@ using Neumont.Tools.Modeling;
 using EnvDTE;
 using System.Xml.Schema;
 using System.Collections.ObjectModel;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -619,7 +620,8 @@ namespace Neumont.Tools.ORM.Shell
 				//refresh diagrams
 				ORMDesignerDocView.InvalidateAllDiagrams(toolServices.ServiceProvider, this);
 
-				//refresh task list
+				//refresh task list and model browser
+				SurveyTree surveyTree = mySurveyTree;
 				foreach (ORMModel model in this.Store.ElementDirectory.FindElements<ORMModel>(true))
 				{
 					ModelErrorDisplayFilter filter = model.ModelErrorDisplayFilter;
@@ -642,6 +644,13 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								taskProvider.RemoveTask(taskItem);
 							}
+						}
+						if (surveyTree != null)
+						{
+							error.WalkAssociatedElements(delegate(ModelElement associatedElement)
+							{
+								surveyTree.UpdateErrorDisplay(associatedElement);
+							});
 						}
 					}
 					break;

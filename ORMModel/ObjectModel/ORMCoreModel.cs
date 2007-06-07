@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -36,6 +37,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
+		private static Type[] errorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
 		private static Type[] questionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
 		#region InitializingToolboxItems property
 		private static bool myInitializingToolboxItems;
@@ -175,7 +177,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// allows tighter control within a domain, or to make a delay validate function run with
 		/// validators for earlier DomainModel.
 		/// </summary>
-		[AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=false)]
+		[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 		public sealed class DelayValidatePriorityAttribute : Attribute
 		{
 			private int myPriority;
@@ -690,9 +692,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectificationDeleted), action);
 			propertyInfo = directory.FindDomainProperty(Objectification.IsImpliedDomainPropertyId);
 			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectificationChanged), action);
-			
+
 			//RolePlayerChanged
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationRolePlayerChanged), action);
+
+			//Error state changed
+			//classInfo = directory.FindDomainClass(ElementLink.DomainClassId);
+			//eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PotentialIndirectModelErrorLinkDeleted), action);
+			classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChanged), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChanged), action);
 
 			//ModalityChanged
 			DomainPropertyInfo info = directory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
@@ -717,7 +726,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			info = directory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
 			eventManager.AddOrRemoveHandler(info, new EventHandler<ElementPropertyChangedEventArgs>(SubtypeFactIsPrimaryChanged), action);
 		}
-			
+
 		void IORMModelEventSubscriber.ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			this.ManageSurveyQuestionModelingEventHandlers(eventManager, action);
@@ -938,13 +947,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void SetConstraintDeleted(object sender, ElementDeletedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
-			ModelHasSetConstraint element = e.ModelElement as ModelHasSetConstraint;			
+			ModelHasSetConstraint element = e.ModelElement as ModelHasSetConstraint;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				eventNotify.ElementDeleted(element.SetConstraint);
 			}
 		}
-
 		/// <summary>
 		/// Set Comparison Constraint added
 		/// </summary>
@@ -955,7 +963,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				//do not add the exclusion constraint if its part of ExclusiveOr. 
-				if (null!=(element as ExclusionConstraint) && null !=((element as ExclusionConstraint).ExclusiveOrMandatoryConstraint))
+				if (null != (element as ExclusionConstraint) && null != ((element as ExclusionConstraint).ExclusiveOrMandatoryConstraint))
 				{
 					return;
 				}
@@ -974,7 +982,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventNotify.ElementDeleted(element.SetComparisonConstraint);
 			}
 		}
-
 		/// <summary>
 		/// Fact Type has role added
 		/// </summary>
@@ -995,7 +1002,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
 		/// <summary>
 		/// Fact Type has role deleted
 		/// </summary>
@@ -1025,14 +1031,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="ElementAddedEventArgs"/> instance containing the event data.</param>
 		protected void ObjectificationAdded(object sender, ElementAddedEventArgs e)
-		{	
+		{
 			INotifySurveyElementChanged eventNotify;
 			Objectification element = e.ModelElement as Objectification;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged)
 				&& !element.IsImplied)
 			{
-					eventNotify.ElementChanged(element.NestingType, questionTypes);
-					eventNotify.ElementChanged(element.NestedFactType, questionTypes);
+				eventNotify.ElementChanged(element.NestingType, questionTypes);
+				eventNotify.ElementChanged(element.NestedFactType, questionTypes);
 			}
 		}
 		/// <summary>
@@ -1095,7 +1101,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void ObjectificationRolePlayerChanged(object sender, RolePlayerChangedEventArgs e)
 		{
 
-			ObjectType newObjectType;			
+			ObjectType newObjectType;
 			ObjectType oldObjectType;
 			ModelElement element = e.NewRolePlayer;
 			INotifySurveyElementChanged eventNotify;
@@ -1109,7 +1115,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
 		/// <summary>
 		/// ValueTypeHasDataType added
 		/// </summary>
@@ -1140,7 +1145,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventNotify.ElementChanged(objectType, questionTypes);
 			}
 		}
-
 		/// <summary>
 		/// Modality changed.
 		/// </summary>
@@ -1186,7 +1190,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventNotify.ElementChanged(constraint, questionTypes);
 			}
 		}
-
 		/// <summary>
 		/// ValueTypeHasDataType added
 		/// </summary>
@@ -1204,7 +1207,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventNotify.ElementChanged(coupler.ExclusionConstraint, questionTypes);
 			}
 		}
-
 		/// <summary>
 		/// ValueTypeHasDataType added
 		/// </summary>
@@ -1224,8 +1226,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
-
 		/// <summary>
 		/// SubType Fact IsPrimary property changed
 		/// </summary>
@@ -1240,8 +1240,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SubtypeFact subTypeFact = element as SubtypeFact;
 				eventNotify.ElementChanged(subTypeFact, questionTypes);
 			}
-		}		
-
+		}
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for changes to a <see cref="ModelElement">ModelElement</see>'s error state
+		/// </summary>
+		protected static void ModelElementErrorStateChanged(object sender, ElementEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element;
+			if (null != (eventNotify = ((element = e.ModelElement).Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ModelError.WalkAssociatedElements((element as ElementAssociatedWithModelError).AssociatedElement,
+					delegate(ModelElement associatedElement)
+					{
+						eventNotify.ElementChanged(associatedElement, errorQuestionTypes);
+					});
+			}
+		}
 		#endregion //SurveyEventHandling
 	}
 }

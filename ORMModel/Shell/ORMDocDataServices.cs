@@ -117,7 +117,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			#region Member Variables
 			private readonly IORMToolServices myServices;
-            private readonly ModelingEventManager myModelingEventManager;  
+			private readonly ModelingEventManager myModelingEventManager;
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -303,7 +303,7 @@ namespace Neumont.Tools.ORM.Shell
 					return ModelingEventManager;
 				}
 			}
-			#endregion // IModelingEventManagerProvider Implementation  
+			#endregion // IModelingEventManagerProvider Implementation
 		}
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
@@ -376,9 +376,9 @@ namespace Neumont.Tools.ORM.Shell
 #if	DEBUG_MODIFIED_PARITION_COMMAND
 					typeof(int),
 #else
-					typeof(bool),
+ typeof(bool),
 #endif
-					new Type[] { transactionItemType, partitionType },
+ new Type[] { transactionItemType, partitionType },
 					transactionItemType, true);
 				// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for more than the required 55 bytes
 				// to avoid a resize to an even larger buffer.
@@ -563,7 +563,7 @@ namespace Neumont.Tools.ORM.Shell
 						MSOLE.IOleUndoUnit[] undoUnitArray = new MSOLE.IOleUndoUnit[1];
 						uint unitsCount = 0;
 						MSOLE.IOleUndoUnit lastUndoUnit = null;
-						for (;;)
+						for (; ; )
 						{
 							if (unitsCount == 1)
 							{
@@ -911,7 +911,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					throw new ArgumentNullException("propertyProvisioning");
 				}
-				
+
 				Type extendableElementType = typeof(TExtendableElement);
 
 				this.RegisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
