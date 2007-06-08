@@ -1,0 +1,1251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Neumont.Tools.Dil.Dcil.DcilDomainModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.Dcil</value>
+    <comment>Description for DslLibrary &apos;Dcil&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DcilDomainModel.DisplayName" xml:space="preserve">
+    <value>Database Conceptual Intermediate Language</value>
+    <comment>DisplayName for DslLibrary &apos;Dcil&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DcilModelElement.Description" xml:space="preserve">
+    <value>Base class for DCIL &lt;see cref=&apos;DslModeling::ModelElement&apos;/&gt;s.</value>
+    <comment>Description for DomainClass &apos;DcilModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DcilModelElement.DisplayName" xml:space="preserve">
+    <value>Dcil Model Element</value>
+    <comment>DisplayName for DomainClass &apos;DcilModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Catalog.Description" xml:space="preserve">
+    <value>A named collection of schemas (commonly referred to as a database). Equivalent to a &apos;CATALOG&apos; in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;Catalog&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Catalog.DisplayName" xml:space="preserve">
+    <value>Catalog</value>
+    <comment>DisplayName for DomainClass &apos;Catalog&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Catalog/Name.Description" xml:space="preserve">
+    <value>The name of the catalog.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Catalog&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Catalog/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Catalog&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Schema.Description" xml:space="preserve">
+    <value>Equivalent to a &apos;SCHEMA&apos; in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Schema.DisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>DisplayName for DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Schema/Name.Description" xml:space="preserve">
+    <value>The name of the schema.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Schema/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Table.Description" xml:space="preserve">
+    <value>Equivalent to a &apos;TABLE&apos; in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Table/Name.Description" xml:space="preserve">
+    <value>The name of the table.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Table/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column.Description" xml:space="preserve">
+    <value>Equivalent to a &apos;COLUMN&apos; in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column/Name.Description" xml:space="preserve">
+    <value>The name of the column.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column/IsNullable.Description" xml:space="preserve">
+    <value>Is NULL a valid value for this column?</value>
+    <comment>Description for DomainProperty &apos;IsNullable&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column/IsNullable.DisplayName" xml:space="preserve">
+    <value>Is Nullable</value>
+    <comment>DisplayName for DomainProperty &apos;IsNullable&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column/IsIdentity.Description" xml:space="preserve">
+    <value>Is this an IDENTITY column?</value>
+    <comment>Description for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Column/IsIdentity.DisplayName" xml:space="preserve">
+    <value>Is Identity</value>
+    <comment>DisplayName for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Constraint.Description" xml:space="preserve">
+    <value>Base class for DCIL constraints.</value>
+    <comment>Description for DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Constraint.DisplayName" xml:space="preserve">
+    <value>Constraint</value>
+    <comment>DisplayName for DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Constraint/name.Description" xml:space="preserve">
+    <value>The name of the constraint.</value>
+    <comment>Description for DomainProperty &apos;name&apos; on DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Constraint/name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;name&apos; on DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraint.Description" xml:space="preserve">
+    <value>A constraint on the uniqueness of a set of columns. Equivalent to a &apos;UNIQUE&apos; or &apos;PRIMARY KEY&apos; in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint</value>
+    <comment>DisplayName for DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraint/IsPrimary.Description" xml:space="preserve">
+    <value>Is this uniqueness constraint a PRIMARY KEY?</value>
+    <comment>Description for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraint/IsPrimary.DisplayName" xml:space="preserve">
+    <value>Is Primary</value>
+    <comment>DisplayName for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraint.Description" xml:space="preserve">
+    <value>A reference to a &lt;see cref=&apos;UniquenessConstraint&apos;/&gt; in another table. Equivalent to a &apos;FOREIGN KEY&apos; in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;ReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraint.DisplayName" xml:space="preserve">
+    <value>Reference Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CheckConstraint.Description" xml:space="preserve">
+    <value>Equivalent to a table-level or domain &apos;CHECK&apos; clause in the SQL Standard.</value>
+    <comment>Description for DomainClass &apos;CheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CheckConstraint.DisplayName" xml:space="preserve">
+    <value>Check Constraint</value>
+    <comment>DisplayName for DomainClass &apos;CheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Domain.Description" xml:space="preserve">
+    <value>A user-defined data domain, which can have custom restrictions on it.</value>
+    <comment>Description for DomainClass &apos;Domain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Domain.DisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>DisplayName for DomainClass &apos;Domain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Domain/Name.Description" xml:space="preserve">
+    <value>The name of the data domain.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Domain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.Domain/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Domain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.PredefinedDataType</value>
+    <comment>Description for DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType.DisplayName" xml:space="preserve">
+    <value>Predefined Data Type</value>
+    <comment>DisplayName for DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Name.Description" xml:space="preserve">
+    <value>The name of the predefined type.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Length.Description" xml:space="preserve">
+    <value>The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</value>
+    <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Length.DisplayName" xml:space="preserve">
+    <value>Length</value>
+    <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Precision.Description" xml:space="preserve">
+    <value>The maximum number of decimal digits in a NUMERIC or DECIMAL, or the maximum number of binary digits in the significand (mantissa) of a FLOAT.</value>
+    <comment>Description for DomainProperty &apos;Precision&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Precision.DisplayName" xml:space="preserve">
+    <value>Precision</value>
+    <comment>DisplayName for DomainProperty &apos;Precision&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Scale.Description" xml:space="preserve">
+    <value>The maximum number of decimal digits after the decimal point in a NUMERIC or DECIMAL.</value>
+    <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.PredefinedDataType/Scale.DisplayName" xml:space="preserve">
+    <value>Scale</value>
+    <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.CatalogContainsSchema</value>
+    <comment>Description for DomainClass &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema.DisplayName" xml:space="preserve">
+    <value>Catalog Contains Schema</value>
+    <comment>DisplayName for DomainClass &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.CatalogContainsSchema.Catalog</value>
+    <comment>Description for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.DisplayName" xml:space="preserve">
+    <value>Catalog</value>
+    <comment>DisplayName for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.PropertyDisplayName" xml:space="preserve">
+    <value>Schemas</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Schema.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.CatalogContainsSchema.Schema</value>
+    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Schema.DisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Schema.PropertyDisplayName" xml:space="preserve">
+    <value>Catalog</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsContent</value>
+    <comment>Description for DomainClass &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent.DisplayName" xml:space="preserve">
+    <value>Schema Contains Content</value>
+    <comment>DisplayName for DomainClass &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent/Schema.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsContent.Schema</value>
+    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent/Schema.DisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent/Schema.PropertyDisplayName" xml:space="preserve">
+    <value>Schema Content</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent/SchemaContent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsContent.SchemaContent</value>
+    <comment>Description for DomainRole &apos;SchemaContent&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent/SchemaContent.DisplayName" xml:space="preserve">
+    <value>Schema Content</value>
+    <comment>DisplayName for DomainRole &apos;SchemaContent&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsContent/SchemaContent.PropertyDisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SchemaContent&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsTable</value>
+    <comment>Description for DomainClass &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable.DisplayName" xml:space="preserve">
+    <value>Schema Contains Table</value>
+    <comment>DisplayName for DomainClass &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsTable.Schema</value>
+    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.DisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.PropertyDisplayName" xml:space="preserve">
+    <value>Tables</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsTable.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsDomain</value>
+    <comment>Description for DomainClass &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain.DisplayName" xml:space="preserve">
+    <value>Schema Contains Domain</value>
+    <comment>DisplayName for DomainClass &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsDomain.Schema</value>
+    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.DisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.PropertyDisplayName" xml:space="preserve">
+    <value>Domains</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Domain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.SchemaContainsDomain.Domain</value>
+    <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Domain.DisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Domain.PropertyDisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsColumn</value>
+    <comment>Description for DomainClass &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn.DisplayName" xml:space="preserve">
+    <value>Table Contains Column</value>
+    <comment>DisplayName for DomainClass &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsColumn.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Columns</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Column.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsColumn.Column</value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsConstraint</value>
+    <comment>Description for DomainClass &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint.DisplayName" xml:space="preserve">
+    <value>Table Contains Constraint</value>
+    <comment>DisplayName for DomainClass &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsConstraint.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Constraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsConstraint.Constraint</value>
+    <comment>Description for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Constraint.DisplayName" xml:space="preserve">
+    <value>Constraint</value>
+    <comment>DisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Constraint.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint</value>
+    <comment>Description for DomainClass &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Table Contains Uniqueness Constraint</value>
+    <comment>DisplayName for DomainClass &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Uniqueness Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.UniquenessConstraint</value>
+    <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/UniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint</value>
+    <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint</value>
+    <comment>Description for DomainClass &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint.DisplayName" xml:space="preserve">
+    <value>Table Contains Reference Constraint</value>
+    <comment>DisplayName for DomainClass &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Reference Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint.ReferenceConstraint</value>
+    <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/ReferenceConstraint.DisplayName" xml:space="preserve">
+    <value>Reference Constraint</value>
+    <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Source Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint</value>
+    <comment>Description for DomainClass &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.DisplayName" xml:space="preserve">
+    <value>Table Contains Check Constraint</value>
+    <comment>DisplayName for DomainClass &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Check Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.CheckConstraint</value>
+    <comment>Description for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/CheckConstraint.DisplayName" xml:space="preserve">
+    <value>Check Constraint</value>
+    <comment>DisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/CheckConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint</value>
+    <comment>Description for DomainClass &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint.DisplayName" xml:space="preserve">
+    <value>Domain Contains Check Constraint</value>
+    <comment>DisplayName for DomainClass &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint/Domain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint.Domain</value>
+    <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint/Domain.DisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint/Domain.PropertyDisplayName" xml:space="preserve">
+    <value>Check Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint.CheckConstraint</value>
+    <comment>Description for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint/CheckConstraint.DisplayName" xml:space="preserve">
+    <value>Check Constraint</value>
+    <comment>DisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint/CheckConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnHasDomain</value>
+    <comment>Description for DomainClass &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain.DisplayName" xml:space="preserve">
+    <value>Column Has Domain</value>
+    <comment>DisplayName for DomainClass &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain/Column.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnHasDomain.Column</value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain/Domain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnHasDomain.Domain</value>
+    <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain/Domain.DisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasDomain/Domain.PropertyDisplayName" xml:space="preserve">
+    <value>Columns</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType</value>
+    <comment>Description for DomainClass &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType.DisplayName" xml:space="preserve">
+    <value>Column Has Predefined Data Type</value>
+    <comment>DisplayName for DomainClass &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType/Column.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType.Column</value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Predefined Data Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType/PredefinedDataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType.PredefinedDataType</value>
+    <comment>Description for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType/PredefinedDataType.DisplayName" xml:space="preserve">
+    <value>Predefined Data Type</value>
+    <comment>DisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType/PredefinedDataType.PropertyDisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType</value>
+    <comment>Description for DomainClass &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType.DisplayName" xml:space="preserve">
+    <value>Domain Has Predefined Data Type</value>
+    <comment>DisplayName for DomainClass &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType/Domain.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType.Domain</value>
+    <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType/Domain.DisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType/Domain.PropertyDisplayName" xml:space="preserve">
+    <value>Predefined Data Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType/PredefinedDataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType.PredefinedDataType</value>
+    <comment>Description for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType/PredefinedDataType.DisplayName" xml:space="preserve">
+    <value>Predefined Data Type</value>
+    <comment>DisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType/PredefinedDataType.PropertyDisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn</value>
+    <comment>Description for DomainClass &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn.DisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint Includes Column</value>
+    <comment>DisplayName for DomainClass &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn.UniquenessConstraint</value>
+    <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint</value>
+    <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Columns</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/Column.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn.Column</value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Uniqueness Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable</value>
+    <comment>Description for DomainClass &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable.DisplayName" xml:space="preserve">
+    <value>Reference Constraint Targets Table</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable.ReferenceConstraint</value>
+    <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable/ReferenceConstraint.DisplayName" xml:space="preserve">
+    <value>Reference Constraint</value>
+    <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Target Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable/TargetTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable.TargetTable</value>
+    <comment>Description for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable/TargetTable.DisplayName" xml:space="preserve">
+    <value>Target Table</value>
+    <comment>DisplayName for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintTargetsTable/TargetTable.PropertyDisplayName" xml:space="preserve">
+    <value>Reference Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnReference</value>
+    <comment>Description for DomainClass &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference.DisplayName" xml:space="preserve">
+    <value>Column Reference</value>
+    <comment>DisplayName for DomainClass &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnReference.SourceColumn</value>
+    <comment>Description for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.DisplayName" xml:space="preserve">
+    <value>Source Column</value>
+    <comment>DisplayName for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.PropertyDisplayName" xml:space="preserve">
+    <value>Target Columns</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ColumnReference.TargetColumn</value>
+    <comment>Description for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.DisplayName" xml:space="preserve">
+    <value>Target Column</value>
+    <comment>DisplayName for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.PropertyDisplayName" xml:space="preserve">
+    <value>Source Columns</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference</value>
+    <comment>Description for DomainClass &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.DisplayName" xml:space="preserve">
+    <value>Reference Constraint Contains Column Reference</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.ReferenceConstraint</value>
+    <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.DisplayName" xml:space="preserve">
+    <value>Reference Constraint</value>
+    <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Column References</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ColumnReference.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.ColumnReference</value>
+    <comment>Description for DomainRole &apos;ColumnReference&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ColumnReference.DisplayName" xml:space="preserve">
+    <value>Column Reference</value>
+    <comment>DisplayName for DomainRole &apos;ColumnReference&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ColumnReference.PropertyDisplayName" xml:space="preserve">
+    <value>Reference Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ColumnReference&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/OldRow.DisplayName" xml:space="preserve">
+    <value>OldRow</value>
+    <comment>Display name for EnumerationLiteral &apos;OldRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/OldRow.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerTarget.OldRow</value>
+    <comment>Description for EnumerationLiteral &apos;OldRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/NewRow.DisplayName" xml:space="preserve">
+    <value>NewRow</value>
+    <comment>Display name for EnumerationLiteral &apos;NewRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/NewRow.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerTarget.NewRow</value>
+    <comment>Description for EnumerationLiteral &apos;NewRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/OldTable.DisplayName" xml:space="preserve">
+    <value>OldTable</value>
+    <comment>Display name for EnumerationLiteral &apos;OldTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/OldTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerTarget.OldTable</value>
+    <comment>Description for EnumerationLiteral &apos;OldTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/NewTable.DisplayName" xml:space="preserve">
+    <value>NewTable</value>
+    <comment>Display name for EnumerationLiteral &apos;NewTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerTarget/NewTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerTarget.NewTable</value>
+    <comment>Description for EnumerationLiteral &apos;NewTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerActionTime/Before.DisplayName" xml:space="preserve">
+    <value>Before</value>
+    <comment>Display name for EnumerationLiteral &apos;Before&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerActionTime/Before.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerActionTime.Before</value>
+    <comment>Description for EnumerationLiteral &apos;Before&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerActionTime/After.DisplayName" xml:space="preserve">
+    <value>After</value>
+    <comment>Display name for EnumerationLiteral &apos;After&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerActionTime/After.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerActionTime.After</value>
+    <comment>Description for EnumerationLiteral &apos;After&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerEvent/Insert.DisplayName" xml:space="preserve">
+    <value>Insert</value>
+    <comment>Display name for EnumerationLiteral &apos;Insert&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerEvent/Insert.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerEvent.Insert</value>
+    <comment>Description for EnumerationLiteral &apos;Insert&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerEvent/Delete.DisplayName" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Display name for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerEvent/Delete.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerEvent.Delete</value>
+    <comment>Description for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerEvent/Update.DisplayName" xml:space="preserve">
+    <value>Update</value>
+    <comment>Display name for EnumerationLiteral &apos;Update&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerEvent/Update.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerEvent.Update</value>
+    <comment>Description for EnumerationLiteral &apos;Update&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerForEach/Statement.DisplayName" xml:space="preserve">
+    <value>Statement</value>
+    <comment>Display name for EnumerationLiteral &apos;Statement&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerForEach/Statement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerForEach.Statement</value>
+    <comment>Description for EnumerationLiteral &apos;Statement&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerForEach/Row.DisplayName" xml:space="preserve">
+    <value>Row</value>
+    <comment>Display name for EnumerationLiteral &apos;Row&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.Dcil.TriggerForEach/Row.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.Dcil.TriggerForEach.Row</value>
+    <comment>Description for EnumerationLiteral &apos;Row&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/NoSql.DisplayName" xml:space="preserve">
+    <value>NoSql</value>
+    <comment>Display name for EnumerationLiteral &apos;NoSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/NoSql.Description" xml:space="preserve">
+    <value>Indicates that the SQL-invoked routine does not possibly contain SQL.</value>
+    <comment>Description for EnumerationLiteral &apos;NoSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/ContainsSql.DisplayName" xml:space="preserve">
+    <value>ContainsSql</value>
+    <comment>Display name for EnumerationLiteral &apos;ContainsSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/ContainsSql.Description" xml:space="preserve">
+    <value>Indicates that the SQL-invoked routine possibly contains SQL.</value>
+    <comment>Description for EnumerationLiteral &apos;ContainsSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/ReadsSqlData.DisplayName" xml:space="preserve">
+    <value>ReadsSqlData</value>
+    <comment>Display name for EnumerationLiteral &apos;ReadsSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/ReadsSqlData.Description" xml:space="preserve">
+    <value>Indicates that the SQL-invoked routine possibly reads SQL-data.</value>
+    <comment>Description for EnumerationLiteral &apos;ReadsSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/ModifiesSqlData.DisplayName" xml:space="preserve">
+    <value>ModifiesSqlData</value>
+    <comment>Display name for EnumerationLiteral &apos;ModifiesSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.SqlDataAccessIndication/ModifiesSqlData.Description" xml:space="preserve">
+    <value>Indicates that the SQL-invoked routine possibly modified SQL-data.</value>
+    <comment>Description for EnumerationLiteral &apos;ModifiesSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/StringMask.DisplayName" xml:space="preserve">
+    <value>StringMask</value>
+    <comment>Display name for EnumerationLiteral &apos;StringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/StringMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.StringMask</value>
+    <comment>Description for EnumerationLiteral &apos;StringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/CharacterStringMask.DisplayName" xml:space="preserve">
+    <value>CharacterStringMask</value>
+    <comment>Display name for EnumerationLiteral &apos;CharacterStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/CharacterStringMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.CharacterStringMask</value>
+    <comment>Description for EnumerationLiteral &apos;CharacterStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/BinaryStringMask.DisplayName" xml:space="preserve">
+    <value>BinaryStringMask</value>
+    <comment>Display name for EnumerationLiteral &apos;BinaryStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/BinaryStringMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.BinaryStringMask</value>
+    <comment>Description for EnumerationLiteral &apos;BinaryStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/LargeObjectStringMask.DisplayName" xml:space="preserve">
+    <value>LargeObjectStringMask</value>
+    <comment>Display name for EnumerationLiteral &apos;LargeObjectStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/LargeObjectStringMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.LargeObjectStringMask</value>
+    <comment>Description for EnumerationLiteral &apos;LargeObjectStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/NumericMask.DisplayName" xml:space="preserve">
+    <value>NumericMask</value>
+    <comment>Display name for EnumerationLiteral &apos;NumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/NumericMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.NumericMask</value>
+    <comment>Description for EnumerationLiteral &apos;NumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/ExactNumericMask.DisplayName" xml:space="preserve">
+    <value>ExactNumericMask</value>
+    <comment>Display name for EnumerationLiteral &apos;ExactNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/ExactNumericMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.ExactNumericMask</value>
+    <comment>Description for EnumerationLiteral &apos;ExactNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/ApproximateNumericMask.DisplayName" xml:space="preserve">
+    <value>ApproximateNumericMask</value>
+    <comment>Display name for EnumerationLiteral &apos;ApproximateNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/ApproximateNumericMask.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.ApproximateNumericMask</value>
+    <comment>Description for EnumerationLiteral &apos;ApproximateNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Character.DisplayName" xml:space="preserve">
+    <value>Character</value>
+    <comment>Display name for EnumerationLiteral &apos;Character&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Character.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Character</value>
+    <comment>Description for EnumerationLiteral &apos;Character&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/CharacterVarying.DisplayName" xml:space="preserve">
+    <value>CharacterVarying</value>
+    <comment>Display name for EnumerationLiteral &apos;CharacterVarying&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/CharacterVarying.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.CharacterVarying</value>
+    <comment>Description for EnumerationLiteral &apos;CharacterVarying&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/CharacterLargeObject.DisplayName" xml:space="preserve">
+    <value>CharacterLargeObject</value>
+    <comment>Display name for EnumerationLiteral &apos;CharacterLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/CharacterLargeObject.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.CharacterLargeObject</value>
+    <comment>Description for EnumerationLiteral &apos;CharacterLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/BinaryLargeObject.DisplayName" xml:space="preserve">
+    <value>BinaryLargeObject</value>
+    <comment>Display name for EnumerationLiteral &apos;BinaryLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/BinaryLargeObject.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.BinaryLargeObject</value>
+    <comment>Description for EnumerationLiteral &apos;BinaryLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Numeric.DisplayName" xml:space="preserve">
+    <value>Numeric</value>
+    <comment>Display name for EnumerationLiteral &apos;Numeric&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Numeric.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Numeric</value>
+    <comment>Description for EnumerationLiteral &apos;Numeric&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Decimal.DisplayName" xml:space="preserve">
+    <value>Decimal</value>
+    <comment>Display name for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Decimal.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Decimal</value>
+    <comment>Description for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/SmallInt.DisplayName" xml:space="preserve">
+    <value>SmallInt</value>
+    <comment>Display name for EnumerationLiteral &apos;SmallInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/SmallInt.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.SmallInt</value>
+    <comment>Description for EnumerationLiteral &apos;SmallInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Integer.DisplayName" xml:space="preserve">
+    <value>Integer</value>
+    <comment>Display name for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Integer.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Integer</value>
+    <comment>Description for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/BigInt.DisplayName" xml:space="preserve">
+    <value>BigInt</value>
+    <comment>Display name for EnumerationLiteral &apos;BigInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/BigInt.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.BigInt</value>
+    <comment>Description for EnumerationLiteral &apos;BigInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Float.DisplayName" xml:space="preserve">
+    <value>Float</value>
+    <comment>Display name for EnumerationLiteral &apos;Float&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Float.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Float</value>
+    <comment>Description for EnumerationLiteral &apos;Float&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Real.DisplayName" xml:space="preserve">
+    <value>Real</value>
+    <comment>Display name for EnumerationLiteral &apos;Real&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Real.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Real</value>
+    <comment>Description for EnumerationLiteral &apos;Real&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/DoublePrecision.DisplayName" xml:space="preserve">
+    <value>DoublePrecision</value>
+    <comment>Display name for EnumerationLiteral &apos;DoublePrecision&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/DoublePrecision.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.DoublePrecision</value>
+    <comment>Description for EnumerationLiteral &apos;DoublePrecision&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Boolean.DisplayName" xml:space="preserve">
+    <value>Boolean</value>
+    <comment>Display name for EnumerationLiteral &apos;Boolean&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.Dil.PredefinedType/Boolean.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.Dil.PredefinedType.Boolean</value>
+    <comment>Description for EnumerationLiteral &apos;Boolean&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
