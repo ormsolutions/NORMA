@@ -480,19 +480,23 @@ namespace Neumont.Tools.ORM.Shell
 					break;
 				case __FRAMESHOW.FRAMESHOW_WinHidden:
 					bool cover = false;
+					object frameModeObj;
+					VSFRAMEMODE frameMode = (VSFRAMEMODE)(-1);
+					IVsWindowFrame frame = Frame;
+					if (frame != null &&
+						VSConstants.S_OK == frame.GetProperty((int)__VSFPROPID.VSFPROPID_FrameMode, out frameModeObj))
+					{
+						// VS is changing the framemode during a hide request without telling us, always check and reset
+						// at this point so that a move on a hidden window does not reshow it.
+						myLastFrameMode = frameMode = (VSFRAMEMODE)frameModeObj;
+					}
 					if (0 != (startFlags & FrameVisibilityFlags.PendingHiddenMeansCovered))
 					{
 						cover = true;
 					}
 					else if (0 == (startFlags & FrameVisibilityFlags.PendingHiddenMeansClosed))
 					{
-						object frameMode;
-						IVsWindowFrame frame = Frame;
-						if (frame != null &&
-							VSConstants.S_OK == frame.GetProperty((int)__VSFPROPID.VSFPROPID_FrameMode, out frameMode))
-						{
-							cover = (VSFRAMEMODE)frameMode == VSFRAMEMODE.VSFM_MdiChild;
-						}
+						cover = frameMode == VSFRAMEMODE.VSFM_MdiChild;
 					}
 					if (cover)
 					{

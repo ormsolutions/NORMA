@@ -617,7 +617,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			DrawDiagram(store);
 		}
 		#region ToolWindowProperties
 		/// <summary>

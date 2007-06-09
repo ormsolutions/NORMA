@@ -7738,14 +7738,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region IConstraint Implementation
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
-            {
+		{
 				new IntersectingConstraintValidation(
 				    IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 				    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 				    ConstraintType.InternalUniqueness,
 				    ConstraintType.ExternalUniqueness),
-            };
+		};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
 		/// </summary>
@@ -7819,28 +7819,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region IConstraint Implementation
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
-            {
+			{
 				//Implication
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.None,
-				    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Equality),
+					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					ConstraintType.Equality),
 
 				//Implication
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.None,
-				    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Equality,
-				    ConstraintType.Subset),
+					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					ConstraintType.Equality,
+					ConstraintType.Subset),
 				
 				//Contradiction
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
-				    SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Exclusion),
+					SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
+					ConstraintType.Exclusion),
 
 				//TODO: handle disjunctive mandatory too!!!
 				//Implication
@@ -7862,7 +7862,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//    IntersectingConstraintPattern.SetComparisonConstraintSubset,
 				//    EqualityIsSubsetOfExclusionError.EqualityConstraintDomainRoleId,
 				//    ConstraintType.Exclusion)
-            };
+			};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
 		/// </summary>
@@ -7947,34 +7947,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#region IConstraint Implementation
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
-            {
+			{
 				//Implication
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Exclusion),
+					ConstraintType.Exclusion),
 
 				//Implication
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger,
-				    SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Exclusion),
+					SetComparisonConstraintHasImplicationError.SetComparisonConstraintDomainRoleId,
+					ConstraintType.Exclusion),
 				
 				//Contradiction
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
-				    SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
+					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Subset),
 				
 				//Contradiction
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSubset,
+					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
-				    SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Equality),
+					SetComparisonConstraintHasExclusionContradictsEqualityError.SetComparisonConstraintDomainRoleId,
+					ConstraintType.Equality),
 				
 				//TODO: handle disjunctive mandatory too!!!
 				//Contradiction
@@ -7990,7 +7990,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 				//    EqualityIsSubsetOfExclusionError.ExclusionConstraintDomainRoleId,
 				//    ConstraintType.Equality)
-            };
+			};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
 		/// </summary>
@@ -8046,14 +8046,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region IConstraint Implementation
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
-            {
+			{
 				//Implication
-                new IntersectingConstraintValidation(
-                    IntersectingConstraintPattern.SetConstraintSubset,
+				new IntersectingConstraintValidation(
+					IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
-                    ConstraintType.SimpleMandatory,
-                    ConstraintType.DisjunctiveMandatory),
+					ConstraintType.SimpleMandatory,
+					ConstraintType.DisjunctiveMandatory),
 				
 				//Implication
 				new IntersectingConstraintValidation(
@@ -8089,7 +8089,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//    IntersectingConstraintPattern.NotWellModeledEqualityAndMandatory,
 				//    SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 				//    ConstraintType.Equality)
-            };
+			};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
 		/// </summary>
@@ -8192,7 +8192,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#region IConstraint Implementation
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
-            {
+			{
 				//TODO: these cases are not currently handled
 				//Implication - if they are in the same direction (it will be bad ORM if they are in different
 				//direction and should be handled differently)
@@ -8210,10 +8210,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				
 				//Contradiction
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
+					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 					IntersectingConstraintPatternOptions.None,
-				    SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
-				    ConstraintType.Exclusion),
+					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
+					ConstraintType.Exclusion),
 
 				//TODO: handle disjunctive mandatory too!!!
 				//Implication
@@ -8236,7 +8236,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//    IntersectingConstraintPattern.SetComparisonConstraintSuperset,
 				//    EqualityIsSubsetOfSubsetError.EqualityConstraintDomainRoleId,
 				//    ConstraintType.Equality)
-            };
+			};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
 		/// </summary>
