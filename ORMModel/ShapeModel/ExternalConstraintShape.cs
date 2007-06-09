@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation

@@ -367,44 +367,104 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// External constraint shapes can only be drawn if they show all of their
 		/// links, so automatically remove them if a connecting shape is removed.
 		/// </summary>
-		[RuleOn(typeof(ExternalConstraintLink))] // DeletingRule
-		private sealed partial class DeleteDanglingConstraintShapeRule : DeletingRule
+		[RuleOn(typeof(LinkConnectsToNode))] // DeletingRule
+		private sealed partial class DeleteDanglingConstraintShapeDeletingRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ExternalConstraintLink link = e.ModelElement as ExternalConstraintLink;
+				LinkConnectsToNode connectLink = e.ModelElement as LinkConnectsToNode;
+				ExternalConstraintLink link = connectLink.Link as ExternalConstraintLink;
 				ModelElement linkMel;
-				ExternalConstraintShape shape;
 				ModelElement shapeMel;
-				// The ToShape (as opposed to FromShape) here needs to be in
-				// sync with the code in ConfiguringAsChildOf
-				if (null != (linkMel = link.ModelElement) &&
-					!linkMel.IsDeleting &&
-					null != (shape = link.ToShape as ExternalConstraintShape) &&
-					null != (shapeMel = shape.ModelElement) &&
-					!shapeMel.IsDeleting)
+				if (null != (link = connectLink.Link as ExternalConstraintLink) &&
+					null != (linkMel = link.ModelElement) &&
+					!linkMel.IsDeleting)
 				{
-					if (!shape.IsDeleting)
+					NodeShape linkNode = connectLink.Nodes;
+					ExternalConstraintShape constraintShape = linkNode as ExternalConstraintShape;
+					NodeShape oppositeShape = null;
+					// The ToShape (as opposed to FromShape) here needs to be in
+					// sync with the code in ConfiguringAsChildOf
+					if (constraintShape == null)
 					{
-						ORMCoreDomainModel.DelayValidateElement(shape, DelayValidateExternalConstraintShapeFullyConnected);
+						constraintShape = link.ToShape as ExternalConstraintShape;
+						oppositeShape = linkNode;
 					}
 					else
 					{
-						FactTypeShape factTypeShape;
-						FactTypeLinkConnectorShape factTypeLinkConnector;
-						NodeShape fromShape = link.FromShape;
-						if ((null != (factTypeShape = fromShape as FactTypeShape) ||
-							null != (factTypeShape = (null != (factTypeLinkConnector = fromShape as FactTypeLinkConnectorShape)) ? factTypeLinkConnector.ParentShape as FactTypeShape : null)))
+						oppositeShape = link.FromShape;
+					}
+					if (oppositeShape != null &&
+						constraintShape != null &&
+						null != (shapeMel = constraintShape.ModelElement) &&
+						!shapeMel.IsDeleting)
+					{
+						if (!constraintShape.IsDeleting)
 						{
-							SizeD oldSize = factTypeShape.Size;
-							factTypeShape.AutoResize();
-							if (oldSize == factTypeShape.Size)
+							ORMCoreDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
+						}
+						else
+						{
+							FactTypeShape factTypeShape = MultiShapeUtility.ResolvePrimaryShape(oppositeShape) as FactTypeShape;
+							if (factTypeShape != null)
 							{
-								factTypeShape.InvalidateRequired(true);
+								SizeD oldSize = factTypeShape.Size;
+								factTypeShape.AutoResize();
+								if (oldSize == factTypeShape.Size)
+								{
+									factTypeShape.InvalidateRequired(true);
+								}
 							}
 						}
 					}
 				}
+			}
+		}
+		/// <summary>
+		/// External constraint shapes can only be drawn if they show all of their
+		/// links, so automatically remove them if a link is moved off the constraint
+		/// shape.
+		/// </summary>
+		[RuleOn(typeof(LinkConnectsToNode))] // RolePlayerChangeRule
+		private sealed partial class DeleteDanglingConstraintShapeRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				IElementDirectory directory;
+				ShapeElement oldShape;
+				if (e.DomainRole.Id == LinkConnectsToNode.NodesDomainRoleId &&
+					(directory = e.ElementLink.Store.ElementDirectory).ContainsElement(e.OldRolePlayerId) &&
+					null != (oldShape = directory.GetElement(e.OldRolePlayerId) as ShapeElement))
+				{
+					ExternalConstraintShape constraintShape;
+					FactTypeShape factTypeShape;
+					if (null != (constraintShape = oldShape as ExternalConstraintShape))
+					{
+						ORMCoreDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
+					}
+					else if (null != (factTypeShape = MultiShapeUtility.ResolvePrimaryShape(oldShape) as FactTypeShape))
+					{
+						SizeD oldSize = factTypeShape.Size;
+						factTypeShape.AutoResize();
+						if (oldSize == factTypeShape.Size)
+						{
+							factTypeShape.InvalidateRequired(true);
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// External constraint shapes can only be drawn if they show all of their
+		/// links, so automatically remove them if multishape link handling never
+		/// attaches the link after it is added.
+		/// </summary>
+		[RuleOn(typeof(ExternalConstraintShape), FireTime=TimeToFire.TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority + 1)] // AddRule
+		private sealed partial class DeleteDanglingConstraintShapeAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				DelayValidateExternalConstraintShapeFullyConnected(e.ModelElement);
 			}
 		}
 		private static void DelayValidateExternalConstraintShapeFullyConnected(ModelElement element)
@@ -421,18 +481,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 				bool keepShape = false;
-				if (linkCount != 0)
+				IConstraint constraint = shape.AssociatedConstraint;
+				switch (constraint.ConstraintStorageStyle)
 				{
-					IConstraint constraint = shape.AssociatedConstraint;
-					switch (constraint.ConstraintStorageStyle)
-					{
-						case ConstraintStorageStyle.SetConstraint:
-							keepShape = ((SetConstraint)constraint).FactTypeCollection.Count == linkCount;
-							break;
-						case ConstraintStorageStyle.SetComparisonConstraint:
-							keepShape = ((SetComparisonConstraint)constraint).FactTypeCollection.Count == linkCount;
-							break;
-					}
+					case ConstraintStorageStyle.SetConstraint:
+						keepShape = ((SetConstraint)constraint).FactTypeCollection.Count == linkCount;
+						break;
+					case ConstraintStorageStyle.SetComparisonConstraint:
+						keepShape = ((SetComparisonConstraint)constraint).FactTypeCollection.Count == linkCount;
+						break;
 				}
 				if (!keepShape)
 				{

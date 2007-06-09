@@ -80,7 +80,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
 		{
-			Debug.Fail("Classes derived from ORMBaseBinarLinkShape must implement IReconfigurableLink.Reconfigure");
+			Debug.Fail("Classes derived from ORMBaseBinaryLinkShape must implement IReconfigurableLink.Reconfigure");
 		}
 		#endregion //MultipleShapesSupport
 		#region Customize appearance
@@ -249,14 +249,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IProxyConnectorShape.ProxyConnectorShapeFor
 		/// </summary>
-		protected NodeShape ProxyConnectorShapeFor
+		protected ShapeElement ProxyConnectorShapeFor
 		{
 			get
 			{
-				return ParentShape as NodeShape;
+				return ParentShape;
 			}
 		}
-		NodeShape IProxyConnectorShape.ProxyConnectorShapeFor
+		ShapeElement IProxyConnectorShape.ProxyConnectorShapeFor
 		{
 			get
 			{

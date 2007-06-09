@@ -34,7 +34,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
-						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -77,6 +79,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ExternalRoleConstraintDeleted),
 						typeof(FactTypedAdded),
 						typeof(FactTypeShapeChanged),
+						typeof(ForceClearViewFixupDataList),
 						typeof(ModelNoteAdded),
 						typeof(ModelNoteReferenceAdded),
 						typeof(ObjectTypedAdded),
@@ -132,7 +135,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 65; ++i)
+			for (int i = 0; i < 68; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -146,9 +149,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region Initially disable rules
 	partial class ExternalConstraintLink
 	{
-		partial class DeleteDanglingConstraintShapeRule
+		partial class DeleteDanglingConstraintShapeAddRule
 		{
-			public DeleteDanglingConstraintShapeRule()
+			public DeleteDanglingConstraintShapeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class ExternalConstraintLink
+	{
+		partial class DeleteDanglingConstraintShapeDeletingRule
+		{
+			public DeleteDanglingConstraintShapeDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class ExternalConstraintLink
+	{
+		partial class DeleteDanglingConstraintShapeRolePlayerChangeRule
+		{
+			public DeleteDanglingConstraintShapeRolePlayerChangeRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -569,6 +592,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		partial class FactTypeShapeChanged
 		{
 			public FactTypeShapeChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class ORMShapeDomainModel
+	{
+		partial class ForceClearViewFixupDataList
+		{
+			public ForceClearViewFixupDataList()
 			{
 				base.IsEnabled = false;
 			}

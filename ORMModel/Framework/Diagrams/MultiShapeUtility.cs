@@ -113,7 +113,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 
 			Transaction currentTransaction = store.TransactionManager.CurrentTransaction;
 			Transaction topLevelTransaction = currentTransaction.TopLevelTransaction;
-			bool allowMultipleShapesForChildren = topLevelTransaction.Context.ContextInfo.ContainsKey(AllowMultipleShapes);
+			bool allowMultipleShapesForChildren =!(childElement is IReconfigureableLink) && topLevelTransaction.Context.ContextInfo.ContainsKey(AllowMultipleShapes);
 
 			if (allowMultipleShapesForChildren)
 			{
@@ -260,6 +260,161 @@ namespace Neumont.Tools.Modeling.Diagrams
 			}
 		}
 		#endregion //FindAllShapesForElement
+		#region GetEffectiveAttachedLinkShapes variants
+		/// <summary>
+		/// Get all link shapes of a given type attached to the specified <paramref name="shape"/>
+		/// or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape) where LinkShapeType : LinkShape
+		{
+			LinkedElementCollection<LinkShape> links;
+			int linkCount;
+			NodeShape nodeShape = shape as NodeShape;
+			if (nodeShape != null)
+			{
+				links = LinkConnectsToNode.GetLink(nodeShape);
+				linkCount = links.Count;
+				for (int i = 0; i < linkCount; ++i)
+				{
+					LinkShapeType linkShape = links[i] as LinkShapeType;
+					if (linkShape != null)
+					{
+						yield return linkShape;
+					}
+				}
+			}
+			if (shape is IProvideConnectorShape)
+			{
+				LinkedElementCollection<ShapeElement> childShapes = shape.RelativeChildShapes;
+				int childCount = childShapes.Count;
+				for (int j = 0; j < childCount; ++j)
+				{
+					NodeShape child;
+					IProxyConnectorShape proxy;
+					if (null != (child = childShapes[j] as NodeShape) &&
+						null != (proxy = child as IProxyConnectorShape))
+					{
+						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
+						links = LinkConnectsToNode.GetLink(child);
+						linkCount = links.Count;
+						for (int i = 0; i < linkCount; ++i)
+						{
+							LinkShapeType linkShape = links[i] as LinkShapeType;
+							if (linkShape != null)
+							{
+								yield return linkShape;
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Get all <see cref="BinaryLinkShape">binary link shapes</see> of a given type originating from
+		/// the specified <paramref name="shape"/> or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
+		{
+			LinkedElementCollection<LinkShape> links;
+			int linkCount;
+			NodeShape nodeShape = shape as NodeShape;
+			if (nodeShape != null)
+			{
+				links = LinkConnectsToNode.GetLink(nodeShape);
+				linkCount = links.Count;
+				for (int i = 0; i < linkCount; ++i)
+				{
+					LinkShapeType linkShape = links[i] as LinkShapeType;
+					if (linkShape != null && linkShape.FromShape == shape)
+					{
+						yield return linkShape;
+					}
+				}
+			}
+			if (shape is IProvideConnectorShape)
+			{
+				LinkedElementCollection<ShapeElement> childShapes = shape.RelativeChildShapes;
+				int childCount = childShapes.Count;
+				for (int j = 0; j < childCount; ++j)
+				{
+					NodeShape child;
+					IProxyConnectorShape proxy;
+					if (null != (child = childShapes[j] as NodeShape) &&
+						null != (proxy = child as IProxyConnectorShape))
+					{
+						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
+						links = LinkConnectsToNode.GetLink(child);
+						linkCount = links.Count;
+						for (int i = 0; i < linkCount; ++i)
+						{
+							LinkShapeType linkShape = links[i] as LinkShapeType;
+							if (linkShape != null && linkShape.FromShape == child)
+							{
+								yield return linkShape;
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Get all <see cref="BinaryLinkShape">binary link shapes</see> of a given type going to
+		/// the specified <paramref name="shape"/> or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="BinaryLinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
+		{
+			LinkedElementCollection<LinkShape> links;
+			int linkCount;
+			NodeShape nodeShape = shape as NodeShape;
+			if (nodeShape != null)
+			{
+				links = LinkConnectsToNode.GetLink(nodeShape);
+				linkCount = links.Count;
+				for (int i = 0; i < linkCount; ++i)
+				{
+					LinkShapeType linkShape = links[i] as LinkShapeType;
+					if (linkShape != null && linkShape.ToShape == shape)
+					{
+						yield return linkShape;
+					}
+				}
+			}
+			if (shape is IProvideConnectorShape)
+			{
+				LinkedElementCollection<ShapeElement> childShapes = shape.RelativeChildShapes;
+				int childCount = childShapes.Count;
+				for (int j = 0; j < childCount; ++j)
+				{
+					NodeShape child;
+					IProxyConnectorShape proxy;
+					if (null != (child = childShapes[j] as NodeShape) &&
+						null != (proxy = child as IProxyConnectorShape))
+					{
+						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
+						links = LinkConnectsToNode.GetLink(child);
+						linkCount = links.Count;
+						for (int i = 0; i < linkCount; ++i)
+						{
+							LinkShapeType linkShape = links[i] as LinkShapeType;
+							if (linkShape != null && linkShape.ToShape == child)
+							{
+								yield return linkShape;
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // GetEffectiveAttachedLinkShapes variants
 		#region Link Configuration
 		/// <summary>
 		/// Determines if the relationship should be visited, and reconfigures any links
@@ -273,94 +428,101 @@ namespace Neumont.Tools.Modeling.Diagrams
 		{
 			bool retVal = true;
 
-			ShapeElement originalShape;
-			if (walker != null && domainRelationshipInfo != null &&
-				(originalShape = sourceElement as ShapeElement) != null)
+			NodeShape sourceShape;
+			IReconfigureableLink reconfigurableLink;
+			if (walker != null &&
+				domainRelationshipInfo != null &&
+				domainRelationshipInfo.Id == LinkConnectsToNode.DomainClassId &&
+				null != (sourceShape = sourceElement as NodeShape) &&
+				null != (reconfigurableLink = (targetRelationship as LinkConnectsToNode).Link as IReconfigureableLink))
 			{
-				foreach (DomainRoleInfo domainRoleInfo in domainRelationshipInfo.DomainRoles)
-				{
-					ShapeElement otherElement;
-					if ((otherElement = domainRoleInfo.GetRolePlayer(targetRelationship) as ShapeElement) != null &&
-						otherElement != sourceElement && !walker.Visited(otherElement))
-					{
-						if (otherElement is IReconfigureableLink)
-						{
-							CheckLinks(originalShape, true);
-							retVal = false;
-						}
-					}
-				}
+				reconfigurableLink.Reconfigure(ResolvePrimaryShape(sourceShape));
+				retVal = false;
 			}
 
 			return retVal;
 		}
 		/// <summary>
-		/// Check and reconfigure links related to a <see cref="ShapeElement"/> when it moves
+		/// Check and reconfigure links related to a <see cref="NodeShape"/> when it moves. Called
+		/// from the ChangeRule of any <see cref="NodeShape"/> that supports multiple shapes at
+		/// TopLevelCommit with priority <see cref="DiagramFixupConstants.AddConnectionRulePriority"/>
 		/// </summary>
-		/// <param name="originalShape">The shape moved</param>
-		public static void CheckLinksOnBoundsChanged(ShapeElement originalShape)
+		/// <param name="e">The <see cref="ElementPropertyChangedEventArgs">event args</see> from a
+		/// <see cref="ChangeRule"/></param>
+		public static void CheckLinksOnBoundsChange(ElementPropertyChangedEventArgs e)
 		{
-			CheckLinks(originalShape, false);
+			NodeShape shapeElement;
+			if (e.DomainProperty.Id == NodeShape.AbsoluteBoundsDomainPropertyId &&
+				(shapeElement = e.ModelElement as NodeShape) != null &&
+				!shapeElement.IsDeleted &&
+				!(shapeElement is IProxyConnectorShape) &&
+				// This is fired on TopLevelCommit, so the bounds may have
+				// changed multiple times. Only use the latest.
+				((RectangleD)e.NewValue == shapeElement.AbsoluteBounds))
+			{
+				CheckLinks(shapeElement, false);
+			}
 		}
 		private static void CheckLinks(ShapeElement checkShape, bool discludeOriginal)
 		{
+
 			ShapeElement originalShape = ResolvePrimaryShape(checkShape);
 			ShapeElement discludedShape = discludeOriginal ? originalShape : null;
 
 			if (originalShape != null && originalShape.ModelElement != null)
 			{
-				List<IReconfigureableLink> reconfigureableLinks = null;
 				//check the links for each shape for the model element
+#if LINKS_ALWAYS_CONNECT
 				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(originalShape.Diagram, originalShape.ModelElement))
 				{
-#if LINKS_ALWAYS_CONNECT
 					bool shapeIsOriginal = (shape == originalShape);
-					foreach (ShapeElement toShape in GetExistingLinks(shape, true, false))
+					foreach (BinaryLinkShape toLinkShape in GetExistingLinks(shape, true, false))
 					{
-						CheckLink(toShape, shapeIsOriginal, BinaryLinkAnchor.ToShape, discludedShape);
+						CheckLink(toLinkShape, shapeIsOriginal, BinaryLinkAnchor.ToShape, discludedShape);
 					}
-					foreach (ShapeElement fromShape in GetExistingLinks(shape, false, true))
+					foreach (BinaryLinkShape fromLinkShape in GetExistingLinks(shape, false, true))
 					{
-						CheckLink(fromShape, shapeIsOriginal, BinaryLinkAnchor.FromShape, discludedShape);
+						CheckLink(fromLinkShape, shapeIsOriginal, BinaryLinkAnchor.FromShape, discludedShape);
 					}
-#else
-					foreach (ShapeElement linkShape in GetExistingLinks(shape, true, true, null))
+				}
+#else // LINKS_ALWAYS_CONNECT
+				Dictionary<ModelElement, IReconfigureableLink> reconfigureableLinks = null;
+				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(originalShape.Diagram, originalShape.ModelElement))
+				{
+					foreach (BinaryLinkShape linkShape in GetExistingLinks(shape, true, true, null))
 					{
-						BinaryLinkShapeBase link;
-						if ((link = linkShape as BinaryLinkShapeBase) != null)
+						if (linkShape is IProvideConnectorShape)
 						{
-							if (link is IEnsureConnectorShapeForLink)
+							// UNDONE: MULTISHAPE. Recursion should happen inside Reconfigure
+							//this link may have other links connected to it, so check those links as well
+							CheckLinks(linkShape, false);
+						}
+						IReconfigureableLink reconfigureableLink;
+						if ((reconfigureableLink = linkShape as IReconfigureableLink) != null)
+						{
+							if (reconfigureableLinks == null)
 							{
-								//this link may have other links connected to it, so check those links as well
-								CheckLinks(link, false);
+								reconfigureableLinks = new Dictionary<ModelElement, IReconfigureableLink>();
 							}
-							IReconfigureableLink reconfigureableLink;
-							if ((reconfigureableLink = link as IReconfigureableLink) != null)
-							{
-								if (reconfigureableLinks == null)
-								{
-									reconfigureableLinks = new List<IReconfigureableLink>();
-								}
-								reconfigureableLinks.Add(reconfigureableLink);
-							}
+							reconfigureableLinks[linkShape.ModelElement] = reconfigureableLink;
 						}
 					}
-#endif //LINKS_ALWAYS_CONNECT
 				}
 				if (reconfigureableLinks != null)
 				{
-					foreach (IReconfigureableLink link in reconfigureableLinks)
+					foreach (IReconfigureableLink link in reconfigureableLinks.Values)
 					{
 						link.Reconfigure(discludedShape);
 					}
 				}
+#endif //LINKS_ALWAYS_CONNECT
 			}
 		}
 #if LINKS_ALWAYS_CONNECT
 		private static void CheckLink(ShapeElement linkShape, bool shapeIsOriginal, BinaryLinkAnchor checkAnchor, ShapeElement discludedShape)
 		{
-			BinaryLinkShapeBase toLink;
-			if ((toLink = linkShape as BinaryLinkShapeBase) != null)
+			BinaryLinkShape toLink;
+			if ((toLink = linkShape as BinaryLinkShape) != null)
 			{
 				if (linkShape is IEnsureConnectorShapeForLink)
 				{
@@ -387,13 +549,19 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="fromElement">The <see cref="ModelElement"/> the link connects from</param>
 		/// <param name="toElement">The <see cref="ModelElement"/> the link connects to</param>
 		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
-		public static void ReconfigureLink(BinaryLinkShapeBase link, ModelElement fromElement, ModelElement toElement, ShapeElement discludedShape)
+		public static void ReconfigureLink(BinaryLinkShape link, ModelElement fromElement, ModelElement toElement, ShapeElement discludedShape)
 		{
 			if (link == null)
 			{
 				throw new ArgumentNullException("link");
 			}
+			Dictionary<object, object> contextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			if (IsSecondaryLinkReconfigureBlocked(contextInfo, link))
+			{
+				return;
+			}
 
+#if LINKS_ALWAYS_CONNECT
 			if (fromElement != null && toElement != null)
 			{
 				Diagram diagram = link.Diagram;
@@ -402,7 +570,6 @@ namespace Neumont.Tools.Modeling.Diagrams
 					throw new NullReferenceException();
 				}
 
-#if LINKS_ALWAYS_CONNECT
 				//get the anchoring side, default to the from shape
 				IBinaryLinkAnchor linkWithAnchor;
 				bool anchorsToFromShape = true;
@@ -412,33 +579,16 @@ namespace Neumont.Tools.Modeling.Diagrams
 				}
 
 				foreach (ShapeElement currentFromShape in FindAllShapesForElement<ShapeElement>(diagram, anchorsToFromShape ? fromElement : toElement, true))
-#else
-				ShapeElement closestFromShape = null;
-				ShapeElement closestToShape = null;
-				double minimumDistance = double.MaxValue;
-
-				foreach (ShapeElement currentFromShape in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
-#endif //LINKS_ALWAYS_CONNECT
 				{
 					if (discludedShape != null && discludedShape == ResolvePrimaryShape(currentFromShape)
-#if LINKS_ALWAYS_CONNECT
-						|| AlreadyConnectedTo(currentFromShape, toElement, anchorsToFromShape, link)
-#endif //LINKS_ALWAYS_CONNECT
-)
+						|| AlreadyConnectedTo(currentFromShape, toElement, anchorsToFromShape, link))
 					{
 						continue;
 					}
-
-#if LINKS_ALWAYS_CONNECT
 					ShapeElement closestToShape = null;
 					double minimumDistance = double.MaxValue;
 
 					foreach (ShapeElement currentToShape in FindAllShapesForElement<ShapeElement>(diagram, anchorsToFromShape ? toElement : fromElement, true))
-#else
-					double existingDistance = GetExistingConnectionDistance(currentFromShape, toElement, true, link);
-
-					foreach (ShapeElement currentToShape in FindAllShapesForElement<ShapeElement>(diagram, toElement, true))
-#endif //LINKS_ALWAYS_CONNECT
 					{
 						if (discludedShape != null && discludedShape == ResolvePrimaryShape(currentToShape))
 						{
@@ -449,107 +599,510 @@ namespace Neumont.Tools.Modeling.Diagrams
 						double distanceY;
 						double currentDistance;
 						if ((currentDistance = (distanceX = currentFromShape.Center.X - currentToShape.Center.X) * distanceX
-							+ (distanceY = currentFromShape.Center.Y - currentToShape.Center.Y) * distanceY) < minimumDistance
-#if !LINKS_ALWAYS_CONNECT
- && currentDistance < existingDistance && currentDistance < GetExistingConnectionDistance(currentToShape, fromElement, false, link)
-#endif //!LINKS_ALWAYS_CONNECT
-)
+							+ (distanceY = currentFromShape.Center.Y - currentToShape.Center.Y) * distanceY) < minimumDistance)
 						{
 							minimumDistance = currentDistance;
 							closestToShape = currentToShape;
-#if !LINKS_ALWAYS_CONNECT
-							closestFromShape = currentFromShape;
-#endif //!LINKS_ALWAYS_CONNECT
 						}
 					}
-#if LINKS_ALWAYS_CONNECT
 					if (closestToShape == null)
 					{
 						//there are no potential to shapes
 						break;
 					}
 					ShapeElement closestFromShape = currentFromShape;
-#else
-				}
-#endif //LINKS_ALWAYS_CONNECT
+					if (closestFromShape != null && closestToShape != null)
+					{
+						NodeShape toShape = null;
+						NodeShape fromShape = null;
+						IProvideConnectorShape getsUniqueConnectorShape;
 
-				if (closestFromShape != null && closestToShape != null)
-				{
-					NodeShape toShape;
-					NodeShape fromShape;
+						if ((getsUniqueConnectorShape = closestToShape as IProvideConnectorShape) != null)
+						{
+							toShape = getsUniqueConnectorShape.GetUniqueConnectorShape(closestFromShape, backingLink);
+						}
+						if (toShape == null)
+						{
+							toShape = closestToShape as NodeShape;
+						}
+						if ((getsUniqueConnectorShape = closestFromShape as IProvideConnectorShape) != null)
+						{
+							fromShape = getsUniqueConnectorShape.GetUniqueConnectorShape(closestToShape, backingLink);
+						}
+						if (fromShape == null)
+						{
+							fromShape = closestFromShape as NodeShape;
+						}
 
-					IEnsureConnectorShapeForLink ensuresLinkConnectorShape;
-					IProvideConnectorShape getsUniqueConnectorShape;
-
-					if ((ensuresLinkConnectorShape = closestToShape as IEnsureConnectorShapeForLink) != null)
-					{
-						toShape = ensuresLinkConnectorShape.EnsureLinkConnectorShape();
-					}
-					else
-					{
-						toShape = closestToShape as NodeShape;
-					}
-					if ((ensuresLinkConnectorShape = closestFromShape as IEnsureConnectorShapeForLink) != null)
-					{
-						fromShape = ensuresLinkConnectorShape.EnsureLinkConnectorShape();
-					}
-					else
-					{
-						fromShape = closestFromShape as NodeShape;
-					}
-
-					NodeShape temp = toShape;
-					if ((getsUniqueConnectorShape = closestToShape as IProvideConnectorShape) != null)
-					{
-						toShape = getsUniqueConnectorShape.GetUniqueConnectorShape(fromShape);
-					}
-					if ((getsUniqueConnectorShape = closestFromShape as IProvideConnectorShape) != null)
-					{
-						fromShape = getsUniqueConnectorShape.GetUniqueConnectorShape(temp);
-					}
-
-					if (toShape != null && fromShape != null)
-					{
-#if LINKS_ALWAYS_CONNECT
+						if (toShape != null && fromShape != null)
+						{
+							bool changedFromShape = link.FromShape != fromShape;
+							bool changedToShape = link.ToShape != toShape;
 							if (anchorsToFromShape)
 							{
-#endif //LINKS_ALWAYS_CONNECT
-						//In order to actually re-connect an already connected link, 
-						// the properties need to be set AND the connect method called.
-						link.FromShape = fromShape;
-						link.ToShape = toShape;
-						link.Connect(fromShape, toShape);
-#if LINKS_ALWAYS_CONNECT
+								if ((changedFromShape = link.FromShape != fromShape) ||
+									(changedToShape = link.ToShape != toShape))
+								{
+									//In order to actually re-connect an already connected link, 
+									// the properties need to be set AND the connect method called.
+									if (changedFromShape)
+									{
+										link.FromShape = fromShape;
+									}
+									if (changedToShape)
+									{
+										link.ToShape = toShape;
+									}
+									link.Connect(fromShape, toShape);
+								}
 							}
-							else
+							else if ((changedFromShape = link.FromShape != toShape) ||
+								(changedToShape = link.ToShape != fromShape))
 							{
-								link.FromShape = toShape;
-								link.ToShape = fromShape;
+								if (changedFromShape)
+								{
+									link.FromShape = toShape;
+								}
+								if (changedToShape)
+								{
+									link.ToShape = fromShape;
+								}
 								link.Connect(toShape, fromShape);
 							}
-#endif //LINKS_ALWAYS_CONNECT
-						return;
+							return;
+						}
 					}
 				}
 			}
-#if LINKS_ALWAYS_CONNECT
-			}
-#endif //LINKS_ALWAYS_CONNECT
 
 			//no shapes need to be connected, so delete the link
 			link.Delete();
-		}
-#if LINKS_ALWAYS_CONNECT
-		private static bool AlreadyConnectedTo(ShapeElement currentShape, ModelElement oppositeElement, bool isFromShape, BinaryLinkShapeBase currentLink)
 #else
-		private static double GetExistingConnectionDistance(ShapeElement currentShape, ModelElement oppositeElement, bool isFromShape, BinaryLinkShapeBase currentLink)
+			if (fromElement != null && toElement != null)
+			{
+				ModelElement backingLink;
+				Diagram diagram;
+				ShapeElement parentShape;
+				if (null == (backingLink = link.ModelElement) ||
+					null == (parentShape = link.ParentShape) ||
+					// Note that getting the diagram is a recursive call with the parent shape as the first step 
+					null == (diagram = parentShape.Diagram))
+				{
+					throw new NullReferenceException();
+				}
+
+				bool originalLinkProcessed = false;
+
+				foreach (ShapeElement currentFromShapeIter in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
+				{
+					ShapeElement currentFromShape = ResolvePrimaryShape(currentFromShapeIter);
+					if (discludedShape != null && discludedShape == currentFromShape)
+					{
+						continue;
+					}
+
+					// Find the nearest to shape
+					ShapeElement closestToShape = null;
+					double closestToShapeDistance = double.MaxValue;
+					PointD closestToShapeCenter = default(PointD);
+					double distanceX;
+					double distanceY;
+					double currentDistance;
+					PointD center = GetReliableShapeCenter(currentFromShape);
+					double testCenterX = center.X;
+					double testCenterY = center.Y;
+					foreach (ShapeElement currentToShapeIter in FindAllShapesForElement<ShapeElement>(diagram, toElement, true))
+					{
+						ShapeElement currentToShape = ResolvePrimaryShape(currentToShapeIter);
+						if (discludedShape != null && discludedShape == currentToShape)
+						{
+							continue;
+						}
+						center = GetReliableShapeCenter(currentToShape);
+						if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
+							+ (distanceY = testCenterY - center.Y) * distanceY) < closestToShapeDistance)
+						{
+							closestToShapeDistance = currentDistance;
+							closestToShapeCenter = center;
+							closestToShape = currentToShape;
+						}
+					}
+
+					if (closestToShape != null)
+					{
+						// We have a to shape to connect to, but that does not mean that the
+						// elements are either currently connected or should be connected.
+						// Before connecting, find out up front if we have a closer from shape than the current from shape.
+						// If we do, then the current to/from shapes should not be connected for this link.
+						ShapeElement closerFromShape = null;
+						double closerFromShapeDistance = closestToShapeDistance;
+						testCenterX = closestToShapeCenter.X;
+						testCenterY = closestToShapeCenter.Y;
+						// See if there is another closer fromShape to the closest to shape
+						foreach (ShapeElement currentFromShapeIter2 in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
+						{
+							ShapeElement currentFromShape2 = ResolvePrimaryShape(currentFromShapeIter2);
+							if (currentFromShape2 == currentFromShape ||
+								(discludedShape != null && discludedShape == currentFromShape2))
+							{
+								continue;
+							}
+							center = GetReliableShapeCenter(currentFromShape2);
+							if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
+								+ (distanceY = testCenterY - center.Y) * distanceY) < closerFromShapeDistance)
+							{
+								closerFromShapeDistance = currentDistance;
+								closerFromShape = currentFromShape2;
+							}
+						}
+
+						BinaryLinkShape connectLink = null;
+						ShapeElement connectFromShape = null;
+						ShapeElement connectToShape = null;
+						BinaryLinkShape existingLink = null;
+						BinaryLinkShape pendingDeleteLinkShape = null;
+						foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesTo<BinaryLinkShape>(closestToShape))
+						{
+							if (linkShape.ModelElement == backingLink)
+							{
+								// Note that there can only be one of these satisfying the criteria
+								existingLink = linkShape;
+								break;
+							}
+						}
+
+						if (existingLink != null)
+						{
+							if (existingLink == link)
+							{
+								originalLinkProcessed = true;
+							}
+							ShapeElement resolvedFromShape = ResolvePrimaryShape(existingLink.FromShape);
+							bool testDeleteLinksOnCurrentFromShape = false;
+							if (resolvedFromShape == currentFromShape)
+							{
+								// If the closerFromShape is null, then we're correctly attached for this link.
+								// If not, then move the link to the closer from shape unless the closer from
+								// shape is already attached for this link. Note that the closerFromShape may
+								// be reevaluated later in the loop and the link could move a second time, but
+								// this rare possibility is better than doing recursive analysis here and will
+								// save existing links.
+								if (closerFromShape != null)
+								{
+									foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(closerFromShape))
+									{
+										if (linkShape.ModelElement == backingLink)
+										{
+											pendingDeleteLinkShape = linkShape;
+											if (linkShape == link)
+											{
+												link = null;
+											}
+											break;
+										}
+									}
+									// Instead of deleting, move the existing link
+									connectLink = existingLink;
+									connectFromShape = closerFromShape;
+									connectToShape = closestToShape;
+								}
+							}
+							else if (closerFromShape != null)
+							{
+								// No links needed on current from shape
+								testDeleteLinksOnCurrentFromShape = true;
+							}
+							else
+							{
+								// Move this link to the current from shape after blowing away
+								// the links currently on the from shape
+								connectLink = existingLink;
+								connectFromShape = currentFromShape;
+								connectToShape = closestToShape;
+								testDeleteLinksOnCurrentFromShape = true;
+							}
+							if (testDeleteLinksOnCurrentFromShape)
+							{
+								foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(currentFromShape))
+								{
+									if (linkShape.ModelElement == backingLink)
+									{
+										pendingDeleteLinkShape = linkShape;
+										if (linkShape == link)
+										{
+											link = null;
+										}
+										break;
+									}
+								}
+							}
+						}
+						else
+						{
+							// The to shape does not have a link on it. Check if there is an
+							// existing one on the from shape we need to delete or move to the
+							// to shape.
+							foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(currentFromShape))
+							{
+								if (linkShape.ModelElement == backingLink)
+								{
+									// Note that there can only be one of these satisfying the criteria
+									existingLink = linkShape;
+									break;
+								}
+							}
+							if (existingLink != null)
+							{
+								if (existingLink == link)
+								{
+									originalLinkProcessed = true;
+								}
+								Debug.Assert(ResolvePrimaryShape(existingLink.ToShape) != closestToShape, "The link would also have been attached to the to shape");
+								if (closerFromShape != null)
+								{
+									// If the closer from shape is not already attached to any link, then attempt to preserve this
+									// link by moving it to the closer from shape. Note that the link will not be moved if the
+									// closer from shape has already been processed in the outer loop, and may still be deleted
+									// in the future when the primary processing for the closer shape occurs. This gives us the
+									// best chance of preserving the link.
+									foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(closerFromShape))
+									{
+										if (linkShape.ModelElement == backingLink)
+										{
+											pendingDeleteLinkShape = existingLink;
+											if (existingLink == link)
+											{
+												link = null;
+											}
+											break;
+										}
+									}
+									connectLink = existingLink;
+									connectToShape = closestToShape;
+									connectFromShape = closerFromShape;
+								}
+								else
+								{
+									connectLink = existingLink;
+									connectToShape = closestToShape;
+									connectFromShape = currentFromShape;
+								}
+							}
+							else if (closerFromShape == null)
+							{
+								connectFromShape = currentFromShape;
+								connectToShape = closestToShape;
+							}
+						}
+
+						// If we have a connect to make or adjust, do it now.
+						if (connectFromShape != null && connectToShape != null)
+						{
+							if (pendingDeleteLinkShape != null)
+							{
+								// Disconnect pending deletes without propagating so that reconnects
+								// can use existing connector shapes on the connected nodes. Full deletion
+								// of the link postponed until after reconnect so that links to links can be maintained.
+								foreach (LinkConnectsToNode disconnectLink in LinkConnectsToNode.GetLinksToNodes(pendingDeleteLinkShape))
+								{
+									disconnectLink.Delete(LinkConnectsToNode.LinkDomainRoleId);
+								}
+							}
+
+							// The first step is to get a link. If the connectLink is
+							// provided then use it. Otherwise, if the passed in link is
+							// pending delete or not connected then use it. Otherwise, use
+							// information from the passed in link to create a new one.
+							if (connectLink == null)
+							{
+								if (link != null &&
+									link.FromShape == null &&
+									link.ToShape == null)
+								{
+									connectLink = link;
+									link = null;
+								}
+								if (connectLink == null)
+								{
+									if ((connectLink = (BinaryLinkShape)CreateChildShape(parentShape, backingLink)) != null)
+									{
+										BlockSecondaryLinkReconfigure(contextInfo, connectLink);
+										ConfigureAndPlaceChildShape(parentShape, connectLink, backingLink, false);
+										UnblockSecondaryLinkReconfigure(contextInfo, connectLink);
+									}
+								}
+							}
+							else if (connectLink == link)
+							{
+								link = null;
+							}
+							NodeShape toShape = null;
+							NodeShape fromShape = null;
+							IProvideConnectorShape getsUniqueConnectorShape;
+
+							if ((getsUniqueConnectorShape = connectToShape as IProvideConnectorShape) != null)
+							{
+								toShape = getsUniqueConnectorShape.GetUniqueConnectorShape(fromShape, backingLink);
+							}
+							if (toShape == null)
+							{
+								toShape = connectToShape as NodeShape;
+							}
+							if ((getsUniqueConnectorShape = connectFromShape as IProvideConnectorShape) != null)
+							{
+								fromShape = getsUniqueConnectorShape.GetUniqueConnectorShape(connectToShape, backingLink);
+							}
+							if (fromShape == null)
+							{
+								fromShape = connectFromShape as NodeShape;
+							}
+
+							if (toShape != null && fromShape != null)
+							{
+								bool changedFromShape = connectLink.FromShape != fromShape;
+								bool changedToShape = connectLink.ToShape != toShape;
+								if (changedFromShape || changedToShape)
+								{
+									//In order to actually re-connect an already connected link, 
+									// the properties need to be set AND the connect method called.
+									if (changedFromShape)
+									{
+										connectLink.FromShape = fromShape;
+									}
+									if (changedToShape)
+									{
+										connectLink.ToShape = toShape;
+									}
+									connectLink.Connect(fromShape, toShape);
+								}
+							}
+						}
+						if (pendingDeleteLinkShape != null)
+						{
+							if (pendingDeleteLinkShape is IProvideConnectorShape)
+							{
+								// A link could be attached to this link. Make sure the
+								// link is moved to a new location or cleanly deleted before
+								// the link itself is deleted.
+								foreach (BinaryLinkShape recursiveLink in GetExistingLinks(pendingDeleteLinkShape, true, true, null))
+								{
+									IReconfigureableLink recurseReconfigureLink = recursiveLink as IReconfigureableLink;
+									if (recurseReconfigureLink != null)
+									{
+										recurseReconfigureLink.Reconfigure(pendingDeleteLinkShape);
+									}
+								}
+							}
+							pendingDeleteLinkShape.Delete();
+						}
+					}
+				}
+				if (link != null && !originalLinkProcessed)
+				{
+					// no shapes need to be connected, so delete the link. Disconnecting
+					// it first tells ShouldVisitOnDelete to not attempt to reconfigure
+					// this link.
+					foreach (LinkConnectsToNode disconnectLink in LinkConnectsToNode.GetLinksToNodes(link))
+					{
+						disconnectLink.Delete(LinkConnectsToNode.LinkDomainRoleId);
+					}
+					link.Delete();
+				}
+			}
 #endif //LINKS_ALWAYS_CONNECT
+		}
+#if !LINKS_ALWAYS_CONNECT
+		private static object SecondaryLinkReconfigureKey = new object();
+		private static void BlockSecondaryLinkReconfigure(Dictionary<object, object> contextInfo, BinaryLinkShape linkShape)
 		{
-#if  !LINKS_ALWAYS_CONNECT
-			double retVal = double.MaxValue;
-#endif //!LINKS_ALWAYS_CONNECT
+			object blockInfo;
+			if (contextInfo.TryGetValue(SecondaryLinkReconfigureKey, out blockInfo))
+			{
+				Dictionary<BinaryLinkShape, BinaryLinkShape> dictionary;
+				if (null != (dictionary = blockInfo as Dictionary<BinaryLinkShape, BinaryLinkShape>))
+				{
+					dictionary[linkShape] = linkShape;
+				}
+				else
+				{
+					dictionary = new Dictionary<BinaryLinkShape, BinaryLinkShape>();
+					BinaryLinkShape existingBlockedLink = (BinaryLinkShape)blockInfo;
+					dictionary[existingBlockedLink] = existingBlockedLink;
+					dictionary[linkShape] = linkShape;
+					contextInfo[SecondaryLinkReconfigureKey] = dictionary;
+				}
+			}
+			else
+			{
+				contextInfo[SecondaryLinkReconfigureKey] = linkShape;
+			}
+		}
+		private static void UnblockSecondaryLinkReconfigure(Dictionary<object, object> contextInfo, BinaryLinkShape linkShape)
+		{
+			object blockInfo;
+			if (contextInfo.TryGetValue(SecondaryLinkReconfigureKey, out blockInfo))
+			{
+				Dictionary<BinaryLinkShape, BinaryLinkShape> dictionary;
+				if (blockInfo == linkShape)
+				{
+					contextInfo.Remove(SecondaryLinkReconfigureKey);
+				}
+				else if (null != (dictionary = blockInfo as Dictionary<BinaryLinkShape, BinaryLinkShape>) &&
+					dictionary.ContainsKey(linkShape))
+				{
+					dictionary.Remove(linkShape);
+				}
+			}
+		}
+		private static bool IsSecondaryLinkReconfigureBlocked(Dictionary<object, object> contextInfo, BinaryLinkShape linkShape)
+		{
+			object blockInfo;
+			if (contextInfo.TryGetValue(SecondaryLinkReconfigureKey, out blockInfo))
+			{
+				Dictionary<BinaryLinkShape, BinaryLinkShape> dictionary;
+				return (blockInfo == linkShape) ||
+					(null != (dictionary = blockInfo as Dictionary<BinaryLinkShape, BinaryLinkShape>) &&
+					dictionary.ContainsKey(linkShape));
+			}
+			return false;
+		}
+		/// <summary>
+		/// Link shapes are not repositioned until well after we need an accurate
+		/// location for the link. Use this method to get what the center will be
+		/// on completion.
+		/// </summary>
+		private static PointD GetReliableShapeCenter(ShapeElement shape)
+		{
+			BinaryLinkShape linkShape;
+			NodeShape toShape;
+			NodeShape fromShape;
+			if (null != (linkShape = shape as BinaryLinkShape) &&
+				null != (toShape = ResolvePrimaryShape(linkShape.ToShape) as NodeShape) &&
+				null != (fromShape = ResolvePrimaryShape(linkShape.FromShape) as NodeShape))
+			{
+				PointD toShapeCenter = toShape.Center;
+				PointD fromShapeCenter = fromShape.Center;
+				PointD? testPoint;
+				PointD fromPoint =
+					(testPoint = GeometryUtility.DoCustomFoldShape(
+					fromShape,
+					GeometryUtility.VectorEndPointForBase(toShape, toShapeCenter),
+					toShape)).HasValue ? testPoint.Value : fromShapeCenter;
+				PointD toPoint =
+					(testPoint = GeometryUtility.DoCustomFoldShape(
+					toShape,
+					GeometryUtility.VectorEndPointForBase(fromShape, fromPoint),
+					fromShape)).HasValue ? testPoint.Value : toShapeCenter;
+				return new PointD((fromPoint.X + toPoint.X) / 2, (fromPoint.Y + toPoint.Y) / 2);
+			}
+			return shape.Center;
+		}
+#endif // !LINKS_ALWAYS_CONNECT
+#if LINKS_ALWAYS_CONNECT
+		private static bool AlreadyConnectedTo(ShapeElement currentShape, ModelElement oppositeElement, bool isFromShape, BinaryLinkShape currentLink)
+		{
 			//check each link to see if it connects to the opposite element
-			foreach (ShapeElement linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape, currentLink.ModelElement))
+			foreach (BinaryLinkShape linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape, currentLink.ModelElement))
 			{
 				//if the link is the one currently being configured, count it as not connected
 				if (linkShape == currentLink)
@@ -557,64 +1110,28 @@ namespace Neumont.Tools.Modeling.Diagrams
 					continue;
 				}
 
-				BinaryLinkShapeBase binaryLinkShapeBase;
-				if ((binaryLinkShapeBase = linkShape as BinaryLinkShapeBase) != null)
+				ShapeElement checkElement;
+				NodeShape nodeShape;
+
+				if (isFromShape)
 				{
-					ShapeElement checkElement;
-					NodeShape nodeShape;
+					nodeShape = linkShape.ToShape;
+				}
+				else
+				{
+					nodeShape = linkShape.FromShape;
+				}
 
-					if (isFromShape)
-					{
-						nodeShape = binaryLinkShapeBase.ToShape;
-					}
-					else
-					{
-						nodeShape = binaryLinkShapeBase.FromShape;
-					}
+				checkElement = ResolvePrimaryShape(nodeShape);
 
-					checkElement = ResolvePrimaryShape(nodeShape);
-
-					if (checkElement != null && checkElement.ModelElement == oppositeElement)
-					{
-#if LINKS_ALWAYS_CONNECT
-						return true;
-#else
-						ShapeElement linkToShape = ResolvePrimaryShape(binaryLinkShapeBase.ToShape);
-						ShapeElement linkFromShape = ResolvePrimaryShape(binaryLinkShapeBase.FromShape);
-
-						if (linkFromShape != null && linkToShape != null)
-						{
-							PointD toShapeCenter = linkToShape.Center;
-							PointD fromShapeCenter = linkFromShape.Center;
-							double distanceX;
-							double distanceY;
-							retVal = Math.Min(((distanceX = toShapeCenter.X - fromShapeCenter.X) * distanceX
-								+ (distanceY = toShapeCenter.Y - fromShapeCenter.Y) * distanceY), retVal);
-						}
-#endif //LINKS_ALWAYS_CONNECT
-					}
+				if (checkElement != null && checkElement.ModelElement == oppositeElement)
+				{
+					return true;
 				}
 			}
-#if LINKS_ALWAYS_CONNECT
 			return false;
-#else
-			return retVal;
-#endif //LINKS_ALWAYS_CONNECT
 		}
-		///// <summary>
-		///// Return a new proxy connector ShapeElement, if necessary.  This method will check for 
-		///// the IEnsureConnectorShapeForLink and IProvideConnectorShape interfaces.
-		///// </summary>
-		///// <param name="shape">The shape to resolve.</param>
-		///// <param name="toShape">The opposite toShape.  Only necessary if shape implements IProvideConnectorShape.</param>
-		///// <returns>The connector NodeShape.</returns>
-		//private static NodeShape GetNewConnectorShape(ShapeElement shape, NodeShape toShape)
-		//{
-		//    NodeShape retVal = null;
-
-
-		//    return retVal ?? shape as NodeShape;
-		//}
+#endif // LINKS_ALWAYS_CONNECT
 		/// <summary>
 		/// Gets all existing links for the shape and its proxy connectors.
 		/// This method will check for the IEnsureConnectorShapeForLink
@@ -624,93 +1141,21 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <param name="getToLinks">True to collect all to role links</param>
 		/// <param name="getFromLinks">True to collect all from role links</param>
 		/// <param name="linkBackingElement">Only return links that have this element as the <see cref="PresentationElement.ModelElement">ModelElement</see>.</param>
-		/// <returns>The proxy connecter</returns>
-		private static IEnumerable<ShapeElement> GetExistingLinks(ShapeElement shape, bool getToLinks, bool getFromLinks, ModelElement linkBackingElement)
+		/// <returns>The attached link shapes</returns>
+		private static IEnumerable<BinaryLinkShape> GetExistingLinks(ShapeElement shape, bool getToLinks, bool getFromLinks, ModelElement linkBackingElement)
 		{
-			Debug.Assert(!(shape is IEnsureConnectorShapeForLink) || !(shape is IProvideConnectorShape),
-				"No class should implement both IEnsureConnectorShapeForLink and IProvideConnectorShape.");
+			Debug.Assert(getToLinks || getFromLinks, "Either getToLinks or fromFromLinks needs to be true");
 
-			NodeShape nodeShape;
-			if ((nodeShape = shape as NodeShape) != null)
+			foreach (BinaryLinkShape linkShape in
+				(getToLinks && getFromLinks) ?
+					MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(shape) :
+					(getToLinks ?
+					MultiShapeUtility.GetEffectiveAttachedLinkShapesTo<BinaryLinkShape>(shape) :
+					MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(shape)))
 			{
-				if (getToLinks)
+				if (linkBackingElement == null || linkShape.ModelElement == linkBackingElement)
 				{
-					foreach (ShapeElement sel in nodeShape.ToRoleLinkShapes)
-					{
-						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
-						{
-							yield return sel;
-						}
-					}
-				}
-				if (getFromLinks)
-				{
-					foreach (ShapeElement sel in nodeShape.FromRoleLinkShapes)
-					{
-						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
-						{
-							yield return sel;
-						}
-					}
-				}
-			}
-
-			NodeShape alternateConnector;
-			IEnsureConnectorShapeForLink ensuresLinkConnectorShape;
-			if (shape is IProvideConnectorShape)
-			{
-				foreach (ShapeElement childShape in shape.RelativeChildShapes)
-				{
-					if (childShape is IProxyConnectorShape &&
-						(alternateConnector = childShape as NodeShape) != null)
-					{
-						if (getToLinks)
-						{
-							foreach (ShapeElement sel in alternateConnector.ToRoleLinkShapes)
-							{
-								if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
-								{
-									yield return sel;
-								}
-							}
-						}
-						if (getFromLinks)
-						{
-							foreach (ShapeElement sel in alternateConnector.FromRoleLinkShapes)
-							{
-								if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
-								{
-									yield return sel;
-								}
-							}
-						}
-					}
-				}
-			}
-			else if ((ensuresLinkConnectorShape = shape as IEnsureConnectorShapeForLink) != null)
-			{
-				//Note that this assumes EnsureLinkConnectorShape will 
-				//always return the same NodeShape with subsequent calls
-				alternateConnector = ensuresLinkConnectorShape.EnsureLinkConnectorShape();
-				if (getToLinks)
-				{
-					foreach (ShapeElement sel in alternateConnector.ToRoleLinkShapes)
-					{
-						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
-						{
-							yield return sel;
-						}
-					}
-				}
-				if (getFromLinks)
-				{
-					foreach (ShapeElement sel in alternateConnector.FromRoleLinkShapes)
-					{
-						if (linkBackingElement == null || sel.ModelElement == linkBackingElement)
-						{
-							yield return sel;
-						}
-					}
+					yield return linkShape;
 				}
 			}
 		}
@@ -721,7 +1166,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// </summary>
 		/// <param name="shape">The shape to resolve.</param>
 		/// <returns>The primary shape.</returns>
-		private static ShapeElement ResolvePrimaryShape(ShapeElement shape)
+		public static ShapeElement ResolvePrimaryShape(ShapeElement shape)
 		{
 			ShapeElement retVal;
 			IProxyConnectorShape proxy;
@@ -760,7 +1205,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// Return another shape that for which this shape is
 		/// acting as a proxy connector.
 		/// </summary>
-		NodeShape ProxyConnectorShapeFor { get;}
+		ShapeElement ProxyConnectorShapeFor { get;}
 	}
 	/// <summary>
 	/// Represents a shape that needs to get unique connector shapes for links connecting to the same opposite shape
@@ -774,19 +1219,12 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// objects to be calculated without ambiguity.
 		/// </summary>
 		/// <param name="oppositeShape">The opposite shape to get a unique connector for</param>
+		/// <param name="ignoreLinkShapesFor">A <see cref="ModelElement"/> (generally an <see cref="ElementLink"/>)
+		/// that should be ignored when checking existing links. This can be <see langword="null"/>, but will be
+		/// set while reconfiguring links.
+		/// </param>
 		/// <returns>NodeShape</returns>
-		NodeShape GetUniqueConnectorShape(NodeShape oppositeShape);
-	}
-	/// <summary>
-	/// Represents a link that needs to ensure a connector shape for other links to connect to
-	/// </summary>
-	public interface IEnsureConnectorShapeForLink
-	{
-		/// <summary>
-		/// For a link, gets the child <see cref="NodeShape"/> that other links should connect to
-		/// </summary>
-		/// <returns>The child <see cref="NodeShape"/></returns>
-		NodeShape EnsureLinkConnectorShape();
+		NodeShape GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor);
 	}
 #if LINKS_ALWAYS_CONNECT
 	/// <summary>

@@ -3816,20 +3816,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// attached to the oppositeShape via any other LinkShape
 		/// objects. This allows multiple links between the same two
 		/// objects to be calculated without ambiguity.
+		/// Implements <see cref="IProvideConnectorShape.GetUniqueConnectorShape"/>
 		/// </summary>
-		/// <param name="oppositeShape">The opposite shape to get a unique connector for</param>
 		/// <returns>NodeShape</returns>
-		protected NodeShape GetUniqueConnectorShape(NodeShape oppositeShape)
+		protected NodeShape GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor)
 		{
 			NodeShape fromShape = this;
 			LinkedElementCollection<LinkShape> linkedToFromShape = LinkConnectsToNode.GetLink(fromShape);
 			int linkedToFromShapeCount = linkedToFromShape.Count;
 			if (linkedToFromShapeCount != 0)
 			{
-				LinkedElementCollection<LinkShape> linkedToToShape = LinkConnectsToNode.GetLink(oppositeShape);
+				IEnumerable<BinaryLinkShape> linkedToToShape = MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(oppositeShape);
 				for (int i = 0; i < linkedToFromShapeCount; ++i)
 				{
-					if (linkedToToShape.Contains(linkedToFromShape[i]))
+					BinaryLinkShape testLinkShape = linkedToFromShape[i] as BinaryLinkShape;
+					if (testLinkShape != null &&
+						(null == ignoreLinkShapesFor || ignoreLinkShapesFor != testLinkShape.ModelElement) &&
+						Utility.EnumerableContains(linkedToToShape, testLinkShape))
 					{
 						FactTypeLinkConnectorShape alternateFromShape = null;
 						LinkedElementCollection<ShapeElement> childShapes = fromShape.RelativeChildShapes;
@@ -3846,7 +3849,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 								int linkedToAlternateCandidateShapeCount = linkedToAlternateCandidateShape.Count;
 								for (int j = 0; j < linkedToAlternateCandidateShapeCount; ++j)
 								{
-									if (linkedToToShape.Contains(linkedToAlternateCandidateShape[j]))
+									testLinkShape = linkedToAlternateCandidateShape[j] as BinaryLinkShape;
+									if (testLinkShape != null &&
+										(null == ignoreLinkShapesFor || ignoreLinkShapesFor != testLinkShape.ModelElement) &&
+										Utility.EnumerableContains(linkedToToShape, testLinkShape))
 									{
 										alternateFromShape = null;
 										++nextConnectShapePosition;
@@ -3872,9 +3878,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return fromShape;
 		}
-		NodeShape IProvideConnectorShape.GetUniqueConnectorShape(NodeShape oppositeShape)
+		NodeShape IProvideConnectorShape.GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor)
 		{
-			return GetUniqueConnectorShape(oppositeShape);
+			return GetUniqueConnectorShape(oppositeShape, ignoreLinkShapesFor);
 		}
 		#endregion // ICustomShapeFolding implementation
 		#region IModelErrorActivation Implementation

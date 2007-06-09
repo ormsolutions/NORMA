@@ -99,12 +99,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				ShapeElement originalElement;
-				if (e.DomainProperty.Id == NodeShape.AbsoluteBoundsDomainPropertyId &&
-					(originalElement = e.ModelElement as ShapeElement) != null)
-				{
-					MultiShapeUtility.CheckLinksOnBoundsChanged(originalElement);
-				}
+				MultiShapeUtility.CheckLinksOnBoundsChange(e);
 			}
 		}
 		#endregion // MultipleShapesSupport

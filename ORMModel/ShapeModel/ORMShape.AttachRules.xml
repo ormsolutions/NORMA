@@ -16,7 +16,9 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMShapeDomainModel">
-		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeRule"/>
+		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeAddRule"/>
+		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule"/>
+		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule"/>
 		<arg:Rule class="ExternalConstraintShape.ExclusiveOrCouplerAdded"/>
 		<arg:Rule class="ExternalConstraintShape.ExclusiveOrCouplerDeleted"/>
 		<arg:Rule class="ExternalConstraintShape.PreferredIdentifierAddRule"/>
@@ -59,6 +61,7 @@
 		<arg:Rule class="ORMShapeDomainModel.ExternalRoleConstraintDeleted"/>
 		<arg:Rule class="ORMShapeDomainModel.FactTypedAdded"/>
 		<arg:Rule class="ORMShapeDomainModel.FactTypeShapeChanged"/>
+		<arg:Rule class="ORMShapeDomainModel.ForceClearViewFixupDataList"/>
 		<arg:Rule class="ORMShapeDomainModel.ModelNoteAdded"/>
 		<arg:Rule class="ORMShapeDomainModel.ModelNoteReferenceAdded"/>
 		<arg:Rule class="ORMShapeDomainModel.ObjectTypedAdded"/>

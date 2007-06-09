@@ -28,6 +28,7 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation

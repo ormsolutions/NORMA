@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace Neumont.Tools.Modeling.Diagrams
 {
 	#region ICustomShapeFolding interface
 	/// <summary>
@@ -252,7 +252,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return customPoint;
 			}
 			else if (null != (proxyConnector = geometryHost as IProxyConnectorShape) &&
-				null != (realHost = proxyConnector.ProxyConnectorShapeFor))
+				null != (realHost = proxyConnector.ProxyConnectorShapeFor as NodeShape))
 			{
 				SizeD size = realHost.Size;
 				customPoint = realHost.ShapeGeometry.DoFoldToShape(new GeometryHostWrapper(realHost), new PointD(size.Width / 2, size.Height / 2), GeometryUtility.VectorEndPointForBase(realHost, vectorEndPoint));
@@ -275,7 +275,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			IProxyConnectorShape proxyConnector = oppositeShape as IProxyConnectorShape;
 			if (proxyConnector != null)
 			{
-				NodeShape proxyFor = proxyConnector.ProxyConnectorShapeFor;
+				NodeShape proxyFor = proxyConnector.ProxyConnectorShapeFor as NodeShape;
 				if (proxyFor != null)
 				{
 					return proxyFor.AbsoluteCenter;

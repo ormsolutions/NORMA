@@ -133,7 +133,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (factType = (dataObject == null) ? elementToPlace as FactType : dataObject.GetData(typeof(FactType)) as FactType))
 			{
-				element = factType;
+				// SubtypeFacts are not placed, they appear as links between placed shapes and are fixed up at that point
+				if (!(factType is SubtypeFact))
+				{
+					element = factType;
+				}
 			}
 			else if (null != (setComparisonConstraint = (dataObject == null) ? elementToPlace as SetComparisonConstraint : dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
 			{
@@ -183,25 +187,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						DropTargetContext.Remove(transaction.TopLevelTransaction);
 					}
-					if (factType != null)
+					if (shapeElement != null)
 					{
-						FixupFactType(factType, shapeElement as FactTypeShape, false);
-					}
-					else if (objectType != null)
-					{
-						FixupObjectType(objectType, shapeElement as ObjectTypeShape, false);
-					}
-					else if (setConstraint != null)
-					{
-						FixupConstraint(setConstraint);
-					}
-					else if (setComparisonConstraint != null)
-					{
-						FixupConstraint(setComparisonConstraint);
-					}
-					else if (modelNote != null)
-					{
-						FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
+						if (factType != null)
+						{
+							FixupFactType(factType, (FactTypeShape)shapeElement, false);
+						}
+						else if (objectType != null)
+						{
+							FixupObjectType(objectType, shapeElement as ObjectTypeShape, false);
+						}
+						else if (setConstraint != null)
+						{
+							FixupConstraint(setConstraint, (ExternalConstraintShape)shapeElement);
+						}
+						else if (setComparisonConstraint != null)
+						{
+							FixupConstraint(setComparisonConstraint, (ExternalConstraintShape)shapeElement);
+						}
+						else if (modelNote != null)
+						{
+							FixupModelNote(modelNote, (ModelNoteShape)shapeElement);
+						}
 					}
 					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
 					{
@@ -235,18 +242,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private void FixupFactType(FactType factType, FactTypeShape factTypeShape, bool childShapesMerged)
 		{
+			bool duplicateShape = false;
+			foreach (FactTypeShape testShape in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(factTypeShape.Diagram, factType))
+			{
+				if (testShape != factTypeShape)
+				{
+					duplicateShape = true;
+					break;
+				}
+			}
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
 			for (int i = 0; i < roleCount; ++i)
 			{
 				//Role role = roleBase.Role;
 				Role role = roleCollection[i].Role;
-				// Pick up role players
-				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
 
-				// Pick up attached constraints
-				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
-				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
+				if (!duplicateShape)
+				{
+					// Pick up role players
+					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+
+					// Pick up attached constraints
+					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
+					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
+				}
 
 				if (!childShapesMerged)
 				{
@@ -292,7 +312,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
+			if (!duplicateShape)
+			{
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
+			}
 			Objectification objectification = factType.Objectification;
 			if (objectification != null && !objectification.IsImplied)
 			{
@@ -308,10 +331,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 						FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType);
 					}
 				}
-				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+				if (!duplicateShape)
+				{
+					FixupObjectTypeLinks(nestingType);
+				}
 			}
 		}
 		private void FixupObjectType(ObjectType objectType, ObjectTypeShape objectTypeShape, bool childShapesMerged)
+		{
+			bool duplicateShape = false;
+			foreach (ObjectTypeShape testShape in MultiShapeUtility.FindAllShapesForElement<ObjectTypeShape>(objectTypeShape.Diagram, objectType))
+			{
+				if (testShape != objectTypeShape)
+				{
+					duplicateShape = true;
+					break;
+				}
+			}
+			if (!duplicateShape)
+			{
+				FixupObjectTypeLinks(objectType);
+			}
+			if (!childShapesMerged)
+			{
+				ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
+				if (valueConstraint != null)
+				{
+					//check if we have a specific shape or need to use the model element
+					if (objectTypeShape == null)
+					{
+						FixUpLocalDiagram(objectType, valueConstraint);
+					}
+					else
+					{
+						FixUpLocalDiagram(objectTypeShape as ShapeElement, valueConstraint);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Helper function for FixupFactType and FixupObjectType
+		/// </summary>
+		private void FixupObjectTypeLinks(ObjectType objectType)
 		{
 			ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(objectType, ObjectTypePlaysRole.RolePlayerDomainRoleId);
 			int linksCount = rolePlayerLinks.Count;
@@ -339,45 +400,62 @@ namespace Neumont.Tools.ORM.ShapeModel
 					FixUpLocalDiagram(link);
 				}
 			}
-			if (!childShapesMerged)
-			{
-				ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
-				if (valueConstraint != null)
-				{
-					//check if we have a specific shape or need to use the model element
-					if (objectTypeShape == null)
-					{
-						FixUpLocalDiagram(objectType, valueConstraint);
-					}
-					else
-					{
-						FixUpLocalDiagram(objectTypeShape as ShapeElement, valueConstraint);
-					}
-				}
-			}
 			FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 		}
-		private void FixupConstraint(IConstraint constraint)
+		private void FixupConstraint(IConstraint constraint, ExternalConstraintShape constraintShape)
 		{
 			Debug.Assert(constraint is SetComparisonConstraint || constraint is SetConstraint,
 				"Only use FixupConstraint for a SetConstraint or SetComparisonConstraint.");
 
-			FixupRelatedLinks(
-				DomainRoleInfo.GetElementLinks<ElementLink>(constraint as ModelElement, constraint is SetComparisonConstraint ?
-					FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId :
-					FactSetConstraint.SetConstraintDomainRoleId),
-				delegate(ElementLink link, ShapeElement newShape)
+			ModelElement constraintElement = constraint as ModelElement;
+			bool duplicateShape = false;
+			foreach (ExternalConstraintShape testShape in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(constraintShape.Diagram, constraintElement))
+			{
+				if (testShape != constraintShape)
 				{
-					ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
-					if (linkShape != null)
+					duplicateShape = true;
+					break;
+				}
+			}
+
+			if (!duplicateShape)
+			{
+				FixupRelatedLinks(
+					DomainRoleInfo.GetElementLinks<ElementLink>(
+						constraintElement,
+						constraint is SetComparisonConstraint ?
+						FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId :
+						FactSetConstraint.SetConstraintDomainRoleId),
+					delegate(ElementLink link, ShapeElement newShape)
 					{
-						FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
-						if (shape != null)
+						ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
+						if (linkShape != null)
 						{
-							shape.ConstraintShapeSetChanged(constraint);
+							FactTypeShape shape = linkShape.AssociatedFactTypeShape as FactTypeShape;
+							if (shape != null)
+							{
+								shape.ConstraintShapeSetChanged(constraint);
+							}
 						}
-					}
-				});
+					});
+			}
+		}
+		private void FixupModelNote(ModelNote noteElement, ModelNoteShape noteShape)
+		{
+			bool duplicateShape = false;
+			foreach (ModelNoteShape testShape in MultiShapeUtility.FindAllShapesForElement<ModelNoteShape>(noteShape.Diagram, noteElement))
+			{
+				if (testShape != noteShape)
+				{
+					duplicateShape = true;
+					break;
+				}
+			}
+
+			if (!duplicateShape)
+			{
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(noteElement, ModelNoteReferencesModelElement.NoteDomainRoleId));
+			}
 		}
 		/// <summary>
 		/// Callback used with <see cref="FixupRelatedLinks(ReadOnlyCollection{ElementLink},AfterLinkFixup)"/>
@@ -1707,11 +1785,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (setConstraint = element as SetConstraint))
 			{
-				FixupConstraint(setConstraint);
+				FixupConstraint(setConstraint, (ExternalConstraintShape)shape);
 			}
 			else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
 			{
-				FixupConstraint(setComparisonConstraint);
+				FixupConstraint(setComparisonConstraint, (ExternalConstraintShape)shape);
 			}
 
 			if (!containedAllowMultipleShapes)

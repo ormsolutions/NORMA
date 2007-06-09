@@ -19,12 +19,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Diagrams;
+using System.Reflection.Emit;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMShapeDomainModel
@@ -1184,6 +1186,73 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ModelNote fixup
+		#region ForceClearViewFixupDataList class
+		/// <summary>
+		/// Make sure the internal diagram ViewFixupDataList is cleared once fixup is completed.
+		/// The core implementation does not clear more than a single element.
+		/// </summary>
+		[RuleOn(typeof(Diagram), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority + 1)]
+		private partial class ForceClearViewFixupDataList : ChangeRule
+		{
+			#region Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ClearViewFixupDataList implementation
+			private delegate void ClearDiagramViewFixupDataListDelegate(Diagram @this);
+			/// <summary>
+			/// The Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ViewFixupData class and corresponding
+			/// Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ViewFixupDataList property are internal
+			/// Microsoft.VisualStudio.Modeling.ModelCommand is internal, but the partition and EventArgs
+			/// elements are not. Retrieve these with a dynamic method.
+			/// </summary>
+			private static readonly ClearDiagramViewFixupDataListDelegate ClearViewFixupDataList = CreateClearViewFixupDataList();
+			private static ClearDiagramViewFixupDataListDelegate CreateClearViewFixupDataList()
+			{
+				Type diagramType = typeof(Diagram);
+				Type viewFixupDataListType;
+				PropertyInfo viewFixupDataListProperty;
+				MethodInfo viewFixupDataListPropertyGet;
+				MethodInfo clearMethod;
+				if (null == (viewFixupDataListProperty = diagramType.GetProperty("ViewFixupDataList", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) ||
+					null == (viewFixupDataListType = viewFixupDataListProperty.PropertyType) ||
+					null == (clearMethod = viewFixupDataListType.GetMethod("Clear", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) ||
+					null == (viewFixupDataListPropertyGet = viewFixupDataListProperty.GetGetMethod(true)))
+				{
+					Debug.Fail("The internal structure of the Diagram class has changed, IL generation will fail");
+					return null;
+				}
+
+				// Approximate method being written (assuming TransactionItem context):
+				// void ClearViewFixupDataList()
+				// {
+				//     ViewFixupDataList.Clear();
+				// }
+				DynamicMethod dynamicMethod = new DynamicMethod(
+					"ClearViewFixupDataList",
+					null,
+					new Type[] { diagramType },
+					diagramType.Module,
+					true);
+				// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for more than the required 12 bytes
+				// to avoid a resize to an even larger buffer.
+				ILGenerator il = dynamicMethod.GetILGenerator(16);
+				il.Emit(OpCodes.Ldarg_0);
+				il.Emit(OpCodes.Call, viewFixupDataListPropertyGet);
+				il.Emit(OpCodes.Call, clearMethod);
+
+				// Return the array (already on the stack)
+				il.Emit(OpCodes.Ret);
+				return (ClearDiagramViewFixupDataListDelegate)dynamicMethod.CreateDelegate(typeof(ClearDiagramViewFixupDataListDelegate));
+			}
+			#endregion // Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ClearViewFixupDataList implementation
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				Diagram diagram;
+				if (e.DomainProperty.Id == Diagram.DoViewFixupDomainPropertyId &&
+					!(diagram = (e.ModelElement as Diagram)).IsDeleted)
+				{
+					ClearViewFixupDataList(diagram);
+				}
+			}
+		}
+		#endregion // ForceClearViewFixupDataList class
 		#endregion // View Fixup Rules
 	}
 }

@@ -299,7 +299,6 @@
     <Compile Include="ShapeModel\SubtypeConnectorAction.cs" />
     <Compile Include="ShapeModel\ValueRangeLink.cs" />
     <Compile Include="ShapeModel\ValueRangeShape.cs" />
-    <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
     <Compile Include="ShapeModel\FrequencyConstraintShape.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
     <Compile Include="Framework\DeserializationManager.cs" />
@@ -393,6 +392,7 @@
     <Compile Include="Framework\Diagnostics\TransactionLogViewer.Designer.cs">
       <DependentUpon>TransactionLogViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Diagrams\CustomFoldShapeGeometries.cs" />
     <Compile Include="Framework\Diagrams\LayoutEngine.cs" />
     <Compile Include="Framework\Diagrams\MultiShapeUtility.cs" />
     <Compile Include="Framework\ModelingEventManager.cs" />

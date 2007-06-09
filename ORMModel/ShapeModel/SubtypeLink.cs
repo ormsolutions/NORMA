@@ -38,7 +38,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IEnsureConnectorShapeForLink, IReconfigureableLink
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -412,12 +412,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// ORM diagrams need to connect links to other links, but this is
 		/// not supported directly by the framework, so we create a dummy
 		/// node shape that tracks the center of the link line and connect
-		/// to the shape instead.
-		/// Implements <see cref="IEnsureConnectorShapeForLink.EnsureLinkConnectorShape"/>
+		/// to the shape instead. The currently ORM diagram requirements
+		/// are simple: we are only called with an opposite ExternalConstraintShape,
+		/// and we can return the same shape for all requests.
+		/// Implements <see cref="IProvideConnectorShape.GetUniqueConnectorShape"/>
 		/// </summary>
-		/// <returns>LinkConnectorShape</returns>
-		protected NodeShape EnsureLinkConnectorShape()
+		protected NodeShape GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor)
 		{
+			Debug.Assert(oppositeShape is ExternalConstraintShape);
 			LinkConnectorShape retVal = null;
 			LinkedElementCollection<ShapeElement> childShapes = RelativeChildShapes;
 			foreach (ShapeElement shape in childShapes)
@@ -434,10 +436,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
 			return retVal;
 		}
-
-		NodeShape IEnsureConnectorShapeForLink.EnsureLinkConnectorShape()
+		NodeShape IProvideConnectorShape.GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor)
 		{
-			return EnsureLinkConnectorShape();
+			return GetUniqueConnectorShape(oppositeShape, ignoreLinkShapesFor);
 		}
 #if LINKS_ALWAYS_CONNECT
 		/// <summary>

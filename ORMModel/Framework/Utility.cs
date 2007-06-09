@@ -316,5 +316,27 @@ namespace Neumont.Tools.Modeling
 			return retVal;
 		}
 		#endregion // GetLocalizedEnumNames method
+		#region EnumerableContains method
+		/// <summary>
+		/// Helper method to see if an <see cref="IEnumerable{T}"/> contains
+		/// a specified item.
+		/// </summary>
+		/// <typeparam name="T">Any type</typeparam>
+		/// <param name="enumerable">The items to search</param>
+		/// <param name="item">The item to search for</param>
+		/// <returns>true of the <paramref name="enumerable"/> contains the <paramref name="item"/></returns>
+		public static bool EnumerableContains<T>(IEnumerable<T> enumerable, T item)
+		{
+			EqualityComparer<T> comparer = EqualityComparer<T>.Default;
+			foreach (T testItem in enumerable)
+			{
+				if (comparer.Equals(item, testItem))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		#endregion // EnumerableContains
 	}
 }
