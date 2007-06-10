@@ -1337,11 +1337,11 @@ namespace Neumont.Tools.ORM.Shell
 			return;
 		}
 		/// <summary>
-		/// Serializes a link.
+		/// Serializes a link. Helper function for <see cref="SerializeChildElement"/>
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
-		/// <param name="link">The link.</param>
-		/// <param name="rolePlayer">The role player.</param>
+		/// <param name="link">The link. Should be verified with <see cref="ShouldSerializeElement"/> before this call.</param>
+		/// <param name="rolePlayer">The role player. Should be verified with <see cref="ShouldSerializeElement"/> before this call.</param>
 		/// <param name="oppositeRolePlayer">The opposite role player.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		private void SerializeLink(XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, DomainRoleInfo rolePlayedInfo)
@@ -1352,10 +1352,6 @@ namespace Neumont.Tools.ORM.Shell
 			string defaultPrefix;
 			bool hasCustomAttributes = false;
 
-			if (!ShouldSerializeElement(link) || !ShouldSerializeElement(rolePlayer))
-			{
-				return;
-			}
 			IORMCustomSerializedElement rolePlayerCustomElement = rolePlayer as IORMCustomSerializedElement;
 			IORMCustomSerializedElement customElement = rolePlayerCustomElement;
 			ORMCustomSerializedElementWriteStyle writeStyle;
@@ -1532,15 +1528,18 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 
-						if (writeBeginElement && !ret && customInfo != null)
+						if (ShouldSerializeElement(link) && ShouldSerializeElement(childElement))
 						{
-							if (!WriteCustomizedStartElement(file, customInfo, containerInfo, defaultPrefix, customInfo.CustomName))
+							if (writeBeginElement && !ret && customInfo != null)
 							{
-								return false;
+								if (!WriteCustomizedStartElement(file, customInfo, containerInfo, defaultPrefix, customInfo.CustomName))
+								{
+									return false;
+								}
+								ret = true;
 							}
-							ret = true;
+							SerializeLink(file, link, childElement, oppositeRolePlayer, rolePlayedInfo);
 						}
-						SerializeLink(file, link, childElement, oppositeRolePlayer, rolePlayedInfo);
 					}
 				}
 			}
