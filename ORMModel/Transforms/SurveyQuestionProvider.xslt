@@ -282,14 +282,7 @@
 												<plx:right>
 													<xsl:choose>
 														<xsl:when test="@imageIndex='.custom'">
-															<plx:binaryOperator type="add">
-																<plx:left>
-																	<xsl:copy-of select="child::plx:*"/>
-																</plx:left>
-																<plx:right>
-																	<plx:value data="1" type="i4"/>
-																</plx:right>
-															</plx:binaryOperator>
+																<xsl:copy-of select="child::plx:*"/>
 														</xsl:when>
 														<xsl:otherwise>
 															<plx:value data="{@imageIndex}" type="i4"/>
@@ -335,7 +328,7 @@
 							<xsl:otherwise>
 								<xsl:for-each select="qp:displaySupport">
 									<xsl:if test="position()=1">
-										<xsl:call-template name="OrTogetherEnumElements">
+										<xsl:call-template name="OrTogetherDisplaySupportElements">
 											<xsl:with-param name="EnumType" select="'SurveyQuestionUISupport'"/>
 											<xsl:with-param name="name" select="@displayCategory"/>
 										</xsl:call-template>
@@ -351,7 +344,7 @@
 	<!-- Or together enum values from the given type. The current state on the initial
 	     call should be the position()=1 element inside a for-each context where the elements
 		 contain the (unqualified) names of the enum values to or together -->
-	<xsl:template name="OrTogetherEnumElements">
+	<xsl:template name="OrTogetherDisplaySupportElements">
 		<xsl:param name="EnumType"/>
 		<xsl:param name="name"/>
 		<xsl:choose>
@@ -364,9 +357,9 @@
 						<plx:callStatic dataTypeName="{$EnumType}" name="{$name}" type="field"/>
 					</plx:left>
 					<plx:right>
-						<xsl:for-each select="following-sibling::*">
+						<xsl:for-each select="following-sibling::qp:displaySupport">
 							<xsl:if test="position()=1">
-								<xsl:call-template name="OrTogetherEnumElements">
+								<xsl:call-template name="OrTogetherDisplaySupportElements">
 									<xsl:with-param name="EnumType" select="$EnumType"/>
 									<xsl:with-param name="name" select="@displayCategory"/>
 								</xsl:call-template>

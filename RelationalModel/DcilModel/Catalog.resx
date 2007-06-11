@@ -132,4 +132,110 @@
 			You must not remove this notice, or any other, from this software.
 		</value>
   </metadata>
+  <data name="PredefinedType.BigInt" xml:space="preserve">
+    <value>BIGINT</value>
+  </data>
+  <data name="PredefinedType.BinaryLargeObject" xml:space="preserve">
+    <value>BINARY LARGE OBJECT</value>
+  </data>
+  <data name="PredefinedType.Boolean" xml:space="preserve">
+    <value>BOOLEAN</value>
+  </data>
+  <data name="PredefinedType.Character" xml:space="preserve">
+    <value>CHARACTER</value>
+  </data>
+  <data name="PredefinedType.CharacterLargeObject" xml:space="preserve">
+    <value>CHARACTER LARGE OBJECT</value>
+  </data>
+  <data name="PredefinedType.CharacterVarying" xml:space="preserve">
+    <value>CHARACTER VARYING</value>
+  </data>
+  <data name="PredefinedType.Decimal" xml:space="preserve">
+    <value>DECIMAL</value>
+  </data>
+  <data name="PredefinedType.DoublePrecision" xml:space="preserve">
+    <value>DOUBLE PRECISION</value>
+  </data>
+  <data name="PredefinedType.Float" xml:space="preserve">
+    <value>FLOAT</value>
+  </data>
+  <data name="PredefinedType.Integer" xml:space="preserve">
+    <value>INTEGER</value>
+  </data>
+  <data name="PredefinedType.Numeric" xml:space="preserve">
+    <value>NUMERIC</value>
+  </data>
+  <data name="PredefinedType.Real" xml:space="preserve">
+    <value>REAL</value>
+  </data>
+  <data name="PredefinedType.SmallInt" xml:space="preserve">
+    <value>SMALLINT</value>
+  </data>
+  <data name="SqlDataAccessIndication.ContainsSql" xml:space="preserve">
+    <value>CONSTAINS SQL</value>
+  </data>
+  <data name="SqlDataAccessIndication.ModifiesSqlData" xml:space="preserve">
+    <value>MODIFIES SQL DATA</value>
+  </data>
+  <data name="SqlDataAccessIndication.NoSql" xml:space="preserve">
+    <value>NO SQL</value>
+  </data>
+  <data name="SqlDataAccessIndication.ReadsSqlData" xml:space="preserve">
+    <value>READS SQL DATA</value>
+  </data>
+  <data name="SurveyReferenceConstraintChildType.TableReference" xml:space="preserve">
+    <value>Referenced Table</value>
+  </data>
+  <data name="SurveyReferenceConstraintChildType.ColumnReference" xml:space="preserve">
+    <value>Referenced Columns</value>
+  </data>
+  <data name="SurveySchemaChildType.Domain" xml:space="preserve">
+    <value>Domains</value>
+  </data>
+  <data name="SurveySchemaChildType.Table" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="SurveySchemaType.Schema" xml:space="preserve">
+    <value>Relational Schemas</value>
+  </data>
+  <data name="SurveyTableChildType.Column" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="SurveyTableChildType.Constraint" xml:space="preserve">
+    <value>Constraints</value>
+  </data>
+  <data name="SurveyTableChildType.ReferenceConstraint" xml:space="preserve">
+    <value>Foreign Keys</value>
+  </data>
+  <data name="SurveyTree.ImageStrip" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>Resources/SurveyTree.ImageStrip.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Image strip for SurveyTree</comment>
+  </data>
+  <data name="SurveyUniquenessConstraintChildType.ColumnReference" xml:space="preserve">
+    <value>Referenced Columns</value>
+  </data>
+  <data name="TriggerActionTime.After" xml:space="preserve">
+    <value>AFTER</value>
+  </data>
+  <data name="TriggerActionTime.Before" xml:space="preserve">
+    <value>BEFORE</value>
+  </data>
+  <data name="TriggerForEach.Row" xml:space="preserve">
+    <value>ROW</value>
+  </data>
+  <data name="TriggerForEach.Statement" xml:space="preserve">
+    <value>STATEMENT</value>
+  </data>
+  <data name="TriggerTarget.NewRow" xml:space="preserve">
+    <value>NEW ROW</value>
+  </data>
+  <data name="TriggerTarget.NewTable" xml:space="preserve">
+    <value>NEW TABLE</value>
+  </data>
+  <data name="TriggerTarget.OldRow" xml:space="preserve">
+    <value>OLD ROW</value>
+  </data>
+  <data name="TriggerTarget.OldTable" xml:space="preserve">
+    <value>OLD TABLE</value>
+  </data>
 </root>

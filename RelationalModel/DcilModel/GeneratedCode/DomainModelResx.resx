@@ -221,13 +221,13 @@
     <value>Constraint</value>
     <comment>DisplayName for DomainClass &apos;Constraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Dil.Dcil.Constraint/name.Description" xml:space="preserve">
+  <data name="Neumont.Tools.Dil.Dcil.Constraint/Name.Description" xml:space="preserve">
     <value>The name of the constraint.</value>
-    <comment>Description for DomainProperty &apos;name&apos; on DomainClass &apos;Constraint&apos;</comment>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Constraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Dil.Dcil.Constraint/name.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.Dil.Dcil.Constraint/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
-    <comment>DisplayName for DomainProperty &apos;name&apos; on DomainClass &apos;Constraint&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Constraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraint.Description" xml:space="preserve">
     <value>A constraint on the uniqueness of a set of columns. Equivalent to a &apos;UNIQUE&apos; or &apos;PRIMARY KEY&apos; in the SQL Standard.</value>
@@ -334,7 +334,7 @@
     <comment>DisplayName for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.PropertyDisplayName" xml:space="preserve">
-    <value>Schemas</value>
+    <value>Schema Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Schema.Description" xml:space="preserve">
@@ -398,7 +398,7 @@
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.PropertyDisplayName" xml:space="preserve">
-    <value>Tables</value>
+    <value>Table Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Table.Description" xml:space="preserve">
@@ -430,7 +430,7 @@
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.PropertyDisplayName" xml:space="preserve">
-    <value>Domains</value>
+    <value>Domain Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Domain.Description" xml:space="preserve">
@@ -462,7 +462,7 @@
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.PropertyDisplayName" xml:space="preserve">
-    <value>Columns</value>
+    <value>Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsColumn/Column.Description" xml:space="preserve">
@@ -494,7 +494,7 @@
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.PropertyDisplayName" xml:space="preserve">
-    <value>Constraints</value>
+    <value>Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Constraint.Description" xml:space="preserve">
@@ -526,7 +526,7 @@
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.PropertyDisplayName" xml:space="preserve">
-    <value>Uniqueness Constraints</value>
+    <value>Uniqueness Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/UniquenessConstraint.Description" xml:space="preserve">
@@ -558,7 +558,7 @@
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.PropertyDisplayName" xml:space="preserve">
-    <value>Reference Constraints</value>
+    <value>Reference Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/ReferenceConstraint.Description" xml:space="preserve">
@@ -590,7 +590,7 @@
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.PropertyDisplayName" xml:space="preserve">
-    <value>Check Constraints</value>
+    <value>Check Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
@@ -750,7 +750,7 @@
     <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Columns</value>
+    <value>Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/Column.Description" xml:space="preserve">
@@ -814,7 +814,7 @@
     <comment>DisplayName for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.PropertyDisplayName" xml:space="preserve">
-    <value>Target Columns</value>
+    <value>Target Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.Description" xml:space="preserve">
@@ -826,7 +826,7 @@
     <comment>DisplayName for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.PropertyDisplayName" xml:space="preserve">
-    <value>Source Columns</value>
+    <value>Source Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.Description" xml:space="preserve">
@@ -846,7 +846,7 @@
     <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Column References</value>
+    <value>Column Reference Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
   <data name="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ColumnReference.Description" xml:space="preserve">

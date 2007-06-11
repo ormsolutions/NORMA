@@ -139,7 +139,7 @@
 				<DomainClassMoniker Name="DcilModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Id="E5B7177F-C2C6-4777-B917-7847930E34EC" Name="name" IsElementName="true" Description="The name of the constraint.">
+				<DomainProperty Id="E5B7177F-C2C6-4777-B917-7847930E34EC" Name="Name" IsElementName="true" Description="The name of the constraint.">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
 							<Parameters>
@@ -363,7 +363,7 @@
 	<Relationships>
 		<DomainRelationship Id="7CBDB2CD-2E18-4F16-BAE8-C81D0F72F90D" Namespace="Neumont.Tools.Dil.Dcil" Name="CatalogContainsSchema" IsEmbedding="true">
 			<Source>
-				<DomainRole Id="F7B037D9-D101-463A-8BDE-62EEBD5430F3" Name="Catalog" PropertyName="Schemas" Multiplicity="ZeroMany">
+				<DomainRole Id="F7B037D9-D101-463A-8BDE-62EEBD5430F3" Name="Catalog" PropertyName="SchemaCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Catalog"/>
 					</RolePlayer>
@@ -400,7 +400,7 @@
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="CC145E8C-EBC7-4BBF-9E70-24F76C4B69A9" Name="Schema" PropertyName="Tables" Multiplicity="ZeroMany">
+				<DomainRole Id="CC145E8C-EBC7-4BBF-9E70-24F76C4B69A9" Name="Schema" PropertyName="TableCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Schema"/>
 					</RolePlayer>
@@ -419,7 +419,7 @@
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="BF0668B8-0CB5-49D0-A1B7-4637A16E2625" Name="Schema" PropertyName="Domains" Multiplicity="ZeroMany">
+				<DomainRole Id="BF0668B8-0CB5-49D0-A1B7-4637A16E2625" Name="Schema" PropertyName="DomainCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Schema"/>
 					</RolePlayer>
@@ -438,7 +438,7 @@
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="B7B5FAE0-9C48-408B-B4AD-03B65CEE1B78" Name="Schema" PropertyName="Triggers" Multiplicity="ZeroMany">
+				<DomainRole Id="B7B5FAE0-9C48-408B-B4AD-03B65CEE1B78" Name="Schema" PropertyName="TriggerCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Schema"/>
 					</RolePlayer>
@@ -457,7 +457,7 @@
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="9946FB8B-7F94-4731-BD9B-A255335EDF09" Name="Schema" PropertyName="Procedures" Multiplicity="ZeroMany">
+				<DomainRole Id="9946FB8B-7F94-4731-BD9B-A255335EDF09" Name="Schema" PropertyName="ProcedureCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Schema"/>
 					</RolePlayer>
@@ -474,7 +474,7 @@
 
 		<DomainRelationship Id="FB5B6B20-8A4E-4BA3-BC8B-FBEAADBF9C33" Namespace="Neumont.Tools.Dil.Dcil" Name="TableContainsColumn" IsEmbedding="true">
 			<Source>
-				<DomainRole Id="C3A52815-E9B9-4757-9985-717E54F884ED" Name="Table" PropertyName="Columns" Multiplicity="OneMany">
+				<DomainRole Id="C3A52815-E9B9-4757-9985-717E54F884ED" Name="Table" PropertyName="ColumnCollection" Multiplicity="OneMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
@@ -490,7 +490,7 @@
 		</DomainRelationship>
 		<DomainRelationship Id="DAD57818-93B6-4584-A94E-71D31E4F959C" Namespace="Neumont.Tools.Dil.Dcil" Name="TableContainsConstraint" IsEmbedding="true">
 			<Source>
-				<DomainRole Id="E64C339F-8AC5-494D-A913-D22D5034E961" Name="Table" PropertyName="Constraints" IsPropertyGenerator="false" Multiplicity="OneMany">
+				<DomainRole Id="E64C339F-8AC5-494D-A913-D22D5034E961" Name="Table" PropertyName="ConstraintCollection" IsPropertyGenerator="false" Multiplicity="OneMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
@@ -509,7 +509,7 @@
 				<DomainRelationshipMoniker Name="TableContainsConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="B9790914-E889-4F00-A456-ED1D1817C23B" Name="Table" PropertyName="UniquenessConstraints" Multiplicity="OneMany">
+				<DomainRole Id="B9790914-E889-4F00-A456-ED1D1817C23B" Name="Table" PropertyName="UniquenessConstraintCollection" Multiplicity="OneMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
@@ -528,7 +528,7 @@
 				<DomainRelationshipMoniker Name="TableContainsConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="8D0549B5-9A2F-4FD2-A733-BCC779A89BAF" Name="Table" PropertyName="ReferenceConstraints" Multiplicity="ZeroMany">
+				<DomainRole Id="8D0549B5-9A2F-4FD2-A733-BCC779A89BAF" Name="Table" PropertyName="ReferenceConstraintCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
@@ -547,7 +547,7 @@
 				<DomainRelationshipMoniker Name="TableContainsConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Id="3370D577-580D-4153-A03B-429ACE90C798" Name="Table" PropertyName="CheckConstraints" Multiplicity="ZeroMany">
+				<DomainRole Id="3370D577-580D-4153-A03B-429ACE90C798" Name="Table" PropertyName="CheckConstraintCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
@@ -630,7 +630,7 @@
 
 		<DomainRelationship Id="0A87B269-0D2C-4D7D-80A7-6DC1B5E0C5F6" Namespace="Neumont.Tools.Dil.Dcil" Name="UniquenessConstraintIncludesColumn">
 			<Source>
-				<DomainRole Id="2AC76280-67CA-4583-A203-C0EDA2D15FE4" Name="UniquenessConstraint" PropertyName="Columns" Multiplicity="OneMany">
+				<DomainRole Id="2AC76280-67CA-4583-A203-C0EDA2D15FE4" Name="UniquenessConstraint" PropertyName="ColumnCollection" Multiplicity="OneMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="UniquenessConstraint"/>
 					</RolePlayer>
@@ -663,14 +663,14 @@
 		</DomainRelationship>
 		<DomainRelationship Id="2CA33A35-0FD3-4B68-9222-F2851A909C2F" Namespace="Neumont.Tools.Dil.Dcil" Name="ColumnReference" AllowsDuplicates="true">
 			<Source>
-				<DomainRole Id="7BE6B7CC-EE99-4667-B096-79E2B4403561" Name="SourceColumn" PropertyName="TargetColumns" IsPropertyGenerator="false" Multiplicity="ZeroMany">
+				<DomainRole Id="7BE6B7CC-EE99-4667-B096-79E2B4403561" Name="SourceColumn" PropertyName="TargetColumnCollection" IsPropertyGenerator="false" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Column"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="D7569B79-22DB-4423-9B31-AD8C5FA96AC2" Name="TargetColumn" PropertyName="SourceColumns" IsPropertyGenerator="false" Multiplicity="ZeroMany">
+				<DomainRole Id="D7569B79-22DB-4423-9B31-AD8C5FA96AC2" Name="TargetColumn" PropertyName="SourceColumnCollection" IsPropertyGenerator="false" Multiplicity="ZeroMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="Column"/>
 					</RolePlayer>
@@ -679,7 +679,7 @@
 		</DomainRelationship>
 		<DomainRelationship Id="59F535BC-8DAF-43A0-8CFC-519086A5A9DE" Namespace="Neumont.Tools.Dil.Dcil" Name="ReferenceConstraintContainsColumnReference" IsEmbedding="true">
 			<Source>
-				<DomainRole Id="FA2DFF9B-4E4B-4BDE-BDDD-090D6B6A6893" Name="ReferenceConstraint" PropertyName="ColumnReferences" Multiplicity="OneMany">
+				<DomainRole Id="FA2DFF9B-4E4B-4BDE-BDDD-090D6B6A6893" Name="ReferenceConstraint" PropertyName="ColumnReferenceCollection" Multiplicity="OneMany">
 					<RolePlayer>
 						<DomainClassMoniker Name="ReferenceConstraint"/>
 					</RolePlayer>
@@ -739,7 +739,7 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerTarget, global::Neumont.Tools.Dil.EnumDisplayNameResources&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerTarget, global::Neumont.Tools.Dil.Dcil.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -769,7 +769,7 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerActionTime, global::Neumont.Tools.Dil.EnumDisplayNameResources&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerActionTime, global::Neumont.Tools.Dil.Dcil.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -808,7 +808,7 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerEvent, global::Neumont.Tools.Dil.EnumDisplayNameResources&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerEvent, global::Neumont.Tools.Dil.Dcil.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -838,7 +838,7 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerForEach, global::Neumont.Tools.Dil.EnumDisplayNameResources&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerForEach, global::Neumont.Tools.Dil.Dcil.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -886,7 +886,7 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;SqlDataAccessIndication, global::Neumont.Tools.Dil.EnumDisplayNameResources&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;SqlDataAccessIndication, global::Neumont.Tools.Dil.Dcil.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -1134,7 +1134,7 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;PredefinedType, global::Neumont.Tools.Dil.EnumDisplayNameResources&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;PredefinedType, global::Neumont.Tools.Dil.Dcil.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

@@ -14,14 +14,12 @@
 \**************************************************************************/
 #endregion
 
-namespace Neumont.Tools.Dil
+namespace Neumont.Tools.Dil.Dcil
 {
-	internal abstract class EnumDisplayNameResources
+	// Placeholder file to associated resources with the root catalog class.
+	// The resources with the domain model are generated, so we need a different
+	// class to attach non-generated resources with.
+	partial class Catalog
 	{
-		private EnumDisplayNameResources()
-		{
-			// Never instantiate this class.
-			// It is only here to pick up the ResourceManager off of it.
-		}
 	}
 }

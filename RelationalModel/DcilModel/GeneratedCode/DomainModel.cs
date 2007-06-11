@@ -107,7 +107,7 @@ namespace Neumont.Tools.Dil.Dcil
 				new DomainMemberInfo(typeof(Column), "Name", Column.NameDomainPropertyId, typeof(Column.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Column), "IsNullable", Column.IsNullableDomainPropertyId, typeof(Column.IsNullablePropertyHandler)),
 				new DomainMemberInfo(typeof(Column), "IsIdentity", Column.IsIdentityDomainPropertyId, typeof(Column.IsIdentityPropertyHandler)),
-				new DomainMemberInfo(typeof(Constraint), "name", Constraint.nameDomainPropertyId, typeof(Constraint.namePropertyHandler)),
+				new DomainMemberInfo(typeof(Constraint), "Name", Constraint.NameDomainPropertyId, typeof(Constraint.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(UniquenessConstraint), "IsPrimary", UniquenessConstraint.IsPrimaryDomainPropertyId, typeof(UniquenessConstraint.IsPrimaryPropertyHandler)),
 				new DomainMemberInfo(typeof(Domain), "Name", Domain.NameDomainPropertyId, typeof(Domain.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(PredefinedDataType), "Name", PredefinedDataType.NameDomainPropertyId, typeof(PredefinedDataType.NamePropertyHandler)),
@@ -542,7 +542,7 @@ namespace Neumont.Tools.Dil.Dcil
 	/// The valid values for the target attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerTarget, global::Neumont.Tools.Dil.EnumDisplayNameResources>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerTarget, global::Neumont.Tools.Dil.Dcil.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerTarget
 	{
@@ -583,7 +583,7 @@ namespace Neumont.Tools.Dil.Dcil
 	/// The valid values for the actionTime attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerActionTime, global::Neumont.Tools.Dil.EnumDisplayNameResources>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerActionTime, global::Neumont.Tools.Dil.Dcil.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerActionTime
 	{
@@ -610,7 +610,7 @@ namespace Neumont.Tools.Dil.Dcil
 	/// The valid values for the event attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerEvent, global::Neumont.Tools.Dil.EnumDisplayNameResources>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerEvent, global::Neumont.Tools.Dil.Dcil.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerEvent
 	{
@@ -644,7 +644,7 @@ namespace Neumont.Tools.Dil.Dcil
 	/// The valid values for the event attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerForEach, global::Neumont.Tools.Dil.EnumDisplayNameResources>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerForEach, global::Neumont.Tools.Dil.Dcil.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerForEach
 	{
@@ -671,7 +671,7 @@ namespace Neumont.Tools.Dil
 	/// Used to indicate the type of access to SQL-data for a SQL-invoked routine.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<SqlDataAccessIndication, global::Neumont.Tools.Dil.EnumDisplayNameResources>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<SqlDataAccessIndication, global::Neumont.Tools.Dil.Dcil.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum SqlDataAccessIndication
 	{
@@ -712,7 +712,7 @@ namespace Neumont.Tools.Dil
 	/// Description for Neumont.Tools.Dil.PredefinedType
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<PredefinedType, global::Neumont.Tools.Dil.EnumDisplayNameResources>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<PredefinedType, global::Neumont.Tools.Dil.Dcil.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum PredefinedType
 	{

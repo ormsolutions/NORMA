@@ -299,10 +299,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Secondary SubType Relationship
 		/// </summary>
 		SecondarySubtypeRelationship,
-        /// <summary>
-        /// The last glyph
-        /// </summary>
-        Last = SecondarySubtypeRelationship,
+		/// <summary>
+		/// The last glyph
+		/// </summary>
+		Last = SecondarySubtypeRelationship,
 	}
 	#endregion // Survey Glyph questions
 }

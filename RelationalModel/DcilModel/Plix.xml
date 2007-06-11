@@ -2,4 +2,5 @@
 <plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
 	<plixLoader:sourceFile file="DcilModel.AttachRules.xml" transformFile="..\..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="DcilModel.SerializationExtensions.xml" transformFile="..\..\ORMModel\Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:sourceFile file="DcilModel.SurveyQuestionProvider.xml" transformFile="..\..\ORMModel\Transforms\SurveyQuestionProvider.xslt"/>
 </plixLoader:sourceFiles>

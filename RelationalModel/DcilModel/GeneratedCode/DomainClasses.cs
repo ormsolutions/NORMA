@@ -183,12 +183,12 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 		
 		#endregion
-		#region Schemas opposite domain role accessor
+		#region SchemaCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of Schemas.
+		/// Gets a list of SchemaCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.CatalogContainsSchema.Catalog
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Schema> Schemas
+		public virtual DslModeling::LinkedElementCollection<Schema> SchemaCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -346,12 +346,12 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region Tables opposite domain role accessor
+		#region TableCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of Tables.
+		/// Gets a list of TableCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.SchemaContainsTable.Schema
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Table> Tables
+		public virtual DslModeling::LinkedElementCollection<Table> TableCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -360,12 +360,12 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region Domains opposite domain role accessor
+		#region DomainCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of Domains.
+		/// Gets a list of DomainCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.SchemaContainsDomain.Schema
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Domain> Domains
+		public virtual DslModeling::LinkedElementCollection<Domain> DomainCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -523,12 +523,12 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region Columns opposite domain role accessor
+		#region ColumnCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of Columns.
+		/// Gets a list of ColumnCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.TableContainsColumn.Table
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Column> Columns
+		public virtual DslModeling::LinkedElementCollection<Column> ColumnCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -537,12 +537,12 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region UniquenessConstraints opposite domain role accessor
+		#region UniquenessConstraintCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of UniquenessConstraints.
+		/// Gets a list of UniquenessConstraintCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.Table
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<UniquenessConstraint> UniquenessConstraints
+		public virtual DslModeling::LinkedElementCollection<UniquenessConstraint> UniquenessConstraintCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -551,12 +551,12 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region ReferenceConstraints opposite domain role accessor
+		#region ReferenceConstraintCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of ReferenceConstraints.
+		/// Gets a list of ReferenceConstraintCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint.Table
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ReferenceConstraint> ReferenceConstraints
+		public virtual DslModeling::LinkedElementCollection<ReferenceConstraint> ReferenceConstraintCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -565,12 +565,12 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region CheckConstraints opposite domain role accessor
+		#region CheckConstraintCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of CheckConstraints.
+		/// Gets a list of CheckConstraintCollection.
 		/// Description for Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.Table
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<CheckConstraint> CheckConstraints
+		public virtual DslModeling::LinkedElementCollection<CheckConstraint> CheckConstraintCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -965,7 +965,7 @@ namespace Neumont.Tools.Dil.Dcil
 	[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.Constraint.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.Constraint.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (name = {namePropertyStorage})")]
+	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainObjectId("a966aaa8-e770-4696-8865-a1396b7871bd")]
 	public abstract partial class Constraint : DcilModelElement
 	{
@@ -985,28 +985,28 @@ namespace Neumont.Tools.Dil.Dcil
 		{
 		}
 		#endregion
-		#region name domain property code
+		#region Name domain property code
 		
 		/// <summary>
-		/// name domain property Id.
+		/// Name domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid nameDomainPropertyId = new global::System.Guid(0xe5b7177f, 0xc2c6, 0x4777, 0xb9, 0x17, 0x78, 0x47, 0x93, 0x0e, 0x34, 0xec);
+		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0xe5b7177f, 0xc2c6, 0x4777, 0xb9, 0x17, 0x78, 0x47, 0x93, 0x0e, 0x34, 0xec);
 		
 		/// <summary>
-		/// Storage for name
+		/// Storage for Name
 		/// </summary>
 		private global::System.String namePropertyStorage = string.Empty;
 		
 		/// <summary>
-		/// Gets or sets the value of name domain property.
+		/// Gets or sets the value of Name domain property.
 		/// The name of the constraint.
 		/// </summary>
 		[global::System.Xml.Serialization.XmlAttribute("name")]
-		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.Constraint/name.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.Constraint/name.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.Constraint/Name.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.Constraint/Name.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("e5b7177f-c2c6-4777-b917-7847930e34ec")]
-		public global::System.String name
+		public global::System.String Name
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -1016,30 +1016,30 @@ namespace Neumont.Tools.Dil.Dcil
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				namePropertyHandler.Instance.SetValue(this, value);
+				NamePropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the Constraint.name domain property.
+		/// Value handler for the Constraint.Name domain property.
 		/// </summary>
-		internal sealed partial class namePropertyHandler : DslModeling::DomainPropertyValueHandler<Constraint, global::System.String>
+		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<Constraint, global::System.String>
 		{
-			private namePropertyHandler() { }
+			private NamePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the Constraint.name domain property value handler.
+			/// Gets the singleton instance of the Constraint.Name domain property value handler.
 			/// </summary>
-			public static readonly namePropertyHandler Instance = new namePropertyHandler();
+			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the Constraint.name domain property.
+			/// Gets the Id of the Constraint.Name domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return nameDomainPropertyId;
+					return NameDomainPropertyId;
 				}
 			}
 			
@@ -1223,13 +1223,13 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region Columns opposite domain role accessor
+		#region ColumnCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of Columns.
+		/// Gets a list of ColumnCollection.
 		/// Description for
 		/// Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn.UniquenessConstraint
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Column> Columns
+		public virtual DslModeling::LinkedElementCollection<Column> ColumnCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -1319,13 +1319,13 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 		}
 		#endregion
-		#region ColumnReferences opposite domain role accessor
+		#region ColumnReferenceCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of ColumnReferences.
+		/// Gets a list of ColumnReferenceCollection.
 		/// Description for
 		/// Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.ReferenceConstraint
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ColumnReference> ColumnReferences
+		public virtual DslModeling::LinkedElementCollection<ColumnReference> ColumnReferenceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get

@@ -111,7 +111,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Schemas", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SchemaCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.CatalogContainsSchema/Catalog.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("f7b037d9-d101-463a-8bde-62eebd5430f3")]
 		public virtual Catalog Catalog
 		{
@@ -179,13 +179,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access Schemas of a Catalog
+		#region Static methods to access SchemaCollection of a Catalog
 		/// <summary>
-		/// Gets a list of Schemas.
+		/// Gets a list of SchemaCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Schema> GetSchemas(Catalog element)
+		public static DslModeling::LinkedElementCollection<Schema> GetSchemaCollection(Catalog element)
 		{
 			return new DslModeling::LinkedElementCollection<Schema>(element, CatalogDomainRoleId);
 		}
@@ -196,7 +196,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.CatalogContainsSchema> GetLinksToSchemas ( global::Neumont.Tools.Dil.Dcil.Catalog catalogInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.CatalogContainsSchema> GetLinksToSchemaCollection ( global::Neumont.Tools.Dil.Dcil.Catalog catalogInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.CatalogContainsSchema>(catalogInstance, global::Neumont.Tools.Dil.Dcil.CatalogContainsSchema.CatalogDomainRoleId);
 		}
@@ -528,7 +528,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Tables", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TableCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.SchemaContainsTable/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("cc145e8c-ebc7-4bbf-9e70-24f76c4b69a9")]
 		public override Schema Schema
 		{
@@ -596,13 +596,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access Tables of a Schema
+		#region Static methods to access TableCollection of a Schema
 		/// <summary>
-		/// Gets a list of Tables.
+		/// Gets a list of TableCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Table> GetTables(Schema element)
+		public static DslModeling::LinkedElementCollection<Table> GetTableCollection(Schema element)
 		{
 			return new DslModeling::LinkedElementCollection<Table>(element, SchemaDomainRoleId);
 		}
@@ -634,7 +634,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.SchemaContainsTable> GetLinksToTables ( global::Neumont.Tools.Dil.Dcil.Schema schemaInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.SchemaContainsTable> GetLinksToTableCollection ( global::Neumont.Tools.Dil.Dcil.Schema schemaInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.SchemaContainsTable>(schemaInstance, global::Neumont.Tools.Dil.Dcil.SchemaContainsTable.SchemaDomainRoleId);
 		}
@@ -787,7 +787,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Domains", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DomainCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.SchemaContainsDomain/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("bf0668b8-0cb5-49d0-a1b7-4637a16e2625")]
 		public override Schema Schema
 		{
@@ -855,13 +855,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access Domains of a Schema
+		#region Static methods to access DomainCollection of a Schema
 		/// <summary>
-		/// Gets a list of Domains.
+		/// Gets a list of DomainCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Domain> GetDomains(Schema element)
+		public static DslModeling::LinkedElementCollection<Domain> GetDomainCollection(Schema element)
 		{
 			return new DslModeling::LinkedElementCollection<Domain>(element, SchemaDomainRoleId);
 		}
@@ -893,7 +893,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.SchemaContainsDomain> GetLinksToDomains ( global::Neumont.Tools.Dil.Dcil.Schema schemaInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.SchemaContainsDomain> GetLinksToDomainCollection ( global::Neumont.Tools.Dil.Dcil.Schema schemaInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.SchemaContainsDomain>(schemaInstance, global::Neumont.Tools.Dil.Dcil.SchemaContainsDomain.SchemaDomainRoleId);
 		}
@@ -1046,7 +1046,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Columns", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsColumn/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("c3a52815-e9b9-4757-9985-717e54f884ed")]
 		public virtual Table Table
 		{
@@ -1114,13 +1114,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access Columns of a Table
+		#region Static methods to access ColumnCollection of a Table
 		/// <summary>
-		/// Gets a list of Columns.
+		/// Gets a list of ColumnCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Column> GetColumns(Table element)
+		public static DslModeling::LinkedElementCollection<Column> GetColumnCollection(Table element)
 		{
 			return new DslModeling::LinkedElementCollection<Column>(element, TableDomainRoleId);
 		}
@@ -1131,7 +1131,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsColumn> GetLinksToColumns ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsColumn> GetLinksToColumnCollection ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.TableContainsColumn>(tableInstance, global::Neumont.Tools.Dil.Dcil.TableContainsColumn.TableDomainRoleId);
 		}
@@ -1284,7 +1284,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Constraints", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("e64c339f-8ac5-494d-a913-d22d5034e961")]
 		public virtual Table Table
 		{
@@ -1352,13 +1352,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access Constraints of a Table
+		#region Static methods to access ConstraintCollection of a Table
 		/// <summary>
-		/// Gets a list of Constraints.
+		/// Gets a list of ConstraintCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Constraint> GetConstraints(Table element)
+		public static DslModeling::LinkedElementCollection<Constraint> GetConstraintCollection(Table element)
 		{
 			return new DslModeling::LinkedElementCollection<Constraint>(element, TableDomainRoleId);
 		}
@@ -1369,7 +1369,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsConstraint> GetLinksToConstraints ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsConstraint> GetLinksToConstraintCollection ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.TableContainsConstraint>(tableInstance, global::Neumont.Tools.Dil.Dcil.TableContainsConstraint.TableDomainRoleId);
 		}
@@ -1522,7 +1522,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UniquenessConstraints", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UniquenessConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("b9790914-e889-4f00-a456-ed1d1817c23b")]
 		public override Table Table
 		{
@@ -1591,13 +1591,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access UniquenessConstraints of a Table
+		#region Static methods to access UniquenessConstraintCollection of a Table
 		/// <summary>
-		/// Gets a list of UniquenessConstraints.
+		/// Gets a list of UniquenessConstraintCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<UniquenessConstraint> GetUniquenessConstraints(Table element)
+		public static DslModeling::LinkedElementCollection<UniquenessConstraint> GetUniquenessConstraintCollection(Table element)
 		{
 			return new DslModeling::LinkedElementCollection<UniquenessConstraint>(element, TableDomainRoleId);
 		}
@@ -1629,7 +1629,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint> GetLinksToUniquenessConstraints ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint> GetLinksToUniquenessConstraintCollection ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint>(tableInstance, global::Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.TableDomainRoleId);
 		}
@@ -1782,7 +1782,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceConstraints", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8d0549b5-9a2f-4fd2-a733-bcc779a89baf")]
 		public override Table Table
 		{
@@ -1851,13 +1851,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access ReferenceConstraints of a Table
+		#region Static methods to access ReferenceConstraintCollection of a Table
 		/// <summary>
-		/// Gets a list of ReferenceConstraints.
+		/// Gets a list of ReferenceConstraintCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ReferenceConstraint> GetReferenceConstraints(Table element)
+		public static DslModeling::LinkedElementCollection<ReferenceConstraint> GetReferenceConstraintCollection(Table element)
 		{
 			return new DslModeling::LinkedElementCollection<ReferenceConstraint>(element, TableDomainRoleId);
 		}
@@ -1889,7 +1889,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint> GetLinksToReferenceConstraints ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint> GetLinksToReferenceConstraintCollection ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint>(tableInstance, global::Neumont.Tools.Dil.Dcil.TableContainsReferenceConstraint.TableDomainRoleId);
 		}
@@ -2042,7 +2042,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CheckConstraints", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CheckConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("3370d577-580d-4153-a03b-429ace90c798")]
 		public override Table Table
 		{
@@ -2111,13 +2111,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access CheckConstraints of a Table
+		#region Static methods to access CheckConstraintCollection of a Table
 		/// <summary>
-		/// Gets a list of CheckConstraints.
+		/// Gets a list of CheckConstraintCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<CheckConstraint> GetCheckConstraints(Table element)
+		public static DslModeling::LinkedElementCollection<CheckConstraint> GetCheckConstraintCollection(Table element)
 		{
 			return new DslModeling::LinkedElementCollection<CheckConstraint>(element, TableDomainRoleId);
 		}
@@ -2149,7 +2149,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint> GetLinksToCheckConstraints ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint> GetLinksToCheckConstraintCollection ( global::Neumont.Tools.Dil.Dcil.Table tableInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint>(tableInstance, global::Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.TableDomainRoleId);
 		}
@@ -3315,7 +3315,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Columns", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("2ac76280-67ca-4583-a203-c0eda2d15fe4")]
 		public virtual UniquenessConstraint UniquenessConstraint
 		{
@@ -3373,13 +3373,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access Columns of a UniquenessConstraint
+		#region Static methods to access ColumnCollection of a UniquenessConstraint
 		/// <summary>
-		/// Gets a list of Columns.
+		/// Gets a list of ColumnCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Column> GetColumns(UniquenessConstraint element)
+		public static DslModeling::LinkedElementCollection<Column> GetColumnCollection(UniquenessConstraint element)
 		{
 			return new DslModeling::LinkedElementCollection<Column>(element, UniquenessConstraintDomainRoleId);
 		}
@@ -3390,7 +3390,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn> GetLinksToColumns ( global::Neumont.Tools.Dil.Dcil.UniquenessConstraint uniquenessConstraintInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn> GetLinksToColumnCollection ( global::Neumont.Tools.Dil.Dcil.UniquenessConstraint uniquenessConstraintInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn>(uniquenessConstraintInstance, global::Neumont.Tools.Dil.Dcil.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
 		}
@@ -3774,7 +3774,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetColumns", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetColumnCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.ColumnReference/SourceColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7be6b7cc-ee99-4667-b096-79e2b4403561")]
 		public virtual Column SourceColumn
 		{
@@ -3791,13 +3791,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access SourceColumns of a Column
+		#region Static methods to access SourceColumnCollection of a Column
 		/// <summary>
-		/// Gets a list of SourceColumns.
+		/// Gets a list of SourceColumnCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Column> GetSourceColumns(Column element)
+		public static DslModeling::LinkedElementCollection<Column> GetSourceColumnCollection(Column element)
 		{
 			return new DslModeling::LinkedElementCollection<Column>(element, TargetColumnDomainRoleId);
 		}
@@ -3815,7 +3815,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SourceColumns", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SourceColumnCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.ColumnReference/TargetColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("d7569b79-22db-4423-9b31-ad8c5fa96ac2")]
 		public virtual Column TargetColumn
 		{
@@ -3832,13 +3832,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access TargetColumns of a Column
+		#region Static methods to access TargetColumnCollection of a Column
 		/// <summary>
-		/// Gets a list of TargetColumns.
+		/// Gets a list of TargetColumnCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Column> GetTargetColumns(Column element)
+		public static DslModeling::LinkedElementCollection<Column> GetTargetColumnCollection(Column element)
 		{
 			return new DslModeling::LinkedElementCollection<Column>(element, SourceColumnDomainRoleId);
 		}
@@ -3871,7 +3871,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.ColumnReference> GetLinksToTargetColumns ( global::Neumont.Tools.Dil.Dcil.Column sourceColumnInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.ColumnReference> GetLinksToTargetColumnCollection ( global::Neumont.Tools.Dil.Dcil.Column sourceColumnInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.ColumnReference>(sourceColumnInstance, global::Neumont.Tools.Dil.Dcil.ColumnReference.SourceColumnDomainRoleId);
 		}
@@ -3882,7 +3882,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.ColumnReference> GetLinksToSourceColumns ( global::Neumont.Tools.Dil.Dcil.Column targetColumnInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.ColumnReference> GetLinksToSourceColumnCollection ( global::Neumont.Tools.Dil.Dcil.Column targetColumnInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.ColumnReference>(targetColumnInstance, global::Neumont.Tools.Dil.Dcil.ColumnReference.TargetColumnDomainRoleId);
 		}
@@ -3999,7 +3999,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnReferences", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnReferenceCollection", PropertyDisplayNameKey="Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("fa2dff9b-4e4b-4bde-bddd-090d6b6a6893")]
 		public virtual ReferenceConstraint ReferenceConstraint
 		{
@@ -4068,13 +4068,13 @@ namespace Neumont.Tools.Dil.Dcil
 		}
 				
 		#endregion
-		#region Static methods to access ColumnReferences of a ReferenceConstraint
+		#region Static methods to access ColumnReferenceCollection of a ReferenceConstraint
 		/// <summary>
-		/// Gets a list of ColumnReferences.
+		/// Gets a list of ColumnReferenceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ColumnReference> GetColumnReferences(ReferenceConstraint element)
+		public static DslModeling::LinkedElementCollection<ColumnReference> GetColumnReferenceCollection(ReferenceConstraint element)
 		{
 			return new DslModeling::LinkedElementCollection<ColumnReference>(element, ReferenceConstraintDomainRoleId);
 		}
@@ -4085,7 +4085,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference> GetLinksToColumnReferences ( global::Neumont.Tools.Dil.Dcil.ReferenceConstraint referenceConstraintInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference> GetLinksToColumnReferenceCollection ( global::Neumont.Tools.Dil.Dcil.ReferenceConstraint referenceConstraintInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference>(referenceConstraintInstance, global::Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
 		}
