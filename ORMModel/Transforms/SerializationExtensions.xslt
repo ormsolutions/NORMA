@@ -1118,17 +1118,15 @@
 								</plx:callObject>
 								<plx:passParam>
 									<plx:string>
-										<plx:string>||||</plx:string>
+										<plx:string data="||||"/>
 										<plx:string>
 											<xsl:call-template name="ResolveNamespace">
 												<xsl:with-param name="namespaces" select="$namespaces"/>
 												<!-- Use default for prefix parameter -->
 											</xsl:call-template>
 										</plx:string>
-										<plx:string>|</plx:string>
-										<plx:string>
-											<xsl:value-of select="@Name"/>
-										</plx:string>
+										<plx:string data="|"/>
+										<plx:string data="{@Name}"/>
 									</plx:string>
 								</plx:passParam>
 								<plx:passParam>
@@ -1142,17 +1140,15 @@
 									</plx:callObject>
 									<plx:passParam>
 										<plx:string>
-											<plx:string>||||</plx:string>
+											<plx:string data="||||"/>
 											<plx:string>
 												<xsl:call-template name="ResolveNamespace">
 													<xsl:with-param name="namespaces" select="$namespaces"/>
 													<!-- Use default for prefix parameter -->
 												</xsl:call-template>
 											</plx:string>
-											<plx:string>|</plx:string>
-											<plx:string>
-												<xsl:value-of select="@Name"/>
-											</plx:string>
+											<plx:string data="|"/>
+											<plx:string data="{@Name}"/>
 										</plx:string>
 									</plx:passParam>
 									<plx:passParam>
@@ -1397,9 +1393,7 @@
 						<plx:passParam>
 							<xsl:choose>
 								<xsl:when test="string-length(@DoubleTagName)">
-									<plx:string>
-										<xsl:value-of select="@DoubleTagName"/>
-									</plx:string>
+									<plx:string data="{@DoubleTagName}"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<plx:nullKeyword/>
@@ -1413,23 +1407,20 @@
 						</plx:callObject>
 						<plx:passParam>
 							<plx:string>
-								<plx:string>||||</plx:string>
+								<plx:string data="||||"/>
 								<plx:string>
 									<xsl:call-template name="ResolveNamespace">
 										<xsl:with-param name="namespaces" select="$namespaces"/>
 										<!-- Use default for prefix parameter -->
 									</xsl:call-template>
 								</plx:string>
-								<plx:string>|</plx:string>
-								<plx:string>
-									<xsl:choose>
-										<xsl:when test="string-length(@Name)">
+								<plx:string data="|"/>
+								<plx:string data="{@ID}">
+									<xsl:if test="string-length(@Name)">
+										<xsl:attribute name="data">
 											<xsl:value-of select="@Name"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="@ID"/>
-										</xsl:otherwise>
-									</xsl:choose>
+										</xsl:attribute>
+									</xsl:if>
 								</plx:string>
 							</plx:string>
 						</plx:passParam>
@@ -1544,13 +1535,13 @@
 												<plx:nameRef name="outerContainerNamespace" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:string>|</plx:string>
+												<plx:string data="|"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:nameRef name="outerContainerName" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:string>|</plx:string>
+												<plx:string data="|"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:inlineStatement dataTypeName=".string">
@@ -1579,13 +1570,13 @@
 												</plx:inlineStatement>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:string>|</plx:string>
+												<plx:string data="|"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:nameRef name="containerName" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:string>|</plx:string>
+												<plx:string data="|"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:inlineStatement dataTypeName=".string">
@@ -1614,7 +1605,7 @@
 												</plx:inlineStatement>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:string>|</plx:string>
+												<plx:string data="|"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:nameRef name="elementName" type="parameter"/>
@@ -1744,17 +1735,14 @@
 															<!-- Use default for prefix parameter -->
 														</xsl:call-template>
 													</plx:string>
-													<plx:string>|</plx:string>
+													<plx:string data="|"/>
 												</xsl:if>
-												<plx:string>
-													<xsl:choose>
-														<xsl:when test="string-length(@Name)">
+												<plx:string data="{@ID}">
+													<xsl:if test="string-length(@Name)">
+														<xsl:attribute name="data">
 															<xsl:value-of select="@Name"/>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:value-of select="@ID"/>
-														</xsl:otherwise>
-													</xsl:choose>
+														</xsl:attribute>
+													</xsl:if>
 												</plx:string>
 											</plx:string>
 										</plx:passParam>
@@ -1803,7 +1791,7 @@
 												<plx:nameRef name="xmlNamespace" type="parameter"/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:string>|</plx:string>
+												<plx:string data="|"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:nameRef name="attributeName" type="parameter"/>
@@ -1914,7 +1902,7 @@
 				</plx:callInstance>
 			</plx:passParam>
 			<plx:passParam>
-				<plx:string>.</plx:string>
+				<plx:string data="."/>
 			</plx:passParam>
 			<plx:passParam>
 				<plx:callInstance name="Name" type="property">
@@ -1983,7 +1971,7 @@
 					</xsl:choose>
 				</xsl:variable>
 				<plx:initialize>
-					<plx:string><xsl:value-of select="$DefaultXmlNamespace"/></plx:string>
+					<plx:string data="{$DefaultXmlNamespace}"/>
 				</plx:initialize>
 			</plx:field>
 			<xsl:for-each select="se:Namespaces">
@@ -2000,9 +1988,7 @@
 							<xsl:variable name="defaultElement" select="se:Namespace[@DefaultPrefix='true']"/>
 							<xsl:choose>
 								<xsl:when test="count($defaultElement)">
-									<plx:string>
-										<xsl:value-of select="$defaultElement/@Prefix"/>
-									</plx:string>
+									<plx:string data="{$defaultElement/@Prefix}"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<plx:nullKeyword/>
@@ -2051,9 +2037,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:string>
-									<xsl:value-of select="@Prefix"/>
-								</plx:string>
+								<plx:string data="{@Prefix}"/>
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -2071,9 +2055,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:string>
-									<xsl:value-of select="@URI"/>
-								</plx:string>
+								<plx:string data="{@URI}"/>
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
@@ -2091,9 +2073,7 @@
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:string>
-									<xsl:value-of select="@SchemaFile"/>
-								</plx:string>
+								<plx:string data="{@SchemaFile}"/>
 							</plx:right>
 						</plx:assign>
 					</xsl:for-each>
@@ -2278,6 +2258,94 @@
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetRootRelationshipContainers" modifier="static">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetRootRelationshipContainers"/>
+				<plx:returns dataTypeName="ORMRootRelationshipContainer" dataTypeIsSimpleArray="true"/>
+				<plx:return>
+					<plx:callNew dataTypeName="ORMRootRelationshipContainer" dataTypeIsSimpleArray="true">
+						<xsl:variable name="rootLinkContainers" select="se:RootLinks/se:Container"/>
+						<xsl:choose>
+							<xsl:when test="$rootLinkContainers">
+								<plx:arrayInitializer>
+									<xsl:for-each select="$rootLinkContainers">
+										<plx:callNew dataTypeName="ORMRootRelationshipContainer">
+											<plx:passParam>
+												<plx:string data="{@Name}"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callNew dataTypeName="ORMRootRelationship" dataTypeIsSimpleArray="true">
+													<plx:arrayInitializer>
+														<xsl:for-each select="se:RootLink">
+															<plx:callNew dataTypeName="ORMRootRelationship">
+																<plx:passParam>
+																	<xsl:choose>
+																		<xsl:when test="string(@Name)">
+																			<plx:string data="{@Name}"/>
+																		</xsl:when>
+																		<xsl:otherwise>
+																			<plx:string data="{@Class}"/>
+																		</xsl:otherwise>
+																	</xsl:choose>
+																</plx:passParam>
+																<plx:passParam>
+																	<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
+																</plx:passParam>
+																<plx:passParam>
+																	<plx:callNew dataTypeName="ORMRootRelationshipRole" dataTypeIsSimpleArray="true">
+																		<plx:arrayInitializer>
+																			<xsl:for-each select="se:Role">
+																				<plx:callNew dataTypeName="ORMRootRelationshipRole">
+																					<plx:passParam>
+																						<xsl:choose>
+																							<xsl:when test="string(@Name)">
+																								<plx:string data="{@Name}"/>
+																							</xsl:when>
+																							<xsl:otherwise>
+																								<plx:string data="{@RoleName}"/>
+																							</xsl:otherwise>
+																						</xsl:choose>
+																					</plx:passParam>
+																					<plx:passParam>
+																						<plx:callStatic dataTypeName="{../@Class}" name="{@RoleName}DomainRoleId" type="field"/>
+																					</plx:passParam>
+																				</plx:callNew>
+																			</xsl:for-each>
+																		</plx:arrayInitializer>
+																	</plx:callNew>
+																</plx:passParam>
+																<plx:passParam>
+																	<xsl:choose>
+																		<xsl:when test="@PrimaryLinkElement='true'">
+																			<plx:trueKeyword/>
+																		</xsl:when>
+																		<xsl:otherwise>
+																			<plx:falseKeyword/>
+																		</xsl:otherwise>
+																	</xsl:choose>
+																</plx:passParam>
+															</plx:callNew>
+														</xsl:for-each>
+													</plx:arrayInitializer>
+												</plx:callNew>
+											</plx:passParam>
+										</plx:callNew>
+									</xsl:for-each>
+								</plx:arrayInitializer>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:passParam>
+									<plx:value type="i4" data="0"/>
+								</plx:passParam>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapRootElement" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -2316,9 +2384,7 @@
 											<plx:nameRef name="elementName" type="parameter"/>
 										</plx:left>
 										<plx:right>
-											<plx:string>
-												<xsl:value-of select="$tagName"/>
-											</plx:string>
+											<plx:string data="{$tagName}"/>
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:left>
@@ -2328,9 +2394,7 @@
 											<plx:nameRef name="xmlNamespace" type="parameter"/>
 										</plx:left>
 										<plx:right>
-											<plx:string>
-												<xsl:value-of select="$namespace"/>
-											</plx:string>
+											<plx:string data="{$namespace}"/>
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:right>
@@ -2395,9 +2459,7 @@
 								<plx:nameRef name="validNamespaces"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:string>
-									<xsl:value-of select="@URI"/>
-								</plx:string>
+								<plx:string data="{@URI}"/>
 							</plx:passParam>
 						</plx:callInstance>
 					</xsl:for-each>
@@ -2439,15 +2501,12 @@
 								<plx:nameRef name="classNameMap"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:string>
-									<xsl:choose>
-										<xsl:when test="string-length(@Name) > 0">
+								<plx:string data="{@Class}">
+									<xsl:if test="string-length(@Name)">
+										<xsl:attribute name="data">
 											<xsl:value-of select="@Name"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="@Class"/>
-										</xsl:otherwise>
-									</xsl:choose>
+										</xsl:attribute>
+									</xsl:if>
 								</plx:string>
 							</plx:passParam>
 							<plx:passParam>
@@ -2462,9 +2521,7 @@
 									<plx:nameRef name="classNameMap"/>
 								</plx:callObject>
 								<plx:passParam>
-									<plx:string>
-										<xsl:value-of select="@Name"/>
-									</plx:string>
+									<plx:string data="{@Name}"/>
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callStatic name="DomainClassId" dataTypeName="{$className}" type="property"/>
@@ -2620,9 +2677,7 @@
 				<plx:initialize>
 					<xsl:choose>
 						<xsl:when test="string-length(@Name)">
-							<plx:string>
-								<xsl:value-of select="@Name"/>
-							</plx:string>
+							<plx:string data="{@Name}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2650,9 +2705,7 @@
 					<plx:initialize>
 						<xsl:choose>
 							<xsl:when test="$primaryDoubleTagName">
-								<plx:string>
-									<xsl:value-of select="$primaryDoubleTagName"/>
-								</plx:string>
+								<plx:string data="{$primaryDoubleTagName}"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<plx:nullKeyword/>
@@ -2681,9 +2734,7 @@
 							<plx:nameRef name="name{$modifier}"/>
 						</plx:left>
 						<plx:right>
-							<plx:string>
-								<xsl:value-of select="@Name"/>
-							</plx:string>
+							<plx:string data="{@Name}"/>
 						</plx:right>
 					</plx:assign>
 					<xsl:variable name="currentWriteStyle" select="string(@WriteStyle)"/>
@@ -2704,9 +2755,7 @@
 								<plx:nameRef name="doubleTagName{$modifier}"/>
 							</plx:left>
 							<plx:right>
-								<plx:string>
-									<xsl:value-of select="$currentDoubleTagName"/>
-								</plx:string>
+								<plx:string data="{$currentDoubleTagName}"/>
 							</plx:right>
 						</plx:assign>
 					</xsl:if>
@@ -2720,9 +2769,7 @@
 		<plx:passParam>
 			<xsl:choose>
 				<xsl:when test="string-length(@Prefix)">
-					<plx:string>
-						<xsl:value-of select="@Prefix"/>
-					</plx:string>
+					<plx:string data="{@Prefix}"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<plx:nullKeyword/>
@@ -2737,9 +2784,7 @@
 				<xsl:otherwise>
 					<xsl:choose>
 						<xsl:when test="string-length(@Name)">
-							<plx:string>
-								<xsl:value-of select="@Name"/>
-							</plx:string>
+							<plx:string data="{@Name}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2751,9 +2796,7 @@
 		<plx:passParam>
 			<xsl:choose>
 				<xsl:when test="string-length(@Namespace)">
-					<plx:string>
-						<xsl:value-of select="@Namespace"/>
-					</plx:string>
+					<plx:string data="{@Namespace}"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<plx:nullKeyword/>
@@ -2798,9 +2841,7 @@
 				<xsl:otherwise>
 					<xsl:choose>
 						<xsl:when test="$primaryDoubleTagName">
-							<plx:string>
-								<xsl:value-of select="$primaryDoubleTagName"/>
-							</plx:string>
+							<plx:string data="{$primaryDoubleTagName}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2832,9 +2873,7 @@
 				<plx:passParam>
 					<xsl:choose>
 						<xsl:when test="string-length(@Prefix)">
-							<plx:string>
-								<xsl:value-of select="@Prefix"/>
-							</plx:string>
+							<plx:string data="{@Prefix}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2844,9 +2883,7 @@
 				<plx:passParam>
 					<xsl:choose>
 						<xsl:when test="string-length(@Name)">
-							<plx:string>
-								<xsl:value-of select="@Name"/>
-							</plx:string>
+							<plx:string data="{@Name}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2856,9 +2893,7 @@
 				<plx:passParam>
 					<xsl:choose>
 						<xsl:when test="string-length(@Namespace)">
-							<plx:string>
-								<xsl:value-of select="@Namespace"/>
-							</plx:string>
+							<plx:string data="{@Namespace}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2899,9 +2934,7 @@
 				<plx:passParam>
 					<xsl:choose>
 						<xsl:when test="string-length(@DoubleTagName)">
-							<plx:string>
-								<xsl:value-of select="@DoubleTagName"/>
-							</plx:string>
+							<plx:string data="{@DoubleTagName}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>

@@ -99,6 +99,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return GetRootElementClasses();
 		}
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+		protected static ORMRootRelationshipContainer[] GetRootRelationshipContainers()
+		{
+			return new ORMRootRelationshipContainer[0];
+		}
+		ORMRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		{
+			return GetRootRelationshipContainers();
+		}
 		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{

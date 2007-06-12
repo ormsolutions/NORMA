@@ -304,6 +304,46 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="RootLinks" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="Container">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="RootLink">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Role" minOccurs="2" maxOccurs="2">
+													<xs:complexType>
+														<xs:sequence>
+															<!--UNDONE: Handle the evalulation of ConditionalNames in the transform-->
+															<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+														</xs:sequence>
+														<xs:attribute name="RoleName" type="xs:string" use="required"/>
+														<xs:attribute name="Name" type="xs:string" use="optional"/>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="Class" type="xs:string" use="required"/>
+											<xs:attribute name="Name" type="xs:string" use="optional">
+												<xs:annotation>
+													<xs:documentation>The name to write for the element. The Class name is used if the Name is not specified. This is only used if we are not the PrimaryLinkElement. For PrimaryLinkElement links all serialization information except for the source and target role players comes from the class itself.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="PrimaryLinkElement" type="xs:boolean" default="false">
+												<xs:annotation>
+													<xs:documentation>If true, then an id attribute will be written out for this link and serialization will defer to the link treated as a class after the source and target role player elements are written.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="Name" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="OmittedDomainElements" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Block elements and links from serializating at the domain level.</xs:documentation>

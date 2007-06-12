@@ -74,6 +74,15 @@ namespace Neumont.Tools.ORM.CustomProperties
 		{
 			return GetRootElementClasses();
 		}
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+		private static ORMRootRelationshipContainer[] GetRootRelationshipContainers()
+		{
+			return new ORMRootRelationshipContainer[0];
+		}
+		ORMRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		{
+			return GetRootRelationshipContainers();
+		}
 		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 		private static Guid MapRootElement(string xmlNamespace, string elementName)
 		{

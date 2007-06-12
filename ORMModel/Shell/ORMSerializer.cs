@@ -774,6 +774,84 @@ namespace Neumont.Tools.ORM.Shell
 	}
 	#endregion // ORMCustomSerializedElementMatch struct
 	#endregion // Public Classes
+	#region Public Structures
+	public struct ORMRootRelationshipContainer
+	{
+		private string myName;
+		private ORMRootRelationship[] myRelationships;
+		public string Name
+		{
+			get { return myName; }
+		}
+
+		public ORMRootRelationship[] GetRelationshipClasses()
+		{
+			return myRelationships;
+		}
+
+		public ORMRootRelationshipContainer(string name, ORMRootRelationship[] relationships)
+		{
+			this.myName = name;
+			this.myRelationships = relationships;
+		}
+	}
+	public struct ORMRootRelationshipRole
+	{
+		private string myAttributeName;
+		private Guid myDomainRoleId;
+
+		public string AttributeName
+		{
+			get { return myAttributeName; }
+		}
+
+		public Guid DomainRoleId
+		{
+			get { return myDomainRoleId; }
+		}
+
+		public ORMRootRelationshipRole(string attributeRoleName, Guid domainRoleId)
+		{
+			myAttributeName = attributeRoleName;
+			myDomainRoleId = domainRoleId;
+		}
+	}
+	public struct ORMRootRelationship
+	{
+		private string myAttributeName;
+		private Guid myDomainClassId;
+		private ORMRootRelationshipRole[] myRoles;
+		private bool isPrimaryLink;
+
+		public string AttributeName
+		{
+			get { return myAttributeName; }
+		}
+
+		public Guid DomainClassId
+		{
+			get { return myDomainClassId; }
+		}
+
+		public bool IsPrimaryLinkElement
+		{
+			get { return isPrimaryLink; }
+		}
+
+		public ORMRootRelationshipRole[] GetRoles()
+		{
+			return myRoles;
+		}
+
+		public ORMRootRelationship(string attributeName, Guid domainClassId, ORMRootRelationshipRole[] roles, bool isPrimaryLinkElement)
+		{
+			myAttributeName = attributeName;
+			myDomainClassId = domainClassId;
+			myRoles = roles;
+			isPrimaryLink = isPrimaryLinkElement;
+		}
+	}
+	#endregion // Public Structures
 	#region Public Interfaces
 	#region IORMCustomSerializedDomainModel interface
 	/// <summary>
@@ -802,6 +880,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Return the meta class guids for all root elements.
 		/// </summary>
 		Guid[] GetRootElementClasses();
+		/// <summary>
+		/// Return the relationship containers for all root links.
+		/// </summary>
+		ORMRootRelationshipContainer[] GetRootRelationshipContainers();
 		/// <summary>
 		/// Determine if a class or relationship should be serialized. This allows
 		/// the serialization engine to do a meta-level sanity check before retrieving
@@ -1582,7 +1664,7 @@ namespace Neumont.Tools.ORM.Shell
 								containerName = string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name);
 								initializedContainerName = true;
 							}
-							if (!SerializeElement(file, child, customInfo, defaultPrefix, ref containerName))
+							if (!SerializeElement(file, child, customInfo, defaultPrefix, null, ref containerName))
 							{
 								return false;
 							}
@@ -1728,15 +1810,20 @@ namespace Neumont.Tools.ORM.Shell
 			return;
 		}
 		/// <summary>
-		/// Recursivly serializes elements.
+		/// A callback delegate for SerializeElement to allow extra attributes to write at the appropriate point in the Xml/>
+		/// </summary>
+		private delegate void SerializeExtraAttributesCallback(XmlWriter file);
+		/// <summary>
+		/// Recursively serializes elements.
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="element">The element.</param>
 		/// <param name="containerCustomInfo">The container element's custom serialization information.</param>
 		/// <param name="containerPrefix">The container element's prefix.</param>
+		/// <param name="serializeExtraAttributes">A callback delegate used to write extra attributes</param>
 		/// <param name="containerName">The container element's name.</param>
 		/// <returns>false if the container element was not written.</returns>
-		private bool SerializeElement(XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, ref string containerName)
+		private bool SerializeElement(XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, SerializeExtraAttributesCallback serializeExtraAttributes, ref string containerName)
 		{
 			if (!ShouldSerializeElement(element))
 			{
@@ -1801,6 +1888,10 @@ namespace Neumont.Tools.ORM.Shell
 				return true;
 			}
 			file.WriteAttributeString("id", ToXml(element.Id));
+			if (serializeExtraAttributes != null)
+			{
+				serializeExtraAttributes(file);
+			}
 
 			//write properties
 			SerializeProperties
@@ -1829,7 +1920,19 @@ namespace Neumont.Tools.ORM.Shell
 		private void SerializeElement(XmlWriter file, ModelElement element)
 		{
 			string containerName = null;
-			SerializeElement(file, element, null, null, ref containerName);
+			SerializeElement(file, element, null, null, null, ref containerName);
+			return;
+		}
+		/// <summary>
+		/// Recursivly serializes elements.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="element">The element.</param>
+		/// <param name="serializeExtraAttributes">A callback delegate used to write extra attributes</param>
+		private void SerializeElement(XmlWriter file, ModelElement element, SerializeExtraAttributesCallback serializeExtraAttributes)
+		{
+			string containerName = null;
+			SerializeElement(file, element, null, null, serializeExtraAttributes, ref containerName);
 			return;
 		}
 		/// <summary>
@@ -1862,6 +1965,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			//serialize all root elements
 			IElementDirectory elementDir = myStore.ElementDirectory;
+			DomainDataDirectory dataDir = myStore.DomainDataDirectory;
 			foreach (IORMCustomSerializedDomainModel ns in Utility.EnumerateDomainModels<IORMCustomSerializedDomainModel>(values))
 			{
 				Guid[] metaClasses = ns.GetRootElementClasses();
@@ -1869,7 +1973,8 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					for (int i = 0; i < metaClasses.Length; ++i)
 					{
-						ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(metaClasses[i]);
+						DomainClassInfo classInfo = dataDir.GetDomainClass(metaClasses[i]);
+						ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(classInfo);
 						int elementCount = elements.Count;
 						for (int j = 0; j < elementCount; ++j)
 						{
@@ -1881,9 +1986,54 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							else
 							{
-								SerializeElement(file, elements[j]);
+								SerializeElement(file, element);
 							}
 						}
+					}
+				}
+				ORMRootRelationshipContainer[] rootContainers = ns.GetRootRelationshipContainers();
+				if (rootContainers != null)
+				{
+					for (int i = 0; i < rootContainers.Length; ++i)
+					{
+						ORMRootRelationshipContainer container = rootContainers[i];
+						file.WriteStartElement(ns.DefaultElementPrefix, container.Name, null);
+
+						ORMRootRelationship[] relationships = container.GetRelationshipClasses();
+						for (int j = 0; j < relationships.Length; ++j)
+						{
+							ORMRootRelationship relationship = relationships[j];
+							DomainRelationshipInfo relationshipInfo = dataDir.GetDomainClass(relationship.DomainClassId) as DomainRelationshipInfo;
+							ReadOnlyCollection<ModelElement> relationshipElements = elementDir.FindElements(relationshipInfo);
+							int elementCount = relationshipElements.Count;
+							for (int k = 0; k < elementCount; ++k)
+							{
+								ElementLink link = relationshipElements[k] as ElementLink;
+								ORMRootRelationshipRole[] roles = relationship.GetRoles();
+								if (relationship.IsPrimaryLinkElement)
+								{
+									SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
+									{
+										for (int l = 0; l < roles.Length; ++l)
+										{
+											ORMRootRelationshipRole role = roles[l];
+											xmlFile.WriteAttributeString(role.AttributeName, "_" + XmlConvert.ToString(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id).ToUpperInvariant());
+										}
+									}));
+								}
+								else
+								{
+									file.WriteStartElement(ns.DefaultElementPrefix, relationship.AttributeName, null);
+									for (int l = 0; l < roles.Length; ++l)
+									{
+										ORMRootRelationshipRole role = roles[l];
+										file.WriteAttributeString(role.AttributeName, "_" + XmlConvert.ToString(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id).ToUpperInvariant());
+									}
+									file.WriteEndElement();
+								}
+							}
+						}
+						file.WriteEndElement();
 					}
 				}
 			}
@@ -2253,24 +2403,52 @@ namespace Neumont.Tools.ORM.Shell
 											IORMCustomSerializedDomainModel metaModel;
 											if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
 											{
-												Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
-												if (!classGuid.Equals(Guid.Empty))
+												string id = reader.GetAttribute("id");
+												if (id != null)
 												{
-													processedRootElement = true;
-													ModelElement rootElement = CreateElement(reader.GetAttribute("id"), null, classGuid);
-													System.Xml.Serialization.IXmlSerializable serializableRootElement = rootElement as System.Xml.Serialization.IXmlSerializable;
-													if (serializableRootElement != null)
+													Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
+													if (!classGuid.Equals(Guid.Empty))
 													{
-														using (XmlReader subtreeReader = reader.ReadSubtree())
+														processedRootElement = true;
+														ModelElement rootElement = CreateElement(id, null, classGuid);
+														System.Xml.Serialization.IXmlSerializable serializableRootElement = rootElement as System.Xml.Serialization.IXmlSerializable;
+														if (serializableRootElement != null)
 														{
-															serializableRootElement.ReadXml(subtreeReader);
+															using (XmlReader subtreeReader = reader.ReadSubtree())
+															{
+																serializableRootElement.ReadXml(subtreeReader);
+															}
+														}
+														else
+														{
+															ProcessClassElement(reader, metaModel, rootElement, null);
 														}
 													}
-													else
+												}
+#if DESERIALIZE_ROOTLINKS // NYI
+												else
+												{
+													// this is a container element
+													
+													while (reader.Read())
 													{
-														ProcessClassElement(reader, metaModel, rootElement, null);
+														if (reader.NodeType == XmlNodeType.Element)
+														{
+															bool processedLinkElement = false;
+
+															Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
+															if (!classGuid.Equals(Guid.Empty))
+															{
+																processedLinkElement = true;
+															}
+															if (!processedLinkElement)
+															{
+																PassEndElement(reader);
+															}
+														}
 													}
 												}
+#endif // DESERIALIZE_ROOTLINKS
 											}
 											if (!processedRootElement)
 											{
@@ -2937,7 +3115,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
 				explicitMetaRelationshipInfo ?? oppositeMetaRoleInfo.DomainRelationship,
-				new PropertyAssignment[]{new PropertyAssignment(ElementFactory.IdPropertyAssignment, id)},
+				new PropertyAssignment[] { new PropertyAssignment(ElementFactory.IdPropertyAssignment, id) },
 				new RoleAssignment(oppositeMetaRoleInfo.OppositeDomainRole.Id, rolePlayer),
 				new RoleAssignment(oppositeMetaRoleInfo.Id, oppositeRolePlayer));
 			if (myNotifyAdded != null)

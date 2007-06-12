@@ -27,13 +27,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	#region RelationalShapeDomainModel model serialization
 	partial class RelationalShapeDomainModel : IORMCustomSerializedDomainModel
 	{
-		/// <summary>
-		/// The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model
-		/// </summary>
+		/// <summary>The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model</summary>
 		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Views/RelationalView";
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.DefaultElementPrefix
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
 			get
@@ -48,9 +44,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return DefaultElementPrefix;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[1, 3];
@@ -76,9 +70,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
@@ -93,9 +85,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.ShouldSerializeDomainClass(store, classInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.GetRootElementClasses
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[]{
@@ -106,9 +96,16 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return GetRootElementClasses();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.MapRootElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+		protected static ORMRootRelationshipContainer[] GetRootRelationshipContainers()
+		{
+			return new ORMRootRelationshipContainer[0];
+		}
+		ORMRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		{
+			return GetRootRelationshipContainers();
+		}
+		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
 			if ((elementName == "RelationalModel") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView"))
@@ -125,9 +122,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return MapRootElement(xmlNamespace, elementName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedDomainModel.MapClassName
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
 			Collection<string> validNamespaces = RelationalShapeDomainModel.myValidNamespaces;
@@ -160,9 +155,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	#region RelationalDiagram serialization
 	partial class RelationalDiagram : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -177,9 +170,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return this.SupportedCustomSerializedOperations;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			throw new NotSupportedException();
@@ -188,9 +179,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
 		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
 		{
 			get
@@ -205,9 +194,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return this.CustomSerializedElementInfo;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == RelationalDiagram.IsCompleteViewDomainPropertyId)
@@ -256,9 +243,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			throw new NotSupportedException();
@@ -267,9 +252,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
@@ -284,9 +267,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return this.CustomSerializedChildRoleComparer;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapChildElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
 		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			return default(ORMCustomSerializedElementMatch);
@@ -295,9 +276,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			return default(Guid);
@@ -306,9 +285,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.ShouldSerialize
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
 		protected static bool ShouldSerialize()
 		{
 			return true;
@@ -322,9 +299,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	#region RelationalModel serialization
 	partial class RelationalModel : IORMCustomSerializedElement
 	{
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
 		{
 			get
@@ -339,9 +314,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return this.SupportedCustomSerializedOperations;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 		protected ORMCustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
 		{
 			throw new NotSupportedException();
@@ -350,9 +323,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.GetCustomSerializedChildElementInfo();
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
 		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
 		{
 			get
@@ -367,9 +338,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return this.CustomSerializedElementInfo;
 			}
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == RelationalModel.NameDomainPropertyId)
@@ -382,9 +351,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
@@ -406,9 +373,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
@@ -424,9 +389,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapChildElement
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
 		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = RelationalModel.myChildElementMappings;
@@ -446,9 +409,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapAttribute
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
 			return default(Guid);
@@ -457,9 +418,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.ShouldSerialize
-		/// </summary>
+		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
 		protected static bool ShouldSerialize()
 		{
 			return true;
