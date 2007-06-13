@@ -709,6 +709,14 @@
     <value>IsSimple</value>
     <comment>DisplayName for DomainProperty &apos;IsSimple&apos; on DomainClass &apos;MandatoryConstraint&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint/IsImplied.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.IsImplied</value>
+    <comment>Description for DomainProperty &apos;IsImplied&apos; on DomainClass &apos;MandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint/IsImplied.DisplayName" xml:space="preserve">
+    <value>IsImplied</value>
+    <comment>DisplayName for DomainProperty &apos;IsImplied&apos; on DomainClass &apos;MandatoryConstraint&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SetConstraint.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;SetConstraint&apos;</comment>
@@ -2124,6 +2132,38 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint/SetConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;ModelHasSetConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint</value>
+    <comment>Description for DomainClass &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>Object Type Implies Mandatory Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/ObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/ObjectType.DisplayName" xml:space="preserve">
+    <value>ImpliedByObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Implied Mandatory Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraint</value>
+    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>ImpliedMandatoryConstraint</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Implied By Object Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint</value>

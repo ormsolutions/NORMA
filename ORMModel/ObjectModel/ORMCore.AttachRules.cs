@@ -142,6 +142,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Objectification).GetNestedType("UniquenessConstraintDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("CheckForIncompatibleRelationshipRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("CheckForIncompatibleRelationshipRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("CheckIsIndependentRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("MandatoryModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("MandatoryRoleAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("MandatoryRoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -401,7 +402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[126],
 						customDomainModelTypes[127],
 						customDomainModelTypes[128],
-						customDomainModelTypes[131],
+						customDomainModelTypes[129],
 						customDomainModelTypes[132],
 						customDomainModelTypes[133],
 						customDomainModelTypes[134],
@@ -491,7 +492,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						customDomainModelTypes[218],
 						customDomainModelTypes[219],
 						customDomainModelTypes[220],
-						customDomainModelTypes[221]};
+						customDomainModelTypes[221],
+						customDomainModelTypes[222]};
 					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
 				}
 				return retVal;
@@ -524,7 +526,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.InitiallyDisabledRuleTypes;
-			for (int i = 0; i < 220; ++i)
+			for (int i = 0; i < 221; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1605,6 +1607,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		partial class CheckForIncompatibleRelationshipRolePlayerChangeRule
 		{
 			public CheckForIncompatibleRelationshipRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class ObjectType
+	{
+		partial class CheckIsIndependentRolePlayerChangeRule
+		{
+			public CheckIsIndependentRolePlayerChangeRule()
 			{
 				base.IsEnabled = false;
 			}

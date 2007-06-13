@@ -1296,7 +1296,11 @@ namespace Neumont.Tools.Modeling
 		/// <param name="notifyAdded">A notification interface</param>
 		private static void HandleDeserializationAdd(INamedElementDictionaryLink link, INotifyElementAdded notifyAdded)
 		{
-			HandleAddRemove(link, null, false, false, notifyAdded);
+			ModelElement mel;
+			if (null == (mel = link as ModelElement) || !mel.IsDeleted)
+			{
+				HandleAddRemove(link, null, false, false, notifyAdded);
+			}
 		}
 		/// <summary>
 		/// Add or remove elements to associated named element

@@ -727,9 +727,11 @@
 			<xs:extension base="SetConstraint">
 				<xs:sequence>
 					<xs:element name="ExclusiveOrExclusionConstraint" type="ExclusionConstraintRef" minOccurs="0"/>
+					<xs:element name="ImpliedByObjectType" type="ObjectRef" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 				<xs:attribute name="IsSimple" type="xs:boolean" default="false"/>
+				<xs:attribute name="IsImplied" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

@@ -1303,8 +1303,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int i = 0; i < roleCount; ++i)
 					{
 						ObjectType objectType;
-						if (null != (objectType = roles[i].RolePlayer) &&
-							objectType.IsIndependent)
+						if (null != (objectType = roles[i].RolePlayer))
 						{
 							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 						}
@@ -1334,7 +1333,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Create a new SubtypeFactFixupListener
 			/// </summary>
 			public TestRemoveIsIndependentFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateErrors)
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
 			/// <summary>
@@ -1352,7 +1351,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int i = 0; i < objectTypeCount; ++i)
 					{
-						objectTypes[i].ValidateIsIndependent();
+						objectTypes[i].ValidateIsIndependent(notifyAdded);
 					}
 				}
 			}
@@ -1365,15 +1364,184 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!element.IsDeleted)
 			{
-				((ObjectType)element).ValidateIsIndependent();
+				((ObjectType)element).ValidateIsIndependent(null);
 			}
 		}
 		/// <summary>
-		/// Turn off the <see cref="IsIndependent"/> property if it is not valid
+		/// Verify that the <see cref="IsIndependent"/> property is off if it should
+		/// not be set and automatically add/remove an implied mandatory constraint
+		/// as needed.
 		/// </summary>
-		private void ValidateIsIndependent()
+		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+		private void ValidateIsIndependent(INotifyElementAdded notifyAdded)
 		{
-			if (IsIndependent && !AllowIsIndependent(false))
+			bool canBeIndependent = true;
+			LinkedElementCollection<Role> preferredIdentifierRoles = null;
+			LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			MandatoryConstraint impliedMandatory = ImpliedMandatoryConstraint;
+			LinkedElementCollection<Role> impliedMandatoryRoles = (impliedMandatory != null) ? impliedMandatory.RoleCollection : null;
+			bool seenNonMandatoryRole = false;
+			for (int i = 0; i < playedRoleCount; ++i)
+			{
+				Role playedRole = playedRoles[i];
+				bool currentRoleIsAlreadyImplied = false;
+				bool currentRoleIsWithPreferredIdentifier = false;
+				bool currentRoleIsMandatory = false;
+				LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
+				int constraintCount = constraints.Count;
+				for (int j = 0; j < constraintCount; ++j)
+				{
+					MandatoryConstraint mandatoryConstraint;
+					if (null != (mandatoryConstraint = constraints[j] as MandatoryConstraint) &&
+						mandatoryConstraint.Modality == ConstraintModality.Alethic)
+					{
+						if (mandatoryConstraint.IsImplied)
+						{
+							Debug.Assert(impliedMandatory == null || impliedMandatory == mandatoryConstraint, "We should never have multiple implied mandatory constraints on one ObjectType");
+							currentRoleIsAlreadyImplied = true;
+							continue;
+						}
+						else if (!canBeIndependent)
+						{
+							// We're only staying in the loop to look for an implied mandatory
+							continue;
+						}
+						currentRoleIsMandatory = true;
+						bool turnedOffCanBeIndependent = false;
+						// The role must be part of a fact type that has a role in the preferred identifier.
+						if (preferredIdentifierRoles == null)
+						{
+							UniquenessConstraint preferredIdentifier = PreferredIdentifier;
+							if (preferredIdentifier == null)
+							{
+								canBeIndependent = false;
+								turnedOffCanBeIndependent = true;
+							}
+							else
+							{
+								preferredIdentifierRoles = preferredIdentifier.RoleCollection;
+							}
+						}
+						if (canBeIndependent)
+						{
+							RoleBase oppositeRole = playedRole.OppositeRole;
+							if (null == oppositeRole || !preferredIdentifierRoles.Contains(oppositeRole.Role))
+							{
+								canBeIndependent = false;
+								turnedOffCanBeIndependent = true;
+							}
+							else
+							{
+								currentRoleIsWithPreferredIdentifier = true;
+							}
+						}
+						if (turnedOffCanBeIndependent && impliedMandatory == null)
+						{
+							// Look farther down the constraints on this role for an implied mandatory
+							for (int k = j + 1; k < constraintCount; ++k)
+							{
+								MandatoryConstraint testImplied = constraints[k] as MandatoryConstraint;
+								if (testImplied != null && testImplied.IsImplied)
+								{
+									currentRoleIsAlreadyImplied = true;
+									break;
+								}
+							}
+						}
+					}
+				}
+				if (!currentRoleIsMandatory)
+				{
+					seenNonMandatoryRole = true;
+				}
+				if (impliedMandatory != null &&	canBeIndependent)
+				{
+					if (currentRoleIsWithPreferredIdentifier)
+					{
+						if (currentRoleIsAlreadyImplied)
+						{
+							impliedMandatoryRoles.Remove(playedRole);
+						}
+					}
+					else if (!currentRoleIsAlreadyImplied)
+					{
+						// The cost of adding an extra role to the implied and
+						// deleting it later is less than another n-squared walk later
+						// on to see if roles are already implied.
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(new ConstraintRoleSequenceHasRole(playedRole, impliedMandatory), false);
+						}
+						else
+						{
+							impliedMandatoryRoles.Add(playedRole);
+						}
+					}
+				}
+			}
+			if (canBeIndependent)
+			{
+				if (seenNonMandatoryRole)
+				{
+					if (impliedMandatory == null)
+					{
+						impliedMandatory = MandatoryConstraint.CreateImpliedMandatoryConstraint(this);
+						impliedMandatoryRoles = impliedMandatory.RoleCollection;
+						// Rewalk the roles and add any that are not opposite the preferred identifier
+						// Note that any roles that were found after a role already in the implied mandatory
+						// constraint is already in the implied constraint
+						for (int i = 0; i < playedRoleCount; ++i)
+						{
+							Role playedRole = playedRoles[i];
+							LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
+							int constraintCount = constraints.Count;
+							bool roleIsMandatory = false;
+							for (int j = 0; j < constraintCount; ++j)
+							{
+								MandatoryConstraint mandatoryConstraint;
+								if (null != (mandatoryConstraint = constraints[j] as MandatoryConstraint) &&
+									mandatoryConstraint.Modality == ConstraintModality.Alethic)
+								{
+									// This must be on the preferred identifier, already verified in the initial test to verify canBeIndependent loop
+									roleIsMandatory = true;
+									break;
+								}
+							}
+							if (!roleIsMandatory)
+							{
+								impliedMandatoryRoles.Add(playedRole);
+							}
+						}
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(impliedMandatory, true);
+						}
+					}
+					else
+					{
+						// Make sure all roles on the implied mandatory are attached to this object type
+						for (int i = impliedMandatoryRoles.Count - 1; i >= 0; --i)
+						{
+							if (impliedMandatoryRoles[i].RolePlayer != this)
+							{
+								impliedMandatoryRoles.RemoveAt(i);
+							}
+						}
+					}
+				}
+				else if (impliedMandatory != null)
+				{
+					impliedMandatory.Delete();
+				}
+			}
+			else if (impliedMandatory != null)
+			{
+				impliedMandatory.Delete();
+			}
+
+			// Finally, turn off IsIndependent if it is no longer needed
+			if (!canBeIndependent && IsIndependent)
 			{
 				IsIndependent = false;
 			}
@@ -1389,17 +1557,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			LinkedElementCollection<Role> preferredIdentifierRoles = null;
 			LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
 			int playedRoleCount = playedRoles.Count;
-			for (int j = 0; j < playedRoleCount && retVal; ++j)
+			for (int i = 0; i < playedRoleCount && retVal; ++i)
 			{
-				Role playedRole = playedRoles[j];
+				Role playedRole = playedRoles[i];
 				LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
 				int constraintCount = constraints.Count;
-				for (int k = 0; k < constraintCount; ++k)
+				for (int j = 0; j < constraintCount; ++j)
 				{
 					MandatoryConstraint mandatoryConstraint;
-					if (null != (mandatoryConstraint = constraints[k] as MandatoryConstraint) &&
+					if (null != (mandatoryConstraint = constraints[j] as MandatoryConstraint) &&
 						mandatoryConstraint.Modality == ConstraintModality.Alethic)
 					{
+						if (mandatoryConstraint.IsImplied)
+						{
+							// The pattern has already been validated. Anything object
+							// an implied mandatory constraint can be independent.
+							return true;
+						}
 						// The role must be part of a fact type that has a role in the preferred identifier.
 						if (preferredIdentifierRoles == null)
 						{
@@ -1409,8 +1583,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 								retVal = false;
 								break;
 							}
-							// Note that the current fixup phase occurs well after implicit
-							// FactConstraint elements are added, so the FactTypeCollection is valid.
 							preferredIdentifierRoles = preferredIdentifier.RoleCollection;
 						}
 						RoleBase oppositeRole = playedRole.OppositeRole;
@@ -2066,15 +2238,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
-				if (role != null)
+				ObjectType objectType = link.RolePlayer;
+				if (!objectType.IsDeleted)
 				{
-					ObjectType objectType = link.RolePlayer;
-					if (!objectType.IsDeleted)
+					// IsIndependent pattern incorporates implied mandatories, reverify when a role player is disconnected
+					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+					SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
+					if (role != null)
 					{
 						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// Verify IsIndependent/ImpliedMandatoryConstraint pattern when a role player changes
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
+		private sealed partial class CheckIsIndependentRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				Guid changedRoleGuid = e.DomainRole.Id;
+				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+				{
+					ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
+				}
+				else
+				{
+					ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
+					ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateIsIndependent);
 				}
 			}
 		}
@@ -2164,7 +2363,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							break;
 						}
 						ObjectType objectType = link.Role.RolePlayer;
-						if (objectType != null && objectType.IsIndependent)
+						if (objectType != null)
 						{
 							// We may need to turn off IsIndependent if it is set
 							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
@@ -2215,14 +2414,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							Role role = roles[i];
 							UniquenessConstraint pid;
-							if (null != (objectType = role.RolePlayer) &&
-								!objectType.IsDeleting &&
-								null != (pid = objectType.PreferredIdentifier) &&
-								!pid.IsDeleting &&
-								!pid.IsInternal &&
-								pid.FactTypeCollection.Contains(role.FactType))
+							if (null != (objectType = role.RolePlayer) && !objectType.IsDeleting)
 							{
-								ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+								ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+								if (null != (pid = objectType.PreferredIdentifier) &&
+									!pid.IsDeleting &&
+									!pid.IsInternal &&
+									pid.FactTypeCollection.Contains(role.FactType))
+								{
+									ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+								}
 							}
 						}
 						break;
@@ -2232,7 +2433,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							break;
 						}
 						objectType = constraint.PreferredIdentifierFor;
-						if (objectType != null && objectType.IsIndependent)
+						if (objectType != null)
 						{
 							// We may need to turn off IsIndependent if it is set
 							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
@@ -2476,7 +2677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValidateObjectTypeRequiresPrimarySupertypeError(notifyAdded);
 			ValidatePreferredIdentifierRequiresMandatoryError(notifyAdded);
 			ValidateCompatibleSupertypesError(notifyAdded);
-			ValidateIsIndependent();
+			ValidateIsIndependent(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{

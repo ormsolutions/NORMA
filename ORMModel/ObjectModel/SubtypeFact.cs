@@ -368,6 +368,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								ThrowPatternModifiedException();
 							}
 						}
+						else if (constraint.ConstraintType == ConstraintType.ImpliedMandatory)
+						{
+							// Nothing to do
+						}
 						else if (subtypeRole != null)
 						{
 							invalidConstraintOnSubtypeRole = true;

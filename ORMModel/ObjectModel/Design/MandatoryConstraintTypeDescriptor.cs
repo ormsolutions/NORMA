@@ -61,9 +61,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			MandatoryConstraint mandatoryConstraint = ModelElement;
 			return mandatoryConstraint.IsSimple ?
 				ResourceStrings.SimpleMandatoryConstraint :
-				(mandatoryConstraint.ExclusiveOrExclusionConstraint == null) ?
-					ResourceStrings.DisjunctiveMandatoryConstraint :
-					ResourceStrings.ExclusiveOrConstraint;
+				mandatoryConstraint.IsImplied ?
+					ResourceStrings.ImpliedMandatoryConstraint :
+					(mandatoryConstraint.ExclusiveOrExclusionConstraint == null) ?
+						ResourceStrings.DisjunctiveMandatoryConstraint :
+						ResourceStrings.ExclusiveOrConstraint;
 		}
 
 		/// <summary>
@@ -93,10 +95,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			FactType factType;
 			if (propertyDescriptor.DomainPropertyInfo.Id == MandatoryConstraint.ModalityDomainPropertyId &&
 				(element = ModelElement).Store != null &&
-				element.IsSimple &&
+				(element.IsImplied ||
+				(element.IsSimple &&
 				(roles = element.RoleCollection).Count == 1 &&
 				((factType = roles[0].FactType).ImpliedByObjectification != null ||
-				factType is SubtypeFact))
+				factType is SubtypeFact))))
 			{
 				return true;
 			}

@@ -775,80 +775,128 @@ namespace Neumont.Tools.ORM.Shell
 	#endregion // ORMCustomSerializedElementMatch struct
 	#endregion // Public Classes
 	#region Public Structures
+	/// <summary>
+	/// Used with <see cref="IORMCustomSerializedDomainModel.GetRootRelationshipContainers"/> method
+	/// to represent relationships that are not serialized under any model.
+	/// </summary>
 	public struct ORMRootRelationshipContainer
 	{
 		private string myName;
 		private ORMRootRelationship[] myRelationships;
+		/// <summary>
+		/// The name of the container XML element
+		/// </summary>
 		public string Name
 		{
 			get { return myName; }
 		}
-
+		/// <summary>
+		/// The relationship classes serialized within the container. Represented
+		/// by an array of <see cref="ORMRootRelationship"/> elements
+		/// </summary>
 		public ORMRootRelationship[] GetRelationshipClasses()
 		{
 			return myRelationships;
 		}
-
+		/// <summary>
+		/// Create a new <see cref="ORMRootRelationshipContainer"/> 
+		/// </summary>
+		/// <param name="name">Value returned by the <see cref="Name"/> property</param>
+		/// <param name="relationships">Array of relationships returned by the <see cref="GetRelationshipClasses"/> method</param>
 		public ORMRootRelationshipContainer(string name, ORMRootRelationship[] relationships)
 		{
 			this.myName = name;
 			this.myRelationships = relationships;
 		}
 	}
+	/// <summary>
+	/// Used with the <see cref="IORMCustomSerializedDomainModel.GetRootRelationshipContainers"/> method
+	/// to represent a single role to be written to a root link element as represented by the <see cref="ORMRootRelationship"/> structure.
+	/// </summary>
 	public struct ORMRootRelationshipRole
 	{
 		private string myAttributeName;
 		private Guid myDomainRoleId;
-
+		/// <summary>
+		/// The name of the serialized attribute
+		/// </summary>
 		public string AttributeName
 		{
 			get { return myAttributeName; }
 		}
-
+		/// <summary>
+		/// The identifier for the <see cref="DomainRoleInfo"/> describing this role
+		/// </summary>
 		public Guid DomainRoleId
 		{
 			get { return myDomainRoleId; }
 		}
-
+		/// <summary>
+		/// Create a new <see cref="ORMRootRelationshipRole"/>
+		/// </summary>
+		/// <param name="attributeRoleName">Value corresponding to the <see cref="AttributeName"/> property</param>
+		/// <param name="domainRoleId">Value corresponding to the <see cref="DomainRoleId"/> property</param>
 		public ORMRootRelationshipRole(string attributeRoleName, Guid domainRoleId)
 		{
 			myAttributeName = attributeRoleName;
 			myDomainRoleId = domainRoleId;
 		}
 	}
+	/// <summary>
+	/// Used with the <see cref="IORMCustomSerializedDomainModel.GetRootRelationshipContainers"/> method
+	/// to represent a single relationship serialized inside a <see cref="ORMRootRelationshipContainer"/>.
+	/// </summary>
 	public struct ORMRootRelationship
 	{
-		private string myAttributeName;
+		private string myElementName;
 		private Guid myDomainClassId;
 		private ORMRootRelationshipRole[] myRoles;
-		private bool isPrimaryLink;
-
-		public string AttributeName
+		private bool myIsPrimaryLink;
+		/// <summary>
+		/// The name of the link element
+		/// </summary>
+		public string ElementName
 		{
-			get { return myAttributeName; }
+			get { return myElementName; }
 		}
-
+		/// <summary>
+		/// The domain class for the link being created
+		/// </summary>
 		public Guid DomainClassId
 		{
 			get { return myDomainClassId; }
 		}
-
+		/// <summary>
+		/// Whether or not this representation of the link forms the
+		/// primary definition for the link. If this is true, then the
+		/// element name is based on the underlying link class (<see cref="ElementName"/>
+		/// is ignored), and all attributes and child elements are written with the element.
+		/// </summary>
 		public bool IsPrimaryLinkElement
 		{
-			get { return isPrimaryLink; }
+			get { return myIsPrimaryLink; }
 		}
-
+		/// <summary>
+		/// Get the <see cref="ORMRootRelationshipRole"/> representing
+		/// how the source and target references are to be written for this element.
+		/// </summary>
 		public ORMRootRelationshipRole[] GetRoles()
 		{
 			return myRoles;
 		}
-
-		public ORMRootRelationship(string attributeName, Guid domainClassId, ORMRootRelationshipRole[] roles, bool isPrimaryLinkElement)
+		/// <summary>
+		/// Create a new <see cref="ORMRootRelationship"/>
+		/// </summary>
+		/// <param name="elementName">Value for the <see cref="ElementName"/> property</param>
+		/// <param name="domainClassId">Value for the <see cref="DomainClassId"/> property</param>
+		/// <param name="roles">Value for the <see cref="GetRoles"/> method</param>
+		/// <param name="isPrimaryLinkElement">Value for the <see cref="IsPrimaryLinkElement"/> property</param>
+		public ORMRootRelationship(string elementName, Guid domainClassId, ORMRootRelationshipRole[] roles, bool isPrimaryLinkElement)
 		{
-			myAttributeName = attributeName;
+			myElementName = elementName;
 			myDomainClassId = domainClassId;
 			myRoles = roles;
-			isPrimaryLink = isPrimaryLinkElement;
+			myIsPrimaryLink = isPrimaryLinkElement;
 		}
 	}
 	#endregion // Public Structures
@@ -2023,7 +2071,7 @@ namespace Neumont.Tools.ORM.Shell
 								}
 								else
 								{
-									file.WriteStartElement(ns.DefaultElementPrefix, relationship.AttributeName, null);
+									file.WriteStartElement(ns.DefaultElementPrefix, relationship.ElementName, null);
 									for (int l = 0; l < roles.Length; ++l)
 									{
 										ORMRootRelationshipRole role = roles[l];

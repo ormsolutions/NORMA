@@ -641,8 +641,12 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="IsImplied" DefaultValue="false" DisplayName="IsImplied" Id="EBF58507-1C28-4C7B-8C1B-ED4C319C9C3C" IsBrowsable="false">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
 		<DomainClass Name="SetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1B85E4BE-0C95-45BD-A76F-2087456F891B" DisplayName="SetConstraint" InheritanceModifier="Abstract" Description="">
@@ -1768,6 +1772,23 @@
 				<DomainRole Name="SetConstraint" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="550F7793-1381-4D37-A5E2-78C48D0F1331">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectTypeImpliesMandatoryConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9A43A30E-6F18-46FF-9B8D-5313F6E93807">
+			<Source>
+				<DomainRole Name="ObjectType" PropertyName="ImpliedMandatoryConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ImpliedByObjectType" Id="929DFC02-4C1E-4D43-90D7-1112C3CF757B">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MandatoryConstraint" PropertyName="ImpliedByObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ImpliedMandatoryConstraint" Id="C4E7DFA7-13B4-463F-BF84-4032DE22DA88">
+					<RolePlayer>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

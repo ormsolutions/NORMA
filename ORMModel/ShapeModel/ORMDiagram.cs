@@ -734,6 +734,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ObjectTypePlaysRole objectTypePlaysRole;
 			SetConstraint setConstraint;
 			ExclusionConstraint exclusionConstraint;
+			MandatoryConstraint mandatoryConstraint;
 			if (null != (factType = element as FactType))
 			{
 				if (factType is SubtypeFact)
@@ -772,6 +773,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 #endif
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
+			}
+			else if (null != (mandatoryConstraint = element as MandatoryConstraint))
+			{
+				return !mandatoryConstraint.IsSimple && !mandatoryConstraint.IsImplied;
 			}
 			else if (null != (setConstraint = element as SetConstraint))
 			{

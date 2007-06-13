@@ -100,6 +100,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint");
 			}
 		}
+		/// <summary>The display name used for an implied mandatory constraint</summary>
+		public static string ImpliedMandatoryConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ImpliedMandatoryConstraint");
+			}
+		}
 		/// <summary>The display name used for a simple mandatory constraint</summary>
 		public static string SimpleMandatoryConstraint
 		{

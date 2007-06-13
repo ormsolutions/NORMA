@@ -63,7 +63,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (!string.IsNullOrEmpty(unaryRoleName))
 					{
 						// UNDONE: Localize the space? (Some languages may not use spaces between words.)
-						return unaryRolePlayer.Name + " " + unaryRoleName;
+						//return unaryRolePlayer.Name + " " + unaryRoleName;
+						// UNDONE: As a temporary favor to code generators, don't add spaces in object names.
+						// Eventually all generators will handle this cleanly, but they don't yet, so leave out
+						// the space to handle the normal case cleanly.
+						return unaryRolePlayer.Name + unaryRoleName;
 					}
 				}
 				return unaryFactType.Name;

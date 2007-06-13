@@ -846,7 +846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// The XML schema is current very lax on exclusion constraints on Sub/SupertypeMetaRoles, so
 				// any constraints on any combination of roles/metaroles load successfully. Eliminate any
 				// constraints with patterns that will raise exceptions inside the tool.
-				if (!constraint.ConstraintIsInternal)
+				if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
 				{
 					bool seenSubtypeFact = false;
 					bool invalidSubtypeConstraint = false;
@@ -862,7 +862,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									invalidSubtypeConstraint = true;
 								}
 								seenSubtypeFact = true;
-								if (constraint.ConstraintType != ConstraintType.DisjunctiveMandatory)
+								if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
 								{
 									invalidSubtypeConstraint = true;
 									break;
@@ -5811,16 +5811,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
+				// UNDONE: Localize error messages in this routine
 				Guid attributeId = e.DomainProperty.Id;
 				if (attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
 				{
 					// UNDONE: Support toggling IsSimple property after the object has been created.
-					throw new InvalidOperationException("MandatoryConstraint.IsSimple cannot be changed");
+					throw new InvalidOperationException("MandatoryConstraint.IsSimple cannot be changed.");
+				}
+				else if (attributeId == MandatoryConstraint.IsImpliedDomainPropertyId)
+				{
+					throw new InvalidOperationException("MandatoryConstraint.IsImplied cannot be changed.");
+				}
+				else if (attributeId == MandatoryConstraint.ModalityDomainPropertyId)
+				{
+					if (((MandatoryConstraint)e.ModelElement).IsImplied)
+					{
+						throw new InvalidOperationException("MandatoryConstraint.Modality cannot be changed is MandatoryConstraint.IsImplied is true.");
+					}
 				}
 			}
 		}
 		#endregion // MandatoryConstraintChangeRule class
 		#endregion // Simple mandatory constraint handling
+		#region Implied mandatory constraint handling
+		private static PropertyAssignment[] myInitialImpliedAttributes;
+		/// <summary>
+		/// Create a MandatoryConstraint with an initial 'IsImplied' property set set true for the specified object type
+		/// </summary>
+		/// <param name="objectType">The <see cref="ObjectType"/> to create an implied mandatory constraint for</param>
+		/// <returns>The newly created constraint</returns>
+		public static MandatoryConstraint CreateImpliedMandatoryConstraint(ObjectType objectType)
+		{
+			PropertyAssignment[] attributes = myInitialImpliedAttributes;
+			Store store = objectType.Store;
+			if (attributes == null)
+			{
+				attributes = myInitialImpliedAttributes = new PropertyAssignment[] { new PropertyAssignment(IsImpliedDomainPropertyId, true) };
+			}
+			MandatoryConstraint retVal = new MandatoryConstraint(store, attributes);
+			retVal.Model = objectType.Model;
+			new ObjectTypeImpliesMandatoryConstraint(objectType, retVal);
+			return retVal;
+		}
+		#endregion // Implied mandatory constraint handling
 		#region IRedirectVerbalization Implementation
 		/// <summary>
 		/// Redirect exclusive or verbalization to the exclusion constraint
@@ -7629,6 +7662,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		DisjunctiveMandatory,
 		/// <summary>
+		/// An implied mandatory constraint. Applied to one or more roles played
+		/// by the same object type.
+		/// </summary>
+		ImpliedMandatory,
+		/// <summary>
 		/// An external subset constraint. Applied to 2
 		/// sets of compatible roles.
 		/// </summary>
@@ -8109,7 +8147,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return IsSimple ? ConstraintType.SimpleMandatory : ConstraintType.DisjunctiveMandatory;
+				return IsSimple ? ConstraintType.SimpleMandatory : (IsImplied ? ConstraintType.ImpliedMandatory : ConstraintType.DisjunctiveMandatory);
 			}
 		}
 		ConstraintType IConstraint.ConstraintType
@@ -8147,7 +8185,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return IsSimple ?
 					RoleSequenceStyles.OneRoleSequence | RoleSequenceStyles.OneRolePerSequence :
-					RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.CompatibleColumns;
+					IsImplied ?
+						RoleSequenceStyles.OneOrMoreRoleSequences | RoleSequenceStyles.OneRolePerSequence : // Note that columns are compatible, but there isn't much use testing this separately on implied mandatories
+						RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.CompatibleColumns;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles

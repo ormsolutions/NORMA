@@ -124,6 +124,7 @@
 		<arg:Rule class="Objectification.UniquenessConstraintDeletingRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule"/>
+		<arg:Rule class="ObjectType.CheckIsIndependentRolePlayerChangeRule"/>
 		<arg:Rule class="ObjectType.MandatoryModalityChangeRule"/>
 		<arg:Rule class="ObjectType.MandatoryRoleAddedRule"/>
 		<arg:Rule class="ObjectType.MandatoryRoleDeletingRule"/>

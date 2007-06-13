@@ -144,7 +144,7 @@
 		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
 		</se:Container>
-		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement" />
+		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement"/>
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
@@ -190,6 +190,7 @@
 			<se:Embed RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
 			<se:Embed RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>
 		</se:Container>
+		<se:Link RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>
@@ -512,6 +513,18 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ProjectionJoin" Name="ProjectionJoin"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" SortChildElements="true" Override="true">
+		<!-- UNDONE: ImplicitElementSerialization
+		ImpliedMandatoryConstraint should serialize, but the old generation
+		algorithms are not ready for them and many of the absorption patterns change in weird
+		ways. Change to serializing these when the generators catch up. -->
+		<se:ConditionalSerialization>
+			<plx:comment>UNDONE: Serialize implied mandatory constraints when the generators handle them better.</plx:comment>
+			<plx:return>
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsImplied" type="property"/>
+				</plx:unaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Attribute ID="IsSimple">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -519,6 +532,14 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="IsImplied">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsImplied" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link Name="ImpliedByObjectType" RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="ObjectType"/>
 		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="ExclusionConstraint" Name="ExclusiveOrExclusionConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>

@@ -3694,6 +3694,266 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ObjectTypeImpliesMandatoryConstraint
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("9a43a30e-6f18-46ff-9b8d-5313f6e93807")]
+	public partial class ObjectTypeImpliesMandatoryConstraint : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectTypeImpliesMandatoryConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x9a43a30e, 0x6f18, 0x46ff, 0x9b, 0x8d, 0x53, 0x13, 0xf6, 0xe9, 0x38, 0x07);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectTypeImpliesMandatoryConstraint link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">MandatoryConstraint to use as the target of the relationship.</param>
+		public ObjectTypeImpliesMandatoryConstraint(ObjectType source, MandatoryConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeImpliesMandatoryConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeImpliesMandatoryConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeImpliesMandatoryConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeImpliesMandatoryConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectType domain role code
+		
+		/// <summary>
+		/// ObjectType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0x929dfc02, 0x4c1e, 0x4d43, 0x90, 0xd7, 0x11, 0x12, 0xc3, 0xcf, 0x75, 0x7b);
+		
+		/// <summary>
+		/// DomainRole ObjectType
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedMandatoryConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("929dfc02-4c1e-4d43-90d7-1112c3cf757b")]
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ImpliedByObjectType of a MandatoryConstraint
+		/// <summary>
+		/// Gets ImpliedByObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectType GetImpliedByObjectType(MandatoryConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MandatoryConstraintDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets ImpliedByObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetImpliedByObjectType(MandatoryConstraint element, ObjectType newObjectType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, MandatoryConstraintDomainRoleId, newObjectType);
+		}
+		#endregion
+		#region MandatoryConstraint domain role code
+		
+		/// <summary>
+		/// MandatoryConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MandatoryConstraintDomainRoleId = new global::System.Guid(0xc4e7dfa7, 0x13b4, 0x463f, 0xbf, 0x84, 0x40, 0x32, 0xde, 0x22, 0xda, 0x88);
+		
+		/// <summary>
+		/// DomainRole MandatoryConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/MandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/MandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ImpliedByObjectType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint/MandatoryConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("c4e7dfa7-13b4-463f-bf84-4032de22da88")]
+		public virtual MandatoryConstraint MandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MandatoryConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, MandatoryConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MandatoryConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ImpliedMandatoryConstraint of a ObjectType
+		/// <summary>
+		/// Gets ImpliedMandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MandatoryConstraint GetImpliedMandatoryConstraint(ObjectType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as MandatoryConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ImpliedMandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetImpliedMandatoryConstraint(ObjectType element, MandatoryConstraint newMandatoryConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newMandatoryConstraint);
+		}
+		#endregion
+		#region ObjectType link accessor
+		/// <summary>
+		/// Get the ObjectTypeImpliesMandatoryConstraint link to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint GetLinkToImpliedMandatoryConstraint (global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint>(objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MandatoryConstraint link accessor
+		/// <summary>
+		/// Get the ObjectTypeImpliesMandatoryConstraint link to a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint GetLinkToImpliedByObjectType (global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint mandatoryConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint>(mandatoryConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MandatoryConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectTypeImpliesMandatoryConstraint instance accessors
+		
+		/// <summary>
+		/// Get any ObjectTypeImpliesMandatoryConstraint links between a given ObjectType and a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint link in links )
+			{
+				if ( target.Equals(link.MandatoryConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectTypeImpliesMandatoryConstraint link between a given ObjectTypeand a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectType source, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint link in links )
+			{
+				if ( target.Equals(link.MandatoryConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ModelHasSetComparisonConstraint
 	/// Description for Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint
 	/// </summary>

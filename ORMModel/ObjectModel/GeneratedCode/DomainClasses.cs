@@ -36,7 +36,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public sealed partial class DelayValidateSignal : DslModeling::ModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DelayValidateSignal domain class Id.
 		/// </summary>
@@ -50,7 +50,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -75,7 +75,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ModelErrorCategory : DslModeling::ModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ModelErrorCategory domain class Id.
 		/// </summary>
@@ -104,7 +104,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public sealed partial class ModelErrorDisplayFilter : DslModeling::ModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ModelErrorDisplayFilter domain class Id.
 		/// </summary>
@@ -118,7 +118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -130,12 +130,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region ExcludedCategories domain property code
-
+		
 		/// <summary>
 		/// ExcludedCategories domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ExcludedCategoriesDomainPropertyId = new global::System.Guid(0x46f355f4, 0x001c, 0x4a3f, 0x8a, 0x0f, 0x56, 0xbe, 0xc4, 0xea, 0xcd, 0xeb);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ExcludedCategories domain property.
 		/// Description for
@@ -164,12 +164,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ExcludedCategoriesPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelErrorDisplayFilter, global::System.String>
 		{
 			private ExcludedCategoriesPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ModelErrorDisplayFilter.ExcludedCategories domain property value handler.
 			/// </summary>
 			public static readonly ExcludedCategoriesPropertyHandler Instance = new ExcludedCategoriesPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ModelErrorDisplayFilter.ExcludedCategories domain property.
 			/// </summary>
@@ -181,7 +181,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ExcludedCategoriesDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -195,7 +195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetExcludedCategoriesValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -204,7 +204,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ModelErrorDisplayFilter element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -218,15 +218,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IncludedErrors domain property code
-
+		
 		/// <summary>
 		/// IncludedErrors domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IncludedErrorsDomainPropertyId = new global::System.Guid(0xd83d0737, 0x79b4, 0x415d, 0x9c, 0x93, 0x73, 0x44, 0x2f, 0x3c, 0x60, 0x6f);
-
+		
 		/// <summary>
 		/// Gets or sets the value of IncludedErrors domain property.
 		/// Description for
@@ -255,12 +255,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IncludedErrorsPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelErrorDisplayFilter, global::System.String>
 		{
 			private IncludedErrorsPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ModelErrorDisplayFilter.IncludedErrors domain property value handler.
 			/// </summary>
 			public static readonly IncludedErrorsPropertyHandler Instance = new IncludedErrorsPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ModelErrorDisplayFilter.IncludedErrors domain property.
 			/// </summary>
@@ -272,7 +272,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IncludedErrorsDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -286,7 +286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetIncludedErrorsValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -295,7 +295,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ModelErrorDisplayFilter element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -309,15 +309,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ExcludedErrors domain property code
-
+		
 		/// <summary>
 		/// ExcludedErrors domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ExcludedErrorsDomainPropertyId = new global::System.Guid(0x593d1e1a, 0xc01d, 0x48e8, 0x83, 0x85, 0x15, 0x07, 0xc7, 0xf9, 0x5a, 0x25);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ExcludedErrors domain property.
 		/// Description for
@@ -346,12 +346,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ExcludedErrorsPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelErrorDisplayFilter, global::System.String>
 		{
 			private ExcludedErrorsPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ModelErrorDisplayFilter.ExcludedErrors domain property value handler.
 			/// </summary>
 			public static readonly ExcludedErrorsPropertyHandler Instance = new ExcludedErrorsPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ModelErrorDisplayFilter.ExcludedErrors domain property.
 			/// </summary>
@@ -363,7 +363,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ExcludedErrorsDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -377,7 +377,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetExcludedErrorsValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -386,7 +386,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ModelErrorDisplayFilter element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -400,7 +400,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
@@ -448,7 +448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class PopulationErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// PopulationErrorCategory domain class Id.
 		/// </summary>
@@ -477,7 +477,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class DataTypeAndValueErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DataTypeAndValueErrorCategory domain class Id.
 		/// </summary>
@@ -506,7 +506,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ConstraintImplicationAndContradictionErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ConstraintImplicationAndContradictionErrorCategory domain class Id.
 		/// </summary>
@@ -535,7 +535,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ConstraintStructureErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ConstraintStructureErrorCategory domain class Id.
 		/// </summary>
@@ -564,7 +564,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class FactTypeDefinitionErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FactTypeDefinitionErrorCategory domain class Id.
 		/// </summary>
@@ -593,7 +593,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ReferenceSchemeErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ReferenceSchemeErrorCategory domain class Id.
 		/// </summary>
@@ -622,7 +622,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class NameErrorCategory : ModelErrorCategory
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// NameErrorCategory domain class Id.
 		/// </summary>
@@ -652,7 +652,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ORMModelElement : DslModeling::ModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ORMModelElement domain class Id.
 		/// </summary>
@@ -712,7 +712,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ORMNamedElement : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ORMNamedElement domain class Id.
 		/// </summary>
@@ -728,17 +728,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Name domain property code
-
+		
 		/// <summary>
 		/// Name domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0x4a557c1e, 0x0a89, 0x49b7, 0xb4, 0xbd, 0xfa, 0x09, 0x5f, 0x62, 0x67, 0xd7);
-
+		
 		/// <summary>
 		/// Storage for Name
 		/// </summary>
 		private global::System.String namePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ORMNamedElement.Name
@@ -767,12 +767,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<ORMNamedElement, global::System.String>
 		{
 			private NamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ORMNamedElement.Name domain property value handler.
 			/// </summary>
 			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ORMNamedElement.Name domain property.
 			/// </summary>
@@ -784,7 +784,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -795,7 +795,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.namePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -804,7 +804,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ORMNamedElement element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -814,7 +814,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 	}
 }
@@ -830,7 +830,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ORMModel : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ORMModel domain class Id.
 		/// </summary>
@@ -844,7 +844,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -856,12 +856,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region ModelErrorDisplayFilterDisplay domain property code
-
+		
 		/// <summary>
 		/// ModelErrorDisplayFilterDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ModelErrorDisplayFilterDisplayDomainPropertyId = new global::System.Guid(0xc5a66492, 0x0ffa, 0x46f9, 0xa6, 0x4b, 0x36, 0x1e, 0x62, 0xd6, 0x96, 0xb0);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ModelErrorDisplayFilterDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ORMModel.ErrorDisplay
@@ -890,12 +890,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ModelErrorDisplayFilterDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModel, ModelErrorDisplayFilter>
 		{
 			private ModelErrorDisplayFilterDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ORMModel.ModelErrorDisplayFilterDisplay domain property value handler.
 			/// </summary>
 			public static readonly ModelErrorDisplayFilterDisplayPropertyHandler Instance = new ModelErrorDisplayFilterDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ORMModel.ModelErrorDisplayFilterDisplay domain property.
 			/// </summary>
@@ -907,7 +907,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ModelErrorDisplayFilterDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -921,7 +921,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetModelErrorDisplayFilterDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -930,7 +930,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ORMModel element, ModelErrorDisplayFilter newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ModelErrorDisplayFilter oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -944,7 +944,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ObjectTypeCollection opposite domain role accessor
 		/// <summary>
@@ -1105,41 +1105,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the source element represented by the ProtoElement can be added to this target element.</returns>
 		protected override bool CanMerge(DslModeling::ProtoElementBase rootElement, DslModeling::ElementGroupPrototype elementGroupPrototype)
 		{
-			if (elementGroupPrototype == null) throw new global::System.ArgumentNullException("elementGroupPrototype");
-
+			if ( elementGroupPrototype == null ) throw new global::System.ArgumentNullException("elementGroupPrototype");
+			
 			if (rootElement != null)
 			{
 				DslModeling::DomainClassInfo rootElementDomainInfo = this.Partition.DomainDataDirectory.GetDomainClass(rootElement.DomainClassId);
-
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetConstraint.DomainClassId))
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetConstraint.DomainClassId)) 
 				{
 					// Call custom method implemented in partial class
 					return this.CanMergeSetConstraint(rootElement, elementGroupPrototype);
 				}
-
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.DomainClassId))
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.DomainClassId)) 
 				{
 					return true;
 				}
-
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ModelNote.DomainClassId))
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ModelNote.DomainClassId)) 
 				{
 					return true;
 				}
-
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId))
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId)) 
 				{
 					return true;
 				}
-
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId))
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId)) 
 				{
 					return true;
 				}
 			}
 			return base.CanMerge(rootElement, elementGroupPrototype);
 		}
-
+		
 		/// <summary>
 		/// Called by the Merge process to create a relationship between 
 		/// this target element and the specified source element. 
@@ -1158,9 +1158,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// In general, sourceElement is allowed to be null, meaning that the elementGroup must be parsed for special cases.
 			// However this is not supported in generated code.  Use double-deriving on this class and then override MergeRelate completely if you 
 			// need to support this case.
-			if (sourceElement == null) throw new global::System.ArgumentNullException("sourceElement");
-
-
+			if ( sourceElement == null ) throw new global::System.ArgumentNullException("sourceElement");
+		
+				
 			global::Neumont.Tools.ORM.ObjectModel.SetConstraint sourceSetConstraint1 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetConstraint;
 			if (sourceSetConstraint1 != null)
 			{
@@ -1169,7 +1169,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint2 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint;
 			if (sourceSetComparisonConstraint2 != null)
 			{
@@ -1178,7 +1178,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.ModelNote sourceModelNote3 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ModelNote;
 			if (sourceModelNote3 != null)
 			{
@@ -1187,16 +1187,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.ObjectType sourceObjectType4 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
 			if (sourceObjectType4 != null)
 			{
-
+				
 				// Call custom method implemented in partial class
 				this.MergeRelateObjectType(sourceElement, elementGroup);
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.FactType sourceFactType5 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.FactType;
 			if (sourceFactType5 != null)
 			{
@@ -1208,7 +1208,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Fall through to base class if this class hasn't handled the merge.
 			base.MergeRelate(sourceElement, elementGroup);
 		}
-
+		
 		/// <summary>
 		/// Performs operation opposite to MergeRelate - i.e. disconnects a given
 		/// element from the current one (removes links created by MergeRelate).
@@ -1218,12 +1218,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected override void MergeDisconnect(DslModeling::ModelElement sourceElement)
 		{
 			if (sourceElement == null) throw new global::System.ArgumentNullException("sourceElement");
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.SetConstraint sourceSetConstraint1 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetConstraint;
 			if (sourceSetConstraint1 != null)
 			{
 				// Delete link for path ModelHasSetConstraint.SetConstraintCollection
-
+				
 				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint.GetLinks((global::Neumont.Tools.ORM.ObjectModel.ORMModel)this, sourceSetConstraint1))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
@@ -1232,12 +1232,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint2 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint;
 			if (sourceSetComparisonConstraint2 != null)
 			{
 				// Delete link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
-
+				
 				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint.GetLinks((global::Neumont.Tools.ORM.ObjectModel.ORMModel)this, sourceSetComparisonConstraint2))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
@@ -1246,12 +1246,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.ModelNote sourceModelNote3 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ModelNote;
 			if (sourceModelNote3 != null)
 			{
 				// Delete link for path ModelHasModelNote.NoteCollection
-
+				
 				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.GetLinks((global::Neumont.Tools.ORM.ObjectModel.ORMModel)this, sourceModelNote3))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
@@ -1260,21 +1260,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.ObjectType sourceObjectType4 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
 			if (sourceObjectType4 != null)
 			{
-
+				
 				// Call custom method implemented in partial class
 				this.MergeDisconnectObjectType(sourceElement);
 				return;
 			}
-
+				
 			global::Neumont.Tools.ORM.ObjectModel.FactType sourceFactType5 = sourceElement as global::Neumont.Tools.ORM.ObjectModel.FactType;
 			if (sourceFactType5 != null)
 			{
 				// Delete link for path ModelHasFactType.FactTypeCollection
-
+				
 				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.ObjectModel.ModelHasFactType.GetLinks((global::Neumont.Tools.ORM.ObjectModel.ORMModel)this, sourceFactType5))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
@@ -1302,7 +1302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ObjectType : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ObjectType domain class Id.
 		/// </summary>
@@ -1316,7 +1316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -1328,17 +1328,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region IsExternal domain property code
-
+		
 		/// <summary>
 		/// IsExternal domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsExternalDomainPropertyId = new global::System.Guid(0xd03828fd, 0x1da7, 0x4804, 0xa1, 0x6b, 0xcc, 0x27, 0xf2, 0x04, 0x6f, 0x57);
-
+		
 		/// <summary>
 		/// Storage for IsExternal
 		/// </summary>
 		private global::System.Boolean isExternalPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsExternal domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsExternal
@@ -1365,12 +1365,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsExternalPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
 		{
 			private IsExternalPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.IsExternal domain property value handler.
 			/// </summary>
 			public static readonly IsExternalPropertyHandler Instance = new IsExternalPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.IsExternal domain property.
 			/// </summary>
@@ -1382,7 +1382,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsExternalDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1393,7 +1393,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isExternalPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1402,7 +1402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -1412,15 +1412,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region NoteText domain property code
-
+		
 		/// <summary>
 		/// NoteText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0x17c4e23d, 0xca49, 0x4329, 0x98, 0x2f, 0x48, 0xf4, 0xef, 0xca, 0x23, 0xbd);
-
+		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Note
@@ -1450,12 +1450,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
 		{
 			private NoteTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.NoteText domain property value handler.
 			/// </summary>
 			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.NoteText domain property.
 			/// </summary>
@@ -1467,7 +1467,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NoteTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1481,7 +1481,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetNoteTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1490,7 +1490,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -1504,20 +1504,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsIndependent domain property code
-
+		
 		/// <summary>
 		/// IsIndependent domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsIndependentDomainPropertyId = new global::System.Guid(0xd52257ef, 0xd76a, 0x404d, 0xaa, 0xc5, 0x74, 0x50, 0xba, 0x5c, 0xc7, 0x90);
-
+		
 		/// <summary>
 		/// Storage for IsIndependent
 		/// </summary>
 		private global::System.Boolean isIndependentPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsIndependent domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent
@@ -1544,12 +1544,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsIndependentPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
 		{
 			private IsIndependentPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.IsIndependent domain property value handler.
 			/// </summary>
 			public static readonly IsIndependentPropertyHandler Instance = new IsIndependentPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.IsIndependent domain property.
 			/// </summary>
@@ -1561,7 +1561,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsIndependentDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1572,7 +1572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isIndependentPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1581,7 +1581,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -1591,15 +1591,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsValueType domain property code
-
+		
 		/// <summary>
 		/// IsValueType domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsValueTypeDomainPropertyId = new global::System.Guid(0xf63acb94, 0x8526, 0x432e, 0x96, 0x4c, 0x3b, 0x44, 0x41, 0x19, 0x57, 0x54);
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsValueType domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueType
@@ -1628,12 +1628,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsValueTypePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
 		{
 			private IsValueTypePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.IsValueType domain property value handler.
 			/// </summary>
 			public static readonly IsValueTypePropertyHandler Instance = new IsValueTypePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.IsValueType domain property.
 			/// </summary>
@@ -1645,7 +1645,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsValueTypeDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1659,7 +1659,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetIsValueTypeValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1668,7 +1668,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -1682,15 +1682,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Scale domain property code
-
+		
 		/// <summary>
 		/// Scale domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ScaleDomainPropertyId = new global::System.Guid(0xbd2d708a, 0x7687, 0x4218, 0x94, 0xbc, 0x05, 0x83, 0x4a, 0xfa, 0xc8, 0x69);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Scale domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Scale
@@ -1718,12 +1718,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ScalePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Int32>
 		{
 			private ScalePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.Scale domain property value handler.
 			/// </summary>
 			public static readonly ScalePropertyHandler Instance = new ScalePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.Scale domain property.
 			/// </summary>
@@ -1735,7 +1735,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ScaleDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1749,7 +1749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetScaleValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1758,7 +1758,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Int32 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int32 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -1772,15 +1772,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Length domain property code
-
+		
 		/// <summary>
 		/// Length domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid LengthDomainPropertyId = new global::System.Guid(0xc9b01797, 0x2ca1, 0x4ff8, 0x86, 0x5a, 0xfd, 0xa0, 0xdd, 0xf3, 0x3f, 0x8d);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Length domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Length
@@ -1808,12 +1808,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class LengthPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Int32>
 		{
 			private LengthPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.Length domain property value handler.
 			/// </summary>
 			public static readonly LengthPropertyHandler Instance = new LengthPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.Length domain property.
 			/// </summary>
@@ -1825,7 +1825,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return LengthDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1839,7 +1839,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetLengthValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1848,7 +1848,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Int32 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int32 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -1862,15 +1862,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ReferenceModeDisplay domain property code
-
+		
 		/// <summary>
 		/// ReferenceModeDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ReferenceModeDisplayDomainPropertyId = new global::System.Guid(0x2e56d25a, 0xbd96, 0x4478, 0xa5, 0x5c, 0x9f, 0x17, 0xa1, 0x5c, 0x94, 0xb6);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.RefMode
@@ -1900,12 +1900,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ReferenceModeDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Object>
 		{
 			private ReferenceModeDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.ReferenceModeDisplay domain property value handler.
 			/// </summary>
 			public static readonly ReferenceModeDisplayPropertyHandler Instance = new ReferenceModeDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.ReferenceModeDisplay domain property.
 			/// </summary>
@@ -1917,7 +1917,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ReferenceModeDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -1931,7 +1931,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetReferenceModeDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -1940,7 +1940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Object newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Object oldValue = GetValue(element);
 				// Don't use != with object properties
 				if (!global::System.Object.Equals(newValue, oldValue))
@@ -1955,15 +1955,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ReferenceModeString domain property code
-
+		
 		/// <summary>
 		/// ReferenceModeString domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ReferenceModeStringDomainPropertyId = new global::System.Guid(0xce61c7ad, 0xb177, 0x4c56, 0x88, 0x43, 0x14, 0x9c, 0x01, 0x43, 0x9d, 0x25);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeString domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeString
@@ -1992,12 +1992,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ReferenceModeStringPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
 		{
 			private ReferenceModeStringPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.ReferenceModeString domain property value handler.
 			/// </summary>
 			public static readonly ReferenceModeStringPropertyHandler Instance = new ReferenceModeStringPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.ReferenceModeString domain property.
 			/// </summary>
@@ -2009,7 +2009,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ReferenceModeStringDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2023,7 +2023,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetReferenceModeStringValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2032,7 +2032,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2046,15 +2046,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ReferenceMode domain property code
-
+		
 		/// <summary>
 		/// ReferenceMode domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ReferenceModeDomainPropertyId = new global::System.Guid(0xe2049ba3, 0xf50d, 0x4e1c, 0x9a, 0xbd, 0x8a, 0x7e, 0xbe, 0xcf, 0xed, 0xf5);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ReferenceMode domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceMode
@@ -2083,12 +2083,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ReferenceModePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, ReferenceMode>
 		{
 			private ReferenceModePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.ReferenceMode domain property value handler.
 			/// </summary>
 			public static readonly ReferenceModePropertyHandler Instance = new ReferenceModePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.ReferenceMode domain property.
 			/// </summary>
@@ -2100,7 +2100,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ReferenceModeDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2114,7 +2114,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetReferenceModeValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2123,7 +2123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, ReferenceMode newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ReferenceMode oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2137,15 +2137,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region DataTypeDisplay domain property code
-
+		
 		/// <summary>
 		/// DataTypeDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid DataTypeDisplayDomainPropertyId = new global::System.Guid(0x3e8893a7, 0x5985, 0x4200, 0xa5, 0x95, 0xcb, 0x1e, 0x9e, 0xc9, 0xad, 0xa7);
-
+		
 		/// <summary>
 		/// Gets or sets the value of DataTypeDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataType
@@ -2174,12 +2174,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class DataTypeDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, DataType>
 		{
 			private DataTypeDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.DataTypeDisplay domain property value handler.
 			/// </summary>
 			public static readonly DataTypeDisplayPropertyHandler Instance = new DataTypeDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.DataTypeDisplay domain property.
 			/// </summary>
@@ -2191,7 +2191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return DataTypeDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2205,7 +2205,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetDataTypeDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2214,7 +2214,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, DataType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				DataType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2228,15 +2228,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ValueRangeText domain property code
-
+		
 		/// <summary>
 		/// ValueRangeText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ValueRangeTextDomainPropertyId = new global::System.Guid(0xf0662c59, 0x700b, 0x435c, 0xb5, 0x7b, 0x93, 0xe5, 0xfd, 0x84, 0xb7, 0x1f);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ValueRangeText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRange
@@ -2264,12 +2264,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ValueRangeTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
 		{
 			private ValueRangeTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.ValueRangeText domain property value handler.
 			/// </summary>
 			public static readonly ValueRangeTextPropertyHandler Instance = new ValueRangeTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.ValueRangeText domain property.
 			/// </summary>
@@ -2281,7 +2281,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ValueRangeTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2295,7 +2295,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetValueRangeTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2304,7 +2304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2318,15 +2318,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ValueTypeValueRangeText domain property code
-
+		
 		/// <summary>
 		/// ValueTypeValueRangeText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ValueTypeValueRangeTextDomainPropertyId = new global::System.Guid(0x6ebe45bb, 0x1054, 0x4785, 0x8c, 0x9d, 0x90, 0x5a, 0x41, 0x59, 0x9e, 0xf9);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ValueTypeValueRangeText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueTypeValueRange
@@ -2354,12 +2354,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ValueTypeValueRangeTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
 		{
 			private ValueTypeValueRangeTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.ValueTypeValueRangeText domain property value handler.
 			/// </summary>
 			public static readonly ValueTypeValueRangeTextPropertyHandler Instance = new ValueTypeValueRangeTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.ValueTypeValueRangeText domain property.
 			/// </summary>
@@ -2371,7 +2371,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ValueTypeValueRangeTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2385,7 +2385,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetValueTypeValueRangeTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2394,7 +2394,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2408,20 +2408,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsPersonal domain property code
-
+		
 		/// <summary>
 		/// IsPersonal domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsPersonalDomainPropertyId = new global::System.Guid(0xef9ae461, 0x4327, 0x46dc, 0x8f, 0xe0, 0xd1, 0x38, 0x8f, 0x06, 0x1b, 0x30);
-
+		
 		/// <summary>
 		/// Storage for IsPersonal
 		/// </summary>
 		private global::System.Boolean isPersonalPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsPersonal domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal
@@ -2448,12 +2448,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsPersonalPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
 		{
 			private IsPersonalPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.IsPersonal domain property value handler.
 			/// </summary>
 			public static readonly IsPersonalPropertyHandler Instance = new IsPersonalPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.IsPersonal domain property.
 			/// </summary>
@@ -2465,7 +2465,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsPersonalDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2476,7 +2476,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isPersonalPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2485,7 +2485,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2495,20 +2495,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsImplicitBooleanValue domain property code
-
+		
 		/// <summary>
 		/// IsImplicitBooleanValue domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsImplicitBooleanValueDomainPropertyId = new global::System.Guid(0xae665fcf, 0xb90a, 0x41bd, 0xb3, 0xe9, 0x86, 0x11, 0xb4, 0x2e, 0x66, 0x8c);
-
+		
 		/// <summary>
 		/// Storage for IsImplicitBooleanValue
 		/// </summary>
 		private global::System.Boolean isImplicitBooleanValuePropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsImplicitBooleanValue domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsImplicitBooleanValue
@@ -2536,12 +2536,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsImplicitBooleanValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
 		{
 			private IsImplicitBooleanValuePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectType.IsImplicitBooleanValue domain property value handler.
 			/// </summary>
 			public static readonly IsImplicitBooleanValuePropertyHandler Instance = new IsImplicitBooleanValuePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectType.IsImplicitBooleanValue domain property.
 			/// </summary>
@@ -2553,7 +2553,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsImplicitBooleanValueDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -2564,7 +2564,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isImplicitBooleanValuePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -2573,7 +2573,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -2583,7 +2583,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region DataType opposite domain role accessor
 		/// <summary>
@@ -2665,6 +2665,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ImpliedMandatoryConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ImpliedMandatoryConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectType
+		/// </summary>
+		public virtual MandatoryConstraint ImpliedMandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId) as MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -2972,7 +3004,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactType : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FactType domain class Id.
 		/// </summary>
@@ -2986,7 +3018,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -2998,17 +3030,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region IsExternal domain property code
-
+		
 		/// <summary>
 		/// IsExternal domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsExternalDomainPropertyId = new global::System.Guid(0x67ea8c95, 0xfd9a, 0x473b, 0x8a, 0xa2, 0xe3, 0x5f, 0xcd, 0xd6, 0x83, 0x61);
-
+		
 		/// <summary>
 		/// Storage for IsExternal
 		/// </summary>
 		private global::System.Boolean isExternalPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsExternal domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.IsExternal
@@ -3035,12 +3067,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsExternalPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.Boolean>
 		{
 			private IsExternalPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.IsExternal domain property value handler.
 			/// </summary>
 			public static readonly IsExternalPropertyHandler Instance = new IsExternalPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.IsExternal domain property.
 			/// </summary>
@@ -3052,7 +3084,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsExternalDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3063,7 +3095,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isExternalPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3072,7 +3104,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3082,15 +3114,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region NoteText domain property code
-
+		
 		/// <summary>
 		/// NoteText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0xaf6200b1, 0x068d, 0x434a, 0x98, 0xd3, 0x44, 0xe8, 0x72, 0xb9, 0x21, 0xbd);
-
+		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.Note
@@ -3120,12 +3152,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
 		{
 			private NoteTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.NoteText domain property value handler.
 			/// </summary>
 			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.NoteText domain property.
 			/// </summary>
@@ -3137,7 +3169,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NoteTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3151,7 +3183,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetNoteTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3160,7 +3192,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3174,15 +3206,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Name domain property code
-
+		
 		/// <summary>
 		/// Name domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0xb17f5e42, 0xa0fa, 0x4b88, 0x9d, 0x24, 0xd1, 0x48, 0xce, 0xee, 0x7d, 0xb0);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.Name
@@ -3212,12 +3244,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
 		{
 			private NamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.Name domain property value handler.
 			/// </summary>
 			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.Name domain property.
 			/// </summary>
@@ -3229,7 +3261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3243,7 +3275,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetNameValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3252,7 +3284,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3266,15 +3298,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region GeneratedName domain property code
-
+		
 		/// <summary>
 		/// GeneratedName domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid GeneratedNameDomainPropertyId = new global::System.Guid(0xf6fc3149, 0x2ed8, 0x458d, 0xa2, 0x9c, 0xfd, 0x64, 0x0a, 0x81, 0x0a, 0x79);
-
+		
 		/// <summary>
 		/// Gets or sets the value of GeneratedName domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.GeneratedName
@@ -3304,12 +3336,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class GeneratedNamePropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
 		{
 			private GeneratedNamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.GeneratedName domain property value handler.
 			/// </summary>
 			public static readonly GeneratedNamePropertyHandler Instance = new GeneratedNamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.GeneratedName domain property.
 			/// </summary>
@@ -3321,7 +3353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return GeneratedNameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3335,7 +3367,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetGeneratedNameValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3344,7 +3376,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3358,15 +3390,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region NameChanged domain property code
-
+		
 		/// <summary>
 		/// NameChanged domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NameChangedDomainPropertyId = new global::System.Guid(0x20a75b4b, 0x69d4, 0x4d1b, 0xbe, 0xb5, 0x9b, 0x0d, 0x66, 0xfd, 0xb1, 0xf3);
-
+		
 		/// <summary>
 		/// Gets or sets the value of NameChanged domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.NameChanged
@@ -3395,12 +3427,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.Int64>
 		{
 			private NameChangedPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.NameChanged domain property value handler.
 			/// </summary>
 			public static readonly NameChangedPropertyHandler Instance = new NameChangedPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.NameChanged domain property.
 			/// </summary>
@@ -3412,7 +3444,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NameChangedDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3426,7 +3458,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetNameChangedValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3435,7 +3467,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, global::System.Int64 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int64 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3449,15 +3481,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region DerivationRuleDisplay domain property code
-
+		
 		/// <summary>
 		/// DerivationRuleDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid DerivationRuleDisplayDomainPropertyId = new global::System.Guid(0x7af5c436, 0xc28a, 0x49ba, 0xb8, 0xe0, 0x05, 0xc4, 0x09, 0xb6, 0x73, 0x58);
-
+		
 		/// <summary>
 		/// Gets or sets the value of DerivationRuleDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationRule
@@ -3487,12 +3519,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class DerivationRuleDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
 		{
 			private DerivationRuleDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.DerivationRuleDisplay domain property value handler.
 			/// </summary>
 			public static readonly DerivationRuleDisplayPropertyHandler Instance = new DerivationRuleDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.DerivationRuleDisplay domain property.
 			/// </summary>
@@ -3504,7 +3536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return DerivationRuleDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3518,7 +3550,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetDerivationRuleDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3527,7 +3559,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3541,15 +3573,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region DerivationStorageDisplay domain property code
-
+		
 		/// <summary>
 		/// DerivationStorageDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid DerivationStorageDisplayDomainPropertyId = new global::System.Guid(0x307c9629, 0xace8, 0x43e1, 0xab, 0xf3, 0x33, 0xe8, 0xbb, 0x71, 0x46, 0xb7);
-
+		
 		/// <summary>
 		/// Gets or sets the value of DerivationStorageDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorage
@@ -3577,12 +3609,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class DerivationStorageDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, DerivationStorageType>
 		{
 			private DerivationStorageDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactType.DerivationStorageDisplay domain property value handler.
 			/// </summary>
 			public static readonly DerivationStorageDisplayPropertyHandler Instance = new DerivationStorageDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactType.DerivationStorageDisplay domain property.
 			/// </summary>
@@ -3594,7 +3626,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return DerivationStorageDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -3608,7 +3640,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetDerivationStorageDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -3617,7 +3649,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactType element, DerivationStorageType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				DerivationStorageType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -3631,7 +3663,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region SetComparisonConstraintCollection opposite domain role accessor
 		/// <summary>
@@ -3980,7 +4012,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SubtypeFact : FactType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SubtypeFact domain class Id.
 		/// </summary>
@@ -3994,7 +4026,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -4006,17 +4038,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region IsPrimary domain property code
-
+		
 		/// <summary>
 		/// IsPrimary domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsPrimaryDomainPropertyId = new global::System.Guid(0x9a2a6585, 0x7caa, 0x41f9, 0x81, 0x17, 0x9f, 0x35, 0x7a, 0x6c, 0x36, 0x26);
-
+		
 		/// <summary>
 		/// Storage for IsPrimary
 		/// </summary>
 		private global::System.Boolean isPrimaryPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsPrimary domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimary
@@ -4043,12 +4075,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsPrimaryPropertyHandler : DslModeling::DomainPropertyValueHandler<SubtypeFact, global::System.Boolean>
 		{
 			private IsPrimaryPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the SubtypeFact.IsPrimary domain property value handler.
 			/// </summary>
 			public static readonly IsPrimaryPropertyHandler Instance = new IsPrimaryPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the SubtypeFact.IsPrimary domain property.
 			/// </summary>
@@ -4060,7 +4092,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsPrimaryDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4071,7 +4103,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isPrimaryPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4080,7 +4112,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(SubtypeFact element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4090,7 +4122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 	}
 }
@@ -4106,7 +4138,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class RoleBase : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RoleBase domain class Id.
 		/// </summary>
@@ -4154,7 +4186,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RoleProxy : RoleBase
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RoleProxy domain class Id.
 		/// </summary>
@@ -4168,7 +4200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -4225,7 +4257,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Role : RoleBase
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// Role domain class Id.
 		/// </summary>
@@ -4239,7 +4271,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -4251,12 +4283,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region RolePlayerDisplay domain property code
-
+		
 		/// <summary>
 		/// RolePlayerDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid RolePlayerDisplayDomainPropertyId = new global::System.Guid(0xb66fca99, 0xe6ec, 0x46c9, 0xb4, 0x45, 0xd5, 0x49, 0xf6, 0xd7, 0xab, 0xe1);
-
+		
 		/// <summary>
 		/// Gets or sets the value of RolePlayerDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.RolePlayer
@@ -4285,12 +4317,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class RolePlayerDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<Role, ObjectType>
 		{
 			private RolePlayerDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.RolePlayerDisplay domain property value handler.
 			/// </summary>
 			public static readonly RolePlayerDisplayPropertyHandler Instance = new RolePlayerDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.RolePlayerDisplay domain property.
 			/// </summary>
@@ -4302,7 +4334,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return RolePlayerDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4316,7 +4348,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetRolePlayerDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4325,7 +4357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, ObjectType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ObjectType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4339,15 +4371,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsMandatory domain property code
-
+		
 		/// <summary>
 		/// IsMandatory domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsMandatoryDomainPropertyId = new global::System.Guid(0x0f5eed7e, 0x7584, 0x413a, 0x92, 0x50, 0xbd, 0x46, 0x24, 0xdc, 0x16, 0x4e);
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsMandatory domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.IsMandatory
@@ -4375,12 +4407,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsMandatoryPropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.Boolean>
 		{
 			private IsMandatoryPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.IsMandatory domain property value handler.
 			/// </summary>
 			public static readonly IsMandatoryPropertyHandler Instance = new IsMandatoryPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.IsMandatory domain property.
 			/// </summary>
@@ -4392,7 +4424,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsMandatoryDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4406,7 +4438,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetIsMandatoryValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4415,7 +4447,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4429,15 +4461,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Multiplicity domain property code
-
+		
 		/// <summary>
 		/// Multiplicity domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MultiplicityDomainPropertyId = new global::System.Guid(0xada46024, 0x61b8, 0x4e1d, 0xbb, 0x28, 0x2f, 0xf2, 0xc7, 0x1b, 0x83, 0xcd);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Multiplicity domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.Multiplicity
@@ -4467,12 +4499,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MultiplicityPropertyHandler : DslModeling::DomainPropertyValueHandler<Role, RoleMultiplicity>
 		{
 			private MultiplicityPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.Multiplicity domain property value handler.
 			/// </summary>
 			public static readonly MultiplicityPropertyHandler Instance = new MultiplicityPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.Multiplicity domain property.
 			/// </summary>
@@ -4484,7 +4516,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MultiplicityDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4498,7 +4530,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetMultiplicityValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4507,7 +4539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, RoleMultiplicity newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				RoleMultiplicity oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4521,15 +4553,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ValueRangeText domain property code
-
+		
 		/// <summary>
 		/// ValueRangeText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ValueRangeTextDomainPropertyId = new global::System.Guid(0x3882c0ac, 0x6f4a, 0x4cf1, 0xb8, 0x56, 0xe5, 0x7a, 0x2d, 0xd4, 0x65, 0x0c);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ValueRangeText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRange
@@ -4557,12 +4589,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ValueRangeTextPropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.String>
 		{
 			private ValueRangeTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.ValueRangeText domain property value handler.
 			/// </summary>
 			public static readonly ValueRangeTextPropertyHandler Instance = new ValueRangeTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.ValueRangeText domain property.
 			/// </summary>
@@ -4574,7 +4606,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ValueRangeTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4588,7 +4620,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetValueRangeTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4597,7 +4629,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4611,15 +4643,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region MandatoryConstraintName domain property code
-
+		
 		/// <summary>
 		/// MandatoryConstraintName domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MandatoryConstraintNameDomainPropertyId = new global::System.Guid(0xa6680c0f, 0x84b1, 0x499c, 0x8b, 0x58, 0x1e, 0x1c, 0x5d, 0x09, 0x57, 0x0c);
-
+		
 		/// <summary>
 		/// Gets or sets the value of MandatoryConstraintName domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName
@@ -4647,12 +4679,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MandatoryConstraintNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.String>
 		{
 			private MandatoryConstraintNamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.MandatoryConstraintName domain property value handler.
 			/// </summary>
 			public static readonly MandatoryConstraintNamePropertyHandler Instance = new MandatoryConstraintNamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.MandatoryConstraintName domain property.
 			/// </summary>
@@ -4664,7 +4696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MandatoryConstraintNameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4678,7 +4710,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetMandatoryConstraintNameValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4687,7 +4719,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4701,15 +4733,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region MandatoryConstraintModality domain property code
-
+		
 		/// <summary>
 		/// MandatoryConstraintModality domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MandatoryConstraintModalityDomainPropertyId = new global::System.Guid(0x29b14765, 0x434b, 0x4ccf, 0x9c, 0x93, 0xbe, 0xe8, 0xbb, 0x7e, 0x26, 0x97);
-
+		
 		/// <summary>
 		/// Gets or sets the value of MandatoryConstraintModality domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality
@@ -4737,12 +4769,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MandatoryConstraintModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<Role, ConstraintModality>
 		{
 			private MandatoryConstraintModalityPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.MandatoryConstraintModality domain property value handler.
 			/// </summary>
 			public static readonly MandatoryConstraintModalityPropertyHandler Instance = new MandatoryConstraintModalityPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.MandatoryConstraintModality domain property.
 			/// </summary>
@@ -4754,7 +4786,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MandatoryConstraintModalityDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4768,7 +4800,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetMandatoryConstraintModalityValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4777,7 +4809,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, ConstraintModality newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ConstraintModality oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4791,20 +4823,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Name domain property code
-
+		
 		/// <summary>
 		/// Name domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0xf173d0fa, 0x8f94, 0x479d, 0x87, 0x94, 0x25, 0x72, 0xb8, 0xcd, 0x8d, 0x9a);
-
+		
 		/// <summary>
 		/// Storage for Name
 		/// </summary>
 		private global::System.String namePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.Name
@@ -4832,12 +4864,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.String>
 		{
 			private NamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.Name domain property value handler.
 			/// </summary>
 			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.Name domain property.
 			/// </summary>
@@ -4849,7 +4881,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4860,7 +4892,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.namePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4869,7 +4901,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4879,15 +4911,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ObjectificationOppositeRoleName domain property code
-
+		
 		/// <summary>
 		/// ObjectificationOppositeRoleName domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ObjectificationOppositeRoleNameDomainPropertyId = new global::System.Guid(0x4719aac4, 0xe0e7, 0x467a, 0xb2, 0x61, 0xcd, 0xb8, 0xae, 0x98, 0x26, 0xed);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ObjectificationOppositeRoleName domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ImpliedRoleName
@@ -4916,12 +4948,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ObjectificationOppositeRoleNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.String>
 		{
 			private ObjectificationOppositeRoleNamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Role.ObjectificationOppositeRoleName domain property value handler.
 			/// </summary>
 			public static readonly ObjectificationOppositeRoleNamePropertyHandler Instance = new ObjectificationOppositeRoleNamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Role.ObjectificationOppositeRoleName domain property.
 			/// </summary>
@@ -4933,7 +4965,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ObjectificationOppositeRoleNameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -4947,7 +4979,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetObjectificationOppositeRoleNameValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -4956,7 +4988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Role element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -4970,7 +5002,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region RolePlayer opposite domain role accessor
 		/// <summary>
@@ -5141,7 +5173,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EqualityConstraint : SetComparisonConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// EqualityConstraint domain class Id.
 		/// </summary>
@@ -5155,7 +5187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -5213,7 +5245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExclusionConstraint : SetComparisonConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ExclusionConstraint domain class Id.
 		/// </summary>
@@ -5227,7 +5259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -5304,7 +5336,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SubsetConstraint : SetComparisonConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SubsetConstraint domain class Id.
 		/// </summary>
@@ -5318,7 +5350,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -5375,7 +5407,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class SetComparisonConstraint : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SetComparisonConstraint domain class Id.
 		/// </summary>
@@ -5391,17 +5423,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Modality domain property code
-
+		
 		/// <summary>
 		/// Modality domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ModalityDomainPropertyId = new global::System.Guid(0xc0aef802, 0xd9e9, 0x4938, 0xb4, 0x4b, 0xde, 0x9a, 0x6a, 0x53, 0x0d, 0x9b);
-
+		
 		/// <summary>
 		/// Storage for Modality
 		/// </summary>
 		private ConstraintModality modalityPropertyStorage = Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.Modality
@@ -5429,12 +5461,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<SetComparisonConstraint, ConstraintModality>
 		{
 			private ModalityPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the SetComparisonConstraint.Modality domain property value handler.
 			/// </summary>
 			public static readonly ModalityPropertyHandler Instance = new ModalityPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the SetComparisonConstraint.Modality domain property.
 			/// </summary>
@@ -5446,7 +5478,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ModalityDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -5457,7 +5489,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.modalityPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -5466,7 +5498,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(SetComparisonConstraint element, ConstraintModality newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ConstraintModality oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -5476,7 +5508,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region FactTypeCollection opposite domain role accessor
 		/// <summary>
@@ -5792,7 +5824,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class Expression : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// Expression domain class Id.
 		/// </summary>
@@ -5808,17 +5840,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Body domain property code
-
+		
 		/// <summary>
 		/// Body domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid BodyDomainPropertyId = new global::System.Guid(0x9760d258, 0x0126, 0x4749, 0xa3, 0x70, 0xd7, 0xcc, 0x5a, 0x04, 0xf1, 0x38);
-
+		
 		/// <summary>
 		/// Storage for Body
 		/// </summary>
 		private global::System.String bodyPropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Body domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Expression.Body
@@ -5845,12 +5877,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class BodyPropertyHandler : DslModeling::DomainPropertyValueHandler<Expression, global::System.String>
 		{
 			private BodyPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Expression.Body domain property value handler.
 			/// </summary>
 			public static readonly BodyPropertyHandler Instance = new BodyPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Expression.Body domain property.
 			/// </summary>
@@ -5862,7 +5894,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return BodyDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -5873,7 +5905,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.bodyPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -5882,7 +5914,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Expression element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -5892,20 +5924,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Language domain property code
-
+		
 		/// <summary>
 		/// Language domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid LanguageDomainPropertyId = new global::System.Guid(0x53d116fa, 0xe39c, 0x47c5, 0xa4, 0xd6, 0x41, 0xe4, 0x27, 0x86, 0xee, 0xdb);
-
+		
 		/// <summary>
 		/// Storage for Language
 		/// </summary>
 		private global::System.String languagePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Language domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Expression.Language
@@ -5932,12 +5964,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class LanguagePropertyHandler : DslModeling::DomainPropertyValueHandler<Expression, global::System.String>
 		{
 			private LanguagePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Expression.Language domain property value handler.
 			/// </summary>
 			public static readonly LanguagePropertyHandler Instance = new LanguagePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Expression.Language domain property.
 			/// </summary>
@@ -5949,7 +5981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return LanguageDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -5960,7 +5992,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.languagePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -5969,7 +6001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Expression element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -5979,7 +6011,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 	}
 }
@@ -5995,7 +6027,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SetComparisonConstraintRoleSequence : ConstraintRoleSequence
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SetComparisonConstraintRoleSequence domain class Id.
 		/// </summary>
@@ -6009,7 +6041,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -6054,7 +6086,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RingConstraint : SetConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RingConstraint domain class Id.
 		/// </summary>
@@ -6068,7 +6100,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -6080,17 +6112,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region RingType domain property code
-
+		
 		/// <summary>
 		/// RingType domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid RingTypeDomainPropertyId = new global::System.Guid(0x54d182e1, 0x6650, 0x4393, 0x8b, 0xd8, 0x9d, 0x9e, 0x42, 0xbb, 0x8c, 0xe7);
-
+		
 		/// <summary>
 		/// Storage for RingType
 		/// </summary>
 		private RingConstraintType ringTypePropertyStorage = Neumont.Tools.ORM.ObjectModel.RingConstraintType.Undefined;
-
+		
 		/// <summary>
 		/// Gets or sets the value of RingType domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.RingConstraint.RingType
@@ -6118,12 +6150,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class RingTypePropertyHandler : DslModeling::DomainPropertyValueHandler<RingConstraint, RingConstraintType>
 		{
 			private RingTypePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the RingConstraint.RingType domain property value handler.
 			/// </summary>
 			public static readonly RingTypePropertyHandler Instance = new RingTypePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the RingConstraint.RingType domain property.
 			/// </summary>
@@ -6135,7 +6167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return RingTypeDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -6146,7 +6178,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.ringTypePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -6155,7 +6187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(RingConstraint element, RingConstraintType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				RingConstraintType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -6165,7 +6197,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region RingConstraintTypeNotSpecifiedError opposite domain role accessor
 		/// <summary>
@@ -6213,7 +6245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FrequencyConstraint : SetConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FrequencyConstraint domain class Id.
 		/// </summary>
@@ -6227,7 +6259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -6239,17 +6271,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region MinFrequency domain property code
-
+		
 		/// <summary>
 		/// MinFrequency domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MinFrequencyDomainPropertyId = new global::System.Guid(0x2d48d3ca, 0x564d, 0x459e, 0xa7, 0x01, 0x42, 0x09, 0xa1, 0x2c, 0x47, 0x83);
-
+		
 		/// <summary>
 		/// Storage for MinFrequency
 		/// </summary>
 		private global::System.Int32 minFrequencyPropertyStorage = 1;
-
+		
 		/// <summary>
 		/// Gets or sets the value of MinFrequency domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequency
@@ -6277,12 +6309,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MinFrequencyPropertyHandler : DslModeling::DomainPropertyValueHandler<FrequencyConstraint, global::System.Int32>
 		{
 			private MinFrequencyPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FrequencyConstraint.MinFrequency domain property value handler.
 			/// </summary>
 			public static readonly MinFrequencyPropertyHandler Instance = new MinFrequencyPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FrequencyConstraint.MinFrequency domain property.
 			/// </summary>
@@ -6294,7 +6326,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MinFrequencyDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -6305,7 +6337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.minFrequencyPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -6314,7 +6346,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FrequencyConstraint element, global::System.Int32 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int32 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -6324,20 +6356,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region MaxFrequency domain property code
-
+		
 		/// <summary>
 		/// MaxFrequency domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MaxFrequencyDomainPropertyId = new global::System.Guid(0xf46d9200, 0x3602, 0x435c, 0xb8, 0x52, 0xc5, 0x3b, 0xe1, 0x0d, 0x99, 0xc6);
-
+		
 		/// <summary>
 		/// Storage for MaxFrequency
 		/// </summary>
 		private global::System.Int32 maxFrequencyPropertyStorage = 2;
-
+		
 		/// <summary>
 		/// Gets or sets the value of MaxFrequency domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequency
@@ -6365,12 +6397,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MaxFrequencyPropertyHandler : DslModeling::DomainPropertyValueHandler<FrequencyConstraint, global::System.Int32>
 		{
 			private MaxFrequencyPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FrequencyConstraint.MaxFrequency domain property value handler.
 			/// </summary>
 			public static readonly MaxFrequencyPropertyHandler Instance = new MaxFrequencyPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FrequencyConstraint.MaxFrequency domain property.
 			/// </summary>
@@ -6382,7 +6414,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MaxFrequencyDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -6393,7 +6425,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.maxFrequencyPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -6402,7 +6434,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FrequencyConstraint element, global::System.Int32 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int32 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -6412,7 +6444,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region FrequencyConstraintMinMaxError opposite domain role accessor
 		/// <summary>
@@ -6476,7 +6508,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class UniquenessConstraint : SetConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// UniquenessConstraint domain class Id.
 		/// </summary>
@@ -6490,7 +6522,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -6502,12 +6534,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region IsPreferred domain property code
-
+		
 		/// <summary>
 		/// IsPreferred domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsPreferredDomainPropertyId = new global::System.Guid(0x585de7a0, 0x8e09, 0x43f3, 0x84, 0x63, 0xf2, 0x06, 0x09, 0xa1, 0x67, 0x90);
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsPreferred domain property.
 		/// Description for
@@ -6536,12 +6568,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsPreferredPropertyHandler : DslModeling::DomainPropertyValueHandler<UniquenessConstraint, global::System.Boolean>
 		{
 			private IsPreferredPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the UniquenessConstraint.IsPreferred domain property value handler.
 			/// </summary>
 			public static readonly IsPreferredPropertyHandler Instance = new IsPreferredPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the UniquenessConstraint.IsPreferred domain property.
 			/// </summary>
@@ -6553,7 +6585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsPreferredDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -6567,7 +6599,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetIsPreferredValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -6576,7 +6608,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(UniquenessConstraint element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -6590,20 +6622,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsInternal domain property code
-
+		
 		/// <summary>
 		/// IsInternal domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsInternalDomainPropertyId = new global::System.Guid(0x55b187ed, 0x3869, 0x4f83, 0xb6, 0xa7, 0x86, 0x61, 0xd6, 0x1b, 0x1c, 0x62);
-
+		
 		/// <summary>
 		/// Storage for IsInternal
 		/// </summary>
 		private global::System.Boolean isInternalPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsInternal domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsInternal
@@ -6631,12 +6663,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsInternalPropertyHandler : DslModeling::DomainPropertyValueHandler<UniquenessConstraint, global::System.Boolean>
 		{
 			private IsInternalPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the UniquenessConstraint.IsInternal domain property value handler.
 			/// </summary>
 			public static readonly IsInternalPropertyHandler Instance = new IsInternalPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the UniquenessConstraint.IsInternal domain property.
 			/// </summary>
@@ -6648,7 +6680,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsInternalDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -6659,7 +6691,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isInternalPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -6668,7 +6700,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(UniquenessConstraint element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -6678,7 +6710,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region PreferredIdentifierFor opposite domain role accessor
 		/// <summary>
@@ -6759,7 +6791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MandatoryConstraint : SetConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// MandatoryConstraint domain class Id.
 		/// </summary>
@@ -6773,7 +6805,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -6785,17 +6817,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region IsSimple domain property code
-
+		
 		/// <summary>
 		/// IsSimple domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsSimpleDomainPropertyId = new global::System.Guid(0xbbda6bd3, 0xb3ac, 0x4e26, 0xab, 0xc3, 0x3f, 0xe1, 0xda, 0xfa, 0x01, 0x65);
-
+		
 		/// <summary>
 		/// Storage for IsSimple
 		/// </summary>
 		private global::System.Boolean isSimplePropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsSimple domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.IsSimple
@@ -6823,12 +6855,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsSimplePropertyHandler : DslModeling::DomainPropertyValueHandler<MandatoryConstraint, global::System.Boolean>
 		{
 			private IsSimplePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the MandatoryConstraint.IsSimple domain property value handler.
 			/// </summary>
 			public static readonly IsSimplePropertyHandler Instance = new IsSimplePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the MandatoryConstraint.IsSimple domain property.
 			/// </summary>
@@ -6840,7 +6872,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsSimpleDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -6851,7 +6883,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.isSimplePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -6860,7 +6892,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(MandatoryConstraint element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -6870,7 +6902,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
+		#endregion
+		#region IsImplied domain property code
+		
+		/// <summary>
+		/// IsImplied domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsImpliedDomainPropertyId = new global::System.Guid(0xebf58507, 0x1c28, 0x4c7b, 0x8c, 0x1b, 0xed, 0x4c, 0x31, 0x9c, 0x9c, 0x3c);
+		
+		/// <summary>
+		/// Storage for IsImplied
+		/// </summary>
+		private global::System.Boolean isImpliedPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsImplied domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.IsImplied
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraint/IsImplied.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraint/IsImplied.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("ebf58507-1c28-4c7b-8c1b-ed4c319c9c3c")]
+		public global::System.Boolean IsImplied
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isImpliedPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsImpliedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the MandatoryConstraint.IsImplied domain property.
+		/// </summary>
+		internal sealed partial class IsImpliedPropertyHandler : DslModeling::DomainPropertyValueHandler<MandatoryConstraint, global::System.Boolean>
+		{
+			private IsImpliedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the MandatoryConstraint.IsImplied domain property value handler.
+			/// </summary>
+			public static readonly IsImpliedPropertyHandler Instance = new IsImpliedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the MandatoryConstraint.IsImplied domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsImpliedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(MandatoryConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isImpliedPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(MandatoryConstraint element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isImpliedPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ImpliedByObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ImpliedByObjectType.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraint
+		/// </summary>
+		public virtual ObjectType ImpliedByObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, value);
+				}
+			}
+		}
 		#endregion
 		#region ExclusiveOrExclusionConstraint opposite domain role accessor
 		/// <summary>
@@ -6970,7 +7122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class SetConstraint : ConstraintRoleSequence
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SetConstraint domain class Id.
 		/// </summary>
@@ -6986,17 +7138,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Modality domain property code
-
+		
 		/// <summary>
 		/// Modality domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ModalityDomainPropertyId = new global::System.Guid(0xb4f1902a, 0x7eb9, 0x464f, 0xa0, 0xf8, 0xf8, 0x16, 0x65, 0x8c, 0x1b, 0xd8);
-
+		
 		/// <summary>
 		/// Storage for Modality
 		/// </summary>
 		private ConstraintModality modalityPropertyStorage = Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.SetConstraint.Modality
@@ -7024,12 +7176,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<SetConstraint, ConstraintModality>
 		{
 			private ModalityPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the SetConstraint.Modality domain property value handler.
 			/// </summary>
 			public static readonly ModalityPropertyHandler Instance = new ModalityPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the SetConstraint.Modality domain property.
 			/// </summary>
@@ -7041,7 +7193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ModalityDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -7052,7 +7204,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.modalityPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -7061,7 +7213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(SetConstraint element, ConstraintModality newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ConstraintModality oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -7071,7 +7223,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region FactTypeCollection opposite domain role accessor
 		/// <summary>
@@ -7269,7 +7421,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ConstraintRoleSequence : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ConstraintRoleSequence domain class Id.
 		/// </summary>
@@ -7344,7 +7496,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Join : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// Join domain class Id.
 		/// </summary>
@@ -7358,7 +7510,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -7370,17 +7522,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region JoinType domain property code
-
+		
 		/// <summary>
 		/// JoinType domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid JoinTypeDomainPropertyId = new global::System.Guid(0x59049038, 0xa13e, 0x4ad1, 0xa8, 0x6b, 0x8e, 0xc3, 0x49, 0x3d, 0xfd, 0xc9);
-
+		
 		/// <summary>
 		/// Storage for JoinType
 		/// </summary>
 		private JoinType joinTypePropertyStorage = Neumont.Tools.ORM.ObjectModel.JoinType.Inner;
-
+		
 		/// <summary>
 		/// Gets or sets the value of JoinType domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Join.JoinType
@@ -7408,12 +7560,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class JoinTypePropertyHandler : DslModeling::DomainPropertyValueHandler<Join, JoinType>
 		{
 			private JoinTypePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Join.JoinType domain property value handler.
 			/// </summary>
 			public static readonly JoinTypePropertyHandler Instance = new JoinTypePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Join.JoinType domain property.
 			/// </summary>
@@ -7425,7 +7577,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return JoinTypeDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -7436,7 +7588,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.joinTypePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -7445,7 +7597,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Join element, JoinType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				JoinType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -7455,7 +7607,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region InputRole opposite domain role accessor
 		/// <summary>
@@ -7523,7 +7675,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooFewRoleSequencesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TooFewRoleSequencesError domain class Id.
 		/// </summary>
@@ -7537,7 +7689,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -7626,7 +7778,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooManyRoleSequencesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TooManyRoleSequencesError domain class Id.
 		/// </summary>
@@ -7640,7 +7792,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -7729,7 +7881,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ObjectTypeDuplicateNameError : DuplicateNameError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ObjectTypeDuplicateNameError domain class Id.
 		/// </summary>
@@ -7743,7 +7895,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -7783,7 +7935,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class PopulationUniquenessError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// PopulationUniquenessError domain class Id.
 		/// </summary>
@@ -7797,7 +7949,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -7867,7 +8019,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ContradictionError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ContradictionError domain class Id.
 		/// </summary>
@@ -7911,7 +8063,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExclusionContradictsMandatoryError : ContradictionError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ExclusionContradictsMandatoryError domain class Id.
 		/// </summary>
@@ -7925,7 +8077,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -7980,7 +8132,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExclusionContradictsEqualityError : ContradictionError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ExclusionContradictsEqualityError domain class Id.
 		/// </summary>
@@ -7994,7 +8146,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8034,7 +8186,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExclusionContradictsSubsetError : ContradictionError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ExclusionContradictsSubsetError domain class Id.
 		/// </summary>
@@ -8048,7 +8200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8088,7 +8240,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class NotWellModeledSubsetAndMandatoryError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// NotWellModeledSubsetAndMandatoryError domain class Id.
 		/// </summary>
@@ -8102,7 +8254,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8191,7 +8343,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class PopulationMandatoryError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// PopulationMandatoryError domain class Id.
 		/// </summary>
@@ -8205,7 +8357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8270,7 +8422,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ConstraintDuplicateNameError : DuplicateNameError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ConstraintDuplicateNameError domain class Id.
 		/// </summary>
@@ -8284,7 +8436,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8354,7 +8506,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class DuplicateNameError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DuplicateNameError domain class Id.
 		/// </summary>
@@ -8383,7 +8535,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooFewReadingRolesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TooFewReadingRolesError domain class Id.
 		/// </summary>
@@ -8397,7 +8549,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8454,7 +8606,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooManyReadingRolesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TooManyReadingRolesError domain class Id.
 		/// </summary>
@@ -8468,7 +8620,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8525,7 +8677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ExternalConstraintRoleSequenceArityMismatchError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ExternalConstraintRoleSequenceArityMismatchError domain class Id.
 		/// </summary>
@@ -8539,7 +8691,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8596,7 +8748,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactTypeRequiresReadingError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FactTypeRequiresReadingError domain class Id.
 		/// </summary>
@@ -8610,7 +8762,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8667,7 +8819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactTypeRequiresInternalUniquenessConstraintError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FactTypeRequiresInternalUniquenessConstraintError domain class Id.
 		/// </summary>
@@ -8681,7 +8833,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8738,7 +8890,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class DataTypeNotSpecifiedError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DataTypeNotSpecifiedError domain class Id.
 		/// </summary>
@@ -8752,7 +8904,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8809,7 +8961,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class NMinusOneError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// NMinusOneError domain class Id.
 		/// </summary>
@@ -8823,7 +8975,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8880,7 +9032,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class CompatibleRolePlayerTypeError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// CompatibleRolePlayerTypeError domain class Id.
 		/// </summary>
@@ -8894,7 +9046,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -8906,17 +9058,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Column domain property code
-
+		
 		/// <summary>
 		/// Column domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ColumnDomainPropertyId = new global::System.Guid(0x222dcf1c, 0x83fb, 0x43f1, 0xa8, 0xbe, 0x3d, 0x05, 0xb8, 0xcf, 0x16, 0x93);
-
+		
 		/// <summary>
 		/// Storage for Column
 		/// </summary>
 		private global::System.Int32 columnPropertyStorage;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Column domain property.
 		/// Description for
@@ -8944,12 +9096,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ColumnPropertyHandler : DslModeling::DomainPropertyValueHandler<CompatibleRolePlayerTypeError, global::System.Int32>
 		{
 			private ColumnPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the CompatibleRolePlayerTypeError.Column domain property value handler.
 			/// </summary>
 			public static readonly ColumnPropertyHandler Instance = new ColumnPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the CompatibleRolePlayerTypeError.Column domain property.
 			/// </summary>
@@ -8961,7 +9113,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ColumnDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -8972,7 +9124,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.columnPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -8981,7 +9133,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(CompatibleRolePlayerTypeError element, global::System.Int32 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int32 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -8991,7 +9143,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region SetComparisonConstraint opposite domain role accessor
 		/// <summary>
@@ -9059,7 +9211,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RolePlayerRequiredError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RolePlayerRequiredError domain class Id.
 		/// </summary>
@@ -9073,7 +9225,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9130,7 +9282,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EqualityImpliedByMandatoryError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// EqualityImpliedByMandatoryError domain class Id.
 		/// </summary>
@@ -9144,7 +9296,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9201,7 +9353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EntityTypeRequiresReferenceSchemeError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// EntityTypeRequiresReferenceSchemeError domain class Id.
 		/// </summary>
@@ -9215,7 +9367,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9272,7 +9424,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FrequencyConstraintMinMaxError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FrequencyConstraintMinMaxError domain class Id.
 		/// </summary>
@@ -9286,7 +9438,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9343,7 +9495,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ReadingRequiresUserModificationError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ReadingRequiresUserModificationError domain class Id.
 		/// </summary>
@@ -9357,7 +9509,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9415,7 +9567,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ModelError : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ModelError domain class Id.
 		/// </summary>
@@ -9431,17 +9583,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region ErrorText domain property code
-
+		
 		/// <summary>
 		/// ErrorText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ErrorTextDomainPropertyId = new global::System.Guid(0x6a6023e7, 0xac27, 0x4d86, 0xaf, 0xe4, 0x64, 0x28, 0x65, 0x9a, 0x04, 0x8e);
-
+		
 		/// <summary>
 		/// Storage for ErrorText
 		/// </summary>
 		private global::System.String errorTextPropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of ErrorText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ModelError.ErrorText
@@ -9470,12 +9622,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ErrorTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelError, global::System.String>
 		{
 			private ErrorTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ModelError.ErrorText domain property value handler.
 			/// </summary>
 			public static readonly ErrorTextPropertyHandler Instance = new ErrorTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ModelError.ErrorText domain property.
 			/// </summary>
@@ -9487,7 +9639,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ErrorTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -9498,7 +9650,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.errorTextPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -9507,7 +9659,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ModelError element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -9517,7 +9669,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
@@ -9567,7 +9719,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ReferenceModeKind : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ReferenceModeKind domain class Id.
 		/// </summary>
@@ -9581,7 +9733,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9593,17 +9745,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region FormatString domain property code
-
+		
 		/// <summary>
 		/// FormatString domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid FormatStringDomainPropertyId = new global::System.Guid(0x3d1b9c67, 0xff56, 0x4345, 0xb4, 0x45, 0x30, 0xf1, 0xf3, 0x36, 0x76, 0x13);
-
+		
 		/// <summary>
 		/// Storage for FormatString
 		/// </summary>
 		private global::System.String formatStringPropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of FormatString domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.FormatString
@@ -9630,12 +9782,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class FormatStringPropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeKind, global::System.String>
 		{
 			private FormatStringPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ReferenceModeKind.FormatString domain property value handler.
 			/// </summary>
 			public static readonly FormatStringPropertyHandler Instance = new FormatStringPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ReferenceModeKind.FormatString domain property.
 			/// </summary>
@@ -9647,7 +9799,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return FormatStringDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -9658,7 +9810,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.formatStringPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -9667,7 +9819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ReferenceModeKind element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -9677,20 +9829,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ReferenceModeType domain property code
-
+		
 		/// <summary>
 		/// ReferenceModeType domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ReferenceModeTypeDomainPropertyId = new global::System.Guid(0x3543e2cb, 0x037d, 0x4d6e, 0xa7, 0x6a, 0x10, 0xcb, 0xdf, 0xb0, 0x51, 0x46);
-
+		
 		/// <summary>
 		/// Storage for ReferenceModeType
 		/// </summary>
 		private ReferenceModeType referenceModeTypePropertyStorage = Neumont.Tools.ORM.ObjectModel.ReferenceModeType.General;
-
+		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeType domain property.
 		/// Description for
@@ -9719,12 +9871,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ReferenceModeTypePropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeKind, ReferenceModeType>
 		{
 			private ReferenceModeTypePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ReferenceModeKind.ReferenceModeType domain property value handler.
 			/// </summary>
 			public static readonly ReferenceModeTypePropertyHandler Instance = new ReferenceModeTypePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ReferenceModeKind.ReferenceModeType domain property.
 			/// </summary>
@@ -9736,7 +9888,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ReferenceModeTypeDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -9747,7 +9899,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.referenceModeTypePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -9756,7 +9908,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ReferenceModeKind element, ReferenceModeType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ReferenceModeType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -9766,7 +9918,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
@@ -9817,7 +9969,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class IntrinsicReferenceMode : ReferenceMode
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// IntrinsicReferenceMode domain class Id.
 		/// </summary>
@@ -9831,7 +9983,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9856,7 +10008,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class CustomReferenceMode : ReferenceMode
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// CustomReferenceMode domain class Id.
 		/// </summary>
@@ -9870,7 +10022,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -9882,17 +10034,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region CustomFormatString domain property code
-
+		
 		/// <summary>
 		/// CustomFormatString domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid CustomFormatStringDomainPropertyId = new global::System.Guid(0x4a7202ff, 0x1d4f, 0x4770, 0x95, 0x3a, 0xd6, 0x3a, 0xda, 0x84, 0x9c, 0xb3);
-
+		
 		/// <summary>
 		/// Storage for CustomFormatString
 		/// </summary>
 		private global::System.String customFormatStringPropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of CustomFormatString domain property.
 		/// Description for
@@ -9920,12 +10072,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class CustomFormatStringPropertyHandler : DslModeling::DomainPropertyValueHandler<CustomReferenceMode, global::System.String>
 		{
 			private CustomFormatStringPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the CustomReferenceMode.CustomFormatString domain property value handler.
 			/// </summary>
 			public static readonly CustomFormatStringPropertyHandler Instance = new CustomFormatStringPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the CustomReferenceMode.CustomFormatString domain property.
 			/// </summary>
@@ -9937,7 +10089,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return CustomFormatStringDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -9948,7 +10100,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.customFormatStringPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -9957,7 +10109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(CustomReferenceMode element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -9967,7 +10119,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 	}
 }
@@ -9983,7 +10135,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ReferenceMode : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ReferenceMode domain class Id.
 		/// </summary>
@@ -9999,12 +10151,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region KindDisplay domain property code
-
+		
 		/// <summary>
 		/// KindDisplay domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid KindDisplayDomainPropertyId = new global::System.Guid(0xbbc452ca, 0x0454, 0x4047, 0x91, 0x43, 0xb1, 0x1e, 0x06, 0x55, 0x56, 0xfb);
-
+		
 		/// <summary>
 		/// Gets or sets the value of KindDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceMode.Kind
@@ -10033,12 +10185,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class KindDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceMode, ReferenceModeKind>
 		{
 			private KindDisplayPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ReferenceMode.KindDisplay domain property value handler.
 			/// </summary>
 			public static readonly KindDisplayPropertyHandler Instance = new KindDisplayPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ReferenceMode.KindDisplay domain property.
 			/// </summary>
@@ -10050,7 +10202,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return KindDisplayDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -10064,7 +10216,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetKindDisplayValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -10073,7 +10225,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ReferenceMode element, ReferenceModeKind newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				ReferenceModeKind oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -10087,7 +10239,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
@@ -10143,7 +10295,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class UnspecifiedDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// UnspecifiedDataType domain class Id.
 		/// </summary>
@@ -10157,7 +10309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10182,7 +10334,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FixedLengthTextDataType : TextDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FixedLengthTextDataType domain class Id.
 		/// </summary>
@@ -10196,7 +10348,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10221,7 +10373,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class VariableLengthTextDataType : TextDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// VariableLengthTextDataType domain class Id.
 		/// </summary>
@@ -10235,7 +10387,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10260,7 +10412,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class LargeLengthTextDataType : TextDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// LargeLengthTextDataType domain class Id.
 		/// </summary>
@@ -10274,7 +10426,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10299,7 +10451,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class TextDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TextDataType domain class Id.
 		/// </summary>
@@ -10328,7 +10480,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SignedIntegerNumericDataType : NumericDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SignedIntegerNumericDataType domain class Id.
 		/// </summary>
@@ -10342,7 +10494,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10367,7 +10519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class UnsignedIntegerNumericDataType : NumericDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// UnsignedIntegerNumericDataType domain class Id.
 		/// </summary>
@@ -10381,7 +10533,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10406,7 +10558,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class AutoCounterNumericDataType : NumericDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// AutoCounterNumericDataType domain class Id.
 		/// </summary>
@@ -10420,7 +10572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10445,7 +10597,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FloatingPointNumericDataType : NumericDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FloatingPointNumericDataType domain class Id.
 		/// </summary>
@@ -10459,7 +10611,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10484,7 +10636,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class DecimalNumericDataType : NumericDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DecimalNumericDataType domain class Id.
 		/// </summary>
@@ -10498,7 +10650,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10523,7 +10675,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MoneyNumericDataType : NumericDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// MoneyNumericDataType domain class Id.
 		/// </summary>
@@ -10537,7 +10689,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10562,7 +10714,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class NumericDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// NumericDataType domain class Id.
 		/// </summary>
@@ -10591,7 +10743,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FixedLengthRawDataDataType : RawDataDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FixedLengthRawDataDataType domain class Id.
 		/// </summary>
@@ -10605,7 +10757,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10630,7 +10782,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class VariableLengthRawDataDataType : RawDataDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// VariableLengthRawDataDataType domain class Id.
 		/// </summary>
@@ -10644,7 +10796,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10669,7 +10821,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class LargeLengthRawDataDataType : RawDataDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// LargeLengthRawDataDataType domain class Id.
 		/// </summary>
@@ -10683,7 +10835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10708,7 +10860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class PictureRawDataDataType : RawDataDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// PictureRawDataDataType domain class Id.
 		/// </summary>
@@ -10722,7 +10874,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10747,7 +10899,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class OleObjectRawDataDataType : RawDataDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// OleObjectRawDataDataType domain class Id.
 		/// </summary>
@@ -10761,7 +10913,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10786,7 +10938,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class RawDataDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RawDataDataType domain class Id.
 		/// </summary>
@@ -10815,7 +10967,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class AutoTimestampTemporalDataType : TemporalDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// AutoTimestampTemporalDataType domain class Id.
 		/// </summary>
@@ -10829,7 +10981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10854,7 +11006,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TimeTemporalDataType : TemporalDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TimeTemporalDataType domain class Id.
 		/// </summary>
@@ -10868,7 +11020,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10893,7 +11045,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class DateTemporalDataType : TemporalDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DateTemporalDataType domain class Id.
 		/// </summary>
@@ -10907,7 +11059,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10932,7 +11084,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class DateAndTimeTemporalDataType : TemporalDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DateAndTimeTemporalDataType domain class Id.
 		/// </summary>
@@ -10946,7 +11098,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -10971,7 +11123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class TemporalDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TemporalDataType domain class Id.
 		/// </summary>
@@ -11000,7 +11152,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TrueOrFalseLogicalDataType : LogicalDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TrueOrFalseLogicalDataType domain class Id.
 		/// </summary>
@@ -11014,7 +11166,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11039,7 +11191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class YesOrNoLogicalDataType : LogicalDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// YesOrNoLogicalDataType domain class Id.
 		/// </summary>
@@ -11053,7 +11205,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11078,7 +11230,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class LogicalDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// LogicalDataType domain class Id.
 		/// </summary>
@@ -11107,7 +11259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RowIdOtherDataType : OtherDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RowIdOtherDataType domain class Id.
 		/// </summary>
@@ -11121,7 +11273,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11146,7 +11298,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ObjectIdOtherDataType : OtherDataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ObjectIdOtherDataType domain class Id.
 		/// </summary>
@@ -11160,7 +11312,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11185,7 +11337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class OtherDataType : DataType
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// OtherDataType domain class Id.
 		/// </summary>
@@ -11215,7 +11367,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class DataType : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// DataType domain class Id.
 		/// </summary>
@@ -11278,7 +11430,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Reading : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// Reading domain class Id.
 		/// </summary>
@@ -11292,7 +11444,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11304,17 +11456,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Text domain property code
-
+		
 		/// <summary>
 		/// Text domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0xa6239359, 0x0ac5, 0x4934, 0xb3, 0x8a, 0x01, 0x1a, 0xa1, 0xf9, 0x35, 0xa6);
-
+		
 		/// <summary>
 		/// Storage for Text
 		/// </summary>
 		private global::System.String textPropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Reading.Text
@@ -11341,12 +11493,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<Reading, global::System.String>
 		{
 			private TextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Reading.Text domain property value handler.
 			/// </summary>
 			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Reading.Text domain property.
 			/// </summary>
@@ -11358,7 +11510,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return TextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -11369,7 +11521,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.textPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -11378,7 +11530,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Reading element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -11388,15 +11540,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsPrimaryForReadingOrder domain property code
-
+		
 		/// <summary>
 		/// IsPrimaryForReadingOrder domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsPrimaryForReadingOrderDomainPropertyId = new global::System.Guid(0x1a989428, 0xc41c, 0x498a, 0xbd, 0x90, 0x1b, 0x92, 0xa7, 0x03, 0xaa, 0x27);
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsPrimaryForReadingOrder domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrder
@@ -11425,12 +11577,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsPrimaryForReadingOrderPropertyHandler : DslModeling::DomainPropertyValueHandler<Reading, global::System.Boolean>
 		{
 			private IsPrimaryForReadingOrderPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Reading.IsPrimaryForReadingOrder domain property value handler.
 			/// </summary>
 			public static readonly IsPrimaryForReadingOrderPropertyHandler Instance = new IsPrimaryForReadingOrderPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Reading.IsPrimaryForReadingOrder domain property.
 			/// </summary>
@@ -11442,7 +11594,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsPrimaryForReadingOrderDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -11456,7 +11608,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetIsPrimaryForReadingOrderValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -11465,7 +11617,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Reading element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -11479,20 +11631,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Language domain property code
-
+		
 		/// <summary>
 		/// Language domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid LanguageDomainPropertyId = new global::System.Guid(0x34c42f00, 0x5d21, 0x4731, 0x8e, 0x38, 0x9a, 0x03, 0x27, 0x1f, 0x04, 0x5a);
-
+		
 		/// <summary>
 		/// Storage for Language
 		/// </summary>
 		private global::System.String languagePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Language domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Reading.Language
@@ -11519,12 +11671,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class LanguagePropertyHandler : DslModeling::DomainPropertyValueHandler<Reading, global::System.String>
 		{
 			private LanguagePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Reading.Language domain property value handler.
 			/// </summary>
 			public static readonly LanguagePropertyHandler Instance = new LanguagePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Reading.Language domain property.
 			/// </summary>
@@ -11536,7 +11688,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return LanguageDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -11547,7 +11699,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.languagePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -11556,7 +11708,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Reading element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -11566,15 +11718,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region IsPrimaryForFactType domain property code
-
+		
 		/// <summary>
 		/// IsPrimaryForFactType domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid IsPrimaryForFactTypeDomainPropertyId = new global::System.Guid(0x1c5a6551, 0x972d, 0x42a6, 0xb4, 0x3d, 0xae, 0xc6, 0xd7, 0x30, 0x19, 0x77);
-
+		
 		/// <summary>
 		/// Gets or sets the value of IsPrimaryForFactType domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactType
@@ -11603,12 +11755,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class IsPrimaryForFactTypePropertyHandler : DslModeling::DomainPropertyValueHandler<Reading, global::System.Boolean>
 		{
 			private IsPrimaryForFactTypePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Reading.IsPrimaryForFactType domain property value handler.
 			/// </summary>
 			public static readonly IsPrimaryForFactTypePropertyHandler Instance = new IsPrimaryForFactTypePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Reading.IsPrimaryForFactType domain property.
 			/// </summary>
@@ -11620,7 +11772,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return IsPrimaryForFactTypeDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -11634,7 +11786,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetIsPrimaryForFactTypeValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -11643,7 +11795,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Reading element, global::System.Boolean newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Boolean oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -11657,7 +11809,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ReadingOrder opposite domain role accessor
 		/// <summary>
@@ -11787,7 +11939,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ReadingOrder : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ReadingOrder domain class Id.
 		/// </summary>
@@ -11801,7 +11953,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11813,12 +11965,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region ReadingText domain property code
-
+		
 		/// <summary>
 		/// ReadingText domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ReadingTextDomainPropertyId = new global::System.Guid(0x4e75ad63, 0xa42b, 0x4571, 0x85, 0xce, 0x81, 0xa4, 0xc5, 0xe0, 0x2c, 0x23);
-
+		
 		/// <summary>
 		/// Gets or sets the value of ReadingText domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ReadingOrder.ReadingText
@@ -11848,12 +12000,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ReadingTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ReadingOrder, global::System.String>
 		{
 			private ReadingTextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ReadingOrder.ReadingText domain property value handler.
 			/// </summary>
 			public static readonly ReadingTextPropertyHandler Instance = new ReadingTextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ReadingOrder.ReadingText domain property.
 			/// </summary>
@@ -11865,7 +12017,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ReadingTextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -11879,7 +12031,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetReadingTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -11888,7 +12040,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ReadingOrder element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -11902,7 +12054,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ReadingCollection opposite domain role accessor
 		/// <summary>
@@ -11967,7 +12119,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueRange : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueRange domain class Id.
 		/// </summary>
@@ -11981,7 +12133,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -11993,17 +12145,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region MinValue domain property code
-
+		
 		/// <summary>
 		/// MinValue domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MinValueDomainPropertyId = new global::System.Guid(0x59b141fd, 0x47ed, 0x43ff, 0x83, 0x7e, 0x85, 0x8f, 0x14, 0x0f, 0xad, 0x57);
-
+		
 		/// <summary>
 		/// Storage for MinValue
 		/// </summary>
 		private global::System.String minValuePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of MinValue domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueRange.MinValue
@@ -12030,12 +12182,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MinValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, global::System.String>
 		{
 			private MinValuePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueRange.MinValue domain property value handler.
 			/// </summary>
 			public static readonly MinValuePropertyHandler Instance = new MinValuePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueRange.MinValue domain property.
 			/// </summary>
@@ -12047,7 +12199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MinValueDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12058,7 +12210,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.minValuePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12067,7 +12219,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueRange element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12077,20 +12229,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region MaxValue domain property code
-
+		
 		/// <summary>
 		/// MaxValue domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MaxValueDomainPropertyId = new global::System.Guid(0x08199824, 0x9ddc, 0x4878, 0x8e, 0x04, 0xe0, 0xf4, 0x32, 0x06, 0x97, 0x26);
-
+		
 		/// <summary>
 		/// Storage for MaxValue
 		/// </summary>
 		private global::System.String maxValuePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of MaxValue domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueRange.MaxValue
@@ -12117,12 +12269,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MaxValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, global::System.String>
 		{
 			private MaxValuePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueRange.MaxValue domain property value handler.
 			/// </summary>
 			public static readonly MaxValuePropertyHandler Instance = new MaxValuePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueRange.MaxValue domain property.
 			/// </summary>
@@ -12134,7 +12286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MaxValueDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12145,7 +12297,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.maxValuePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12154,7 +12306,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueRange element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12164,15 +12316,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region Text domain property code
-
+		
 		/// <summary>
 		/// Text domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0x1fb8c126, 0x4481, 0x41d0, 0xb4, 0x1c, 0x5a, 0x30, 0xbc, 0x72, 0x45, 0xde);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueRange.Text
@@ -12200,12 +12352,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, global::System.String>
 		{
 			private TextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueRange.Text domain property value handler.
 			/// </summary>
 			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueRange.Text domain property.
 			/// </summary>
@@ -12217,7 +12369,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return TextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12231,7 +12383,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12240,7 +12392,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueRange element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12254,20 +12406,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region MinInclusion domain property code
-
+		
 		/// <summary>
 		/// MinInclusion domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MinInclusionDomainPropertyId = new global::System.Guid(0xcde9fc53, 0xbe51, 0x4c27, 0x9e, 0x6c, 0x67, 0x5c, 0xdb, 0x58, 0x0f, 0x3a);
-
+		
 		/// <summary>
 		/// Storage for MinInclusion
 		/// </summary>
 		private RangeInclusion minInclusionPropertyStorage = Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet;
-
+		
 		/// <summary>
 		/// Gets or sets the value of MinInclusion domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueRange.MinInclusion
@@ -12295,12 +12447,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MinInclusionPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, RangeInclusion>
 		{
 			private MinInclusionPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueRange.MinInclusion domain property value handler.
 			/// </summary>
 			public static readonly MinInclusionPropertyHandler Instance = new MinInclusionPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueRange.MinInclusion domain property.
 			/// </summary>
@@ -12312,7 +12464,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MinInclusionDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12323,7 +12475,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.minInclusionPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12332,7 +12484,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueRange element, RangeInclusion newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				RangeInclusion oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12342,20 +12494,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region MaxInclusion domain property code
-
+		
 		/// <summary>
 		/// MaxInclusion domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid MaxInclusionDomainPropertyId = new global::System.Guid(0xeb018230, 0x2726, 0x4206, 0xae, 0x2e, 0x1c, 0x91, 0x1b, 0x60, 0x6f, 0xc1);
-
+		
 		/// <summary>
 		/// Storage for MaxInclusion
 		/// </summary>
 		private RangeInclusion maxInclusionPropertyStorage = Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet;
-
+		
 		/// <summary>
 		/// Gets or sets the value of MaxInclusion domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueRange.MaxInclusion
@@ -12383,12 +12535,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class MaxInclusionPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, RangeInclusion>
 		{
 			private MaxInclusionPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueRange.MaxInclusion domain property value handler.
 			/// </summary>
 			public static readonly MaxInclusionPropertyHandler Instance = new MaxInclusionPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueRange.MaxInclusion domain property.
 			/// </summary>
@@ -12400,7 +12552,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return MaxInclusionDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12411,7 +12563,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.maxInclusionPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12420,7 +12572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueRange element, RangeInclusion newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				RangeInclusion oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12430,7 +12582,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ValueConstraint opposite domain role accessor
 		/// <summary>
@@ -12530,7 +12682,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueTypeValueConstraint : ValueConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueTypeValueConstraint domain class Id.
 		/// </summary>
@@ -12544,7 +12696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -12601,7 +12753,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RoleValueConstraint : ValueConstraint
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RoleValueConstraint domain class Id.
 		/// </summary>
@@ -12615,7 +12767,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -12672,7 +12824,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ValueConstraint : ORMNamedElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueConstraint domain class Id.
 		/// </summary>
@@ -12688,12 +12840,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Text domain property code
-
+		
 		/// <summary>
 		/// Text domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0x410fce34, 0xdacb, 0x4f59, 0x94, 0xa6, 0xff, 0x7e, 0x42, 0x10, 0x8e, 0x74);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueConstraint.Text
@@ -12721,12 +12873,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraint, global::System.String>
 		{
 			private TextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueConstraint.Text domain property value handler.
 			/// </summary>
 			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueConstraint.Text domain property.
 			/// </summary>
@@ -12738,7 +12890,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return TextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12752,7 +12904,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetTextValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12761,7 +12913,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueConstraint element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12775,15 +12927,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region TextChanged domain property code
-
+		
 		/// <summary>
 		/// TextChanged domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid TextChangedDomainPropertyId = new global::System.Guid(0xacb49806, 0xa830, 0x431d, 0x95, 0x9f, 0x20, 0xc7, 0xdd, 0x9c, 0x1d, 0x4d);
-
+		
 		/// <summary>
 		/// Gets or sets the value of TextChanged domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextChanged
@@ -12812,12 +12964,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class TextChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraint, global::System.Int64>
 		{
 			private TextChangedPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueConstraint.TextChanged domain property value handler.
 			/// </summary>
 			public static readonly TextChangedPropertyHandler Instance = new TextChangedPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueConstraint.TextChanged domain property.
 			/// </summary>
@@ -12829,7 +12981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return TextChangedDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -12843,7 +12995,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetTextChangedValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -12852,7 +13004,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueConstraint element, global::System.Int64 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int64 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -12866,7 +13018,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ValueRangeCollection opposite domain role accessor
 		/// <summary>
@@ -12949,7 +13101,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ValueMismatchError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueMismatchError domain class Id.
 		/// </summary>
@@ -12978,7 +13130,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MinValueMismatchError : ValueMismatchError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// MinValueMismatchError domain class Id.
 		/// </summary>
@@ -12992,7 +13144,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13049,7 +13201,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MaxValueMismatchError : ValueMismatchError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// MaxValueMismatchError domain class Id.
 		/// </summary>
@@ -13063,7 +13215,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13120,7 +13272,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ImpliedInternalUniquenessConstraintError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ImpliedInternalUniquenessConstraintError domain class Id.
 		/// </summary>
@@ -13134,7 +13286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13191,7 +13343,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FrequencyConstraintContradictsInternalUniquenessConstraintError domain class Id.
 		/// </summary>
@@ -13205,7 +13357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13270,7 +13422,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class RingConstraintTypeNotSpecifiedError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RingConstraintTypeNotSpecifiedError domain class Id.
 		/// </summary>
@@ -13284,7 +13436,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13341,7 +13493,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SubtypeMetaRole : Role
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SubtypeMetaRole domain class Id.
 		/// </summary>
@@ -13355,7 +13507,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13380,7 +13532,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SupertypeMetaRole : Role
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// SupertypeMetaRole domain class Id.
 		/// </summary>
@@ -13394,7 +13546,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13419,7 +13571,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ObjectTypeRequiresPrimarySupertypeError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ObjectTypeRequiresPrimarySupertypeError domain class Id.
 		/// </summary>
@@ -13433,7 +13585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13490,7 +13642,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Note : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// Note domain class Id.
 		/// </summary>
@@ -13504,7 +13656,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13516,17 +13668,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Text domain property code
-
+		
 		/// <summary>
 		/// Text domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0x0ef3bc12, 0x45ff, 0x46a8, 0xb3, 0x25, 0xcd, 0xfc, 0xc1, 0x05, 0xa1, 0xe1);
-
+		
 		/// <summary>
 		/// Storage for Text
 		/// </summary>
 		private global::System.String textPropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Note.Note
@@ -13555,12 +13707,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<Note, global::System.String>
 		{
 			private TextPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the Note.Text domain property value handler.
 			/// </summary>
 			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the Note.Text domain property.
 			/// </summary>
@@ -13572,7 +13724,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return TextDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -13583,7 +13735,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.textPropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -13592,7 +13744,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(Note element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -13602,7 +13754,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region FactType opposite domain role accessor
 		/// <summary>
@@ -13680,7 +13832,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ModelNote : Note
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ModelNote domain class Id.
 		/// </summary>
@@ -13694,7 +13846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13781,7 +13933,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class CompatibleSupertypesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// CompatibleSupertypesError domain class Id.
 		/// </summary>
@@ -13795,7 +13947,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13852,7 +14004,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ImplicationError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ImplicationError domain class Id.
 		/// </summary>
@@ -13866,7 +14018,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -13955,7 +14107,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EqualityOrSubsetImpliedByMandatoryError : ImplicationError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// EqualityOrSubsetImpliedByMandatoryError domain class Id.
 		/// </summary>
@@ -13969,7 +14121,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14026,7 +14178,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class PreferredIdentifierRequiresMandatoryError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// PreferredIdentifierRequiresMandatoryError domain class Id.
 		/// </summary>
@@ -14040,7 +14192,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14097,7 +14249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueRangeOverlapError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueRangeOverlapError domain class Id.
 		/// </summary>
@@ -14111,7 +14263,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14168,7 +14320,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactTypeDerivationExpression : Expression
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FactTypeDerivationExpression domain class Id.
 		/// </summary>
@@ -14182,7 +14334,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14194,17 +14346,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region DerivationStorage domain property code
-
+		
 		/// <summary>
 		/// DerivationStorage domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid DerivationStorageDomainPropertyId = new global::System.Guid(0x6b011b44, 0x9854, 0x436a, 0xad, 0xed, 0x7b, 0xbc, 0x63, 0x5a, 0x7c, 0x1f);
-
+		
 		/// <summary>
 		/// Storage for DerivationStorage
 		/// </summary>
 		private DerivationStorageType derivationStoragePropertyStorage = Neumont.Tools.ORM.ObjectModel.DerivationStorageType.Derived;
-
+		
 		/// <summary>
 		/// Gets or sets the value of DerivationStorage domain property.
 		/// Description for
@@ -14233,12 +14385,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class DerivationStoragePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationExpression, DerivationStorageType>
 		{
 			private DerivationStoragePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the FactTypeDerivationExpression.DerivationStorage domain property value handler.
 			/// </summary>
 			public static readonly DerivationStoragePropertyHandler Instance = new DerivationStoragePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the FactTypeDerivationExpression.DerivationStorage domain property.
 			/// </summary>
@@ -14250,7 +14402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return DerivationStorageDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -14261,7 +14413,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.derivationStoragePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -14270,7 +14422,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(FactTypeDerivationExpression element, DerivationStorageType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				DerivationStorageType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -14280,7 +14432,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region FactType opposite domain role accessor
 		/// <summary>
@@ -14329,7 +14481,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ObjectTypeInstance : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ObjectTypeInstance domain class Id.
 		/// </summary>
@@ -14345,12 +14497,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Name domain property code
-
+		
 		/// <summary>
 		/// Name domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0x553deb12, 0x8fe0, 0x4fe4, 0xb9, 0x4e, 0x52, 0xf1, 0xcd, 0x5d, 0xcf, 0x0a);
-
+		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.Name
@@ -14376,12 +14528,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NamePropertyHandler : DslModeling::CalculatedPropertyValueHandler<ObjectTypeInstance, global::System.String>
 		{
 			private NamePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectTypeInstance.Name domain property value handler.
 			/// </summary>
 			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectTypeInstance.Name domain property.
 			/// </summary>
@@ -14393,7 +14545,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NameDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -14407,17 +14559,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetNameValue();
 			}
-
+		
 		}
-
+		
 		#endregion
 		#region NameChanged domain property code
-
+		
 		/// <summary>
 		/// NameChanged domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid NameChangedDomainPropertyId = new global::System.Guid(0xf1e0bb68, 0xf047, 0x464b, 0xb1, 0x7b, 0x6b, 0xa8, 0x65, 0x14, 0x4b, 0xb4);
-
+		
 		/// <summary>
 		/// Gets or sets the value of NameChanged domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.NameChanged
@@ -14446,12 +14598,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeInstance, global::System.Int64>
 		{
 			private NameChangedPropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ObjectTypeInstance.NameChanged domain property value handler.
 			/// </summary>
 			public static readonly NameChangedPropertyHandler Instance = new NameChangedPropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ObjectTypeInstance.NameChanged domain property.
 			/// </summary>
@@ -14463,7 +14615,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return NameChangedDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -14477,7 +14629,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// method on the domain class.
 				return element.GetNameChangedValue();
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -14486,7 +14638,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ObjectTypeInstance element, global::System.Int64 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.Int64 oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -14500,7 +14652,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region PopulationMandatoryErrorCollection opposite domain role accessor
 		/// <summary>
@@ -14545,7 +14697,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EntityTypeInstance : ObjectTypeInstance
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// EntityTypeInstance domain class Id.
 		/// </summary>
@@ -14559,7 +14711,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14651,7 +14803,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueTypeInstance : ObjectTypeInstance
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueTypeInstance domain class Id.
 		/// </summary>
@@ -14665,7 +14817,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14677,17 +14829,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Value domain property code
-
+		
 		/// <summary>
 		/// Value domain property Id.
 		/// </summary>
 		public static readonly global::System.Guid ValueDomainPropertyId = new global::System.Guid(0x1d0232ba, 0xa92f, 0x4b81, 0x99, 0xbf, 0x2a, 0x2a, 0x44, 0x82, 0x10, 0x30);
-
+		
 		/// <summary>
 		/// Storage for Value
 		/// </summary>
 		private global::System.String valuePropertyStorage = string.Empty;
-
+		
 		/// <summary>
 		/// Gets or sets the value of Value domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.Value
@@ -14714,12 +14866,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		internal sealed partial class ValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueTypeInstance, global::System.String>
 		{
 			private ValuePropertyHandler() { }
-
+		
 			/// <summary>
 			/// Gets the singleton instance of the ValueTypeInstance.Value domain property value handler.
 			/// </summary>
 			public static readonly ValuePropertyHandler Instance = new ValuePropertyHandler();
-
+		
 			/// <summary>
 			/// Gets the Id of the ValueTypeInstance.Value domain property.
 			/// </summary>
@@ -14731,7 +14883,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return ValueDomainPropertyId;
 				}
 			}
-
+			
 			/// <summary>
 			/// Gets a strongly-typed value of the property on specified element.
 			/// </summary>
@@ -14742,7 +14894,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.valuePropertyStorage;
 			}
-
+		
 			/// <summary>
 			/// Sets property value on an element.
 			/// </summary>
@@ -14751,7 +14903,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed void SetValue(ValueTypeInstance element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-
+		
 				global::System.String oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
@@ -14761,7 +14913,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		
 		#endregion
 		#region ValueType opposite domain role accessor
 		/// <summary>
@@ -14829,7 +14981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactTypeInstance : ORMModelElement
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// FactTypeInstance domain class Id.
 		/// </summary>
@@ -14843,7 +14995,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -14935,7 +15087,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooFewEntityTypeRoleInstancesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TooFewEntityTypeRoleInstancesError domain class Id.
 		/// </summary>
@@ -14949,7 +15101,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -15006,7 +15158,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class TooFewFactTypeRoleInstancesError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// TooFewFactTypeRoleInstancesError domain class Id.
 		/// </summary>
@@ -15020,7 +15172,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -15077,7 +15229,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class CompatibleValueTypeInstanceValueError : ModelError
 	{
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// CompatibleValueTypeInstanceValueError domain class Id.
 		/// </summary>
@@ -15091,7 +15243,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>

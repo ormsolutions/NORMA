@@ -791,7 +791,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				foreach (SetConstraint element in elementDirectory.FindElements<SetConstraint>(true))
 				{
-					if (!((IConstraint)element).ConstraintIsInternal)
+					IConstraint constraint = (IConstraint)element;
+					if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
 					{
 						yield return element;
 					}
@@ -937,6 +938,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							return;
 						}
 						break;
+					case ConstraintType.ImpliedMandatory:
+						return;
 				}
 				eventNotify.ElementAdded(element, null);
 			}
@@ -948,7 +951,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelHasSetConstraint element = e.ModelElement as ModelHasSetConstraint;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			MandatoryConstraint mandatoryConstraint;
+			if ((null == (mandatoryConstraint = element.SetConstraint as MandatoryConstraint) ||
+				!mandatoryConstraint.IsImplied) &&
+				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				eventNotify.ElementDeleted(element.SetConstraint);
 			}
