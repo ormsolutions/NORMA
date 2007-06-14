@@ -289,7 +289,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 						// call the Line method on the parse object
 						string factText = this.GetFactLine();
 						ParsedFact parsedFact = myParser.ParseLine(factText);
-						FactSaver.AddFact(myCompletionSet.CurrentDocumentView, parsedFact, myCompletionSet.EditFact);
+						FactSaver.AddFact(myCompletionSet.CurrentDocumentView.DocData as ORMDesignerDocData, myCompletionSet.CurrentDocumentView, parsedFact, myCompletionSet.EditFact);
 						break;
 					case CmdTypeChar: // any character
 						fHandled = false;

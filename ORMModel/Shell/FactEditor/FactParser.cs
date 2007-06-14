@@ -24,6 +24,8 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.ObjectModel;
 #endregion
 
 namespace Neumont.Tools.ORM.Shell.FactEditor
@@ -58,7 +60,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// Create a new FactLine
 		/// </summary>
 		/// <param name="line">The source line text</param>
-		public FactLine(string line) 
+		public FactLine(string line)
 		{
 			myLineText = line;
 			myMarks = new Collection<FactTokenMark>();
@@ -152,30 +154,30 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 
 			// FACT-QUANTIFIERS: This is the new quantifier pattern entered with (note the "." as the delimiter):
 			// [Person] drives .at most one. [Car]
-//			string logicalOne = "one";
-//			string logicalQuantifierPattern = String.Format(@"\.(?<quantifier>(?<logicalName>({0}|{1}|{2}))\s+(?<logicalFreq>(\d+|{3})))\.", FactQuantifier.LogicalExactly, FactQuantifier.LogicalAtLeast, FactQuantifier.LogicalAtMost, logicalOne);
-//			Regex regExQuantifier = new Regex(logicalQuantifierPattern);
-//			MatchCollection quantifiers = regExQuantifier.Matches(factText);
+			//			string logicalOne = "one";
+			//			string logicalQuantifierPattern = String.Format(@"\.(?<quantifier>(?<logicalName>({0}|{1}|{2}))\s+(?<logicalFreq>(\d+|{3})))\.", FactQuantifier.LogicalExactly, FactQuantifier.LogicalAtLeast, FactQuantifier.LogicalAtMost, logicalOne);
+			//			Regex regExQuantifier = new Regex(logicalQuantifierPattern);
+			//			MatchCollection quantifiers = regExQuantifier.Matches(factText);
 
 			// FACT-QUANTIFIERS: This is the old quantifier Pattern
 			// mandatory both sides, one to one {..;1:1}
 			// functional role pattern {.-;n:1}
-//			string quantifierPattern = @"([^{]+)?(?<multiplicityWhole>({(?<mandatoryRoles>(\.|-)+)?;(?<multiplicity>(.+))?}))";
-//			Regex regExMultiplicity = new Regex(quantifierPattern);
-//			Match multiplicity = regExMultiplicity.Match(factText);
+			//			string quantifierPattern = @"([^{]+)?(?<multiplicityWhole>({(?<mandatoryRoles>(\.|-)+)?;(?<multiplicity>(.+))?}))";
+			//			Regex regExMultiplicity = new Regex(quantifierPattern);
+			//			Match multiplicity = regExMultiplicity.Match(factText);
 
 
 			#region Old Multiplicity matches, eg. {.-;n:1}
 			// Grab the multiplicity values
-//			char[] mandatoryValues = null;
-//			string multiplicityValues = null; 
-//			if (multiplicity.Success)
-//			{
-//				mandatoryValues = multiplicity.Groups["mandatoryRoles"].Value.ToCharArray();
-//				multiplicityValues = multiplicity.Groups["multiplicity"].Value;
-//				factText = factText.Replace(multiplicity.Groups["multiplicityWhole"].Value, "");
-//			}
-#endregion // Old Multiplicity matches, eg. {.-;n:1}
+			//			char[] mandatoryValues = null;
+			//			string multiplicityValues = null; 
+			//			if (multiplicity.Success)
+			//			{
+			//				mandatoryValues = multiplicity.Groups["mandatoryRoles"].Value.ToCharArray();
+			//				multiplicityValues = multiplicity.Groups["multiplicity"].Value;
+			//				factText = factText.Replace(multiplicity.Groups["multiplicityWhole"].Value, "");
+			//			}
+			#endregion // Old Multiplicity matches, eg. {.-;n:1}
 
 			Regex regExObjectType = new Regex(objectTypePattern);
 			MatchCollection objectTypes = regExObjectType.Matches(factText);
@@ -203,7 +205,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 				// set the colorization for the object
 				int objColorStart = objectNameGroup.Index;
 				int objColorEnd = objectNameGroup.Index + objectNameGroup.Length - 1;
-				
+
 				// get the previous "[", only if it contains "["
 				bool objectContainsBracket = objectGroup.Value.IndexOf('[') > -1 && objectGroup.Value.IndexOf(']') > -1;
 				if (objectContainsBracket)
@@ -229,7 +231,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					{
 						parsedFact.ColorAttributes[j] = (uint)FactEditorColorizableItem.ReferenceModeName;
 					}
-					
+
 				}
 
 				// colorize the parens for ref modes
@@ -257,68 +259,133 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 				#region Logical Quantifiers
 				// FACT-QUANTIFIERS: This is for the old multiplicity code, e.g. {.-;m:n}, where "."
 				// indicates a mandatory role
-//				if (i <= mandatoryValues.GetUpperBound(0))
-//				{
-//					// Is mandatory
-//					if (mandatoryValues[i] == '.')
-//					{
-//						newObject.RoleQuantifiers.NewFactQuantifier("mandatory", 1);
-//					}
-//				}
+				//				if (i <= mandatoryValues.GetUpperBound(0))
+				//				{
+				//					// Is mandatory
+				//					if (mandatoryValues[i] == '.')
+				//					{
+				//						newObject.RoleQuantifiers.NewFactQuantifier("mandatory", 1);
+				//					}
+				//				}
 
 				// FACT-QUANTIFIERS: This is for the new quantifier implementation using the "." delimiters:
 				// [Person] drives .at most one. [Car]
-//				foreach (Match quantifier in quantifiers)
-//				{
-//					if (quantifier.Index < index)
-//					{
-//						try
-//						{
-//							int frequency = 0;
-//							string freqString = quantifier.Groups["logicalFreq"].Value;
-//
-//							if (freqString == logicalOne)
-//							{
-//								frequency = 1;
-//							}
-//							else
-//							{
-//								frequency = int.Parse(freqString);
-//							}
-//							newObject.RoleQuantifiers.NewFactQuantifier(quantifier.Groups["logicalName"].Value, frequency);
-//						}
-//						catch (FormatException ex)
-//						{
-//							//NOTDONE: Create a task item for a quantifier sans a numeric frequency.
-//							string err = ex.Message;
-//						}
-//					}
-//				}
+				//				foreach (Match quantifier in quantifiers)
+				//				{
+				//					if (quantifier.Index < index)
+				//					{
+				//						try
+				//						{
+				//							int frequency = 0;
+				//							string freqString = quantifier.Groups["logicalFreq"].Value;
+				//
+				//							if (freqString == logicalOne)
+				//							{
+				//								frequency = 1;
+				//							}
+				//							else
+				//							{
+				//								frequency = int.Parse(freqString);
+				//							}
+				//							newObject.RoleQuantifiers.NewFactQuantifier(quantifier.Groups["logicalName"].Value, frequency);
+				//						}
+				//						catch (FormatException ex)
+				//						{
+				//							//NOTDONE: Create a task item for a quantifier sans a numeric frequency.
+				//							string err = ex.Message;
+				//						}
+				//					}
+				//				}
+				#endregion // Logical Quantifiers
 			}
-			#endregion // Logical Quantifiers
-
+			#region Commented Out
 			// FACT-QUANTIFIERS: This is for the new quantifier implementation using the "." delimiters.
 			// get a copy of the fact to work with
-//			string tempFactText = builderFact.ToString();
+			//			string tempFactText = builderFact.ToString();
 			// remove all quantifiers from the fact
-//			foreach (Match quantifier in quantifiers)
-//			{
-//				tempFactText = tempFactText.Replace(quantifier.Value, "");
-//
-//				// setup colorization for quantifiers
-//				int qColorStart = quantifier.Index;
-//				int qColorEnd = quantifier.Index + quantifier.Length - 1;
-//				for (int j = qColorStart; j <= qColorEnd; ++j)
-//				{
-//					parsedFact.ColorAttributes[j] = (uint)FactEditorColorizableItem.Quantifier;
-//				}
-//			}
-
+			//			foreach (Match quantifier in quantifiers)
+			//			{
+			//				tempFactText = tempFactText.Replace(quantifier.Value, "");
+			//
+			//				// setup colorization for quantifiers
+			//				int qColorStart = quantifier.Index;
+			//				int qColorEnd = quantifier.Index + quantifier.Length - 1;
+			//				for (int j = qColorStart; j <= qColorEnd; ++j)
+			//				{
+			//					parsedFact.ColorAttributes[j] = (uint)FactEditorColorizableItem.Quantifier;
+			//				}
+			//			}
+			#endregion Commented Out
+			FactObjectCollection objects = parsedFact.FactObjects;
+			//Reading text is in format: {0} <blank> {1}
 			parsedFact.ReadingText = builderFact.ToString();
+			//Checks if the fact is a binary fact type with a forward AND reverse reading, denoted by the presence of the "/"
+			//Then it splits the text into representations of two seperate readings
+			if (nrObjects == 2 && parsedFact.ReadingText.Contains("/"))
+			{
+				string[] splitReadings = parsedFact.ReadingText.Split(new char[] { '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
+				if (splitReadings.Length == 2)
+				{
+					parsedFact.ReadingText = splitReadings[0].Trim() + " {1}";
+					parsedFact.ReverseReadingText = "{0} " + splitReadings[1].Trim();
+				}
+			}
 			parsedFact.FactObjects.AddRange(factObjects);
 			return parsedFact;
 		}
 
+		/// <summary>
+		/// Sets the Readings correctly as well as the FactObjects Collection
+		/// when editing a binary with forward and reverse readings
+		/// </summary>
+		/// <param name="fact">The Fact being edited</param>
+		/// <param name="parsedFact">The ParsedFact that represents the edited version</param>
+		/// <returns>void</returns>
+		public static void SetReadings(FactType fact, ParsedFact parsedFact)
+		{
+			using (Transaction t = fact.Store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
+			{
+				string name = parsedFact.FactObjects[0].Name;
+				LinkedElementCollection<ReadingOrder> orders = fact.ReadingOrderCollection;
+				int orderCount = orders.Count;
+				if (orderCount != 0)
+				{
+					bool hasInverse = orderCount > 1;
+					//If the order of the edited fact text is the same as the primary reading
+					ReadingOrder firstOrder = orders[0];
+					if (name == firstOrder.RoleCollection[0].Role.RolePlayer.Name)
+					{
+						firstOrder.ReadingCollection[0].Text = parsedFact.ReadingText;
+						if (hasInverse)
+						{
+							orders[1].ReadingCollection[0].Text = parsedFact.ReverseReadingText;
+						}
+						//If the primary reading is not the Display Reading and we are editing the Primary Reading Order
+						//then the FactObjects collection needs to have its order reversed
+						if (name != fact.RoleCollection[0].Role.RolePlayer.Name && parsedFact.FactObjects.Count == 2)
+						{
+							FactObject temp = parsedFact.FactObjects[0];
+							parsedFact.FactObjects[0] = parsedFact.FactObjects[1];
+							parsedFact.FactObjects[1] = temp;
+						}
+					}
+					//if the order of the edited fact is not the same as primary reading
+					//(should only occur when the reverse is primary and the fact is selected off the Model Browser)
+					else if (hasInverse)
+					{
+						orders[1].ReadingCollection[0].Text = parsedFact.ReadingText;
+						if (hasInverse)
+						{
+							orders[0].ReadingCollection[0].Text = parsedFact.ReverseReadingText;
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+			}
+		}
 		#endregion
 	}
 
@@ -329,10 +396,12 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 	/// </summary>
 	public class ParsedFact
 	{
-		private string myReading;
+		private string myReadingText;
+		private string myReverseReadingText;
 		private FactObjectCollection myObjects;
 		private uint[] myColorAttributes;
 		private string myOriginalFactText;
+		private Reading myReadingToEdit;
 
 		/// <summary>
 		/// Create a new ParsedFact from a structured fact in the fact editor
@@ -351,9 +420,19 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// <value></value>
 		public string ReadingText
 		{
-			get { return myReading; }
-			set { myReading = value; }
+			get { return myReadingText; }
+			set { myReadingText = value; }
 		}
+		/// <summary>
+		/// The reverse reading text used only for binary fact readings, e.g. {0} is of {1}
+		/// </summary>
+		/// <value></value>
+		public string ReverseReadingText
+		{
+			get { return myReverseReadingText; }
+			set { myReverseReadingText = value; }
+		}
+
 		/// <summary>
 		/// All of the objects parsed out of the original fact text
 		/// </summary>
@@ -377,11 +456,18 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// <summary>
 		/// The original fact text
 		/// </summary>
-		/// <value></value>
 		public string OriginalFactText
 		{
 			get { return myOriginalFactText; }
 			set { myOriginalFactText = value; }
+		}
+		/// <summary>
+		/// The reading to edit
+		/// </summary>
+		public Reading ReadingToEdit
+		{
+			get { return myReadingToEdit; }
+			set { myReadingToEdit = value; }
 		}
 	}
 
@@ -396,7 +482,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		private string myRefMode;
 		private bool myRefModeHasParenthesis;
 		// TODO: Uncomment
-//		private FactQuantifierCollection myRoleQuantifiers;
+		//		private FactQuantifierCollection myRoleQuantifiers;
 		private int myPositionNr;
 
 		/// <summary>
@@ -404,7 +490,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		/// </summary>
 		public FactObject()
 		{
-//			myRoleQuantifiers = new FactQuantifierCollection();
+			//			myRoleQuantifiers = new FactQuantifierCollection();
 		}
 		/// <summary>
 		/// The name of the object
@@ -434,14 +520,14 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			get { return myRefModeHasParenthesis; }
 			set { myRefModeHasParenthesis = value; }
 		}
-//		/// <summary>
-//		/// Quantifiers which indicate mandatory or uniqueness
-//		/// </summary>
-//		/// <value></value>
-//		public FactQuantifierCollection RoleQuantifiers
-//		{
-//			get { return myRoleQuantifiers; }
-//		}
+		//		/// <summary>
+		//		/// Quantifiers which indicate mandatory or uniqueness
+		//		/// </summary>
+		//		/// <value></value>
+		//		public FactQuantifierCollection RoleQuantifiers
+		//		{
+		//			get { return myRoleQuantifiers; }
+		//		}
 		/// <summary>
 		/// The position of this object in the parsed fact
 		/// </summary>
@@ -456,9 +542,9 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 	/// <summary>
 	/// A collection of objects in a fact
 	/// </summary>
-	public class FactObjectCollection : IList<FactObject>
+	[Serializable]
+	public class FactObjectCollection : Collection<FactObject>
 	{
-		private List<FactObject> myList = new List<FactObject>();
 		/// <summary>
 		/// Creates and adds a new FactObject to the collection
 		/// </summary>
@@ -466,421 +552,221 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 		public FactObject NewFactObject()
 		{
 			FactObject fo = new FactObject();
-			myList.Add(fo);
+			base.Items.Add(fo);
 			return fo;
 		}
 
 		/// <summary>
 		/// Adds a range of FactObjects to the collection
 		/// </summary>
-		/// <param name="value"></param>
-		public void AddRange(FactObjectCollection value)
+		public void AddRange(FactObjectCollection values)
 		{
-			myList.AddRange(value);
-		}
-
-		#region IList<FactObject> Members
-
-		int IList<FactObject>.IndexOf(FactObject item)
-		{
-			return this.IndexOf(item);
-		}
-
-		/// <summary>
-		/// Implements IList.IndexOf
-		/// </summary>
-		/// <param name="item"></param>
-		/// <returns></returns>
-		protected int IndexOf(FactObject item)
-		{
-			return myList.IndexOf(item);
-		}
-
-		void IList<FactObject>.Insert(int index, FactObject item)
-		{
-			this.Insert(index, item);
-		}
-
-		/// <summary>
-		/// Implements IList.IndexOf
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="item"></param>
-		/// <returns></returns>
-		protected void Insert(int index, FactObject item)
-		{
-			myList.Insert(index, item);
-		}
-
-		void IList<FactObject>.RemoveAt(int index)
-		{
-			RemoveAt(index);
-		}
-
-		/// <summary>
-		/// Implements IList.RemoveAt
-		/// </summary>
-		/// <param name="index"></param>
-		protected void RemoveAt(int index)
-		{
-			myList.RemoveAt(index);
-		}
-
-		FactObject IList<FactObject>.this[int index]
-		{
-			get
+			IList<FactObject> items = base.Items;
+			foreach (FactObject value in values)
 			{
-				return this[index];
-			}
-			set
-			{
-				this[index] = value;
+				items.Add(value);
 			}
 		}
-
-		/// <summary>
-		/// Implements indexer for IList
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		protected FactObject this[int index]
-		{
-			get
-			{
-				return (FactObject)myList[index];
-			}
-			set
-			{
-				myList[index] = value;
-			}
-		}
-		#endregion
-
-		#region ICollection<FactObject> Members
-
-		void ICollection<FactObject>.Add(FactObject item)
-		{
-			Add(item);
-		}
-
-		/// <summary>
-		/// Implements ICollection.Add
-		/// </summary>
-		/// <param name="item"></param>
-		protected void Add(FactObject item)
-		{
-			myList.Add(item);
-		}
-
-		void ICollection<FactObject>.Clear()
-		{
-			Clear();
-		}
-
-		/// <summary>
-		/// Implements ICollection.Clear
-		/// </summary>
-		protected void Clear()
-		{
-			myList.Clear();
-		}
-
-		bool ICollection<FactObject>.Contains(FactObject item)
-		{
-			return Contains(item);
-		}
-
-		/// <summary>
-		/// Implements ICollection.Contains
-		/// </summary>
-		/// <param name="item"></param>
-		/// <returns></returns>
-		protected bool Contains(FactObject item)
-		{
-			return myList.Contains(item);
-		}
-
-		void ICollection<FactObject>.CopyTo(FactObject[] array, int arrayIndex)
-		{
-			CopyTo(array, arrayIndex);
-		}
-
-		/// <summary>
-		/// Implements CopyTo
-		/// </summary>
-		/// <param name="array"></param>
-		/// <param name="arrayIndex"></param>
-		protected void CopyTo(FactObject[] array, int arrayIndex)
-		{
-			myList.CopyTo(array, arrayIndex);
-		}
-
-		int ICollection<FactObject>.Count
-		{
-			get { return this.Count; }
-		}
-
-		/// <summary>
-		/// Implements ICollection.Count
-		/// </summary>
-		/// <value></value>
-		protected int Count
-		{
-			get { return myList.Count; }
-		}
-
-		bool ICollection<FactObject>.IsReadOnly
-		{
-			get { return IsReadOnly; }
-		}
-
-		// UNDONE: List<FactObject> doesn't contain an IsReadOnly property, so we're returning false
-		/// <summary>
-		/// Implements ICollection.IsReadOnly
-		/// </summary>
-		/// <value></value>
-		protected static bool IsReadOnly
-		{
-			get { return false; }
-		}
-
-		bool ICollection<FactObject>.Remove(FactObject item)
-		{
-			return Remove(item);
-		}
-
-		/// <summary>
-		/// Implements ICollection.Remove
-		/// </summary>
-		/// <param name="item"></param>
-		/// <returns></returns>
-		protected bool Remove(FactObject item)
-		{
-			return myList.Remove(item);
-		}
-
-		#endregion
-
-		#region IEnumerable<FactObject> Members
-
-		IEnumerator<FactObject> IEnumerable<FactObject>.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-		/// <summary>
-		/// Implements IEnumerable.GetEnumerator()
-		/// </summary>
-		/// <returns></returns>
-		protected IEnumerator<FactObject> GetEnumerator()
-		{
-			return myList.GetEnumerator();
-		}
-
-		#endregion
 	}
 
 	// TODO: Use FactQuantifier when parser can handle it more gracefully
-//	/// <summary>
-//	/// Types of quantifiers available.
-//	/// This is currently not used
-//	/// </summary>
-//	public enum LogicalQuantifierType 
-//	{ 
-//		/// <summary>
-//		/// AtLeast Quantifier
-//		/// </summary>
-//		AtLeast,
-//		/// <summary>
-//		/// AtMost Quantifier
-//		/// </summary>
-//		AtMost,
-//		/// <summary>
-//		/// Exactly Quantifier
-//		/// </summary>
-//		Exactly,
-//		/// <summary>
-//		/// Mandatory Quantifier
-//		/// </summary>
-//		Mandatory
-//	}
-//
-//	
-//	/// <summary>
-//	/// Quantifiers which are attached to objects, such as mandatory or at least one
-//	/// </summary>
-//	public class FactQuantifier
-//	{
-//		private string myName;
-//		private int myFrequency;
-//		private LogicalQuantifierType myQuantifierType;
-//
-//		//UNDONE: Localize these strings
-////		/// <summary>
-////		/// A string representing a logical quantifier literal
-////		/// </summary>
-////		public static readonly string LogicalExactly = "exactly";
-////		/// <summary>
-////		/// A string representing a logical quantifier literal
-////		/// </summary>
-////		public static readonly string LogicalAtLeast = @"at\sleast";
-////		/// <summary>
-////		/// A string representing a logical quantifier literal
-////		/// </summary>
-////		public static readonly string LogicalAtMost = @"at\smost";
-////		/// <summary>
-////		/// A string representing a logical quantifier literal
-////		/// </summary>
-////		public static readonly string LogicalMandatory = @"mandatory";
-//
-//		/// <summary>
-//		/// Create a new quantifier based on its name, e.g. "exactly" or "at least"
-//		/// </summary>
-//		/// <param name="name"></param>
-//		/// <param name="frequency"></param>
-//		public FactQuantifier(string name, int frequency)
-//		{
-//			Name = name;
-//			myFrequency = frequency;
-//		}
-//		/// <summary>
-//		/// Gets or sets the name of this quantifier
-//		/// </summary>
-//		/// <value></value>
-//		public string Name
-//		{
-//			get { return myName; }
-//			set 
-//			{ 
-//				myName = value;
-//				// TODO: set the quantifier type to the right type if the name is changed
-//				// replace spaces to match the constant tokens
-////				string noSpaces = myName.Replace(" ", @"\s");
-////				if (noSpaces == LogicalExactly)
-////				{
-////					this.QuantifierType = LogicalQuantifierType.Exactly;
-////				}
-////				else if (noSpaces == LogicalAtLeast)
-////				{
-////					this.QuantifierType = LogicalQuantifierType.AtLeast;
-////				}
-////				else if (noSpaces == LogicalAtMost)
-////				{
-////					this.QuantifierType = LogicalQuantifierType.AtMost;
-////				}
-////				else if (noSpaces == LogicalMandatory)
-////				{
-////					this.QuantifierType = LogicalQuantifierType.Mandatory;
-////				}
-//			}
-//		}
-//		/// <summary>
-//		/// Gets or sets the frequency value. "One" maps to the number 1.
-//		/// </summary>
-//		/// <value></value>
-//		public int Frequency
-//		{
-//			get { return myFrequency; }
-//			set { myFrequency = value; }
-//		}
-//		/// <summary>
-//		/// The type of quantifier: mandatory, at least one, etc.
-//		/// </summary>
-//		/// <value></value>
-//		public LogicalQuantifierType QuantifierType
-//		{
-//			get { return myQuantifierType; }
-//			set { myQuantifierType = value; }
-//		}
-//	}
-//
-//	/// <summary>
-//	/// A collection of quantifiers for an object
-//	/// </summary>
-//	public class FactQuantifierCollection : System.Collections.CollectionBase
-//	{
-//		/// <summary>
-//		/// An indexer to get and set an item in the collection
-//		/// </summary>
-//		/// <param name="index"></param>
-//		/// <returns></returns>
-//		public FactQuantifier this[int index]
-//		{
-//			get
-//			{
-//				return (FactQuantifier)List[index];
-//			}
-//			set
-//			{
-//				List[index] = value;
-//			}
-//		}
-//
-//		/// <summary>
-//		/// Shortcut to create and add an new quantifier to the collection
-//		/// </summary>
-//		/// <param name="name"></param>
-//		/// <param name="frequency"></param>
-//		/// <returns></returns>
-//		public FactQuantifier NewFactQuantifier(string name, int frequency)
-//		{
-//			FactQuantifier fq = new FactQuantifier(name, frequency);
-//			this.Add(fq);
-//
-//			return fq;
-//		}
-//
-//		/// <summary>
-//		/// Adds a quantifier to the collection
-//		/// </summary>
-//		/// <param name="value"></param>
-//		/// <returns></returns>
-//		public int Add(FactQuantifier value)
-//		{
-//			return ((this as IList<FactObject>).Add(value));
-//		}
-//
-//		/// <summary>
-//		/// Finds the index of an item in the collection
-//		/// </summary>
-//		/// <param name="value"></param>
-//		/// <returns></returns>
-//		public int IndexOf(FactQuantifier value)
-//		{
-//			return ((this as IList<FactObject>).IndexOf(value));
-//		}
-//
-//		/// <summary>
-//		/// Inserts a quantifier at the given index
-//		/// </summary>
-//		/// <param name="index"></param>
-//		/// <param name="value"></param>
-//		public void Insert(int index, FactQuantifier value)
-//		{
-//			(this as IList<FactObject>).Insert(index, value);
-//		}
-//
-//		/// <summary>
-//		/// Removes a quantifier from the collection
-//		/// </summary>
-//		/// <param name="value"></param>
-//		public void Remove(FactQuantifier value)
-//		{
-//			(this as IList<FactObject>).Remove(value);
-//		}
-//
-//		/// <summary>
-//		/// Find if a quantifier is in the collection
-//		/// </summary>
-//		/// <param name="value"></param>
-//		/// <returns></returns>
-//		public bool Contains(FactQuantifier value)
-//		{
-//			return ((this as IList<FactObject>).Contains(value));
-//		}
-//	}
+	//	/// <summary>
+	//	/// Types of quantifiers available.
+	//	/// This is currently not used
+	//	/// </summary>
+	//	public enum LogicalQuantifierType 
+	//	{ 
+	//		/// <summary>
+	//		/// AtLeast Quantifier
+	//		/// </summary>
+	//		AtLeast,
+	//		/// <summary>
+	//		/// AtMost Quantifier
+	//		/// </summary>
+	//		AtMost,
+	//		/// <summary>
+	//		/// Exactly Quantifier
+	//		/// </summary>
+	//		Exactly,
+	//		/// <summary>
+	//		/// Mandatory Quantifier
+	//		/// </summary>
+	//		Mandatory
+	//	}
+	//
+	//	
+	//	/// <summary>
+	//	/// Quantifiers which are attached to objects, such as mandatory or at least one
+	//	/// </summary>
+	//	public class FactQuantifier
+	//	{
+	//		private string myName;
+	//		private int myFrequency;
+	//		private LogicalQuantifierType myQuantifierType;
+	//
+	//		//UNDONE: Localize these strings
+	////		/// <summary>
+	////		/// A string representing a logical quantifier literal
+	////		/// </summary>
+	////		public static readonly string LogicalExactly = "exactly";
+	////		/// <summary>
+	////		/// A string representing a logical quantifier literal
+	////		/// </summary>
+	////		public static readonly string LogicalAtLeast = @"at\sleast";
+	////		/// <summary>
+	////		/// A string representing a logical quantifier literal
+	////		/// </summary>
+	////		public static readonly string LogicalAtMost = @"at\smost";
+	////		/// <summary>
+	////		/// A string representing a logical quantifier literal
+	////		/// </summary>
+	////		public static readonly string LogicalMandatory = @"mandatory";
+	//
+	//		/// <summary>
+	//		/// Create a new quantifier based on its name, e.g. "exactly" or "at least"
+	//		/// </summary>
+	//		/// <param name="name"></param>
+	//		/// <param name="frequency"></param>
+	//		public FactQuantifier(string name, int frequency)
+	//		{
+	//			Name = name;
+	//			myFrequency = frequency;
+	//		}
+	//		/// <summary>
+	//		/// Gets or sets the name of this quantifier
+	//		/// </summary>
+	//		/// <value></value>
+	//		public string Name
+	//		{
+	//			get { return myName; }
+	//			set 
+	//			{ 
+	//				myName = value;
+	//				// TODO: set the quantifier type to the right type if the name is changed
+	//				// replace spaces to match the constant tokens
+	////				string noSpaces = myName.Replace(" ", @"\s");
+	////				if (noSpaces == LogicalExactly)
+	////				{
+	////					this.QuantifierType = LogicalQuantifierType.Exactly;
+	////				}
+	////				else if (noSpaces == LogicalAtLeast)
+	////				{
+	////					this.QuantifierType = LogicalQuantifierType.AtLeast;
+	////				}
+	////				else if (noSpaces == LogicalAtMost)
+	////				{
+	////					this.QuantifierType = LogicalQuantifierType.AtMost;
+	////				}
+	////				else if (noSpaces == LogicalMandatory)
+	////				{
+	////					this.QuantifierType = LogicalQuantifierType.Mandatory;
+	////				}
+	//			}
+	//		}
+	//		/// <summary>
+	//		/// Gets or sets the frequency value. "One" maps to the number 1.
+	//		/// </summary>
+	//		/// <value></value>
+	//		public int Frequency
+	//		{
+	//			get { return myFrequency; }
+	//			set { myFrequency = value; }
+	//		}
+	//		/// <summary>
+	//		/// The type of quantifier: mandatory, at least one, etc.
+	//		/// </summary>
+	//		/// <value></value>
+	//		public LogicalQuantifierType QuantifierType
+	//		{
+	//			get { return myQuantifierType; }
+	//			set { myQuantifierType = value; }
+	//		}
+	//	}
+	//
+	//	/// <summary>
+	//	/// A collection of quantifiers for an object
+	//	/// </summary>
+	//	public class FactQuantifierCollection : System.Collections.CollectionBase
+	//	{
+	//		/// <summary>
+	//		/// An indexer to get and set an item in the collection
+	//		/// </summary>
+	//		/// <param name="index"></param>
+	//		/// <returns></returns>
+	//		public FactQuantifier this[int index]
+	//		{
+	//			get
+	//			{
+	//				return (FactQuantifier)List[index];
+	//			}
+	//			set
+	//			{
+	//				List[index] = value;
+	//			}
+	//		}
+	//
+	//		/// <summary>
+	//		/// Shortcut to create and add an new quantifier to the collection
+	//		/// </summary>
+	//		/// <param name="name"></param>
+	//		/// <param name="frequency"></param>
+	//		/// <returns></returns>
+	//		public FactQuantifier NewFactQuantifier(string name, int frequency)
+	//		{
+	//			FactQuantifier fq = new FactQuantifier(name, frequency);
+	//			this.Add(fq);
+	//
+	//			return fq;
+	//		}
+	//
+	//		/// <summary>
+	//		/// Adds a quantifier to the collection
+	//		/// </summary>
+	//		/// <param name="value"></param>
+	//		/// <returns></returns>
+	//		public int Add(FactQuantifier value)
+	//		{
+	//			return ((this as IList<FactObject>).Add(value));
+	//		}
+	//
+	//		/// <summary>
+	//		/// Finds the index of an item in the collection
+	//		/// </summary>
+	//		/// <param name="value"></param>
+	//		/// <returns></returns>
+	//		public int IndexOf(FactQuantifier value)
+	//		{
+	//			return ((this as IList<FactObject>).IndexOf(value));
+	//		}
+	//
+	//		/// <summary>
+	//		/// Inserts a quantifier at the given index
+	//		/// </summary>
+	//		/// <param name="index"></param>
+	//		/// <param name="value"></param>
+	//		public void Insert(int index, FactQuantifier value)
+	//		{
+	//			(this as IList<FactObject>).Insert(index, value);
+	//		}
+	//
+	//		/// <summary>
+	//		/// Removes a quantifier from the collection
+	//		/// </summary>
+	//		/// <param name="value"></param>
+	//		public void Remove(FactQuantifier value)
+	//		{
+	//			(this as IList<FactObject>).Remove(value);
+	//		}
+	//
+	//		/// <summary>
+	//		/// Find if a quantifier is in the collection
+	//		/// </summary>
+	//		/// <param name="value"></param>
+	//		/// <returns></returns>
+	//		public bool Contains(FactQuantifier value)
+	//		{
+	//			return ((this as IList<FactObject>).Contains(value));
+	//		}
+	//	}
 	#endregion
 }

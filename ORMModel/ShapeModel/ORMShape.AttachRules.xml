@@ -77,6 +77,7 @@
 		<arg:Rule class="ORMShapeDomainModel.SetConstraintAdded"/>
 		<arg:Rule class="ORMShapeDomainModel.ValueTypeValueConstraintAdded"/>
 		<arg:Rule class="ReadingShape.DisplayOrientationChanged"/>
+		<arg:Rule class="ReadingShape.ReadingAdded"/>
 		<arg:Rule class="ReadingShape.ReadingOrderDeleted"/>
 		<arg:Rule class="ReadingShape.ReadingPositionChanged"/>
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>

@@ -90,6 +90,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
@@ -407,11 +408,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\FactEditor\FactTokenHelper.cs" />
+    <Compile Include="Shell\FactEditor\FactTokenInfo.cs" />
+    <Compile Include="Shell\FactEditor\NewFactAuthoringScope.cs" />
     <Compile Include="ObjectModel\VerbalizationReport.cs" />
+    <Compile Include="Shell\FactEditor\NewFactDeclarations.cs" />
+    <Compile Include="Shell\FactEditor\NewFactEditorCommandSet.cs" />
+    <Compile Include="Shell\FactEditor\NewFactLanguageService.cs" />
+    <Compile Include="Shell\FactEditor\NewFactScanner.cs" />
+    <Compile Include="Shell\FactEditor\NewFactSource.cs" />
     <Compile Include="ObjectModel\VerbalizationReportGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationReportGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\FactEditor\ORMFactEditorToolWindow.cs" />
     <Compile Include="Shell\GenerateReportDialog.cs">
       <SubType>Form</SubType>
     </Compile>

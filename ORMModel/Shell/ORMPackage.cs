@@ -73,6 +73,22 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(PackageResources.Id.CTMenu, 1)]
+	[ProvideService(typeof(NewFactLanguageService), ServiceName = "New ORM Fact Editor")]
+	[ProvideLanguageService(typeof(NewFactLanguageService),
+							 "New ORM Fact Editor",
+							 -1,                           // resource ID of localized language name
+							 CodeSense = true,              // Supports IntelliSense
+							 QuickInfo = true,              // Supports Quick info
+							 RequestStockColors = false,    // Supplies custom colors
+							 EnableCommenting = true,       // Supports commenting out code
+							 EnableAsyncCompletion = true,  // Supports background parsing
+							 EnableLineNumbers = true,
+							 ShowCompletion = true,
+							 ShowMatchingBrace = true
+							 )]
+	[ProvideLanguageExtensionAttribute(typeof(NewFactLanguageService), ".ormx")]
+	[ProvideToolWindow(typeof(ORMFactEditorToolWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindowVisibility(typeof(ORMFactEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[PackageRegistration(UseManagedResourcesOnly=true, RegisterUsing=RegistrationMethod.Assembly)]
@@ -101,6 +117,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// The commands supported by this package
 		/// </summary>
 		private CommandSet myCommandSet;
+		private CommandSet myFactEditorCommandSet;
 		private IVsWindowFrame myFactEditorToolWindow;
 		private ORMDesignerFontsAndColors myFontAndColorService;
 		private ORMDesignerSettings myDesignerSettings;
@@ -248,7 +265,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// Private to discourage use outside of unit testing,
 		/// may only be accessed through reflection.
 		/// </summary>
-		private static ORMDesignerPackage Singleton
+		internal static ORMDesignerPackage Singleton
 		{
 			get
 			{
@@ -277,9 +294,14 @@ namespace Neumont.Tools.ORM.Shell
 				((IServiceContainer)this).AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService = new ORMDesignerFontsAndColors(this), true);
 				((IServiceContainer)this).AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 
+				NewFactLanguageService managedLanguageService = new NewFactLanguageService();
+				managedLanguageService.SetSite(this);
+				((IServiceContainer)this).AddService(typeof(NewFactLanguageService), managedLanguageService, true);
+
 				// setup commands
 				(myCommandSet = ORMDesignerDocView.CreateCommandSet(this)).Initialize();
 
+				(myFactEditorCommandSet = FactEditor.NewFactEditorCommandSet.CreateCommandSet(this)).Initialize();
 				// Create tool windows
 				AddToolWindow(typeof(ORMModelBrowserToolWindow));
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
@@ -289,6 +311,8 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMNotesToolWindow));
 				AddToolWindow(typeof(ORMContextWindow));
 				EnsureFactEditorToolWindow();
+
+				AddToolWindow(typeof(ORMFactEditorToolWindow));
 
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
@@ -717,6 +741,18 @@ namespace Neumont.Tools.ORM.Shell
 				return mySingleton.EnsureFactEditorToolWindow();
 			}
 		}
+
+		/// <summary>
+		/// Fact editor tool window.
+		/// </summary>
+		public static FactEditor.ORMFactEditorToolWindow NewFactEditorWindow
+		{
+			get
+			{
+				return (FactEditor.ORMFactEditorToolWindow)mySingleton.GetToolWindow(typeof(FactEditor.ORMFactEditorToolWindow), true);
+			}
+		}
+
 		private ORMVerbalizationToolWindowSettings myVerbalizationWindowSettings = new ORMVerbalizationToolWindowSettings();
 		/// <summary>
 		/// Retrieve the settings for the verbalization toolbar. The settings cannot be

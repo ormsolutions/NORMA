@@ -1069,6 +1069,9 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				IVsWindowFrame editorWindow = ORMDesignerPackage.FactEditorWindow;
 				editorWindow.Show();
+
+				ToolWindow newEditorWindow = ORMDesignerPackage.NewFactEditorWindow;
+				newEditorWindow.Show();
 			}
 
 			/// <summary>

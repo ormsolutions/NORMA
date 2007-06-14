@@ -931,6 +931,42 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		/// <summary>
+		/// Adding a reading at the 0 position of the ReadingOrder
+		/// changes the primary reading for that order
+		/// </summary>
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
+		private sealed partial class ReadingAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+				if (!link.IsDeleted)
+				{
+					ReadingOrder order = link.ReadingOrder;
+					FactType factType;
+					if (order.ReadingCollection[0] == link.Reading &&
+						null != (factType = order.FactType))
+					{
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+						{
+							FactTypeShape factShape = pel as FactTypeShape;
+							if (factShape != null)
+							{
+								foreach (ShapeElement shape in factShape.RelativeChildShapes)
+								{
+									ReadingShape readingShape = shape as ReadingShape;
+									if (readingShape != null)
+									{
+										readingShape.InvalidateDisplayText();
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
 		private sealed partial class RoleDisplayOrderAdded : AddRule
 		{
