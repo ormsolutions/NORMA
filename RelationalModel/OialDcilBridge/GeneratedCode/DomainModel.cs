@@ -31,11 +31,11 @@ namespace Neumont.Tools.OialDcilBridge
 	/// Description for Neumont.Tools.OialDcilBridge.OialDcilBridge
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.Oial.OialDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"/*Neumont.Tools.Dil.Dcil.DcilDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"/*Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[DslModeling::DomainObjectId("005cbd56-3ba5-4947-9f46-5608bd563ced")]
 	public partial class OialDcilBridgeDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
@@ -43,7 +43,7 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// OialDcilBridgeDomainModel domain model Id.
 		/// </summary>
-		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0xc52fb9a5, 0x6bf4, 0x4267, 0x87, 0x16, 0x71, 0xd7, 0x4c, 0x7a, 0xa8, 0x9c);
+		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0x005cbd56, 0x3ba5, 0x4947, 0x9f, 0x46, 0x56, 0x08, 0xbd, 0x56, 0x3c, 0xed);
 	
 		/// <summary>
 		/// Constructor.

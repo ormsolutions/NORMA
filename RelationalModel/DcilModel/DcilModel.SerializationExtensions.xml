@@ -17,25 +17,79 @@
 		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
 		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:DomainModel Class="DcilDomainModel">
+	<se:DomainModel Class="ConceptualDatabaseDomainModel">
 		<se:Namespaces>
-			<!--<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-04/ORMCore" SchemaFile="ORM2Core.xsd" DefaultPrefix="true"/>-->
+			<se:Namespace Prefix="rcd" URI="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" SchemaFile="ConceptualDatabase.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ddt" URI="http://schemas.orm.net/DIL/DILDT" SchemaFile="DILDT.xsd"/>
 		</se:Namespaces>
 		<se:RootElements>
-			<!--<se:RootElement Class="ORMModel"/>
-			<se:RootElement Class="ModelErrorDisplayFilter"/>-->
+			<se:RootElement Class="Catalog"/>
 		</se:RootElements>
 		<se:OmittedDomainElements>
-			<!--<se:OmitRelationship Class="FactConstraint"/>
-			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
-			<se:OmitRelationship Class="ExternalRoleConstraint"/>
-			<se:OmitRelationship Class="RoleInstance"/>
-			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
-			<se:OmitRelationship Class="JoinHasRole"/>
-			<se:OmitRelationship Class="ORMModelElementHasJoinPath"/>
-			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
-			<se:OmitClass Class="IntrinsicReferenceMode"/>-->
+			<se:OmitRelationship Class="SchemaContainsContent"/>
+			<se:OmitRelationship Class="TableContainsConstraint"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
-
+	<se:Element Class="Catalog">
+		<se:Container Name="Schemas">
+			<se:Embed RelationshipName="CatalogContainsSchema" RoleName="Schema"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="Schema" SortChildElements="false">
+		<se:Container Name="Tables">
+			<se:Embed RelationshipName="SchemaContainsTable" RoleName="Table"/>
+		</se:Container>
+		<se:Container Name="DomainDataTypes">
+			<se:Embed RelationshipName="SchemaContainsDomain" RoleName="Domain"/>
+		</se:Container>
+		<!--<se:Container Name="Triggers">
+			<se:Embed RelationshipName="SchemaContainsTrigger" RoleName="Trigger"/>
+		</se:Container>
+		<se:Container Name="Procedures">
+			<se:Embed RelationshipName="SchemaContainsProcedure" RoleName="Procedure"/>
+		</se:Container>-->
+	</se:Element>
+	<se:Element Class="Domain" Name="DomainDataType">
+		
+	</se:Element>
+	<se:Element Class="Table" SortChildElements="true">
+		<se:Container Name="Columns">
+			<se:Embed RelationshipName="TableContainsColumn" RoleName="Column"/>
+		</se:Container>
+		<se:Container Name="Constraints">
+			<se:Embed RelationshipName="TableContainsCheckConstraint" RoleName="CheckConstraint"/>
+			<se:Embed RelationshipName="TableContainsUniquenessConstraint" RoleName="UniquenessConstraint"/>
+			<se:Embed RelationshipName="TableContainsReferenceConstraint" RoleName="ReferenceConstraint"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="Column">
+		<se:Attribute ID="IsIdentity">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsIdentity" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsNullable">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsNullable" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="UniquenessConstraintIncludesColumn" RoleName="UniquenessConstraint" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="UniquenessConstraint">
+		<se:Attribute ID="IsPrimary">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPrimary" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="Columns">
+			<se:Link RelationshipName="UniquenessConstraintIncludesColumn" RoleName="Column"/>
+		</se:Container>
+		<se:Link Name="Column" RelationshipName="UniquenessConstraintIncludesColumn" RoleName="Column"/>
+	</se:Element>
 </se:CustomSerializedElements>

@@ -77,7 +77,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					/// <summary>
 					/// Returns last item's index
 					/// </summary>
-					public int EndIndex
+					public int LastItem
 					{
 						get { return myFirstItem + myCount - 1; }
 					}

@@ -15,7 +15,7 @@
 <Dsl
 	xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
-	Id="C52FB9A5-6BF4-4267-8716-71D74C7AA89C"
+	Id="005CBD56-3BA5-4947-9F46-5608BD563CED"
 	Namespace="Neumont.Tools.OialDcilBridge"
 	PackageNamespace="Neumont.Tools.ORM.Shell"
 	Name="OialDcilBridge"
@@ -32,7 +32,7 @@
 		</ClrAttribute>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA&quot;/*Neumont.Tools.Dil.Dcil.DcilDomainModel*/"/>
+				<AttributeParameter Value="&quot;CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA&quot;/*Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
@@ -42,7 +42,7 @@
 			<Source>
 				<DomainRole Id="6ED59846-E0D8-4980-81AC-B3541AD9D7DD" Description="" Name="Schema" PropertyName="OialModel" Multiplicity="One">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Dil.Dcil/Schema"/>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Schema"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -58,7 +58,7 @@
 			<Source>
 				<DomainRole Id="DAEB8DB4-C3A6-497D-BA4C-74D1AF6CCDC0" Description="" Name="Table" PropertyName="ConceptType" Multiplicity="One">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Dil.Dcil/Table"/>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Table"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -74,7 +74,7 @@
 			<Source>
 				<DomainRole Id="E2F7DD3B-8E40-45A5-AC39-863ABFA35020" Description="" Name="Table" PropertyName="ConceptType" Multiplicity="ZeroMany">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Dil.Dcil/Table"/>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Table"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -90,7 +90,7 @@
 			<Source>
 				<DomainRole Id="BC7EA8A8-8772-4CA4-B914-B78B4B583338" Description="" Name="Column" PropertyName="ConceptTypeChildPath" Multiplicity="OneMany">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Dil.Dcil/Column"/>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Column"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -106,7 +106,7 @@
 			<Source>
 				<DomainRole Id="2C58F935-E736-401F-B22F-E38F71AB33E5" Description="" Name="UniquenessConstraint" PropertyName="Uniqueness" Multiplicity="ZeroMany">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Dil.Dcil/UniquenessConstraint"/>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/UniquenessConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -122,7 +122,7 @@
 			<Source>
 				<DomainRole Id="EEC22052-39CD-4F93-AC66-6634DD6423B4" Description="" Name="Domain" PropertyName="InformationTypeFormat" Multiplicity="One">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Dil.Dcil/Domain"/>
+						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Domain"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>

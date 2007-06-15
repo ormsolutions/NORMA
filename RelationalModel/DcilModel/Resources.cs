@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	internal static class Resources
 	{
@@ -57,7 +57,7 @@ namespace Neumont.Tools.Dil.Dcil
 			switch (manager)
 			{
 				case ResourceManagers.DomainModel:
-					return DcilDomainModel.SingletonResourceManager;
+					return ConceptualDatabaseDomainModel.SingletonResourceManager;
 				case ResourceManagers.Catalog:
 					return CatalogResourceManager;
 				default:

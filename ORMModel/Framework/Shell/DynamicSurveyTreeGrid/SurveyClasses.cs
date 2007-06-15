@@ -226,7 +226,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				int imageOffset = 0;
 				foreach (ISurveyQuestionProvider provider in questionProviderList)
 				{
-					foreach (ISurveyQuestionTypeInfo currentQuestionTypeInfo in provider.GetSurveyQuestions(expansionKey))
+					IEnumerable<ISurveyQuestionTypeInfo> questions = provider.GetSurveyQuestions(expansionKey);
+					if (questions == null)
+					{
+						continue;
+					}
+					foreach (ISurveyQuestionTypeInfo currentQuestionTypeInfo in questions)
 					{
 						SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestionTypeInfo, imageOffset);
 						currentQuestion.Shift = totalShift;

@@ -2,16 +2,17 @@
 using System.Windows.Forms;
 using System.Collections.Generic;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
-	partial class DcilDomainModel : ISurveyQuestionProvider
+	partial class ConceptualDatabaseDomainModel : ISurveyQuestionProvider
 	{
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveySchemaType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveySchemaChildType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo[]{
-			ProvideSurveyQuestionForSurveyTableChildType.Instance};
+			ProvideSurveyQuestionForSurveyTableChildType.Instance,
+			ProvideSurveyQuestionForSurveyTableChildGlyphType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo4 = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForSurveyReferenceConstraintChildType.Instance};
 		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo[]{
@@ -93,13 +94,13 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return -1;
+				return answer;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
 				get
 				{
-					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
+					return SurveyQuestionUISupport.Grouping | (SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.Glyph);
 				}
 			}
 		}
@@ -127,7 +128,7 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return (int)SurveySchemaType.Last + answer;
+				return ((int)SurveySchemaType.Last + 1) + answer;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -195,7 +196,7 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return (int)SurveySchemaChildType.Last + answer;
+				return (((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + answer;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -229,7 +230,7 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return (int)SurveyTableChildGlyphType.Last + answer;
+				return ((((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + ((int)SurveyTableChildGlyphType.Last + 1)) + answer;
 			}
 			public SurveyQuestionUISupport UISupport
 			{
@@ -263,7 +264,7 @@ namespace Neumont.Tools.Dil.Dcil
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return (int)SurveyReferenceConstraintChildType.Last + answer;
+				return (((((int)SurveySchemaType.Last + 1) + ((int)SurveySchemaChildType.Last + 1)) + ((int)SurveyTableChildGlyphType.Last + 1)) + ((int)SurveyReferenceConstraintChildType.Last + 1)) + answer;
 			}
 			public SurveyQuestionUISupport UISupport
 			{

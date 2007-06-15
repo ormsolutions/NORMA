@@ -53,7 +53,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 
 					// UNDONE: AnswerOrder
 					//AnswerOrder = new int[Question.CategoryCount];
-					NeutralOnTop = true;
+					NeutralOnTop = false;
 				}
 			}
 			#endregion //survey question display struct
@@ -157,12 +157,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 				int IComparer<SampleDataElementNode>.Compare(SampleDataElementNode node1, SampleDataElementNode node2)
 				{
-					object element1 = node1.Element;
-					object element2 = node2.Element;
-					if (element1 == element2)
+					if (node1 == node2)
 					{
 						return 0;
 					}
+					object element1 = node1.Element;
+					object element2 = node2.Element;
 					List<SurveyQuestionDisplay> displays = myParent.myCurrentDisplays;
 					int displayCount = displays.Count;
 					int retVal = 0;
@@ -688,7 +688,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				BranchModificationEventHandler modificationEvents = myModificationEvents;
 				if (myRootGrouper != null)
 				{
-					myRootGrouper.ElementChangedAt(modificationEvents, index);
+					myRootGrouper.ElementChangedAt(index, modificationEvents);
 				}
 				else if (modificationEvents != null)
 				{

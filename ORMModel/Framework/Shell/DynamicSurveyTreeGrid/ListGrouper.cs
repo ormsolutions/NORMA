@@ -55,7 +55,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						if (branch == null)
 						{
 							//Get parent QuestionList
-							Survey questionList = grouper.myQuestionList;
+							Survey questionList = grouper.mySurvey;
 							//getIndex
 							int questionIndex = questionList.GetIndex(grouper.myQuestion.Question.QuestionType);
 							if (questionIndex < questionList.Count - 1)
@@ -312,7 +312,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							modificationEvents(notifyListShifter, BranchModificationEventArgs.DeleteItems(notifyListShifter, index, 1));
 
 						}
-						if (adjustIndex == 1)
+						else if (adjustIndex == 1)
 						{
 							modificationEvents(notifyListShifter, BranchModificationEventArgs.InsertItems(notifyListShifter, index - 1, 1));
 
@@ -325,14 +325,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							modificationEvents(notifyThrough, BranchModificationEventArgs.DeleteItems(notifyThrough, notifyThroughOffset + index, 1));
 						}
-						if (adjustIndex == 1)
+						else if (adjustIndex == 1)
 						{
-							modificationEvents(notifyThrough, BranchModificationEventArgs.DeleteItems(notifyThrough, notifyThroughOffset + index, 1));
+							modificationEvents(notifyThrough, BranchModificationEventArgs.InsertItems(notifyThrough, notifyThroughOffset + index -1, 1));
 						}
 					}
 					#endregion
 					#region AdjustChange
-					public void AdjustChange(BranchModificationEventHandler modificationEvents, int index)
+					public void AdjustChange(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 					{
 						if (Start <= index && End >= index)
 						{
@@ -344,11 +344,18 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								ListGrouper grouper;
 								if (null != (shifter = branch as SimpleListShifter))
 								{
-									modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, shifter, index, 0, 1)));
+									if (notifyThrough != null)
+									{
+										modificationEvents(notifyThrough, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, notifyThrough, index + notifyThroughOffset, 0, 1)));
+									}
+									else
+									{
+										modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, shifter, index, 0, 1)));
+									}
 								}
 								else if (null != (grouper = branch as ListGrouper))
 								{
-									grouper.ElementChangedAt(modificationEvents, index);
+									grouper.ElementChangedAt(index, modificationEvents, notifyThrough, notifyThroughOffset);
 								}
 							}
 						}
@@ -384,7 +391,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				#region constructor and variable declaration
 				private readonly IBranch myBaseBranch;
 				private readonly SurveyQuestion myQuestion;
-				private readonly Survey myQuestionList;
+				private readonly Survey mySurvey;
 				private readonly int myStartIndex;
 				private readonly int myEndIndex;
 				private readonly bool myNeutralOnTop;
@@ -406,8 +413,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					Debug.Assert(baseBranch != null);
 					myBaseBranch = baseBranch;
 					myQuestion = question;
-					myQuestionList = myQuestion.QuestionList;
-					Debug.Assert(myQuestionList != null); //questions should only be accessible through a survey in which case their question list must be set
+					mySurvey = myQuestion.QuestionList;
+					Debug.Assert(mySurvey != null); //questions should only be accessible through a survey in which case their question list must be set
 					myStartIndex = startIndex;
 					myEndIndex = endIndex;
 					myVisibleSubBranchCount = 0;
@@ -460,15 +467,28 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 					if (--index >= startNeutralIndex)
 					{
-						int questionIndex = myQuestionList.GetIndex(myQuestion.Question.QuestionType);
-						if (questionIndex == myQuestionList.Count - 1)
+						int questionIndex = mySurvey.GetIndex(myQuestion.Question.QuestionType);
+						int questionCount = mySurvey.Count;
+						int groupableQuestionIndex = -1;
+						for (int i = questionIndex + 1; i < questionCount; ++i)
+						{
+							// UNDONE: This should come from the display information, not the question
+							// itself.
+							if (0 != (mySurvey[i].UISupport & SurveyQuestionUISupport.Grouping))
+							{
+								groupableQuestionIndex = i;
+								break;
+							}
+						}
+						
+						if (groupableQuestionIndex == -1)
 						{
 							myNeutralBranch = new SimpleListShifter(myBaseBranch, startNeutralIndex, index - startNeutralIndex + 1);
 						}
 						else
 						{
 							//TODO: use neutralOnTop bool stored with question instead of passing one in
-							myNeutralBranch = new ListGrouper(myBaseBranch, myQuestionList[questionIndex + 1], startNeutralIndex, index, myNeutralOnTop);
+							myNeutralBranch = new ListGrouper(myBaseBranch, mySurvey[groupableQuestionIndex], startNeutralIndex, index, myNeutralOnTop);
 						}
 						return ++index;
 					}
@@ -499,6 +519,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						currentAnswer = question.ExtractAnswer(nodes[index].NodeData);
 						if (currentAnswer == SurveyQuestion.NeutralAnswer)
 						{
+							currentAnswer = lastAnswer;
 							break;
 						}
 						if (currentAnswer != lastAnswer)
@@ -585,7 +606,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						}
 					}
 
-					return index < myEndIndex ? index : myEndIndex;
+					return (index < myEndIndex || index == 0) ? index : myEndIndex;
 				}
 				#endregion //tree creation
 				#region IBranch Members
@@ -813,26 +834,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				private void ElementDeletedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					MainList baseBranch = ((MainList)this.myBaseBranch);
-					if (myNeutralOnTop)
-					{
-						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-						#region currently not implemented Neutral handling
-						//ElementDeletedAtNeutral();
-						//IBranch neutralBranch = myNeutralBranch;
-						//if (neutralBranch != null)
-						//{
-						//    SimpleListShifter neutralShifter;
-						//    ListGrouper neutralGrouper;
-						//    if (null != (neutralShifter = myNeutralBranch as SimpleListShifter))
-						//    {
-						//    }
-						//    else if (null != (neutralGrouper = myNeutralBranch as ListGrouper))
-						//    {
-						//        neutralGrouper.ElementDeletedAt
-						//    }
-						//} 
-						#endregion
-					}
 					for (int i = 0; i < this.mySubBranches.Length; i++)
 					{
 						if (mySubBranches[i].AdjustDelete(index, -1, modificationEvents, notifyThrough, notifyThroughOffset))
@@ -865,10 +866,32 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							}
 						}
 					}
-					if (!myNeutralOnTop)
+
+					// Handle neutral branches
+					IBranch neutralBranch = myNeutralBranch;
+					if (neutralBranch != null)
 					{
-						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-						// UNDONE: Handle trailing neutral
+						Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+						int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
+						IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+						SimpleListShifter shifter;
+						if (null == (shifter = (neutralBranch as SimpleListShifter)))
+						{
+							((ListGrouper)neutralBranch).ElementDeletedAt(index, modificationEvents, notifyBranch, offsetAdjustment);
+						}
+						// Simple shifter cases
+						else if (shifter.FirstItem > index)
+						{
+							shifter.FirstItem -= 1;
+						}
+						else if (shifter.LastItem <= index)
+						{
+							shifter.Count -= 1;
+							if (modificationEvents != null)
+							{
+								modificationEvents(notifyBranch, BranchModificationEventArgs.DeleteItems(notifyBranch, offsetAdjustment + index - shifter.FirstItem, 1));
+							}
+						}
 					}
 				}
 				#endregion // ElementDeletedAt
@@ -892,26 +915,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				private void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
-					if (myNeutralOnTop)
-					{
-						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-						#region handle neutral, currently not implemented
-						//ElementDeletedAtNeutral();
-						//IBranch neutralBranch = myNeutralBranch;
-						//if (neutralBranch != null)
-						//{
-						//    SimpleListShifter neutralShifter;
-						//    ListGrouper neutralGrouper;
-						//    if (null != (neutralShifter = myNeutralBranch as SimpleListShifter))
-						//    {
-						//    }
-						//    else if (null != (neutralGrouper = myNeutralBranch as ListGrouper))
-						//    {
-						//        neutralGrouper.ElementDeletedAt
-						//    }
-						//} 
-						#endregion
-					}
 					for (int i = 0; i < this.mySubBranches.Length; i++)
 					{
 						if (mySubBranches[i].AdjustAdd(i == currentAnswer, i > currentAnswer, index, modificationEvents, notifyThrough, notifyThroughOffset))
@@ -957,10 +960,30 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							}
 						}
 					}
-					if (!myNeutralOnTop)
+					IBranch neutralBranch = myNeutralBranch;
+					if (neutralBranch != null)
 					{
-						Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-						// UNDONE: Handle trailing neutral
+						Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+						int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
+						IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+						SimpleListShifter shifter;
+						if (null == (shifter = (neutralBranch as SimpleListShifter)))
+						{
+							((ListGrouper)neutralBranch).ElementAddedAt(index, modificationEvents, notifyBranch, offsetAdjustment);
+						}
+						// Simple shifter cases
+						else if (shifter.FirstItem > index)
+						{
+							shifter.FirstItem += 1;	
+						}
+						else if (shifter.LastItem <= index)
+						{
+							shifter.Count += 1;
+							if (modificationEvents != null)
+							{
+								modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, offsetAdjustment + index - shifter.FirstItem - 1, 1));
+							}
+						}
 					}
 				}
 				#endregion // ElementAddedAt
@@ -987,47 +1010,87 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					if (modificationEvents != null)
 					{
-						if (myNeutralOnTop)
-						{
-							Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-						}
 						SubBranchMetaData[] subBranches = mySubBranches;
 						for (int i = 0; i < subBranches.Length; i++)
 						{
 							subBranches[i].AdjustRename(fromIndex, toIndex, modificationEvents, notifyThrough, notifyThroughOffset);
 						}
-						if (!myNeutralOnTop)
+						// Handle any nested neutral branches
+						IBranch neutralBranch = myNeutralBranch;
+						if (neutralBranch != null)
 						{
-							Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-							// UNDONE: Handle trailing neutral
+							Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+							int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
+							IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+							SimpleListShifter shifter;
+							if (null == (shifter = (neutralBranch as SimpleListShifter)))
+							{
+								((ListGrouper)neutralBranch).ElementRenamedAt(fromIndex, toIndex, modificationEvents, notifyBranch, offsetAdjustment);
+							}
+							else if (shifter.FirstItem <= fromIndex && shifter.LastItem >= fromIndex)
+							{
+								if (fromIndex != toIndex)
+								{
+									modificationEvents(notifyBranch, BranchModificationEventArgs.MoveItem(notifyBranch, fromIndex - shifter.FirstItem + offsetAdjustment, toIndex - shifter.FirstItem + offsetAdjustment));
+								}
+								else
+								{
+									modificationEvents(notifyBranch, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, notifyBranch, fromIndex - shifter.FirstItem + offsetAdjustment, 0, 1)));
+								}
+							}
 						}
 					}
 				}
 				#endregion // ElementRenamedAt
 				#region ElementChangedAt
-				public void ElementChangedAt(BranchModificationEventHandler modificationEvents, int index)
+				/// <summary>
+				/// Modifies display of the node at the given index and redraws the tree
+				/// </summary>
+				/// <param name="index">Index of the display change for the item</param>
+				/// <param name="modificationEvents">The event handler to notify the tree with</param>
+				public void ElementChangedAt(int index, BranchModificationEventHandler modificationEvents)
+				{
+					ElementChangedAt(index, modificationEvents, null, 0);
+				}
+				/// <summary>
+				/// Modifies display of the node at the given index and redraws the tree
+				/// </summary>
+				/// <param name="index">Index of the display change for the item</param>
+				/// <param name="modificationEvents">The event handler to notify the tree with</param>
+				/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
+				/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
+				public void ElementChangedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					if (modificationEvents != null)
 					{
-						if (myNeutralOnTop)
-						{
-							Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-						}
+						// Handle the main branches
 						SubBranchMetaData[] subBranches = mySubBranches;
 						for (int i = 0; i < subBranches.Length; i++)
 						{
-							subBranches[i].AdjustChange(modificationEvents, index);
+							subBranches[i].AdjustChange(index, modificationEvents, notifyThrough, notifyThroughOffset);
 						}
-						if (!myNeutralOnTop)
+
+						// Handle any nested neutral branches
+						IBranch neutralBranch = myNeutralBranch;
+						if (neutralBranch != null)
 						{
-							Debug.Assert(myNeutralBranch == null, "Neutral adjustment not handled");
-							// UNDONE: Handle trailing neutral
+							Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+							int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
+							IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
+							SimpleListShifter shifter;
+							if (null == (shifter = (neutralBranch as SimpleListShifter)))
+							{
+								((ListGrouper)neutralBranch).ElementChangedAt(index, modificationEvents, notifyBranch, offsetAdjustment);
+							}
+							else if (shifter.FirstItem <= index && shifter.LastItem >= index)
+							{
+								modificationEvents(notifyBranch, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, notifyBranch, index - shifter.FirstItem + offsetAdjustment, 0, 1)));
+							}
 						}
 					}
 				}
 				#endregion // ElementChangedAt
 			}
-
 		}
 	}
 }

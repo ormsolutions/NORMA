@@ -163,7 +163,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>See <see cref="IEquatable{SampleDataElementNode}.Equals"/>.</summary>
 			public bool Equals(SampleDataElementNode other)
 			{
-				return this.myElement == other.myElement && this.myNodeData == other.myNodeData;
+				return this.myElement == other.myElement && this.myNodeData == other.myNodeData && this.myDisplayText == other.myDisplayText;
 			}
 			/// <summary>
 			/// Returns whether <param name="left"/> is equal to <param name="right"/>, based on the

@@ -131,7 +131,11 @@ namespace Neumont.Tools.Modeling.Design
 			{
 				EnumValueInfo valueInfo = new EnumValueInfo(fields[i]);
 				TEnum value = valueInfo.Value;
-				valueInfoDictionary[value] = valueInfo;
+				// If the enum value is duplicated, then key off the first listed field.
+				if (!valueInfoDictionary.ContainsKey(value))
+				{
+					valueInfoDictionary.Add(value, valueInfo);
+				}
 				invariantNameDictionary[valueInfo.InvariantName] = value;
 			}
 		}

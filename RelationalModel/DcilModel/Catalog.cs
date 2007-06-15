@@ -14,7 +14,7 @@
 \**************************************************************************/
 #endregion
 
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	// Placeholder file to associated resources with the root catalog class.
 	// The resources with the domain model are generated, so we need a different

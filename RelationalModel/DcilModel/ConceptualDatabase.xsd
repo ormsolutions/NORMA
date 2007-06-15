@@ -1,0 +1,598 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="0.9">
+	<xs:annotation>
+		<xs:appinfo source="zlib/libpng License Copyright Notice">
+			Copyright © Neumont University. All rights reserved.
+
+			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+			1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+			3. This notice may not be removed or altered from any source distribution.
+		</xs:appinfo>
+		<xs:appinfo>Based on the XML/DIL/DCIL.xsd file</xs:appinfo>
+		<xs:documentation>Database Conceptual Intermediate Language</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
+
+	<xs:element name="Root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="rcd:Catalog" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="catalogKey">
+			<xs:selector xpath="rcd:Catalog"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:simpleType name="NamedIdentifier">
+		<!-- ddt:identifier is very restrictive, and we should never block file load due to duplicate names -->
+		<xs:restriction base="xs:string"/>
+		<!--<xs:restriction base="ddt:identifier"/>-->
+	</xs:simpleType>
+
+	<xs:attributeGroup name="SurrogateIdentifier">
+		<xs:attribute name="id" type="xs:ID" use="required">
+			<xs:annotation>
+				<xs:documentation>A surrogate identifier used for all elements.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="SurrogateIdentifierRef">
+		<xs:attribute name="ref" type="xs:IDREF" use="required">
+			<xs:annotation>
+				<xs:documentation>A surrogate identifier reference used for all elements.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:element name="Catalog">
+		<xs:annotation>
+			<xs:documentation>A named collection of schemas (commonly referred to as a database). Equivalent to a 'CATALOG' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Schemas" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rcd:Schema" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the catalog.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="8"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="schemaKey">
+			<xs:selector xpath="rcd:Schemas/rcd:Schema"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="Schema">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'SCHEMA' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="Tables" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rcd:Table" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DomainDataTypes" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rcd:DomainDataType" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Trigger" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rcd:Trigger" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Procedures" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rcd:Procedure" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the schema.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="tableKey">
+			<xs:selector xpath="rcd:Tables/rcd:Table"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+		<xs:key name="domainDataTypeKey">
+			<xs:selector xpath="rcd:DomainDataTypes/rcd:DomainDataType"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+		<xs:key name="triggerKey">
+			<xs:selector xpath="rcd:Triggers/rcd:Trigger"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="Table">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'TABLE' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Columns" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The columns in the table</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="rcd:Column"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Constraints" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The constraints associated with the table</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:group ref="rcd:Constraint"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the table.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="tableConstraintKey">
+			<xs:selector xpath="rcd:Constraints/child::*"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+		<xs:key name="columnKey">
+			<xs:selector xpath="rcd:Columns/rcd:Column"/>
+			<xs:field xpath="@id"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:key>
+	</xs:element>
+
+	<xs:complexType name="PredefinedDataType">
+		<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+		<xs:attribute name="Name" use="required" type="ddt:predefinedTypes"/>
+		<xs:attribute name="Length" use="optional" type="ddt:stringOrLargeObjectLength">
+			<xs:annotation>
+				<xs:documentation>The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</xs:documentation>
+				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Precision" use="optional" type="ddt:numericPrecision">
+			<xs:annotation>
+				<xs:documentation>The maximum number of decimal digits in a NUMERIC or DECIMAL, or the maximum number of binary digits in the significand (mantissa) of a FLOAT.</xs:documentation>
+				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Scale" use="optional" type="ddt:numericPrecision">
+			<xs:annotation>
+				<xs:documentation>The maximum number of decimal digits after the decimal point in a NUMERIC or DECIMAL.</xs:documentation>
+				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:element name="Column">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'COLUMN' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0">
+					<xs:element name="DomainDataType">
+						<xs:annotation>
+							<xs:documentation>A reference to a user-defined, domain-specific data type.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:attributeGroup ref="rcd:SurrogateIdentifierRef"/>
+							<!--<xs:attribute name="Name" type="rcd:NamedIdentifier">
+								<xs:annotation>
+									<xs:documentation>The name of the domain-specific data type being referenced.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>-->
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PredefinedDataType" type="rcd:PredefinedDataType"/>
+				</xs:choice>
+				<!--<xs:element name="GenerationCode" type="dep:valueExpression" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The code used in the generation / computation of this column.</xs:documentation>
+						<xs:documentation>This element may only be present if @isIdentity is false.</xs:documentation>
+					</xs:annotation>
+				</xs:element>-->
+			</xs:sequence>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the column.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="IsNullable" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is NULL a valid value for this column?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="IsIdentity" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is this an IDENTITY column?</xs:documentation>
+					<xs:documentation>If 'true' is specified for this attribute, the generationCode element must not be present.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:keyref name="domainDataTypeKeyRef" refer="rcd:domainDataTypeKey">
+			<xs:selector xpath="rcd:DomainDataType"/>
+			<xs:field xpath="@ref"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="DomainDataType">
+		<xs:annotation>
+			<xs:documentation>A user-defined, domain-specific data type with custom restrictions on it.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PredefinedDataType" type="rcd:PredefinedDataType"/>
+				<xs:element ref="rcd:CheckConstraint">
+					<xs:annotation>
+						<xs:documentation>The check constraint on this domain-specific data type.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the domain-specific data type.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="Constraint">
+		<xs:choice>
+			<xs:element ref="rcd:UniquenessConstraint"/>
+			<xs:element ref="rcd:ReferenceConstraint"/>
+			<xs:element ref="rcd:CheckConstraint"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="ConstraintType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>A constraint on a table or a domain-specific data type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+		<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+			<xs:annotation>
+				<xs:documentation>The name of the constraint.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:element name="UniquenessConstraint">
+		<xs:annotation>
+			<xs:documentation>A constraint on the uniqueness of a collection of columns. Equivalent to a 'UNIQUE' or 'PRIMARY KEY' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="rcd:ConstraintType">
+					<xs:sequence>
+						<xs:element name="Columns" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Column" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>A reference to a column.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attributeGroup ref="rcd:SurrogateIdentifierRef"/>
+											<!--<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+												<xs:annotation>
+													<xs:documentation>The name of the column being referenced.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>-->
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="IsPrimary" default="false" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Is this uniqueness constraint a PRIMARY KEY?</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:keyref name="uniquenessConstraintColumnKeyRef" refer="rcd:columnKey">
+			<xs:selector xpath="rcd:Column"/>
+			<xs:field xpath="@ref"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="ReferenceConstraint">
+		<xs:annotation>
+			<xs:documentation>A reference to a key in another table. Equivalent to a 'FOREIGN KEY' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="rcd:ConstraintType">
+					<xs:sequence>
+						<xs:element name="TargetTable" minOccurs="0">
+							<xs:complexType>
+								<xs:attributeGroup ref="rcd:SurrogateIdentifierRef"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ColumnReferences" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>References from a column in this table to a column in the target table.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:choice minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="ColumnReference">
+										<xs:complexType>
+											<xs:attribute name="SourceColumn" use="required" type="xs:IDREF">
+												<xs:annotation>
+													<xs:documentation>The name of the referencing column in this table.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="TargetColumn" use="required" type="xs:IDREF">
+												<xs:annotation>
+													<xs:documentation>The name of the referenced column in the target table.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:keyref name="referenceConstraintTableKeyRef" refer="rcd:tableKey">
+			<xs:selector xpath="rcd:TargetTable"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>
+		<xs:keyref name="referenceConstraintSourceColumnKeyRef" refer="rcd:columnKey">
+			<xs:selector xpath="rcd:ColumnReferences/rcd:ColumnReference"/>
+			<xs:field xpath="@SourceColumn"/>
+		</xs:keyref>
+		<xs:keyref name="referenceConstraintTargetColumnKeyRef" refer="rcd:columnKey">
+			<xs:selector xpath="rcd:ColumnReferences/rcd:ColumnReference"/>
+			<xs:field xpath="@TargetColumn"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="CheckConstraint">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a table-level or domain 'CHECK' clause in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="rcd:ConstraintType">
+					<!--<xs:group ref="dep:booleanValueExpression"/>-->
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Trigger">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'TRIGGER' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TargetTable" minOccurs="0">
+					<xs:complexType>
+						<xs:attributeGroup ref="rcd:SurrogateIdentifierRef"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Columns" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The columns that will cause this trigger to fire.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Column" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A reference to a column.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attributeGroup ref="rcd:SurrogateIdentifierRef"/>
+									<!--<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+										<xs:annotation>
+											<xs:documentation>The name of the column being referenced.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>-->
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Referencing" minOccurs="0" maxOccurs="4">
+					<xs:annotation>
+						<xs:documentation>Equivalent to the 'REFERENCING' clause in the SQL Standard.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="Target" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:enumeration value="OLD ROW"/>
+									<xs:enumeration value="NEW ROW"/>
+									<xs:enumeration value="OLD TABLE"/>
+									<xs:enumeration value="NEW TABLE"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+							<xs:annotation>
+								<xs:documentation>The name of the transition variable or table.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<!--<xs:element name="When" minOccurs="0" maxOccurs="1" type="dep:booleanValueExpression">
+					<xs:annotation>
+						<xs:documentation>Equivalent to a search condition in the SQL Standard.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AtomicBlock">
+					<xs:complexType>
+						<xs:group ref="dil:sqlProcedureStatement" maxOccurs="unbounded"/>
+					</xs:complexType>
+				</xs:element>-->
+			</xs:sequence>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the trigger.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<!--<xs:attribute name="TargetTable" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the table being referenced.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>-->
+			<xs:attribute name="ActionTime" use="required">
+				<xs:annotation>
+					<xs:documentation>When the trigger fires.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="BEFORE"/>
+						<xs:enumeration value="AFTER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Event" use="required">
+				<xs:annotation>
+					<xs:documentation>The event that causes trigger to fire.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="INSERT"/>
+						<xs:enumeration value="DELETE"/>
+						<xs:enumeration value="UPDATE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="ForEach" use="required">
+				<xs:annotation>
+					<xs:documentation>The level of the trigger.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="STATEMENT"/>
+						<xs:enumeration value="ROW"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:keyref name="triggerTableKeyRef" refer="rcd:tableKey">
+			<xs:selector xpath="rcd:TargetTable"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>
+		<xs:keyref name="triggerColumnKeyRef" refer="rcd:columnKey">
+			<xs:selector xpath="rcd:Columns/rcd:Column"/>
+			<xs:field xpath="@ref"/>
+			<!--<xs:field xpath="@Name"/>-->
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="Procedure">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'PROCEDURE' in the SQL standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PredefinedDataType" type="rcd:PredefinedDataType"/>
+						</xs:sequence>
+						<xs:attribute name="mode" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="IN"/>
+									<xs:enumeration value="OUT"/>
+									<xs:enumeration value="INOUT"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+							<xs:annotation>
+								<xs:documentation>The name of the parameter.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<!--<xs:group ref="dil:sqlProcedureStatement"/>-->
+			</xs:sequence>
+			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
+			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The name of the procedure.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="SqlDataAccessIndication" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="NO SQL"/>
+						<xs:enumeration value="CONTAINS SQL"/>
+						<xs:enumeration value="READS SQL DATA"/>
+						<xs:enumeration value="MODIFIES SQL DATA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

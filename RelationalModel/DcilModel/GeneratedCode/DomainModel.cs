@@ -24,22 +24,22 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
-	/// DomainModel DcilDomainModel
-	/// Description for Neumont.Tools.Dil.Dcil.Dcil
+	/// DomainModel ConceptualDatabaseDomainModel
+	/// Relational Database View of ORM Model
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Dil.Dcil.DcilDomainModel.DisplayName", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.DcilDomainModel.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("cede46b1-9ca1-4c55-bc88-3dacfadd70ea")]
-	public partial class DcilDomainModel : DslModeling::DomainModel
+	public partial class ConceptualDatabaseDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// DcilDomainModel domain model Id.
+		/// ConceptualDatabaseDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0xcede46b1, 0x9ca1, 0x4c55, 0xbc, 0x88, 0x3d, 0xac, 0xfa, 0xdd, 0x70, 0xea);
 	
@@ -47,7 +47,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public DcilDomainModel(DslModeling::Store store)
+		public ConceptualDatabaseDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -63,7 +63,7 @@ namespace Neumont.Tools.Dil.Dcil
 		{
 			return new global::System.Type[]
 			{
-				typeof(DcilModelElement),
+				typeof(ConceptualDatabaseModelElement),
 				typeof(Catalog),
 				typeof(Schema),
 				typeof(Table),
@@ -232,18 +232,17 @@ namespace Neumont.Tools.Dil.Dcil
 				createElementLinkMap.Add(typeof(SchemaContainsTable), 1);
 				createElementLinkMap.Add(typeof(SchemaContainsDomain), 2);
 				createElementLinkMap.Add(typeof(TableContainsColumn), 3);
-				createElementLinkMap.Add(typeof(TableContainsConstraint), 4);
-				createElementLinkMap.Add(typeof(TableContainsUniquenessConstraint), 5);
-				createElementLinkMap.Add(typeof(TableContainsReferenceConstraint), 6);
-				createElementLinkMap.Add(typeof(TableContainsCheckConstraint), 7);
-				createElementLinkMap.Add(typeof(DomainContainsCheckConstraint), 8);
-				createElementLinkMap.Add(typeof(ColumnHasDomain), 9);
-				createElementLinkMap.Add(typeof(ColumnHasPredefinedDataType), 10);
-				createElementLinkMap.Add(typeof(DomainHasPredefinedDataType), 11);
-				createElementLinkMap.Add(typeof(UniquenessConstraintIncludesColumn), 12);
-				createElementLinkMap.Add(typeof(ReferenceConstraintTargetsTable), 13);
-				createElementLinkMap.Add(typeof(ColumnReference), 14);
-				createElementLinkMap.Add(typeof(ReferenceConstraintContainsColumnReference), 15);
+				createElementLinkMap.Add(typeof(TableContainsUniquenessConstraint), 4);
+				createElementLinkMap.Add(typeof(TableContainsReferenceConstraint), 5);
+				createElementLinkMap.Add(typeof(TableContainsCheckConstraint), 6);
+				createElementLinkMap.Add(typeof(DomainContainsCheckConstraint), 7);
+				createElementLinkMap.Add(typeof(ColumnHasDomain), 8);
+				createElementLinkMap.Add(typeof(ColumnHasPredefinedDataType), 9);
+				createElementLinkMap.Add(typeof(DomainHasPredefinedDataType), 10);
+				createElementLinkMap.Add(typeof(UniquenessConstraintIncludesColumn), 11);
+				createElementLinkMap.Add(typeof(ReferenceConstraintTargetsTable), 12);
+				createElementLinkMap.Add(typeof(ColumnReference), 13);
+				createElementLinkMap.Add(typeof(ReferenceConstraintContainsColumnReference), 14);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -256,18 +255,17 @@ namespace Neumont.Tools.Dil.Dcil
 				case 1: return new SchemaContainsTable(partition, roleAssignments, propertyAssignments);
 				case 2: return new SchemaContainsDomain(partition, roleAssignments, propertyAssignments);
 				case 3: return new TableContainsColumn(partition, roleAssignments, propertyAssignments);
-				case 4: return new TableContainsConstraint(partition, roleAssignments, propertyAssignments);
-				case 5: return new TableContainsUniquenessConstraint(partition, roleAssignments, propertyAssignments);
-				case 6: return new TableContainsReferenceConstraint(partition, roleAssignments, propertyAssignments);
-				case 7: return new TableContainsCheckConstraint(partition, roleAssignments, propertyAssignments);
-				case 8: return new DomainContainsCheckConstraint(partition, roleAssignments, propertyAssignments);
-				case 9: return new ColumnHasDomain(partition, roleAssignments, propertyAssignments);
-				case 10: return new ColumnHasPredefinedDataType(partition, roleAssignments, propertyAssignments);
-				case 11: return new DomainHasPredefinedDataType(partition, roleAssignments, propertyAssignments);
-				case 12: return new UniquenessConstraintIncludesColumn(partition, roleAssignments, propertyAssignments);
-				case 13: return new ReferenceConstraintTargetsTable(partition, roleAssignments, propertyAssignments);
-				case 14: return new ColumnReference(partition, roleAssignments, propertyAssignments);
-				case 15: return new ReferenceConstraintContainsColumnReference(partition, roleAssignments, propertyAssignments);
+				case 4: return new TableContainsUniquenessConstraint(partition, roleAssignments, propertyAssignments);
+				case 5: return new TableContainsReferenceConstraint(partition, roleAssignments, propertyAssignments);
+				case 6: return new TableContainsCheckConstraint(partition, roleAssignments, propertyAssignments);
+				case 7: return new DomainContainsCheckConstraint(partition, roleAssignments, propertyAssignments);
+				case 8: return new ColumnHasDomain(partition, roleAssignments, propertyAssignments);
+				case 9: return new ColumnHasPredefinedDataType(partition, roleAssignments, propertyAssignments);
+				case 10: return new DomainHasPredefinedDataType(partition, roleAssignments, propertyAssignments);
+				case 11: return new UniquenessConstraintIncludesColumn(partition, roleAssignments, propertyAssignments);
+				case 12: return new ReferenceConstraintTargetsTable(partition, roleAssignments, propertyAssignments);
+				case 13: return new ColumnReference(partition, roleAssignments, propertyAssignments);
+				case 14: return new ReferenceConstraintContainsColumnReference(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -279,7 +277,7 @@ namespace Neumont.Tools.Dil.Dcil
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -289,7 +287,7 @@ namespace Neumont.Tools.Dil.Dcil
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DcilDomainModel.SingletonResourceManager;
+				return ConceptualDatabaseDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -301,11 +299,11 @@ namespace Neumont.Tools.Dil.Dcil
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (DcilDomainModel.resourceManager == null)
+				if (ConceptualDatabaseDomainModel.resourceManager == null)
 				{
-					DcilDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(DcilDomainModel).Assembly);
+					ConceptualDatabaseDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ConceptualDatabaseDomainModel).Assembly);
 				}
-				return DcilDomainModel.resourceManager;
+				return ConceptualDatabaseDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -329,9 +327,9 @@ namespace Neumont.Tools.Dil.Dcil
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return DcilDomainModel.CopyClosure;
+					return ConceptualDatabaseDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return DcilDomainModel.DeleteClosure;
+					return ConceptualDatabaseDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -343,14 +341,14 @@ namespace Neumont.Tools.Dil.Dcil
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (DcilDomainModel.copyClosure == null)
+				if (ConceptualDatabaseDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new DcilCopyClosure());
+					copyFilter.AddFilter(new ConceptualDatabaseCopyClosure());
 					
-					DcilDomainModel.copyClosure = copyFilter;
+					ConceptualDatabaseDomainModel.copyClosure = copyFilter;
 				}
-				return DcilDomainModel.copyClosure;
+				return ConceptualDatabaseDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -361,14 +359,14 @@ namespace Neumont.Tools.Dil.Dcil
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (DcilDomainModel.removeClosure == null)
+				if (ConceptualDatabaseDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new DcilDeleteClosure());
+					removeFilter.AddFilter(new ConceptualDatabaseDeleteClosure());
 		
-					DcilDomainModel.removeClosure = removeFilter;
+					ConceptualDatabaseDomainModel.removeClosure = removeFilter;
 				}
-				return DcilDomainModel.removeClosure;
+				return ConceptualDatabaseDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -379,12 +377,12 @@ namespace Neumont.Tools.Dil.Dcil
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class DcilDeleteClosure : DcilDeleteClosureBase, DslModeling::IElementVisitorFilter
+	public partial class ConceptualDatabaseDeleteClosure : ConceptualDatabaseDeleteClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DcilDeleteClosure() : base()
+		public ConceptualDatabaseDeleteClosure() : base()
 		{
 		}
 	}
@@ -392,7 +390,7 @@ namespace Neumont.Tools.Dil.Dcil
 	/// <summary>
 	/// Base class for remove closure visitor filter
 	/// </summary>
-	public partial class DcilDeleteClosureBase : DslModeling::IElementVisitorFilter
+	public partial class ConceptualDatabaseDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -401,20 +399,20 @@ namespace Neumont.Tools.Dil.Dcil
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DcilDeleteClosureBase()
+		public ConceptualDatabaseDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.CatalogContainsSchema.SchemaDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.SchemaContainsContent.SchemaContentDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.SchemaContainsTable.TableDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.SchemaContainsDomain.DomainDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.TableContainsColumn.ColumnDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.TableContainsConstraint.ConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.TableContainsUniquenessConstraint.UniquenessConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.TableContainsCheckConstraint.CheckConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.DomainContainsCheckConstraint.CheckConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.ColumnHasPredefinedDataType.PredefinedDataTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.SchemaDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContentDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.TableDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DomainDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.ColumnDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.ConstraintDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraintDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraintDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraintDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataTypeDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -463,19 +461,19 @@ namespace Neumont.Tools.Dil.Dcil
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class DcilCopyClosure : DcilCopyClosureBase, DslModeling::IElementVisitorFilter
+	public partial class ConceptualDatabaseCopyClosure : ConceptualDatabaseCopyClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DcilCopyClosure() : base()
+		public ConceptualDatabaseCopyClosure() : base()
 		{
 		}
 	}
 	/// <summary>
 	/// Base class for copy closure visitor filter
 	/// </summary>
-	public partial class DcilCopyClosureBase : DslModeling::IElementVisitorFilter
+	public partial class ConceptualDatabaseCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -484,10 +482,10 @@ namespace Neumont.Tools.Dil.Dcil
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DcilCopyClosureBase()
+		public ConceptualDatabaseCopyClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.Dil.Dcil.DomainHasPredefinedDataType.PredefinedDataTypeDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataTypeDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -535,143 +533,154 @@ namespace Neumont.Tools.Dil.Dcil
 	#endregion
 		
 }
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainEnumeration: TriggerTarget
 	/// The valid values for the target attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerTarget, global::Neumont.Tools.Dil.Dcil.Catalog>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerTarget, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerTarget
 	{
 		/// <summary>
 		/// OldRow
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerTarget.OldRow
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.OldRow
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("OLD ROW")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerTarget/OldRow.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/OldRow.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		OldRow = 0,
 		/// <summary>
 		/// NewRow
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerTarget.NewRow
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.NewRow
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("NEW ROW")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerTarget/NewRow.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/NewRow.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		NewRow = 1,
 		/// <summary>
 		/// OldTable
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerTarget.OldTable
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.OldTable
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("OLD TABLE")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerTarget/OldTable.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/OldTable.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		OldTable = 2,
 		/// <summary>
 		/// NewTable
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerTarget.NewTable
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.NewTable
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("NEW TABLE")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerTarget/NewTable.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/NewTable.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		NewTable = 3,
 	}
 }
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainEnumeration: TriggerActionTime
 	/// The valid values for the actionTime attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerActionTime, global::Neumont.Tools.Dil.Dcil.Catalog>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerActionTime, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerActionTime
 	{
 		/// <summary>
 		/// Before
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerActionTime.Before
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime.Before
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("BEFORE")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerActionTime/Before.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime/Before.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Before = 0,
 		/// <summary>
 		/// After
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerActionTime.After
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime.After
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("AFTER")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerActionTime/After.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime/After.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		After = 1,
 	}
 }
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainEnumeration: TriggerEvent
 	/// The valid values for the event attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerEvent, global::Neumont.Tools.Dil.Dcil.Catalog>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerEvent, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerEvent
 	{
 		/// <summary>
 		/// Insert
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerEvent.Insert
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent.Insert
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("INSERT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerEvent/Insert.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Insert.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Insert = 0,
 		/// <summary>
 		/// Delete
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerEvent.Delete
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent.Delete
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("DELETE")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerEvent/Delete.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Delete.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Delete = 1,
 		/// <summary>
 		/// Update
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerEvent.Update
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent.Update
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("UPDATE")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerEvent/Update.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Update.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Update = 2,
 	}
 }
-namespace Neumont.Tools.Dil.Dcil
+namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainEnumeration: TriggerForEach
 	/// The valid values for the event attribute of a trigger.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerForEach, global::Neumont.Tools.Dil.Dcil.Catalog>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TriggerForEach, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum TriggerForEach
 	{
 		/// <summary>
 		/// Statement
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerForEach.Statement
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach.Statement
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("STATEMENT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerForEach/Statement.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach/Statement.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Statement = 0,
 		/// <summary>
 		/// Row
-		/// Description for Neumont.Tools.Dil.Dcil.TriggerForEach.Row
+		/// Description for
+		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach.Row
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("ROW")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.Dcil.TriggerForEach/Row.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach/Row.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Row = 1,
 	}
 }
-namespace Neumont.Tools.Dil
+namespace Neumont.Tools.RelationalModels.DatabaseDefinition
 {
 	/// <summary>
 	/// DomainEnumeration: SqlDataAccessIndication
 	/// Used to indicate the type of access to SQL-data for a SQL-invoked routine.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<SqlDataAccessIndication, global::Neumont.Tools.Dil.Dcil.Catalog>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<SqlDataAccessIndication, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum SqlDataAccessIndication
 	{
@@ -680,188 +689,208 @@ namespace Neumont.Tools.Dil
 		/// Indicates that the SQL-invoked routine does not possibly contain SQL.
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("NO SQL")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.SqlDataAccessIndication/NoSql.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/NoSql.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		NoSql = 0,
 		/// <summary>
 		/// ContainsSql
 		/// Indicates that the SQL-invoked routine possibly contains SQL.
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("CONTAINS SQL")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.SqlDataAccessIndication/ContainsSql.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ContainsSql.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		ContainsSql = 1,
 		/// <summary>
 		/// ReadsSqlData
 		/// Indicates that the SQL-invoked routine possibly reads SQL-data.
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("READS SQL DATA")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.SqlDataAccessIndication/ReadsSqlData.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ReadsSqlData.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		ReadsSqlData = 2,
 		/// <summary>
 		/// ModifiesSqlData
 		/// Indicates that the SQL-invoked routine possibly modified SQL-data.
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("MODIFIES SQL DATA")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.SqlDataAccessIndication/ModifiesSqlData.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ModifiesSqlData.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		ModifiesSqlData = 3,
 	}
 }
-namespace Neumont.Tools.Dil
+namespace Neumont.Tools.RelationalModels.DatabaseDefinition
 {
 	/// <summary>
 	/// DomainEnumeration: PredefinedType
-	/// Description for Neumont.Tools.Dil.PredefinedType
+	/// Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<PredefinedType, global::Neumont.Tools.Dil.Dcil.Catalog>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<PredefinedType, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog>))]
 	[global::System.CLSCompliant(true)]
 	public enum PredefinedType
 	{
 		/// <summary>
 		/// StringMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.StringMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.StringMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/StringMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/StringMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		StringMask = 1140850688,
 		/// <summary>
 		/// CharacterStringMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.CharacterStringMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.CharacterStringMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/CharacterStringMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterStringMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		CharacterStringMask = 67108864,
 		/// <summary>
 		/// BinaryStringMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.BinaryStringMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.BinaryStringMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/BinaryStringMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BinaryStringMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		BinaryStringMask = 1073741824,
 		/// <summary>
 		/// LargeObjectStringMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.LargeObjectStringMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.LargeObjectStringMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/LargeObjectStringMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/LargeObjectStringMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		LargeObjectStringMask = 536870912,
 		/// <summary>
 		/// NumericMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.NumericMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.NumericMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/NumericMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/NumericMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		NumericMask = 402653184,
 		/// <summary>
 		/// ExactNumericMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.ExactNumericMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.ExactNumericMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/ExactNumericMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/ExactNumericMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		ExactNumericMask = 268435456,
 		/// <summary>
 		/// ApproximateNumericMask
-		/// Description for Neumont.Tools.Dil.PredefinedType.ApproximateNumericMask
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.ApproximateNumericMask
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/ApproximateNumericMask.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/ApproximateNumericMask.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		ApproximateNumericMask = 134217728,
 		/// <summary>
 		/// Character
-		/// Description for Neumont.Tools.Dil.PredefinedType.Character
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Character
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("CHARACTER")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Character.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Character.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Character = 67108865,
 		/// <summary>
 		/// CharacterVarying
-		/// Description for Neumont.Tools.Dil.PredefinedType.CharacterVarying
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.CharacterVarying
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("CHARACTER VARYING")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/CharacterVarying.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterVarying.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		CharacterVarying = 67108866,
 		/// <summary>
 		/// CharacterLargeObject
-		/// Description for Neumont.Tools.Dil.PredefinedType.CharacterLargeObject
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.CharacterLargeObject
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("CHARACTER LARGE OBJECT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/CharacterLargeObject.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterLargeObject.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		CharacterLargeObject = 603979779,
 		/// <summary>
 		/// BinaryLargeObject
-		/// Description for Neumont.Tools.Dil.PredefinedType.BinaryLargeObject
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.BinaryLargeObject
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("BINARY LARGE OBJECT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/BinaryLargeObject.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BinaryLargeObject.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		BinaryLargeObject = 1610612740,
 		/// <summary>
 		/// Numeric
-		/// Description for Neumont.Tools.Dil.PredefinedType.Numeric
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Numeric
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("NUMERIC")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Numeric.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Numeric.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Numeric = 268435461,
 		/// <summary>
 		/// Decimal
-		/// Description for Neumont.Tools.Dil.PredefinedType.Decimal
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Decimal
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("DECIMAL")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Decimal.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Decimal.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Decimal = 268435462,
 		/// <summary>
 		/// SmallInt
-		/// Description for Neumont.Tools.Dil.PredefinedType.SmallInt
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.SmallInt
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("SMALLINT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/SmallInt.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/SmallInt.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		SmallInt = 268435463,
 		/// <summary>
 		/// Integer
-		/// Description for Neumont.Tools.Dil.PredefinedType.Integer
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Integer
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("INTEGER")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Integer.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Integer.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Integer = 268435464,
 		/// <summary>
 		/// BigInt
-		/// Description for Neumont.Tools.Dil.PredefinedType.BigInt
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.BigInt
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("BIGINT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/BigInt.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BigInt.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		BigInt = 268435465,
 		/// <summary>
 		/// Float
-		/// Description for Neumont.Tools.Dil.PredefinedType.Float
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Float
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("FLOAT")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Float.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Float.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Float = 134217738,
 		/// <summary>
 		/// Real
-		/// Description for Neumont.Tools.Dil.PredefinedType.Real
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Real
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("REAL")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Real.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Real.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Real = 134217739,
 		/// <summary>
 		/// DoublePrecision
-		/// Description for Neumont.Tools.Dil.PredefinedType.DoublePrecision
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.DoublePrecision
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("DOUBLE PRECISION")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/DoublePrecision.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/DoublePrecision.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		DoublePrecision = 134217740,
 		/// <summary>
 		/// Boolean
-		/// Description for Neumont.Tools.Dil.PredefinedType.Boolean
+		/// Description for
+		/// Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Boolean
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("BOOLEAN")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Dil.PredefinedType/Boolean.Description", typeof(global::Neumont.Tools.Dil.Dcil.DcilDomainModel), "Neumont.Tools.Dil.Dcil.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Boolean.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Boolean = 13,
 	}
 }

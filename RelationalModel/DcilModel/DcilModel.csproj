@@ -7,8 +7,8 @@
     <ProjectGuid>{1A3F7938-A79C-40D2-BA43-1778118C73C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.Dil.Dcil</RootNamespace>
-    <AssemblyName>Neumont.Tools.Dil.Dcil</AssemblyName>
+    <RootNamespace>Neumont.Tools.RelationalModels.ConceptualDatabase</RootNamespace>
+    <AssemblyName>Neumont.Tools.RelationalModels</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -68,6 +68,13 @@
     <Content Include="DcilModel.dsl" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\..\XML\DIL\DILDT.xsd">
+      <Link>DILDT.xsd</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConceptualDatabase.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="GeneratedCode\DomainClasses.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainClasses.cs</LastGenOutput>
@@ -134,6 +141,7 @@
       <DependentUpon>DcilModel.SurveyQuestionProvider.xml</DependentUpon>
     </Compile>
     <Compile Include="Catalog.cs" />
+    <Compile Include="Design\ConceptualDatabaseModelElementTypeDescriptor.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="SurveyImplementations\SurveyQuestions.cs" />
     <EmbeddedResource Include="Catalog.resx">

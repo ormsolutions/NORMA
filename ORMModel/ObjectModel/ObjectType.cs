@@ -401,7 +401,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						for (int i = 0; i < linkCount; ++i)
 						{
 							ElementLink link = links[i];
-							if (!link.IsDeleting && link.GetDomainClass().DomainModel == nativeModel && !(link is ORMModelElementHasExtensionElement))
+							if (!link.IsDeleting &&
+								link.GetDomainClass().DomainModel == nativeModel &&
+								!(link is ORMModelElementHasExtensionElement) &&
+								!(link is ObjectTypeImpliesMandatoryConstraint))
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,
