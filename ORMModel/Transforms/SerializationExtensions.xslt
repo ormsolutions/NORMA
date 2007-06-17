@@ -47,12 +47,29 @@
 						<plx:comment blankLine="true"/>
 					</plx:leadingInfo>
 				</xsl:if>
-				<xsl:apply-templates select="child::*"/>
+				<xsl:variable name="namespaces" select="se:DomainModel/se:Namespaces/se:Namespace"/>
+				<xsl:variable name="defaultNamespaceFragment">
+					<xsl:variable name="explicitDefaultNamespace" select="$namespaces[@DefaultPrefix='true' or @DefaultPrefix='1']"/>
+					<xsl:choose>
+						<xsl:when test="$explicitDefaultNamespace">
+							<xsl:copy-of select="$explicitDefaultNamespace[1]"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:copy-of select="$namespaces[1]"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:apply-templates select="child::*">
+					<xsl:with-param name="namespaces" select="$namespaces"/>
+					<xsl:with-param name="defaultNamespace" select="exsl:node-set($defaultNamespaceFragment)/child::*"/>
+				</xsl:apply-templates>
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>
 	<xsl:template match="se:Copyright"/>
 	<xsl:template match="se:Element">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="defaultNamespace"/>
 		<xsl:variable name="ClassName" select="@Class"/>
 		<xsl:variable name="ClassOverride" select="@Override='true'"/>
 		<xsl:variable name="ClassSealed" select="@Sealed='true'"/>
@@ -296,6 +313,8 @@
 											<plx:right>
 												<plx:callNew dataTypeName="ORMCustomSerializedContainerElementInfo">
 													<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+														<xsl:with-param name="namespaces" select="$namespaces"/>
+														<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 														<xsl:with-param name="modifier" select="$outerIndex"/>
 													</xsl:call-template>
 													<xsl:for-each select="se:Link | se:Embed">
@@ -325,6 +344,8 @@
 												<plx:right>
 													<plx:callNew dataTypeName="ORMCustomSerializedInnerContainerElementInfo">
 														<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+															<xsl:with-param name="namespaces" select="$namespaces"/>
+															<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 															<xsl:with-param name="modifier" select="$innerIndex"/>
 														</xsl:call-template>
 														<plx:passParam>
@@ -382,7 +403,10 @@
 					<plx:get>
 						<xsl:choose>
 							<xsl:when test="$haveCustomElementInfo">
-								<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+								<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+									<xsl:with-param name="namespaces" select="$namespaces"/>
+									<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+								</xsl:call-template>
 							</xsl:when>
 							<xsl:otherwise>
 								<plx:throw>
@@ -488,7 +512,7 @@
 					</xsl:choose>
 				</plx:function>
 			</xsl:if>
-			<xsl:variable name="customLinkInfo" select="se:Link"/>
+			<xsl:variable name="customLinkInfo" select="se:Link | se:StandaloneLink"/>
 			<xsl:if test="$customLinkInfo or not($ClassOverride)">
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedLinkInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
@@ -512,7 +536,7 @@
 								</plx:initialize>
 							</plx:local>
 							<xsl:choose>
-								<xsl:when test="not(se:Link[normalize-space(@CreateAsRelationshipName)])">
+								<xsl:when test="not((se:Link|se:StandaloneLink)[normalize-space(@CreateAsRelationshipName)])">
 									<xsl:for-each select="$customLinkInfo">
 										<plx:branch>
 											<plx:condition>
@@ -525,7 +549,10 @@
 													</plx:right>
 												</plx:binaryOperator>
 											</plx:condition>
-											<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+											<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+												<xsl:with-param name="namespaces" select="$namespaces"/>
+												<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+											</xsl:call-template>
 										</plx:branch>
 									</xsl:for-each>
 								</xsl:when>
@@ -542,7 +569,7 @@
 									<xsl:for-each select="exsl:node-set($sortedCustomLinkInfo)/child::*">
 										<xsl:variable name="roleName" select="@RoleName"/>
 										<xsl:variable name="relationshipName" select="@RelationshipName"/>
-										<xsl:if test="position()=1 or not(preceding-sibling::se:Link[1][@RelationshipName=$relationshipName and @RoleName=$roleName])">
+										<xsl:if test="position()=1 or not(preceding-sibling::*[self::se:Link | self::se:StandaloneLink][1][@RelationshipName=$relationshipName and @RoleName=$roleName])">
 											<plx:branch>
 												<plx:condition>
 													<plx:binaryOperator type="equality">
@@ -581,10 +608,13 @@
 																	</plx:right>
 																</plx:binaryOperator>
 															</plx:condition>
-															<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+															<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+																<xsl:with-param name="namespaces" select="$namespaces"/>
+																<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+															</xsl:call-template>
 														</plx:branch>
-														<xsl:if test="position()!=last() and following-sibling::se:Link[1][@RelationshipName=$relationshipName and @RoleName=$roleName]">
-															<xsl:for-each select="following-sibling::se:Link[@RelationshipName=$relationshipName and @RoleName=$roleName]">
+														<xsl:if test="position()!=last() and following-sibling::*[self::se:Link | self::se:StandaloneLink][1][@RelationshipName=$relationshipName and @RoleName=$roleName]">
+															<xsl:for-each select="following-sibling::*[self::se:Link | self::se:StandaloneLink][@RelationshipName=$relationshipName and @RoleName=$roleName]">
 																<xsl:choose>
 																	<xsl:when test="normalize-space(@CreateAsRelationshipName)">
 																		<plx:alternateBranch>
@@ -598,12 +628,18 @@
 																					</plx:right>
 																				</plx:binaryOperator>
 																			</plx:condition>
-																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+																				<xsl:with-param name="namespaces" select="$namespaces"/>
+																				<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+																			</xsl:call-template>
 																		</plx:alternateBranch>
 																	</xsl:when>
 																	<xsl:otherwise>
 																		<plx:fallbackBranch>
-																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+																				<xsl:with-param name="namespaces" select="$namespaces"/>
+																				<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+																			</xsl:call-template>
 																		</plx:fallbackBranch>
 																	</xsl:otherwise>
 																</xsl:choose>
@@ -611,7 +647,10 @@
 														</xsl:if>
 													</xsl:when>
 													<xsl:otherwise>
-														<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+														<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+															<xsl:with-param name="namespaces" select="$namespaces"/>
+															<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+														</xsl:call-template>
 													</xsl:otherwise>
 												</xsl:choose>
 											</plx:branch>
@@ -1055,7 +1094,6 @@
 				</xsl:when>
 			</xsl:choose>
 			<xsl:variable name="mapChildElementBodyFragment">
-				<xsl:variable name="namespaces" select="../se:DomainModel/se:Namespaces/se:Namespace"/>
 				<xsl:variable name="namespace">
 					<xsl:call-template name="ResolveNamespace">
 						<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1065,7 +1103,7 @@
 				<xsl:variable name="linksInContainerElement" select="se:Container//se:Link"/>
 				<xsl:variable name="containerElements" select="$allContainers"/>
 				<xsl:variable name="allLinksTemp">
-					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten') or se:ConditionalName[not(@WriteStyle='NotWritten')]]">
+					<xsl:for-each select="se:StandaloneLink | se:Link[not(@WriteStyle='NotWritten') or se:ConditionalName[not(@WriteStyle='NotWritten')]]">
 						<xsl:copy>
 							<xsl:copy-of select="@*"/>
 							<xsl:if test="$linksInContainerElement[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and normalize-space(@CreateAsRelationshipName)=normalize-space(current()/@CreateAsRelationshipName)]">
@@ -1078,6 +1116,7 @@
 									<xsl:copy-of select="@*"/>
 								</xsl:copy>
 							</xsl:for-each>
+							<xsl:copy-of select="se:Role"/>
 						</xsl:copy>
 					</xsl:for-each>
 				</xsl:variable>
@@ -1168,32 +1207,45 @@
 							<xsl:variable name="relationshipName" select="@RelationshipName"/>
 							<xsl:variable name="roleName" select="@RoleName"/>
 							<xsl:variable name="namedLinks" select="$allLinks[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and normalize-space(@CreateAsRelationshipName)=normalize-space(current()/@CreateAsRelationshipName)]"/>
-							<xsl:if test="$namedLinks">
+							<xsl:for-each select="$namedLinks">
 								<xsl:copy>
-									<xsl:copy-of select="@*"/>
-									<xsl:for-each select="$namedLinks[1]">
-										<xsl:variable name="conditionalNames" select="se:ConditionalName[string(@Name) and not(@WriteStyle='NotWritten')]"/>
-										<xsl:choose>
-											<xsl:when test="string-length(@Name)">
-												<xsl:copy-of select="@Name"/>
-											</xsl:when>
-											<xsl:when test="not($conditionalNames)">
-												<xsl:attribute name="Name">
-													<xsl:value-of select="@RelationshipName"/>
-													<xsl:text>.</xsl:text>
-													<xsl:value-of select="@RoleName"/>
-												</xsl:attribute>
-											</xsl:when>
-										</xsl:choose>
-										<xsl:copy-of select="@AllowDuplicates"/>
-										<xsl:for-each select="$conditionalNames">
-											<xsl:copy>
-												<xsl:copy-of select="@*"/>
-											</xsl:copy>
-										</xsl:for-each>
+									<xsl:copy-of select="@*[local-name()!='Name']"/>
+									<xsl:variable name="conditionalNames" select="se:ConditionalName[string(@Name) and not(@WriteStyle='NotWritten')]"/>
+									<xsl:choose>
+										<xsl:when test="self::se:StandaloneLink">
+											<xsl:if test="not(@PrimaryLinkElement='true' or @PrimaryLinkElement='1')">
+												<xsl:choose>
+													<xsl:when test="string-length(@Name)">
+														<xsl:copy-of select="@Name"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:attribute name="Name">
+															<xsl:value-of select="@Class"/>
+														</xsl:attribute>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:if>
+										</xsl:when>
+										<xsl:when test="string-length(@Name)">
+											<xsl:copy-of select="@Name"/>
+										</xsl:when>
+										<xsl:when test="not($conditionalNames)">
+											<xsl:attribute name="Name">
+												<xsl:value-of select="@RelationshipName"/>
+												<xsl:text>.</xsl:text>
+												<xsl:value-of select="@RoleName"/>
+											</xsl:attribute>
+										</xsl:when>
+									</xsl:choose>
+									<xsl:copy-of select="@AllowDuplicates"/>
+									<xsl:for-each select="$conditionalNames">
+										<xsl:copy>
+											<xsl:copy-of select="@*"/>
+										</xsl:copy>
 									</xsl:for-each>
+									<xsl:copy-of select="se:Role"/>
 								</xsl:copy>
-							</xsl:if>
+							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:variable>
 					<xsl:variable name="localLinks" select="exsl:node-set($localLinksFragment)/child::*"/>
@@ -1244,11 +1296,19 @@
 										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
 									</plx:passParam>
 								</xsl:if>
+								<xsl:if test="self::se:StandaloneLink">
+									<plx:passParam>
+										<xsl:call-template name="CreateStandaloneRelationship">
+											<xsl:with-param name="namespaces" select="$namespaces"/>
+											<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+										</xsl:call-template>
+									</plx:passParam>
+								</xsl:if>
 								<plx:passParam>
 									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
 								</plx:passParam>
 							</plx:callInstance>
-							<xsl:if test="string(@Name) and not(@WriteStyle='NotWritten')">
+							<xsl:if test="self::se:StandaloneLink or (string(@Name) and not(@WriteStyle='NotWritten'))">
 								<plx:callInstance name="Add">
 									<plx:callObject>
 										<plx:nameRef name="childElementMappings"/>
@@ -1690,7 +1750,6 @@
 					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="$attributes">
-							<xsl:variable name="namespaces" select="../se:DomainModel/se:Namespaces/se:Namespace"/>
 							<plx:local name="customSerializedAttributes" dataTypeName="Dictionary">
 								<plx:passTypeParam dataTypeName=".string"/>
 								<plx:passTypeParam dataTypeName="Guid"/>
@@ -1926,6 +1985,8 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="se:DomainModel">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="defaultNamespace"/>
 		<xsl:variable name="ModelName" select="@Class"/>
 		<xsl:variable name="ClassSealed" select="@Sealed='true'"/>
 		<xsl:variable name="InterfaceImplementationVisibility">
@@ -1958,20 +2019,8 @@
 						<summary>The default XmlNamespace associated with the '<xsl:value-of select="$ModelName"/>' extension model</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<xsl:variable name="DefaultXmlNamespace">
-					<xsl:variable name="namespaces" select="se:Namespaces/se:Namespace"/>
-					<xsl:variable name="defaultNamespace" select="$namespaces[@DefaultPrefix='true' or @DefaultPrefix='1']"/>
-					<xsl:choose>
-						<xsl:when test="$defaultNamespace">
-							<xsl:value-of select="$defaultNamespace[1]/@URI"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$namespaces[1]/@URI"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
 				<plx:initialize>
-					<plx:string data="{$DefaultXmlNamespace}"/>
+					<plx:string data="{$defaultNamespace/@URI}"/>
 				</plx:initialize>
 			</plx:field>
 			<xsl:for-each select="se:Namespaces">
@@ -2159,6 +2208,9 @@
 			<plx:field name="myValidNamespaces" dataTypeName="Collection" visibility="private" static="true">
 				<plx:passTypeParam dataTypeName=".string"/>
 			</plx:field>
+			<xsl:if test="se:RootLinks/se:Container">
+				<plx:field name="myRootRelationshipContainers" dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true" visibility="private" static="true"/>
+			</xsl:if>
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="ShouldSerializeDomainClass">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -2265,86 +2317,93 @@
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetRootRelationshipContainers"/>
-				<plx:returns dataTypeName="ORMRootRelationshipContainer" dataTypeIsSimpleArray="true"/>
-				<plx:return>
-					<plx:callNew dataTypeName="ORMRootRelationshipContainer" dataTypeIsSimpleArray="true">
-						<xsl:variable name="rootLinkContainers" select="se:RootLinks/se:Container"/>
-						<xsl:choose>
-							<xsl:when test="$rootLinkContainers">
-								<plx:arrayInitializer>
-									<xsl:for-each select="$rootLinkContainers">
-										<plx:callNew dataTypeName="ORMRootRelationshipContainer">
-											<plx:passParam>
-												<plx:string data="{@Name}"/>
-											</plx:passParam>
-											<plx:passParam>
-												<plx:callNew dataTypeName="ORMRootRelationship" dataTypeIsSimpleArray="true">
-													<plx:arrayInitializer>
-														<xsl:for-each select="se:RootLink">
-															<plx:callNew dataTypeName="ORMRootRelationship">
-																<plx:passParam>
-																	<xsl:choose>
-																		<xsl:when test="string(@Name)">
-																			<plx:string data="{@Name}"/>
-																		</xsl:when>
-																		<xsl:otherwise>
-																			<plx:string data="{@Class}"/>
-																		</xsl:otherwise>
-																	</xsl:choose>
-																</plx:passParam>
-																<plx:passParam>
-																	<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
-																</plx:passParam>
-																<plx:passParam>
-																	<plx:callNew dataTypeName="ORMRootRelationshipRole" dataTypeIsSimpleArray="true">
-																		<plx:arrayInitializer>
-																			<xsl:for-each select="se:Role">
-																				<plx:callNew dataTypeName="ORMRootRelationshipRole">
-																					<plx:passParam>
-																						<xsl:choose>
-																							<xsl:when test="string(@Name)">
-																								<plx:string data="{@Name}"/>
-																							</xsl:when>
-																							<xsl:otherwise>
-																								<plx:string data="{@RoleName}"/>
-																							</xsl:otherwise>
-																						</xsl:choose>
-																					</plx:passParam>
-																					<plx:passParam>
-																						<plx:callStatic dataTypeName="{../@Class}" name="{@RoleName}DomainRoleId" type="field"/>
-																					</plx:passParam>
-																				</plx:callNew>
-																			</xsl:for-each>
-																		</plx:arrayInitializer>
-																	</plx:callNew>
-																</plx:passParam>
-																<plx:passParam>
-																	<xsl:choose>
-																		<xsl:when test="@PrimaryLinkElement='true'">
-																			<plx:trueKeyword/>
-																		</xsl:when>
-																		<xsl:otherwise>
-																			<plx:falseKeyword/>
-																		</xsl:otherwise>
-																	</xsl:choose>
-																</plx:passParam>
-															</plx:callNew>
-														</xsl:for-each>
-													</plx:arrayInitializer>
+				<plx:returns dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true"/>
+				<xsl:variable name="rootLinkContainers" select="se:RootLinks/se:Container"/>
+				<xsl:choose>
+					<xsl:when test="$rootLinkContainers">
+						<plx:local name="retVal" dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true">
+							<plx:initialize>
+								<plx:callStatic dataTypeName="{$ModelName}" name="myRootRelationshipContainers" type="field"/>
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:nameRef name="retVal"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="retVal"/>
+								</plx:left>
+								<plx:right>
+									<plx:callNew dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true">
+										<plx:arrayInitializer>
+											<xsl:for-each select="$rootLinkContainers">
+												<plx:callNew dataTypeName="ORMCustomSerializedRootRelationshipContainer">
+													<plx:passParam>
+														<plx:string data="{$defaultNamespace/@Prefix}">
+															<xsl:if test="string(@Prefix)">
+																<xsl:attribute name="data">
+																	<xsl:value-of select="@Prefix"/>
+																</xsl:attribute>
+															</xsl:if>
+														</plx:string>
+													</plx:passParam>
+													<plx:passParam>
+														<plx:string data="{@Name}"/>
+													</plx:passParam>
+													<plx:passParam>
+														<plx:string data="{$defaultNamespace/@URI}">
+															<xsl:if test="string(@Prefix)">
+																<xsl:attribute name="data">
+																	<xsl:value-of select="$namespaces[@Prefix=current()/@Prefix]/@URI"/>
+																</xsl:attribute>
+															</xsl:if>
+														</plx:string>
+													</plx:passParam>
+													<plx:passParam>
+														<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationship" dataTypeIsSimpleArray="true">
+															<plx:arrayInitializer>
+																<xsl:for-each select="se:RootLink">
+																	<xsl:call-template name="CreateStandaloneRelationship">
+																		<xsl:with-param name="namespaces" select="$namespaces"/>
+																		<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+																	</xsl:call-template>
+																</xsl:for-each>
+															</plx:arrayInitializer>
+														</plx:callNew>
+													</plx:passParam>
 												</plx:callNew>
-											</plx:passParam>
-										</plx:callNew>
-									</xsl:for-each>
-								</plx:arrayInitializer>
-							</xsl:when>
-							<xsl:otherwise>
-								<plx:passParam>
-									<plx:value type="i4" data="0"/>
-								</plx:passParam>
-							</xsl:otherwise>
-						</xsl:choose>
-					</plx:callNew>
-				</plx:return>
+											</xsl:for-each>
+										</plx:arrayInitializer>
+									</plx:callNew>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:callStatic dataTypeName="{$ModelName}" name="myRootRelationshipContainers" type="field"/>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="retVal"/>
+								</plx:right>
+							</plx:assign>
+						</plx:branch>
+						<plx:return>
+							<plx:nameRef name="retVal"/>
+						</plx:return>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:return>
+							<plx:nullKeyword/>
+						</plx:return>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:function>
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapRootElement" modifier="static">
 				<plx:leadingInfo>
@@ -2356,7 +2415,6 @@
 				<plx:param name="xmlNamespace" dataTypeName=".string"/>
 				<plx:param name="elementName" dataTypeName=".string"/>
 				<plx:returns dataTypeName="Guid"/>
-				<xsl:variable name="namespaces" select="se:Namespaces/se:Namespace"/>
 				<xsl:for-each select="se:RootElements/se:RootElement">
 					<xsl:variable name="className" select="@Class"/>
 					<xsl:variable name="tagName">
@@ -2764,6 +2822,8 @@
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="PassORMCustomSerializedElementInfoParams">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="defaultNamespace"/>
 		<xsl:param name="modifier"/>
 		<xsl:variable name="conditionalNames" select="se:ConditionalName"/>
 		<plx:passParam>
@@ -2785,6 +2845,9 @@
 					<xsl:choose>
 						<xsl:when test="string-length(@Name)">
 							<plx:string data="{@Name}"/>
+						</xsl:when>
+						<xsl:when test="self::se:StandaloneLink[not(@PrimaryLinkElement='true' or @PrimaryLinkElement='1')]">
+							<plx:string data="{@Class}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:nullKeyword/>
@@ -2813,6 +2876,16 @@
 					<plx:callStatic name="pending" type="field" dataTypeName="ORMCustomSerializedElementWriteStyle">
 						<xsl:attribute name="name">
 							<xsl:choose>
+								<xsl:when test="self::se:StandaloneLink">
+									<xsl:choose>
+										<xsl:when test="@PrimaryLinkElement='true' or @PrimaryLinkElement='1'">
+											<xsl:text>PrimaryStandaloneLinkElement</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>StandaloneLinkElement</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
 								<xsl:when test="string-length(@DoubleTagName)">
 									<xsl:text>DoubleTaggedElement</xsl:text>
 								</xsl:when>
@@ -2850,12 +2923,30 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:passParam>
+		<xsl:if test="self::se:StandaloneLink">
+			<plx:passParam>
+				<xsl:call-template name="CreateStandaloneRelationship">
+					<xsl:with-param name="namespaces" select="$namespaces"/>
+					<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+				</xsl:call-template>
+			</plx:passParam>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="ReturnORMCustomSerializedElementInfo">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="defaultNamespace"/>
 		<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable"/>
 		<plx:return>
 			<plx:callNew dataTypeName="ORMCustomSerializedElementInfo">
-				<xsl:call-template name="PassORMCustomSerializedElementInfoParams"/>
+				<xsl:if test="self::se:StandaloneLink">
+					<xsl:attribute name="dataTypeName">
+						<xsl:text>ORMCustomSerializedStandaloneLinkElementInfo</xsl:text>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+					<xsl:with-param name="namespaces" select="$namespaces"/>
+					<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+				</xsl:call-template>
 			</plx:callNew>
 		</plx:return>
 	</xsl:template>
@@ -2943,5 +3034,79 @@
 				</plx:passParam>
 			</plx:callNew>
 		</plx:return>
+	</xsl:template>
+	<xsl:template name="CreateStandaloneRelationship">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="defaultNamespace"/>
+		<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationship">
+			<plx:passParam>
+				<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationshipRole" dataTypeIsSimpleArray="true">
+					<plx:arrayInitializer>
+						<xsl:for-each select="se:Role">
+							<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationshipRole">
+								<plx:passParam>
+									<plx:string data="{@RoleName}">
+										<xsl:if test="string(@Name)">
+											<xsl:attribute name="data">
+												<xsl:value-of select="@Name"/>
+											</xsl:attribute>
+										</xsl:if>
+									</plx:string>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callStatic dataTypeName="{../@Class}" name="{@RoleName}DomainRoleId" type="field"/>
+								</plx:passParam>
+							</plx:callNew>
+						</xsl:for-each>
+					</plx:arrayInitializer>
+				</plx:callNew>
+			</plx:passParam>
+			<xsl:choose>
+				<xsl:when test="@PrimaryLinkElement='true' or @PrimaryLinkElement='1'">
+					<plx:passParam>
+						<plx:nullKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nullKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nullKeyword/>
+					</plx:passParam>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:passParam>
+						<plx:string data="{$defaultNamespace/@Prefix}">
+							<xsl:if test="string(@Prefix)">
+								<xsl:attribute name="data">
+									<xsl:value-of select="@Prefix"/>
+								</xsl:attribute>
+							</xsl:if>
+						</plx:string>
+					</plx:passParam>
+					<plx:passParam>
+						<xsl:choose>
+							<xsl:when test="string(@Name)">
+								<plx:string data="{@Name}"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:string data="{@Class}"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string data="{$defaultNamespace/@URI}">
+							<xsl:if test="string(@Prefix)">
+								<xsl:attribute name="data">
+									<xsl:value-of select="$namespaces[@Prefix=current()/@Prefix]/@URI"/>
+								</xsl:attribute>
+							</xsl:if>
+						</plx:string>
+					</plx:passParam>
+				</xsl:otherwise>
+			</xsl:choose>
+		</plx:callNew>
 	</xsl:template>
 </xsl:stylesheet>

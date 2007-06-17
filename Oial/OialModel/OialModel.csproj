@@ -7,8 +7,8 @@
     <ProjectGuid>{F4B81EBF-F984-4051-A321-CC7ECB4F2C0B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.Oial</RootNamespace>
-    <AssemblyName>Neumont.Tools.Oial</AssemblyName>
+    <RootNamespace>Neumont.Tools.ORMAbstraction</RootNamespace>
+    <AssemblyName>Neumont.Tools.ORMAbstraction</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -125,7 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.Oial.GeneratedCode.OialDomainModelResx.resources</LogicalName>
+      <LogicalName>Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx.resources</LogicalName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainModelResx.tt</DependentUpon>

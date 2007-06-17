@@ -404,7 +404,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (!link.IsDeleting &&
 								link.GetDomainClass().DomainModel == nativeModel &&
 								!(link is ORMModelElementHasExtensionElement) &&
-								!(link is ObjectTypeImpliesMandatoryConstraint))
+								!(link is ObjectTypeImpliesMandatoryConstraint) &&
+								!(link is ElementAssociatedWithModelError))
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,

@@ -19,7 +19,7 @@
 	Namespace="Neumont.Tools.OialDcilBridge"
 	PackageNamespace="Neumont.Tools.ORM.Shell"
 	Name="OialDcilBridge"
-	DisplayName="OIAL/DCIL Bridge"
+	DisplayName="(Preliminary) ORMAbstraction/ConceptualDatabase Bridge"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
@@ -27,7 +27,7 @@
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;F7BC82F4-83D1-408C-BA42-607E90B23BEA&quot;/*Neumont.Tools.Oial.OialDomainModel*/"/>
+				<AttributeParameter Value="&quot;F7BC82F4-83D1-408C-BA42-607E90B23BEA&quot;/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
@@ -38,18 +38,18 @@
 	</Attributes>
 	
 	<Relationships>
-		<DomainRelationship Id="9CA44CEF-1787-41BC-A0AC-5AC79753DABB" Name="SchemaIsForOialModel" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="9CA44CEF-1787-41BC-A0AC-5AC79753DABB" Name="SchemaIsForAbstractionModel" Namespace="Neumont.Tools.OialDcilBridge">
 			<Source>
-				<DomainRole Id="6ED59846-E0D8-4980-81AC-B3541AD9D7DD" Description="" Name="Schema" PropertyName="OialModel" Multiplicity="One">
+				<DomainRole Id="6ED59846-E0D8-4980-81AC-B3541AD9D7DD" Description="" Name="Schema" PropertyName="AbstractionModel" Multiplicity="One">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Schema"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="3C18D01E-2687-42A1-9536-B23F91A247D0" Description="" Name="OialModel" PropertyName="Schema" Multiplicity="One">
+				<DomainRole Id="3C18D01E-2687-42A1-9536-B23F91A247D0" Description="" Name="AbstractionModel" PropertyName="Schema" Multiplicity="One">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Oial/OialModel"/>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/AbstractionModel"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -65,7 +65,7 @@
 			<Target>
 				<DomainRole Id="64F5EC66-1AF4-4368-A1A2-5913681DE491" Description="" Name="ConceptType" PropertyName="Table" Multiplicity="ZeroOne">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Oial/ConceptType"/>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -81,7 +81,7 @@
 			<Target>
 				<DomainRole Id="51D93721-0758-4405-B36E-E807309F8CA8" Description="" Name="ConceptType" PropertyName="Table" Multiplicity="ZeroMany">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Oial/ConceptType"/>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -97,7 +97,7 @@
 			<Target>
 				<DomainRole Id="B162A279-A4C1-4271-AD37-9CDDFC421722" Description="" Name="ConceptTypeChild" PropertyName="Column" Multiplicity="OneMany">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="/Neumont.Tools.Oial/ConceptTypeChild"/>
+						<DomainRelationshipMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptTypeChild"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -113,7 +113,7 @@
 			<Target>
 				<DomainRole Id="78AB7C46-D141-4136-B1DA-2F5A64E820DC" Description="" Name="ConceptTypeChild" PropertyName="Column" Multiplicity="ZeroMany">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="/Neumont.Tools.Oial/ConceptTypeChild"/>
+						<DomainRelationshipMoniker Name="/Neumont.Tools.ORMAbstraction/ConceptTypeChild"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -129,7 +129,7 @@
 			<Target>
 				<DomainRole Id="64E89755-37F7-43D6-A6C5-654B1C315D1B" Description="" Name="InformationTypeFormat" PropertyName="Domain" Multiplicity="ZeroMany">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.Oial/InformationTypeFormat"/>
+						<DomainClassMoniker Name="/Neumont.Tools.ORMAbstraction/InformationTypeFormat"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

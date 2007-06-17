@@ -4,9 +4,9 @@ using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
-using Neumont.Tools.Oial;
+using Neumont.Tools.ORMAbstraction;
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	class InformationTypeFormatWithFactTypes
 	{

@@ -17,31 +17,33 @@
 		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
 		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:DomainModel Class="OialDomainModel">
+	<se:DomainModel Class="AbstractionDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="oil" URI="http://schemas.orm.net/OIAL/Core" SchemaFile="OIAL.xsd" DefaultPrefix="true"/>
-			<se:Namespace Prefix="odt" URI="http://schemas.orm.net/OIAL/Datatypes/Core" SchemaFile="OIALDatatypes.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="oil" URI="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" SchemaFile="OIAL.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="odt" URI="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" SchemaFile="OIALDatatypes.xsd"/>
 		</se:Namespaces>
 		<se:RootElements>
-			<se:RootElement Class="OialModel" Name="model"/>
+			<se:RootElement Class="AbstractionModel" Name="model"/>
 		</se:RootElements>
 	</se:DomainModel>
-	<!-- OialModel -->
-	<se:Element Class="OialModel" Name="model" SortChildElements="false" Override="false" Sealed="true">
+	<!-- AbstractionModel -->
+	<se:Element Class="AbstractionModel" Name="model" SortChildElements="true" Override="false" Sealed="true">
 		<se:Attribute ID="Name" Name="name"/>
 		<se:Container Name="informationTypeFormats">
-			<se:Embed RelationshipName="OialModelHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
+			<se:Embed RelationshipName="AbstractionModelHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
 		</se:Container>
-		<se:Link Name="conceptType" RelationshipName="OialModelHasConceptType" RoleName="ConceptType"/>
+		<se:Container Name="conceptTypes">
+			<se:Embed RelationshipName="AbstractionModelHasConceptType" RoleName="ConceptType"/>
+		</se:Container>
 	</se:Element>
 	<!-- InformationTypeFormats -->
-	<se:Element Class="InformationTypeFormat" Prefix="odt" Override="false">
+	<se:Element Class="InformationTypeFormat" Prefix="odt" Override="false" Name="dataType">
 		<se:Attribute Name="name" ID="Name"/>
 		<se:Link Name="ConceptType" RelationshipName="InformationType" RoleName="ConceptType" WriteStyle="NotWritten"/>
 		<se:Link Name="Parent" RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- Uniqueness elements -->
-	<se:Element Class="Uniqueness" Name="uniqueness" SortChildElements="false" Override="false" Sealed="true">
+	<se:Element Class="Uniqueness" Name="uniquenessConstraint" SortChildElements="false" Override="false" Sealed="true">
 		<!-- We write the value of the Preferred property only if it is true -->
 		<se:Attribute ID="IsPreferred" Name="isPreferred">
 			<se:Condition WriteStyle="NotWritten">
@@ -54,21 +56,28 @@
 		<se:Link Name="uniquenessChild" RelationshipName="UniquenessIncludesConceptTypeChild" RoleName="ConceptTypeChild" />
 	</se:Element>
 	<!-- Concept Types -->
-	<se:Element Class="ConceptType" Name="conceptType" SortChildElements="false" Override="false" Sealed="true">
+	<se:Element Class="ConceptType" Name="conceptType" SortChildElements="true" Override="false" Sealed="true">
 		<se:Attribute Name="name" ID="Name" WriteStyle="Attribute"/>
-		<se:Link Name="informationType" RelationshipName="InformationType" RoleName="InformationTypeFormat" WriteStyle="PrimaryLinkElement"/>
-		<se:Link Name="uniqueness" RelationshipName="ConceptTypeHasUniqueness" RoleName="Uniqueness" WriteStyle="PrimaryLinkElement"/>
-		<se:Link Name="relatedConceptType" RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatedConceptType" WriteStyle="PrimaryLinkElement" />
-		<se:Link Name="assimilatedConceptType" RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatedConceptType" WriteStyle="PrimaryLinkElement" />
-		<se:Link Name="associationChild" RelationshipName="ConceptTypeHasChildAsPartOfAssociation" RoleName="Target"/>
+		<se:Container Name="children">
+			<se:Link RelationshipName="InformationType" RoleName="InformationTypeFormat"/>
+			<se:Link RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatedConceptType"/>
+			<se:Link RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatedConceptType"/>
+		</se:Container>
+		<se:Container Name="uniquenessConstraints">
+			<se:Embed RelationshipName="ConceptTypeHasUniqueness" RoleName="Uniqueness"/>
+		</se:Container>
 		<se:Container Name="association">
-			<se:Embed RoleName="Target" RelationshipName="ConceptTypeHasChildAsPartOfAssociation"/>
+			<se:Link RoleName="Target" RelationshipName="ConceptTypeHasChildAsPartOfAssociation"/>
 		</se:Container>
 
-		<se:Link RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConceptTypeChild" RoleName="Target" WriteStyle="NotWritten"/>
+		<se:Link Name="informationType" RelationshipName="InformationType" RoleName="InformationTypeFormat" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
+		<se:Link Name="relatedConceptType" RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatedConceptType" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
+		<se:Link Name="assimilatedConceptType" RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatedConceptType" WriteStyle="PrimaryLinkElement" />
 		<se:Link RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatingConceptType" WriteStyle="NotWritten" />
 		<se:Link RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatorConceptType" WriteStyle="NotWritten"/>
+		<se:Link Name="associationChild" RelationshipName="ConceptTypeHasChildAsPartOfAssociation" RoleName="Target"/>
+		<se:Link RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeChild" RoleName="Target" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConceptTypeReferencesConceptType" RoleName="ReferencedConceptType" WriteStyle="NotWritten" />
 		<se:Link RelationshipName="ConceptTypeReferencesConceptType" RoleName="ReferencingConceptType" WriteStyle="NotWritten" />
 	</se:Element>
@@ -114,10 +123,4 @@
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
-	<!-- Associated concept types -->
-	<se:Element Class="ConceptTypeHasChildAsPartOfAssociation" Override="false" Sealed="true"/>
-	<se:Element Class="ConceptTypeHasUniqueness" Override="false" Sealed="true"/>
-	<se:Element Class="UniquenessIncludesConceptTypeChild" Override="false" Sealed="true"/>
-	<se:Element Class="OialModelHasConceptType" Override="false" Sealed="true"/>
-	<se:Element Class="OialModelHasInformationTypeFormat" Override="false" Sealed="true"/>
 </se:CustomSerializedElements>

@@ -19,11 +19,11 @@ using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections;
-using Neumont.Tools.Oial;
+using Neumont.Tools.ORMAbstraction;
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
-	public partial class ORMOialBridgeDomainModel : IDeserializationFixupListenerProvider
+	public partial class ORMToORMAbstractionBridgeDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>
@@ -34,9 +34,9 @@ namespace Neumont.Tools.ORMOialBridge
 			get
 			{
 				yield return new ORMModelFixupListener();
-				yield return OialModelIsForORMModel.ORMModelHasObjectTypeFixupListener;
-				yield return OialModelIsForORMModel.ORMModelHasFactTypeFixupListener;
-				yield return OialModelIsForORMModel.ORMModelModelHasSetConstraintFixupListener;
+				yield return AbstractionModelIsForORMModel.ORMModelHasObjectTypeFixupListener;
+				yield return AbstractionModelIsForORMModel.ORMModelHasFactTypeFixupListener;
+				yield return AbstractionModelIsForORMModel.ORMModelModelHasSetConstraintFixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
@@ -72,11 +72,11 @@ namespace Neumont.Tools.ORMOialBridge
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(ORMModel element, Store store, INotifyElementAdded notifyAdded)
 			{
-				OialModel oil = OialModelIsForORMModel.GetOialModel(element);
+				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(element);
 				if (oil == null)
 				{
-					oil = new OialModel(store);
-					OialModelIsForORMModel oialModelIsForORMModel = new OialModelIsForORMModel(oil, element);
+					oil = new AbstractionModel(store);
+					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, element);
 					notifyAdded.ElementAdded(oil, true);
 				}
 			}

@@ -936,7 +936,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			get
 			{
 				// UNDONE: Localize the format string
-				return string.Format(CultureInfo.InvariantCulture, "{0}->{1}", SourceColumn.Name, TargetColumn.Name);
+				return string.Format(CultureInfo.InvariantCulture, "{0} = {1}", SourceColumn.Name, TargetColumn.Name);
 			}
 		}
 		string ISurveyNode.EditableSurveyName

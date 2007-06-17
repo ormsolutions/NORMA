@@ -2,7 +2,7 @@
 <#@ DisableRule processor="DisableRuleDirectiveProcessor" requires="ruleName='Microsoft.VisualStudio.Modeling.DslDesigner.PropertyAddedSerializationFixupRule, Microsoft.VisualStudio.Modeling.Sdk.DslDefinition, Version\u003D8.2.0.0, Culture\u003Dneutral, PublicKeyToken\u003Db03f5f7f11d50a3a'" #>
 <#@ DisableRule processor="DisableRuleDirectiveProcessor" requires="ruleName='Microsoft.VisualStudio.Modeling.DslDesigner.RelationshipAddedSerializationFixupRule, Microsoft.VisualStudio.Modeling.Sdk.DslDefinition, Version\u003D8.2.0.0, Culture\u003Dneutral, PublicKeyToken\u003Db03f5f7f11d50a3a'" #>
 <#@ include file="Dsl\DslResxGenerator.tt" #>
-<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ORMOialBridge.dsl';generatedResourceFile='ORMOialBridgeDomainModelResx';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ORMOialBridge.dsl';generatedResourceFile='ORMToORMAbstractionBridgeDomainModelResx';validation=''" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../OialModel/OialModel.dsl';validation=''" provides="dslLibrary='OialDslLibrary'" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>

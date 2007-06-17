@@ -22,13 +22,13 @@ using Neumont.Tools.ORM.ObjectModel;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.Oial
+namespace Neumont.Tools.ORMAbstraction
 {
-	#region OialDomainModel model serialization
-	partial class OialDomainModel : IORMCustomSerializedDomainModel
+	#region AbstractionDomainModel model serialization
+	partial class AbstractionDomainModel : IORMCustomSerializedDomainModel
 	{
-		/// <summary>The default XmlNamespace associated with the 'OialDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.orm.net/OIAL/Core";
+		/// <summary>The default XmlNamespace associated with the 'AbstractionDomainModel' extension model</summary>
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core";
 		/// <summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
@@ -49,10 +49,10 @@ namespace Neumont.Tools.Oial
 		{
 			string[,] ret = new string[2, 3];
 			ret[0, 0] = "oil";
-			ret[0, 1] = "http://schemas.orm.net/OIAL/Core";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core";
 			ret[0, 2] = "OIAL.xsd";
 			ret[1, 0] = "odt";
-			ret[1, 1] = "http://schemas.orm.net/OIAL/Datatypes/Core";
+			ret[1, 1] = "http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core";
 			ret[1, 2] = "OIALDatatypes.xsd";
 			return ret;
 		}
@@ -75,27 +75,27 @@ namespace Neumont.Tools.Oial
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[]{
-				OialModel.DomainClassId};
+				AbstractionModel.DomainClassId};
 		}
 		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
 			return GetRootElementClasses();
 		}
 		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
-		protected static ORMRootRelationshipContainer[] GetRootRelationshipContainers()
+		protected static ORMCustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{
-			return new ORMRootRelationshipContainer[0];
+			return null;
 		}
-		ORMRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		ORMCustomSerializedRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
 		{
 			return GetRootRelationshipContainers();
 		}
 		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "model") && (xmlNamespace == "http://schemas.orm.net/OIAL/Core"))
+			if ((elementName == "model") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"))
 			{
-				return OialModel.DomainClassId;
+				return AbstractionModel.DomainClassId;
 			}
 			return default(Guid);
 		}
@@ -106,28 +106,23 @@ namespace Neumont.Tools.Oial
 		/// <summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
-			Collection<string> validNamespaces = OialDomainModel.myValidNamespaces;
-			Dictionary<string, Guid> classNameMap = OialDomainModel.myClassNameMap;
+			Collection<string> validNamespaces = AbstractionDomainModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = AbstractionDomainModel.myClassNameMap;
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.orm.net/OIAL/Core");
-				validNamespaces.Add("http://schemas.orm.net/OIAL/Datatypes/Core");
-				OialDomainModel.myValidNamespaces = validNamespaces;
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core");
+				AbstractionDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
-				classNameMap.Add("model", OialModel.DomainClassId);
-				classNameMap.Add("InformationTypeFormat", InformationTypeFormat.DomainClassId);
-				classNameMap.Add("uniqueness", Uniqueness.DomainClassId);
+				classNameMap.Add("model", AbstractionModel.DomainClassId);
+				classNameMap.Add("dataType", InformationTypeFormat.DomainClassId);
+				classNameMap.Add("uniquenessConstraint", Uniqueness.DomainClassId);
 				classNameMap.Add("conceptType", ConceptType.DomainClassId);
-				classNameMap.Add("ConceptTypeHasChildAsPartOfAssociation", ConceptTypeHasChildAsPartOfAssociation.DomainClassId);
-				classNameMap.Add("ConceptTypeHasUniqueness", ConceptTypeHasUniqueness.DomainClassId);
-				classNameMap.Add("UniquenessIncludesConceptTypeChild", UniquenessIncludesConceptTypeChild.DomainClassId);
-				classNameMap.Add("OialModelHasConceptType", OialModelHasConceptType.DomainClassId);
-				classNameMap.Add("OialModelHasInformationTypeFormat", OialModelHasInformationTypeFormat.DomainClassId);
-				OialDomainModel.myClassNameMap = classNameMap;
+				AbstractionDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
 			{
@@ -140,28 +135,29 @@ namespace Neumont.Tools.Oial
 			return MapClassName(xmlNamespace, elementName);
 		}
 	}
-	#endregion // OialDomainModel model serialization
-	#region OialModel serialization
-	sealed partial class OialModel : IORMCustomSerializedElement
+	#endregion // AbstractionDomainModel model serialization
+	#region AbstractionModel serialization
+	sealed partial class AbstractionModel : IORMCustomSerializedElement
 	{
 		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles));
 			}
 		}
 		private static ORMCustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
 		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
 		{
-			ORMCustomSerializedContainerElementInfo[] ret = OialModel.myCustomSerializedChildElementInfo;
+			ORMCustomSerializedContainerElementInfo[] ret = AbstractionModel.myCustomSerializedChildElementInfo;
 			if (ret == null)
 			{
-				ret = new ORMCustomSerializedContainerElementInfo[1];
-				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "informationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OialModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
-				OialModel.myCustomSerializedChildElementInfo = ret;
+				ret = new ORMCustomSerializedContainerElementInfo[2];
+				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "informationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+				ret[1] = new ORMCustomSerializedContainerElementInfo(null, "conceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, AbstractionModelHasConceptType.ConceptTypeDomainRoleId);
+				AbstractionModel.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
 		}
@@ -176,7 +172,7 @@ namespace Neumont.Tools.Oial
 		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (domainPropertyInfo.Id == OialModel.NameDomainPropertyId)
+			if (domainPropertyInfo.Id == AbstractionModel.NameDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, "name", null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
@@ -185,35 +181,66 @@ namespace Neumont.Tools.Oial
 		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == OialModelHasConceptType.ConceptTypeDomainRoleId)
+			throw new NotSupportedException();
+		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			public CustomSortChildComparer(Store store)
 			{
-				return new ORMCustomSerializedElementInfo(null, "conceptType", null, ORMCustomSerializedElementWriteStyle.Element, null);
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(AbstractionModelHasConceptType.ConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			return ORMCustomSerializedElementInfo.Default;
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				int xPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
 		}
 		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
-				return null;
+				IComparer<DomainRoleInfo> retVal = AbstractionModel.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					retVal = new CustomSortChildComparer(this.Store);
+					AbstractionModel.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
 			}
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
 		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
-			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = OialModel.myChildElementMappings;
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = AbstractionModel.myChildElementMappings;
 			if (childElementMappings == null)
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(OialModelHasConceptType.ConceptTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|conceptType", match);
-				match.InitializeRoles(OialModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
-				childElementMappings.Add("||http://schemas.orm.net/OIAL/Core|informationTypeFormats||", match);
-				OialModel.myChildElementMappings = childElementMappings;
+				match.InitializeRoles(AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|informationTypeFormats||", match);
+				match.InitializeRoles(AbstractionModelHasConceptType.ConceptTypeDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|conceptTypes||", match);
+				AbstractionModel.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
 			childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", ((object)containerNamespace != (object)outerContainerNamespace) ? containerNamespace : null, "|", containerName, "|", ((object)elementNamespace != (object)containerNamespace) ? elementNamespace : null, "|", elementName), out rVal);
@@ -223,12 +250,12 @@ namespace Neumont.Tools.Oial
 		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
 		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
-			Dictionary<string, Guid> customSerializedAttributes = OialModel.myCustomSerializedAttributes;
+			Dictionary<string, Guid> customSerializedAttributes = AbstractionModel.myCustomSerializedAttributes;
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
-				customSerializedAttributes.Add("name", OialModel.NameDomainPropertyId);
-				OialModel.myCustomSerializedAttributes = customSerializedAttributes;
+				customSerializedAttributes.Add("name", AbstractionModel.NameDomainPropertyId);
+				AbstractionModel.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
 			string key = attributeName;
@@ -249,7 +276,7 @@ namespace Neumont.Tools.Oial
 			return ShouldSerialize();
 		}
 	}
-	#endregion // OialModel serialization
+	#endregion // AbstractionModel serialization
 	#region InformationTypeFormat serialization
 	partial class InformationTypeFormat : IORMCustomSerializedElement
 	{
@@ -282,7 +309,7 @@ namespace Neumont.Tools.Oial
 		{
 			get
 			{
-				return new ORMCustomSerializedElementInfo("odt", null, null, ORMCustomSerializedElementWriteStyle.Element, null);
+				return new ORMCustomSerializedElementInfo("odt", "dataType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 		}
 		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
@@ -403,7 +430,7 @@ namespace Neumont.Tools.Oial
 		{
 			get
 			{
-				return new ORMCustomSerializedElementInfo(null, "uniqueness", null, ORMCustomSerializedElementWriteStyle.Element, null);
+				return new ORMCustomSerializedElementInfo(null, "uniquenessConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 		}
 		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
@@ -451,7 +478,7 @@ namespace Neumont.Tools.Oial
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(UniquenessIncludesConceptTypeChild.ConceptTypeChildDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|uniquenessChild", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|uniquenessChild", match);
 				Uniqueness.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -498,7 +525,7 @@ namespace Neumont.Tools.Oial
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
 			}
 		}
 		private static ORMCustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
@@ -508,8 +535,10 @@ namespace Neumont.Tools.Oial
 			ORMCustomSerializedContainerElementInfo[] ret = ConceptType.myCustomSerializedChildElementInfo;
 			if (ret == null)
 			{
-				ret = new ORMCustomSerializedContainerElementInfo[1];
-				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "association", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId);
+				ret = new ORMCustomSerializedContainerElementInfo[3];
+				ret[0] = new ORMCustomSerializedContainerElementInfo(null, "children", null, ORMCustomSerializedElementWriteStyle.Element, null, InformationType.InformationTypeFormatDomainRoleId, ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId, ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId);
+				ret[1] = new ORMCustomSerializedContainerElementInfo(null, "uniquenessConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasUniqueness.UniquenessDomainRoleId);
+				ret[2] = new ORMCustomSerializedContainerElementInfo(null, "association", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId);
 				ConceptType.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -539,10 +568,6 @@ namespace Neumont.Tools.Oial
 			{
 				return new ORMCustomSerializedElementInfo(null, "informationType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
-			if (roleId == ConceptTypeHasUniqueness.UniquenessDomainRoleId)
-			{
-				return new ORMCustomSerializedElementInfo(null, "uniqueness", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
-			}
 			if (roleId == ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "relatedConceptType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
@@ -550,6 +575,14 @@ namespace Neumont.Tools.Oial
 			if (roleId == ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "assimilatedConceptType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
+			}
+			if (roleId == ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId)
 			{
@@ -563,14 +596,6 @@ namespace Neumont.Tools.Oial
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId)
-			{
-				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId)
-			{
-				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ConceptTypeReferencesConceptType.ReferencedConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
@@ -581,12 +606,66 @@ namespace Neumont.Tools.Oial
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			public CustomSortChildComparer(Store store)
+			{
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(InformationType.InformationTypeFormatDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasUniqueness.UniquenessDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeChild.ParentDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeChild.TargetDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeReferencesConceptType.ReferencedConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeReferencesConceptType.ReferencingConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				int xPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
+		}
 		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
-				return null;
+				IComparer<DomainRoleInfo> retVal = ConceptType.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					retVal = new CustomSortChildComparer(this.Store);
+					ConceptType.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
 			}
 		}
 		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
@@ -598,16 +677,16 @@ namespace Neumont.Tools.Oial
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(InformationType.InformationTypeFormatDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|informationType", match);
-				match.InitializeRoles(ConceptTypeHasUniqueness.UniquenessDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|uniqueness", match);
-				match.InitializeRoles(ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|relatedConceptType", match);
+				match.InitializeRoles(true, InformationType.InformationTypeFormatDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|children||informationType", match);
+				match.InitializeRoles(true, ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|children||relatedConceptType", match);
 				match.InitializeRoles(ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|assimilatedConceptType", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|children||assimilatedConceptType", match);
 				match.InitializeRoles(ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId);
-				childElementMappings.Add("||||http://schemas.orm.net/OIAL/Core|associationChild", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|association||associationChild", match);
+				match.InitializeRoles(ConceptTypeHasUniqueness.UniquenessDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core|uniquenessConstraints||", match);
 				ConceptType.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -971,319 +1050,4 @@ namespace Neumont.Tools.Oial
 		}
 	}
 	#endregion // ConceptTypeAssimilatesConceptType serialization
-	#region ConceptTypeHasChildAsPartOfAssociation serialization
-	sealed partial class ConceptTypeHasChildAsPartOfAssociation : IORMCustomSerializedElement
-	{
-		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return ORMCustomSerializedElementSupportedOperations.None;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return null;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return default(ORMCustomSerializedElementMatch);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return default(Guid);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
-		private static bool ShouldSerialize()
-		{
-			return true;
-		}
-		bool IORMCustomSerializedElement.ShouldSerialize()
-		{
-			return ShouldSerialize();
-		}
-	}
-	#endregion // ConceptTypeHasChildAsPartOfAssociation serialization
-	#region ConceptTypeHasUniqueness serialization
-	sealed partial class ConceptTypeHasUniqueness : IORMCustomSerializedElement
-	{
-		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return ORMCustomSerializedElementSupportedOperations.None;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return null;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return default(ORMCustomSerializedElementMatch);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return default(Guid);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
-		private static bool ShouldSerialize()
-		{
-			return true;
-		}
-		bool IORMCustomSerializedElement.ShouldSerialize()
-		{
-			return ShouldSerialize();
-		}
-	}
-	#endregion // ConceptTypeHasUniqueness serialization
-	#region UniquenessIncludesConceptTypeChild serialization
-	sealed partial class UniquenessIncludesConceptTypeChild : IORMCustomSerializedElement
-	{
-		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return ORMCustomSerializedElementSupportedOperations.None;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return null;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return default(ORMCustomSerializedElementMatch);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return default(Guid);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
-		private static bool ShouldSerialize()
-		{
-			return true;
-		}
-		bool IORMCustomSerializedElement.ShouldSerialize()
-		{
-			return ShouldSerialize();
-		}
-	}
-	#endregion // UniquenessIncludesConceptTypeChild serialization
-	#region OialModelHasConceptType serialization
-	sealed partial class OialModelHasConceptType : IORMCustomSerializedElement
-	{
-		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return ORMCustomSerializedElementSupportedOperations.None;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return null;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return default(ORMCustomSerializedElementMatch);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return default(Guid);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
-		private static bool ShouldSerialize()
-		{
-			return true;
-		}
-		bool IORMCustomSerializedElement.ShouldSerialize()
-		{
-			return ShouldSerialize();
-		}
-	}
-	#endregion // OialModelHasConceptType serialization
-	#region OialModelHasInformationTypeFormat serialization
-	sealed partial class OialModelHasInformationTypeFormat : IORMCustomSerializedElement
-	{
-		/// <summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return ORMCustomSerializedElementSupportedOperations.None;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
-		ORMCustomSerializedContainerElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
-		{
-			throw new NotSupportedException();
-		}
-		/// <summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-		{
-			get
-			{
-				return null;
-			}
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
-		{
-			return default(ORMCustomSerializedElementMatch);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
-		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-		{
-			return default(Guid);
-		}
-		/// <summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
-		private static bool ShouldSerialize()
-		{
-			return true;
-		}
-		bool IORMCustomSerializedElement.ShouldSerialize()
-		{
-			return ShouldSerialize();
-		}
-	}
-	#endregion // OialModelHasInformationTypeFormat serialization
 }

@@ -15,6 +15,6 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="OialDomainModel">
+	<arg:Model class="AbstractionDomainModel">
 	</arg:Model>
 </arg:Rules>

@@ -16,17 +16,17 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
-	#region Attach rules to ORMOialBridgeDomainModel model
-	partial class ORMOialBridgeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
+	#region Attach rules to ORMToORMAbstractionBridgeDomainModel model
+	partial class ORMToORMAbstractionBridgeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = ORMOialBridgeDomainModel.myCustomDomainModelTypes;
+				Type[] retVal = ORMToORMAbstractionBridgeDomainModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -34,12 +34,12 @@ namespace Neumont.Tools.ORMOialBridge
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
-						typeof(OialModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OialModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OialModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OialModelIsForORMModel).GetNestedType("ObjectTypeRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ValueTypeDataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OialModelIsForORMModel).GetNestedType("ObjectTypeRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ValueTypeDataTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic)};
-					ORMOialBridgeDomainModel.myCustomDomainModelTypes = retVal;
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ObjectTypeRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ValueTypeDataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ObjectTypeRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ValueTypeDataTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic)};
+					ORMToORMAbstractionBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORMOialBridge
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = ORMOialBridgeDomainModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORMOialBridge
 		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
-			Type[] disabledRuleTypes = ORMOialBridgeDomainModel.CustomDomainModelTypes;
+			Type[] disabledRuleTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
 			for (int i = 0; i < 5; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
@@ -82,9 +82,9 @@ namespace Neumont.Tools.ORMOialBridge
 			this.EnableRulesAfterDeserialization(store);
 		}
 	}
-	#endregion // Attach rules to ORMOialBridgeDomainModel model
+	#endregion // Attach rules to ORMToORMAbstractionBridgeDomainModel model
 	#region Initially disable rules
-	partial class OialModelIsForORMModel
+	partial class AbstractionModelIsForORMModel
 	{
 		partial class ConstraintRule
 		{
@@ -97,7 +97,7 @@ namespace Neumont.Tools.ORMOialBridge
 			}
 		}
 	}
-	partial class OialModelIsForORMModel
+	partial class AbstractionModelIsForORMModel
 	{
 		partial class ConstraintRule
 		{
@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORMOialBridge
 			}
 		}
 	}
-	partial class OialModelIsForORMModel
+	partial class AbstractionModelIsForORMModel
 	{
 		partial class ConstraintRule
 		{
@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORMOialBridge
 			}
 		}
 	}
-	partial class OialModelIsForORMModel
+	partial class AbstractionModelIsForORMModel
 	{
 		partial class ObjectTypeRule
 		{
@@ -136,7 +136,7 @@ namespace Neumont.Tools.ORMOialBridge
 			}
 		}
 	}
-	partial class OialModelIsForORMModel
+	partial class AbstractionModelIsForORMModel
 	{
 		partial class ObjectTypeRule
 		{

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.orm.net/OIAL/Datatypes/Core"
-	xmlns:odt="http://schemas.orm.net/OIAL/Datatypes/Core"
-	xmlns:oil="http://schemas.orm.net/OIAL/Core"
+	targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
+	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
+	xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -14,10 +14,10 @@
 				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 				xmlns:dc="http://purl.org/dc/elements/1.1/"
 				xmlns:dcterms="http://purl.org/dc/terms/">
-				<rdf:Description rdf:about="http://schemas.orm.net/OIAL/Datatypes/Core">
+				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core">
 					<dcterms:isPartOf rdf:resource="http://schemas.orm.net/OIAL"/>
-					<dcterms:isRequiredBy rdf:resource="http://schemas.orm.net/OIAL/Core"/>
-					<dcterms:requires rdf:resource="http://schemas.orm.net/OIAL/Core"/>
+					<dcterms:isRequiredBy rdf:resource="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
+					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
 					<dc:title>ORM Intermediate Abstraction Language Datatypes</dc:title>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:contributor>Corey Kaylor</dc:contributor>
@@ -42,7 +42,7 @@
 		</xs:appinfo>
 	</xs:annotation>
 
-	<xs:import namespace="http://schemas.orm.net/OIAL/Core"/>
+	<xs:import namespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
 
 	<xs:simpleType name="clusivity">
 		<xs:restriction base="xs:string">
@@ -69,14 +69,18 @@
 		<xs:restriction base="xs:string"/>
 	</xs:simpleType>
 
-	<xs:complexType name="dataType" abstract="true">
+	<!-- Return to abstract status when oial does something real with data types -->
+	<!--<xs:complexType name="dataType" abstract="true">-->
+	<xs:complexType name="dataType">
 		<xs:complexContent>
 			<xs:extension base="oil:identified"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="dataType" type="odt:dataType" abstract="true"/>
+	<!-- Return to abstract status when oial does something real with data types -->
+	<!--<xs:element name="dataType" type="odt:dataType" abstract="true"/>-->
+	<xs:element name="dataType" type="odt:dataType"/>
 
-	
+
 	<xs:complexType name="boolean">
 		<xs:complexContent>
 			<xs:extension base="odt:dataType">

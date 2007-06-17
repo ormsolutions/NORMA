@@ -3436,6 +3436,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	/// Description for
 	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ReferenceConstraintTargetsTable, Design.ConceptualDatabaseElementTypeDescriptor<ReferenceConstraintTargetsTable>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -3677,6 +3678,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 	/// Description for
 	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ColumnReference, Design.ConceptualDatabaseElementTypeDescriptor<ColumnReference>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

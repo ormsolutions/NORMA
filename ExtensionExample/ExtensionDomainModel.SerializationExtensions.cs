@@ -78,11 +78,11 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			return GetRootElementClasses();
 		}
 		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
-		protected static ORMRootRelationshipContainer[] GetRootRelationshipContainers()
+		protected static ORMCustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{
-			return new ORMRootRelationshipContainer[0];
+			return null;
 		}
-		ORMRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		ORMCustomSerializedRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
 		{
 			return GetRootRelationshipContainers();
 		}

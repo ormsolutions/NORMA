@@ -30,7 +30,7 @@ namespace Neumont.Tools.OialDcilBridge
 	/// DomainModel OialDcilBridgeDomainModel
 	/// Description for Neumont.Tools.OialDcilBridge.OialDcilBridge
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.Oial.OialDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"/*Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
@@ -65,7 +65,7 @@ namespace Neumont.Tools.OialDcilBridge
 		{
 			return new global::System.Type[]
 			{
-				typeof(SchemaIsForOialModel),
+				typeof(SchemaIsForAbstractionModel),
 				typeof(TableIsPrimarilyForConceptType),
 				typeof(TableIsAlsoForConceptType),
 				typeof(ColumnHasConceptTypeChild),
@@ -91,8 +91,8 @@ namespace Neumont.Tools.OialDcilBridge
 		{
 			return new DomainRolePlayerInfo[]
 			{
-				new DomainRolePlayerInfo(typeof(SchemaIsForOialModel), "Schema", SchemaIsForOialModel.SchemaDomainRoleId),
-				new DomainRolePlayerInfo(typeof(SchemaIsForOialModel), "OialModel", SchemaIsForOialModel.OialModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "Schema", SchemaIsForAbstractionModel.SchemaDomainRoleId),
+				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "AbstractionModel", SchemaIsForAbstractionModel.AbstractionModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsPrimarilyForConceptType), "Table", TableIsPrimarilyForConceptType.TableDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsPrimarilyForConceptType), "ConceptType", TableIsPrimarilyForConceptType.ConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TableIsAlsoForConceptType), "Table", TableIsAlsoForConceptType.TableDomainRoleId),
@@ -155,7 +155,7 @@ namespace Neumont.Tools.OialDcilBridge
 			if (createElementLinkMap == null)
 			{
 				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(6);
-				createElementLinkMap.Add(typeof(SchemaIsForOialModel), 0);
+				createElementLinkMap.Add(typeof(SchemaIsForAbstractionModel), 0);
 				createElementLinkMap.Add(typeof(TableIsPrimarilyForConceptType), 1);
 				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 2);
 				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 3);
@@ -169,7 +169,7 @@ namespace Neumont.Tools.OialDcilBridge
 			}
 			switch (index)
 			{
-				case 0: return new SchemaIsForOialModel(partition, roleAssignments, propertyAssignments);
+				case 0: return new SchemaIsForAbstractionModel(partition, roleAssignments, propertyAssignments);
 				case 1: return new TableIsPrimarilyForConceptType(partition, roleAssignments, propertyAssignments);
 				case 2: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
 				case 3: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);

@@ -15,12 +15,12 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="ORMOialBridgeDomainModel">
-		<arg:Rule class="OialModelIsForORMModel.ConstraintRule.ConstraintAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ConstraintRule.ConstraintChangeRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ConstraintRule.ConstraintDeleteRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ObjectTypeRule.ValueTypeDataTypeAddRule"/>
-		<arg:Rule class="OialModelIsForORMModel.ObjectTypeRule.ValueTypeDataTypeDeleteRule"/>
+	<arg:Model class="ORMToORMAbstractionBridgeDomainModel">
+		<arg:Rule class="AbstractionModelIsForORMModel.ConstraintRule.ConstraintAddRule"/>
+		<arg:Rule class="AbstractionModelIsForORMModel.ConstraintRule.ConstraintChangeRule"/>
+		<arg:Rule class="AbstractionModelIsForORMModel.ConstraintRule.ConstraintDeleteRule"/>
+		<arg:Rule class="AbstractionModelIsForORMModel.ObjectTypeRule.ValueTypeDataTypeAddRule"/>
+		<arg:Rule class="AbstractionModelIsForORMModel.ObjectTypeRule.ValueTypeDataTypeDeleteRule"/>
 		<!--
 		<arg:Rule class="OialModelIsForORMModel.ModelHasObjectTypeAddRule"/>
 		<arg:Rule class="OialModelIsForORMModel.ModelHasObjectTypeDeletingRule"/>

@@ -120,6 +120,22 @@ namespace Neumont.Tools.ORM.Shell
 		/// and referencing child elements are written at this location.
 		/// </summary>
 		EmbeddingLinkElement = 0x03,
+		/// <summary>
+		/// Used for links where both roleplayers are specified with the link.
+		/// This is generally required only for embedded link scenarios, which
+		/// are not supported directly by the DSL framework.
+		/// </summary>
+		StandaloneLinkElement = 0x04,
+		/// <summary>
+		/// Used for links where both roleplayers are specified with the link.
+		/// This is generally required only for embedded link scenarios, which
+		/// are not supported directly by the DSL framework. When a standalone
+		/// link is primary, then the element name is based on the link class,
+		/// not the local link information, and id is written, and all other attributes
+		/// and child elements of the link are written at this location. A link
+		/// should be primary in at most one location in the file to avoid duplicate identifiers.
+		/// </summary>
+		PrimaryStandaloneLinkElement = 0x05,
 	}
 	#endregion // ORMCustomSerializedElementWriteStyle enum
 	#region ORMCustomSerializedAttributeWriteStyle enum
@@ -468,6 +484,55 @@ namespace Neumont.Tools.ORM.Shell
 		}
 	}
 	#endregion // ORMCustomSerializedContainerElementInfo class
+	#region ORMCustomSerializedStandaloneLinkInfo class
+	/// <summary>
+	/// A class with information for serializing a standalone link element
+	/// </summary>
+	public class ORMCustomSerializedStandaloneLinkElementInfo : ORMCustomSerializedElementInfo
+	{
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		protected ORMCustomSerializedStandaloneLinkElementInfo()
+		{
+		}
+		/// <summary>
+		/// Main Constructor
+		/// </summary>
+		/// <param name="customPrefix">The custom prefix to use.</param>
+		/// <param name="customName">The custom name to use.</param>
+		/// <param name="customNamespace">The custom namespace to use.</param>
+		/// <param name="writeStyle">The style to use when writting.</param>
+		/// <param name="doubleTagName">The name of the double tag.</param>
+		/// <param name="standaloneRelationship">The domain role ideas of opposite child elements.</param>
+		public ORMCustomSerializedStandaloneLinkElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, ORMCustomSerializedStandaloneRelationship standaloneRelationship)
+			: base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
+		{
+			myRelationship = standaloneRelationship;
+		}
+		private ORMCustomSerializedStandaloneRelationship myRelationship;
+		/// <summary>
+		/// Get the <see cref="ORMCustomSerializedStandaloneRelationship"/> information associated with this link.
+		/// </summary>
+		public ORMCustomSerializedStandaloneRelationship StandaloneRelationship
+		{
+			get
+			{
+				return myRelationship;
+			}
+		}
+		/// <summary>
+		/// Base override indicating when this object is in its default state (no data available)
+		/// </summary>
+		public override bool IsDefault
+		{
+			get
+			{
+				return myRelationship.DomainClassId == Guid.Empty && base.IsDefault;
+			}
+		}
+	}
+	#endregion // ORMCustomSerializedStandaloneLinkElementInfo class
 	#region ORMCustomSerializedInnerContainerElementInfo class
 	/// <summary>
 	/// Custom serialization information for nested container elements.
@@ -534,6 +599,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// relationship guid is provided
 		/// </summary>
 		private Guid[] myMultiGuids;
+		/// <summary>
+		/// Hold the standalone relationship information for this match.
+		/// Stored as an array to minimize storage impact when not used.
+		/// </summary>
+		private ORMCustomSerializedStandaloneRelationship[] myStandaloneRelationship;
 		private ORMCustomSerializedElementMatchStyle myMatchStyle;
 		private const ORMCustomSerializedElementMatchStyle StyleMask = (ORMCustomSerializedElementMatchStyle)0xFFFF;
 		private const ORMCustomSerializedElementMatchStyle AllowDuplicatesBit = (ORMCustomSerializedElementMatchStyle)((int)StyleMask + 1);
@@ -548,6 +618,7 @@ namespace Neumont.Tools.ORM.Shell
 			mySingleGuid = metaAttributeGuid;
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.Property;
 			myDoubleTagName = (doubleTagName != null && doubleTagName.Length != 0) ? doubleTagName : null;
+			myStandaloneRelationship = null;
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player
@@ -555,7 +626,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(params Guid[] oppositeDomainRoleIds)
 		{
-			InitializeRoles(false, oppositeDomainRoleIds);
+			InitializeRoles(false, null, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRoles(ORMCustomSerializedStandaloneRelationship standaloneRelationship, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(false, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleIds);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player
@@ -563,6 +643,20 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="allowDuplicates">Allow duplicates for this link</param>
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(bool allowDuplicates, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(allowDuplicates, null, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRoles(bool allowDuplicates, ORMCustomSerializedStandaloneRelationship standaloneRelationship, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRoles(allowDuplicates, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleIds);
+		}
+		private void InitializeRoles(bool allowDuplicates, ORMCustomSerializedStandaloneRelationship[] standaloneRelationship, params Guid[] oppositeDomainRoleIds)
 		{
 			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
 			if (oppositeDomainRoleIds.Length == 1)
@@ -590,7 +684,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(Guid oppositeDomainRoleId)
 		{
-			InitializeRoles(false, oppositeDomainRoleId);
+			InitializeRoles(false, null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRoles(ORMCustomSerializedStandaloneRelationship standaloneRelationship, Guid oppositeDomainRoleId)
+		{
+			InitializeRoles(false, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleId);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player. Optimized overload
@@ -600,6 +704,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(bool allowDuplicates, Guid oppositeDomainRoleId)
 		{
+			InitializeRoles(allowDuplicates, null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRoles(bool allowDuplicates, ORMCustomSerializedStandaloneRelationship standaloneRelationship, Guid oppositeDomainRoleId)
+		{
+			InitializeRoles(allowDuplicates, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleId);
+		}
+		private void InitializeRoles(bool allowDuplicates, ORMCustomSerializedStandaloneRelationship[] standaloneRelationship, Guid oppositeDomainRoleId)
+		{
 			mySingleGuid = oppositeDomainRoleId;
 			myMultiGuids = null;
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole;
@@ -607,6 +726,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myMatchStyle |= AllowDuplicatesBit;
 			}
+			myStandaloneRelationship = standaloneRelationship;
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type
@@ -615,7 +735,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, params Guid[] oppositeDomainRoleIds)
 		{
-			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, oppositeDomainRoleIds);
+			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, null, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type
+		/// </summary>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, ORMCustomSerializedStandaloneRelationship standaloneRelationship, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleIds);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type
@@ -624,6 +754,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRolesWithExplicitRelationship(allowDuplicates, explicitRelationshipGuid, null, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, ORMCustomSerializedStandaloneRelationship standaloneRelationship, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRolesWithExplicitRelationship(allowDuplicates, explicitRelationshipGuid, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleIds);
+		}
+		private void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, ORMCustomSerializedStandaloneRelationship[] standaloneRelationship, params Guid[] oppositeDomainRoleIds)
 		{
 			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
 			if (oppositeDomainRoleIds.Length == 1)
@@ -643,6 +788,7 @@ namespace Neumont.Tools.ORM.Shell
 				myMatchStyle |= AllowDuplicatesBit;
 			}
 			myDoubleTagName = null;
+			myStandaloneRelationship = standaloneRelationship;
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type.
@@ -652,7 +798,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, Guid oppositeDomainRoleId)
 		{
-			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, oppositeDomainRoleId);
+			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type.
+		/// Optimized overload for 1 element.
+		/// </summary>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, ORMCustomSerializedStandaloneRelationship standaloneRelationship, Guid oppositeDomainRoleId)
+		{
+			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleId);
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type.
@@ -663,6 +820,22 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, Guid oppositeDomainRoleId)
 		{
+			InitializeRolesWithExplicitRelationship(allowDuplicates, explicitRelationshipGuid, null, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type.
+		/// Optimized overload for 1 element.
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="standaloneRelationship">A <see cref="ORMCustomSerializedStandaloneRelationship"/> structure</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, ORMCustomSerializedStandaloneRelationship standaloneRelationship, Guid oppositeDomainRoleId)
+		{
+			InitializeRolesWithExplicitRelationship(allowDuplicates, explicitRelationshipGuid, new ORMCustomSerializedStandaloneRelationship[] { standaloneRelationship }, oppositeDomainRoleId);
+		}
+		private void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, ORMCustomSerializedStandaloneRelationship[] standaloneRelationship, Guid oppositeDomainRoleId)
+		{
 			mySingleGuid = explicitRelationshipGuid;
 			myMultiGuids = new Guid[] { oppositeDomainRoleId };
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType;
@@ -670,6 +843,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myMatchStyle |= AllowDuplicatesBit;
 			}
+			myStandaloneRelationship = standaloneRelationship;
 		}
 		/// <summary>
 		/// The guid identifying the meta property. Valid for a match
@@ -739,6 +913,17 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
+		/// Return the standalone relationship info used to create this link
+		/// </summary>
+		public ORMCustomSerializedStandaloneRelationship? StandaloneRelationship
+		{
+			get
+			{
+				ORMCustomSerializedStandaloneRelationship[] relationshipInfo = myStandaloneRelationship;
+				return (relationshipInfo != null) ? relationshipInfo[0] : (ORMCustomSerializedStandaloneRelationship?)null;
+			}
+		}
+		/// <summary>
 		/// The type of element match
 		/// </summary>
 		/// <value>ORMCustomSerializedElementMatchStyle</value>
@@ -779,41 +964,83 @@ namespace Neumont.Tools.ORM.Shell
 	/// Used with <see cref="IORMCustomSerializedDomainModel.GetRootRelationshipContainers"/> method
 	/// to represent relationships that are not serialized under any model.
 	/// </summary>
-	public struct ORMRootRelationshipContainer
+	public struct ORMCustomSerializedRootRelationshipContainer
 	{
-		private string myName;
-		private ORMRootRelationship[] myRelationships;
+		private string myContainerName;
+		private string myContainerPrefix;
+		private string myContainerNamespace;
+		private ORMCustomSerializedStandaloneRelationship[] myRelationships;
 		/// <summary>
 		/// The name of the container XML element
 		/// </summary>
-		public string Name
+		public string ContainerName
 		{
-			get { return myName; }
+			get { return myContainerName; }
+		}
+		/// <summary>
+		/// The name of a non-default prefix for the container prefix
+		/// </summary>
+		public string ContainerPrefix
+		{
+			get { return myContainerPrefix; }
+		}
+		/// <summary>
+		/// The name of a non-default prefix for the container prefix
+		/// </summary>
+		public string ContainerNamespace
+		{
+			get { return myContainerNamespace; }
 		}
 		/// <summary>
 		/// The relationship classes serialized within the container. Represented
-		/// by an array of <see cref="ORMRootRelationship"/> elements
+		/// by an array of <see cref="ORMCustomSerializedStandaloneRelationship"/> elements
 		/// </summary>
-		public ORMRootRelationship[] GetRelationshipClasses()
+		public ORMCustomSerializedStandaloneRelationship[] GetRelationshipClasses()
 		{
 			return myRelationships;
 		}
 		/// <summary>
-		/// Create a new <see cref="ORMRootRelationshipContainer"/> 
+		/// Create a new <see cref="ORMCustomSerializedRootRelationshipContainer"/> 
 		/// </summary>
-		/// <param name="name">Value returned by the <see cref="Name"/> property</param>
+		/// <param name="containerPrefix">Value returned by the <see cref="ContainerPrefix"/> property</param>
+		/// <param name="containerName">Value returned by the <see cref="ContainerName"/> property</param>
+		/// <param name="containerNamespace">Value returned by the <see cref="ContainerNamespace"/> property</param>
 		/// <param name="relationships">Array of relationships returned by the <see cref="GetRelationshipClasses"/> method</param>
-		public ORMRootRelationshipContainer(string name, ORMRootRelationship[] relationships)
+		public ORMCustomSerializedRootRelationshipContainer(string containerPrefix, string containerName, string containerNamespace, ORMCustomSerializedStandaloneRelationship[] relationships)
 		{
-			this.myName = name;
-			this.myRelationships = relationships;
+			myContainerName = containerName;
+			myContainerPrefix = containerPrefix;
+			myContainerNamespace = containerNamespace;
+			myRelationships = relationships;
+		}
+		/// <summary>
+		/// Find a container based on name and namespace
+		/// </summary>
+		/// <param name="containers">An array of containers</param>
+		/// <param name="containerName">The xml element name for the container element</param>
+		/// <param name="containerNamespace">The xml namespace for the container element</param>
+		/// <returns><see cref="Nullable{ORMCustomSerializedRootRelationshipContainer}"/></returns>
+		public static ORMCustomSerializedRootRelationshipContainer? Find(ORMCustomSerializedRootRelationshipContainer[] containers, string containerName, string containerNamespace)
+		{
+			if (containers != null)
+			{
+				for (int i = 0; i < containers.Length; ++i)
+				{
+					ORMCustomSerializedRootRelationshipContainer currentContainer = containers[i];
+					if (currentContainer.ContainerName == containerName && currentContainer.ContainerNamespace == containerNamespace)
+					{
+						return currentContainer;
+					}
+				}
+			}
+			return null;
 		}
 	}
 	/// <summary>
 	/// Used with the <see cref="IORMCustomSerializedDomainModel.GetRootRelationshipContainers"/> method
-	/// to represent a single role to be written to a root link element as represented by the <see cref="ORMRootRelationship"/> structure.
+	/// to represent a single role to be written to a root link element as represented by the <see cref="ORMCustomSerializedStandaloneRelationship"/> structure.
 	/// </summary>
-	public struct ORMRootRelationshipRole
+	public struct ORMCustomSerializedStandaloneRelationshipRole
 	{
 		private string myAttributeName;
 		private Guid myDomainRoleId;
@@ -832,11 +1059,11 @@ namespace Neumont.Tools.ORM.Shell
 			get { return myDomainRoleId; }
 		}
 		/// <summary>
-		/// Create a new <see cref="ORMRootRelationshipRole"/>
+		/// Create a new <see cref="ORMCustomSerializedStandaloneRelationshipRole"/>
 		/// </summary>
 		/// <param name="attributeRoleName">Value corresponding to the <see cref="AttributeName"/> property</param>
 		/// <param name="domainRoleId">Value corresponding to the <see cref="DomainRoleId"/> property</param>
-		public ORMRootRelationshipRole(string attributeRoleName, Guid domainRoleId)
+		public ORMCustomSerializedStandaloneRelationshipRole(string attributeRoleName, Guid domainRoleId)
 		{
 			myAttributeName = attributeRoleName;
 			myDomainRoleId = domainRoleId;
@@ -844,20 +1071,35 @@ namespace Neumont.Tools.ORM.Shell
 	}
 	/// <summary>
 	/// Used with the <see cref="IORMCustomSerializedDomainModel.GetRootRelationshipContainers"/> method
-	/// to represent a single relationship serialized inside a <see cref="ORMRootRelationshipContainer"/>.
+	/// to represent a single relationship serialized inside a <see cref="ORMCustomSerializedRootRelationshipContainer"/>.
 	/// </summary>
-	public struct ORMRootRelationship
+	public struct ORMCustomSerializedStandaloneRelationship
 	{
 		private string myElementName;
+		private string myElementPrefix;
+		private string myElementNamespace;
 		private Guid myDomainClassId;
-		private ORMRootRelationshipRole[] myRoles;
-		private bool myIsPrimaryLink;
+		private ORMCustomSerializedStandaloneRelationshipRole[] myRoles;
 		/// <summary>
 		/// The name of the link element
 		/// </summary>
 		public string ElementName
 		{
 			get { return myElementName; }
+		}
+		/// <summary>
+		/// The xml namespace of the link element
+		/// </summary>
+		public string ElementNamespace
+		{
+			get { return myElementNamespace; }
+		}
+		/// <summary>
+		/// The xml prefix of the link element
+		/// </summary>
+		public string ElementPrefix
+		{
+			get { return myElementPrefix; }
 		}
 		/// <summary>
 		/// The domain class for the link being created
@@ -874,29 +1116,74 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public bool IsPrimaryLinkElement
 		{
-			get { return myIsPrimaryLink; }
+			get { return myElementName == null; }
 		}
 		/// <summary>
-		/// Get the <see cref="ORMRootRelationshipRole"/> representing
+		/// Get the <see cref="ORMCustomSerializedStandaloneRelationshipRole"/> representing
 		/// how the source and target references are to be written for this element.
 		/// </summary>
-		public ORMRootRelationshipRole[] GetRoles()
+		public ORMCustomSerializedStandaloneRelationshipRole[] GetRoles()
 		{
 			return myRoles;
 		}
 		/// <summary>
-		/// Create a new <see cref="ORMRootRelationship"/>
+		/// Create a new <see cref="ORMCustomSerializedStandaloneRelationship"/>
 		/// </summary>
-		/// <param name="elementName">Value for the <see cref="ElementName"/> property</param>
 		/// <param name="domainClassId">Value for the <see cref="DomainClassId"/> property</param>
 		/// <param name="roles">Value for the <see cref="GetRoles"/> method</param>
-		/// <param name="isPrimaryLinkElement">Value for the <see cref="IsPrimaryLinkElement"/> property</param>
-		public ORMRootRelationship(string elementName, Guid domainClassId, ORMRootRelationshipRole[] roles, bool isPrimaryLinkElement)
+		/// <param name="elementPrefix">Value for the <see cref="ElementPrefix"/> property</param>
+		/// <param name="elementName">Value for the <see cref="ElementName"/> property. If the name is null then this is the primary link element and all name information is retrieved from the class.</param>
+		/// <param name="elementNamespace">Value for the <see cref="ElementNamespace"/> property</param>
+		public ORMCustomSerializedStandaloneRelationship(Guid domainClassId, ORMCustomSerializedStandaloneRelationshipRole[] roles, string elementPrefix, string elementName, string elementNamespace)
 		{
-			myElementName = elementName;
 			myDomainClassId = domainClassId;
 			myRoles = roles;
-			myIsPrimaryLink = isPrimaryLinkElement;
+			myElementPrefix = elementPrefix;
+			myElementName = elementName;
+			myElementNamespace = elementNamespace;
+		}
+		/// <summary>
+		/// Find a relationship based on name and namespace
+		/// </summary>
+		/// <param name="relationships">An array of relationship elements</param>
+		/// <param name="elementName">The xml element name for the relationship element</param>
+		/// <param name="xmlNamespace">The xml namespace for the relationship element</param>
+		/// <returns><see cref="Nullable{ORMCustomSerializedStandaloneRelationship}"/></returns>
+		public static ORMCustomSerializedStandaloneRelationship? Find(ORMCustomSerializedStandaloneRelationship[] relationships, string elementName, string xmlNamespace)
+		{
+			if (relationships != null)
+			{
+				for (int i = 0; i < relationships.Length; ++i)
+				{
+					ORMCustomSerializedStandaloneRelationship currentRelationship = relationships[i];
+					if (currentRelationship.ElementName == elementName && currentRelationship.ElementNamespace == xmlNamespace)
+					{
+						return currentRelationship;
+					}
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Find a relationship based on name and namespace
+		/// </summary>
+		/// <param name="relationships">An array of relationship elements</param>
+		/// <param name="relationshipDomainClassId">The value corresponding to the class of this relationship.</param>
+		/// <returns><see cref="Nullable{ORMCustomSerializedStandaloneRelationship}"/></returns>
+		public static ORMCustomSerializedStandaloneRelationship? Find(ORMCustomSerializedStandaloneRelationship[] relationships, Guid relationshipDomainClassId)
+		{
+			if (relationships != null)
+			{
+				for (int i = 0; i < relationships.Length; ++i)
+				{
+					ORMCustomSerializedStandaloneRelationship currentRelationship = relationships[i];
+					if (currentRelationship.DomainClassId == relationshipDomainClassId)
+					{
+						return currentRelationship;
+					}
+				}
+			}
+			return null;
 		}
 	}
 	#endregion // Public Structures
@@ -931,7 +1218,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Return the relationship containers for all root links.
 		/// </summary>
-		ORMRootRelationshipContainer[] GetRootRelationshipContainers();
+		ORMCustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers();
 		/// <summary>
 		/// Determine if a class or relationship should be serialized. This allows
 		/// the serialization engine to do a meta-level sanity check before retrieving
@@ -1484,13 +1771,29 @@ namespace Neumont.Tools.ORM.Shell
 
 			IORMCustomSerializedElement rolePlayerCustomElement = rolePlayer as IORMCustomSerializedElement;
 			IORMCustomSerializedElement customElement = rolePlayerCustomElement;
-			ORMCustomSerializedElementWriteStyle writeStyle;
+			ORMCustomSerializedElementWriteStyle writeStyle = ORMCustomSerializedElementWriteStyle.Element;
+			ORMCustomSerializedElementInfo oppositeRolePlayerElementInfo = null;
 			bool aggregatingLink = false;
+			bool standaloneLink = false;
 			bool writeContents = customElement != null &&
 				0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) &&
-				((writeStyle = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link).WriteStyle) == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement ||
+				((writeStyle = (oppositeRolePlayerElementInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link)).WriteStyle) == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement ||
+				(standaloneLink = writeStyle == ORMCustomSerializedElementWriteStyle.PrimaryStandaloneLinkElement) ||
 				(aggregatingLink = writeStyle == ORMCustomSerializedElementWriteStyle.EmbeddingLinkElement));
 
+			if (!standaloneLink)
+			{
+				standaloneLink = writeStyle == ORMCustomSerializedElementWriteStyle.StandaloneLinkElement;
+			}
+
+			ORMCustomSerializedStandaloneRelationshipRole[] roles = null;
+			if (standaloneLink)
+			{
+				roles = ((ORMCustomSerializedStandaloneLinkElementInfo)oppositeRolePlayerElementInfo).StandaloneRelationship.GetRoles();
+				// UNDONE: This precludes using EmbeddingLinkElement inside a StandaloneLinkfs
+				link = (ElementLink)oppositeRolePlayer;
+			}
+			
 			if (writeContents)
 			{
 				customElement = link as IORMCustomSerializedElement;
@@ -1512,42 +1815,53 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				hasCustomAttributes = (supportedOperations & ORMCustomSerializedElementSupportedOperations.PropertyInfo) != 0;
 
-				IORMCustomSerializedElement tagCustomElement = customElement;
 				if (writeContents)
 				{
-					tagCustomElement = rolePlayerCustomElement;
-					if (tagCustomElement != null)
+					if (oppositeRolePlayerElementInfo != null)
 					{
-						if (0 != (tagCustomElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo))
-						{
-							customInfo = tagCustomElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link);
-						}
+						customInfo = oppositeRolePlayerElementInfo;
 					}
 				}
 				else if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) != 0)
 				{
-					customInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link);
-					if (customInfo.IsDefault && GetParentModel(rolePlayer) != GetParentModel(oppositeRolePlayer))
+					customInfo = oppositeRolePlayerElementInfo;
+					IORMCustomSerializedDomainModel rolePlayerParentModel;
+					if (customInfo.IsDefault &&
+						((rolePlayerParentModel = GetParentModel(rolePlayer)) != GetParentModel(oppositeRolePlayer) ||
+						rolePlayerParentModel != GetParentModel(link)))
 					{
 						return;
 					}
 				}
 #if !WRITE_ALL_DEFAULT_LINKS
-				else if (GetParentModel(rolePlayer) != GetParentModel(oppositeRolePlayer))
+				else
 				{
+					IORMCustomSerializedDomainModel rolePlayerParentModel = GetParentModel(rolePlayer);
+					if (rolePlayerParentModel != GetParentModel(oppositeRolePlayer) ||
+						rolePlayerParentModel != GetParentModel(link))
 					return;
 				}
 #endif // WRITE_ALL_DEFAULT_LINKS
 			}
-
-			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
+			// UNDONE: NOW Write start element off roleplayer, not link, for standalone primary link element
+			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, standaloneLink ? link.GetDomainClass().Name : string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
 			{
 				return;
+			}
+
+			if (standaloneLink)
+			{
+				for (int i = 0; i < roles.Length; ++i)
+				{
+					ORMCustomSerializedStandaloneRelationshipRole role = roles[i];
+					file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+				}
 			}
 
 			Guid keyId = writeContents ? link.Id : oppositeRolePlayer.Id;
 			if (writeContents)
 			{
+				// UNDONE: NOW Write content of the oppositeRolePlayer for the standalone link
 				ReadOnlyCollection<DomainRoleInfo> rolesPlayed = link.GetDomainClass().AllDomainRolesPlayed;
 				bool writeChildren = aggregatingLink || rolesPlayed.Count != 0;
 
@@ -1557,7 +1871,7 @@ namespace Neumont.Tools.ORM.Shell
 					// roles are actually serialized, then we don't need this at all.
 					file.WriteAttributeString("id", ToXml(keyId));
 				}
-				if (!aggregatingLink)
+				if (!aggregatingLink && !standaloneLink)
 				{
 					file.WriteAttributeString("ref", ToXml(oppositeRolePlayer.Id));
 				}
@@ -1575,7 +1889,7 @@ namespace Neumont.Tools.ORM.Shell
 					SerializeChildElements(file, link, customElement, childElementInfo, rolesPlayed, 0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles), groupRoles, defaultPrefix);
 				}
 			}
-			else
+			else if (!standaloneLink)
 			{
 				file.WriteAttributeString("ref", ToXml(keyId));
 			}
@@ -2039,43 +2353,43 @@ namespace Neumont.Tools.ORM.Shell
 						}
 					}
 				}
-				ORMRootRelationshipContainer[] rootContainers = ns.GetRootRelationshipContainers();
+				ORMCustomSerializedRootRelationshipContainer[] rootContainers = ns.GetRootRelationshipContainers();
 				if (rootContainers != null)
 				{
 					for (int i = 0; i < rootContainers.Length; ++i)
 					{
-						ORMRootRelationshipContainer container = rootContainers[i];
-						file.WriteStartElement(ns.DefaultElementPrefix, container.Name, null);
+						ORMCustomSerializedRootRelationshipContainer container = rootContainers[i];
+						file.WriteStartElement(container.ContainerPrefix, container.ContainerName, container.ContainerNamespace);
 
-						ORMRootRelationship[] relationships = container.GetRelationshipClasses();
+						ORMCustomSerializedStandaloneRelationship[] relationships = container.GetRelationshipClasses();
 						for (int j = 0; j < relationships.Length; ++j)
 						{
-							ORMRootRelationship relationship = relationships[j];
+							ORMCustomSerializedStandaloneRelationship relationship = relationships[j];
 							DomainRelationshipInfo relationshipInfo = dataDir.GetDomainClass(relationship.DomainClassId) as DomainRelationshipInfo;
 							ReadOnlyCollection<ModelElement> relationshipElements = elementDir.FindElements(relationshipInfo);
 							int elementCount = relationshipElements.Count;
 							for (int k = 0; k < elementCount; ++k)
 							{
 								ElementLink link = relationshipElements[k] as ElementLink;
-								ORMRootRelationshipRole[] roles = relationship.GetRoles();
+								ORMCustomSerializedStandaloneRelationshipRole[] roles = relationship.GetRoles();
 								if (relationship.IsPrimaryLinkElement)
 								{
 									SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
 									{
 										for (int l = 0; l < roles.Length; ++l)
 										{
-											ORMRootRelationshipRole role = roles[l];
-											xmlFile.WriteAttributeString(role.AttributeName, "_" + XmlConvert.ToString(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id).ToUpperInvariant());
+											ORMCustomSerializedStandaloneRelationshipRole role = roles[l];
+											xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
 										}
 									}));
 								}
 								else
 								{
-									file.WriteStartElement(ns.DefaultElementPrefix, relationship.ElementName, null);
+									file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
 									for (int l = 0; l < roles.Length; ++l)
 									{
-										ORMRootRelationshipRole role = roles[l];
-										file.WriteAttributeString(role.AttributeName, "_" + XmlConvert.ToString(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id).ToUpperInvariant());
+										ORMCustomSerializedStandaloneRelationshipRole role = roles[l];
+										file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
 									}
 									file.WriteEndElement();
 								}
@@ -2430,7 +2744,9 @@ namespace Neumont.Tools.ORM.Shell
 			// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
 			// an extra transaction. However, the interactions between deserialization and diagram initialization are extremely
 			// complex, so I'm not sure exactly what is happening here.
-			using (Transaction t = myStore.TransactionManager.BeginTransaction())
+			Store store = myStore;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			using (Transaction t = store.TransactionManager.BeginTransaction())
 			{
 				using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
 				{
@@ -2469,34 +2785,138 @@ namespace Neumont.Tools.ORM.Shell
 														}
 														else
 														{
-															ProcessClassElement(reader, metaModel, rootElement, null);
+															ProcessClassElement(reader, metaModel, rootElement, null, null);
 														}
 													}
 												}
-#if DESERIALIZE_ROOTLINKS // NYI
-												else
+												else if (!reader.IsEmptyElement)
 												{
-													// this is a container element
-													
-													while (reader.Read())
+													ORMCustomSerializedRootRelationshipContainer[] containers = metaModel.GetRootRelationshipContainers();
+													if (containers != null)
 													{
-														if (reader.NodeType == XmlNodeType.Element)
+														ORMCustomSerializedRootRelationshipContainer? container = ORMCustomSerializedRootRelationshipContainer.Find(containers, reader.LocalName, reader.NamespaceURI);
+														if (container.HasValue)
 														{
-															bool processedLinkElement = false;
+															processedRootElement = true;
+															// this is a relationsip container element
+															while (reader.Read())
+															{
+																if (reader.NodeType == XmlNodeType.Element)
+																{
+																	bool processedLinkElement = false;
+																	string linkNamespace = reader.NamespaceURI;
+																	string linkName = reader.LocalName;
 
-															Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
-															if (!classGuid.Equals(Guid.Empty))
-															{
-																processedLinkElement = true;
-															}
-															if (!processedLinkElement)
-															{
-																PassEndElement(reader);
+																	ORMCustomSerializedStandaloneRelationship[] relationships = container.Value.GetRelationshipClasses();
+																	DomainRelationshipInfo relationshipInfo = null;
+																	ORMCustomSerializedStandaloneRelationship? relationship = ORMCustomSerializedStandaloneRelationship.Find(relationships, linkName, linkNamespace);
+																	if (relationship.HasValue)
+																	{
+																		relationshipInfo = dataDirectory.FindDomainRelationship(relationship.Value.DomainClassId);
+																	}
+																	else
+																	{
+																		Guid domainClassId = metaModel.MapClassName(linkNamespace, linkName);
+																		if (!domainClassId.Equals(Guid.Empty))
+																		{
+																			relationshipInfo = dataDirectory.FindDomainRelationship(domainClassId);
+																		}
+																		if (relationshipInfo == null)
+																		{
+																			relationshipInfo = dataDirectory.FindDomainRelationship(string.Concat(metaModel.GetType().Namespace, ".", linkName));
+																		}
+																	}
+																	if (relationshipInfo != null &&
+																		(relationship = ORMCustomSerializedStandaloneRelationship.Find(relationships, relationshipInfo.Id)).HasValue)
+																	{
+																		ORMCustomSerializedStandaloneRelationshipRole[] roles = relationship.Value.GetRoles();
+																		if (roles.Length == 2)
+																		{
+																			string[] rolePlayerIds = new string[2];
+																			DomainClassInfo[] rolePlayerDomainClasses = new DomainClassInfo[2];
+																			DomainRoleInfo oppositeRoleInfo = null;
+																			for (int i = 0; i < 2; ++i)
+																			{
+																				ORMCustomSerializedStandaloneRelationshipRole currentRole = roles[i];
+																				string rolePlayerId;
+																				DomainRoleInfo domainRoleInfo;
+																				DomainClassInfo domainClassInfo;
+																				if (null == (rolePlayerId = reader.GetAttribute(currentRole.AttributeName)) ||
+																					null == (domainRoleInfo = dataDirectory.FindDomainRole(roles[i].DomainRoleId)) ||
+																					null == (domainClassInfo = domainRoleInfo.RolePlayer))
+																				{
+																					break;
+																				}
+																				rolePlayerIds[i] = rolePlayerId;
+																				rolePlayerDomainClasses[i] = domainClassInfo;
+																				if (i == 1)
+																				{
+																					oppositeRoleInfo = domainRoleInfo;
+																				}
+																			}
+																			if (oppositeRoleInfo != null)
+																			{
+																				bool isNewElementDummy;
+																				ElementLink newElementLink = CreateElementLink(
+																						reader.GetAttribute("id"),
+																						CreateElement(
+																							rolePlayerIds[0],
+																							rolePlayerDomainClasses[0],
+																							Guid.Empty,
+																							rolePlayerDomainClasses[0].AllDescendants.Count == 0,
+																							out isNewElementDummy),
+																						CreateElement(
+																							rolePlayerIds[1],
+																							rolePlayerDomainClasses[1],
+																							Guid.Empty,
+																							rolePlayerDomainClasses[1].AllDescendants.Count == 0,
+																							out isNewElementDummy),
+																						oppositeRoleInfo,
+																						relationshipInfo);
+																				if (relationship.Value.IsPrimaryLinkElement)
+																				{
+																					processedLinkElement = true;
+																					int blockedAttributeCount = 0;
+																					ProcessClassElement(
+																						reader,
+																						metaModel,
+																						newElementLink,
+																						null,
+																						delegate(string attributeNamespace, string attributeName)
+																						{
+																							if (blockedAttributeCount < 2)
+																							{
+																								if (string.IsNullOrEmpty(attributeNamespace))
+																								{
+																									if (attributeName == roles[0].AttributeName ||
+																										attributeName == roles[1].AttributeName)
+																									{
+																										++blockedAttributeCount;
+																										return false;
+																									}
+																								}
+																							}
+																							return true;
+																						});
+																				}
+
+																			}
+																		}
+																	}
+
+																	if (!processedLinkElement)
+																	{
+																		PassEndElement(reader);
+																	}
+																}
+																else if (reader.NodeType == XmlNodeType.EndElement)
+																{
+																	break;
+																}
 															}
 														}
 													}
 												}
-#endif // DESERIALIZE_ROOTLINKS
 											}
 											if (!processedRootElement)
 											{
@@ -2530,6 +2950,13 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private delegate ElementLink CreateAggregatingLink(string idValue);
 		/// <summary>
+		/// Provide a callback filter to skip attribute processing
+		/// </summary>
+		/// <param name="attributeNamespace">The xml namespace of attribute</param>
+		/// <param name="attributeName">The name of the attribute</param>
+		/// <returns><see langword="false"/> to block attribute processing</returns>
+		private delegate bool ShouldProcessAttribute(string attributeNamespace, string attributeName);
+		/// <summary>
 		/// Process a newly created element. The element will have an
 		/// Id set only. The id and ref properties should be ignored.
 		/// </summary>
@@ -2537,7 +2964,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="customModel">The custom serialized meta model</param>
 		/// <param name="element">Newly created element</param>
 		/// <param name="createAggregatingLinkCallback">A callback to pre-create the aggregating link before the aggregated element has finished processing</param>
-		private void ProcessClassElement(XmlReader reader, IORMCustomSerializedDomainModel customModel, ModelElement element, CreateAggregatingLink createAggregatingLinkCallback)
+		/// <param name="shouldProcessAttributeCallback">A callback to determine which attribute values should be processed</param>
+		private void ProcessClassElement(XmlReader reader, IORMCustomSerializedDomainModel customModel, ModelElement element, CreateAggregatingLink createAggregatingLinkCallback, ShouldProcessAttribute shouldProcessAttributeCallback)
 		{
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
 			DomainDataDirectory dataDir = myStore.DomainDataDirectory;
@@ -2550,7 +2978,8 @@ namespace Neumont.Tools.ORM.Shell
 					string attributeName = reader.LocalName;
 					string namespaceName = reader.NamespaceURI;
 					//derived objects are prefixed by an underscore and do not need to be read in
-					if (!(namespaceName.Length == 0 && (attributeName == "id" || attributeName == "ref" || attributeName[0] == '_')))
+					if (!(namespaceName.Length == 0 && (attributeName == "id" || attributeName == "ref" || attributeName[0] == '_')) &&
+						(shouldProcessAttributeCallback == null || shouldProcessAttributeCallback(namespaceName, attributeName)))
 					{
 						Guid attributeGuid = new Guid();
 						DomainPropertyInfo attributeInfo = null;
@@ -2628,6 +3057,7 @@ namespace Neumont.Tools.ORM.Shell
 					IORMCustomSerializedDomainModel restoreCustomModel = null;
 					bool nodeProcessed = false;
 					ORMCustomSerializedElementMatch aggregatingLinkMatch;
+					ORMCustomSerializedStandaloneRelationship? standaloneRelationship = null;
 					DomainRoleInfo testAggregatingRole;
 					if (aggregatedClass &&
 						testForAggregatingLink &&
@@ -2639,7 +3069,7 @@ namespace Neumont.Tools.ORM.Shell
 						ElementLink aggregatingLink = createAggregatingLinkCallback(idValue);
 						if (aggregatingLink != null)
 						{
-							ProcessClassElement(reader, customModel, aggregatingLink, null);
+							ProcessClassElement(reader, customModel, aggregatingLink, null, null);
 						}
 						nodeProcessed = true;
 					}
@@ -2696,6 +3126,7 @@ namespace Neumont.Tools.ORM.Shell
 								match = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 							}
 							allowDuplicates = match.AllowDuplicates;
+							standaloneRelationship = match.StandaloneRelationship;
 							switch (match.MatchStyle)
 							{
 								case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole:
@@ -2943,47 +3374,149 @@ namespace Neumont.Tools.ORM.Shell
 							// to this element does not already exist. This obviously requires one
 							// relationship of each type between any two objects, which is a reasonable assumption
 							// for a well-formed model.
-							bool isNewElement;
+							bool isNewElement = false;
 							string elementId = aggregatedClass ? idValue : refValue;
-							ModelElement oppositeElement = CreateElement(elementId, oppositeDomainClass, Guid.Empty, !oppositeDomainClassFullyDeterministic, out isNewElement);
+							ModelElement oppositeElement = null;
 							bool createLink = true;
-							if (aggregatedClass)
+							if (!standaloneRelationship.HasValue)
 							{
-								ProcessClassElement(
-									reader,
-									customModel,
-									oppositeElement,
-									delegate(string aggregateIdValue)
+								oppositeElement = CreateElement(elementId, oppositeDomainClass, Guid.Empty, !oppositeDomainClassFullyDeterministic, out isNewElement);
+							}
+							else
+							{
+								ORMCustomSerializedStandaloneRelationship relationship = standaloneRelationship.Value;
+								DomainRelationshipInfo standaloneRelationshipInfo = dataDir.FindDomainRelationship(standaloneRelationship.Value.DomainClassId);
+								ORMCustomSerializedStandaloneRelationshipRole[] roles = relationship.GetRoles();
+								if (roles.Length == 2)
+								{
+									string[] rolePlayerIds = new string[2];
+									DomainClassInfo[] rolePlayerDomainClasses = new DomainClassInfo[2];
+									DomainRoleInfo oppositeRoleInfo = null;
+									for (int i = 0; i < 2; ++i)
 									{
-										ElementLink retVal = null;
-										if (createLink)
+										ORMCustomSerializedStandaloneRelationshipRole currentRole = roles[i];
+										string rolePlayerId;
+										DomainRoleInfo domainRoleInfo;
+										DomainClassInfo domainClassInfo;
+										if (null == (rolePlayerId = reader.GetAttribute(currentRole.AttributeName)) ||
+											null == (domainRoleInfo = dataDir.FindDomainRole(roles[i].DomainRoleId)) ||
+											null == (domainClassInfo = domainRoleInfo.RolePlayer))
+										{
+											break;
+										}
+										rolePlayerIds[i] = rolePlayerId;
+										rolePlayerDomainClasses[i] = domainClassInfo;
+										if (i == 1)
+										{
+											oppositeRoleInfo = domainRoleInfo;
+										}
+									}
+									if (oppositeRoleInfo != null)
+									{
+										isNewElement = true;
+										bool isNewElementDummy;
+										oppositeElement = CreateElementLink(
+												idValue,
+												CreateElement(
+													rolePlayerIds[0],
+													rolePlayerDomainClasses[0],
+													Guid.Empty,
+													rolePlayerDomainClasses[0].AllDescendants.Count == 0,
+													out isNewElementDummy),
+												CreateElement(
+													rolePlayerIds[1],
+													rolePlayerDomainClasses[1],
+													Guid.Empty,
+													rolePlayerDomainClasses[1].AllDescendants.Count == 0,
+													out isNewElementDummy),
+												oppositeRoleInfo,
+												standaloneRelationshipInfo);
+										if (relationship.IsPrimaryLinkElement)
+										{
+											int blockedAttributeCount = 0;
+											ProcessClassElement(
+												reader,
+												customModel,
+												oppositeElement,
+												delegate(string aggregateIdValue)
+												{
+													ElementLink retVal = null;
+													if (createLink)
+													{
+														createLink = false;
+														retVal = CreateElementLink(aggregateIdValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
+													}
+													return retVal;
+												},
+												delegate(string attributeNamespace, string attributeName)
+												{
+													if (blockedAttributeCount < 2)
+													{
+														if (string.IsNullOrEmpty(attributeNamespace))
+														{
+															if (attributeName == roles[0].AttributeName ||
+																attributeName == roles[1].AttributeName)
+															{
+																++blockedAttributeCount;
+																return false;
+															}
+														}
+													}
+													return true;
+												});
+										}
+									}
+								}
+								// If this is set, then we already used it to create the standalone line
+								// Any embedding relationship id would have been set with the EmbeddingLinkElement callback
+								idValue = null;
+								aggregatedClass = false;
+							}
+							if (oppositeElement != null)
+							{
+								if (aggregatedClass)
+								{
+									ProcessClassElement(
+										reader,
+										customModel,
+										oppositeElement,
+										delegate(string aggregateIdValue)
+										{
+											ElementLink retVal = null;
+											if (createLink)
+											{
+												createLink = false;
+												retVal = CreateElementLink(aggregateIdValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
+											}
+											return retVal;
+										},
+										null);
+								}
+								if (!allowDuplicates && !isNewElement)
+								{
+									LinkedElementCollection<ModelElement> oppositeRolePlayers = oppositeDomainRole.GetLinkedElements(oppositeElement);
+									int oppositeCount = oppositeRolePlayers.Count;
+									for (int i = 0; i < oppositeCount; ++i)
+									{
+										if (element == oppositeRolePlayers[i])
 										{
 											createLink = false;
-											retVal = CreateElementLink(aggregateIdValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
+											break;
 										}
-										return retVal;
-									});
-							}
-							if (!allowDuplicates && !isNewElement)
-							{
-								LinkedElementCollection<ModelElement> oppositeRolePlayers = oppositeDomainRole.GetLinkedElements(oppositeElement);
-								int oppositeCount = oppositeRolePlayers.Count;
-								for (int i = 0; i < oppositeCount; ++i)
+									}
+								}
+								if (createLink)
 								{
-									if (element == oppositeRolePlayers[i])
+									ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
+									if (!aggregatedClass && idValue != null)
 									{
-										createLink = false;
-										break;
+										ProcessClassElement(reader, customModel, newLink, null, null);
 									}
 								}
 							}
-							if (createLink)
+							else
 							{
-								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
-								if (!aggregatedClass && idValue != null)
-								{
-									ProcessClassElement(reader, customModel, newLink, null);
-								}
+								PassEndElement(reader);
 							}
 						}
 						else

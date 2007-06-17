@@ -75,11 +75,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 			return GetRootElementClasses();
 		}
 		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
-		private static ORMRootRelationshipContainer[] GetRootRelationshipContainers()
+		private static ORMCustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{
-			return new ORMRootRelationshipContainer[0];
+			return null;
 		}
-		ORMRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		ORMCustomSerializedRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
 		{
 			return GetRootRelationshipContainers();
 		}

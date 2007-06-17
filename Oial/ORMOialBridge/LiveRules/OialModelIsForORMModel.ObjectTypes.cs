@@ -4,9 +4,9 @@ using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
-	public partial class OialModelIsForORMModel
+	public partial class AbstractionModelIsForORMModel
 	{
 		private partial class ObjectTypeRule
 		{
@@ -21,7 +21,7 @@ namespace Neumont.Tools.ORMOialBridge
 					ValueTypeHasDataType valueTypeHasDataType = (ValueTypeHasDataType)e.ModelElement;
 					ObjectType objectType = (ObjectType)valueTypeHasDataType.ValueType;
 					AddTransactedModelElement(objectType, OialModelElementAction.Change);
-					ORMCoreDomainModel.DelayValidateElement(objectType.Model, OialModelIsForORMModel.DelayValidateModel);
+					ORMCoreDomainModel.DelayValidateElement(objectType.Model, AbstractionModelIsForORMModel.DelayValidateModel);
 				}
 			}
 
@@ -38,7 +38,7 @@ namespace Neumont.Tools.ORMOialBridge
 					ValueTypeHasDataType valueTypeHasDataType = (ValueTypeHasDataType)e.ModelElement;
 					ObjectType objectType = (ObjectType)valueTypeHasDataType.ValueType;
 					AddTransactedModelElement(objectType, OialModelElementAction.Change);
-					ORMCoreDomainModel.DelayValidateElement(objectType.Model, OialModelIsForORMModel.DelayValidateModel);
+					ORMCoreDomainModel.DelayValidateElement(objectType.Model, AbstractionModelIsForORMModel.DelayValidateModel);
 				}
 			}
 		}

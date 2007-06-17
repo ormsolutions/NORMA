@@ -17,12 +17,37 @@
 		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
 		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:DomainModel Class="ORMOialBridgeDomainModel">
+	<se:DomainModel Class="ORMToORMAbstractionBridgeDomainModel">
 		<se:Namespaces>
+			<se:Namespace Prefix="ormtooil" URI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" SchemaFile="ORMToORMAbstraction.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
-		<se:RootElements>
-		</se:RootElements>
-		<se:OmittedDomainElements>
-		</se:OmittedDomainElements>
+		<se:RootLinks>
+			<se:Container Name="Bridge">
+				<se:RootLink Class="AbstractionModelIsForORMModel" PrimaryLinkElement="true">
+					<se:Role RoleName="AbstractionModel"/>
+					<se:Role RoleName="ORMModel"/>
+				</se:RootLink>
+				<se:RootLink Class="FactTypeMapsTowardsRole" PrimaryLinkElement="true">
+					<se:Role RoleName="FactType"/>
+					<se:Role RoleName="TowardsRole"/>
+				</se:RootLink>
+				<se:RootLink Class="ConceptTypeIsForObjectType" PrimaryLinkElement="true">
+					<se:Role RoleName="ConceptType"/>
+					<se:Role RoleName="ObjectType"/>
+				</se:RootLink>
+				<se:RootLink Class="ConceptTypeChildHasPathFactType" PrimaryLinkElement="true">
+					<se:Role RoleName="ConceptTypeChild"/>
+					<se:Role RoleName="PathFactType"/>
+				</se:RootLink>
+				<se:RootLink Class="InformationTypeFormatIsForValueType" PrimaryLinkElement="true">
+					<se:Role RoleName="InformationTypeFormat"/>
+					<se:Role RoleName="ValueType"/>
+				</se:RootLink>
+				<se:RootLink Class="UniquenessIsForUniquenessConstraint" PrimaryLinkElement="true">
+					<se:Role RoleName="Uniqueness" Name="AbstractionUniquenessConstraint"/>
+					<se:Role RoleName="UniquenessConstraint" Name="ORMUniquenessConstraint"/>
+				</se:RootLink>
+			</se:Container>
+		</se:RootLinks>
 	</se:DomainModel>
 </se:CustomSerializedElements>

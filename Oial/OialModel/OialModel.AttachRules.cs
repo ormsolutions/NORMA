@@ -16,17 +16,17 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.Oial
+namespace Neumont.Tools.ORMAbstraction
 {
-	#region Attach rules to OialDomainModel model
-	partial class OialDomainModel
+	#region Attach rules to AbstractionDomainModel model
+	partial class AbstractionDomainModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = OialDomainModel.myCustomDomainModelTypes;
+				Type[] retVal = AbstractionDomainModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -34,7 +34,7 @@ namespace Neumont.Tools.Oial
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{};
-					OialDomainModel.myCustomDomainModelTypes = retVal;
+					AbstractionDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -50,7 +50,7 @@ namespace Neumont.Tools.Oial
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = OialDomainModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = AbstractionDomainModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -63,5 +63,5 @@ namespace Neumont.Tools.Oial
 			}
 		}
 	}
-	#endregion // Attach rules to OialDomainModel model
+	#endregion // Attach rules to AbstractionDomainModel model
 }

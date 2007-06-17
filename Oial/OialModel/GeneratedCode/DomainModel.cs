@@ -24,22 +24,22 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Oial
+namespace Neumont.Tools.ORMAbstraction
 {
 	/// <summary>
-	/// DomainModel OialDomainModel
-	/// ORM Intermediate Abstraction Language
+	/// DomainModel AbstractionDomainModel
+	/// Intermediate ORM Mapping to Attribute-based Models
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Oial.OialDomainModel.DisplayName", typeof(global::Neumont.Tools.Oial.OialDomainModel), "Neumont.Tools.Oial.GeneratedCode.OialDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Oial.OialDomainModel.Description", typeof(global::Neumont.Tools.Oial.OialDomainModel), "Neumont.Tools.Oial.GeneratedCode.OialDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.AbstractionDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.AbstractionDomainModel.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("f7bc82f4-83d1-408c-ba42-607e90b23bea")]
-	public partial class OialDomainModel : DslModeling::DomainModel
+	public partial class AbstractionDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// OialDomainModel domain model Id.
+		/// AbstractionDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0xf7bc82f4, 0x83d1, 0x408c, 0xba, 0x42, 0x60, 0x7e, 0x90, 0xb2, 0x3b, 0xea);
 	
@@ -47,7 +47,7 @@ namespace Neumont.Tools.Oial
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public OialDomainModel(DslModeling::Store store)
+		public AbstractionDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -63,12 +63,12 @@ namespace Neumont.Tools.Oial
 		{
 			return new global::System.Type[]
 			{
-				typeof(OialModel),
+				typeof(AbstractionModel),
 				typeof(ConceptType),
 				typeof(InformationTypeFormat),
 				typeof(Uniqueness),
-				typeof(OialModelHasConceptType),
-				typeof(OialModelHasInformationTypeFormat),
+				typeof(AbstractionModelHasConceptType),
+				typeof(AbstractionModelHasInformationTypeFormat),
 				typeof(ConceptTypeHasUniqueness),
 				typeof(ConceptTypeChild),
 				typeof(ConceptTypeHasChildAsPartOfAssociation),
@@ -87,7 +87,7 @@ namespace Neumont.Tools.Oial
 		{
 			return new DomainMemberInfo[]
 			{
-				new DomainMemberInfo(typeof(OialModel), "Name", OialModel.NameDomainPropertyId, typeof(OialModel.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(AbstractionModel), "Name", AbstractionModel.NameDomainPropertyId, typeof(AbstractionModel.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptType), "Name", ConceptType.NameDomainPropertyId, typeof(ConceptType.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(InformationTypeFormat), "Name", InformationTypeFormat.NameDomainPropertyId, typeof(InformationTypeFormat.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Uniqueness), "Name", Uniqueness.NameDomainPropertyId, typeof(Uniqueness.NamePropertyHandler)),
@@ -108,10 +108,10 @@ namespace Neumont.Tools.Oial
 		{
 			return new DomainRolePlayerInfo[]
 			{
-				new DomainRolePlayerInfo(typeof(OialModelHasConceptType), "Model", OialModelHasConceptType.ModelDomainRoleId),
-				new DomainRolePlayerInfo(typeof(OialModelHasConceptType), "ConceptType", OialModelHasConceptType.ConceptTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(OialModelHasInformationTypeFormat), "Model", OialModelHasInformationTypeFormat.ModelDomainRoleId),
-				new DomainRolePlayerInfo(typeof(OialModelHasInformationTypeFormat), "InformationTypeFormat", OialModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasConceptType), "Model", AbstractionModelHasConceptType.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasConceptType), "ConceptType", AbstractionModelHasConceptType.ConceptTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasInformationTypeFormat), "Model", AbstractionModelHasInformationTypeFormat.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasInformationTypeFormat), "InformationTypeFormat", AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasUniqueness), "ConceptType", ConceptTypeHasUniqueness.ConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasUniqueness), "Uniqueness", ConceptTypeHasUniqueness.UniquenessDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeChild), "Parent", ConceptTypeChild.ParentDomainRoleId),
@@ -149,7 +149,7 @@ namespace Neumont.Tools.Oial
 			if (createElementMap == null)
 			{
 				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(4);
-				createElementMap.Add(typeof(OialModel), 0);
+				createElementMap.Add(typeof(AbstractionModel), 0);
 				createElementMap.Add(typeof(ConceptType), 1);
 				createElementMap.Add(typeof(InformationTypeFormat), 2);
 				createElementMap.Add(typeof(Uniqueness), 3);
@@ -161,7 +161,7 @@ namespace Neumont.Tools.Oial
 			}
 			switch (index)
 			{
-				case 0: return new OialModel(partition, propertyAssignments);
+				case 0: return new AbstractionModel(partition, propertyAssignments);
 				case 1: return new ConceptType(partition, propertyAssignments);
 				case 2: return new InformationTypeFormat(partition, propertyAssignments);
 				case 3: return new Uniqueness(partition, propertyAssignments);
@@ -188,8 +188,8 @@ namespace Neumont.Tools.Oial
 			if (createElementLinkMap == null)
 			{
 				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(10);
-				createElementLinkMap.Add(typeof(OialModelHasConceptType), 0);
-				createElementLinkMap.Add(typeof(OialModelHasInformationTypeFormat), 1);
+				createElementLinkMap.Add(typeof(AbstractionModelHasConceptType), 0);
+				createElementLinkMap.Add(typeof(AbstractionModelHasInformationTypeFormat), 1);
 				createElementLinkMap.Add(typeof(ConceptTypeHasUniqueness), 2);
 				createElementLinkMap.Add(typeof(ConceptTypeHasChildAsPartOfAssociation), 3);
 				createElementLinkMap.Add(typeof(InformationType), 4);
@@ -204,8 +204,8 @@ namespace Neumont.Tools.Oial
 			}
 			switch (index)
 			{
-				case 0: return new OialModelHasConceptType(partition, roleAssignments, propertyAssignments);
-				case 1: return new OialModelHasInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 0: return new AbstractionModelHasConceptType(partition, roleAssignments, propertyAssignments);
+				case 1: return new AbstractionModelHasInformationTypeFormat(partition, roleAssignments, propertyAssignments);
 				case 2: return new ConceptTypeHasUniqueness(partition, roleAssignments, propertyAssignments);
 				case 3: return new ConceptTypeHasChildAsPartOfAssociation(partition, roleAssignments, propertyAssignments);
 				case 4: return new InformationType(partition, roleAssignments, propertyAssignments);
@@ -223,7 +223,7 @@ namespace Neumont.Tools.Oial
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.Oial.GeneratedCode.OialDomainModelResx";
+		public const string ResourceBaseName = "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -233,7 +233,7 @@ namespace Neumont.Tools.Oial
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return OialDomainModel.SingletonResourceManager;
+				return AbstractionDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -245,11 +245,11 @@ namespace Neumont.Tools.Oial
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (OialDomainModel.resourceManager == null)
+				if (AbstractionDomainModel.resourceManager == null)
 				{
-					OialDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(OialDomainModel).Assembly);
+					AbstractionDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(AbstractionDomainModel).Assembly);
 				}
-				return OialDomainModel.resourceManager;
+				return AbstractionDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -273,9 +273,9 @@ namespace Neumont.Tools.Oial
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return OialDomainModel.CopyClosure;
+					return AbstractionDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return OialDomainModel.DeleteClosure;
+					return AbstractionDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -287,14 +287,14 @@ namespace Neumont.Tools.Oial
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (OialDomainModel.copyClosure == null)
+				if (AbstractionDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new OialCopyClosure());
+					copyFilter.AddFilter(new AbstractionCopyClosure());
 					
-					OialDomainModel.copyClosure = copyFilter;
+					AbstractionDomainModel.copyClosure = copyFilter;
 				}
-				return OialDomainModel.copyClosure;
+				return AbstractionDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -305,14 +305,14 @@ namespace Neumont.Tools.Oial
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (OialDomainModel.removeClosure == null)
+				if (AbstractionDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new OialDeleteClosure());
+					removeFilter.AddFilter(new AbstractionDeleteClosure());
 		
-					OialDomainModel.removeClosure = removeFilter;
+					AbstractionDomainModel.removeClosure = removeFilter;
 				}
-				return OialDomainModel.removeClosure;
+				return AbstractionDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -323,12 +323,12 @@ namespace Neumont.Tools.Oial
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class OialDeleteClosure : OialDeleteClosureBase, DslModeling::IElementVisitorFilter
+	public partial class AbstractionDeleteClosure : AbstractionDeleteClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialDeleteClosure() : base()
+		public AbstractionDeleteClosure() : base()
 		{
 		}
 	}
@@ -336,7 +336,7 @@ namespace Neumont.Tools.Oial
 	/// <summary>
 	/// Base class for remove closure visitor filter
 	/// </summary>
-	public partial class OialDeleteClosureBase : DslModeling::IElementVisitorFilter
+	public partial class AbstractionDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -345,14 +345,14 @@ namespace Neumont.Tools.Oial
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialDeleteClosureBase()
+		public AbstractionDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.Oial.OialModelHasConceptType.ConceptTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Oial.OialModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Oial.ConceptTypeHasUniqueness.UniquenessDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.Oial.InformationType.InformationTypeFormatDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -401,19 +401,19 @@ namespace Neumont.Tools.Oial
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class OialCopyClosure : OialCopyClosureBase, DslModeling::IElementVisitorFilter
+	public partial class AbstractionCopyClosure : AbstractionCopyClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialCopyClosure() : base()
+		public AbstractionCopyClosure() : base()
 		{
 		}
 	}
 	/// <summary>
 	/// Base class for copy closure visitor filter
 	/// </summary>
-	public partial class OialCopyClosureBase : DslModeling::IElementVisitorFilter
+	public partial class AbstractionCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -422,7 +422,7 @@ namespace Neumont.Tools.Oial
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialCopyClosureBase()
+		public AbstractionCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion

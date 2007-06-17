@@ -24,24 +24,24 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	/// <summary>
-	/// DomainModel ORMOialBridgeDomainModel
-	/// Bridges ORM and OIAL together.
+	/// DomainModel ORMToORMAbstractionBridgeDomainModel
+	/// Bridges ORM and and ORM Intermediate Abstraction Language.
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.Oial.OialDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel), "Neumont.Tools.ORMOialBridge.GeneratedCode.ORMOialBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel.Description", typeof(global::Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel), "Neumont.Tools.ORMOialBridge.GeneratedCode.ORMOialBridgeDomainModelResx")]
+	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("1f394f03-8a41-48bc-bded-2268e131b4a3")]
-	public partial class ORMOialBridgeDomainModel : DslModeling::DomainModel
+	public partial class ORMToORMAbstractionBridgeDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// ORMOialBridgeDomainModel domain model Id.
+		/// ORMToORMAbstractionBridgeDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0x1f394f03, 0x8a41, 0x48bc, 0xbd, 0xed, 0x22, 0x68, 0xe1, 0x31, 0xb4, 0xa3);
 	
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORMOialBridge
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public ORMOialBridgeDomainModel(DslModeling::Store store)
+		public ORMToORMAbstractionBridgeDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -66,7 +66,7 @@ namespace Neumont.Tools.ORMOialBridge
 			return new global::System.Type[]
 			{
 				typeof(FactTypeMapsTowardsRole),
-				typeof(OialModelIsForORMModel),
+				typeof(AbstractionModelIsForORMModel),
 				typeof(ConceptTypeIsForObjectType),
 				typeof(ConceptTypeChildHasPathFactType),
 				typeof(InformationTypeFormatIsForValueType),
@@ -94,8 +94,8 @@ namespace Neumont.Tools.ORMOialBridge
 			{
 				new DomainRolePlayerInfo(typeof(FactTypeMapsTowardsRole), "FactType", FactTypeMapsTowardsRole.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactTypeMapsTowardsRole), "TowardsRole", FactTypeMapsTowardsRole.TowardsRoleDomainRoleId),
-				new DomainRolePlayerInfo(typeof(OialModelIsForORMModel), "OialModel", OialModelIsForORMModel.OialModelDomainRoleId),
-				new DomainRolePlayerInfo(typeof(OialModelIsForORMModel), "ORMModel", OialModelIsForORMModel.ORMModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelIsForORMModel), "AbstractionModel", AbstractionModelIsForORMModel.AbstractionModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelIsForORMModel), "ORMModel", AbstractionModelIsForORMModel.ORMModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeIsForObjectType), "ConceptType", ConceptTypeIsForObjectType.ConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeIsForObjectType), "ObjectType", ConceptTypeIsForObjectType.ObjectTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeChildHasPathFactType), "ConceptTypeChild", ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId),
@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORMOialBridge
 			{
 				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(6);
 				createElementLinkMap.Add(typeof(FactTypeMapsTowardsRole), 0);
-				createElementLinkMap.Add(typeof(OialModelIsForORMModel), 1);
+				createElementLinkMap.Add(typeof(AbstractionModelIsForORMModel), 1);
 				createElementLinkMap.Add(typeof(ConceptTypeIsForObjectType), 2);
 				createElementLinkMap.Add(typeof(ConceptTypeChildHasPathFactType), 3);
 				createElementLinkMap.Add(typeof(InformationTypeFormatIsForValueType), 4);
@@ -171,7 +171,7 @@ namespace Neumont.Tools.ORMOialBridge
 			switch (index)
 			{
 				case 0: return new FactTypeMapsTowardsRole(partition, roleAssignments, propertyAssignments);
-				case 1: return new OialModelIsForORMModel(partition, roleAssignments, propertyAssignments);
+				case 1: return new AbstractionModelIsForORMModel(partition, roleAssignments, propertyAssignments);
 				case 2: return new ConceptTypeIsForObjectType(partition, roleAssignments, propertyAssignments);
 				case 3: return new ConceptTypeChildHasPathFactType(partition, roleAssignments, propertyAssignments);
 				case 4: return new InformationTypeFormatIsForValueType(partition, roleAssignments, propertyAssignments);
@@ -187,7 +187,7 @@ namespace Neumont.Tools.ORMOialBridge
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORMOialBridge.GeneratedCode.ORMOialBridgeDomainModelResx";
+		public const string ResourceBaseName = "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORMOialBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return ORMOialBridgeDomainModel.SingletonResourceManager;
+				return ORMToORMAbstractionBridgeDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -209,11 +209,11 @@ namespace Neumont.Tools.ORMOialBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (ORMOialBridgeDomainModel.resourceManager == null)
+				if (ORMToORMAbstractionBridgeDomainModel.resourceManager == null)
 				{
-					ORMOialBridgeDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMOialBridgeDomainModel).Assembly);
+					ORMToORMAbstractionBridgeDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMToORMAbstractionBridgeDomainModel).Assembly);
 				}
-				return ORMOialBridgeDomainModel.resourceManager;
+				return ORMToORMAbstractionBridgeDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -237,9 +237,9 @@ namespace Neumont.Tools.ORMOialBridge
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return ORMOialBridgeDomainModel.CopyClosure;
+					return ORMToORMAbstractionBridgeDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return ORMOialBridgeDomainModel.DeleteClosure;
+					return ORMToORMAbstractionBridgeDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -251,14 +251,14 @@ namespace Neumont.Tools.ORMOialBridge
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (ORMOialBridgeDomainModel.copyClosure == null)
+				if (ORMToORMAbstractionBridgeDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new ORMOialBridgeCopyClosure());
+					copyFilter.AddFilter(new ORMToORMAbstractionBridgeCopyClosure());
 					
-					ORMOialBridgeDomainModel.copyClosure = copyFilter;
+					ORMToORMAbstractionBridgeDomainModel.copyClosure = copyFilter;
 				}
-				return ORMOialBridgeDomainModel.copyClosure;
+				return ORMToORMAbstractionBridgeDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -269,14 +269,14 @@ namespace Neumont.Tools.ORMOialBridge
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (ORMOialBridgeDomainModel.removeClosure == null)
+				if (ORMToORMAbstractionBridgeDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new ORMOialBridgeDeleteClosure());
+					removeFilter.AddFilter(new ORMToORMAbstractionBridgeDeleteClosure());
 		
-					ORMOialBridgeDomainModel.removeClosure = removeFilter;
+					ORMToORMAbstractionBridgeDomainModel.removeClosure = removeFilter;
 				}
-				return ORMOialBridgeDomainModel.removeClosure;
+				return ORMToORMAbstractionBridgeDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -287,12 +287,12 @@ namespace Neumont.Tools.ORMOialBridge
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class ORMOialBridgeDeleteClosure : ORMOialBridgeDeleteClosureBase, DslModeling::IElementVisitorFilter
+	public partial class ORMToORMAbstractionBridgeDeleteClosure : ORMToORMAbstractionBridgeDeleteClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMOialBridgeDeleteClosure() : base()
+		public ORMToORMAbstractionBridgeDeleteClosure() : base()
 		{
 		}
 	}
@@ -300,7 +300,7 @@ namespace Neumont.Tools.ORMOialBridge
 	/// <summary>
 	/// Base class for remove closure visitor filter
 	/// </summary>
-	public partial class ORMOialBridgeDeleteClosureBase : DslModeling::IElementVisitorFilter
+	public partial class ORMToORMAbstractionBridgeDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -309,10 +309,10 @@ namespace Neumont.Tools.ORMOialBridge
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMOialBridgeDeleteClosureBase()
+		public ORMToORMAbstractionBridgeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -361,19 +361,19 @@ namespace Neumont.Tools.ORMOialBridge
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class ORMOialBridgeCopyClosure : ORMOialBridgeCopyClosureBase, DslModeling::IElementVisitorFilter
+	public partial class ORMToORMAbstractionBridgeCopyClosure : ORMToORMAbstractionBridgeCopyClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMOialBridgeCopyClosure() : base()
+		public ORMToORMAbstractionBridgeCopyClosure() : base()
 		{
 		}
 	}
 	/// <summary>
 	/// Base class for copy closure visitor filter
 	/// </summary>
-	public partial class ORMOialBridgeCopyClosureBase : DslModeling::IElementVisitorFilter
+	public partial class ORMToORMAbstractionBridgeCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -382,7 +382,7 @@ namespace Neumont.Tools.ORMOialBridge
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMOialBridgeCopyClosureBase()
+		public ORMToORMAbstractionBridgeCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -432,13 +432,13 @@ namespace Neumont.Tools.ORMOialBridge
 	#endregion
 		
 }
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingDepth
-	/// Description for Neumont.Tools.ORMOialBridge.MappingDepth
+	/// Description for Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MappingDepth, global::Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MappingDepth, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum MappingDepth
 	{
@@ -448,7 +448,7 @@ namespace Neumont.Tools.ORMOialBridge
 		/// mapped to the destination <see
 		/// cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMOialBridge.MappingDepth/Shallow.Description", typeof(global::Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel), "Neumont.Tools.ORMOialBridge.GeneratedCode.ORMOialBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Shallow.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Shallow = 0,
 		/// <summary>
 		/// Deep
@@ -458,7 +458,7 @@ namespace Neumont.Tools.ORMOialBridge
 		/// is absorbed into the destination <see
 		/// cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMOialBridge.MappingDepth/Deep.Description", typeof(global::Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel), "Neumont.Tools.ORMOialBridge.GeneratedCode.ORMOialBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Deep.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Deep = 1,
 	}
 }

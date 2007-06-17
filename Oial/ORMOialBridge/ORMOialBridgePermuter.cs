@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Oial;
+using Neumont.Tools.ORMAbstraction;
 using Microsoft.VisualStudio.Modeling;
 using System.IO;
 using System.Diagnostics;
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region Chain calculator
 	class UndecidedMappingChains

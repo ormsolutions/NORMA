@@ -117,451 +117,451 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.Oial.OialDomainModel.Description" xml:space="preserve">
-    <value>ORM Intermediate Abstraction Language</value>
-    <comment>Description for DslLibrary &apos;Oial&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionDomainModel.Description" xml:space="preserve">
+    <value>Intermediate ORM Mapping to Attribute-based Models</value>
+    <comment>Description for DslLibrary &apos;Abstraction&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialDomainModel.DisplayName" xml:space="preserve">
-    <value>ORM Intermediate Abstraction Language</value>
-    <comment>DisplayName for DslLibrary &apos;Oial&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionDomainModel.DisplayName" xml:space="preserve">
+    <value>(Preliminary) ORM Abstraction</value>
+    <comment>DisplayName for DslLibrary &apos;Abstraction&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModel.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModel.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;OialModel&apos;</comment>
+    <comment>Description for DomainClass &apos;AbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModel.DisplayName" xml:space="preserve">
-    <value>OialModel</value>
-    <comment>DisplayName for DomainClass &apos;OialModel&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModel.DisplayName" xml:space="preserve">
+    <value>AbstractionModel</value>
+    <comment>DisplayName for DomainClass &apos;AbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModel/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModel.Name</value>
-    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;OialModel&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModel/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModel.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;AbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModel/Name.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModel/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
-    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;OialModel&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;AbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptType.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptType.DisplayName" xml:space="preserve">
     <value>ConceptType</value>
     <comment>DisplayName for DomainClass &apos;ConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptType/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptType.Name</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptType/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptType.Name</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptType/Name.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptType/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationTypeFormat.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationTypeFormat.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;InformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationTypeFormat.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationTypeFormat.DisplayName" xml:space="preserve">
     <value>InformationTypeFormat</value>
     <comment>DisplayName for DomainClass &apos;InformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationTypeFormat/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.InformationTypeFormat.Name</value>
+  <data name="Neumont.Tools.ORMAbstraction.InformationTypeFormat/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.InformationTypeFormat.Name</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;InformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationTypeFormat/Name.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationTypeFormat/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;InformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.Uniqueness.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.Uniqueness.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;Uniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.Uniqueness.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.Uniqueness.DisplayName" xml:space="preserve">
     <value>Uniqueness</value>
     <comment>DisplayName for DomainClass &apos;Uniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.Uniqueness/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.Uniqueness.Name</value>
+  <data name="Neumont.Tools.ORMAbstraction.Uniqueness/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.Uniqueness.Name</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Uniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.Uniqueness/Name.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.Uniqueness/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Uniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.Uniqueness/IsPreferred.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.Uniqueness.IsPreferred</value>
+  <data name="Neumont.Tools.ORMAbstraction.Uniqueness/IsPreferred.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.Uniqueness.IsPreferred</value>
     <comment>Description for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;Uniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.Uniqueness/IsPreferred.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.Uniqueness/IsPreferred.DisplayName" xml:space="preserve">
     <value>IsPreferred</value>
     <comment>DisplayName for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;Uniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModelHasConceptType</value>
-    <comment>Description for DomainClass &apos;OialModelHasConceptType&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType</value>
+    <comment>Description for DomainClass &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType.DisplayName" xml:space="preserve">
-    <value>Oial Model Has Concept Type</value>
-    <comment>DisplayName for DomainClass &apos;OialModelHasConceptType&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.DisplayName" xml:space="preserve">
+    <value>Abstraction Model Has Concept Type</value>
+    <comment>DisplayName for DomainClass &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType/Model.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModelHasConceptType.Model</value>
-    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;OialModelHasConceptType&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType/Model.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType/Model.DisplayName" xml:space="preserve">
     <value>Model</value>
-    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OialModelHasConceptType&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType/Model.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType/Model.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OialModelHasConceptType&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType/ConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModelHasConceptType.ConceptType</value>
-    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;OialModelHasConceptType&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptType</value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType/ConceptType.DisplayName" xml:space="preserve">
     <value>ConceptType</value>
-    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;OialModelHasConceptType&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Model</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;OialModelHasConceptType&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;AbstractionModelHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModelHasInformationTypeFormat</value>
-    <comment>Description for DomainClass &apos;OialModelHasInformationTypeFormat&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat</value>
+    <comment>Description for DomainClass &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat.DisplayName" xml:space="preserve">
-    <value>Oial Model Has Information Type Format</value>
-    <comment>DisplayName for DomainClass &apos;OialModelHasInformationTypeFormat&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>Abstraction Model Has Information Type Format</value>
+    <comment>DisplayName for DomainClass &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat/Model.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModelHasInformationTypeFormat.Model</value>
-    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;OialModelHasInformationTypeFormat&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat/Model.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat/Model.DisplayName" xml:space="preserve">
     <value>Model</value>
-    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OialModelHasInformationTypeFormat&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat/Model.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat/Model.PropertyDisplayName" xml:space="preserve">
     <value>Information Type Format Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;OialModelHasInformationTypeFormat&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.OialModelHasInformationTypeFormat.InformationTypeFormat</value>
-    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;OialModelHasInformationTypeFormat&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormat</value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
     <value>InformationTypeFormat</value>
-    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;OialModelHasInformationTypeFormat&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.OialModelHasInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
     <value>Model</value>
-    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;OialModelHasInformationTypeFormat&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeHasUniqueness</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness</value>
     <comment>Description for DomainClass &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.DisplayName" xml:space="preserve">
     <value>Concept Type Has Uniqueness</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness/ConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeHasUniqueness.ConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.ConceptType</value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness/ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness/ConceptType.DisplayName" xml:space="preserve">
     <value>ConceptType</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness/Uniqueness.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeHasUniqueness.Uniqueness</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness/Uniqueness.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.Uniqueness</value>
     <comment>Description for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness/Uniqueness.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness/Uniqueness.DisplayName" xml:space="preserve">
     <value>Uniqueness</value>
     <comment>DisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasUniqueness/Uniqueness.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness/Uniqueness.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;ConceptTypeHasUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeChild</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeChild</value>
     <comment>Description for DomainClass &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Concept Type Child</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/IsMandatory.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeChild.IsMandatory</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/IsMandatory.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeChild.IsMandatory</value>
     <comment>Description for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/IsMandatory.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/IsMandatory.DisplayName" xml:space="preserve">
     <value>IsMandatory</value>
     <comment>DisplayName for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeChild.Name</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeChild.Name</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Name.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Parent.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeChild.Parent</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Parent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeChild.Parent</value>
     <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Parent.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Parent.DisplayName" xml:space="preserve">
     <value>Parent</value>
     <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Parent.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Parent.PropertyDisplayName" xml:space="preserve">
     <value>Target Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Target.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeChild.Target</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Target.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeChild.Target</value>
     <comment>Description for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Target.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Target.DisplayName" xml:space="preserve">
     <value>Child</value>
     <comment>DisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeChild/Target.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeChild/Target.PropertyDisplayName" xml:space="preserve">
     <value>Parent</value>
     <comment>PropertyDisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation</value>
     <comment>Description for DomainClass &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.DisplayName" xml:space="preserve">
     <value>Concept Type Has Child As Part Of Association</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation/Parent.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation.Parent</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation/Parent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Parent</value>
     <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation/Parent.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation/Parent.DisplayName" xml:space="preserve">
     <value>Parent</value>
     <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation/Parent.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation/Parent.PropertyDisplayName" xml:space="preserve">
     <value>Target Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation/Target.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation.Target</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation/Target.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Target</value>
     <comment>Description for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation/Target.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation/Target.DisplayName" xml:space="preserve">
     <value>AssociationChild</value>
     <comment>DisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeHasChildAsPartOfAssociation/Target.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation/Target.PropertyDisplayName" xml:space="preserve">
     <value>Parent</value>
     <comment>PropertyDisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeHasChildAsPartOfAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.InformationType</value>
+  <data name="Neumont.Tools.ORMAbstraction.InformationType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.InformationType</value>
     <comment>Description for DomainClass &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationType.DisplayName" xml:space="preserve">
     <value>Information Type</value>
     <comment>DisplayName for DomainClass &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType/ConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.InformationType.ConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.InformationType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.InformationType.ConceptType</value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationType/ConceptType.DisplayName" xml:space="preserve">
     <value>ConceptType</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Information Type Format Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType/InformationTypeFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.InformationType.InformationTypeFormat</value>
+  <data name="Neumont.Tools.ORMAbstraction.InformationType/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.InformationType.InformationTypeFormat</value>
     <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType/InformationTypeFormat.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationType/InformationTypeFormat.DisplayName" xml:space="preserve">
     <value>InformationTypeFormat</value>
     <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.InformationType/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.InformationType/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeReferencesConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType</value>
     <comment>Description for DomainClass &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type References Concept Type</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/OppositeName.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeReferencesConceptType.OppositeName</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/OppositeName.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeName</value>
     <comment>Description for DomainProperty &apos;OppositeName&apos; on DomainClass &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/OppositeName.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/OppositeName.DisplayName" xml:space="preserve">
     <value>OppositeName</value>
     <comment>DisplayName for DomainProperty &apos;OppositeName&apos; on DomainClass &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/ReferencingConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeReferencesConceptType.ReferencingConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/ReferencingConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType</value>
     <comment>Description for DomainRole &apos;ReferencingConceptType&apos; on DomainRelationship &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/ReferencingConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/ReferencingConceptType.DisplayName" xml:space="preserve">
     <value>ReferencingConceptType</value>
     <comment>DisplayName for DomainRole &apos;ReferencingConceptType&apos; on DomainRelationship &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/ReferencingConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/ReferencingConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Referenced Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferencingConceptType&apos; on DomainRelationship &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/ReferencedConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeReferencesConceptType.ReferencedConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/ReferencedConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencedConceptType</value>
     <comment>Description for DomainRole &apos;ReferencedConceptType&apos; on DomainRelationship &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/ReferencedConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/ReferencedConceptType.DisplayName" xml:space="preserve">
     <value>ReferencedConceptType</value>
     <comment>DisplayName for DomainRole &apos;ReferencedConceptType&apos; on DomainRelationship &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeReferencesConceptType/ReferencedConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType/ReferencedConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Referencing Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferencedConceptType&apos; on DomainRelationship &apos;ConceptTypeReferencesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeRelatesToConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType</value>
     <comment>Description for DomainClass &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type Relates To Concept Type</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType/RelatingConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeRelatesToConceptType.RelatingConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType/RelatingConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptType</value>
     <comment>Description for DomainRole &apos;RelatingConceptType&apos; on DomainRelationship &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType/RelatingConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType/RelatingConceptType.DisplayName" xml:space="preserve">
     <value>RelatingConceptType</value>
     <comment>DisplayName for DomainRole &apos;RelatingConceptType&apos; on DomainRelationship &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType/RelatingConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType/RelatingConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Related Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RelatingConceptType&apos; on DomainRelationship &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType/RelatedConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeRelatesToConceptType.RelatedConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType/RelatedConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatedConceptType</value>
     <comment>Description for DomainRole &apos;RelatedConceptType&apos; on DomainRelationship &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType/RelatedConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType/RelatedConceptType.DisplayName" xml:space="preserve">
     <value>RelatedConceptType</value>
     <comment>DisplayName for DomainRole &apos;RelatedConceptType&apos; on DomainRelationship &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeRelatesToConceptType/RelatedConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType/RelatedConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Relating Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RelatedConceptType&apos; on DomainRelationship &apos;ConceptTypeRelatesToConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType</value>
     <comment>Description for DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type Assimilates Concept Type</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/RefersToSubtype.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.RefersToSubtype</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/RefersToSubtype.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtype</value>
     <comment>Description for DomainProperty &apos;RefersToSubtype&apos; on DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/RefersToSubtype.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/RefersToSubtype.DisplayName" xml:space="preserve">
     <value>RefersToSubtype</value>
     <comment>DisplayName for DomainProperty &apos;RefersToSubtype&apos; on DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/IsPreferredForTarget.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.IsPreferredForTarget</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/IsPreferredForTarget.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTarget</value>
     <comment>Description for DomainProperty &apos;IsPreferredForTarget&apos; on DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/IsPreferredForTarget.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/IsPreferredForTarget.DisplayName" xml:space="preserve">
     <value>IsPreferredForTarget</value>
     <comment>DisplayName for DomainProperty &apos;IsPreferredForTarget&apos; on DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/IsPreferredForParent.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.IsPreferredForParent</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/IsPreferredForParent.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParent</value>
     <comment>Description for DomainProperty &apos;IsPreferredForParent&apos; on DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/IsPreferredForParent.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/IsPreferredForParent.DisplayName" xml:space="preserve">
     <value>IsPreferredForParent</value>
     <comment>DisplayName for DomainProperty &apos;IsPreferredForParent&apos; on DomainClass &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/AssimilatorConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.AssimilatorConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/AssimilatorConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptType</value>
     <comment>Description for DomainRole &apos;AssimilatorConceptType&apos; on DomainRelationship &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/AssimilatorConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/AssimilatorConceptType.DisplayName" xml:space="preserve">
     <value>AssimilatorConceptType</value>
     <comment>DisplayName for DomainRole &apos;AssimilatorConceptType&apos; on DomainRelationship &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/AssimilatorConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/AssimilatorConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Assimilated Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;AssimilatorConceptType&apos; on DomainRelationship &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/AssimilatedConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType.AssimilatedConceptType</value>
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/AssimilatedConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptType</value>
     <comment>Description for DomainRole &apos;AssimilatedConceptType&apos; on DomainRelationship &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/AssimilatedConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/AssimilatedConceptType.DisplayName" xml:space="preserve">
     <value>AssimilatedConceptType</value>
     <comment>DisplayName for DomainRole &apos;AssimilatedConceptType&apos; on DomainRelationship &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.ConceptTypeAssimilatesConceptType/AssimilatedConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType/AssimilatedConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Assimilator Concept Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;AssimilatedConceptType&apos; on DomainRelationship &apos;ConceptTypeAssimilatesConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild</value>
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild</value>
     <comment>Description for DomainClass &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Uniqueness Includes Concept Type Child</value>
     <comment>DisplayName for DomainClass &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild/Uniqueness.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild.Uniqueness</value>
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild/Uniqueness.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild.Uniqueness</value>
     <comment>Description for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild/Uniqueness.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild/Uniqueness.DisplayName" xml:space="preserve">
     <value>Uniqueness</value>
     <comment>DisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild/Uniqueness.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild/Uniqueness.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Child Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild.ConceptTypeChild</value>
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild.ConceptTypeChild</value>
     <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>ConceptTypeChild</value>
     <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Oial.UniquenessIncludesConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessIncludesConceptTypeChild&apos;</comment>
   </data>

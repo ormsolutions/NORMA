@@ -7,8 +7,8 @@
     <ProjectGuid>{A9BE54D9-16AE-49F0-BF00-279F200633A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORMOialBridge</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORMOialBridge</AssemblyName>
+    <RootNamespace>Neumont.Tools.ORMToORMAbstractionBridge</RootNamespace>
+    <AssemblyName>Neumont.Tools.ORMToORMAbstractionBridge</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -109,6 +109,9 @@
       <LastGenOutput>DomainRelationships.cs</LastGenOutput>
     </None>
     <None Include="Install.bat" />
+    <EmbeddedResource Include="ORMToORMAbstraction.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Plix.xml" />
     <Content Include="ORMOialBridge.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
@@ -125,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.ORMOialBridge.GeneratedCode.ORMOialBridgeDomainModelResx.resources</LogicalName>
+      <LogicalName>Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx.resources</LogicalName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainModelResx.tt</DependentUpon>

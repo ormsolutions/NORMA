@@ -14,5 +14,5 @@
 \**************************************************************************/
 #endregion
 <#@ include file="Dsl\DomainClassCodeGenerator.tt" #>
-<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../OialModel.dsl';generatedResourceFile='OialDomainModelResx';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../OialModel.dsl';generatedResourceFile='AbstractionDomainModelResx';validation=''" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/Framework/SystemCore.dsl';validation=''" provides="dslLibrary='SystemCoreDslLibrary'" #>

@@ -19,7 +19,7 @@
 	Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase"
 	PackageNamespace="Neumont.Tools.RelationalModels"
 	Name="ConceptualDatabase"
-	DisplayName="Conceptual Database"
+	DisplayName="(Preliminary) Conceptual Database"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	Description="Relational Database View of ORM Model"
@@ -662,6 +662,13 @@
 		</DomainRelationship>
 
 		<DomainRelationship Id="27A4368B-C175-4F67-803F-AD902B5E7753" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintTargetsTable">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ReferenceConstraintTargetsTable, Design.ConceptualDatabaseElementTypeDescriptor&lt;ReferenceConstraintTargetsTable&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<Source>
 				<DomainRole Id="22F748A4-8086-46C4-A323-E93574438D16" Name="ReferenceConstraint" PropertyName="TargetTable" Multiplicity="One">
 					<RolePlayer>
@@ -678,6 +685,13 @@
 			</Target>
 		</DomainRelationship>
 		<DomainRelationship Id="2CA33A35-0FD3-4B68-9222-F2851A909C2F" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ColumnReference" AllowsDuplicates="true">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ColumnReference, Design.ConceptualDatabaseElementTypeDescriptor&lt;ColumnReference&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<Source>
 				<DomainRole Id="7BE6B7CC-EE99-4667-B096-79E2B4403561" Name="SourceColumn" PropertyName="TargetColumnCollection" IsPropertyGenerator="false" Multiplicity="ZeroMany">
 					<RolePlayer>

@@ -4,9 +4,9 @@ using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
-	public partial class OialModelIsForORMModel
+	public partial class AbstractionModelIsForORMModel
 	{
 		/// <summary>
 		/// Covers both internal uniqueness and simple mandatory constraints.
@@ -26,7 +26,7 @@ namespace Neumont.Tools.ORMOialBridge
 						// HACK: we are not guarenteed that this constraint has a model attached to it.
 						if (constraint.Model != null)
 						{
-							ORMCoreDomainModel.DelayValidateElement(constraint.Model, OialModelIsForORMModel.DelayValidateModel);
+							ORMCoreDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
 						}
 					}
 				}
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORMOialBridge
 					if (IsValidConstraintType((ConstraintRoleSequenceHasRole)e.ModelElement, ref constraint))
 					{
 						AddTransactedModelElement((ModelElement)constraint, OialModelElementAction.Change);
-						ORMCoreDomainModel.DelayValidateElement(constraint.Model, OialModelIsForORMModel.DelayValidateModel);
+						ORMCoreDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
 					}
 				}
 			}
@@ -63,7 +63,7 @@ namespace Neumont.Tools.ORMOialBridge
 					if (IsValidConstraintType((ConstraintRoleSequenceHasRole)e.ModelElement, ref constraint))
 					{
 						AddTransactedModelElement((ModelElement)constraint, OialModelElementAction.Delete);
-						ORMCoreDomainModel.DelayValidateElement(constraint.Model, OialModelIsForORMModel.DelayValidateModel);
+						ORMCoreDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
 					}
 				}
 			}

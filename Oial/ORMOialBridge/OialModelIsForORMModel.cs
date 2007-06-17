@@ -8,9 +8,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections;
 using System.Threading;
-using Neumont.Tools.Oial;
+using Neumont.Tools.ORMAbstraction;
 
-namespace Neumont.Tools.ORMOialBridge
+namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region OIAL support code
 	enum OialModelElementAction
@@ -20,7 +20,7 @@ namespace Neumont.Tools.ORMOialBridge
 		Delete = 4,
 	}
 	#endregion
-	public partial class OialModelIsForORMModel
+	public partial class AbstractionModelIsForORMModel
 	{
 		#region ModelElement transaction support
 		private static object Key = new object();
@@ -92,22 +92,23 @@ namespace Neumont.Tools.ORMOialBridge
 			}
 
 			// Get the link from the given ORMModel
-			OialModelIsForORMModel oialModelIsForORMModel = OialModelIsForORMModel.GetLinkToOialModel(model);
+			AbstractionModelIsForORMModel oialModelIsForORMModel = AbstractionModelIsForORMModel.GetLinkToAbstractionModel(model);
 
 			// If the link exists...
 			if (oialModelIsForORMModel != null)
 			{
-				if (oialModelIsForORMModel.OialModel != null)
+				AbstractionModel oialModel;
+				if (null != (oialModel = oialModelIsForORMModel.AbstractionModel))
 				{
-					oialModelIsForORMModel.OialModel.Delete();
+					oialModel.Delete();
 				}
 
 				// Delete it.
 				oialModelIsForORMModel.Delete();
 			}
 
-			OialModel oial = new OialModel(model.Store);
-			oialModelIsForORMModel = new OialModelIsForORMModel(oial, model);
+			AbstractionModel oial = new AbstractionModel(model.Store);
+			oialModelIsForORMModel = new AbstractionModelIsForORMModel(oial, model);
 
 			// Apply ORM to OIAL algorithm
 			oialModelIsForORMModel.TransformORMtoOial();
@@ -159,11 +160,11 @@ namespace Neumont.Tools.ORMOialBridge
 			{
 				ObjectType objectType = element as ObjectType;
 				ORMModel model = objectType.Model;
-				OialModel oil = OialModelIsForORMModel.GetOialModel(model);
+				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(model);
 				if (oil == null)
 				{
-					oil = new OialModel(store);
-					OialModelIsForORMModel oialModelIsForORMModel = new OialModelIsForORMModel(oil, model);
+					oil = new AbstractionModel(store);
+					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
 					notifyAdded.ElementAdded(oil, true);
 				}
 				ORMCoreDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
@@ -198,11 +199,11 @@ namespace Neumont.Tools.ORMOialBridge
 			{
 				FactType fact = element as FactType;
 				ORMModel model = fact.Model;
-				OialModel oil = OialModelIsForORMModel.GetOialModel(model);
+				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(model);
 				if (oil == null)
 				{
-					oil = new OialModel(store);
-					OialModelIsForORMModel oialModelIsForORMModel = new OialModelIsForORMModel(oil, model);
+					oil = new AbstractionModel(store);
+					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
 					notifyAdded.ElementAdded(oil, true);
 				}
 				ORMCoreDomainModel.DelayValidateElement(model, DelayValidateModel);
@@ -237,11 +238,11 @@ namespace Neumont.Tools.ORMOialBridge
 			{
 				ModelHasSetConstraint setConstraint = element as ModelHasSetConstraint;
 				ORMModel model = setConstraint.Model;
-				OialModel oil = OialModelIsForORMModel.GetOialModel(model);
+				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(model);
 				if (oil == null)
 				{
-					oil = new OialModel(store);
-					OialModelIsForORMModel oialModelIsForORMModel = new OialModelIsForORMModel(oil, model);
+					oil = new AbstractionModel(store);
+					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
 					notifyAdded.ElementAdded(oil, true);
 				}
 				ORMCoreDomainModel.DelayValidateElement(model, DelayValidateModel);
@@ -250,7 +251,7 @@ namespace Neumont.Tools.ORMOialBridge
 		#endregion // Deserialization FixupListeners
 		#region ORM to OIAL Algorithm Methods
 		/// <summary>
-		/// Transforms the data in <see cref="ORMModel"/> into this <see cref="OialModel"/>.
+		/// Transforms the data in <see cref="ORMModel"/> into this <see cref="AbstractionModel"/>.
 		/// </summary>
 		private void TransformORMtoOial()
 		{
@@ -453,7 +454,7 @@ namespace Neumont.Tools.ORMOialBridge
 		}
 
 		/// <summary>
-		/// Populates this <see cref="OialModel"/> given the decided <see cref="FactTypeMapping"/> objects.
+		/// Populates this <see cref="AbstractionModel"/> given the decided <see cref="FactTypeMapping"/> objects.
 		/// </summary>
 		/// <param name="factTypeMappings">The decided <see cref="FactTypeMapping"/> objects.</param>
 		private void GenerateOialModel(FactTypeMappingDictionary factTypeMappings)
@@ -651,7 +652,7 @@ namespace Neumont.Tools.ORMOialBridge
 		{
 			ORMModel model = this.ORMModel;
 			IEnumerable<ObjectType> modelValueTypes = model.ValueTypeCollection;
-			OialModel oialModel = this.OialModel;
+			AbstractionModel oialModel = this.AbstractionModel;
 
 			// For each ValueType in the model...
 			foreach (ObjectType valueType in modelValueTypes)
@@ -676,7 +677,7 @@ namespace Neumont.Tools.ORMOialBridge
 		{
 			ORMModel model = this.ORMModel;
 			LinkedElementCollection<ObjectType> modelObjectTypes = model.ObjectTypeCollection;
-			OialModel oialModel = this.OialModel;
+			AbstractionModel oialModel = this.AbstractionModel;
 
 			// For each object type in the model...
 			foreach (ObjectType objectType in modelObjectTypes)
@@ -722,7 +723,7 @@ namespace Neumont.Tools.ORMOialBridge
 		}
 
 		/// <summary>
-		/// Generate the <see cref="ConceptTypeChild"/> objects of the <see cref="OialModel"/>.
+		/// Generate the <see cref="ConceptTypeChild"/> objects of the <see cref="AbstractionModel"/>.
 		/// </summary>
 		/// <param name="factTypeMappings">The decided <see cref="FactTypeMapping"/> objects.</param>
 		private void GenerateConceptTypeChildren(FactTypeMappingDictionary factTypeMappings)
@@ -817,13 +818,13 @@ namespace Neumont.Tools.ORMOialBridge
 		}
 
 		/// <summary>
-		/// Generates the <see cref="Uniqueness"/> objects for the <see cref="OialModel"/>.
+		/// Generates the <see cref="Uniqueness"/> objects for the <see cref="AbstractionModel"/>.
 		/// </summary>
 		/// <param name="factTypeMappings">The decided <see cref="FactTypeMapping"/> objects.</param>
 		private void GenerateUniqueness(FactTypeMappingDictionary factTypeMappings)
 		{
 			// TODO: clean this up.
-			OialModel oialModel = this.OialModel;
+			AbstractionModel oialModel = this.AbstractionModel;
 
 			// For each concept type in the model...
 			foreach (ConceptType conceptType in oialModel.ConceptTypeCollection)
@@ -937,7 +938,7 @@ namespace Neumont.Tools.ORMOialBridge
 
 		private void GenerateAssociations()
 		{
-			OialModel oialModel = this.OialModel;
+			AbstractionModel oialModel = this.AbstractionModel;
 
 			// UNDONE: Portions of this may need to change depending on what we do for unary objectification.
 			foreach (ConceptType ct in oialModel.ConceptTypeCollection)

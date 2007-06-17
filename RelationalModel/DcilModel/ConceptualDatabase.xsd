@@ -103,6 +103,15 @@
 							<xs:element ref="rcd:Table" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:sequence>
 					</xs:complexType>
+					<xs:key name="allTablesColumnKey">
+						<xs:selector xpath="rcd:Table/rcd:Columns/rcd:Column"/>
+						<xs:field xpath="@id"/>
+						<!--<xs:field xpath="@Name"/>-->
+					</xs:key>
+					<xs:keyref name="referenceConstraintTargetColumnKeyRef" refer="rcd:allTablesColumnKey">
+						<xs:selector xpath="rcd:Table/rcd:Constraints/rcd:ReferenceConstraint/rcd:ColumnReferences/rcd:ColumnReference"/>
+						<xs:field xpath="@TargetColumn"/>
+					</xs:keyref>
 				</xs:element>
 				<xs:element name="DomainDataTypes" minOccurs="0">
 					<xs:complexType>
@@ -189,7 +198,7 @@
 			<xs:field xpath="@id"/>
 			<!--<xs:field xpath="@Name"/>-->
 		</xs:key>
-		<xs:key name="columnKey">
+		<xs:key name="localColumnKey">
 			<xs:selector xpath="rcd:Columns/rcd:Column"/>
 			<xs:field xpath="@id"/>
 			<!--<xs:field xpath="@Name"/>-->
@@ -350,7 +359,7 @@
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<xs:keyref name="uniquenessConstraintColumnKeyRef" refer="rcd:columnKey">
+		<xs:keyref name="uniquenessConstraintColumnKeyRef" refer="rcd:localColumnKey">
 			<xs:selector xpath="rcd:Column"/>
 			<xs:field xpath="@ref"/>
 			<!--<xs:field xpath="@Name"/>-->
@@ -401,13 +410,9 @@
 			<xs:selector xpath="rcd:TargetTable"/>
 			<xs:field xpath="@ref"/>
 		</xs:keyref>
-		<xs:keyref name="referenceConstraintSourceColumnKeyRef" refer="rcd:columnKey">
+		<xs:keyref name="referenceConstraintSourceColumnKeyRef" refer="rcd:localColumnKey">
 			<xs:selector xpath="rcd:ColumnReferences/rcd:ColumnReference"/>
 			<xs:field xpath="@SourceColumn"/>
-		</xs:keyref>
-		<xs:keyref name="referenceConstraintTargetColumnKeyRef" refer="rcd:columnKey">
-			<xs:selector xpath="rcd:ColumnReferences/rcd:ColumnReference"/>
-			<xs:field xpath="@TargetColumn"/>
 		</xs:keyref>
 	</xs:element>
 
@@ -540,7 +545,7 @@
 			<xs:selector xpath="rcd:TargetTable"/>
 			<xs:field xpath="@ref"/>
 		</xs:keyref>
-		<xs:keyref name="triggerColumnKeyRef" refer="rcd:columnKey">
+		<xs:keyref name="triggerColumnKeyRef" refer="rcd:localColumnKey">
 			<xs:selector xpath="rcd:Columns/rcd:Column"/>
 			<xs:field xpath="@ref"/>
 			<!--<xs:field xpath="@Name"/>-->

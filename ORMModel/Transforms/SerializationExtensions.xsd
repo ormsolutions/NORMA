@@ -210,7 +210,7 @@
 							<xs:documentation>Customizes an element.</xs:documentation>
 						</xs:annotation>
 						<xs:key name="ElementLinkKey">
-							<xs:selector xpath="se:Link"/>
+							<xs:selector xpath="se:Link | se:StandaloneLink"/>
 							<xs:field xpath="@RelationshipName"/>
 							<xs:field xpath="@RoleName"/>
 							<xs:field xpath="@CreateAsRelationshipName"/>
@@ -228,7 +228,7 @@
 							<xs:field xpath="@CreateAsRelationshipName" />
 						</xs:keyref>
 						<xs:unique name="UniqueLinkEmbed">
-							<xs:selector xpath="se:Link | se:Container/se:Embed | se:Container/se:Container/se:Embed"/>
+							<xs:selector xpath="se:StandaloneLink | se:Link | se:Container/se:Embed | se:Container/se:Container/se:Embed"/>
 							<xs:field xpath="@RelationshipName"/>
 							<xs:field xpath="@RoleName"/>
 							<xs:field xpath="@CreateAsRelationshipName"/>
@@ -309,36 +309,11 @@
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
 						<xs:element name="Container">
 							<xs:complexType>
-								<xs:sequence minOccurs="0" maxOccurs="unbounded">
-									<xs:element name="RootLink">
-										<xs:complexType>
-											<xs:sequence>
-												<xs:element name="Role" minOccurs="2" maxOccurs="2">
-													<xs:complexType>
-														<xs:sequence>
-															<!--UNDONE: Handle the evalulation of ConditionalNames in the transform-->
-															<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-														</xs:sequence>
-														<xs:attribute name="RoleName" type="xs:string" use="required"/>
-														<xs:attribute name="Name" type="xs:string" use="optional"/>
-													</xs:complexType>
-												</xs:element>
-											</xs:sequence>
-											<xs:attribute name="Class" type="xs:string" use="required"/>
-											<xs:attribute name="Name" type="xs:string" use="optional">
-												<xs:annotation>
-													<xs:documentation>The name to write for the element. The Class name is used if the Name is not specified. This is only used if we are not the PrimaryLinkElement. For PrimaryLinkElement links all serialization information except for the source and target role players comes from the class itself.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-											<xs:attribute name="PrimaryLinkElement" type="xs:boolean" default="false">
-												<xs:annotation>
-													<xs:documentation>If true, then an id attribute will be written out for this link and serialization will defer to the link treated as a class after the source and target role player elements are written.</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-										</xs:complexType>
-									</xs:element>
+								<xs:sequence minOccurs="1" maxOccurs="unbounded">
+									<xs:element name="RootLink" type="StandaloneLinkType"/>
 								</xs:sequence>
 								<xs:attribute name="Name" type="xs:string" use="required"/>
+								<xs:attribute name="Prefix" type="xs:string" use="optional"/>
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
@@ -396,6 +371,47 @@
 		<xs:attribute name="Sealed" type="canonicalBoolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Set to true if this DomainModel class is sealed (cannot be inherited from).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="StandaloneLinkType">
+		<xs:annotation>
+			<xs:documentation>Represents a link that is created directly without being in the parent context of one of its role players.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Role" minOccurs="2" maxOccurs="2">
+				<xs:complexType>
+					<xs:attribute name="RoleName" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>The name of the role to serialize.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Name" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>The attribute name written for the role name. The RoleName is used directly if this is not specified.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Class" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the link class.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Prefix" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>A prefix chosen from the list of supported Namespace prefixes. The default prefix is used if Prefix is not specified, except for attributes, where unqualified attributes are the default.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Name" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The name to write for the element. The Class name is used if the Name is not specified. This is only used if we are not the PrimaryLinkElement. For PrimaryLinkElement links all serialization information except for the source and target role players comes from the class itself.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryLinkElement" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>If true, then an id attribute will be written out for this link and serialization will defer to the link treated as a class after the source and target role player elements are written.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -470,6 +486,23 @@
 								<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="StandaloneLink">
+					<xs:annotation>
+						<xs:documentation>An embedding link to a directly created link element. The RelationshipName, RoleName, and CreateAsRelationshipName attributes on this element determine the relationship from the context element to the link, which is created separately based on additional attributes. A writestyle of PrimaryLinkElement in this case corresponds to the directly created link class, not the link to the element from this context. Any information about the link from the context element can be written with an EmbeddingLinkElement contained in the element itself.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="StandaloneLinkType">
+								<xs:attributeGroup ref="LinkAttributes"/>
+								<xs:attribute name="NotSorted" type="canonicalBoolean" default="false">
+									<xs:annotation>
+										<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:extension>
+						</xs:complexContent>
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>

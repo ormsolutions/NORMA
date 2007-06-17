@@ -122,40 +122,40 @@
     <comment>Description for DslLibrary &apos;OialDcilBridge&apos;</comment>
   </data>
   <data name="Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.DisplayName" xml:space="preserve">
-    <value>OIAL/DCIL Bridge</value>
+    <value>(Preliminary) ORMAbstraction/ConceptualDatabase Bridge</value>
     <comment>DisplayName for DslLibrary &apos;OialDcilBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.SchemaIsForOialModel</value>
-    <comment>Description for DomainClass &apos;SchemaIsForOialModel&apos;</comment>
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel</value>
+    <comment>Description for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel.DisplayName" xml:space="preserve">
-    <value>Schema Is For Oial Model</value>
-    <comment>DisplayName for DomainClass &apos;SchemaIsForOialModel&apos;</comment>
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.DisplayName" xml:space="preserve">
+    <value>Schema Is For Abstraction Model</value>
+    <comment>DisplayName for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel/Schema.Description" xml:space="preserve">
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForOialModel&apos;</comment>
+    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel/Schema.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
-    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForOialModel&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel/Schema.PropertyDisplayName" xml:space="preserve">
-    <value>Oial Model</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForOialModel&apos;</comment>
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.PropertyDisplayName" xml:space="preserve">
+    <value>Abstraction Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel/OialModel.Description" xml:space="preserve">
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainRole &apos;OialModel&apos; on DomainRelationship &apos;SchemaIsForOialModel&apos;</comment>
+    <comment>Description for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel/OialModel.DisplayName" xml:space="preserve">
-    <value>Oial Model</value>
-    <comment>DisplayName for DomainRole &apos;OialModel&apos; on DomainRelationship &apos;SchemaIsForOialModel&apos;</comment>
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.DisplayName" xml:space="preserve">
+    <value>Abstraction Model</value>
+    <comment>DisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForOialModel/OialModel.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
     <value>Schema</value>
-    <comment>PropertyDisplayName for DomainRole &apos;OialModel&apos; on DomainRelationship &apos;SchemaIsForOialModel&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType</value>

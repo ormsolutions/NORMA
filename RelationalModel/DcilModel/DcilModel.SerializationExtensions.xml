@@ -61,6 +61,7 @@
 			<se:Embed RelationshipName="TableContainsUniquenessConstraint" RoleName="UniquenessConstraint"/>
 			<se:Embed RelationshipName="TableContainsReferenceConstraint" RoleName="ReferenceConstraint"/>
 		</se:Container>
+		<se:Link RelationshipName="ReferenceConstraintTargetsTable" RoleName="ReferenceConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="Column">
 		<se:Attribute ID="IsIdentity">
@@ -78,8 +79,13 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Link RelationshipName="UniquenessConstraintIncludesColumn" RoleName="UniquenessConstraint" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ColumnReference" RoleName="TargetColumn" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ColumnReference" RoleName="SourceColumn" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="UniquenessConstraint">
+	<se:Element Class="Constraint" LinkOnly="true">
+		<se:Attribute ID="Name"/>
+	</se:Element>
+	<se:Element Class="UniquenessConstraint" Override="true">
 		<se:Attribute ID="IsPrimary">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -91,5 +97,21 @@
 			<se:Link RelationshipName="UniquenessConstraintIncludesColumn" RoleName="Column"/>
 		</se:Container>
 		<se:Link Name="Column" RelationshipName="UniquenessConstraintIncludesColumn" RoleName="Column"/>
+	</se:Element>
+	<se:Element Class="CheckConstraint" Override="true">
+		
+	</se:Element>
+	<se:Element Class="ReferenceConstraint" Override="true" SortChildElements="true">
+		<se:Link RelationshipName="ReferenceConstraintTargetsTable" RoleName="TargetTable" Name="TargetTable"/>
+		<se:Container Name="ColumnReferences">
+			<se:Link RelationshipName="ReferenceConstraintContainsColumnReference" RoleName="ColumnReference"/>
+		</se:Container>
+		<se:StandaloneLink RelationshipName="ReferenceConstraintContainsColumnReference" RoleName="ColumnReference" Class="ColumnReference">
+			<se:Role RoleName="TargetColumn"/>
+			<se:Role RoleName="SourceColumn"/>
+		</se:StandaloneLink>
+	</se:Element>
+	<se:Element Class="ColumnReference">
+		<se:Link RelationshipName="ReferenceConstraintContainsColumnReference" RoleName="ReferenceConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
 </se:CustomSerializedElements>

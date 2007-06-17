@@ -117,227 +117,227 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel.Description" xml:space="preserve">
-    <value>Bridges ORM and OIAL together.</value>
-    <comment>Description for DslLibrary &apos;ORMOialBridge&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description" xml:space="preserve">
+    <value>Bridges ORM and and ORM Intermediate Abstraction Language.</value>
+    <comment>Description for DslLibrary &apos;ORMToORMAbstractionBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ORMOialBridgeDomainModel.DisplayName" xml:space="preserve">
-    <value>ORM/OIAL Bridge</value>
-    <comment>DisplayName for DslLibrary &apos;ORMOialBridge&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName" xml:space="preserve">
+    <value>(Preliminary) ORM/ORMAbstraction Bridge</value>
+    <comment>DisplayName for DslLibrary &apos;ORMToORMAbstractionBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole</value>
     <comment>Description for DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.DisplayName" xml:space="preserve">
     <value>Fact Type Maps Towards Role</value>
     <comment>DisplayName for DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/Depth.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole.Depth</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/Depth.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Depth</value>
     <comment>Description for DomainProperty &apos;Depth&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/Depth.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/Depth.DisplayName" xml:space="preserve">
     <value>Depth</value>
     <comment>DisplayName for DomainProperty &apos;Depth&apos; on DomainClass &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/FactType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole.FactType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactType</value>
     <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/FactType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.DisplayName" xml:space="preserve">
     <value>FactType</value>
     <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/FactType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.PropertyDisplayName" xml:space="preserve">
     <value>Towards Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/TowardsRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole.TowardsRole</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.TowardsRole</value>
     <comment>Description for DomainRole &apos;TowardsRole&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/TowardsRole.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.DisplayName" xml:space="preserve">
     <value>TowardsRole</value>
     <comment>DisplayName for DomainRole &apos;TowardsRole&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.FactTypeMapsTowardsRole/TowardsRole.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.PropertyDisplayName" xml:space="preserve">
     <value>Fact Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;TowardsRole&apos; on DomainRelationship &apos;FactTypeMapsTowardsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.OialModelIsForORMModel</value>
-    <comment>Description for DomainClass &apos;OialModelIsForORMModel&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel</value>
+    <comment>Description for DomainClass &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel.DisplayName" xml:space="preserve">
-    <value>Oial Model Is For ORMModel</value>
-    <comment>DisplayName for DomainClass &apos;OialModelIsForORMModel&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.DisplayName" xml:space="preserve">
+    <value>Abstraction Model Is For ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel/OialModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.OialModelIsForORMModel.OialModel</value>
-    <comment>Description for DomainRole &apos;OialModel&apos; on DomainRelationship &apos;OialModelIsForORMModel&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModel</value>
+    <comment>Description for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel/OialModel.DisplayName" xml:space="preserve">
-    <value>OialModel</value>
-    <comment>DisplayName for DomainRole &apos;OialModel&apos; on DomainRelationship &apos;OialModelIsForORMModel&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.DisplayName" xml:space="preserve">
+    <value>AbstractionModel</value>
+    <comment>DisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel/OialModel.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
     <value>ORMModel</value>
-    <comment>PropertyDisplayName for DomainRole &apos;OialModel&apos; on DomainRelationship &apos;OialModelIsForORMModel&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel/ORMModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.OialModelIsForORMModel.ORMModel</value>
-    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;OialModelIsForORMModel&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel/ORMModel.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.DisplayName" xml:space="preserve">
     <value>ORMModel</value>
-    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;OialModelIsForORMModel&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.OialModelIsForORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
-    <value>Oial Model</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;OialModelIsForORMModel&apos;</comment>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Abstraction Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;AbstractionModelIsForORMModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType</value>
     <comment>Description for DomainClass &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.DisplayName" xml:space="preserve">
     <value>Concept Type Is For Object Type</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType/ConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType.ConceptType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptType</value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.DisplayName" xml:space="preserve">
     <value>ConceptType</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Object Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType/ObjectType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType.ObjectType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ObjectType</value>
     <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType/ObjectType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.DisplayName" xml:space="preserve">
     <value>ObjectType</value>
     <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeIsForObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ConceptTypeIsForObjectType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType</value>
     <comment>Description for DomainClass &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.DisplayName" xml:space="preserve">
     <value>Concept Type Child Has Path Fact Type</value>
     <comment>DisplayName for DomainClass &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType.ConceptTypeChild</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChild</value>
     <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>ConceptTypeChild</value>
     <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Path Fact Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType/PathFactType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType.PathFactType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.PathFactType</value>
     <comment>Description for DomainRole &apos;PathFactType&apos; on DomainRelationship &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType/PathFactType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.DisplayName" xml:space="preserve">
     <value>PathFactType</value>
     <comment>DisplayName for DomainRole &apos;PathFactType&apos; on DomainRelationship &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.ConceptTypeChildHasPathFactType/PathFactType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Child</value>
     <comment>PropertyDisplayName for DomainRole &apos;PathFactType&apos; on DomainRelationship &apos;ConceptTypeChildHasPathFactType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType</value>
     <comment>Description for DomainClass &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.DisplayName" xml:space="preserve">
     <value>Information Type Format Is For Value Type</value>
     <comment>DisplayName for DomainClass &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType.InformationTypeFormat</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormat</value>
     <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.DisplayName" xml:space="preserve">
     <value>InformationTypeFormat</value>
     <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
     <value>Value Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType/ValueType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType.ValueType</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.ValueType</value>
     <comment>Description for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType/ValueType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.DisplayName" xml:space="preserve">
     <value>ValueType</value>
     <comment>DisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.InformationTypeFormatIsForValueType/ValueType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.PropertyDisplayName" xml:space="preserve">
     <value>Information Type Format</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;InformationTypeFormatIsForValueType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint</value>
     <comment>Description for DomainClass &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Uniqueness Is For Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint/Uniqueness.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint.Uniqueness</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.Uniqueness</value>
     <comment>Description for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint/Uniqueness.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.DisplayName" xml:space="preserve">
     <value>UniquenessConstraint</value>
     <comment>DisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint/Uniqueness.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint.UniquenessConstraint</value>
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessConstraint</value>
     <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Uniqueness</value>
     <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessIsForUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.MappingDepth/Shallow.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Shallow.DisplayName" xml:space="preserve">
     <value>Shallow</value>
     <comment>Display name for EnumerationLiteral &apos;Shallow&apos; on DomainEnumeration &apos;MappingDepth&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.MappingDepth/Shallow.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Shallow.Description" xml:space="preserve">
     <value>Only the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; referenced is mapped to the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;Shallow&apos; on DomainEnumeration &apos;MappingDepth&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.MappingDepth/Deep.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Deep.DisplayName" xml:space="preserve">
     <value>Deep</value>
     <comment>Display name for EnumerationLiteral &apos;Deep&apos; on DomainEnumeration &apos;MappingDepth&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMOialBridge.MappingDepth/Deep.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Deep.Description" xml:space="preserve">
     <value>The &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.FactType&quot;/&gt; referenced is mapped to the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;, and the &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt; playing the opposite role is absorbed into the destination &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ObjectType&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;Deep&apos; on DomainEnumeration &apos;MappingDepth&apos;</comment>
   </data>
