@@ -95,6 +95,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(SetConstraintAdded),
 						typeof(ValueTypeValueConstraintAdded),
 						typeof(ReadingShape).GetNestedType("DisplayOrientationChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("ReadingAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingOrderDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
@@ -135,7 +136,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 68; ++i)
+			for (int i = 0; i < 69; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -752,6 +753,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		partial class DisplayOrientationChanged
 		{
 			public DisplayOrientationChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class ReadingShape
+	{
+		partial class ReadingAdded
+		{
+			public ReadingAdded()
 			{
 				base.IsEnabled = false;
 			}

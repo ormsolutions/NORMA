@@ -138,10 +138,6 @@
 		</oil:conceptType>
 
 		<oil:conceptType id="UniquenessChild" name="UniquenessChild">
-			<oil:association>
-				<oil:associationChild ref="UniquenessChild.uniqueness"/>
-				<oil:associationChild ref="UniquenessChild.child"/>
-			</oil:association>
 			<oil:children>
 				<oil:relatedConceptType id="UniquenessChild.uniqueness" name="uniqueness" oppositeName="uniquenessChild" ref="Uniqueness" isMandatory="true"/>
 				<oil:relatedConceptType id="UniquenessChild.child" name="child" oppositeName="uniquenessChild" ref="InformationTypeOrConceptTypeRelation" isMandatory="true"/>
@@ -152,6 +148,10 @@
 					<oil:uniquenessChild ref="UniquenessChild.child"/>
 				</oil:uniquenessConstraint>
 			</oil:uniquenessConstraints>
+			<oil:association>
+				<oil:associationChild ref="UniquenessChild.uniqueness"/>
+				<oil:associationChild ref="UniquenessChild.child"/>
+			</oil:association>
 		</oil:conceptType>
 	</oil:conceptTypes>
 </oil:model>
