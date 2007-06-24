@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Collections.ObjectModel;
+using Neumont.Tools.Modeling.Diagnostics;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -60,8 +61,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // InitializingToolboxItems property
 		#region TransactionRulesFixupHack class
-		[RuleOn(typeof(CoreDomainModel))] // TransactionBeginningRule
-		private sealed class TransactionRulesFixupHack : TransactionBeginningRule
+		private sealed partial class TransactionRulesFixupHack
 		{
 			// UNDONE: There are still a few situations that this doesn't handle:
 			//
@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			public sealed override void TransactionBeginning(TransactionBeginningEventArgs e)
+			private void ProcessTransactionBeginning(TransactionBeginningEventArgs e)
 			{
 				if (!base.IsEnabled)
 				{
@@ -239,62 +239,62 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
-		[RuleOn(typeof(DelayValidateSignal), FireTime = TimeToFire.LocalCommit, Priority = DelayValidateRulePriority)] // AddRule
-		private sealed partial class DelayValidateElements : AddRule
+		/// <summary>
+		/// AddRule: typeof(DelayValidateSignal), FireTime=LocalCommit, Priority=ORMCoreDomainModel.DelayValidateRulePriority;
+		/// Delay validate registered elements during LocalCommit
+		/// </summary>
+		private static void DelayValidateElements(ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			ModelElement element = e.ModelElement;
+			Store store = element.Store;
+			element.Delete();
+			Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
+			object validatorsObject;
+			if (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
 			{
-				ModelElement element = e.ModelElement;
-				Store store = element.Store;
-				element.Delete();
-				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
-				object validatorsObject;
-				if (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
+				Dictionary<ElementValidator, object> validators = (Dictionary<ElementValidator, object>)validatorsObject;
+				Dictionary<ElementValidator, object>.KeyCollection currentKeys = validators.Keys;
+				Dictionary<ElementValidator, object> sideEffectValidators = new Dictionary<ElementValidator, object>();
+				contextInfo[DelayedValidationContextKey] = sideEffectValidators;
+				int keyCount = currentKeys.Count;
+				if (keyCount == 0)
 				{
-					Dictionary<ElementValidator, object> validators = (Dictionary<ElementValidator, object>)validatorsObject;
-					Dictionary<ElementValidator, object>.KeyCollection currentKeys = validators.Keys;
-					Dictionary<ElementValidator, object> sideEffectValidators = new Dictionary<ElementValidator, object>();
+					contextInfo.Remove(DelayedValidationContextKey);
+					validators = null;
+				}
+				else
+				{
+					IComparer<ElementValidator> comparer = new ElementValidatorOrderComparer(store);
+					// Update the validation context key to keep us in this loop
 					contextInfo[DelayedValidationContextKey] = sideEffectValidators;
-					int keyCount = currentKeys.Count;
-					if (keyCount == 0)
+					// Sort the validators based on domain model priority
+					List<ElementValidator> sortedValidators = new List<ElementValidator>(currentKeys);
+					sortedValidators.Sort(comparer);
+					while (keyCount != 0)
 					{
-						contextInfo.Remove(DelayedValidationContextKey);
-						validators = null;
-					}
-					else
-					{
-						IComparer<ElementValidator> comparer = new ElementValidatorOrderComparer(store);
-						// Update the validation context key to keep us in this loop
-						contextInfo[DelayedValidationContextKey] = sideEffectValidators;
-						// Sort the validators based on domain model priority
-						List<ElementValidator> sortedValidators = new List<ElementValidator>(currentKeys);
-						sortedValidators.Sort(comparer);
-						while (keyCount != 0)
+						--keyCount;
+						ElementValidator key = sortedValidators[keyCount];
+						key.Validate();
+						validators.Remove(key);
+						sortedValidators.RemoveAt(keyCount);
+						if (sideEffectValidators.Count != 0)
 						{
-							--keyCount;
-							ElementValidator key = sortedValidators[keyCount];
-							key.Validate();
-							validators.Remove(key);
-							sortedValidators.RemoveAt(keyCount);
-							if (sideEffectValidators.Count != 0)
+							// Additional validators were added as side effects. Move them
+							// into the current sorted set.
+							foreach (ElementValidator newValidator in sideEffectValidators.Keys)
 							{
-								// Additional validators were added as side effects. Move them
-								// into the current sorted set.
-								foreach (ElementValidator newValidator in sideEffectValidators.Keys)
+								if (!validators.ContainsKey(newValidator))
 								{
-									if (!validators.ContainsKey(newValidator))
-									{
-										validators[newValidator] = null;
-										int insertIndex = sortedValidators.BinarySearch(newValidator, comparer);
-										sortedValidators.Insert((insertIndex < 0) ? ~insertIndex : insertIndex, newValidator);
-									}
+									validators[newValidator] = null;
+									int insertIndex = sortedValidators.BinarySearch(newValidator, comparer);
+									sortedValidators.Insert((insertIndex < 0) ? ~insertIndex : insertIndex, newValidator);
 								}
-								sideEffectValidators.Clear();
 							}
-							keyCount = sortedValidators.Count;
+							sideEffectValidators.Clear();
 						}
-						contextInfo.Remove(DelayedValidationContextKey);
+						keyCount = sortedValidators.Count;
 					}
+					contextInfo.Remove(DelayedValidationContextKey);
 				}
 			}
 		}
@@ -486,7 +486,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public void Validate()
 			{
-				this.Validation(this.Element);
+				TraceUtility.TraceDelegateStart(Element.Store, Validation);
+				Validation(Element);
+				TraceUtility.TraceDelegateEnd(Element.Store, Validation);
 			}
 			private static Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache> myMethodToElementValidatorOrderCacheMap =
 				new Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache>(RuntimeMethodHandleComparer.Instance);
@@ -1023,11 +1025,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!factType.IsDeleted)
 				{
 					eventNotify.ElementChanged(factType, questionTypes);
-					Role role = element.Role as Role;
-					if (role != null)
-					{
-						eventNotify.ElementDeleted(role);
-					}
+				}
+				RoleBase role = element.Role as RoleBase;
+				if (role != null)
+				{
+					eventNotify.ElementDeleted(role);
 				}
 			}
 		}

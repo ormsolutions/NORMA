@@ -370,67 +370,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.Name.CompareTo(other.Name);
 		}
 		#endregion
-		#region ReferenceModeChangeRule class
+		#region ReferenceModeChangeRule
 		/// <summary>
+		/// ChangeRule: typeof(ReferenceMode)
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
-		[RuleOn(typeof(ReferenceMode))] // ChangeRule
-		private sealed partial class ReferenceModeChangeRule : ChangeRule
+		private static void ReferenceModeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Forward KindDisplay change value to Kind
-			/// </summary>
-			/// <param name="e">ElementPropertyChangedEventArgs</param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == KindDisplayDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == KindDisplayDomainPropertyId)
-				{
-					(e.ModelElement as ReferenceMode).Kind = (ReferenceModeKind)e.NewValue;
-				}
+				(e.ModelElement as ReferenceMode).Kind = (ReferenceModeKind)e.NewValue;
 			}
 		}
-		#endregion // ReferenceModeChangeRule class
-		#region ReferenceModeAddedRule class
+		#endregion // ReferenceModeChangeRule
+		#region ReferenceModeAddedRule
 		/// <summary>
+		/// AddRule: typeof(ModelHasReferenceMode), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
 		/// Make sure that every added reference mode has a valid
 		/// reference mode kind. Default to general.
 		/// </summary>
-		[RuleOn(typeof(ModelHasReferenceMode), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
-		private sealed partial class ReferenceModeAddedRule : AddRule
+		private static void ReferenceModeAddedRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Verify the Kind relationship is set on a newly
-			/// added reference mode
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasReferenceMode link = e.ModelElement as ModelHasReferenceMode;
+			ReferenceMode mode = link.ReferenceMode;
+			// Make sure we have a reference kind
+			if (mode.Kind == null)
 			{
-				ModelHasReferenceMode link = e.ModelElement as ModelHasReferenceMode;
-				ReferenceMode mode = link.ReferenceMode;
-				// Make sure we have a reference kind
-				if (mode.Kind == null)
+				foreach (ReferenceModeKind kind in link.Model.ReferenceModeKindCollection)
 				{
-					foreach (ReferenceModeKind kind in link.Model.ReferenceModeKindCollection)
+					if (kind.ReferenceModeType == ReferenceModeType.General)
 					{
-						if (kind.ReferenceModeType == ReferenceModeType.General)
-						{
-							mode.Kind = kind;
-							break;
-						}
+						mode.Kind = kind;
+						break;
 					}
 				}
-				
-				// Test that the format string is compliant
-				EnsureUnique(mode, link.Model);
 			}
+
+			// Test that the format string is compliant
+			EnsureUnique(mode, link.Model);
 		}
 		/// <summary>
 		/// Throws an exception if the format strings are not unique
 		/// </summary>
-		/// <param name="newMode"></param>
-		/// <param name="model"></param>
 		protected static void EnsureUnique(ReferenceMode newMode, ORMModel model)
 		{
 			if (model != null)
@@ -446,7 +429,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ReferenceModeAddedRule class
+		#endregion // ReferenceModeAddedRule
 	}
 	#endregion // ReferenceMode class
 	#region CustomReferenceMode class
@@ -471,66 +454,57 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
-		#region CustomReferenceModeChangeRule class
+		#region CustomReferenceModeChangeRule
 		/// <summary>
-		/// Rule to forward the KindDisplay property to the generated
-		/// Kind property
+		/// ChangeRule: typeof(CustomReferenceMode)
+		/// Update value types when format string or reference mode name changes
 		/// </summary>
-		[RuleOn(typeof(CustomReferenceMode))] // ChangeRule
-		private sealed partial class CustomReferenceModeChangeRule : ChangeRule
+		private static void CustomReferenceModeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Update value types when format string changes
-			/// </summary>
-			/// <param name="e">ElementPropertyChangedEventArgs</param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			CustomReferenceMode mode = e.ModelElement as CustomReferenceMode;
+			ORMModel model = mode.Model;
+			EnsureUnique(mode, model);
+
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == CustomFormatStringDomainPropertyId)
 			{
-				CustomReferenceMode mode = e.ModelElement as CustomReferenceMode;
-				ORMModel model = mode.Model;
-				EnsureUnique(mode, model);
-
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == CustomFormatStringDomainPropertyId)
+				string customFormatString = (string)e.NewValue;
+				if (customFormatString.Length > 0)
 				{
-					string customFormatString = (string)e.NewValue;
-					if (customFormatString.Length > 0)
+					string oldFormatString = (string)e.OldValue;
+					if (oldFormatString == null || oldFormatString.Length == 0)
 					{
-						string oldFormatString = (string)e.OldValue;
-						if (oldFormatString == null || oldFormatString.Length == 0)
-						{
-							oldFormatString = mode.Kind.FormatString;
-						}
+						oldFormatString = mode.Kind.FormatString;
+					}
 
-						foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
-						{
-							string newName = mode.GenerateValueTypeName(entity.Name);
-							entity.RenameReferenceMode(newName);
-						}
+					foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
+					{
+						string newName = mode.GenerateValueTypeName(entity.Name);
+						entity.RenameReferenceMode(newName);
+					}
 
-						if (customFormatString.Equals(mode.Kind.FormatString))
-						{
-							mode.CustomFormatString = "";
-						}
+					if (customFormatString.Equals(mode.Kind.FormatString))
+					{
+						mode.CustomFormatString = "";
 					}
 				}
-				else if (attributeId == NameDomainPropertyId)
+			}
+			else if (attributeId == NameDomainPropertyId)
+			{
+				string newRefModeName = (string)e.NewValue;
+				if (newRefModeName.Length > 0)
 				{
-					string newRefModeName = (string)e.NewValue;
-					if (newRefModeName.Length > 0)
-					{
-						string oldRefModeName = (string)e.OldValue;
+					string oldRefModeName = (string)e.OldValue;
 
-						foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, oldRefModeName))
-						{
-							string newName = mode.GenerateValueTypeName(entity.Name);
-							entity.RenameReferenceMode(newName);
-						}
+					foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, oldRefModeName))
+					{
+						string newName = mode.GenerateValueTypeName(entity.Name);
+						entity.RenameReferenceMode(newName);
 					}
 				}
 			}
 		}
-		#endregion // CustomReferenceModeChangeRule class
+		#endregion // CustomReferenceModeChangeRule
 
 		#region IComparable<CustomReferenceMode> Members
 		int IComparable<CustomReferenceMode>.CompareTo(CustomReferenceMode other)
@@ -575,149 +549,119 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.ReferenceModeType.ToString();
 		}
 		#endregion //properties
-		#region CustomReferenceModeChangeRule class
+		#region CustomReferenceModeChangeRule
 		/// <summary>
-		/// Rule to forward the KindDisplay property to the generated
-		/// Kind property
+		/// ChangeRule: typeof(ReferenceModeKind)
+		/// Update value types in corresponding reference mode patterns when format string changes
 		/// </summary>
-		[RuleOn(typeof(ReferenceModeKind))] // ChangeRule
-		private sealed partial class ReferenceModeKindChangeRule : ChangeRule
+		private static void ReferenceModeKindChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Update value types when format string changes
-			/// </summary>
-			/// <param name="e">ElementPropertyChangedEventArgs</param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == FormatStringDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == FormatStringDomainPropertyId)
-				{
-					string oldFormatString = (string)e.OldValue;
-					ReferenceModeKind kind = e.ModelElement as ReferenceModeKind;
-					string newFormatString = kind.FormatString;
-					ORMModel model = kind.Model;
-					EnsureUnique(kind, model);
+				string oldFormatString = (string)e.OldValue;
+				ReferenceModeKind kind = e.ModelElement as ReferenceModeKind;
+				string newFormatString = kind.FormatString;
+				ORMModel model = kind.Model;
+				EnsureUnique(kind, model);
 
-					foreach (ReferenceMode mode in kind.ReferenceModeCollection)
+				foreach (ReferenceMode mode in kind.ReferenceModeCollection)
+				{
+					CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
+					if (customReferenceMode != null)
 					{
-						CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
-						if (customReferenceMode != null)
+						string customFormatString = customReferenceMode.CustomFormatString;
+						if (customFormatString.Length != 0)
 						{
-							string customFormatString = customReferenceMode.CustomFormatString;
-							if (customFormatString.Length != 0)
+							if (customFormatString == newFormatString)
 							{
-								if (customFormatString == newFormatString)
-								{
-									customReferenceMode.CustomFormatString = "";
-								}
-								continue;
+								customReferenceMode.CustomFormatString = "";
 							}
-						}
-						foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
-						{
-							string newName = mode.GenerateValueTypeName(entity.Name);
-							entity.RenameReferenceMode(newName);
+							continue;
 						}
 					}
-				}
-			}
-
-			/// <summary>
-			/// Throws an exception if the format strings are not unique
-			/// </summary>
-			/// <param name="newKind"></param>
-			/// <param name="model"></param>
-			private static void EnsureUnique(ReferenceModeKind newKind, ORMModel model)
-			{
-				string newFormatString = newKind.FormatString;
-				foreach (ReferenceModeKind kind in model.ReferenceModeKindCollection)
-				{
-					if (newKind != kind && newFormatString == kind.FormatString)
+					foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeKindEnforceUniqueFormatString); 
+						string newName = mode.GenerateValueTypeName(entity.Name);
+						entity.RenameReferenceMode(newName);
 					}
 				}
 			}
 		}
-		#endregion // ReferenceModeKindChangeRule class
+		/// <summary>
+		/// Throws an exception if the format strings are not unique
+		/// </summary>
+		private static void EnsureUnique(ReferenceModeKind newKind, ORMModel model)
+		{
+			string newFormatString = newKind.FormatString;
+			foreach (ReferenceModeKind kind in model.ReferenceModeKindCollection)
+			{
+				if (newKind != kind && newFormatString == kind.FormatString)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeKindEnforceUniqueFormatString);
+				}
+			}
+		}
+		#endregion // ReferenceModeKindChangeRule
 	}
 	#endregion //ReferenceModeKind class
 	#region ReferenceModeHasReferenceModeKind
 	public partial class ReferenceModeHasReferenceModeKind
 	{
-		#region ReferenceModeHasReferenceModeKindChangeRule class
+		#region ReferenceModeHasReferenceModeKindRolePlayerChangeRule
 		/// <summary>
-		/// Rule to forward the KindDisplay property to the generated
-		/// Kind property
+		/// RolePlayerChangeRule: typeof(ReferenceModeHasReferenceModeKind)
+		/// Update value types when reference mode kind changes
 		/// </summary>
-		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))] // RolePlayerChangeRule
-		private sealed partial class ReferenceModeHasReferenceModeKindChangeRule : RolePlayerChangeRule
+		private static void ReferenceModeHasReferenceModeKindRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			/// <summary>
-			/// Update value types when reference mode kind changes
-			/// </summary>
-			/// <param name="e"></param>
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			if (e.DomainRole.Id.Equals(ReferenceModeHasReferenceModeKind.KindDomainRoleId))
 			{
-				if (e.DomainRole.Id.Equals(ReferenceModeHasReferenceModeKind.KindDomainRoleId))
+				ReferenceModeHasReferenceModeKind link = e.ElementLink as ReferenceModeHasReferenceModeKind;
+				ReferenceModeKind newKind = (ReferenceModeKind)e.NewRolePlayer;
+				Debug.Assert(newKind == link.Kind);
+				ReferenceModeKind oldKind = (ReferenceModeKind)e.OldRolePlayer;
+
+				ReferenceMode mode = link.ReferenceMode;
+				CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
+				if (customReferenceMode != null)
 				{
-					ReferenceModeHasReferenceModeKind link = e.ElementLink as ReferenceModeHasReferenceModeKind;
-					ReferenceModeKind newKind = (ReferenceModeKind)e.NewRolePlayer;
-					Debug.Assert(newKind == link.Kind);
-					ReferenceModeKind oldKind = (ReferenceModeKind)e.OldRolePlayer;
-
-					ReferenceMode mode = link.ReferenceMode;
-					CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
-					if (customReferenceMode != null)
+					string oldFormatString = customReferenceMode.CustomFormatString;
+					if (oldFormatString == null || oldFormatString.Length == 0)
 					{
-						string oldFormatString = customReferenceMode.CustomFormatString;
-						if (oldFormatString == null || oldFormatString.Length == 0)
-						{
-							oldFormatString = oldKind.FormatString;
-						}
-						customReferenceMode.CustomFormatString = "";
+						oldFormatString = oldKind.FormatString;
+					}
+					customReferenceMode.CustomFormatString = "";
 
-						foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
-						{
-							string newName = customReferenceMode.GenerateValueTypeName(entity.Name);
-							entity.RenameReferenceMode(newName);
-						}
-					}
-					else if (mode is IntrinsicReferenceMode)
+					foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeIntrinsicRefModesDontChange);
+						string newName = customReferenceMode.GenerateValueTypeName(entity.Name);
+						entity.RenameReferenceMode(newName);
 					}
+				}
+				else if (mode is IntrinsicReferenceMode)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeIntrinsicRefModesDontChange);
 				}
 			}
 		}
-		#endregion // ReferenceModeHasReferenceModeKindChangeRule class
-		#region ReferenceModeHasReferenceModeKindDeletingRule class
-		// UNDONE: If we make this a Remove instead of a Removing, then
-		// mode.IsDeleted is false even if a mode.Remove triggered this.
-		// This looks alot like an IMS bug.
+		#endregion // ReferenceModeHasReferenceModeKindRolePlayerChangeRule
+		#region ReferenceModeHasReferenceModeKindDeletingRule
 		/// <summary>
-		/// Rule to forward the KindDisplay property to the generated
-		/// Kind property
+		/// DeletingRule: typeof(ReferenceModeHasReferenceModeKind)
+		/// Disallow removal of kind
 		/// </summary>
-		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))] // DeletingRule
-		private sealed partial class ReferenceModeHasReferenceModeKindDeletingRule : DeletingRule
+		private static void ReferenceModeHasReferenceModeKindDeletingRule(ElementDeletingEventArgs e)
 		{
-			/// <summary>
-			/// Disallow removal of kind
-			/// </summary>
-			/// <param name="e">ElementPropertyChangedEventArgs</param>
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ReferenceModeHasReferenceModeKind link = e.ModelElement as ReferenceModeHasReferenceModeKind;
+			ReferenceModeHasReferenceModeKind link = e.ModelElement as ReferenceModeHasReferenceModeKind;
 
-				ReferenceMode mode = link.ReferenceMode as ReferenceMode;
-				if (mode != null && !mode.IsDeleting)
-				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeReferenceModesKindNotEmpty);
-				}
+			ReferenceMode mode = link.ReferenceMode as ReferenceMode;
+			if (mode != null && !mode.IsDeleting)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeReferenceModesKindNotEmpty);
 			}
 		}
-		#endregion // ReferenceModeHasReferenceModeKindDeletingRule class
+		#endregion // ReferenceModeHasReferenceModeKindDeletingRule
 	}
 	#endregion
 }

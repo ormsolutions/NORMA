@@ -159,35 +159,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // properties
 		#region Shape fixup rules
-		#region ValueConstraintTextChanged class
+		#region ValueConstraintTextChangedRule
 		/// <summary>
+		/// ChangeRule: typeof(ValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Rule to watch the ValueConstraint.TextChanged property so that we can
 		/// update text as needed. TextChanged is triggered when the ValueConstraint is
 		/// first added, so this is sufficient for updating.
 		/// </summary>
-		[RuleOn(typeof(ValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed partial class ValueConstraintTextChanged : ChangeRule 
+		private static void ValueConstraintTextChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == ValueConstraint.TextChangedDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == ValueConstraint.TextChangedDomainPropertyId)
+				ValueConstraint constraint = e.ModelElement as ValueConstraint;
+				if (!constraint.IsDeleted)
 				{
-					ValueConstraint constraint = e.ModelElement as ValueConstraint;
-					if (!constraint.IsDeleted)
+					foreach (ShapeElement pel in PresentationViewsSubject.GetPresentation(constraint))
 					{
-						foreach (ShapeElement pel in PresentationViewsSubject.GetPresentation(constraint))
+						ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
+						if (valueConstraintShape != null)
 						{
-							ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
-							if (valueConstraintShape != null)
-							{
-								valueConstraintShape.InvalidateDisplayText();
-							}
+							valueConstraintShape.InvalidateDisplayText();
 						}
 					}
 				}
 			}
 		}
-		#endregion // ValueConstraintTextChanged class
+		#endregion // ValueConstraintTextChangedRule
 		#endregion // Shape fixup rules
 		#region IModelErrorActivation Implementation
 		/// <summary>

@@ -884,6 +884,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceRolePlayerNotNestingType");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to modify a role player associated with an implicit boolean value.</summary>
+		public static string ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to move a role to a different FactType.</summary>
+		public static string ModelExceptionFactTypeEnforceNoRoleMigration
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceNoRoleMigration");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</summary>
 		public static string ModelExceptionObjectTypeEnforceIsIndependentPattern
 		{
@@ -925,19 +941,19 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>Exception message when an attempt is made to attached facts from an external model to a constraint.</summary>
-		public static string ModelExceptionConstraintEnforceNoForeignFacts
+		public static string ModelExceptionConstraintEnforceNoForeignFactTypes
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceNoForeignFacts");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceNoForeignFactTypes");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to attached more than one fact to an internal constraint.</summary>
-		public static string ModelExceptionConstraintEnforceSingleFactForInternalConstraint
+		public static string ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceSingleFactForInternalConstraint");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</summary>

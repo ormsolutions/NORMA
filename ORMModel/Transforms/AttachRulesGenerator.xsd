@@ -6,6 +6,7 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
@@ -22,6 +23,7 @@
 			You must not remove this notice, or any other, from this software.
 		</xs:appinfo>
 	</xs:annotation>
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
 
 	<xs:element name="Rules" type="RulesType"/>
 	<xs:complexType name="RulesType">
@@ -83,13 +85,137 @@
 	<xs:complexType name="RuleType">
 		<xs:complexContent>
 			<xs:extension base="ReflectedTypeType">
-				<xs:attribute name="alwaysOn" type="xs:boolean" default="false">
-					<xs:annotation>
-						<xs:documentation>If alwaysOn is set to true, then this rule will be on during load. Otherwise, the rule is turned on after document load is completed.</xs:documentation>
-					</xs:annotation>
-				</xs:attribute>
+				<xs:attributeGroup ref="alwaysOnAttributeGroup"/>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:attributeGroup name="alwaysOnAttributeGroup">
+		<xs:attribute name="alwaysOn" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>If alwaysOn is set to true, then this rule will be on during load. Otherwise, the rule is turned on after document load is completed.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:element name="RuleContainer" type="RuleContainerType" substitutionGroup="ReflectedType"/>
+	<xs:complexType name="RuleContainerType">
+		<xs:annotation>
+			<xs:documentation>A class that contains other rules. The rule classes in the container are automatically
+			created and attached, and the user provides a static callback method on the container class to handle
+			the rule. Using a RuleContainer instead of a Rule element allows central management or rule priorities,
+			rule tracing (with the Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRulesSwitch) and additional generated features
+			in the future such as dynamic rule prioritization, bidirectional synchronization, and filtering.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReflectedTypeType">
+				<xs:sequence>
+					<xs:element ref="AutoRule" maxOccurs="unbounded"/>
+				</xs:sequence>				
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AutoRule" type="AutoRuleType" abstract="true"/>
+	<xs:element name="AddRule" substitutionGroup="AutoRule"/>
+	<xs:element name="ChangeRule" substitutionGroup="AutoRule"/>
+	<xs:element name="DeleteRule" substitutionGroup="AutoRule"/>
+	<xs:element name="DeletingRule" substitutionGroup="AutoRule"/>
+	<xs:element name="MoveRule" substitutionGroup="AutoRule"/>
+	<xs:element name="RolePlayerChangeRule" substitutionGroup="AutoRule"/>
+	<xs:element name="RolePlayerPositionChangeRule" substitutionGroup="AutoRule"/>
+	<xs:element name="TransactionBeginningRule" substitutionGroup="AutoRule"/>
+	<xs:element name="TransactionCommittingRule" substitutionGroup="AutoRule"/>
+	<xs:element name="TransactionRollingBackRule" substitutionGroup="AutoRule"/>
+	<xs:complexType name="AutoRuleType">
+		<xs:sequence>
+			<xs:element name="RuleOn" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PriorityAdjustment" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="plx:expressionElement"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="targetType" type="plx:simpleNameType" use="required">
+						<xs:annotation>
+							<xs:documentation>The type of the element to attach the rule to.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="targetTypeQualifier" type="plx:qualifierNameType" use="optional">
+						<xs:annotation>
+							<xs:documentation>The qualifier for the element to attach the rule to. Not required if the type is in the current namespace.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="fireTime" default="Inline">
+						<xs:annotation>
+							<xs:documentation>Specifies when the rule should fire. Corresponds to the Microsoft.VisualStudio.Modeling.TimeToFire enumeration.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="Inline"/>
+								<xs:enumeration value="LocalCommit"/>
+								<xs:enumeration value="TopLevelCommit"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="priority" use="optional">
+						<xs:annotation>
+							<xs:documentation>The priority for this class. Either an integer or one of the special framework values specified. Any value here is added to an expression specified in the PriorityAdjustment element.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union memberTypes="xs:int">
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="BeforeDelayValidateRulePriority">
+											<xs:annotation>
+												<xs:documentation>Run this rule before delay validation</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DelayValidateRulePriority">
+											<xs:annotation>
+												<xs:documentation>The rule priority where default validation runs.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AddClrElementRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.AddOrphanedLinkForPresentationViewsSubjectLink"/>
+										<xs:enumeration value="DiagramFixupConstants.AddPresentationViewsSubjectLinkForOrphanedLink"/>
+										<xs:enumeration value="DiagramFixupConstants.AddShapeRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.AddShapeParentExistRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.AddConnectionRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.ResizeParentRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.ShapeAnchoringRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.LineReroutingRulePriority"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:union>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="methodName" use="required" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The name of the user-provided method called when the rule is fired.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="className" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>An optional class name for the rule class. If the class name is not specified, then a class name is automatically derived from the method name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="methodInRuleClass" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>(Default false) Set to true if the method is in the rule class itself and the rule class is assumed to be partial. Otherwise, the method is assumed to be static in the container class.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="fireBefore" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>(Default false) Set to true if the rule class should return true from the FireBefore method.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="alwaysOnAttributeGroup"/>
 	</xs:complexType>
 </xs:schema>
 

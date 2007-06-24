@@ -97,103 +97,95 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return (primary != null) ? primary.ToString() : base.ToString();
 		}
 		#endregion
-		#region EnforceNoEmptyReadingOrderDeleteRule rule class
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class EnforceNoEmptyReadingOrderDeleteRule : DeleteRule
-		{
-			/// <summary>
-			/// If the ReadingOrder.ReadingCollection is empty then remove the ReadingOrder
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-				ReadingOrder readOrd = link.ReadingOrder;
-				if (!readOrd.IsDeleted)
-				{
-					if (readOrd.ReadingCollection.Count == 0)
-					{
-						readOrd.Delete();
-					}
-				}
-			}
-		}
-		#endregion // EnforceNoEmptyReadingOrderDeleteRule rule class
-		#region EnforceNoEmptyReadingOrderRolePlayerChange rule class
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // RolePlayerChangeRule
-		private sealed partial class EnforceNoEmptyReadingOrderRolePlayerChange : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				ReadingOrderHasReading link = e.ElementLink as ReadingOrderHasReading;
-				if (e.DomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId)
-				{
-					ReadingOrder order = (ReadingOrder)e.OldRolePlayer;
-					if (!order.IsDeleted && order.ReadingCollection.Count == 0)
-					{
-						order.Delete();
-					}
-				}
-			}
-		}
-		#endregion // EnforceNoEmptyReadingOrderRolePlayerChange rule class
-		#region ReadingOrderHasRoleRemoving rule class
+		#region EnforceNoEmptyReadingOrderDeleteRule
 		/// <summary>
-		/// Handles the clean up of the readings that the role is involved in by replacing
-		/// the place holder with the text {{deleted}}
+		/// DeleteRule: typeof(ReadingOrderHasReading), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// If the ReadingOrder.ReadingCollection is empty then remove the ReadingOrder
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasRole))] // DeletingRule
-		private sealed partial class ReadingOrderHasRoleDeleting : DeletingRule
+		private static void EnforceNoEmptyReadingOrderDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+			ReadingOrder readOrd = link.ReadingOrder;
+			if (!readOrd.IsDeleted)
 			{
-				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				RoleBase linkRole = link.Role;
-				ReadingOrder linkReadingOrder = link.ReadingOrder;
-
-				if (linkReadingOrder.IsDeleting)
+				if (readOrd.ReadingCollection.Count == 0)
 				{
-					// Don't validate if we're removing the reading order
-					return;
+					readOrd.Delete();
 				}
-				Debug.Assert(!linkReadingOrder.IsDeleted);
-				FactType factType = linkReadingOrder.FactType;
-				if (factType != null)
+			}
+		}
+		#endregion // EnforceNoEmptyReadingOrderDeleteRule
+		#region EnforceNoEmptyReadingOrderRolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ReadingOrderHasReading), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void EnforceNoEmptyReadingOrderRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			ReadingOrderHasReading link = e.ElementLink as ReadingOrderHasReading;
+			if (e.DomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId)
+			{
+				ReadingOrder order = (ReadingOrder)e.OldRolePlayer;
+				if (!order.IsDeleted && order.ReadingCollection.Count == 0)
 				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateReadingOrderCollation);
+					order.Delete();
 				}
+			}
+		}
+		#endregion // EnforceNoEmptyReadingOrderRolePlayerChangeRule
+		#region ReadingOrderHasRoleDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ReadingOrderHasRole)
+		/// Handles the clean up of the readings that the role is involved in by replacing
+		/// the place holder with the text DELETED
+		/// </summary>
+		private static void ReadingOrderHasRoleDeletingRule(ElementDeletingEventArgs e)
+		{
+			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+			RoleBase linkRole = link.Role;
+			ReadingOrder linkReadingOrder = link.ReadingOrder;
 
-				int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);
-				if (pos >= 0)
+			if (linkReadingOrder.IsDeleting)
+			{
+				// Don't validate if we're removing the reading order
+				return;
+			}
+			Debug.Assert(!linkReadingOrder.IsDeleted);
+			FactType factType = linkReadingOrder.FactType;
+			if (factType != null)
+			{
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateReadingOrderCollation);
+			}
+
+			int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);
+			if (pos >= 0)
+			{
+				bool isUnaryFactType = factType.UnaryRole != null;
+				LinkedElementCollection<Reading> readings = linkReadingOrder.ReadingCollection;
+				int numReadings = readings.Count;
+				int roleCount = linkReadingOrder.RoleCollection.Count;
+				for (int iReading = 0; iReading < numReadings; ++iReading)
 				{
-					bool isUnaryFactType = factType.UnaryRole != null;
-					LinkedElementCollection<Reading> readings = linkReadingOrder.ReadingCollection;
-					int numReadings = readings.Count;
-					int roleCount = linkReadingOrder.RoleCollection.Count;
-					for (int iReading = 0; iReading < numReadings; ++iReading)
+					Reading linkReading = readings[iReading];
+					if (!linkReading.IsDeleting)
 					{
-						Reading linkReading = readings[iReading];
-						if (!linkReading.IsDeleting)
-						{
-							Debug.Assert(!linkReading.IsDeleted);
-							string text = linkReading.Text;
-							IFormatProvider formatProvider = CultureInfo.InvariantCulture;
-							linkReading.SetAutoText(Reading.ReplaceFields(
-								linkReading.Text,
-								delegate(int replaceIndex)
+						Debug.Assert(!linkReading.IsDeleted);
+						string text = linkReading.Text;
+						IFormatProvider formatProvider = CultureInfo.InvariantCulture;
+						linkReading.SetAutoText(Reading.ReplaceFields(
+							linkReading.Text,
+							delegate(int replaceIndex)
+							{
+								if (replaceIndex == pos)
 								{
-									if (replaceIndex == pos)
-									{
-										return isUnaryFactType ? "" : ResourceStrings.ModelReadingRoleDeletedRoleText;
-									}
-									else if (replaceIndex > pos)
-									{
-										return "{" + (replaceIndex - 1).ToString(formatProvider) + "}";
-									}
-									return null;
+									return isUnaryFactType ? "" : ResourceStrings.ModelReadingRoleDeletedRoleText;
 								}
-								));
-						}
+								else if (replaceIndex > pos)
+								{
+									return "{" + (replaceIndex - 1).ToString(formatProvider) + "}";
+								}
+								return null;
+							}
+							));
 					}
 				}
 			}
@@ -264,7 +256,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ReadingOrderHasRoleRemoving rule class
+		#endregion // ReadingOrderHasRoleDeletingRule
 		#region FactTypeHasRoleAddedRule
 		/// <summary>
 		/// Common place for code to deal with roles that exist in a fact
@@ -305,19 +297,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
 		/// Rule to detect when a Role is added to the FactType so that it
 		/// can also be added to the ReadingOrders and their Readings.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class FactTypeHasRoleAddedRule : AddRule
+		private static void FactTypeHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				ValidateReadingOrdersRoleCollection(link.FactType, link.Role);
-			}
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			ValidateReadingOrdersRoleCollection(link.FactType, link.Role);
 		}
-		#endregion
+		#endregion // FactTypeHasRoleAddedRule
 		#region IRedirectVerbalization Implementation
 		/// <summary>
 		/// Implements IRedirectVerbalization.SurrogateVerbalizer by deferring to the parent fact

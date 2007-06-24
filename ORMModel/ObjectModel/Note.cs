@@ -45,36 +45,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // INoteOwner interface
 	public partial class Note
 	{
-		#region NoteChangeRule class
+		#region NoteChangeRule
 		/// <summary>
-		/// Enforces Change Rules
+		/// ChangeRule: typeof(Note)
+		/// Handle custom storage properties on Note
 		/// </summary>
-		[RuleOn(typeof(Note))] // ChangeRule
-		private sealed partial class NoteChangeRule : ChangeRule
+		private static void NoteChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Handle custom storage properties on Note
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			// If what was changed was the note's Text property,
+			if (attributeGuid == Note.TextDomainPropertyId)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				// If what was changed was the note's Text property,
-				if (attributeGuid == Note.TextDomainPropertyId)
+				// cache the value.
+				string newText = (string)e.NewValue;
+				// Get the note
+				Note note = e.ModelElement as Note;
+				// and if the text is blank, 
+				if (string.IsNullOrEmpty(newText))
 				{
-					// cache the value.
-					string newText = (string)e.NewValue;
-					// Get the note
-					Note note = e.ModelElement as Note;
-					// and if the text is blank, 
-					if (string.IsNullOrEmpty(newText))
-					{
-						// get rid of the note.
-						note.Delete();
-					}
+					// get rid of the note.
+					note.Delete();
 				}
 			}
 		}
-		#endregion // NoteChangeRule class
+		#endregion // NoteChangeRule
 	}
 	public partial class FactType : INoteOwner
 	{

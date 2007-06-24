@@ -129,48 +129,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region ValueRangeChangeRule rule
-		[RuleOn(typeof(ValueRange))] // ChangeRule
-		private sealed partial class ValueRangeChangeRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ValueRange)
+		/// Translate the Text property
+		/// </summary>
+		private static void ValueRangeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Translate the Text property
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == ValueRange.TextDomainPropertyId)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == ValueRange.TextDomainPropertyId)
+				ValueRange vr = e.ModelElement as ValueRange;
+				Debug.Assert(vr != null);
+				string newValue = e.NewValue as string;
+				//Set the min- and max-inclusion
+				string minInclusion;
+				string maxInclusion;
+				newValue = StripInclusions(out minInclusion, out maxInclusion, newValue);
+				if (minInclusion.Length != 0)
 				{
-					ValueRange vr = e.ModelElement as ValueRange;
-					Debug.Assert(vr != null);
-					string newValue = e.NewValue as string;
-					//Set the min- and max-inclusion
-					string minInclusion;
-					string maxInclusion;
-					newValue = StripInclusions(out minInclusion, out maxInclusion, newValue);
-					if (minInclusion.Length != 0)
-					{
-						vr.MinInclusion = minInclusion.Equals(minOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
-					}
-					if (maxInclusion.Length != 0)
-					{
-						vr.MaxInclusion = maxInclusion.Equals(maxOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
-					}
-					//Split the range, if one exists, and set the values
-					if (newValue.Contains(valueDelim))
-					{
-						int currentPos = newValue.IndexOf(valueDelim);
-						string value = TrimStringMarkers(newValue.Substring(0, currentPos));
-						vr.MinValue = string.Format(CultureInfo.InvariantCulture, value);
-						currentPos += valueDelim.Length;
-						value = TrimStringMarkers(newValue.Substring(currentPos, newValue.Length - currentPos));
-						vr.MaxValue = string.Format(CultureInfo.InvariantCulture, value);
-					}
-					//Not a range? Set the value as both the min and max
-					else
-					{
-						vr.MinValue = vr.MaxValue = string.Format(CultureInfo.InvariantCulture, TrimStringMarkers(newValue));
-					}
+					vr.MinInclusion = minInclusion.Equals(minOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
+				}
+				if (maxInclusion.Length != 0)
+				{
+					vr.MaxInclusion = maxInclusion.Equals(maxOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
+				}
+				//Split the range, if one exists, and set the values
+				if (newValue.Contains(valueDelim))
+				{
+					int currentPos = newValue.IndexOf(valueDelim);
+					string value = TrimStringMarkers(newValue.Substring(0, currentPos));
+					vr.MinValue = string.Format(CultureInfo.InvariantCulture, value);
+					currentPos += valueDelim.Length;
+					value = TrimStringMarkers(newValue.Substring(currentPos, newValue.Length - currentPos));
+					vr.MaxValue = string.Format(CultureInfo.InvariantCulture, value);
+				}
+				//Not a range? Set the value as both the min and max
+				else
+				{
+					vr.MinValue = vr.MaxValue = string.Format(CultureInfo.InvariantCulture, TrimStringMarkers(newValue));
 				}
 			}
 		}
@@ -495,388 +491,267 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
 			}
 		}
-		#region DataTypeRolePlayerChangeRule rule
+		#region DataTypeRolePlayerChangeRule
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
 		/// When the DataType is changed, recheck the instance values
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
-		private sealed partial class DataTypeRolePlayerChangeRule : RolePlayerChangeRule
+		private static void DataTypeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
 			{
-				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
-				{
-					DelayValidateAssociatedValueConstraints((e.ElementLink as ValueTypeHasDataType).ValueType);
-				}
+				DelayValidateAssociatedValueConstraints((e.ElementLink as ValueTypeHasDataType).ValueType);
 			}
 		}
-		#endregion // DataTypeRolePlayerChangeRule rule
-		#region DataTypeDeletingRule class
+		#endregion // DataTypeRolePlayerChangeRule
+		#region DataTypeDeletingRule
 		/// <summary>
+		/// DeletingRule: typeof(ValueTypeHasDataType)
 		/// If a DataType is being cleared from an ObjectType that is
 		/// not being deleted, and the value type has downstream value roles,
 		/// then create a new value type with that data type and set it as the
 		/// reference mode for the object type.
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // DeletingRule
-		private sealed partial class DataTypeDeletingRule : DeletingRule
+		private static void DataTypeDeletingRule(ElementDeletingEventArgs e)
 		{
-			public override void ElementDeleting(ElementDeletingEventArgs e)
+			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+			ObjectType oldValueType = link.ValueType;
+			if (!oldValueType.IsDeleting)
 			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType oldValueType = link.ValueType;
-				if (!oldValueType.IsDeleting)
-				{
-					ValueTypeHasValueConstraint valueTypeConstraintLink = ValueTypeHasValueConstraint.GetLinkToValueConstraint(oldValueType);
-					bool hasValueConstraint = valueTypeConstraintLink != null;
-					if (!hasValueConstraint)
-					{
-						Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-						{
-							if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-							{
-								hasValueConstraint = true;
-								return false; // Stop walking
-							}
-							return true;
-						});
-					}
-					if (hasValueConstraint)
-					{
-						// Convert this value type into an entity type with a reference mode
-						ORMModel model = oldValueType.Model;
-						if (model != null)
-						{
-							// Get a unique name for a new value type
-							INamedElementDictionary existingObjectsDictionary = model.ObjectTypesDictionary;
-							string newNamePattern = ResourceStrings.ValueTypeAutoCreateReferenceModeNamePattern;
-							string baseName = oldValueType.Name;
-							string newName = null;
-							int i = 0;
-							do
-							{
-								newName = string.Format(CultureInfo.InvariantCulture, newNamePattern, baseName, (i == 0) ? "" : i.ToString(CultureInfo.InvariantCulture));
-								++i;
-							} while (!existingObjectsDictionary.GetElement(newName).IsEmpty);
-
-							// Create the value type and attach it to a clone of the deleting datatype link
-							Partition partition = model.Partition;
-							ObjectType newValueType = new ObjectType(partition, new PropertyAssignment[] { new PropertyAssignment(ORMNamedElement.NameDomainPropertyId, newName) });
-							ValueTypeHasDataType newDataTypeLink = new ValueTypeHasDataType(
-								partition,
-								new RoleAssignment[] { new RoleAssignment(ValueTypeHasDataType.ValueTypeDomainRoleId, newValueType), new RoleAssignment(ValueTypeHasDataType.DataTypeDomainRoleId, link.DataType) },
-								new PropertyAssignment[] { new PropertyAssignment(ValueTypeHasDataType.ScaleDomainPropertyId, link.Scale), new PropertyAssignment(ValueTypeHasDataType.LengthDomainPropertyId, link.Length) });
-
-							// Attach the new value type to the model
-							newValueType.Model = model;
-
-							// Change the old ValueTypeValueConstraint to a new RoleValueConstraint
-							RoleValueConstraint newValueConstraint = null;
-							string preserveValueConstraintName = null;
-							if (valueTypeConstraintLink != null)
-							{
-								// Move all links except the aggregating link from the old value constraint to
-								// the new one. Note that this will also take care of moving any presentation elements
-								ValueConstraint oldValueConstraint = valueTypeConstraintLink.ValueConstraint;
-								preserveValueConstraintName = oldValueConstraint.Name;
-								newValueConstraint = new RoleValueConstraint(partition);
-								if (System.Text.RegularExpressions.Regex.IsMatch(preserveValueConstraintName, System.ComponentModel.TypeDescriptor.GetClassName(oldValueConstraint) + @"\d+"))
-								{
-									preserveValueConstraintName = null;
-								}
-
-								foreach (DomainRoleInfo roleInfo in oldValueConstraint.GetDomainClass().AllDomainRolesPlayed)
-								{
-									if (!roleInfo.OppositeDomainRole.IsEmbedding && roleInfo.Id != ValueConstraintHasDuplicateNameError.ValueConstraintDomainRoleId)
-									{
-										foreach (ElementLink transferLink in roleInfo.GetElementLinks(oldValueConstraint))
-										{
-											roleInfo.SetRolePlayer(transferLink, newValueConstraint);
-										}
-									}
-								}
-
-								// No we've pulled all useful information from the old value constraint we can go ahead
-								// and delete it. Deleting the link will propagate to delete the constraint.
-								valueTypeConstraintLink.Delete();
-							}
-
-							// Setting the ReferenceModeString property will do the bulk of the work
-							oldValueType.ReferenceModeString = newName;
-
-							if (newValueConstraint != null)
-							{
-								// Attach the new constraint to the appropriate opposite role
-								newValueConstraint.Role = oldValueType.PreferredIdentifier.RoleCollection[0];
-								if (preserveValueConstraintName != null)
-								{
-									Dictionary<object, object> contextInfo = partition.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-									try
-									{
-										contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
-										newValueConstraint.Name = preserveValueConstraintName;
-									}
-									finally
-									{
-										contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
-									}
-								}
-							}
-						}
-					}
-				}
-				else
+				ValueTypeHasValueConstraint valueTypeConstraintLink = ValueTypeHasValueConstraint.GetLinkToValueConstraint(oldValueType);
+				bool hasValueConstraint = valueTypeConstraintLink != null;
+				if (!hasValueConstraint)
 				{
 					Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
 						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
 						{
-							currentValueConstraint.Delete();
-						}
-						return true; // Continue walking
-					});
-				}
-			}
-		}
-		#endregion // DataTypeDeletingRule class
-		#region DataTypeChangeRule class
-		[RuleOn(typeof(ValueTypeHasDataType))] // ChangeRule
-		private sealed partial class DataTypeChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// checks first if the data type has been changed and then test if the 
-			/// value matches the datatype
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == ValueTypeHasDataType.ScaleDomainPropertyId ||
-					attributeId == ValueTypeHasDataType.LengthDomainPropertyId)
-				{
-					DelayValidateAssociatedValueConstraints((e.ModelElement as ValueTypeHasDataType).ValueType);
-				}
-			}
-		}
-		#endregion // DataTypeChangeRule class
-		#region ValueConstraintAddRule class
-		[RuleOn(typeof(ValueTypeHasValueConstraint))] // AddRule
-		private sealed partial class ValueConstraintAddRule : AddRule
-		{
-			/// <summary>
-			/// checks if the new value range definition matches the data type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				DelayValidateValueConstraint((e.ModelElement as ValueTypeHasValueConstraint).ValueConstraint);
-			}
-		}
-		#endregion // ValueConstraintAddRule rule
-		#region RoleValueConstraintAdded rule
-		[RuleOn(typeof(RoleHasValueConstraint))] // AddRule
-		private sealed partial class RoleValueConstraintAdded : AddRule
-		{
-			/// <summary>
-			/// checks if the the value range matches the specified date type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				DelayValidateValueConstraint((e.ModelElement as RoleHasValueConstraint).ValueConstraint);
-			}
-		}
-		#endregion // RoleValueConstraintAdded rule
-		#region ObjectTypeRoleAdded rule
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class ObjectTypeRoleAdded : AddRule
-		{
-			/// <summary>
-			/// checks to see if the value on the role added matches the specified data type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ObjectType valueType = (e.ModelElement as ObjectTypePlaysRole).RolePlayer;
-				if (valueType.DataType != null)
-				{
-					DelayValidateAssociatedValueConstraints(valueType);
-				}
-			}
-		}
-		#endregion // ObjectTypeRoleAdded rule
-		#region ValueRangeAdded rule
-		[RuleOn(typeof(ValueConstraintHasValueRange))] // AddRule
-		private sealed partial class ValueRangeAdded : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				DelayValidateValueConstraint((e.ModelElement as ValueConstraintHasValueRange).ValueConstraint);
-			}
-		}
-		#endregion // ValueRangeAdded rule
-		#region ValueRangeChangeRule rule
-		[RuleOn(typeof(ValueRange))] // ChangeRule
-		private sealed partial class ValueRangeChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Validate values when any non-calculated properties change
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid != ValueRange.TextDomainPropertyId)
-				{
-					DelayValidateValueConstraint((e.ModelElement as ValueRange).ValueConstraint);
-				}
-			}
-		}
-		#endregion // ValueRangeChangeRule class
-		#region ValueConstraintChangeRule class
-		[RuleOn(typeof(ValueConstraint))] // ChangeRule
-		private sealed partial class ValueConstraintChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Translate the Text property
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == ValueConstraint.TextDomainPropertyId)
-				{
-					ValueConstraint valueConstraint = e.ModelElement as ValueConstraint;
-					//Set the new definition
-					string newText = (string)e.NewValue;
-					if (newText.Length == 0)
-					{
-						valueConstraint.Delete();
-					}
-					else
-					{
-						valueConstraint.ParseDefinition((string)e.NewValue);
-					}
-				}
-			}
-		}
-		#endregion // ValueConstraintChangeRule class
-		#region PreferredIdentifierDeletingRule class
-		/// <summary>
-		/// Deleting a preferred identifier can force any descended value
-		/// roles to no longer be value roles. Delete any attached value constraints
-		/// in this case.
-		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeletingRule
-		private sealed partial class PreferredIdentifierDeletingRule : DeletingRule
-		{
-			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
-			{
-				if (objectType == null)
-				{
-					objectType = link.PreferredIdentifierFor;
-				}
-				if (!objectType.IsDeleting)
-				{
-					Role.WalkDescendedValueRoles(objectType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
-					{
-						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-						{
-							currentValueConstraint.Delete();
+							hasValueConstraint = true;
+							return false; // Stop walking
 						}
 						return true;
 					});
 				}
-			}
-			public override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-
-				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
-			}
-		}
-		#endregion // PreferredIdentifierDeletingRule class
-		#region PreferredIdentifierRolePlayerChangeRule class
-		/// <summary>
-		/// RolePlayerChangeRule corresponding to <see cref="PreferredIdentifierDeletingRule"/>
-		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
-		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				Guid changedRoleGuid = e.DomainRole.Id;
-				ObjectType oldObjectType = null;
-				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+				if (hasValueConstraint)
 				{
-					oldObjectType = (ObjectType)e.OldRolePlayer;
-				}
-				PreferredIdentifierDeletingRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
-			}
-		}
-		#endregion // PreferredIdentifierRolePlayerChangeRule class
-		#region PreferredIdentifierRoleAddRule class
-		/// <summary>
-		/// A rule to determine if a role has been added to a constraint
-		/// that is acting as a preferred identifier
-		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), Priority = 1)] // AddRule
-		// Priority=1 places this rule after EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule
-		private sealed partial class PreferredIdentifierRoleAddRule : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				UniquenessConstraint constraint;
-				ObjectType identifiedObject;
-				LinkedElementCollection<Role> roles;
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
-					null != (identifiedObject = constraint.PreferredIdentifierFor) &&
-					(roles = constraint.RoleCollection).Count == 2) // Moving from 1 role to 2
-				{
-					// Find the original role
-					Role originalRole = roles[0];
-					if (originalRole == link.Role)
+					// Convert this value type into an entity type with a reference mode
+					ORMModel model = oldValueType.Model;
+					if (model != null)
 					{
-						originalRole = roles[1];
-					}
-					ObjectType originalRolePlayer;
-					RoleBase oppositeRoleBase;
-					RoleProxy proxyRole;
-					Role oppositeRole;
-					if (null != (originalRolePlayer = originalRole.RolePlayer) &&
-						null != (oppositeRoleBase = (null != (proxyRole = originalRole.Proxy)) ? proxyRole.OppositeRole : originalRole.OppositeRole) &&
-						null != (oppositeRole = oppositeRoleBase.Role))
-					{
-						Debug.Assert((proxyRole != null) ? (oppositeRole.RolePlayer == originalRole.FactType.NestingType) : oppositeRole.RolePlayer == identifiedObject);
-						LinkedElementCollection<Role> playedRoles = identifiedObject.PlayedRoleCollection;
-						int playedRolesCount = playedRoles.Count;
-						for (int i = 0; i < playedRolesCount; ++i)
+						// Get a unique name for a new value type
+						INamedElementDictionary existingObjectsDictionary = model.ObjectTypesDictionary;
+						string newNamePattern = ResourceStrings.ValueTypeAutoCreateReferenceModeNamePattern;
+						string baseName = oldValueType.Name;
+						string newName = null;
+						int i = 0;
+						do
 						{
-							Role testRole = playedRoles[i];
-							if (testRole != oppositeRole)
+							newName = string.Format(CultureInfo.InvariantCulture, newNamePattern, baseName, (i == 0) ? "" : i.ToString(CultureInfo.InvariantCulture));
+							++i;
+						} while (!existingObjectsDictionary.GetElement(newName).IsEmpty);
+
+						// Create the value type and attach it to a clone of the deleting datatype link
+						Partition partition = model.Partition;
+						ObjectType newValueType = new ObjectType(partition, new PropertyAssignment[] { new PropertyAssignment(ORMNamedElement.NameDomainPropertyId, newName) });
+						ValueTypeHasDataType newDataTypeLink = new ValueTypeHasDataType(
+							partition,
+							new RoleAssignment[] { new RoleAssignment(ValueTypeHasDataType.ValueTypeDomainRoleId, newValueType), new RoleAssignment(ValueTypeHasDataType.DataTypeDomainRoleId, link.DataType) },
+							new PropertyAssignment[] { new PropertyAssignment(ValueTypeHasDataType.ScaleDomainPropertyId, link.Scale), new PropertyAssignment(ValueTypeHasDataType.LengthDomainPropertyId, link.Length) });
+
+						// Attach the new value type to the model
+						newValueType.Model = model;
+
+						// Change the old ValueTypeValueConstraint to a new RoleValueConstraint
+						RoleValueConstraint newValueConstraint = null;
+						string preserveValueConstraintName = null;
+						if (valueTypeConstraintLink != null)
+						{
+							// Move all links except the aggregating link from the old value constraint to
+							// the new one. Note that this will also take care of moving any presentation elements
+							ValueConstraint oldValueConstraint = valueTypeConstraintLink.ValueConstraint;
+							preserveValueConstraintName = oldValueConstraint.Name;
+							newValueConstraint = new RoleValueConstraint(partition);
+							if (System.Text.RegularExpressions.Regex.IsMatch(preserveValueConstraintName, System.ComponentModel.TypeDescriptor.GetClassName(oldValueConstraint) + @"\d+"))
 							{
-								// Test by skipping the binary fact for the old part of the preferred identifier
-								Role.WalkDescendedValueRoles(originalRolePlayer, testRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+								preserveValueConstraintName = null;
+							}
+
+							foreach (DomainRoleInfo roleInfo in oldValueConstraint.GetDomainClass().AllDomainRolesPlayed)
+							{
+								if (!roleInfo.OppositeDomainRole.IsEmbedding && roleInfo.Id != ValueConstraintHasDuplicateNameError.ValueConstraintDomainRoleId)
 								{
-									if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+									foreach (ElementLink transferLink in roleInfo.GetElementLinks(oldValueConstraint))
 									{
-										currentValueConstraint.Delete();
+										roleInfo.SetRolePlayer(transferLink, newValueConstraint);
 									}
-									return true;
-								});
+								}
+							}
+
+							// No we've pulled all useful information from the old value constraint we can go ahead
+							// and delete it. Deleting the link will propagate to delete the constraint.
+							valueTypeConstraintLink.Delete();
+						}
+
+						// Setting the ReferenceModeString property will do the bulk of the work
+						oldValueType.ReferenceModeString = newName;
+
+						if (newValueConstraint != null)
+						{
+							// Attach the new constraint to the appropriate opposite role
+							newValueConstraint.Role = oldValueType.PreferredIdentifier.RoleCollection[0];
+							if (preserveValueConstraintName != null)
+							{
+								Dictionary<object, object> contextInfo = partition.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+								try
+								{
+									contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+									newValueConstraint.Name = preserveValueConstraintName;
+								}
+								finally
+								{
+									contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		#endregion // PreferredIdentifierRoleAddRule class
-		#region RolePlayerDeleting class
-		/// <summary>
-		/// Deleting a role player link can eliminate the
-		/// path between a downstream value role and a value type.
-		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
-		private sealed partial class RolePlayerDeleting : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			else
 			{
-				Role.WalkDescendedValueRoles((e.ModelElement as ObjectTypePlaysRole).RolePlayer, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+				Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+				{
+					if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+					{
+						currentValueConstraint.Delete();
+					}
+					return true; // Continue walking
+				});
+			}
+		}
+		#endregion // DataTypeDeletingRule
+		#region DataTypeChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ValueTypeHasDataType)
+		/// Checks first if the data type has been changed and then if the 
+		/// value matches the datatype
+		/// </summary>
+		private static void DataTypeChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ValueTypeHasDataType.ScaleDomainPropertyId ||
+				attributeId == ValueTypeHasDataType.LengthDomainPropertyId)
+			{
+				DelayValidateAssociatedValueConstraints((e.ModelElement as ValueTypeHasDataType).ValueType);
+			}
+		}
+		#endregion // DataTypeChangeRule
+		#region ValueConstraintAddRule
+		/// <summary>
+		/// AddRule: typeof(ValueTypeHasValueConstraint)
+		/// Checks if the new value range definition matches the data type
+		/// </summary>
+		private static void ValueConstraintAddRule(ElementAddedEventArgs e)
+		{
+			DelayValidateValueConstraint((e.ModelElement as ValueTypeHasValueConstraint).ValueConstraint);
+		}
+		#endregion // ValueConstraintAddRule
+		#region RoleValueConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(RoleHasValueConstraint)
+		/// Checks if the the value range matches the specified date type
+		/// </summary>
+		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
+		{
+			DelayValidateValueConstraint((e.ModelElement as RoleHasValueConstraint).ValueConstraint);
+		}
+		#endregion // RoleValueConstraintAddedRule
+		#region ObjectTypeRoleAdded
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// Checks to see if the value on the role added matches the specified data type
+		/// </summary>
+		private static void ObjectTypeRoleAdded(ElementAddedEventArgs e)
+		{
+			ObjectType valueType = (e.ModelElement as ObjectTypePlaysRole).RolePlayer;
+			if (valueType.DataType != null)
+			{
+				DelayValidateAssociatedValueConstraints(valueType);
+			}
+		}
+		#endregion // ObjectTypeRoleAdded
+		#region ValueRangeAddedRule
+		/// <summary>
+		/// AddRule: typeof(ValueConstraintHasValueRange)
+		/// Validate a value constraint when a new value range is added.
+		/// </summary>
+		private static void ValueRangeAddedRule(ElementAddedEventArgs e)
+		{
+			DelayValidateValueConstraint((e.ModelElement as ValueConstraintHasValueRange).ValueConstraint);
+		}
+		#endregion // ValueRangeAddedRule
+		#region ValueRangeChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ValueRange)
+		/// Validate values when any non-calculated properties change
+		/// </summary>
+		private static void ValueRangeChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid != ValueRange.TextDomainPropertyId)
+			{
+				DelayValidateValueConstraint((e.ModelElement as ValueRange).ValueConstraint);
+			}
+		}
+		#endregion // ValueRangeChangeRule
+		#region ValueConstraintChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ValueConstraint)
+		/// Translate the Text property
+		/// </summary>
+		private static void ValueConstraintChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == ValueConstraint.TextDomainPropertyId)
+			{
+				ValueConstraint valueConstraint = e.ModelElement as ValueConstraint;
+				//Set the new definition
+				string newText = (string)e.NewValue;
+				if (newText.Length == 0)
+				{
+					valueConstraint.Delete();
+				}
+				else
+				{
+					valueConstraint.ParseDefinition((string)e.NewValue);
+				}
+			}
+		}
+		#endregion // ValueConstraintChangeRule
+		#region PreferredIdentifierDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(EntityTypeHasPreferredIdentifier)
+		/// Deleting a preferred identifier can force any descended value
+		/// roles to no longer be value roles. Delete any attached value constraints
+		/// in this case.
+		/// </summary>
+		private static void PreferredIdentifierDeletingRule(ElementDeletingEventArgs e)
+		{
+			ProcessPreferredIdentifierDeleting(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+		}
+		/// <summary>
+		/// Common rule code for processing preferred identifier deletion
+		/// </summary>
+		/// <param name="link">The <see cref="EntityTypeHasPreferredIdentifier"/> being deleted or modified.</param>
+		/// <param name="objectType">An alternate EntityType role player from the <paramref name="link"/>. Use the link's role player if this is <see langword="null"/></param>
+		private static void ProcessPreferredIdentifierDeleting(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+		{
+			if (objectType == null)
+			{
+				objectType = link.PreferredIdentifierFor;
+			}
+			if (!objectType.IsDeleting)
+			{
+				Role.WalkDescendedValueRoles(objectType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 				{
 					if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
 					{
@@ -886,44 +761,63 @@ namespace Neumont.Tools.ORM.ObjectModel
 				});
 			}
 		}
-		#endregion // RolePlayerDeleting class
-		#region RolePlayerRolePlayerChangeRule class
+		#endregion // PreferredIdentifierDeletingRule
+		#region PreferredIdentifierRolePlayerChangeRule
 		/// <summary>
-		/// Changing a role player link from one object to another
-		/// can eliminate or modify the path between a downstream
-		/// value role and a value type.
+		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
+		/// RolePlayerChangeRule corresponding to <see cref="PreferredIdentifierDeletingRule"/>
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed partial class RolePlayerRolePlayerChangeRule : RolePlayerChangeRule
+		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			Guid changedRoleGuid = e.DomainRole.Id;
+			ObjectType oldObjectType = null;
+			if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
-				if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+				oldObjectType = (ObjectType)e.OldRolePlayer;
+			}
+			ProcessPreferredIdentifierDeleting(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
+		}
+		#endregion // PreferredIdentifierRolePlayerChangeRule
+		#region PreferredIdentifierRoleAddRule
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole), Priority=1;
+		/// A rule to determine if a role has been added to a constraint
+		/// that is acting as a preferred identifier
+		/// </summary>
+		private static void PreferredIdentifierRoleAddRule(ElementAddedEventArgs e)
+		{
+			UniquenessConstraint constraint;
+			ObjectType identifiedObject;
+			LinkedElementCollection<Role> roles;
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+				null != (identifiedObject = constraint.PreferredIdentifierFor) &&
+				(roles = constraint.RoleCollection).Count == 2) // Moving from 1 role to 2
+			{
+				// Find the original role
+				Role originalRole = roles[0];
+				if (originalRole == link.Role)
 				{
-					Role changedRole = (e.ElementLink as ObjectTypePlaysRole).PlayedRole;
-					ObjectType oldRolePlayer = (ObjectType)e.OldRolePlayer;
-					if (changedRole.IsValueRoleForAlternateRolePlayer(oldRolePlayer))
+					originalRole = roles[1];
+				}
+				ObjectType originalRolePlayer;
+				RoleBase oppositeRoleBase;
+				RoleProxy proxyRole;
+				Role oppositeRole;
+				if (null != (originalRolePlayer = originalRole.RolePlayer) &&
+					null != (oppositeRoleBase = (null != (proxyRole = originalRole.Proxy)) ? proxyRole.OppositeRole : originalRole.OppositeRole) &&
+					null != (oppositeRole = oppositeRoleBase.Role))
+				{
+					Debug.Assert((proxyRole != null) ? (oppositeRole.RolePlayer == originalRole.FactType.NestingType) : oppositeRole.RolePlayer == identifiedObject);
+					LinkedElementCollection<Role> playedRoles = identifiedObject.PlayedRoleCollection;
+					int playedRolesCount = playedRoles.Count;
+					for (int i = 0; i < playedRolesCount; ++i)
 					{
-						// If the old configuration did not have the changed role as a value
-						// role then there will be no value roles descended from it.
-						bool visited = false;
-						Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+						Role testRole = playedRoles[i];
+						if (testRole != oppositeRole)
 						{
-							// If we get any callback here, then the role can still be a value role
-							visited = true;
-							if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-							{
-								// Make sure that this value constraint is compatible with
-								// other constraints above it.
-								DelayValidateValueConstraint(currentValueConstraint);
-							}
-							return true;
-						});
-						if (!visited)
-						{
-							// The old role player supported values, the new one does not.
-							// Delete any downstream value constraints.
-							Role.WalkDescendedValueRoles(oldRolePlayer, changedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+							// Test by skipping the binary fact for the old part of the preferred identifier
+							Role.WalkDescendedValueRoles(originalRolePlayer, testRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 							{
 								if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
 								{
@@ -936,7 +830,72 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RolePlayerRolePlayerChangeRule class
+		#endregion // PreferredIdentifierRoleAddRule
+		#region RolePlayerDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ObjectTypePlaysRole)
+		/// Deleting a role player link can eliminate the
+		/// path between a downstream value role and a value type.
+		/// </summary>
+		private static void RolePlayerDeletingRule(ElementDeletingEventArgs e)
+		{
+			Role.WalkDescendedValueRoles((e.ModelElement as ObjectTypePlaysRole).RolePlayer, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			{
+				if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+				{
+					currentValueConstraint.Delete();
+				}
+				return true;
+			});
+		}
+		#endregion // RolePlayerDeletingRule
+		#region RolePlayerRolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// Changing a role player link from one object to another
+		/// can eliminate or modify the path between a downstream
+		/// value role and a value type.
+		/// </summary>
+		private static void RolePlayerRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				Role changedRole = (e.ElementLink as ObjectTypePlaysRole).PlayedRole;
+				ObjectType oldRolePlayer = (ObjectType)e.OldRolePlayer;
+				if (changedRole.IsValueRoleForAlternateRolePlayer(oldRolePlayer))
+				{
+					// If the old configuration did not have the changed role as a value
+					// role then there will be no value roles descended from it.
+					bool visited = false;
+					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					{
+						// If we get any callback here, then the role can still be a value role
+						visited = true;
+						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+						{
+							// Make sure that this value constraint is compatible with
+							// other constraints above it.
+							DelayValidateValueConstraint(currentValueConstraint);
+						}
+						return true;
+					});
+					if (!visited)
+					{
+						// The old role player supported values, the new one does not.
+						// Delete any downstream value constraints.
+						Role.WalkDescendedValueRoles(oldRolePlayer, changedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+						{
+							if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+							{
+								currentValueConstraint.Delete();
+							}
+							return true;
+						});
+					}
+				}
+			}
+		}
+		#endregion // RolePlayerRolePlayerChangeRule
 		#endregion // ValueMatch Validation
 		#region VerifyValueRangeOverlapError
 		private static void DelayValidateValueRangeOverlapError(ModelElement element)

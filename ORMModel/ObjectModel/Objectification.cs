@@ -29,24 +29,122 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		// UNDONE: Handle unary objectifications (both implied and explicit)
 		#region Implied Objectification creation, removal, and pattern enforcement
-		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
+		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
 		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule : AddRule
+		private static void ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			UniquenessConstraint constraint;
+			FactType factType;
+			if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+				constraint.IsInternal &&
+				null != (factType = link.Role.FactType))
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint;
-				FactType factType;
-				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
-					constraint.IsInternal &&
-					null != (factType = link.Role.FactType))
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				ObjectType nestingType = factType.NestingType;
+				if (nestingType != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
-					ObjectType nestingType = factType.NestingType;
+					ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
+		#region ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
+		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
+		/// </summary>
+		private static void ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule(ElementDeletingEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			UniquenessConstraint constraint;
+			FactType factType;
+			if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
+				constraint.IsInternal &&
+				null != (factType = link.Role.FactType))
+			{
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+			}
+		}
+		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
+		#region ImpliedObjectificationFactTypeHasRoleAddRule
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// 1) Creates a new implied Objectification if the implied objectification pattern is now present.
+		/// 2) Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
+		/// </summary>
+		private static void ImpliedObjectificationFactTypeHasRoleAddRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
+			ORMCoreDomainModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
+			ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
+		}
+		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule
+		#region ImpliedObjectificationFactTypeHasRoleDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(FactTypeHasRole)
+		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
+		/// </summary>
+		private static void ImpliedObjectificationFactTypeHasRoleDeletingRule(ElementDeletingEventArgs e)
+		{
+			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+			if (!factType.IsDeleting)
+			{
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				Objectification objectification;
+				if (null != (objectification = factType.Objectification) &&
+					!objectification.IsDeleting)
+				{
+					ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule
+		#region ImpliedObjectificationUniquenessConstraintChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(UniquenessConstraint)
+		/// Adds or removes an implied Objectification if necessary as well as ensuring
+		/// that an objectifying type with a single candidate internal uniqueness
+		/// constraint on the objectified fact uses that constraint as its preferred identifier.
+		/// </summary>
+		private static void ImpliedObjectificationUniquenessConstraintChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
+			if (!constraint.IsDeleted)
+			{
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
+				{
+					ProcessUniquenessConstraintForImpliedObjectification(constraint, true, false);
+				}
+				else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
+				{
+					if (constraint.IsInternal)
+					{
+						ProcessUniquenessConstraintForImpliedObjectification(constraint, false, true);
+					}
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationUniquenessConstraintChangeRule
+		#region UniquenessConstraintAddRule
+		/// <summary>
+		/// AddRule: typeof(ModelHasSetConstraint)
+		/// Ensure that an objectifying type with a single candidate internal uniqueness
+		/// constraint on the objectified fact uses that constraint as its preferred identifier.
+		/// </summary>
+		private static void UniquenessConstraintAddRule(ElementAddedEventArgs e)
+		{
+			UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
+			if (constraint != null && constraint.IsInternal)
+			{
+				LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
+				if (facts.Count != 0)
+				{
+					ObjectType nestingType = facts[0].NestingType;
 					if (nestingType != null)
 					{
 						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
@@ -54,593 +152,449 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
-		#region ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
+		#endregion // UniquenessConstraintAddRule
+		#region UniquessConstraintDeletingRule
 		/// <summary>
-		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
-		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private sealed partial class ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint;
-				FactType factType;
-				if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
-					constraint.IsInternal &&
-					null != (factType = link.Role.FactType))
-				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
-				}
-			}
-		}
-		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
-		#region ImpliedObjectificationFactTypeHasRoleAddRule class
-		/// <summary>
-		/// 1) Creates a new implied Objectification if the implied objectification pattern is now present.
-		/// 2) Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class ImpliedObjectificationFactTypeHasRoleAddRule : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
-				ORMCoreDomainModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
-				ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
-			}
-		}
-		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule class
-		#region ImpliedObjectificationFactTypeHasRoleDeletingRule class
-		/// <summary>
-		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // DeletingRule
-		private sealed partial class ImpliedObjectificationFactTypeHasRoleDeletingRule : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-				if (!factType.IsDeleting)
-				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
-					Objectification objectification;
-					if (null != (objectification = factType.Objectification) &&
-						!objectification.IsDeleting)
-					{
-						ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-					}
-
-				}
-			}
-		}
-		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule class
-		#region ImpliedObjectificationUniquenessConstraintChangeRule class
-		/// <summary>
-		/// Adds or removes an implied Objectification if necessary as well as ensuring
-		/// that an objectifying type with a single candidate internal uniqueness
-		/// constraint on the objectified fact uses that constraint as its preferred identifier.
-		/// </summary>
-		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
-		private sealed partial class ImpliedObjectificationUniquenessConstraintChangeRule : ChangeRule
-		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
-				if (!constraint.IsDeleted)
-				{
-					Guid attributeId = e.DomainProperty.Id;
-					if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
-					{
-						ProcessUniquenessConstraintForImpliedObjectification(constraint, true, false);
-					}
-					else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
-					{
-						if (constraint.IsInternal)
-						{
-							ProcessUniquenessConstraintForImpliedObjectification(constraint, false, true);
-						}
-					}
-				}
-			}
-		}
-		#endregion // ImpliedObjectificationUniquenessConstraintChangeRule class
-		#region UniquenessConstraintAddRule class
-		/// <summary>
+		/// DeletingRule: typeof(ModelHasSetConstraint)
 		/// Ensure that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
-		private sealed partial class UniquenessConstraintAddRule : AddRule
+		private static void UniquenessConstraintDeletingRule(ElementDeletingEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
+			if (constraint != null && constraint.IsInternal)
 			{
-				UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
-				if (constraint != null && constraint.IsInternal)
+				LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
+				FactType testFact;
+				Objectification objectification;
+				if (facts.Count != 0 &&
+					!(testFact = facts[0]).IsDeleting &&
+					null != (objectification = testFact.Objectification) &&
+					!objectification.IsDeleting)
 				{
-					LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
-					if (facts.Count != 0)
-					{
-						ObjectType nestingType = facts[0].NestingType;
-						if (nestingType != null)
-						{
-							ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-						}
-					}
+					ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				}
 			}
 		}
-		#endregion // UniquenessConstraintAddRule class
-		#region UniquessConstraintDeletingRule class
+		#endregion // UniquessConstraintDeletingRule
+		#region PreferredIdentifierDeletingRule
 		/// <summary>
-		/// Ensure that an objectifying type with a single candidate internal uniqueness
-		/// constraint on the objectified fact uses that constraint as its preferred identifier.
-		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))] // DeletingRule
-		private sealed partial class UniquenessConstraintDeletingRule : DeletingRule
-		{
-			public override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
-				if (constraint != null && constraint.IsInternal)
-				{
-					LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
-					FactType testFact;
-					Objectification objectification;
-					if (facts.Count != 0 &&
-						!(testFact = facts[0]).IsDeleting &&
-						null != (objectification = testFact.Objectification) &&
-						!objectification.IsDeleting)
-					{
-						ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-					}
-				}
-			}
-		}
-		#endregion // UniquessConstraintDeletingRule class
-		#region PreferredIdentifierDeletingRule class
-		/// <summary>
+		/// DeletingRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// Make sure than an objectifying type gets a preferred identifier if
 		/// the existing preferred identifier is deleted and a single internal
 		/// uniqueness constraint on the objectified fact is available.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeletingRule
-		private sealed partial class PreferredIdentifierDeletingRule : DeletingRule
+		private static void PreferredIdentifierDeletingRule(ElementDeletingEventArgs e)
 		{
-			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+			ProcessPreferredIdentifierDeleting(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessPreferredIdentifierDeleting(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+		{
+			if (objectType == null)
 			{
-				if (objectType == null)
-				{
-					objectType = link.PreferredIdentifierFor;
-				}
-				Objectification objectification;
-				if (!objectType.IsDeleting &&
-					null != (objectification = objectType.Objectification) &&
-					!objectification.IsDeleting)
-				{
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-				}
+				objectType = link.PreferredIdentifierFor;
 			}
-			public override void  ElementDeleting(ElementDeletingEventArgs e)
+			Objectification objectification;
+			if (!objectType.IsDeleting &&
+				null != (objectification = objectType.Objectification) &&
+				!objectification.IsDeleting)
 			{
-				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+				ORMCoreDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 			}
 		}
-		#endregion // PreferredIdentifierDeletingRule class
-		#region PreferredIdentifierRolePlayerChangeRule class
+		#endregion // PreferredIdentifierDeletingRule
+		#region PreferredIdentifierRolePlayerChangeRule
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// RolePlayerChangeRule corresponding to <see cref="PreferredIdentifierDeletingRule"/>
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
-		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			Guid changedRoleGuid = e.DomainRole.Id;
+			ObjectType oldObjectType = null;
+			if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
-				Guid changedRoleGuid = e.DomainRole.Id;
-				ObjectType oldObjectType = null;
-				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
-				{
-					oldObjectType = (ObjectType)e.OldRolePlayer;
-				}
-				PreferredIdentifierDeletingRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
+				oldObjectType = (ObjectType)e.OldRolePlayer;
 			}
+			ProcessPreferredIdentifierDeleting(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
 		}
-		#endregion // PreferredIdentifierRolePlayerChangeRule class
-		#region ImpliedObjectificationIsImpliedChangeRule class
+		#endregion // PreferredIdentifierRolePlayerChangeRule
+		#region ImpliedObjectificationIsImpliedChangeRule
 		/// <summary>
+		/// ChangeRule: typeof(Objectification)
 		/// Validates that an objectification that is implied matches the implied objectification pattern.
 		/// </summary>
-		[RuleOn(typeof(Objectification))] // ChangeRule
-		private sealed partial class ImpliedObjectificationIsImpliedChangeRule : ChangeRule
+		private static void ImpliedObjectificationIsImpliedChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId && (bool)e.NewValue)
 			{
-				if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId && (bool)e.NewValue)
+				Objectification objectification = e.ModelElement as Objectification;
+
+				// Check the implication pattern
+				ProcessFactTypeForImpliedObjectification(objectification.NestedFactType, true);
+
+				// If we're still objectified, check that we are only doing things that are allowed
+				if (objectification.IsImplied)
 				{
-					Objectification objectification = e.ModelElement as Objectification;
-					
-					// Check the implication pattern
-					ProcessFactTypeForImpliedObjectification(objectification.NestedFactType, true);
-					
-					// If we're still objectified, check that we are only doing things that are allowed
-					if (objectification.IsImplied)
+					ObjectType nestingType = objectification.NestingType;
+					if (nestingType != null && ((nestingType.AllowIsIndependent(false) && !nestingType.IsIndependent) || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
 					{
-						ObjectType nestingType = objectification.NestingType;
-						if (nestingType != null && ((nestingType.AllowIsIndependent(false) && !nestingType.IsIndependent) || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
+						throw InvalidImpliedObjectificationException();
+					}
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationIsImpliedChangeRule
+		#region ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ObjectType)
+		/// Changes an implied Objectification to being explicit if IsIndependent is changed.
+		/// </summary>
+		private static void ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ObjectType.IsIndependentDomainPropertyId && !(bool)e.NewValue)
+			{
+				ObjectType nestingType = e.ModelElement as ObjectType;
+				FactType nestedFact = nestingType.NestedFactType;
+				Objectification objectification;
+				UniquenessConstraint preferredIdentifier;
+				if (nestedFact != null &&
+					(objectification = nestedFact.Objectification).IsImplied &&
+					null != (preferredIdentifier = nestingType.PreferredIdentifier) &&
+					preferredIdentifier.RoleCollection.Count == nestedFact.RoleCollection.Count)
+				{
+					objectification.IsImplied = false;
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
+		#region ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
+		/// </summary>
+		private static void ImpliedObjectificationObjectifyingTypePlaysRoleAddRule(ElementAddedEventArgs e)
+		{
+			ProcessNewPlayedRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRole);
+		}
+		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
+		#endregion // Implied Objectification creation, removal, and pattern enforcement
+		#region Objectification implied facts and constraints pattern enforcement
+		#region ObjectificationAddRule
+		/// <summary>
+		/// AddRule: typeof(Objectification)
+		/// Create implied facts and constraints when an item is objectified
+		/// </summary>
+		private static void ObjectificationAddRule(ElementAddedEventArgs e)
+		{
+			ProcessObjectificationAdded(e.ModelElement as Objectification, null, null);
+		}
+		/// <summary>
+		/// Create implied facts and constraints as needed
+		/// </summary>
+		/// <param name="objectification">The objectification relationship to process</param>
+		/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
+		/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
+		private static void ProcessObjectificationAdded(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
+		{
+			if (nestedFactType == null)
+			{
+				nestedFactType = objectification.NestedFactType;
+			}
+			if (nestedFactType.ImpliedByObjectification != null)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
+			}
+			if (nestingType == null)
+			{
+				nestingType = objectification.NestingType;
+			}
+			ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+			Store store = nestedFactType.Store;
+			ORMModel model = nestedFactType.Model;
+
+			// Comments in this and other related procedures will refer to
+			// the 'near' end and 'far' end of the implied elements. The
+			// near end refers to the nested fact type and its role players, the
+			// far end is the nesting type. The pattern specifies that a binary fact type
+			// is implied between each role player and the objectified type. The far
+			// role players on the implied fact types always have a single role internal
+			// constraint and a simple mandatory constraint.
+
+			// Once we have a model, we can begin to add implied
+			// facts and constraints. Note that we do not set the
+			// ImpliedByObjectification property on any object
+			// until all are completed because any modifications
+			// to these implied elements is strictly monitored once
+			// this relationship is established.
+
+			// Add implied fact types, one for each role
+			LinkedElementCollection<RoleBase> roles = nestedFactType.RoleCollection;
+			int roleCount = roles.Count;
+			if (roleCount != 0)
+			{
+				bool ruleDisabled = false;
+				try
+				{
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Role role = roles[i].Role;
+						RoleProxy proxy = role.Proxy;
+						if (proxy == null)
 						{
-							throw InvalidImpliedObjectificationException();
+							CreateImpliedFactTypeForRole(model, nestingType, role, objectification);
+						}
+						else
+						{
+							RoleBase oppositeRoleBase;
+							Role oppositeRole;
+							if (null != (oppositeRoleBase = proxy.OppositeRole) &&
+								null != (oppositeRole = oppositeRoleBase as Role) &&
+								(nestingType != oppositeRole.RolePlayer))
+							{
+								// Move an existing proxy fact to the correct nesting type
+								if (!ruleDisabled)
+								{
+									store.RuleManager.DisableRule(typeof(RolePlayerAddRuleClass));
+									ruleDisabled = true;
+								}
+								oppositeRole.RolePlayer = nestingType;
+							}
 						}
 					}
 				}
-			}
-		}
-		#endregion // ImpliedObjectificationIsImpliedChangeRule class
-		#region ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule class
-		/// <summary>
-		/// Changes an implied Objectification to being explicit if IsIndependent is changed.
-		/// </summary>
-		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed partial class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule : ChangeRule
-		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				if (e.DomainProperty.Id == ObjectType.IsIndependentDomainPropertyId && !(bool)e.NewValue)
+				finally
 				{
-					ObjectType nestingType = e.ModelElement as ObjectType;
-					FactType nestedFact = nestingType.NestedFactType;
-					Objectification objectification;
-					UniquenessConstraint preferredIdentifier;
-					if (nestedFact != null &&
-						(objectification = nestedFact.Objectification).IsImplied &&
-						null != (preferredIdentifier = nestingType.PreferredIdentifier) &&
-						preferredIdentifier.RoleCollection.Count == nestedFact.RoleCollection.Count)
+					if (ruleDisabled)
 					{
-						objectification.IsImplied = false;
+						store.RuleManager.EnableRule(typeof(RolePlayerAddRuleClass));
 					}
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule class
-		#region ImpliedObjectificationObjectifyingTypePlaysRoleAddRule class
+		#endregion // ObjectificationAddRule
+		#region ObjectificationDeleteRule
 		/// <summary>
-		/// Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
+		/// DeletingRule: typeof(Objectification)
+		/// Remove the implied objectifying ObjectType when Objectification is removed.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule : AddRule
+		private static void ObjectificationDeletingRule(ElementDeletingEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ProcessNewPlayedRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRole);
-			}
+			ProcessObjectificationDeleting(e.ModelElement as Objectification, null, null);
 		}
-		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddRule class
-		#endregion // Implied Objectification creation, removal, and pattern enforcement
-		#region Objectification implied facts and constraints pattern enforcement
-		#region ObjectificationAddRule class
 		/// <summary>
-		/// Create implied facts and constraints when an item is objectified
+		/// Remove the implied objectifying ObjectType when Objectification is removed
+		/// and delay validated the previously nested fact type.
 		/// </summary>
-		[RuleOn(typeof(Objectification))] // AddRule
-		private sealed partial class ObjectificationAddRule : AddRule
+		/// <param name="objectification">The objectification relationship to process</param>
+		/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
+		/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
+		private static void ProcessObjectificationDeleting(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 		{
-			/// <summary>
-			/// Create implied facts and constraints as needed
-			/// </summary>
-			/// <param name="objectification">The objectification relationship to process</param>
-			/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
-			/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
-			public static void ProcessObjectificationAdded(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
+			if (nestingType == null)
+			{
+				nestingType = objectification.NestingType;
+			}
+			if (objectification.IsImplied)
 			{
 				if (nestedFactType == null)
 				{
 					nestedFactType = objectification.NestedFactType;
 				}
-				if (nestedFactType.ImpliedByObjectification != null)
+				if (nestingType.IsDeleting)
 				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
-				}
-				if (nestingType == null)
-				{
-					nestingType = objectification.NestingType;
-				}
-				ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-				Store store = nestedFactType.Store;
-				ORMModel model = nestedFactType.Model;
-
-				// Comments in this and other related procedures will refer to
-				// the 'near' end and 'far' end of the implied elements. The
-				// near end refers to the nested fact type and its role players, the
-				// far end is the nesting type. The pattern specifies that a binary fact type
-				// is implied between each role player and the objectified type. The far
-				// role players on the implied fact types always have a single role internal
-				// constraint and a simple mandatory constraint.
-
-				// Once we have a model, we can begin to add implied
-				// facts and constraints. Note that we do not set the
-				// ImpliedByObjectification property on any object
-				// until all are completed because any modifications
-				// to these implied elements is strictly monitored once
-				// this relationship is established.
-
-				// Add implied fact types, one for each role
-				LinkedElementCollection<RoleBase> roles = nestedFactType.RoleCollection;
-				int roleCount = roles.Count;
-				if (roleCount != 0)
-				{
-					bool ruleDisabled = false;
-					try
+					if (!(nestedFactType.IsDeleting || nestedFactType.IsDeleted))
 					{
-						for (int i = 0; i < roleCount; ++i)
-						{
-							Role role = roles[i].Role;
-							RoleProxy proxy = role.Proxy;
-							if (proxy == null)
-							{
-								CreateImpliedFactTypeForRole(model, nestingType, role, objectification);
-							}
-							else
-							{
-								RoleBase oppositeRoleBase;
-								Role oppositeRole;
-								if (null != (oppositeRoleBase = proxy.OppositeRole) &&
-									null != (oppositeRole = oppositeRoleBase as Role) &&
-									(nestingType != oppositeRole.RolePlayer))
-								{
-									// Move an existing proxy fact to the correct nesting type
-									if (!ruleDisabled)
-									{
-										store.RuleManager.DisableRule(typeof(RolePlayerAddRule));
-										ruleDisabled = true;
-									}
-									oppositeRole.RolePlayer = nestingType;
-								}
-							}
-						}
+						// If the fact type should still be explicitly objectified, we
+						// have two choices at this point:
+						// 1) Check the pattern here and throw if it is still needed
+						// 2) Check the pattern later and regenerated the implied objectification
+						// Checking the implicit objectification pattern here is difficult due
+						// to the 'deleting' state, and the exception is not technically necessary
+						// given that the objects being lost are auto-generated in the first place.
+						ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
 					}
-					finally
-					{
-						if (ruleDisabled)
-						{
-							store.RuleManager.EnableRule(typeof(RolePlayerAddRule));
-						}
-					}
+				}
+				if (!(nestingType.IsDeleting || nestingType.IsDeleted))
+				{
+					nestingType.Delete();
 				}
 			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			else
 			{
-				ProcessObjectificationAdded(e.ModelElement as Objectification, null, null);
-			}
-		}
-		#endregion // ObjectificationAddRule class
-		#region ObjectificationDeleteRule class
-		/// <summary>
-		/// Remove the implied objectifying ObjectType when Objectification is removed.
-		/// </summary>
-		[RuleOn(typeof(Objectification))] // DeletingRule
-		private sealed partial class ObjectificationDeletingRule : DeletingRule
-		{
-			/// <summary>
-			/// Remove the implied objectifying ObjectType when Objectification is removed
-			/// and delay validated the previously nested fact type.
-			/// </summary>
-			/// <param name="objectification">The objectification relationship to process</param>
-			/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
-			/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
-			public static void ProcessObjectificationDeleting(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
-			{
-				if (nestingType == null)
+				if (nestedFactType == null)
 				{
-					nestingType = objectification.NestingType;
+					nestedFactType = objectification.NestedFactType;
 				}
-				if (objectification.IsImplied)
+				// Treat an objectification relationship as a two way
+				// delete propagation relationship if either end is deleted. This
+				// allows us to treat the two objects as one except when they are
+				// explicitly disconnected.
+				if (nestedFactType.IsDeleting || nestedFactType.IsDeleted)
 				{
-					if (nestedFactType == null)
-					{
-						nestedFactType = objectification.NestedFactType;
-					}
-					if (nestingType.IsDeleting)
-					{
-						if (!(nestedFactType.IsDeleting || nestedFactType.IsDeleted))
-						{
-							// If the fact type should still be explicitly objectified, we
-							// have two choices at this point:
-							// 1) Check the pattern here and throw if it is still needed
-							// 2) Check the pattern later and regenerated the implied objectification
-							// Checking the implicit objectification pattern here is difficult due
-							// to the 'deleting' state, and the exception is not technically necessary
-							// given that the objects being lost are auto-generated in the first place.
-							ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
-						}
-					}
 					if (!(nestingType.IsDeleting || nestingType.IsDeleted))
 					{
 						nestingType.Delete();
 					}
 				}
-				else
+				else if (nestingType.IsDeleting || nestingType.IsDeleted)
 				{
-					if (nestedFactType == null)
+					if (!(nestedFactType.IsDeleting || nestedFactType.IsDeleted))
 					{
-						nestedFactType = objectification.NestedFactType;
-					}
-					// Treat an objectification relationship as a two way
-					// delete propagation relationship if either end is deleted. This
-					// allows us to treat the two objects as one except when they are
-					// explicitly disconnected.
-					if (nestedFactType.IsDeleting || nestedFactType.IsDeleted)
-					{
-						if (!(nestingType.IsDeleting || nestingType.IsDeleted))
-						{
-							nestingType.Delete();
-						}
-					}
-					else if (nestingType.IsDeleting || nestingType.IsDeleted)
-					{
-						if (!(nestedFactType.IsDeleting || nestedFactType.IsDeleted))
-						{
-							nestedFactType.Delete();
-						}
-					}
-					else
-					{
-						ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
+						nestedFactType.Delete();
 					}
 				}
-			}
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ProcessObjectificationDeleting(e.ModelElement as Objectification, null, null);
+				else
+				{
+					ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
+				}
 			}
 		}
-		#endregion // ObjectificationDeletingRule class
-		#region ObjectificationRolePlayerChangeRule class
+		#endregion // ObjectificationDeletingRule
+		#region ObjectificationRolePlayerChangeRule
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(Objectification)
 		/// Process Objectification role player changes
 		/// </summary>
-		[RuleOn(typeof(Objectification))] // RolePlayerChangeRule
-		private sealed partial class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
+		private static void ObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			Objectification link = e.ElementLink as Objectification;
+			if (link.IsDeleted)
 			{
-				Objectification link = e.ElementLink as Objectification;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				Guid changedRoleGuid = e.DomainRole.Id;
-				ObjectType oldObjectType = null;
-				FactType oldFactType = null;
-				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
-				{
-					oldObjectType = (ObjectType)e.OldRolePlayer;
-				}
-				else
-				{
-					oldFactType = (FactType)e.OldRolePlayer;
-				}
-				RuleManager ruleManager = link.Store.RuleManager;
-				try
-				{
-					ruleManager.DisableRule(typeof(RoleDeletingRule));
-					link.ImpliedFactTypeCollection.Clear();
-				}
-				finally
-				{
-					ruleManager.EnableRule(typeof(RoleDeletingRule));
-				}
-				ObjectificationDeletingRule.ProcessObjectificationDeleting(link, oldFactType, oldObjectType);
-				ObjectificationAddRule.ProcessObjectificationAdded(link, null, null);
+				return;
 			}
+			Guid changedRoleGuid = e.DomainRole.Id;
+			ObjectType oldObjectType = null;
+			FactType oldFactType = null;
+			if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
+			{
+				oldObjectType = (ObjectType)e.OldRolePlayer;
+			}
+			else
+			{
+				oldFactType = (FactType)e.OldRolePlayer;
+			}
+			RuleManager ruleManager = link.Store.RuleManager;
+			try
+			{
+				ruleManager.DisableRule(typeof(RoleDeletingRuleClass));
+				link.ImpliedFactTypeCollection.Clear();
+			}
+			finally
+			{
+				ruleManager.EnableRule(typeof(RoleDeletingRuleClass));
+			}
+			ProcessObjectificationDeleting(link, oldFactType, oldObjectType);
+			ProcessObjectificationAdded(link, null, null);
 		}
-		#endregion // ObjectificationRolePlayerChangeRule class
-		#region ImpliedFactTypeAddRule class
+		#endregion // ObjectificationRolePlayerChangeRule
+		#region ImpliedFactTypeAddRule
 		/// <summary>
-		/// Rule class to block objectification of implied facts
+		/// AddRule: typeof(ObjectificationImpliesFactType)
+		/// Rule to block objectification of implied facts
 		/// </summary>
-		[RuleOn(typeof(ObjectificationImpliesFactType))] // AddRule
-		private sealed partial class ImpliedFactTypeAddRule : AddRule
+		private static void ImpliedFactTypeAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ObjectificationImpliesFactType link = e.ModelElement as ObjectificationImpliesFactType;
+			if (link.ImpliedFactType.Objectification != null)
 			{
-				ObjectificationImpliesFactType link = e.ModelElement as ObjectificationImpliesFactType;
-				if (link.ImpliedFactType.Objectification != null)
-				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
-				}
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
 			}
 		}
-		#endregion // ImpliedFactTypeAddRule class
-		#region RoleAddRule class
+		#endregion // ImpliedFactTypeAddRule
+		#region RoleAddRule
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// AddRule: typeof(FactSetConstraint)
 		/// Synchronize implied fact types when a role is added
-		/// to the nested type.
+		/// to the nested fact type or an attached constraint.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole)), RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed partial class RoleAddRule : AddRule
+		private static void RoleAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelElement element = e.ModelElement;
+			ConstraintRoleSequenceHasRole sequenceRoleLink;
+			FactSetConstraint internalConstraintLink;
+			FactType fact;
+			Objectification objectificationLink;
+			bool disallowed = false;
+			if (null != (sequenceRoleLink = element as ConstraintRoleSequenceHasRole))
 			{
-				ModelElement element = e.ModelElement;
-				ConstraintRoleSequenceHasRole sequenceRoleLink;
-				FactSetConstraint internalConstraintLink;
-				FactType fact;
-				Objectification objectificationLink;
-				bool disallowed = false;
-				if (null != (sequenceRoleLink = element as ConstraintRoleSequenceHasRole))
+				ConstraintRoleSequence modifiedSequence = sequenceRoleLink.ConstraintRoleSequence;
+				IConstraint constraint = modifiedSequence.Constraint;
+				if (constraint != null)
 				{
-					ConstraintRoleSequence modifiedSequence = sequenceRoleLink.ConstraintRoleSequence;
-					IConstraint constraint = modifiedSequence.Constraint;
-					if (constraint != null)
+					ConstraintType constraintType = constraint.ConstraintType;
+					switch (constraintType)
 					{
-						ConstraintType constraintType = constraint.ConstraintType;
-						switch (constraintType)
-						{
-							case ConstraintType.SimpleMandatory:
-							case ConstraintType.InternalUniqueness:
-								// Do not allow direct modification. This rule is disabled
-								// when constraints on existing fact types are modified
-								LinkedElementCollection<FactType> facts = (constraint as SetConstraint).FactTypeCollection;
-								if (facts.Count == 1)
+						case ConstraintType.SimpleMandatory:
+						case ConstraintType.InternalUniqueness:
+							// Do not allow direct modification. This rule is disabled
+							// when constraints on existing fact types are modified
+							LinkedElementCollection<FactType> facts = (constraint as SetConstraint).FactTypeCollection;
+							if (facts.Count == 1)
+							{
+								fact = facts[0];
+								if (null != fact.ImpliedByObjectification)
 								{
-									fact = facts[0];
-									if (null != fact.ImpliedByObjectification)
-									{
-										disallowed = true; // We don't trigger adds when this rule is active
-									}
+									disallowed = true; // We don't trigger adds when this rule is active
 								}
-								break;
-						}
+							}
+							break;
 					}
-				}
-				else if (null != (internalConstraintLink = element as FactSetConstraint))
-				{
-					if (internalConstraintLink.SetConstraint.Constraint.ConstraintIsInternal)
-					{
-						disallowed = null != internalConstraintLink.FactType.ImpliedByObjectification;
-					}
-				}
-				else
-				{
-					FactTypeHasRole factRoleLink = element as FactTypeHasRole;
-					fact = factRoleLink.FactType;
-					if (null != (objectificationLink = fact.ImpliedByObjectification))
-					{
-						// Our code only adds these before linking the implied objectification,
-						// so we always throw at this point
-						disallowed = true;
-					}
-					else if (null != (objectificationLink = fact.Objectification))
-					{
-						ObjectType nestingType = objectificationLink.NestingType;
-						Role nestedRole = factRoleLink.Role.Role;
-
-						// Create and populate new fact type
-						if (nestedRole.Proxy == null)
-						{
-							CreateImpliedFactTypeForRole(nestingType.Model, nestingType, nestedRole, objectificationLink);
-						}
-					}
-				}
-
-				// Throw if the modification was disallowed by the objectification pattern
-				if (disallowed)
-				{
-					throw BlockedByObjectificationPatternException();
 				}
 			}
+			else if (null != (internalConstraintLink = element as FactSetConstraint))
+			{
+				if (internalConstraintLink.SetConstraint.Constraint.ConstraintIsInternal)
+				{
+					disallowed = null != internalConstraintLink.FactType.ImpliedByObjectification;
+				}
+			}
+			else
+			{
+				FactTypeHasRole factRoleLink = element as FactTypeHasRole;
+				fact = factRoleLink.FactType;
+				if (null != (objectificationLink = fact.ImpliedByObjectification))
+				{
+					// Our code only adds these before linking the implied objectification,
+					// so we always throw at this point
+					disallowed = true;
+				}
+				else if (null != (objectificationLink = fact.Objectification))
+				{
+					ObjectType nestingType = objectificationLink.NestingType;
+					Role nestedRole = factRoleLink.Role.Role;
+
+					// Create and populate new fact type
+					if (nestedRole.Proxy == null)
+					{
+						CreateImpliedFactTypeForRole(nestingType.Model, nestingType, nestedRole, objectificationLink);
+					}
+				}
+			}
+
+			// Throw if the modification was disallowed by the objectification pattern
+			if (disallowed)
+			{
+				throw BlockedByObjectificationPatternException();
+			}
 		}
-		#endregion // RoleAddRule class
-		#region RoleDeletingRule class
-		/// <summary>
-		/// Synchronize implied fact types when a role is removed from
-		/// the nested type.
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed partial class RoleDeletingRule : DeletingRule
+		#endregion // RoleAddRule
+		#region RoleDeletingRule
+		partial class RoleDeletingRuleClass
 		{
 			private bool myAllowModification;
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			/// <summary>
+			/// DeletingRule: typeof(FactTypeHasRole)
+			/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
+			/// Synchronize implied fact types when a role is removed from
+			/// the nested type.
+			/// </summary>
+			private void RoleDeletingRule(ElementDeletingEventArgs e)
 			{
 				ModelElement element = e.ModelElement;
 				ConstraintRoleSequenceHasRole sequenceRoleLink;
@@ -681,7 +635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactTypeHasRole factRoleLink = element as FactTypeHasRole;
 					fact = factRoleLink.FactType;
 					if (null != (objectificationLink = fact.ImpliedByObjectification))
-					{ 
+					{
 						// Our code only adds these before linking the implied objectification,
 						// so we always throw at this point
 						if (!myAllowModification && !objectificationLink.IsDeleting)
@@ -726,87 +680,78 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RoleDeletingRule class
-		#region RolePlayerAddRule class
+		#endregion // RoleDeletingRule
+		#region RolePlayerAddRule
 		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
 		/// Synchronize implied fact types when a role player is
 		/// set on an objectified role
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class RolePlayerAddRule : AddRule
+		private static void RolePlayerAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRole;
+			FactType fact = role.FactType;
+			if (fact != null)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
-				FactType fact = role.FactType;
-				if (fact != null)
+				if (null != fact.ImpliedByObjectification)
 				{
-					if (null != fact.ImpliedByObjectification)
+					throw BlockedByObjectificationPatternException();
+				}
+			}
+		}
+		#endregion // RolePlayerAddRule
+		#region RolePlayerDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ObjectTypePlaysRole)
+		/// Synchronize implied fact types when a role player is
+		/// being removed from an objectified role
+		/// </summary>
+		private static void RolePlayerDeletingRule(ElementDeletingEventArgs e)
+		{
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRole;
+			ObjectType rolePlayer = link.RolePlayer;
+			FactType fact = role.FactType;
+			// Note if the roleplayer is removed, then the links all go away
+			// automatically. There is no additional work to do or checks to make.
+			if (!(rolePlayer.IsDeleted || rolePlayer.IsDeleting) &&
+				(null != (fact = role.FactType)))
+			{
+				Objectification objectificationLink;
+				if (null != (objectificationLink = fact.ImpliedByObjectification))
+				{
+					if (!(objectificationLink.IsDeleting || role.IsDeleting))
 					{
 						throw BlockedByObjectificationPatternException();
 					}
 				}
 			}
 		}
-		#endregion // RolePlayerAddRule class
-		#region RolePlayerDeletingRule class
+		#endregion // RolePlayerDeletingRule
+		#region InternalConstraintChangeRule
 		/// <summary>
-		/// Synchronize implied fact types when a role player is
-		/// being removed from an objectified role
-		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
-		private sealed partial class RolePlayerDeletingRule : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
-				ObjectType rolePlayer = link.RolePlayer;
-				FactType fact = role.FactType;
-				// Note if the roleplayer is removed, then the links all go away
-				// automatically. There is no additional work to do or checks to make.
-				if (!(rolePlayer.IsDeleted || rolePlayer.IsDeleting) &&
-					(null != (fact = role.FactType)))
-				{
-					Objectification objectificationLink;
-					if (null != (objectificationLink = fact.ImpliedByObjectification))
-					{
-						if (!(objectificationLink.IsDeleting || role.IsDeleting))
-						{
-							throw BlockedByObjectificationPatternException();
-						}
-					}
-				}
-			}
-		}
-		#endregion // RolePlayerDeletingRule class
-		#region InternalConstraintChangeRule class
-		/// <summary>
+		/// ChangeRule: typeof(SetConstraint)
 		/// Ensure that implied internal constraints cannot change the Modality property
 		/// </summary>
-		[RuleOn(typeof(SetConstraint))] // ChangeRule
-		private sealed partial class InternalConstraintChangeRule : ChangeRule
+		private static void InternalConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == SetConstraint.ModalityDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == SetConstraint.ModalityDomainPropertyId)
+				SetConstraint constraint = e.ModelElement as SetConstraint;
+				if (constraint.Constraint.ConstraintIsInternal)
 				{
-					SetConstraint constraint = e.ModelElement as SetConstraint;
-					if (constraint.Constraint.ConstraintIsInternal)
+					LinkedElementCollection<FactType> facts;
+					if (1 == (facts = constraint.FactTypeCollection).Count &&
+						facts[0].ImpliedByObjectification != null)
 					{
-						LinkedElementCollection<FactType> facts;
-						if (1 == (facts = constraint.FactTypeCollection).Count &&
-							facts[0].ImpliedByObjectification != null)
-						{
-							throw BlockedByObjectificationPatternException();
-						}
+						throw BlockedByObjectificationPatternException();
 					}
 				}
 			}
 		}
-		#endregion // InternalConstraintChangeRule class
+		#endregion // InternalConstraintChangeRule
 		#endregion // Objectification implied facts and constraints pattern enforcement
 		#region Helper functions
 		/// <summary>
@@ -1164,9 +1109,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					bool removingRuleDisabled = false;
 					try
 					{
-						ruleManager.DisableRule(typeof(RolePlayerAddRule));
+						ruleManager.DisableRule(typeof(RolePlayerAddRuleClass));
 						addRuleDisabled = true;
-						ruleManager.DisableRule(typeof(RolePlayerDeletingRule));
+						ruleManager.DisableRule(typeof(RolePlayerDeletingRuleClass));
 						removingRuleDisabled = true;
 						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
 						{
@@ -1186,11 +1131,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (addRuleDisabled)
 						{
-							ruleManager.EnableRule(typeof(RolePlayerAddRule));
+							ruleManager.EnableRule(typeof(RolePlayerAddRuleClass));
 						}
 						if (removingRuleDisabled)
 						{
-							ruleManager.EnableRule(typeof(RolePlayerDeletingRule));
+							ruleManager.EnableRule(typeof(RolePlayerDeletingRuleClass));
 						}
 					}
 					objectification.IsImplied = false;

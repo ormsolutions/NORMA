@@ -955,271 +955,256 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Subtype and Supertype routines
-		#region ObjectTypeChangeRule class
-
+		#region ObjectTypeChangeRule
 		/// <summary>
+		/// ChangeRule: typeof(ObjectType)
 		/// Enforces Change Rules
+		/// Add or remove a ValueTypeHasDataType link depending on the value
+		/// of the IsValueType property.
 		/// </summary>
-		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed partial class ObjectTypeChangeRule : ChangeRule
+		private static void ObjectTypeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Add or remove a ValueTypeHasDataType link depending on the value
-			/// of the IsValueType property.
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			ObjectType objectType = e.ModelElement as ObjectType;
+			if (objectType.IsImplicitBooleanValue && e.ChangeSource != ChangeSource.Rule)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				ObjectType objectType = e.ModelElement as ObjectType;
-				if (objectType.IsImplicitBooleanValue && e.ChangeSource != ChangeSource.Rule)
-				{
-					// UNDONE: This should only allow rules from our domain model.
-					// We also allow rules from any other domain model with the current ChangeSource check
-					throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypeRestriction);
-				}
-				else if (attributeGuid == ObjectType.IsValueTypeDomainPropertyId)
-				{
-					bool newValue = (bool)e.NewValue;
-					DataType dataType = null;
-					if (newValue)
-					{
-						dataType = objectType.Model.DefaultDataType;
-					}
-					objectType.DataType = dataType;
-				}
-				else if (attributeGuid == ObjectType.ScaleDomainPropertyId)
-				{
-					ValueTypeHasDataType link = objectType.GetDataTypeLink();
-					// No effect for non-value types
-					if (link != null)
-					{
-						link.Scale = (int)e.NewValue;
-					}
-					else
-					{
-						if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
-							(null != (link = objectType.GetDataTypeLink()))))
-						{
-							link.Scale = (int)e.NewValue;
-						}
-					}
-				}
-				else if (attributeGuid == ObjectType.DataTypeDisplayDomainPropertyId)
-				{
-					//If this objectype has a reference mode, return the datatype corresponding
-					//to the ref mode's datatype.
-					ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
-					if (refModeRolePlayer != null)
-					{
-						objectType = refModeRolePlayer;
-					}
-					objectType.DataType = e.NewValue as DataType;
-				}
-				else if (attributeGuid == ObjectType.LengthDomainPropertyId)
-				{
-					ValueTypeHasDataType link = objectType.GetDataTypeLink();
-					// No effect for non-value types
-					if (link != null)
-					{
-						link.Length = (int)e.NewValue;
-					}
-					else
-					{
-						if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
-							(null != (link = objectType.GetDataTypeLink()))))
-						{
-							link.Length = (int)e.NewValue;
-						}
-					}
-				}
-				else if (attributeGuid == ObjectType.NameDomainPropertyId)
-				{
-					UniquenessConstraint prefConstraint = objectType.PreferredIdentifier;
-
-					if (prefConstraint != null && prefConstraint.IsInternal)
-					{
-						string newValue = (string)e.NewValue;
-						string oldValue = (string)e.OldValue;
-						string oldReferenceModeName = string.Empty;
-
-						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
-
-						if (referenceMode != null)
-						{
-							string name = newValue;
-							oldReferenceModeName = referenceMode.Name;
-							name = referenceMode.GenerateValueTypeName(name);
-
-							if (name != oldReferenceModeName)
-							{
-								objectType.RenameReferenceMode(name);
-							}
-						}
-					}
-				}
-				else if (attributeGuid == ObjectType.ReferenceModeDisplayDomainPropertyId)
-				{
-					SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string, true);
-				}
-				else if (attributeGuid == ObjectType.ReferenceModeStringDomainPropertyId)
-				{
-					string newName = (string)e.NewValue;
-
-					// Find the unique reference mode for this object type and reference mode string
-					IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newName, objectType.Model);
-					ReferenceMode singleMode = null;
-					int modeCount = referenceModes.Count;
-					if (modeCount == 1)
-					{
-						singleMode = referenceModes[0];
-						newName = null;
-					}
-					else if (modeCount > 1)
-					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
-					}
-					SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string, false);
-				}
-				else if (attributeGuid == ObjectType.ReferenceModeDomainPropertyId)
-				{
-					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null, false);
-				}
-				else if (attributeGuid == ObjectType.ValueRangeTextDomainPropertyId)
-				{
-					ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
-					valueConstraint.Text = (string)e.NewValue;
-				}
-				else if (attributeGuid == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
-				{
-					ValueTypeValueConstraint valueConstraint = objectType.FindValueTypeValueConstraint(true);
-					if (valueConstraint != null)
-					{
-						valueConstraint.Text = (string)e.NewValue;
-					}
-				}
-				else if (attributeGuid == ObjectType.NoteTextDomainPropertyId)
-				{
-					// cache the text.
-					string newText = (string)e.NewValue;
-					// Get the note if it exists
-					Note note = objectType.Note;
-					if (note != null)
-					{
-						// and try to set the text to the cached value.
-						note.Text = newText;
-					}
-					else if (!string.IsNullOrEmpty(newText))
-					{
-						// Otherwise, create the note and set the text,
-						note = new Note(objectType.Store);
-						note.Text = newText;
-						// then attach the note to the RootType.
-						objectType.Note = note;
-					}
-				}
-				else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
-				{
-					if ((bool)e.NewValue)
-					{
-						(e.ModelElement as ObjectType).AllowIsIndependent(true);
-					}
-				}
-				else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId && e.ChangeSource != ChangeSource.Rule)
-				{
-					throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypePropertyRestriction);
-				}
+				// UNDONE: This should only allow rules from our domain model.
+				// We also allow rules from any other domain model with the current ChangeSource check
+				throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypeRestriction);
 			}
-			/// <summary>
-			/// Determines if the value type associated with the reference mode pattern needs to be 
-			/// removed, renamed, or created based on the new and old values of the property.
-			/// Value Type modifications won't be seen unless the object type is viewed in expanded mode.
-			/// </summary>
-			/// <param name="objectType">the selected object</param>
-			/// <param name="newMode">The new reference mode</param>
-			/// <param name="oldMode">The old reference mode</param>
-			/// <param name="newModeName">The new reference mode name</param>
-			/// <param name="oldModeName">The old reference mode name</param>
-			/// <param name="forceAggressivelyKillValueType">Aggressively remove an associated value type. If this is false, then
-			/// it checks for the DeleteReferenceModeValueType key in the store context.</param>
-			private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName, bool forceAggressivelyKillValueType)
+			else if (attributeGuid == ObjectType.IsValueTypeDomainPropertyId)
 			{
-				bool aggressivelyKillValueType = forceAggressivelyKillValueType ?
-					true :
-					objectType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
-				string newValue = newModeName ?? string.Empty;
-				string oldValue = oldModeName ?? string.Empty;
-
-				string name = newValue;
-				if (newMode != null)
+				bool newValue = (bool)e.NewValue;
+				DataType dataType = null;
+				if (newValue)
 				{
-					if (name.Length == 0)
-					{
-						name = newMode.Name;
-					}
-					name = newMode.GenerateValueTypeName(objectType.Name);
-					newValue = newMode.Name;
-					if (oldMode != null)
-					{
-						oldValue = oldMode.Name;
-					}
+					dataType = objectType.Model.DefaultDataType;
 				}
-				bool haveNew = newMode != null || newValue.Length != 0;
-				bool hadOld = oldMode != null || oldValue.Length != 0;
-				if (hadOld)
+				objectType.DataType = dataType;
+			}
+			else if (attributeGuid == ObjectType.ScaleDomainPropertyId)
+			{
+				ValueTypeHasDataType link = objectType.GetDataTypeLink();
+				// No effect for non-value types
+				if (link != null)
 				{
-					if (haveNew)
-					{
-						objectType.RenameReferenceMode(name);
-					}
-					else
-					{
-						objectType.KillReferenceMode(aggressivelyKillValueType);
-					}
+					link.Scale = (int)e.NewValue;
 				}
 				else
 				{
-					Debug.Assert(haveNew);
-					objectType.CreateReferenceMode(name);
-				}
-				if (newMode != null)
-				{
-					//Now, set the dataType
-					DataType dataType = null;
-					ORMModel ormModel = objectType.Model;
-					dataType = ormModel.GetPortableDataType(newMode.Type);
-					//Change the objectType to the ref mode's preferred valueType and set the
-					//dataType on that objectType.
-					//Unless things change and the refMode can be set on objects without a preferred constraint,
-					//the objectType will always be changed.
-					ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
-					if (refModeRolePlayer != null)
+					if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
+						(null != (link = objectType.GetDataTypeLink()))))
 					{
-						refModeRolePlayer.DataType = dataType;
+						link.Scale = (int)e.NewValue;
 					}
 				}
 			}
-		}
-		#endregion // ObjectTypeChangeRule class
-		#region ObjectTypeDeleteRule class
-
-		/// <summary>
-		/// Enforces Delete Rules
-		/// </summary>
-		[RuleOn(typeof(ObjectType))] // DeletingRule
-		private sealed partial class ObjectTypeDeleteRule : DeletingRule
-		{
-			/// <summary>
-			/// Executes when an object is removing
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			else if (attributeGuid == ObjectType.DataTypeDisplayDomainPropertyId)
 			{
-				ObjectType objectType = (ObjectType)e.ModelElement;
-				objectType.ReferenceModeDisplay = string.Empty;
+				//If this objectype has a reference mode, return the datatype corresponding
+				//to the ref mode's datatype.
+				ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
+				if (refModeRolePlayer != null)
+				{
+					objectType = refModeRolePlayer;
+				}
+				objectType.DataType = e.NewValue as DataType;
+			}
+			else if (attributeGuid == ObjectType.LengthDomainPropertyId)
+			{
+				ValueTypeHasDataType link = objectType.GetDataTypeLink();
+				// No effect for non-value types
+				if (link != null)
+				{
+					link.Length = (int)e.NewValue;
+				}
+				else
+				{
+					if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
+						(null != (link = objectType.GetDataTypeLink()))))
+					{
+						link.Length = (int)e.NewValue;
+					}
+				}
+			}
+			else if (attributeGuid == ObjectType.NameDomainPropertyId)
+			{
+				UniquenessConstraint prefConstraint = objectType.PreferredIdentifier;
+
+				if (prefConstraint != null && prefConstraint.IsInternal)
+				{
+					string newValue = (string)e.NewValue;
+					string oldValue = (string)e.OldValue;
+					string oldReferenceModeName = string.Empty;
+
+					ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
+
+					if (referenceMode != null)
+					{
+						string name = newValue;
+						oldReferenceModeName = referenceMode.Name;
+						name = referenceMode.GenerateValueTypeName(name);
+
+						if (name != oldReferenceModeName)
+						{
+							objectType.RenameReferenceMode(name);
+						}
+					}
+				}
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeDisplayDomainPropertyId)
+			{
+				SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string, true);
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeStringDomainPropertyId)
+			{
+				string newName = (string)e.NewValue;
+
+				// Find the unique reference mode for this object type and reference mode string
+				IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newName, objectType.Model);
+				ReferenceMode singleMode = null;
+				int modeCount = referenceModes.Count;
+				if (modeCount == 1)
+				{
+					singleMode = referenceModes[0];
+					newName = null;
+				}
+				else if (modeCount > 1)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
+				}
+				SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string, false);
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeDomainPropertyId)
+			{
+				SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null, false);
+			}
+			else if (attributeGuid == ObjectType.ValueRangeTextDomainPropertyId)
+			{
+				ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
+				valueConstraint.Text = (string)e.NewValue;
+			}
+			else if (attributeGuid == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
+			{
+				ValueTypeValueConstraint valueConstraint = objectType.FindValueTypeValueConstraint(true);
+				if (valueConstraint != null)
+				{
+					valueConstraint.Text = (string)e.NewValue;
+				}
+			}
+			else if (attributeGuid == ObjectType.NoteTextDomainPropertyId)
+			{
+				// cache the text.
+				string newText = (string)e.NewValue;
+				// Get the note if it exists
+				Note note = objectType.Note;
+				if (note != null)
+				{
+					// and try to set the text to the cached value.
+					note.Text = newText;
+				}
+				else if (!string.IsNullOrEmpty(newText))
+				{
+					// Otherwise, create the note and set the text,
+					note = new Note(objectType.Store);
+					note.Text = newText;
+					// then attach the note to the RootType.
+					objectType.Note = note;
+				}
+			}
+			else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
+			{
+				if ((bool)e.NewValue)
+				{
+					(e.ModelElement as ObjectType).AllowIsIndependent(true);
+				}
+			}
+			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId && e.ChangeSource != ChangeSource.Rule)
+			{
+				throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypePropertyRestriction);
 			}
 		}
-		#endregion //ObjectTypeDeleteRule class
+		/// <summary>
+		/// Determines if the value type associated with the reference mode pattern needs to be 
+		/// removed, renamed, or created based on the new and old values of the property.
+		/// Value Type modifications won't be seen unless the object type is viewed in expanded mode.
+		/// </summary>
+		/// <param name="objectType">the selected object</param>
+		/// <param name="newMode">The new reference mode</param>
+		/// <param name="oldMode">The old reference mode</param>
+		/// <param name="newModeName">The new reference mode name</param>
+		/// <param name="oldModeName">The old reference mode name</param>
+		/// <param name="forceAggressivelyKillValueType">Aggressively remove an associated value type. If this is false, then
+		/// it checks for the DeleteReferenceModeValueType key in the store context.</param>
+		private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName, bool forceAggressivelyKillValueType)
+		{
+			bool aggressivelyKillValueType = forceAggressivelyKillValueType ?
+				true :
+				objectType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
+			string newValue = newModeName ?? string.Empty;
+			string oldValue = oldModeName ?? string.Empty;
+
+			string name = newValue;
+			if (newMode != null)
+			{
+				if (name.Length == 0)
+				{
+					name = newMode.Name;
+				}
+				name = newMode.GenerateValueTypeName(objectType.Name);
+				newValue = newMode.Name;
+				if (oldMode != null)
+				{
+					oldValue = oldMode.Name;
+				}
+			}
+			bool haveNew = newMode != null || newValue.Length != 0;
+			bool hadOld = oldMode != null || oldValue.Length != 0;
+			if (hadOld)
+			{
+				if (haveNew)
+				{
+					objectType.RenameReferenceMode(name);
+				}
+				else
+				{
+					objectType.KillReferenceMode(aggressivelyKillValueType);
+				}
+			}
+			else
+			{
+				Debug.Assert(haveNew);
+				objectType.CreateReferenceMode(name);
+			}
+			if (newMode != null)
+			{
+				//Now, set the dataType
+				DataType dataType = null;
+				ORMModel ormModel = objectType.Model;
+				dataType = ormModel.GetPortableDataType(newMode.Type);
+				//Change the objectType to the ref mode's preferred valueType and set the
+				//dataType on that objectType.
+				//Unless things change and the refMode can be set on objects without a preferred constraint,
+				//the objectType will always be changed.
+				ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
+				if (refModeRolePlayer != null)
+				{
+					refModeRolePlayer.DataType = dataType;
+				}
+			}
+		}
+		#endregion // ObjectTypeChangeRule
+		#region ObjectTypeDeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ObjectType)
+		/// Enforces Deleting Rules
+		/// </summary>
+		private static void ObjectTypeDeletingRule(ElementDeletingEventArgs e)
+		{
+			ObjectType objectType = (ObjectType)e.ModelElement;
+			objectType.ReferenceModeDisplay = string.Empty;
+		}
+		#endregion //ObjectTypeDeletingRule
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
@@ -1291,26 +1276,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // INamedElementDictionaryParent implementation
 		#region IsIndependent Validation
 		/// <summary>
+		/// ChangeRule: typeof(MandatoryConstraint)
 		/// Verify IsIndependent settings on attached objects when modality changes
 		/// </summary>
-		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
-		private sealed partial class MandatoryModalityChangeRule : ChangeRule
+		private static void MandatoryModalityChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			// Make sure that we retest IsIndependent settings
+			if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId &&
+				((ConstraintModality)e.NewValue) == ConstraintModality.Alethic)
 			{
-				// Make sure that we retest IsIndependent settings
-				if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId &&
-					((ConstraintModality)e.NewValue) == ConstraintModality.Alethic)
+				LinkedElementCollection<Role> roles = ((MandatoryConstraint)e.ModelElement).RoleCollection;
+				int roleCount = roles.Count;
+				for (int i = 0; i < roleCount; ++i)
 				{
-					LinkedElementCollection<Role> roles = ((MandatoryConstraint)e.ModelElement).RoleCollection;
-					int roleCount = roles.Count;
-					for (int i = 0; i < roleCount; ++i)
+					ObjectType objectType;
+					if (null != (objectType = roles[i].RolePlayer))
 					{
-						ObjectType objectType;
-						if (null != (objectType = roles[i].RolePlayer))
-						{
-							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-						}
+						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 					}
 				}
 			}
@@ -1658,37 +1640,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// A class to add unspecified data type errors
+		/// AddRule: typeof(ValueTypeHasDataType)
+		/// Test if an added data type relationship points to
+		/// an unspecified type
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
-		private sealed partial class UnspecifiedDataTypeAddRule : AddRule
+		private static void UnspecifiedDataTypeAddRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Test if an added data type relationship points to
-			/// an unspecified type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
-			}
+			ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
 		}
-		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
-		private sealed partial class UnspecifiedDataRoleRolePlayerChangeRule : RolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void UnspecifiedDataTypeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			Guid changedRoleGuid = e.DomainRole.Id;
+			// If the data type changed, then validate the object type.
+			// If the object type changed, then validate both object types.
+			if (changedRoleGuid == ValueTypeHasDataType.DataTypeDomainRoleId)
 			{
-				Guid changedRoleGuid = e.DomainRole.Id;
-				// If the data type changed, then validate the object type.
-				// If the object type changed, then validate both object types.
-				if (changedRoleGuid == ValueTypeHasDataType.DataTypeDomainRoleId)
-				{
-					ORMCoreDomainModel.DelayValidateElement((e.ElementLink as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
-				}
-				else
-				{
-					ORMCoreDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateDataTypeNotSpecifiedError);
-					ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDataTypeNotSpecifiedError);
-				}
+				ORMCoreDomainModel.DelayValidateElement((e.ElementLink as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
+			}
+			else
+			{
+				ORMCoreDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateDataTypeNotSpecifiedError);
+				ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDataTypeNotSpecifiedError);
 			}
 		}
 		#endregion // DataTypeNotSpecifiedError retrieval and validation
@@ -2100,224 +2075,212 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // CompatibleSupertypesError Validation
 		#region EntityTypeRequiresReferenceSchemeError Rules
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
-		private sealed partial class VerifyReferenceSchemeAddRule : AddRule
+		/// <summary>
+		/// AddRule: typeof(EntityTypeHasPreferredIdentifier)
+		/// </summary>
+		private static void VerifyReferenceSchemeAddRule(ElementAddedEventArgs e)
 		{
-			public static void Process(EntityTypeHasPreferredIdentifier link)
+			ProcessVerifyReferenceSchemeAdd(e.ModelElement as EntityTypeHasPreferredIdentifier);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessVerifyReferenceSchemeAdd(EntityTypeHasPreferredIdentifier link)
+		{
+			ObjectType objectType = link.PreferredIdentifierFor;
+			ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+			if (!link.PreferredIdentifier.IsInternal)
 			{
-				ObjectType objectType = link.PreferredIdentifierFor;
+				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(EntityTypeHasPreferredIdentifier)
+		/// </summary>
+		private static void VerifyReferenceSchemeDeleteRule(ElementDeletedEventArgs e)
+		{
+			ProcessVerifyReferenceSchemeDelete(e.ModelElement as EntityTypeHasPreferredIdentifier, null, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessVerifyReferenceSchemeDelete(EntityTypeHasPreferredIdentifier link, ObjectType objectType, UniquenessConstraint preferredIdentifier)
+		{
+			if (objectType == null)
+			{
+				objectType = link.PreferredIdentifierFor;
+			}
+			if (!objectType.IsDeleted)
+			{
 				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-				if (!link.PreferredIdentifier.IsInternal)
+				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+				if (preferredIdentifier == null)
+				{
+					preferredIdentifier = link.PreferredIdentifier;
+				}
+				if (!preferredIdentifier.IsInternal)
 				{
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 				}
 			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as EntityTypeHasPreferredIdentifier);
-			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeleteRule
-		private sealed partial class VerifyReferenceSchemeDeleteRule : DeleteRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
+		/// </summary>
+		private static void VerifyReferenceSchemeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public static void Process(EntityTypeHasPreferredIdentifier link, ObjectType objectType, UniquenessConstraint preferredIdentifier)
+			Guid changedRoleGuid = e.DomainRole.Id;
+			ObjectType oldObjectType = null;
+			UniquenessConstraint oldPreferredIdentifier = null;
+			if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
-				if (objectType == null)
-				{
-					objectType = link.PreferredIdentifierFor;
-				}
-				if (!objectType.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-					if (preferredIdentifier == null)
-					{
-						preferredIdentifier = link.PreferredIdentifier;
-					}
-					if (!preferredIdentifier.IsInternal)
-					{
-						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
-					}
-				}
+				oldObjectType = (ObjectType)e.OldRolePlayer;
 			}
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			else if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
-				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null, null);
+				oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
 			}
+			EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
+			ProcessVerifyReferenceSchemeDelete(link, oldObjectType, oldPreferredIdentifier);
+			ProcessVerifyReferenceSchemeAdd(link);
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
-		private sealed partial class VerifyReferenceSchemeRolePlayerChangeRule : RolePlayerChangeRule
+		/// <summary>
+		/// AddRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void VerifyValueTypeHasDataTypeAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				Guid changedRoleGuid = e.DomainRole.Id;
-				ObjectType oldObjectType = null;
-				UniquenessConstraint oldPreferredIdentifier = null;
-				if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
-				{
-					oldObjectType = (ObjectType)e.OldRolePlayer;
-				}
-				else if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
-				{
-					oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
-				}
-				EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
-				VerifyReferenceSchemeDeleteRule.Process(link, oldObjectType, oldPreferredIdentifier);
-				VerifyReferenceSchemeAddRule.Process(link);
-			}
-		}
-		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
-		private sealed partial class VerifyValueTypeHasDataTypeAddRule : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ORMCoreDomainModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-			}
 		}
-		[RuleOn(typeof(ValueTypeHasDataType))] // DeleteRule
-		private sealed partial class VerifyValueTypeHasDataTypeDeleteRule : DeleteRule
+		/// <summary>
+		/// DeleteRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void VerifyValueTypeHasDataTypeDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ObjectType valueType = (e.ModelElement as ValueTypeHasDataType).ValueType;
+			if (!valueType.IsDeleted)
 			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ORMCoreDomainModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				ORMCoreDomainModel.DelayValidateElement(valueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ModelHasObjectType)
 		/// Calls the validation of all FactType related errors
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType))] // AddRule
-		private sealed partial class ModelHasObjectTypeAddRuleModelValidation : AddRule
+		private static void ObjectTypeAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
+			link.ObjectType.DelayValidateErrors();
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// The reference scheme requirements change when the supertype changes
+		/// </summary>
+		private static void SupertypeAddedRule(ElementAddedEventArgs e)
+		{
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRole;
+			ObjectType rolePlayer = role.RolePlayer;
+			ORMCoreDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
+			if (role is SubtypeMetaRole)
 			{
-				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-				link.ObjectType.DelayValidateErrors();
+				ObjectType objectType = link.RolePlayer;
+				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+				WalkSubtypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+				{
+					ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+					ValidateAttachedConstraintColumnCompatibility(type);
+					return ObjectTypeVisitorResult.Continue;
+				});
+			}
+			else if (role is SupertypeMetaRole)
+			{
+				WalkSupertypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+				{
+					if (depth != 0)
+					{
+						ValidateAttachedConstraintColumnCompatibility(type);
+					}
+					return ObjectTypeVisitorResult.Continue;
+				});
 			}
 		}
 		/// <summary>
-		/// The reference scheme requirements change when the supertype changes
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// The reference scheme requirements change when the supertype is deleted
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class SupertypeAddedRule : AddRule
+		private static void SupertypeDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			ObjectType objectType = link.RolePlayer;
+			if (!objectType.IsDeleted)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
-				ObjectType rolePlayer = role.RolePlayer;
-				ORMCoreDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
-				if (role is SubtypeMetaRole)
+				// IsIndependent pattern incorporates implied mandatories, reverify when a role player is disconnected
+				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+				SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
+				if (role != null)
 				{
-					ObjectType objectType = link.RolePlayer;
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
-					WalkSubtypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
-					{
-						ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
-						ValidateAttachedConstraintColumnCompatibility(type);
-						return ObjectTypeVisitorResult.Continue;
-					});
-				}
-				else if (role is SupertypeMetaRole)
-				{
-					WalkSupertypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
-					{
-						if (depth != 0)
-						{
-							ValidateAttachedConstraintColumnCompatibility(type);
-						}
-						return ObjectTypeVisitorResult.Continue;
-					});
 				}
 			}
 		}
 		/// <summary>
-		/// The reference scheme requirements change when the supertype changes
-		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
-		private sealed partial class SupertypeDeleteRule : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				ObjectType objectType = link.RolePlayer;
-				if (!objectType.IsDeleted)
-				{
-					// IsIndependent pattern incorporates implied mandatories, reverify when a role player is disconnected
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-					SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
-					if (role != null)
-					{
-						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
-					}
-				}
-			}
-		}
-		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
 		/// Verify IsIndependent/ImpliedMandatoryConstraint pattern when a role player changes
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed partial class CheckIsIndependentRolePlayerChangeRule : RolePlayerChangeRule
+		private static void CheckIsIndependentRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			if (link.IsDeleted)
 			{
-				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				Guid changedRoleGuid = e.DomainRole.Id;
-				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
-				{
-					ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
-				}
-				else
-				{
-					ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
-					ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateIsIndependent);
-				}
+				return;
+			}
+			Guid changedRoleGuid = e.DomainRole.Id;
+			if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+			{
+				ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
+			}
+			else
+			{
+				ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
+				ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateIsIndependent);
 			}
 		}
 		/// <summary>
+		/// DeletingRule: typeof(ObjectTypePlaysRole)
 		/// Subtypes need to check super type compatibility when a subtype link is removing
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
-		private sealed partial class SupertypeDeletingRule : DeletingRule
+		private static void SupertypeDeletingRule(ElementDeletingEventArgs e)
 		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRole;
+			if (role is SubtypeMetaRole)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
-				if (role is SubtypeMetaRole)
+				WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 				{
-					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+					ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+					// Keep going while we're here to see if we need to validate compatible role
+					ValidateAttachedConstraintColumnCompatibility(type);
+					return ObjectTypeVisitorResult.Continue;
+				});
+			}
+			else if (role is SupertypeMetaRole)
+			{
+				WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+				{
+					if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
 					{
-						ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
-						// Keep going while we're here to see if we need to validate compatible role
 						ValidateAttachedConstraintColumnCompatibility(type);
-						return ObjectTypeVisitorResult.Continue;
-					});
-				}
-				else if (role is SupertypeMetaRole)
-				{
-					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
-					{
-						if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
-						{
-							ValidateAttachedConstraintColumnCompatibility(type);
-						}
-						return ObjectTypeVisitorResult.Continue;
-					});
-				}
+					}
+					return ObjectTypeVisitorResult.Continue;
+				});
 			}
 		}
 		/// <summary>
 		/// Helper function for SupertypeDeletingRule
 		/// </summary>
-		/// <param name="type"></param>
 		private static void ValidateAttachedConstraintColumnCompatibility(ObjectType type)
 		{
 			LinkedElementCollection<Role> playedRoles = type.PlayedRoleCollection;
@@ -2345,105 +2308,103 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class MandatoryRoleAddedRule : AddRule
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void MandatoryRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			if (sequence is SetComparisonConstraintRoleSequence)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				if (sequence is SetComparisonConstraintRoleSequence)
-				{
-					return;
-				}
-				IConstraint constraint = ((IConstraint)sequence);
-				ConstraintType constraintType = constraint.ConstraintType;
-				switch (constraintType)
-				{
-					case ConstraintType.SimpleMandatory:
-					case ConstraintType.DisjunctiveMandatory:
-						if (constraint.Modality != ConstraintModality.Alethic)
+				return;
+			}
+			IConstraint constraint = ((IConstraint)sequence);
+			ConstraintType constraintType = constraint.ConstraintType;
+			switch (constraintType)
+			{
+				case ConstraintType.SimpleMandatory:
+				case ConstraintType.DisjunctiveMandatory:
+					if (constraint.Modality != ConstraintModality.Alethic)
+					{
+						break;
+					}
+					ObjectType objectType = link.Role.RolePlayer;
+					if (objectType != null)
+					{
+						// We may need to turn off IsIndependent if it is set
+						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+					}
+					LinkedElementCollection<Role> roles = sequence.RoleCollection;
+					int roleCount = roles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Role role = roles[i];
+						UniquenessConstraint pid;
+						if (null != (objectType = role.RolePlayer) &&
+							null != (pid = objectType.PreferredIdentifier) &&
+							!pid.IsInternal &&
+							pid.FactTypeCollection.Contains(role.FactType))
 						{
-							break;
+							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 						}
-						ObjectType objectType = link.Role.RolePlayer;
-						if (objectType != null)
+					}
+					break;
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void MandatoryRoleDeletingRule(ElementDeletingEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			if (sequence is SetComparisonConstraintRoleSequence)
+			{
+				return;
+			}
+			IConstraint constraint = (IConstraint)sequence;
+			ConstraintType constraintType = constraint.ConstraintType;
+			ObjectType objectType;
+			switch (constraintType)
+			{
+				case ConstraintType.SimpleMandatory:
+				case ConstraintType.DisjunctiveMandatory:
+					if (constraint.Modality != ConstraintModality.Alethic)
+					{
+						break;
+					}
+					LinkedElementCollection<Role> roles = sequence.RoleCollection;
+					int roleCount = roles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Role role = roles[i];
+						UniquenessConstraint pid;
+						if (null != (objectType = role.RolePlayer) && !objectType.IsDeleting)
 						{
-							// We may need to turn off IsIndependent if it is set
 							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-						}
-						LinkedElementCollection<Role> roles = sequence.RoleCollection;
-						int roleCount = roles.Count;
-						for (int i = 0; i < roleCount; ++i)
-						{
-							Role role = roles[i];
-							UniquenessConstraint pid;
-							if (null != (objectType = role.RolePlayer) &&
-								null != (pid = objectType.PreferredIdentifier) &&
+							if (null != (pid = objectType.PreferredIdentifier) &&
+								!pid.IsDeleting &&
 								!pid.IsInternal &&
 								pid.FactTypeCollection.Contains(role.FactType))
 							{
 								ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 							}
 						}
+					}
+					break;
+				case ConstraintType.InternalUniqueness:
+					if (constraint.Modality != ConstraintModality.Alethic)
+					{
 						break;
-				}
-			}
-		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed partial class MandatoryRoleDeletingRule : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				if (sequence is SetComparisonConstraintRoleSequence)
-				{
-					return;
-				}
-				IConstraint constraint = (IConstraint)sequence;
-				ConstraintType constraintType = constraint.ConstraintType;
-				ObjectType objectType;
-				switch (constraintType)
-				{
-					case ConstraintType.SimpleMandatory:
-					case ConstraintType.DisjunctiveMandatory:
-						if (constraint.Modality != ConstraintModality.Alethic)
-						{
-							break;
-						}
-						LinkedElementCollection<Role> roles = sequence.RoleCollection;
-						int roleCount = roles.Count;
-						for (int i = 0; i < roleCount; ++i)
-						{
-							Role role = roles[i];
-							UniquenessConstraint pid;
-							if (null != (objectType = role.RolePlayer) && !objectType.IsDeleting)
-							{
-								ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-								if (null != (pid = objectType.PreferredIdentifier) &&
-									!pid.IsDeleting &&
-									!pid.IsInternal &&
-									pid.FactTypeCollection.Contains(role.FactType))
-								{
-									ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
-								}
-							}
-						}
-						break;
-					case ConstraintType.InternalUniqueness:
-						if (constraint.Modality != ConstraintModality.Alethic)
-						{
-							break;
-						}
-						objectType = constraint.PreferredIdentifierFor;
-						if (objectType != null)
-						{
-							// We may need to turn off IsIndependent if it is set
-							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-						}
-						break;
-				}
+					}
+					objectType = constraint.PreferredIdentifierFor;
+					if (objectType != null)
+					{
+						// We may need to turn off IsIndependent if it is set
+						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+					}
+					break;
 			}
 		}
 		#endregion // EntityTypeRequiresReferenceSchemeError Rules
@@ -2452,11 +2413,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a subtypefact is set as primary then clear the primary
 		/// subtype from other facts.
 		/// </summary>
-		[RuleOn(typeof(SubtypeFact))] // ChangeRule
-		private sealed partial class SubtypeFactChangeRule : ChangeRule
+		partial class SubtypeFactChangeRuleClass
 		{
 			private bool myIgnoreRule;
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			/// <summary>
+			/// ChangeRule: typeof(SubtypeFact)
+			/// </summary>
+			private void SubtypeFactChangeRule(ElementPropertyChangedEventArgs e)
 			{
 				if (myIgnoreRule)
 				{
@@ -2741,148 +2704,123 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
-		#region CheckForIncompatibleRelationshipRule class
+		#region CheckForIncompatibleRelationshipAddRule
 		/// <summary>
+		/// AddRule: typeof(Objectification)
+		/// AddRule: typeof(ValueTypeHasDataType)
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// AddRule: typeof(FactTypeHasRole)
 		/// Ensure consistency among relationships attached to ObjectType roles.
 		/// This is an object model backup for the UI, which does not offer these
 		/// conditions to the user.
+		/// Called when an attempt is made to turn an ObjectType into either
+		/// a value type or an objectifying type.
 		/// </summary>
-		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class CheckForIncompatibleRelationshipRule : AddRule
+		private static void CheckForIncompatibleRelationshipAddRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Helper function called by ElementAdded and the corresponding RolePlayerChanged role
-			/// </summary>
-			/// <param name="element"></param>
-			public static void Process(ModelElement element)
+			ProcessCheckForIncompatibleRelationship(e.ModelElement);
+		}
+		/// <summary>
+		/// Helper function called by CheckForIncompatibleRelationshipAddRule and the corresponding CheckForIncompatibleRelationshipRolePlayerChangeRule
+		/// </summary>
+		public static void ProcessCheckForIncompatibleRelationship(ModelElement element)
+		{
+			Objectification nester;
+			ValueTypeHasDataType valType;
+			ObjectTypePlaysRole roleLink;
+			FactTypeHasRole newRole;
+			bool incompatibleValueTypeCombination = false;
+			bool incompatibleNestingAndRoleCombination = false;
+			bool subtypesNotNested = false;
+			// Note that the other portion of this condition is
+			// checked in a separate add rule for EntityTypeHasPreferredIdentifier
+			bool incompatiblePreferredIdentifierCombination = false;
+			if (null != (nester = element as Objectification))
 			{
-				Objectification nester;
-				ValueTypeHasDataType valType;
-				ObjectTypePlaysRole roleLink;
-				FactTypeHasRole newRole;
-				bool incompatibleValueTypeCombination = false;
-				bool incompatibleNestingAndRoleCombination = false;
-				bool subtypesNotNested = false;
-				// Note that the other portion of this condition is
-				// checked in a separate add rule for EntityTypeHasPreferredIdentifier
-				bool incompatiblePreferredIdentifierCombination = false;
-				if (null != (nester = element as Objectification))
+				if (nester.NestedFactType is SubtypeFact)
 				{
-					if (nester.NestedFactType is SubtypeFact)
+					subtypesNotNested = true;
+				}
+				else
+				{
+					ObjectType nestingType = nester.NestingType;
+					if (!(incompatibleValueTypeCombination = nestingType.IsValueType))
 					{
-						subtypesNotNested = true;
-					}
-					else
-					{
-						ObjectType nestingType = nester.NestingType;
-						if (!(incompatibleValueTypeCombination = nestingType.IsValueType))
+						foreach (RoleBase role in nester.NestedFactType.RoleCollection)
 						{
-							foreach (RoleBase role in nester.NestedFactType.RoleCollection)
+							if (role.Role.RolePlayer == nestingType)
 							{
-								if (role.Role.RolePlayer == nestingType)
-								{
-									incompatibleNestingAndRoleCombination = true;
-									break;
-								}
+								incompatibleNestingAndRoleCombination = true;
+								break;
 							}
 						}
 					}
 				}
-				else if (null != (valType = element as ValueTypeHasDataType))
+			}
+			else if (null != (valType = element as ValueTypeHasDataType))
+			{
+				if (!(incompatibleValueTypeCombination = valType.ValueType.NestedFactType != null))
 				{
-					if (!(incompatibleValueTypeCombination = valType.ValueType.NestedFactType != null))
-					{
-						incompatiblePreferredIdentifierCombination = null != valType.ValueType.PreferredIdentifier;
-					}
+					incompatiblePreferredIdentifierCombination = null != valType.ValueType.PreferredIdentifier;
 				}
-				else if (null != (roleLink = element as ObjectTypePlaysRole))
+			}
+			else if (null != (roleLink = element as ObjectTypePlaysRole))
+			{
+				FactType fact = roleLink.PlayedRole.FactType;
+				if (fact != null)
 				{
-					FactType fact = roleLink.PlayedRole.FactType;
-					if (fact != null)
-					{
-						incompatibleNestingAndRoleCombination = fact.NestingType == roleLink.RolePlayer;
-					}
+					incompatibleNestingAndRoleCombination = fact.NestingType == roleLink.RolePlayer;
 				}
-				else if (null != (newRole = element as FactTypeHasRole))
+			}
+			else if (null != (newRole = element as FactTypeHasRole))
+			{
+				ObjectType player = newRole.Role.Role.RolePlayer;
+				if (player != null)
 				{
-					ObjectType player = newRole.Role.Role.RolePlayer;
-					if (player != null)
-					{
-						incompatibleNestingAndRoleCombination = player == newRole.FactType.NestingType;
-					}
+					incompatibleNestingAndRoleCombination = player == newRole.FactType.NestingType;
 				}
+			}
 
-				// Raise an exception if any of the objectype-linked relationship
-				// combinations are invalid
-				string exceptionString = null;
-				if (incompatibleValueTypeCombination)
-				{
-					exceptionString = ResourceStrings.ModelExceptionEnforceValueTypeNotNestingType;
-				}
-				else if (incompatibleNestingAndRoleCombination)
-				{
-					exceptionString = ResourceStrings.ModelExceptionEnforceRolePlayerNotNestingType;
-				}
-				else if (incompatiblePreferredIdentifierCombination)
-				{
-					exceptionString = ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType;
-				}
-				else if (subtypesNotNested)
-				{
-					exceptionString = ResourceStrings.ModelExceptionSubtypeFactNotNested;
-				}
-				if (exceptionString != null)
-				{
-					throw new InvalidOperationException(exceptionString);
-				}
-			}
-			/// <summary>
-			/// Called when an attempt is made to turn an ObjectType into either
-			/// a value type or a nesting type.
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			// Raise an exception if any of the objectype-linked relationship
+			// combinations are invalid
+			string exceptionString = null;
+			if (incompatibleValueTypeCombination)
 			{
-				Process(e.ModelElement);
+				exceptionString = ResourceStrings.ModelExceptionEnforceValueTypeNotNestingType;
 			}
-			/// <summary>
-			/// Fire early. There is no reason to put this in the transaction log
-			/// if it isn't valid.
-			/// </summary>
-			public sealed override bool FireBefore
+			else if (incompatibleNestingAndRoleCombination)
 			{
-				get
-				{
-					return true;
-				}
+				exceptionString = ResourceStrings.ModelExceptionEnforceRolePlayerNotNestingType;
+			}
+			else if (incompatiblePreferredIdentifierCombination)
+			{
+				exceptionString = ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType;
+			}
+			else if (subtypesNotNested)
+			{
+				exceptionString = ResourceStrings.ModelExceptionSubtypeFactNotNested;
+			}
+			if (exceptionString != null)
+			{
+				throw new InvalidOperationException(exceptionString);
 			}
 		}
-		#endregion // CheckForIncompatibleRelationshipRule class
-		#region CheckForIncompatibleRelationshipRule class
+		#endregion // CheckForIncompatibleRelationshipAddRule
+		#region CheckForIncompatibleRelationshipRolePlayerChangeRule
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(Objectification)
+		/// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// RolePlayerChangeRule: typeof(FactTypeHasRole)
 		/// Ensure consistency among relationships attached to ObjectType roles.
 		/// This is an object model backup for the UI, which does not offer these
 		/// conditions to the user.
 		/// </summary>
-		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))] // RolePlayerChangeRule
-		private sealed partial class CheckForIncompatibleRelationshipRolePlayerChangeRule : RolePlayerChangeRule
+		private static void CheckForIncompatibleRelationshipRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				CheckForIncompatibleRelationshipRule.Process(e.ElementLink);
-			}
-			/// <summary>
-			/// Fire early. There is no reason to put this in the transaction log
-			/// if it isn't valid.
-			/// </summary>
-			public sealed override bool FireBefore
-			{
-				get
-				{
-					return true;
-				}
-			}
+			ProcessCheckForIncompatibleRelationship(e.ElementLink);
 		}
-		#endregion // CheckForIncompatibleRelationshipRolePlayerChangeRule class
+		#endregion // CheckForIncompatibleRelationshipRolePlayerChangeRule
 		#region IHierarchyContextEnabled Members
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>

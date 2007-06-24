@@ -433,38 +433,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion Deserialization Fixup
 		#region Rule to update error text on model name change
-		[RuleOn(typeof(ORMModel))] // ChangeRule
-		private sealed partial class SynchronizeErrorTextForModelRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ORMModel)
+		/// </summary>
+		private static void SynchronizeErrorTextForModelRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id.Equals(ORMModel.NameDomainPropertyId))
 			{
-				if (e.DomainProperty.Id.Equals(ORMModel.NameDomainPropertyId))
+				foreach (ModelError error in ((ORMModel)e.ModelElement).ErrorCollection)
 				{
-					foreach (ModelError error in ((ORMModel)e.ModelElement).ErrorCollection)
+					if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.ModelNameChange))
 					{
-						if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.ModelNameChange))
-						{
-							error.GenerateErrorText();
-						}
+						error.GenerateErrorText();
 					}
 				}
 			}
 		}
 		#endregion // Rule to update error text on model name change
 		#region Rule to update error text on owner name change
-		[RuleOn(typeof(ORMNamedElement))] // ChangeRule
-		private sealed partial class SynchronizeErrorForOwnerRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ORMNamedElement)
+		/// </summary>
+		private static void SynchronizeErrorTextForOwnerRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id.Equals(ORMNamedElement.NameDomainPropertyId))
 			{
-				if (e.DomainProperty.Id.Equals(ORMNamedElement.NameDomainPropertyId))
+				foreach (ModelError error in ((IModelErrorOwner)e.ModelElement).GetErrorCollection(ModelErrorUses.None))
 				{
-					foreach (ModelError error in ((IModelErrorOwner)e.ModelElement).GetErrorCollection(ModelErrorUses.None))
+					if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
 					{
-						if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
-						{
-							error.GenerateErrorText();
-						}
+						error.GenerateErrorText();
 					}
 				}
 			}

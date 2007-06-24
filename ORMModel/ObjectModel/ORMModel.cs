@@ -275,50 +275,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryParent implementation
 		#region Rules to remove duplicate name errors
-		[RuleOn(typeof(ObjectTypeHasDuplicateNameError))] // DeleteRule
-		private sealed partial class RemoveDuplicateObjectTypeNameErrorRule : DeleteRule
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypeHasDuplicateNameError)
+		/// </summary>
+		private static void DuplicateObjectTypeNameObjectTypeDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ObjectTypeHasDuplicateNameError link = e.ModelElement as ObjectTypeHasDuplicateNameError;
+			ObjectTypeDuplicateNameError error = link.DuplicateNameError;
+			if (!error.IsDeleted)
 			{
-				ObjectTypeHasDuplicateNameError link = e.ModelElement as ObjectTypeHasDuplicateNameError;
-				ObjectTypeDuplicateNameError error = link.DuplicateNameError;
-				if (!error.IsDeleted)
+				if (error.ObjectTypeCollection.Count < 2)
 				{
-					if (error.ObjectTypeCollection.Count < 2)
-					{
-						error.Delete();
-					}
+					error.Delete();
 				}
 			}
 		}
-		[RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError)), RuleOn(typeof(SetConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))] // DeleteRule
-		private sealed partial class RemoveDuplicateConstraintNameErrorRule : DeleteRule
+		/// <summary>
+		/// DeleteRule: typeof(SetComparisonConstraintHasDuplicateNameError)
+		/// DeleteRule: typeof(SetConstraintHasDuplicateNameError)
+		/// DeleteRule: typeof(ValueConstraintHasDuplicateNameError)
+		/// </summary>
+		private static void DuplicateConstraintNameConstraintDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ModelElement link = e.ModelElement;
+			SetComparisonConstraintHasDuplicateNameError mcLink;
+			SetConstraintHasDuplicateNameError scLink;
+			ValueConstraintHasDuplicateNameError vLink;
+			ConstraintDuplicateNameError error = null;
+			if (null != (mcLink = link as SetComparisonConstraintHasDuplicateNameError))
 			{
-				ModelElement link = e.ModelElement;
-				SetComparisonConstraintHasDuplicateNameError mcLink;
-				SetConstraintHasDuplicateNameError scLink;
-				ValueConstraintHasDuplicateNameError vLink;
-				ConstraintDuplicateNameError error = null;
-				if (null != (mcLink = link as SetComparisonConstraintHasDuplicateNameError))
+				error = mcLink.DuplicateNameError;
+			}
+			else if (null != (scLink = link as SetConstraintHasDuplicateNameError))
+			{
+				error = scLink.DuplicateNameError;
+			}
+			else if (null != (vLink = link as ValueConstraintHasDuplicateNameError))
+			{
+				error = vLink.DuplicateNameError;
+			}
+			if (error != null && !error.IsDeleted)
+			{
+				if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
 				{
-					error = mcLink.DuplicateNameError;
-				}
-				else if (null != (scLink = link as SetConstraintHasDuplicateNameError))
-				{
-					error = scLink.DuplicateNameError;
-				}
-				else if (null != (vLink = link as ValueConstraintHasDuplicateNameError))
-				{
-					error = vLink.DuplicateNameError;
-				}
-				if (error != null && !error.IsDeleted)
-				{
-					if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
-					{
-						error.Delete();
-					}
+					error.Delete();
 				}
 			}
 		}

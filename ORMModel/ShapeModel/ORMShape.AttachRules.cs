@@ -34,75 +34,75 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
-						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerDeleted", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("DerivationRuleChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("DerivationRuleAdd", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("DerivationRuleDelete", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ImplicitBooleanValueChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ObjectificationIsImpliedChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ObjectificationRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("SwitchFromNestedFact", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("SwitchToNestedFact", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ModelNoteShape).GetNestedType("NoteChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("DataTypeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("DataTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("ObjectTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRolePlayerChangeRuleForResize", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierLengthened", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierShortened", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMBaseShape).GetNestedType("ModelErrorAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMBaseShape).GetNestedType("ModelErrorDeleting", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ConstraintRoleSequenceRoleAdded),
-						typeof(ConstraintRoleSequenceRoleDeleted),
-						typeof(FactConstraintAdded),
-						typeof(FactConstraintDeleted),
-						typeof(ExternalRoleConstraintDeleted),
-						typeof(FactTypedAdded),
-						typeof(FactTypeShapeChanged),
-						typeof(ForceClearViewFixupDataList),
-						typeof(ModelNoteAdded),
-						typeof(ModelNoteReferenceAdded),
-						typeof(ObjectTypedAdded),
-						typeof(ObjectTypePlaysRoleAdded),
-						typeof(ObjectTypePlaysRoleRolePlayerChange),
-						typeof(ObjectTypeShapeChangeRule),
-						typeof(ReadingOrderAdded),
-						typeof(RoleAdded),
-						typeof(RoleChange),
-						typeof(RoleDeleted),
-						typeof(RoleValueConstraintAdded),
-						typeof(SetComparisonConstraintAdded),
-						typeof(SetConstraintAdded),
-						typeof(ValueTypeValueConstraintAdded),
-						typeof(ReadingShape).GetNestedType("DisplayOrientationChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("ReadingAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("ReadingOrderDeleted", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("ReadingPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("ReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("RoleDisplayOrderAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("RoleDisplayOrderPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RingConstraintShape).GetNestedType("RingConstraintPropertyChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraintShape).GetNestedType("ValueConstraintTextChanged", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("DerivationAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("DerivationChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("DerivationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ImplicitBooleanValueChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ObjectificationIsImpliedChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ObjectificationRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("SwitchFromNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("SwitchToNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModelNoteShape).GetNestedType("NoteChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("DataTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("DataTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("ObjectTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("ObjectTypeShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierLengthenedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRolePlayerChangeRuleForResizeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierShortenedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseShape).GetNestedType("ModelErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseShape).GetNestedType("ModelErrorDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequenceRoleAddedRuleClass),
+						typeof(ConstraintRoleSequenceRoleDeletedRuleClass),
+						typeof(FactConstraintAddedRuleClass),
+						typeof(FactConstraintDeletedRuleClass),
+						typeof(ExternalRoleConstraintDeletedRuleClass),
+						typeof(FactTypedAddedRuleClass),
+						typeof(FactTypeShapeChangedRuleClass),
+						typeof(ForceClearViewFixupDataListRuleClass),
+						typeof(ModelNoteAddedRuleClass),
+						typeof(ModelNoteReferenceAddedRuleClass),
+						typeof(ObjectTypedAddedRuleClass),
+						typeof(ObjectTypePlaysRoleAddedRuleClass),
+						typeof(ObjectTypePlaysRoleRolePlayerChangeRuleClass),
+						typeof(ObjectTypeShapeChangeRuleClass),
+						typeof(ReadingOrderAddedRuleClass),
+						typeof(RoleAddedRuleClass),
+						typeof(RoleChangedRuleClass),
+						typeof(RoleDeletedRuleClass),
+						typeof(RoleValueConstraintAddedRuleClass),
+						typeof(SetComparisonConstraintAddedRuleClass),
+						typeof(SetConstraintAddedRuleClass),
+						typeof(ValueTypeValueConstraintAddedRuleClass),
+						typeof(ReadingShape).GetNestedType("DisplayOrientationChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("ReadingAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("ReadingOrderDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("ReadingPositionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("ReadingTextChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("RoleDisplayOrderAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("RoleDisplayOrderPositionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RingConstraintShape).GetNestedType("RingConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraintShape).GetNestedType("ValueConstraintTextChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMShapeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -147,696 +147,1727 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // Attach rules to ORMShapeDomainModel model
-	#region Initially disable rules
+	#region Auto-rule classes
+	#region Rule classes for ExternalConstraintLink
 	partial class ExternalConstraintLink
 	{
-		partial class DeleteDanglingConstraintShapeAddRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExternalConstraintShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=(Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority + 1))]
+		private sealed class DeleteDanglingConstraintShapeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public DeleteDanglingConstraintShapeAddRule()
+			public DeleteDanglingConstraintShapeAddRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink
+			/// /// <summary>
+			/// /// AddRule: typeof(ExternalConstraintShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority + 1;
+			/// /// </summary>
+			/// private static void DeleteDanglingConstraintShapeAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeAddRule");
+				ExternalConstraintLink.DeleteDanglingConstraintShapeAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeAddRule");
+			}
 		}
-	}
-	partial class ExternalConstraintLink
-	{
-		partial class DeleteDanglingConstraintShapeDeletingRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode))]
+		private sealed class DeleteDanglingConstraintShapeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
-			public DeleteDanglingConstraintShapeDeletingRule()
+			public DeleteDanglingConstraintShapeDeletingRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
+			/// /// </summary>
+			/// private static void DeleteDanglingConstraintShapeDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule");
+				ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule");
+			}
 		}
-	}
-	partial class ExternalConstraintLink
-	{
-		partial class DeleteDanglingConstraintShapeRolePlayerChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode))]
+		private sealed class DeleteDanglingConstraintShapeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
-			public DeleteDanglingConstraintShapeRolePlayerChangeRule()
+			public DeleteDanglingConstraintShapeRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
+			/// /// </summary>
+			/// private static void DeleteDanglingConstraintShapeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule");
+				ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ExternalConstraintLink
+	#region Rule classes for ExternalConstraintShape
 	partial class ExternalConstraintShape
 	{
-		partial class ExclusiveOrCouplerAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ExclusiveOrCouplerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ExclusiveOrCouplerAdded()
+			public ExclusiveOrCouplerAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ExclusiveOrCouplerAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.ExclusiveOrCouplerAddedRule");
+				ExternalConstraintShape.ExclusiveOrCouplerAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.ExclusiveOrCouplerAddedRule");
+			}
 		}
-	}
-	partial class ExternalConstraintShape
-	{
-		partial class ExclusiveOrCouplerDeleted
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ExclusiveOrCouplerDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public ExclusiveOrCouplerDeleted()
+			public ExclusiveOrCouplerDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ExclusiveOrCouplerDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.ExclusiveOrCouplerDeletedRule");
+				ExternalConstraintShape.ExclusiveOrCouplerDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.ExclusiveOrCouplerDeletedRule");
+			}
 		}
-	}
-	partial class ExternalConstraintShape
-	{
-		partial class PreferredIdentifierAddRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class PreferredIdentifierAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public PreferredIdentifierAddRule()
+			public PreferredIdentifierAddRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.PreferredIdentifierAddRule");
+				ExternalConstraintShape.PreferredIdentifierAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.PreferredIdentifierAddRule");
+			}
 		}
-	}
-	partial class ExternalConstraintShape
-	{
-		partial class PreferredIdentifierDeleteRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class PreferredIdentifierDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public PreferredIdentifierDeleteRule()
+			public PreferredIdentifierDeleteRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierDeleteRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.PreferredIdentifierDeleteRule");
+				ExternalConstraintShape.PreferredIdentifierDeleteRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.PreferredIdentifierDeleteRule");
+			}
 		}
-	}
-	partial class ExternalConstraintShape
-	{
-		partial class PreferredIdentifierRolePlayerChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
-			public PreferredIdentifierRolePlayerChangeRule()
+			public PreferredIdentifierRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.PreferredIdentifierRolePlayerChangeRule");
+				ExternalConstraintShape.PreferredIdentifierRolePlayerChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.PreferredIdentifierRolePlayerChangeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ExternalConstraintShape
+	#region Rule classes for FactTypeShape
 	partial class FactTypeShape
 	{
-		partial class ConstraintDisplayPositionChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ConstraintDisplayPositionChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ConstraintDisplayPositionChangeRule()
+			public ConstraintDisplayPositionChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintDisplayPositionChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionChangeRule");
+				FactTypeShape.ConstraintDisplayPositionChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionChangeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class DerivationRuleChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class DerivationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public DerivationRuleChanged()
+			public DerivationAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void DerivationAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.DerivationAddedRule");
+				FactTypeShape.DerivationAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.DerivationAddedRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class DerivationRuleAdd
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class DerivationChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public DerivationRuleAdd()
+			public DerivationChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.DerivationChangedRule");
+				FactTypeShape.DerivationChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.DerivationChangedRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class DerivationRuleDelete
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class DerivationDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public DerivationRuleDelete()
+			public DerivationDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void DerivationDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.DerivationDeletedRule");
+				FactTypeShape.DerivationDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.DerivationDeletedRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class ExternalConstraintShapeChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExternalConstraintShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ExternalConstraintShapeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ExternalConstraintShapeChangeRule()
+			public ExternalConstraintShapeChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ExternalConstraintShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ExternalConstraintShapeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ExternalConstraintShapeChangeRule");
+				FactTypeShape.ExternalConstraintShapeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ExternalConstraintShapeChangeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class FactTypeShapeChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class FactTypeShapeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public FactTypeShapeChangeRule()
+			public FactTypeShapeChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void FactTypeShapeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeChangeRule");
+				FactTypeShape.FactTypeShapeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeChangeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class ImplicitBooleanValueChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
+		private sealed class ImplicitBooleanValueChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ImplicitBooleanValueChangeRule()
+			public ImplicitBooleanValueChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+			/// /// </summary>
+			/// private static void ImplicitBooleanValueChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ImplicitBooleanValueChangeRule");
+				FactTypeShape.ImplicitBooleanValueChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ImplicitBooleanValueChangeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class ObjectificationIsImpliedChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ObjectificationIsImpliedChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ObjectificationIsImpliedChangeRule()
+			public ObjectificationIsImpliedChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ObjectificationIsImpliedChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ObjectificationIsImpliedChangeRule");
+				FactTypeShape.ObjectificationIsImpliedChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ObjectificationIsImpliedChangeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class ObjectificationRolePlayerChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ObjectificationRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
-			public ObjectificationRolePlayerChangeRule()
+			public ObjectificationRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ObjectificationRolePlayerChangeRule");
+				FactTypeShape.ObjectificationRolePlayerChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ObjectificationRolePlayerChangeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class RoleDisplayOrderChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class RoleDisplayOrderChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
-			public RoleDisplayOrderChanged()
+			public RoleDisplayOrderChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void RoleDisplayOrderChangedRule(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.RoleDisplayOrderChangedRule");
+				FactTypeShape.RoleDisplayOrderChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.RoleDisplayOrderChangedRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class SwitchFromNestedFact
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class SwitchFromNestedFactTypeRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public SwitchFromNestedFact()
+			public SwitchFromNestedFactTypeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void SwitchFromNestedFactTypeRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.SwitchFromNestedFactTypeRule");
+				FactTypeShape.SwitchFromNestedFactTypeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.SwitchFromNestedFactTypeRule");
+			}
 		}
-	}
-	partial class FactTypeShape
-	{
-		partial class SwitchToNestedFact
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class SwitchToNestedFactTypeRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public SwitchToNestedFact()
+			public SwitchToNestedFactTypeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void SwitchToNestedFactTypeRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.SwitchToNestedFactTypeRule");
+				FactTypeShape.SwitchToNestedFactTypeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.SwitchToNestedFactTypeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for FactTypeShape
+	#region Rule classes for FrequencyConstraintShape
 	partial class FrequencyConstraintShape
 	{
-		partial class FrequencyConstraintPropertyChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class FrequencyConstraintPropertyChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public FrequencyConstraintPropertyChangeRule()
+			public FrequencyConstraintPropertyChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void FrequencyConstraintPropertyChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule");
+				FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for FrequencyConstraintShape
+	#region Rule classes for ModelNoteShape
 	partial class ModelNoteShape
 	{
-		partial class NoteChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Note), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class NoteChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public NoteChangeRule()
+			public NoteChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ModelNoteShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Note), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void NoteChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ModelNoteShape.NoteChangeRule");
+				ModelNoteShape.NoteChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ModelNoteShape.NoteChangeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ModelNoteShape
+	#region Rule classes for ObjectTypeShape
 	partial class ObjectTypeShape
 	{
-		partial class DataTypeAddedRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType))]
+		private sealed class DataTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public DataTypeAddedRule()
+			public DataTypeAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void DataTypeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.DataTypeAddedRule");
+				ObjectTypeShape.DataTypeAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.DataTypeAddedRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class DataTypeDeleteRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class DataTypeDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public DataTypeDeleteRule()
+			public DataTypeDeleteRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void DataTypeDeleteRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.DataTypeDeleteRule");
+				ObjectTypeShape.DataTypeDeleteRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.DataTypeDeleteRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class ObjectTypeShapeChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ObjectTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ObjectTypeShapeChangeRule()
+			public ObjectTypeChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeChangeRule");
+				ObjectTypeShape.ObjectTypeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeChangeRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class PreferredIdentifierDeleteRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ObjectTypeShapeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public PreferredIdentifierDeleteRule()
+			public ObjectTypeShapeChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypeShapeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeChangeRule");
+				ObjectTypeShape.ObjectTypeShapeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeChangeRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class PreferredIdentifierAddedRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+		private sealed class PreferredIdentifierAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public PreferredIdentifierAddedRule()
+			public PreferredIdentifierAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// /// </summary>
+			/// private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierAddedRule");
+				ObjectTypeShape.PreferredIdentifierAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierAddedRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class PreferredIdentifierRolePlayerChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class PreferredIdentifierDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public PreferredIdentifierRolePlayerChangeRule()
+			public PreferredIdentifierDeleteRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierDeleteRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierDeleteRule");
+				ObjectTypeShape.PreferredIdentifierDeleteRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierDeleteRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class PreferredIdentifierRolePlayerChangeRuleForResize
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class PreferredIdentifierLengthenedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public PreferredIdentifierRolePlayerChangeRuleForResize()
+			public PreferredIdentifierLengthenedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierLengthenedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierLengthenedRule");
+				ObjectTypeShape.PreferredIdentifierLengthenedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierLengthenedRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class PreferredIdentifierLengthened
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
-			public PreferredIdentifierLengthened()
+			public PreferredIdentifierRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// /// </summary>
+			/// private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierRolePlayerChangeRule");
+				ObjectTypeShape.PreferredIdentifierRolePlayerChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierRolePlayerChangeRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class PreferredIdentifierShortened
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class PreferredIdentifierRolePlayerChangeRuleForResizeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
-			public PreferredIdentifierShortened()
+			public PreferredIdentifierRolePlayerChangeRuleForResizeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierRolePlayerChangeRuleForResizeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierRolePlayerChangeRuleForResizeRule");
+				ObjectTypeShape.PreferredIdentifierRolePlayerChangeRuleForResizeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierRolePlayerChangeRuleForResizeRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class RolePlayerAddedRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class PreferredIdentifierShortenedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public RolePlayerAddedRule()
+			public PreferredIdentifierShortenedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void PreferredIdentifierShortenedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierShortenedRule");
+				ObjectTypeShape.PreferredIdentifierShortenedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.PreferredIdentifierShortenedRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class RolePlayerDeleteRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
+		private sealed class RolePlayerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public RolePlayerDeleteRule()
+			public RolePlayerAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// /// </summary>
+			/// private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerAddedRule");
+				ObjectTypeShape.RolePlayerAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerAddedRule");
+			}
 		}
-	}
-	partial class ObjectTypeShape
-	{
-		partial class ShapeChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class RolePlayerDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public ShapeChangeRule()
+			public RolePlayerDeleteRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void RolePlayerDeleteRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerDeleteRule");
+				ObjectTypeShape.RolePlayerDeleteRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.RolePlayerDeleteRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ObjectTypeShape
+	#region Rule classes for ORMBaseBinaryLinkShape
 	partial class ORMBaseBinaryLinkShape
 	{
-		partial class LinkChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class LinkChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public LinkChangeRule()
+			public LinkChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMBaseBinaryLinkShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void LinkChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.LinkChangeRule");
+				ORMBaseBinaryLinkShape.LinkChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.LinkChangeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ORMBaseBinaryLinkShape
+	#region Rule classes for ORMBaseShape
 	partial class ORMBaseShape
 	{
-		partial class AbsoluteBoundsChangedRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.NodeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class AbsoluteBoundsChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public AbsoluteBoundsChangedRule()
+			public AbsoluteBoundsChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMBaseShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.NodeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void AbsoluteBoundsChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.AbsoluteBoundsChangedRule");
+				ORMBaseShape.AbsoluteBoundsChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.AbsoluteBoundsChangedRule");
+			}
 		}
-	}
-	partial class ORMBaseShape
-	{
-		partial class ModelErrorAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError))]
+		private sealed class ModelErrorAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ModelErrorAdded()
+			public ModelErrorAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMBaseShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError)
+			/// /// </summary>
+			/// private static void ModelErrorAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.ModelErrorAddedRule");
+				ORMBaseShape.ModelErrorAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.ModelErrorAddedRule");
+			}
 		}
-	}
-	partial class ORMBaseShape
-	{
-		partial class ModelErrorDeleting
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError))]
+		private sealed class ModelErrorDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
-			public ModelErrorDeleting()
+			public ModelErrorDeletingRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMBaseShape
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError)
+			/// /// </summary>
+			/// private static void ModelErrorDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.ModelErrorDeletingRule");
+				ORMBaseShape.ModelErrorDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.ModelErrorDeletingRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ORMBaseShape
+	#region Rule classes for ORMShapeDomainModel
 	partial class ORMShapeDomainModel
 	{
-		partial class ConstraintRoleSequenceRoleAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ConstraintRoleSequenceRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ConstraintRoleSequenceRoleAdded()
+			public ConstraintRoleSequenceRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleSequenceRoleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequenceRoleAddedRule");
+				ORMShapeDomainModel.ConstraintRoleSequenceRoleAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequenceRoleAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ConstraintRoleSequenceRoleDeleted
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ConstraintRoleSequenceRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public ConstraintRoleSequenceRoleDeleted()
+			public ConstraintRoleSequenceRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleSequenceRoleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequenceRoleDeletedRule");
+				ORMShapeDomainModel.ConstraintRoleSequenceRoleDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ConstraintRoleSequenceRoleDeletedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class FactConstraintAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class FactConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public FactConstraintAdded()
+			public FactConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void FactConstraintAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactConstraintAddedRule");
+				ORMShapeDomainModel.FactConstraintAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactConstraintAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class FactConstraintDeleted
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class FactConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public FactConstraintDeleted()
+			public FactConstraintDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void FactConstraintDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactConstraintDeletedRule");
+				ORMShapeDomainModel.FactConstraintDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactConstraintDeletedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ExternalRoleConstraintDeleted
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ExternalRoleConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public ExternalRoleConstraintDeleted()
+			public ExternalRoleConstraintDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ExternalRoleConstraintDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ExternalRoleConstraintDeletedRule");
+				ORMShapeDomainModel.ExternalRoleConstraintDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ExternalRoleConstraintDeletedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class FactTypedAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasFactType), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class FactTypedAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public FactTypedAdded()
+			public FactTypedAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasFactType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void FactTypedAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactTypedAddedRule");
+				ORMShapeDomainModel.FactTypedAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactTypedAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class FactTypeShapeChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class FactTypeShapeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public FactTypeShapeChanged()
+			public FactTypeShapeChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void FactTypeShapeChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactTypeShapeChangedRule");
+				ORMShapeDomainModel.FactTypeShapeChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.FactTypeShapeChangedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ForceClearViewFixupDataList
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=(Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority + 1))]
+		private sealed partial class ForceClearViewFixupDataListRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ForceClearViewFixupDataList()
+			public ForceClearViewFixupDataListRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// partial class ForceClearViewFixupDataListRuleClass
+			/// {
+			/// 	/// <summary>
+			/// 	/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority + 1;
+			/// 	/// </summary>
+			/// 	private void ForceClearViewFixupDataListRule(ElementPropertyChangedEventArgs e)
+			/// 	{
+			/// 	}
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ForceClearViewFixupDataListRule");
+				this.ForceClearViewFixupDataListRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ForceClearViewFixupDataListRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ModelNoteAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasModelNote), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ModelNoteAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ModelNoteAdded()
+			public ModelNoteAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasModelNote), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ModelNoteAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ModelNoteAddedRule");
+				ORMShapeDomainModel.ModelNoteAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ModelNoteAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ModelNoteReferenceAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ModelNoteReferenceAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ModelNoteReferenceAdded()
+			public ModelNoteReferenceAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ModelNoteReferenceAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ModelNoteReferenceAddedRule");
+				ORMShapeDomainModel.ModelNoteReferenceAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ModelNoteReferenceAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ObjectTypedAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ObjectTypedAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ObjectTypedAdded()
+			public ObjectTypedAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypedAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypedAddedRule");
+				ORMShapeDomainModel.ObjectTypedAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypedAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ObjectTypePlaysRoleAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ObjectTypePlaysRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ObjectTypePlaysRoleAdded()
+			public ObjectTypePlaysRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypePlaysRoleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypePlaysRoleAddedRule");
+				ORMShapeDomainModel.ObjectTypePlaysRoleAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypePlaysRoleAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ObjectTypePlaysRoleRolePlayerChange
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ObjectTypePlaysRoleRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
-			public ObjectTypePlaysRoleRolePlayerChange()
+			public ObjectTypePlaysRoleRolePlayerChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypePlaysRoleRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypePlaysRoleRolePlayerChangeRule");
+				ORMShapeDomainModel.ObjectTypePlaysRoleRolePlayerChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypePlaysRoleRolePlayerChangeRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ObjectTypeShapeChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectifiedFactTypeNameShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ObjectTypeShapeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ObjectTypeShapeChangeRule()
+			public ObjectTypeShapeChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// ChangeRule: typeof(ObjectifiedFactTypeNameShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypeShapeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypeShapeChangeRule");
+				ORMShapeDomainModel.ObjectTypeShapeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ObjectTypeShapeChangeRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ReadingOrderAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ReadingOrderAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ReadingOrderAdded()
+			public ReadingOrderAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ReadingOrderAddedRule");
+				ORMShapeDomainModel.ReadingOrderAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ReadingOrderAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class RoleAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class RoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public RoleAdded()
+			public RoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void RoleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleAddedRule");
+				ORMShapeDomainModel.RoleAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class RoleChange
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Role), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class RoleChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public RoleChange()
+			public RoleChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void RoleChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleChangedRule");
+				ORMShapeDomainModel.RoleChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleChangedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class RoleDeleted
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class RoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public RoleDeleted()
+			public RoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void RoleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleDeletedRule");
+				ORMShapeDomainModel.RoleDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleDeletedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class RoleValueConstraintAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class RoleValueConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public RoleValueConstraintAdded()
+			public RoleValueConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleValueConstraintAddedRule");
+				ORMShapeDomainModel.RoleValueConstraintAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleValueConstraintAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class SetComparisonConstraintAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class SetComparisonConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public SetComparisonConstraintAdded()
+			public SetComparisonConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void SetComparisonConstraintAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SetComparisonConstraintAddedRule");
+				ORMShapeDomainModel.SetComparisonConstraintAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SetComparisonConstraintAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class SetConstraintAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class SetConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public SetConstraintAdded()
+			public SetConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void SetConstraintAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SetConstraintAddedRule");
+				ORMShapeDomainModel.SetConstraintAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SetConstraintAddedRule");
+			}
 		}
-	}
-	partial class ORMShapeDomainModel
-	{
-		partial class ValueTypeValueConstraintAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ValueTypeValueConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ValueTypeValueConstraintAdded()
+			public ValueTypeValueConstraintAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ValueTypeValueConstraintAddedRule");
+				ORMShapeDomainModel.ValueTypeValueConstraintAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.ValueTypeValueConstraintAddedRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ORMShapeDomainModel
+	#region Rule classes for ReadingShape
 	partial class ReadingShape
 	{
-		partial class DisplayOrientationChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class DisplayOrientationChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public DisplayOrientationChanged()
+			public DisplayOrientationChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void DisplayOrientationChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.DisplayOrientationChangedRule");
+				ReadingShape.DisplayOrientationChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.DisplayOrientationChangedRule");
+			}
 		}
-	}
-	partial class ReadingShape
-	{
-		partial class ReadingAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ReadingAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public ReadingAdded()
+			public ReadingAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ReadingAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingAddedRule");
+				ReadingShape.ReadingAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingAddedRule");
+			}
 		}
-	}
-	partial class ReadingShape
-	{
-		partial class ReadingOrderDeleted
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ReadingOrderDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
-			public ReadingOrderDeleted()
+			public ReadingOrderDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingOrderDeletedRule");
+				ReadingShape.ReadingOrderDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingOrderDeletedRule");
+			}
 		}
-	}
-	partial class ReadingShape
-	{
-		partial class ReadingPositionChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ReadingPositionChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
-			public ReadingPositionChanged()
+			public ReadingPositionChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ReadingPositionChangedRule(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingPositionChangedRule");
+				ReadingShape.ReadingPositionChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingPositionChangedRule");
+			}
 		}
-	}
-	partial class ReadingShape
-	{
-		partial class ReadingTextChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.Reading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ReadingTextChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ReadingTextChanged()
+			public ReadingTextChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Reading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ReadingTextChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextChangedRule");
+				ReadingShape.ReadingTextChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextChangedRule");
+			}
 		}
-	}
-	partial class ReadingShape
-	{
-		partial class RoleDisplayOrderAdded
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class RoleDisplayOrderAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			public RoleDisplayOrderAdded()
+			public RoleDisplayOrderAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void RoleDisplayOrderAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.RoleDisplayOrderAddedRule");
+				ReadingShape.RoleDisplayOrderAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.RoleDisplayOrderAddedRule");
+			}
 		}
-	}
-	partial class ReadingShape
-	{
-		partial class RoleDisplayOrderPositionChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class RoleDisplayOrderPositionChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
 		{
-			public RoleDisplayOrderPositionChanged()
+			public RoleDisplayOrderPositionChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void RoleDisplayOrderPositionChangedRule(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.RoleDisplayOrderPositionChangedRule");
+				ReadingShape.RoleDisplayOrderPositionChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "Neumont.Tools.ORM.ShapeModel.ReadingShape.RoleDisplayOrderPositionChangedRule");
+			}
 		}
 	}
+	#endregion // Rule classes for ReadingShape
+	#region Rule classes for RingConstraintShape
 	partial class RingConstraintShape
 	{
-		partial class RingConstraintPropertyChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class RingConstraintPropertyChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public RingConstraintPropertyChangeRule()
+			public RingConstraintPropertyChangeRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.RingConstraintShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void RingConstraintPropertyChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.RingConstraintShape.RingConstraintPropertyChangeRule");
+				RingConstraintShape.RingConstraintPropertyChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.RingConstraintShape.RingConstraintPropertyChangeRule");
+			}
 		}
 	}
+	#endregion // Rule classes for RingConstraintShape
+	#region Rule classes for ValueConstraintShape
 	partial class ValueConstraintShape
 	{
-		partial class ValueConstraintTextChanged
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ValueConstraintTextChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
-			public ValueConstraintTextChanged()
+			public ValueConstraintTextChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ShapeModel.ValueConstraintShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void ValueConstraintTextChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueConstraintTextChangedRule");
+				ValueConstraintShape.ValueConstraintTextChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueConstraintTextChangedRule");
+			}
 		}
 	}
-	#endregion // Initially disable rules
+	#endregion // Rule classes for ValueConstraintShape
+	#endregion // Auto-rule classes
 }

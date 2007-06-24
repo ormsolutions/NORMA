@@ -246,7 +246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				Store store = Store;
 				RuleManager ruleManager = store.RuleManager;
-				Type ruleType = typeof(ReadingPropertiesChanged);
+				Type ruleType = typeof(ReadingPropertiesChangedRuleClass);
 				ruleManager.DisableRule(ruleType);
 				try
 				{
@@ -377,68 +377,64 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		#region ReadingPropertiesChanged rule class
+		#region ReadingPropertiesChangedRule
 		/// <summary>
+		/// ChangeRule: typeof(Reading)
 		/// Handles the resetting the current primary reading when a new one is selected.
 		/// Also rejects trying to change the current primary reading's IsPrimary to false.
 		/// Validates that the reading text has the necessary number of placeholders.
 		/// </summary>
-		[RuleOn(typeof(Reading))] // ChangeRule
-		private sealed partial class ReadingPropertiesChanged : ChangeRule
+		private static void ReadingPropertiesChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			Reading changedReading = e.ModelElement as Reading;
+			if (changedReading.IsDeleted)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				Reading changedReading = e.ModelElement as Reading;
-				if (changedReading.IsDeleted)
+				return;
+			}
+			bool moveReadingOrder = false;
+			if (attributeGuid == Reading.IsPrimaryForReadingOrderDomainPropertyId ||
+				(moveReadingOrder = (attributeGuid == Reading.IsPrimaryForFactTypeDomainPropertyId)))
+			{
+				if (!((bool)e.NewValue))
 				{
-					return;
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionReadingIsPrimaryToFalse);
 				}
-				bool moveReadingOrder = false;
-				if (attributeGuid == Reading.IsPrimaryForReadingOrderDomainPropertyId ||
-					(moveReadingOrder = (attributeGuid == Reading.IsPrimaryForFactTypeDomainPropertyId)))
+				ReadingOrder order;
+				if (null != (order = changedReading.ReadingOrder))
 				{
-					if (!((bool)e.NewValue))
+					LinkedElementCollection<Reading> readings = order.ReadingCollection;
+					if (readings.Count > 1 && readings[0] != changedReading)
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionReadingIsPrimaryToFalse);
+						readings.Move(changedReading, 0);
 					}
-					ReadingOrder order;
-					if (null != (order = changedReading.ReadingOrder))
+					if (moveReadingOrder)
 					{
-						LinkedElementCollection<Reading> readings = order.ReadingCollection;
-						if (readings.Count > 1 && readings[0] != changedReading)
+						FactType factType;
+						if (null != (factType = order.FactType))
 						{
-							readings.Move(changedReading, 0);
-						}
-						if (moveReadingOrder)
-						{
-							FactType factType;
-							if (null != (factType = order.FactType))
+							LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
+							if (readingOrders.Count > 1 && readingOrders[0] != order)
 							{
-								LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
-								if (readingOrders.Count > 1 && readingOrders[0] != order)
-								{
-									readingOrders.Move(order, 0);
-								}
+								readingOrders.Move(order, 0);
 							}
 						}
 					}
 				}
-				else if (attributeGuid == Reading.TextDomainPropertyId)
+			}
+			else if (attributeGuid == Reading.TextDomainPropertyId)
+			{
+				changedReading.ReadingTextChanged((string)e.NewValue);
+				if (!changedReading.IsDeleted)
 				{
-					changedReading.ReadingTextChanged((string)e.NewValue);
-					if (!changedReading.IsDeleted)
+					ReadingRequiresUserModificationError modificationError;
+					if (null != (modificationError = changedReading.RequiresUserModificationError))
 					{
-						ReadingRequiresUserModificationError modificationError;
-						if (null != (modificationError = changedReading.RequiresUserModificationError))
-						{
-							modificationError.Delete();
-						}
+						modificationError.Delete();
 					}
 				}
 			}
 		}
-
 		/// <summary>
 		/// Removes empty readings or calls delay validate.
 		/// </summary>
@@ -456,26 +452,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		#endregion // ReadingPropertiesChanged rule class
-		#region ReadingOrderHasRoleRemoved rule class
-		[RuleOn(typeof(ReadingOrderHasRole))] // DeleteRule
-		private sealed partial class ReadingOrderHasRoleDeleted : DeleteRule
+		#endregion // ReadingPropertiesChangedRule
+		#region ReadingOrderHasRoleDeletedRule
+		/// <summary>
+		/// DeleteRule: typeof(ReadingOrderHasRole)
+		/// Validate readings when a role is removed from a reading order
+		/// </summary>
+		private static void ReadingOrderHasRoleDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+			ReadingOrder ord = link.ReadingOrder;
+			if (!ord.IsDeleted)
 			{
-				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				ReadingOrder ord = link.ReadingOrder;
-				if (!ord.IsDeleted)
+				LinkedElementCollection<Reading> readings = ord.ReadingCollection;
+				foreach (Reading read in readings)
 				{
-					LinkedElementCollection<Reading> readings = ord.ReadingCollection;
-					foreach (Reading read in readings)
-					{
-						ORMCoreDomainModel.DelayValidateElement(read, DelayValidateRoleCountError);
-					}
+					ORMCoreDomainModel.DelayValidateElement(read, DelayValidateRoleCountError);
 				}
 			}
 		}
-		#endregion // ReadingOrderHasRoleRemoved rule class
+		#endregion // ReadingOrderHasRoleDeletedRule
 		#endregion // rule classes and helpers
 		#region IModelErrorOwner implementation
 		/// <summary>

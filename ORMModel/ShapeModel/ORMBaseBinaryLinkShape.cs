@@ -158,51 +158,47 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Luminosity Modification
 		#region LinkConnectorShape management
-
-		#region LinkChangeRule class
+		#region LinkChangeRule
 		/// <summary>
+		/// ChangeRule: typeof(ORMBaseBinaryLinkShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// Keep relative child elements a fixed distance away from the fact
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
-		private sealed partial class LinkChangeRule : ChangeRule
+		private static void LinkChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ORMBaseBinaryLinkShape.EdgePointsDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == ORMBaseBinaryLinkShape.EdgePointsDomainPropertyId)
+				ORMBaseBinaryLinkShape parentShape = e.ModelElement as ORMBaseBinaryLinkShape;
+				LinkedElementCollection<ShapeElement> childShapes = parentShape.RelativeChildShapes;
+				int childCount = childShapes.Count;
+				for (int i = 0; i < childCount; ++i)
 				{
-					ORMBaseBinaryLinkShape parentShape = e.ModelElement as ORMBaseBinaryLinkShape;
-					LinkedElementCollection<ShapeElement> childShapes = parentShape.RelativeChildShapes;
-					int childCount = childShapes.Count;
-					for (int i = 0; i < childCount; ++i)
+					LinkConnectorShape linkConnector = childShapes[i] as LinkConnectorShape;
+					if (linkConnector != null)
 					{
-						LinkConnectorShape linkConnector = childShapes[i] as LinkConnectorShape;
-						if (linkConnector != null)
+						RectangleD bounds = parentShape.AbsoluteBoundingBox;
+						linkConnector.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
+						ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(linkConnector, LinkConnectsToNode.NodesDomainRoleId);
+						int linksCount = links.Count;
+						for (int j = 0; j < linksCount; ++j)
 						{
-							RectangleD bounds = parentShape.AbsoluteBoundingBox;
-							linkConnector.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
-							ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(linkConnector, LinkConnectsToNode.NodesDomainRoleId);
-							int linksCount = links.Count;
-							for (int j = 0; j < linksCount; ++j)
+							LinkConnectsToNode link = links[j];
+							BinaryLinkShape linkShape = link.Link as BinaryLinkShape;
+							if (linkShape != null)
 							{
-								LinkConnectsToNode link = links[j];
-								BinaryLinkShape linkShape = link.Link as BinaryLinkShape;
-								if (linkShape != null)
-								{
-									// Changing the location is not reliably reconnecting all shapes, especially
-									// during load. Force the link to reconnect with a RecalculateRoute call
-									linkShape.RecalculateRoute();
-								}
-
+								// Changing the location is not reliably reconnecting all shapes, especially
+								// during load. Force the link to reconnect with a RecalculateRoute call
+								linkShape.RecalculateRoute();
 							}
-							break;
+
 						}
+						break;
 					}
 				}
 			}
 		}
-		#endregion // LinkChangeRule class
+		#endregion // LinkChangeRule
 		#endregion // LinkConnectorShape management
 		#region Accessibility Properties
 		/// <summary>

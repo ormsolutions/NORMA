@@ -161,39 +161,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Customize appearance
 		#region Shape display update rules
-		#region FrequencyConstraintPropertyChangeRule class
-		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed partial class FrequencyConstraintPropertyChangeRule : ChangeRule
+		#region FrequencyConstraintPropertyChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void FrequencyConstraintPropertyChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
+				attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
-					attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
+				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
+				if (!fc.IsDeleted)
 				{
-					FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
-					if (!fc.IsDeleted)
+					// Resize the frequency constraint wherever it is displayed, and make sure
+					// the object type is made visible in the same location.
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(fc))
 					{
-						// Resize the frequency constraint wherever it is displayed, and make sure
-						// the object type is made visible in the same location.
-						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(fc))
+						ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
+						if (externalConstraintShape != null)
 						{
-							ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
-							if (externalConstraintShape != null)
+							SizeD oldSize = externalConstraintShape.Size;
+							externalConstraintShape.AutoResize();
+							if (oldSize == externalConstraintShape.Size)
 							{
-								SizeD oldSize = externalConstraintShape.Size;
-								externalConstraintShape.AutoResize();
-								if (oldSize == externalConstraintShape.Size)
-								{
-									externalConstraintShape.InvalidateRequired(true);
-								}
+								externalConstraintShape.InvalidateRequired(true);
 							}
 						}
 					}
 				}
 			}
 		}
-		#endregion // FrequencyConstraintPropertyChangeRule class
+		#endregion // FrequencyConstraintPropertyChangeRule
 		#endregion // Shape display update rules
 	}
 }

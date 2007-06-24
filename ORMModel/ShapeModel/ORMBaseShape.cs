@@ -94,13 +94,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return MultiShapeUtility.FixUpChildShapes(this, childElement);
 		}
-		[RuleOn(typeof(NodeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private sealed partial class AbsoluteBoundsChangedRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.NodeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void AbsoluteBoundsChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				MultiShapeUtility.CheckLinksOnBoundsChange(e);
-			}
+			MultiShapeUtility.CheckLinksOnBoundsChange(e);
 		}
 		#endregion // MultipleShapesSupport
 		#region Customize appearance
@@ -587,24 +586,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // DuplicateNameError Activation Helper
 		#region Update shapes on ModelError added/removed
-		[RuleOn(typeof(ModelHasError))] // AddRule
-		private sealed partial class ModelErrorAdded : AddRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError)
+		/// </summary>
+		private static void ModelErrorAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ProcessModelErrorChange(e.ModelElement as ModelHasError);
-			}
+			ProcessModelErrorChange(e.ModelElement as ModelHasError);
 		}
-		[RuleOn(typeof(ModelHasError))] // DeletingRule
-		private sealed partial class ModelErrorDeleting : DeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError)
+		/// </summary>
+		private static void ModelErrorDeletingRule(ElementDeletingEventArgs e)
 		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			ModelHasError link = e.ModelElement as ModelHasError;
+			if (!link.Model.IsDeleting)
 			{
-				ModelHasError link = e.ModelElement as ModelHasError;
-				if (!link.Model.IsDeleting)
-				{
-					ProcessModelErrorChange(link);
-				}
+				ProcessModelErrorChange(link);
 			}
 		}
 		private static void ProcessModelErrorChange(ModelHasError errorLink)

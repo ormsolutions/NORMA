@@ -382,6 +382,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\Diagnostics\TraceUtility.cs" />
     <Compile Include="Framework\Design\Editors\FlagsEnumEditor.cs" />
     <Compile Include="Framework\Design\Editors\FlagsEnumListBox.cs">
       <SubType>Component</SubType>

@@ -365,11 +365,11 @@
 		<value>(Filtered)</value>
 		<comment>Text returned by the ModelErrorDisplayFilter's ToString override.</comment>
 	</data>
-	<data name="ModelException.Constraint.EnforceNoForeignFacts" xml:space="preserve">
+	<data name="ModelException.Constraint.EnforceNoForeignFactTypes" xml:space="preserve">
 		<value>A constraint must be attached to a fact in the same model as the constraint.</value>
 		<comment>Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
 	</data>
-	<data name="ModelException.Constraint.EnforceSingleFactForInternalConstraint" xml:space="preserve">
+	<data name="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint" xml:space="preserve">
 		<value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
 		<comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
 	</data>
@@ -396,6 +396,14 @@
 	<data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
 		<value>Reading text is not in a valid format.</value>
 		<comment>Thrown when adding a reading to a fact using the AddReading with the reading text to add.</comment>
+	</data>
+	<data name="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange" xml:space="preserve">
+		<value>The role associated with an implicit boolean value type cannot be changed.</value>
+		<comment>Exception message when an attempt is made to modify a role player associated with an implicit boolean value.</comment>
+	</data>
+	<data name="ModelException.FactType.EnforceNoRoleMigration" xml:space="preserve">
+		<value>A Role must remain with the FactType it was originally associated with.</value>
+		<comment>Exception message when an attempt is made to move a role to a different FactType.</comment>
 	</data>
 	<data name="ModelException.FactType.EnforceRolePlayerNotNestingType" xml:space="preserve">
 		<value>A role player cannot be the type objectifying the role's parent fact type.</value>

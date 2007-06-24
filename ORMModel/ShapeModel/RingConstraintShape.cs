@@ -346,47 +346,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		#endregion // Customize appearance
-		#region RingConstraintPropertyChangeRule class
-		[RuleOn(typeof(RingConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // ChangeRule
-		private sealed partial class RingConstraintPropertyChangeRule : ChangeRule
+		#region RingConstraintPropertyChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(RingConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void RingConstraintPropertyChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == RingConstraint.RingTypeDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == RingConstraint.RingTypeDomainPropertyId)
+				RingConstraint ringConstraint = (RingConstraint)e.ModelElement;
+				if (!ringConstraint.IsDeleted)
 				{
-					RingConstraint ringConstraint = (RingConstraint)e.ModelElement;
-					if (!ringConstraint.IsDeleted)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(ringConstraint))
 					{
-						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(ringConstraint))
+						RingConstraintShape ringConstraintShape = pel as RingConstraintShape;
+						if (ringConstraintShape != null)
 						{
-							RingConstraintShape ringConstraintShape = pel as RingConstraintShape;
-							if (ringConstraintShape != null)
+							foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(ringConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
 							{
-								foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(ringConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
+								BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+								if (binaryLink != null)
 								{
-									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-									if (binaryLink != null)
-									{
-										binaryLink.RecalculateRoute();
-									}
+									binaryLink.RecalculateRoute();
 								}
-								SizeD oldSize = ringConstraintShape.myContentSize;
-								ringConstraintShape.myContentSize = SizeD.Empty;
-								if (!oldSize.IsEmpty)
-								{
-									RectangleD bounds = ringConstraintShape.Bounds;
-									bounds.Offset(-((ringConstraintShape.ContentSize.Width - oldSize.Width) / 2), 0);
-									ringConstraintShape.Bounds = bounds;
-								}
-								ringConstraintShape.AutoResize();
-								ringConstraintShape.InvalidateRequired(true);
 							}
+							SizeD oldSize = ringConstraintShape.myContentSize;
+							ringConstraintShape.myContentSize = SizeD.Empty;
+							if (!oldSize.IsEmpty)
+							{
+								RectangleD bounds = ringConstraintShape.Bounds;
+								bounds.Offset(-((ringConstraintShape.ContentSize.Width - oldSize.Width) / 2), 0);
+								ringConstraintShape.Bounds = bounds;
+							}
+							ringConstraintShape.AutoResize();
+							ringConstraintShape.InvalidateRequired(true);
 						}
 					}
 				}
 			}
 		}
-		#endregion // RingConstraintPropertyChangeRule class
+		#endregion // RingConstraintPropertyChangeRule
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError

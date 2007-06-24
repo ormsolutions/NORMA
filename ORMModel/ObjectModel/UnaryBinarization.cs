@@ -418,68 +418,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				return true;
 			}
-
-			[RuleOn(typeof(FactType))] // ChangeRule
-			private sealed partial class FactTypeNameChanged : ChangeRule
+			/// <summary>
+			/// ChangeRule: typeof(FactType)
+			/// </summary>
+			private static void FactTypeNameChangedRule(ElementPropertyChangedEventArgs e)
 			{
-				public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+				if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
 				{
-					if (e.DomainProperty.Id == FactType.GeneratedNameDomainPropertyId)
+					ORMCoreDomainModel.DelayValidateElement(e.ModelElement, DelayValidateUnaryBinarization);
+				}
+			}
+			/// <summary>
+			/// AddRule: typeof(ObjectTypePlaysRole)
+			/// </summary>
+			private static void ObjectTypePlaysRoleAddedRule(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				FactType factType;
+				if (null != (factType = link.PlayedRole.FactType))
+				{
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+				}
+			}
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+			/// </summary>
+			private static void ObjectTypePlaysRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			{
+				bool rolePlayerRoleChanged = e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId;
+				ObjectType rolePlayer = rolePlayerRoleChanged ? (ObjectType)e.OldRolePlayer : ((ObjectTypePlaysRole)e.ElementLink).RolePlayer;
+				if (rolePlayer.IsImplicitBooleanValue)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange);
+				}
+				if (!rolePlayerRoleChanged)
+				{
+					FactType factType = ((Role)e.OldRolePlayer).FactType;
+					if (factType != null)
 					{
-						ORMCoreDomainModel.DelayValidateElement((e.ModelElement as FactType), DelayValidateUnaryBinarization);
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+					}
+					factType = ((Role)e.NewRolePlayer).FactType;
+					if (factType != null)
+					{
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 					}
 				}
 			}
-
-			[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-			private sealed partial class ObjectTypePlaysRoleAdded : AddRule
+			/// <summary>
+			/// DeleteRule: typeof(ObjectTypePlaysRole)
+			/// </summary>
+			private static void ObjectTypePlaysRoleDeletedRule(ElementDeletedEventArgs e)
 			{
-				public override void ElementAdded(ElementAddedEventArgs e)
+				// After this point, it is unknown whether the FactType was a unary, so we just delete it for now
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				ObjectType objectType = link.RolePlayer;
+				Role role;
+				FactType factType;
+				if (objectType.IsImplicitBooleanValue)
 				{
-					ObjectTypePlaysRole o = e.ModelElement as ObjectTypePlaysRole;
-					if (o.PlayedRole.FactType != null)
+					if (!(role = link.PlayedRole).IsDeleted &&
+						null != (factType = role.FactType) &&
+						!factType.IsDeleted)
 					{
-						ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ObjectTypePlaysRole).PlayedRole.FactType, DelayValidateUnaryBinarization);
+						factType.Delete();
+					}
+					if (!objectType.IsDeleted)
+					{
+						objectType.Delete();
 					}
 				}
 			}
-
-			[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-			private sealed partial class ObjectTypePlaysRoleRolePlayerChanged : RolePlayerChangeRule
-			{
-				public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-				{
-					if ((e.OldRolePlayer as ObjectType).IsImplicitBooleanValue && !(e.NewRolePlayer as ObjectType).IsImplicitBooleanValue)
-					{
-						Debug.Fail("Cannot change the role player on the implicit boolean role on a binarized unary.");
-						(e.ElementLink as ObjectTypePlaysRole).PlayedRole.RolePlayer = (ObjectType)e.OldRolePlayer;
-					}
-					ORMCoreDomainModel.DelayValidateElement((e.ElementLink as ObjectTypePlaysRole).PlayedRole.FactType, DelayValidateUnaryBinarization);
-				}
-			}
-
-			[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
-			private sealed partial class ObjectTypePlaysRoleDeleted : DeleteRule
-			{
-				public override void ElementDeleted(ElementDeletedEventArgs e)
-				{
-					// After this point, it is unknown whether the FactType was a unary, so we just delete it for now
-					if ((e.ModelElement as ObjectTypePlaysRole).RolePlayer.IsImplicitBooleanValue)
-					{
-						(e.ModelElement as ObjectTypePlaysRole).PlayedRole.FactType.Delete();
-					}
-					//ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ObjectTypePlaysRole).PlayedRole.FactType, DelayValidateUnaryBinarization);
-				}
-			}
-
 			#region Rules for FactTypeHasRole
-			[RuleOn(typeof(FactTypeHasRole))] // AddRule
-			private sealed partial class FactTypeHasRoleAdded : AddRule
+			/// <summary>
+			/// AddRule: typeof(FactTypeHasRole)
+			/// </summary>
+			private static void FactTypeHasRoleAddedRule(ElementAddedEventArgs e)
 			{
-				public override void ElementAdded(ElementAddedEventArgs e)
-				{
-					ORMCoreDomainModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayValidateUnaryBinarization);
-				}
+				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayValidateUnaryBinarization);
 			}
 			[ORMCoreDomainModel.DelayValidatePriority(-100)]
 			private static void DelayValidateUnaryBinarization(ModelElement element)
@@ -490,84 +506,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ProcessFactType(factType);
 				}
 			}
-
-			[RuleOn(typeof(FactTypeHasRole))] // RolePlayerChangeRule
-			private sealed partial class FactTypeHasRoleRolePlayerChanged : RolePlayerChangeRule
+			/// <summary>
+			/// DeletingRule: typeof(FactTypeHasRole)
+			/// </summary>
+			private static void FactTypeHasRoleDeletingRule(ElementDeletingEventArgs e)
 			{
-				public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+				if (!factType.IsDeleting)
 				{
-					ORMCoreDomainModel.DelayValidateElement(((FactTypeHasRole)e.ElementLink).FactType, DelayValidateUnaryBinarization);
-				}
-			}
-
-			[RuleOn(typeof(FactTypeHasRole))] // DeletingRule
-			private sealed partial class FactTypeHasRoleDeleting : DeletingRule
-			{
-				public override void ElementDeleting(ElementDeletingEventArgs e)
-				{
-					FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-					if (!factType.IsDeleted)
+					LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
+					int? unaryIndex = GetUnaryRoleIndex(factRoles);
+					Role implicitRole;
+					ObjectType implicitRolePlayer;
+					if (unaryIndex.HasValue &&
+						null != (implicitRole = factRoles[(unaryIndex.Value == 0) ? 1 : 0].Role) &&
+						null != (implicitRolePlayer = implicitRole.RolePlayer))
 					{
-						if (factType.UnaryRole != null)
-						{
-							// Delete the Implicit Boolean ValueType
-							if (factType.RoleCollection[0].Role.RolePlayer != null && factType.RoleCollection[0].Role.RolePlayer.IsImplicitBooleanValue)
-							{
-								factType.RoleCollection[0].Role.RolePlayer.Delete();
-							}
-							else
-							{
-								factType.RoleCollection[1].Role.RolePlayer.Delete();
-							}
-							// Delete the Unary FactType
-							(e.ModelElement as FactTypeHasRole).FactType.Delete();
-						}
+						// Delete the Implicit Boolean ValueType
+						implicitRole.Delete();
+						// Delete the Unary FactType
+						factType.Delete();
 					}
-					//ORMCoreDomainModel.DelayValidateElement(((FactTypeHasRole)e.ModelElement).FactType, DelayValidateUnaryBinarization);
 				}
 			}
 			#endregion //Rules for FactTypeHasRole
-
 			#region Rules for ConstraintRoleSequenceHasRole
 			/// <summary>
-			/// 
+			/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 			/// </summary>
-			[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-			private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
+			private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 			{
-				public override void ElementAdded(ElementAddedEventArgs e)
+				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
+				if (factType != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayValidateUnaryBinarization);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 				}
 			}
-
 			/// <summary>
-			/// 
+			/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
 			/// </summary>
-			[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
-			private sealed partial class ConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
+			private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
 			{
-				public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
+				if (factType != null && !factType.IsDeleted)
 				{
-					if ((e.ElementLink as ConstraintRoleSequenceHasRole).Role.FactType != null)
-					{
-						ORMCoreDomainModel.DelayValidateElement((e.ElementLink as ConstraintRoleSequenceHasRole).Role.FactType, DelayValidateUnaryBinarization);
-					}
-				}
-			}
-
-			/// <summary>
-			/// 
-			/// </summary>
-			[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-			private sealed partial class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
-			{
-				public override void ElementDeleted(ElementDeletedEventArgs e)
-				{
-					if ((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType != null)
-					{
-						ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayValidateUnaryBinarization);
-					}
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 				}
 			}
 			#endregion Rules for ConstraintRoleSequenceHasRole

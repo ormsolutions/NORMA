@@ -661,7 +661,7 @@ namespace Neumont.Tools.Modeling
 								if (notifyAdded == null)
 								{
 									ruleManager = element.Store.RuleManager;
-									ruleManager.DisableRule(typeof(NamedElementChangedRule));
+									ruleManager.DisableRule(typeof(NamedElementChangedRuleClass));
 									ruleDisabled = true;
 								}
 								DomainClassInfo.SetName(element, elementName);
@@ -670,7 +670,7 @@ namespace Neumont.Tools.Modeling
 							{
 								if (ruleDisabled)
 								{
-									ruleManager.EnableRule(typeof(NamedElementChangedRule));
+									ruleManager.EnableRule(typeof(NamedElementChangedRuleClass));
 								}
 							}
 						}
@@ -964,21 +964,19 @@ namespace Neumont.Tools.Modeling
 			}
 			return duplicateAction;
 		}
-		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)] // AddRule
-		private sealed partial class ElementLinkAddedRule : AddRule
+		/// <summary>
+		/// AddRule: typeof(ElementLink), Priority=NamedElementDictionary.RulePriority;
+		/// </summary>
+		private static void ElementLinkAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				HandleAddRemove(e.ModelElement, false, false);
-			}
+			HandleAddRemove(e.ModelElement, false, false);
 		}
-		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)] // DeletingRule
-		private sealed partial class ElementLinkDeleteRule : DeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ElementLink), Priority=NamedElementDictionary.RulePriority;
+		/// </summary>
+		private static void ElementLinkDeletingRule(ElementDeletingEventArgs e)
 		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				HandleAddRemove(e.ModelElement, true, false);
-			}
+			HandleAddRemove(e.ModelElement, true, false);
 		}
 		private static void ElementLinkAddedEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -1420,13 +1418,12 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		// UNDONE: RolePlayerChange
-		[RuleOn(typeof(ModelElement), Priority = NamedElementDictionary.RulePriority)] // ChangeRule
-		private sealed partial class NamedElementChangedRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ModelElement), Priority=NamedElementDictionary.RulePriority;
+		/// </summary>
+		private static void NamedElementChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				HandleElementChanged(e, false);
-			}
+			HandleElementChanged(e, false);
 		}
 		private static void NamedElementChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{

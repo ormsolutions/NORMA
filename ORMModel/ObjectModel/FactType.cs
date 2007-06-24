@@ -530,87 +530,83 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetNamedElementDictionaryLinkRoles();
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
-		#region FactTypeChangeRule class
-		[RuleOn(typeof(FactType))] // ChangeRule
-		private sealed partial class FactTypeChangeRule : ChangeRule
+		#region FactTypeChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(FactType)
+		/// Forward through the property grid property to the underlying
+		/// nesting type property
+		/// </summary>
+		private static void FactTypeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Forward through the property grid property to the underlying
-			/// nesting type property
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == FactType.DerivationRuleDisplayDomainPropertyId)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == FactType.DerivationRuleDisplayDomainPropertyId)
+				FactType factType = e.ModelElement as FactType;
+				string newVal = e.NewValue as string;
+				FactTypeDerivationExpression currentRule = factType.DerivationRule;
+				if (string.IsNullOrEmpty(newVal))
 				{
-					FactType factType = e.ModelElement as FactType;
-					string newVal = e.NewValue as string;
-					FactTypeDerivationExpression currentRule = factType.DerivationRule;
-					if (string.IsNullOrEmpty(newVal))
+					if (currentRule != null)
 					{
-						if (currentRule != null)
-						{
-							currentRule.Body = string.Empty;
-						}
-					}
-					else
-					{
-						if (null == currentRule)
-						{
-							currentRule = new FactTypeDerivationExpression(factType.Store);
-							factType.DerivationRule = currentRule;
-						}
-						currentRule.Body = newVal;
+						currentRule.Body = string.Empty;
 					}
 				}
-				else if (attributeGuid == FactType.DerivationStorageDisplayDomainPropertyId)
+				else
+				{
+					if (null == currentRule)
+					{
+						currentRule = new FactTypeDerivationExpression(factType.Store);
+						factType.DerivationRule = currentRule;
+					}
+					currentRule.Body = newVal;
+				}
+			}
+			else if (attributeGuid == FactType.DerivationStorageDisplayDomainPropertyId)
+			{
+				FactType factType = e.ModelElement as FactType;
+				if (factType.DerivationRule != null)
+				{
+					factType.DerivationRule.DerivationStorage = (DerivationStorageType)e.NewValue;
+				}
+			}
+			else if (attributeGuid == FactType.NoteTextDomainPropertyId)
+			{
+				// cache the text.
+				string newText = (string)e.NewValue;
+				FactType factType = e.ModelElement as FactType;
+				// Get the note if it exists
+				Note note = factType.Note;
+				if (note != null)
+				{
+					// and try to set the text to the cached value.
+					note.Text = newText;
+				}
+				else if (!string.IsNullOrEmpty(newText))
+				{
+					// Otherwise, create the note and set the text,
+					note = new Note(factType.Store);
+					note.Text = newText;
+					// then attach the note to the RootType.
+					factType.Note = note;
+				}
+			}
+			else if (attributeGuid == FactType.NameDomainPropertyId)
+			{
+				Debug.Assert(e.ChangeSource == ChangeSource.Normal, "The FactType.Name property should not be set directly from a rule. FactType and its nested class should set the GeneratedName property instead.");
+				if (e.ChangeSource == ChangeSource.Normal) // Ignore changes from rules and other sources
 				{
 					FactType factType = e.ModelElement as FactType;
-					if (factType.DerivationRule != null)
+					Objectification objectificationLink;
+					ObjectType nestingType;
+					if (null != (objectificationLink = factType.Objectification) &&
+						null != (nestingType = objectificationLink.NestingType))
 					{
-						factType.DerivationRule.DerivationStorage = (DerivationStorageType)e.NewValue;
-					}
-				}
-				else if (attributeGuid == FactType.NoteTextDomainPropertyId)
-				{
-					// cache the text.
-					string newText = (string)e.NewValue;
-					FactType factType = e.ModelElement as FactType;
-					// Get the note if it exists
-					Note note = factType.Note;
-					if (note != null)
-					{
-						// and try to set the text to the cached value.
-						note.Text = newText;
-					}
-					else if (!string.IsNullOrEmpty(newText))
-					{
-						// Otherwise, create the note and set the text,
-						note = new Note(factType.Store);
-						note.Text = newText;
-						// then attach the note to the RootType.
-						factType.Note = note;
-					}
-				}
-				else if (attributeGuid == FactType.NameDomainPropertyId)
-				{
-					Debug.Assert(e.ChangeSource == ChangeSource.Normal, "The FactType.Name property should not be set directly from a rule. FactType and its nested class should set the GeneratedName property instead.");
-					if (e.ChangeSource == ChangeSource.Normal) // Ignore changes from rules and other sources
-					{
-						FactType factType = e.ModelElement as FactType;
-						Objectification objectificationLink;
-						ObjectType nestingType;
-						if (null != (objectificationLink = factType.Objectification) &&
-							null != (nestingType = objectificationLink.NestingType))
-						{
-							nestingType.Name = (string)e.NewValue;
-						}
+						nestingType.Name = (string)e.NewValue;
 					}
 				}
 			}
 		}
-		#endregion // FactTypeChangeRule class
+		#endregion // FactTypeChangeRule
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the error associated with the fact.
@@ -1359,281 +1355,283 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Automatic Name Generation
 		#region Model Validation Rules
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(FactTypeHasRole)
+		/// Other rules are not set up to handle roles jumping from one FactType to another.
+		/// The NORMA UI never attempts this operation.
+		/// Throw if any attempt is made to directly modify roles on a FactTypeHasRole
+		/// relationship after it has been created.
+		/// </summary>
+		private static void BlockRoleMigrationRule(RolePlayerChangedEventArgs e)
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeEnforceNoRoleMigration);
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class FactTypeHasRoleAddRule : AddRule
+		private static void FactTypeHasRoleAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+			ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+			ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasRole)
+		/// Internal uniqueness constraints are required for non-unary facts. Requires
+		/// validation when roles are added and removed.
+		/// </summary>
+		private static void FactTypeHasRoleDeleteRule(ElementDeletedEventArgs e)
+		{
+			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+			if (!factType.IsDeleted)
 			{
-				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 			}
 		}
 		/// <summary>
-		/// Internal uniqueness constraints are required for non-unary facts. Requires
-		/// validation when roles are added and removed.
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
-		private sealed partial class FactTypeHasRoleDeleteRule : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-				if (!factType.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-				}
-			}
-		}
-		/// <summary>
+		/// AddRule: typeof(FactSetConstraint)
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed partial class ModelHasInternalConstraintAddRuleModelValidation : AddRule
+		private static void InternalConstraintAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			if (link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 			{
-				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				if (link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
-				{
-					FactType fact = link.FactType;
-					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
-				}
-			}
-		}
-		/// <summary>
-		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
-		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
-		private sealed partial class ModelHasInternalConstraintDeleteRuleModelValidation : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				FactSetConstraint link = e.ModelElement as FactSetConstraint;
 				FactType fact = link.FactType;
-				if (!fact.IsDeleted &&
-					link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
-				{
-					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
-				}
+				ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 			}
 		}
-		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
-		private sealed partial class InternalUniquenessConstraintChangeRule : ChangeRule
+		/// <summary>
+		/// DeleteRule: typeof(FactSetConstraint)
+		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
+		/// </summary>
+		private static void InternalConstraintDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			FactType fact = link.FactType;
+			if (!fact.IsDeleted &&
+				link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
-				{
-					UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
-					LinkedElementCollection<FactType> facts;
-					if (!constraint.IsDeleted &&
-						constraint.IsInternal &&
-						1 == (facts = constraint.FactTypeCollection).Count)
-					{
-						FactType fact = facts[0];
-						ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-						ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
-					}
-				}
+				ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class InternalConstraintCollectionHasConstraintAddedRule : AddRule
+		/// <summary>
+		/// ChangeRule: typeof(UniquenessConstraint)
+		/// </summary>
+		private static void InternalUniquenessConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+				UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
 				LinkedElementCollection<FactType> facts;
-				if (constraint != null &&
+				if (!constraint.IsDeleted &&
 					constraint.IsInternal &&
 					1 == (facts = constraint.FactTypeCollection).Count)
 				{
-					ORMCoreDomainModel.DelayValidateElement(facts[0], DelayValidateImpliedInternalUniquenessConstraintError);
-				}
-			}
-		}
-
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-		private sealed partial class InternalConstraintCollectionHasConstraintDeleteRule : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
-				LinkedElementCollection<FactType> facts;
-				FactType fact;
-				if (constraint != null &&
-					!constraint.IsDeleted &&
-					constraint.IsInternal &&
-					1 == (facts = constraint.FactTypeCollection).Count &&
-					!(fact = facts[0]).IsDeleted)
-				{
+					FactType fact = facts[0];
+					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
-
-
 		/// <summary>
-		/// Calls the validation of all FactType related errors
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))] // AddRule
-		private sealed partial class ModelHasFactTypeAddRuleModelValidation : AddRule
+		private static void InternalConstraintCollectionHasConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+			LinkedElementCollection<FactType> facts;
+			if (constraint != null &&
+				constraint.IsInternal &&
+				1 == (facts = constraint.FactTypeCollection).Count)
 			{
-				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				if (link != null)
-				{
-					FactType fact = link.FactType;
-					if (fact != null)
-					{
-						fact.DelayValidateErrors();
-					}
-				}
+				ORMCoreDomainModel.DelayValidateElement(facts[0], DelayValidateImpliedInternalUniquenessConstraintError);
 			}
 		}
-
 		/// <summary>
-		/// Only validates ReadingRequiredError
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasReadingOrder))] // AddRule
-		private sealed partial class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
+		private static void InternalConstraintCollectionHasConstraintDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+			LinkedElementCollection<FactType> facts;
+			FactType fact;
+			if (constraint != null &&
+				!constraint.IsDeleted &&
+				constraint.IsInternal &&
+				1 == (facts = constraint.FactTypeCollection).Count &&
+				!(fact = facts[0]).IsDeleted)
 			{
-				FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
+				ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ModelHasFactType)
+		/// Calls the validation of all FactType related errors
+		/// </summary>
+		private static void FactTypeAddedRule(ElementAddedEventArgs e)
+		{
+			(e.ModelElement as ModelHasFactType).FactType.DelayValidateErrors();
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasReadingOrder)
+		/// Validates ReadingRequiredError and possibly triggers automatic name generation
+		/// </summary>
+		private static void FactTypeHasReadingOrderAddRule(ElementAddedEventArgs e)
+		{
+			FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
+			ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+			ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasReadingOrder)
+		/// Validates ReadingRequiredError and possibly triggers automatic name generation
+		/// </summary>
+		private static void FactTypeHasReadingOrderDeleteRule(ElementDeletedEventArgs e)
+		{
+			FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
+			if (!factType.IsDeleted)
+			{
 				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
 				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 			}
 		}
 		/// <summary>
-		/// Only validates ReadingRequiredError
+		/// AddRule: typeof(ReadingOrderHasReading)
+		/// Validates ReadingRequiredError and possibly triggers automatic name generation
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasReadingOrder))] // DeleteRule
-		private sealed partial class FactTypeHasReadingOrderDeleteRuleModelValidation : DeleteRule
+		private static void ReadingOrderHasReadingAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			FactType factType = (e.ModelElement as ReadingOrderHasReading).ReadingOrder.FactType;
+			if (factType != null)
 			{
-				FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
-				if (!factType.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Only validates ReadingRequiredError
-		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading))] // AddRule
-		private sealed partial class ReadingOrderHasReadingAddRuleModelValidation : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactType factType = (e.ModelElement as ReadingOrderHasReading).ReadingOrder.FactType;
-				if (factType != null)
-				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-				}
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 			}
 		}
 		/// <summary>
-		/// Only validates ReadingRequiredError
+		/// DeleteRule: typeof(ReadingOrderHasReading)
+		/// Validates ReadingRequiredError and possibly triggers automatic name generation
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading))] // DeleteRule
-		private sealed partial class ReadingOrderHasReadingDeleteRuleModelValidation : DeleteRule
+		private static void ReadingOrderHasReadingDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ReadingOrder ord = (e.ModelElement as ReadingOrderHasReading).ReadingOrder;
+			FactType factType;
+			if (!ord.IsDeleted &&
+				null != (factType = ord.FactType) &&
+				!factType.IsDeleted)
 			{
-				ReadingOrder ord = (e.ModelElement as ReadingOrderHasReading).ReadingOrder;
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Reading)
+		/// </summary>
+		private static void ValidateFactTypeNameForReadingChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Reading.TextDomainPropertyId)
+			{
+				Reading reading = e.ModelElement as Reading;
+				ReadingOrder order;
 				FactType factType;
-				if (!ord.IsDeleted &&
-					null != (factType = ord.FactType) &&
+				if (null != reading &&
+					!reading.IsDeleted &&
+					null != (order = reading.ReadingOrder) &&
+					!order.IsDeleted &&
+					null != (factType = order.FactType) &&
 					!factType.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
 					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
-		[RuleOn(typeof(Reading))] // ChangeRule
-		private sealed partial class ValidateFactNameForReadingChange : ChangeRule
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(FactTypeHasReadingOrder)
+		/// </summary>
+		private static void ValidateFactTypeNameForReadingOrderReorderRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.SourceDomainRole.Id == FactTypeHasReadingOrder.FactTypeDomainRoleId)
 			{
-				if (e.DomainProperty.Id == Reading.TextDomainPropertyId)
+				FactType factType = (FactType)e.SourceElement;
+				if (!factType.IsDeleted)
 				{
-					Reading reading = e.ModelElement as Reading;
-					ReadingOrder order;
-					FactType factType;
-					if (null != reading &&
-						!reading.IsDeleted &&
-						null != (order = reading.ReadingOrder) &&
-						!order.IsDeleted &&
-						null != (factType = order.FactType) &&
-						!factType.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-					}
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeHasReadingOrder))] // RolePlayerPositionChangeRule
-		private sealed partial class ValidateFactNameForReadingOrderReorder : RolePlayerPositionChangeRule
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(ReadingOrderHasReading)
+		/// </summary>
+		private static void ValidateFactTypeNameForReadingReorderRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			if (e.SourceDomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId)
 			{
-				if (e.SourceDomainRole.Id == FactTypeHasReadingOrder.FactTypeDomainRoleId)
+				ReadingOrder order = (ReadingOrder)e.SourceElement;
+				FactType factType;
+				if (!order.IsDeleted &&
+					null != (factType = order.FactType) &&
+					!factType.IsDeleted)
 				{
-					FactType factType = (FactType)e.SourceElement;
-					if (!factType.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-					}
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
-		[RuleOn(typeof(ReadingOrderHasReading))] // RolePlayerPositionChangeRule
-		private sealed partial class ValidateFactNameForReadingReorder : RolePlayerPositionChangeRule
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// </summary>
+		private static void ValidateFactTypeNameForRolePlayerAddedRule(ElementAddedEventArgs e)
 		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			ProcessValidateFactNameForRolePlayerAdded(e.ModelElement as ObjectTypePlaysRole, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessValidateFactNameForRolePlayerAdded(ObjectTypePlaysRole link, Role playedRole)
+		{
+			if (playedRole == null)
 			{
-				if (e.SourceDomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId)
-				{
-					ReadingOrder order = (ReadingOrder)e.SourceElement;
-					FactType factType;
-					if (!order.IsDeleted &&
-						null != (factType = order.FactType) &&
-						!factType.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-					}
-				}
+				playedRole = link.PlayedRole;
+			}
+			FactType factType = playedRole.FactType;
+			if (factType != null)
+			{
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+			}
+			RoleProxy proxy;
+			if (null != (proxy = playedRole.Proxy) &&
+				null != (factType = proxy.FactType))
+			{
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class ValidateFactNameForRolePlayerAdded : AddRule
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// </summary>
+		private static void ValidateFactTypeNameForRolePlayerDeleteRule(ElementDeletedEventArgs e)
 		{
-			public static void Process(ObjectTypePlaysRole link, Role playedRole)
+			ProcessValidateFactNameForRolePlayerDelete(e.ModelElement as ObjectTypePlaysRole, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessValidateFactNameForRolePlayerDelete(ObjectTypePlaysRole link, Role playedRole)
+		{
+			if (playedRole == null)
 			{
-				if (playedRole == null)
-				{
-					playedRole = link.PlayedRole;
-				}
-				FactType factType = playedRole.FactType;
-				if (factType != null)
+				playedRole = link.PlayedRole;
+			}
+			FactType factType;
+			if (!playedRole.IsDeleted)
+			{
+				if (null != (factType = playedRole.FactType))
 				{
 					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
@@ -1644,99 +1642,64 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole, null);
-			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
-		private sealed partial class ValidateFactNameForRolePlayerDelete : DeleteRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// </summary>
+		private static void ValidateFactTypeNameForRolePlayerRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public static void Process(ObjectTypePlaysRole link, Role playedRole)
+			Guid changedRoleGuid = e.DomainRole.Id;
+			Role oldRole = null;
+			if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
 			{
-				if (playedRole == null)
-				{
-					playedRole = link.PlayedRole;
-				}
-				FactType factType;
-				if (!playedRole.IsDeleted)
-				{
-					if (null != (factType = playedRole.FactType))
-					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-					}
-					RoleProxy proxy;
-					if (null != (proxy = playedRole.Proxy) &&
-						null != (factType = proxy.FactType))
-					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-					}
-				}
+				oldRole = (Role)e.OldRolePlayer;
 			}
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole, null);
-			}
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			ProcessValidateFactNameForRolePlayerDelete(link, oldRole);
+			ProcessValidateFactNameForRolePlayerAdded(link, null);
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed partial class ValidateFactNameForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ObjectType)
+		/// </summary>
+		private static void ValidateFactTypeNameForObjectTypeNameChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ObjectType.NameDomainPropertyId)
 			{
-				Guid changedRoleGuid = e.DomainRole.Id;
-				Role oldRole = null;
-				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+				ObjectType objectType = e.ModelElement as ObjectType;
+				if (!objectType.IsDeleted)
 				{
-					oldRole = (Role)e.OldRolePlayer;
-				}
-				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
-				ValidateFactNameForRolePlayerDelete.Process(link, oldRole);
-				ValidateFactNameForRolePlayerAdded.Process(link, null);
-			}
-		}
-		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed partial class ValidateFactNameForObjectTypeNameChange : ChangeRule
-		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == ObjectType.NameDomainPropertyId)
-				{
-					ObjectType objectType = e.ModelElement as ObjectType;
-					if (!objectType.IsDeleted)
+					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+					int playedRolesCount = playedRoles.Count;
+					for (int i = 0; i < playedRolesCount; ++i)
 					{
-						LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
-						int playedRolesCount = playedRoles.Count;
-						for (int i = 0; i < playedRolesCount; ++i)
+						Role role = playedRoles[i];
+						FactType factType = role.FactType;
+						if (factType != null)
 						{
-							Role role = playedRoles[i];
-							FactType factType = role.FactType;
-							if (factType != null)
-							{
-								ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-							}
-							RoleProxy proxy;
-							if (null != (proxy = role.Proxy) &&
-								null != (factType = proxy.FactType))
-							{
-								ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
-							}
+							ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 						}
-						FactType nestedFact = objectType.NestedFactType;
-						if (nestedFact != null)
+						RoleProxy proxy;
+						if (null != (proxy = role.Proxy) &&
+							null != (factType = proxy.FactType))
 						{
-							string newName = (string)e.NewValue;
-							if (newName.Length != 0)
+							ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						}
+					}
+					FactType nestedFact = objectType.NestedFactType;
+					if (nestedFact != null)
+					{
+						string newName = (string)e.NewValue;
+						if (newName.Length != 0)
+						{
+							string generatedName = nestedFact.myGeneratedName;
+							if (!string.IsNullOrEmpty(generatedName) &&
+								(object)newName != (object)generatedName)
 							{
-								string generatedName = nestedFact.myGeneratedName;
-								if (!string.IsNullOrEmpty(generatedName) &&
-									(object)newName != (object)generatedName)
-								{
-									GeneratedNamePropertyHandler.ClearGeneratedName(nestedFact, generatedName);
-								}
-								nestedFact.RegenerateErrorText();
-								nestedFact.OnFactTypeNameChanged();
+								GeneratedNamePropertyHandler.ClearGeneratedName(nestedFact, generatedName);
 							}
+							nestedFact.RegenerateErrorText();
+							nestedFact.OnFactTypeNameChanged();
 						}
 					}
 				}
@@ -1756,80 +1719,79 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(Objectification), Priority=1;
 		/// Update the fact type name when an objectification is added
 		/// </summary>
-		[RuleOn(typeof(Objectification), Priority = 1)] // AddRule
-		private sealed partial class ValidateFactNameForObjectificationAdded : AddRule
+		private static void ValidateFactTypeNameForObjectificationAddedRule(ElementAddedEventArgs e)
 		{
-			public static void Process(Objectification link)
+			ProcessValidateFactNameForObjectificationAdded(e.ModelElement as Objectification);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessValidateFactNameForObjectificationAdded(Objectification link)
+		{
+			ObjectType nestingObjectType = link.NestingType;
+			if (nestingObjectType.Name.Length != 0)
 			{
-				ObjectType nestingObjectType = link.NestingType;
-				if (nestingObjectType.Name.Length != 0)
-				{
-					FactType nestedFactType = link.NestedFactType;
-					nestedFactType.RegenerateErrorText();
-					nestedFactType.OnFactTypeNameChanged();
-				}
-			}
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as Objectification);
+				FactType nestedFactType = link.NestedFactType;
+				nestedFactType.RegenerateErrorText();
+				nestedFactType.OnFactTypeNameChanged();
 			}
 		}
 		/// <summary>
+		/// DeleteRule: typeof(Objectification), Priority=1;
 		/// Update the fact type name when an objectification is deleted
 		/// </summary>
-		[RuleOn(typeof(Objectification), Priority = 1)] // DeleteRule
-		private sealed partial class ValidateFactNameForObjectificationDelete : DeleteRule
+		private static void ValidateFactTypeNameForObjectificationDeleteRule(ElementDeletedEventArgs e)
 		{
-			public static void Process(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
+			ProcessValidateFactNameForObjectificationDelete(e.ModelElement as Objectification, null, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessValidateFactNameForObjectificationDelete(Objectification link, FactType nestedFactType, ObjectType nestingObjectType)
+		{
+			if (nestedFactType == null)
 			{
-				if (nestedFactType == null)
-				{
-					nestedFactType = link.NestedFactType;
-				}
-				if (nestingObjectType == null)
-				{
-					nestingObjectType = link.NestingType;
-				}
-				if (!nestedFactType.IsDeleted && (nestingObjectType.IsDeleted || nestingObjectType.Name.Length != 0))
-				{
-					nestedFactType.RegenerateErrorText();
-					nestedFactType.OnFactTypeNameChanged();
-				}
+				nestedFactType = link.NestedFactType;
 			}
-			public override void ElementDeleted(ElementDeletedEventArgs e)
+			if (nestingObjectType == null)
 			{
-				Process(e.ModelElement as Objectification, null, null);
+				nestingObjectType = link.NestingType;
+			}
+			if (!nestedFactType.IsDeleted && (nestingObjectType.IsDeleted || nestingObjectType.Name.Length != 0))
+			{
+				nestedFactType.RegenerateErrorText();
+				nestedFactType.OnFactTypeNameChanged();
 			}
 		}
-		[RuleOn(typeof(Objectification), Priority = 1)] // RolePlayerChangeRule
-		private sealed partial class ValidateFactNameForObjectificationRolePlayerChange : RolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Objectification), Priority=1;
+		/// </summary>
+		private static void ValidateFactTypeNameForObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			Guid changedRoleGuid = e.DomainRole.Id;
+			FactType oldFactType = null;
+			ObjectType oldObjectType = null;
+			Objectification link = e.ElementLink as Objectification;
+			if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
 			{
-				Guid changedRoleGuid = e.DomainRole.Id;
-				FactType oldFactType = null;
-				ObjectType oldObjectType = null;
-				Objectification link = e.ElementLink as Objectification;
-				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
-				{
-					oldObjectType = (ObjectType)e.OldRolePlayer;
-					oldFactType = link.NestedFactType;
-				}
-				else if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
-				{
-					oldFactType = (FactType)e.OldRolePlayer;
-					oldObjectType = link.NestingType;
-				}
-				string oldFactTypeName = oldFactType.myGeneratedName;
-				bool resetObjectTypeName = !string.IsNullOrEmpty(oldFactTypeName) && oldFactTypeName == oldObjectType.Name;
-				ValidateFactNameForObjectificationDelete.Process(link, oldFactType, oldObjectType);
-				ValidateFactNameForObjectificationAdded.Process(link);
-				if (resetObjectTypeName)
-				{
-					link.NestingType.Name = "";
-				}
+				oldObjectType = (ObjectType)e.OldRolePlayer;
+				oldFactType = link.NestedFactType;
+			}
+			else if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
+			{
+				oldFactType = (FactType)e.OldRolePlayer;
+				oldObjectType = link.NestingType;
+			}
+			string oldFactTypeName = oldFactType.myGeneratedName;
+			bool resetObjectTypeName = !string.IsNullOrEmpty(oldFactTypeName) && oldFactTypeName == oldObjectType.Name;
+			ProcessValidateFactNameForObjectificationDelete(link, oldFactType, oldObjectType);
+			ProcessValidateFactNameForObjectificationAdded(link);
+			if (resetObjectTypeName)
+			{
+				link.NestingType.Name = "";
 			}
 		}
 		#endregion
@@ -2741,23 +2703,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region FactTypeDerivationExpression
 	public partial class FactTypeDerivationExpression
 	{
-		[RuleOn(typeof(FactTypeDerivationExpression))] // ChangeRule
-		private sealed partial class FactTypeDerivationExpressionChangeRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationExpression)
+		/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
+		/// if Body is empty
+		/// </summary>
+		private static void FactTypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
-			/// if Body is empty
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == FactTypeDerivationExpression.BodyDomainPropertyId)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == FactTypeDerivationExpression.BodyDomainPropertyId)
+				FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
+				if (!ftde.IsDeleted && string.IsNullOrEmpty(ftde.Body))
 				{
-					FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
-					if (!ftde.IsDeleted && string.IsNullOrEmpty(ftde.Body))
-					{
-						ftde.Delete();
-					}
+					ftde.Delete();
 				}
 			}
 		}

@@ -173,21 +173,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#region Shape display update rules
-		[RuleOn(typeof(Note), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed partial class NoteChangeRule : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Note), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void NoteChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeGuid = e.DomainProperty.Id;
+			if (attributeGuid == Note.TextDomainPropertyId)
 			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == Note.TextDomainPropertyId)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(e.ModelElement))
 				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(e.ModelElement))
+					ORMBaseShape shape = pel as ORMBaseShape;
+					if (shape != null)
 					{
-						ORMBaseShape shape = pel as ORMBaseShape;
-						if (shape != null)
-						{
-							shape.AutoResize();
-						}
+						shape.AutoResize();
 					}
 				}
 			}

@@ -399,32 +399,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return retVal;
 		}
 		#endregion // ConstraintUtility specific
-		#region ConstraintRoleSequenceHasRoleDeleted class
+		#region ConstraintRoleSequenceHasRoleDeletedRule
 		/// <summary>
-		/// Rule that fires when a constraint has a RoleSequence Removed
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// Runs when ConstraintRoleSequenceHasRole element is removed. 
+		/// If there are no more roles in the role collection then the
+		/// entire ConstraintRoleSequence is removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
+		private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
 		{
-			/// <summary>
-			/// Runs when ConstraintRoleSequenceHasRole element is removed. 
-			/// If there are no more roles in the role collection then the
-			/// entire ConstraintRoleSequence is removed
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence roleSequence = link.ConstraintRoleSequence;
+			if (!roleSequence.IsDeleted)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequence = link.ConstraintRoleSequence;
-				if (!roleSequence.IsDeleted)
+				if (roleSequence.RoleCollection.Count == 0)
 				{
-					if (roleSequence.RoleCollection.Count == 0)
-					{
-						roleSequence.Delete();
-					}
+					roleSequence.Delete();
 				}
 			}
 		}
-		#endregion //ConstraintRoleSequenceHasRoleDeleted class
+		#endregion //ConstraintRoleSequenceHasRoleDeletedRule
 	}
 	#endregion // Constraint class
 	#region SetConstraint class
@@ -472,7 +466,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Make sure the model for the constraint and fact are consistent
 		/// </summary>
-		private static void EnforceNoForeignFacts(FactSetConstraint link)
+		private static void EnforceNoForeignFactTypes(FactSetConstraint link)
 		{
 			FactType fact = link.FactType;
 			SetConstraint constraint = link.SetConstraint;
@@ -483,7 +477,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Check for internal constraint pattern violation when facts are attached we're at it
 				if (1 != constraint.FactTypeCollection.Count)
 				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceSingleFactForInternalConstraint);
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint);
 				}
 			}
 			if (factModel != null)
@@ -494,7 +488,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (factModel != constraintModel)
 				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFacts);
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFactTypes);
 				}
 			}
 			else if (constraintModel != null)
@@ -503,149 +497,106 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactSetConstraint)
 		/// Ensure that a fact and constraint have a consistent owning model
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed partial class FactSetConstraintAdded : AddRule
+		private static void FactSetConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				EnforceNoForeignFacts(e.ModelElement as FactSetConstraint);
-			}
+			EnforceNoForeignFactTypes(e.ModelElement as FactSetConstraint);
 		}
 		/// <summary>
-		/// Ensure that an internal constraint always goes away with its fact
+		/// DeleteRule: typeof(FactSetConstraint)
+		/// Ensure that an internal constraint always goes away with its fact type
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
-		private sealed partial class FactSetConstraintDeleted : DeleteRule
+		private static void FactSetConstraintDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			SetConstraint constraint = link.SetConstraint;
+			if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal && constraint.Model != null)
 			{
-				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				SetConstraint constraint = link.SetConstraint;
-				if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal && constraint.Model != null)
-				{
-					constraint.Delete();
-				}
+				constraint.Delete();
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ModelHasFactType)
 		/// Ensure that a newly added fact that is already attached to constraints
 		/// has a consistent model for the constraints
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))] // AddRule
-		private sealed partial class FactAdded : AddRule
+		private static void FactTypeAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasFactType link = e.ModelElement as ModelHasFactType;
+			ReadOnlyCollection<ElementLink> existingConstraintLinks = DomainRoleInfo.GetElementLinks<ElementLink>(link.FactType, FactSetConstraint.FactTypeDomainRoleId);
+			int existingLinksCount = existingConstraintLinks.Count;
+			for (int i = 0; i < existingLinksCount; ++i)
 			{
-				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				ReadOnlyCollection<ElementLink> existingConstraintLinks = DomainRoleInfo.GetElementLinks<ElementLink>(link.FactType, FactSetConstraint.FactTypeDomainRoleId);
-				int existingLinksCount = existingConstraintLinks.Count;
-				for (int i = 0; i < existingLinksCount; ++i)
-				{
-					EnforceNoForeignFacts(existingConstraintLinks[i] as FactSetConstraint);
-				}
+				EnforceNoForeignFactTypes(existingConstraintLinks[i] as FactSetConstraint);
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class EnforceRoleSequenceValidityForAdd : AddRule
+		private static void EnforceRoleSequenceValidityForRoleAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint != null)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
-				if (constraint != null)
-				{
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
-				}
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 			}
 		}
-
 		/// <summary>
-		/// Remove Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
+		/// Deleted Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-		private sealed partial class EnforceRoleSequenceValidityForDelete : DeleteRule
+		private static void EnforceRoleSequenceValidityForRoleDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint != null && !constraint.IsDeleted)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
-				if (constraint != null && !constraint.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
-				}
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 			}
-
 		}
 		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
+		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetConstraint constraint = link.ConstraintRoleSequence.Constraint as SetConstraint;
+			if (constraint != null)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint constraint = link.ConstraintRoleSequence.Constraint as SetConstraint;
-				if (constraint != null)
+				bool createdAndInitialized;
+				FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
+				if (factConstraint != null && !createdAndInitialized)
 				{
-					bool createdAndInitialized;
-					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
-					if (factConstraint != null && !createdAndInitialized)
-					{
-						factConstraint.ConstrainedRoleCollection.Add(link);
-					}
-				}
-			}
-			/// <summary>
-			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
-			/// </summary>
-			public override bool FireBefore
-			{
-				get
-				{
-					return true;
+					factConstraint.ConstrainedRoleCollection.Add(link);
 				}
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ModelHasSetConstraint)
 		/// If a role sequence is added that already contains roles, then
 		/// make sure the corresponding FactConstraint and ExternalRoleConstraint
 		/// objects are created for each role. Note that a single column external
 		/// constraint is a role sequence.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
-		private sealed partial class ConstraintAdded : AddRule
+		private static void ConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
-				// Add implied fact constraint elements
-				EnsureFactConstraintForRoleSequence(link);
+			ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
+			// Add implied fact constraint elements
+			EnsureFactConstraintForRoleSequence(link);
 
-				// Register for delayed error validation
-				IModelErrorOwner errorOwner = link.SetConstraint as IModelErrorOwner;
-				if (errorOwner != null)
-				{
-					errorOwner.DelayValidateErrors();
-				}
-			}
-			/// <summary>
-			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
-			/// </summary>
-			public override bool FireBefore
+			// Register for delayed error validation
+			IModelErrorOwner errorOwner = link.SetConstraint as IModelErrorOwner;
+			if (errorOwner != null)
 			{
-				get
-				{
-					return true;
-				}
+				errorOwner.DelayValidateErrors();
 			}
 		}
 		/// <summary>
@@ -1085,87 +1036,82 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
 		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class EnforceRoleSequenceValidityForRolePlayerAdd : AddRule
+		private static void EnforceRoleSequenceValidityForRolePlayerAddRule(ElementAddedEventArgs e)
 		{
-			public static void Process(ObjectTypePlaysRole link)
-			{
-				Role role = link.PlayedRole;
-				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
-				int count = roleSequences.Count;
-				for (int i = 0; i < count; ++i)
-				{
-					SetConstraint sequence = roleSequences[i] as SetConstraint;
-					if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
-					{
-						ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
-					}
-				}
-			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole);
-			}
+			ProcessEnforceRoleSequenceValidityForRolePlayerAdd(e.ModelElement as ObjectTypePlaysRole);
 		}
-
 		/// <summary>
-		///Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		/// Shared rule helper method
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
-		private sealed partial class EnforceRoleSequenceValidityForRolePlayerDelete : DeleteRule
+		private static void ProcessEnforceRoleSequenceValidityForRolePlayerAdd(ObjectTypePlaysRole link)
 		{
-			public static void Process(ObjectTypePlaysRole link, Role role)
+			Role role = link.PlayedRole;
+			LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
+			int count = roleSequences.Count;
+			for (int i = 0; i < count; ++i)
 			{
-				if (role == null)
+				SetConstraint sequence = roleSequences[i] as SetConstraint;
+				if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
 				{
-					role = link.PlayedRole;
+					ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 				}
-				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
-				int count = roleSequences.Count;
-				for (int i = 0; i < count; ++i)
-				{
-
-					SetConstraint sequence = roleSequences[i] as SetConstraint;
-					if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
-					{
-						ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
-					}
-				}
-			}
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole, null);
 			}
 		}
 		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// Delete Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		/// </summary>
+		private static void EnforceRoleSequenceValidityForRolePlayerDeleteRule(ElementDeletedEventArgs e)
+		{
+			ProcessEnforceRoleSequenceValidityForRolePlayerDelete(e.ModelElement as ObjectTypePlaysRole, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessEnforceRoleSequenceValidityForRolePlayerDelete(ObjectTypePlaysRole link, Role role)
+		{
+			if (role == null)
+			{
+				role = link.PlayedRole;
+			}
+			LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
+			int count = roleSequences.Count;
+			for (int i = 0; i < count; ++i)
+			{
+
+				SetConstraint sequence = roleSequences[i] as SetConstraint;
+				if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
+				{
+					ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
 		/// Forward ObjectTypePlaysRole role player changes to corresponding Add/Delete rules
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		private static void EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			if (link.IsDeleted)
 			{
-				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				Guid changedRoleGuid = e.DomainRole.Id;
-				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
-				{
-					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, (Role)e.OldRolePlayer);
-					EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
-				}
-				else
-				{
-					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, null);
-					// Both add and delete end up calling the same delay validation routine, just run one of them
-					// EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
-				}
+				return;
+			}
+			Guid changedRoleGuid = e.DomainRole.Id;
+			if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+			{
+				ProcessEnforceRoleSequenceValidityForRolePlayerDelete(link, (Role)e.OldRolePlayer);
+				ProcessEnforceRoleSequenceValidityForRolePlayerAdd(link);
+			}
+			else
+			{
+				ProcessEnforceRoleSequenceValidityForRolePlayerDelete(link, null);
+				// Both add and delete end up calling the same delay validation routine, just run one of them
+				// EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
 			}
 		}
 		#endregion // Error synchronization rules
@@ -1268,35 +1214,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IConstraint Implementation
 		#region Pattern Rules
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class SetConstraintRoleSequenceHasRoleAdded : AddRule
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void SetConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ProcessSetConstraintPattern((e.ModelElement as ConstraintRoleSequenceHasRole).ConstraintRoleSequence as SetConstraint, false);
-			}
-		}
-
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed partial class SetConstraintRoleSequenceHasRoleDeleting : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ProcessSetConstraintPattern((e.ModelElement as ConstraintRoleSequenceHasRole).ConstraintRoleSequence as SetConstraint, false);
-			}
+			ProcessSetConstraintPattern((e.ModelElement as ConstraintRoleSequenceHasRole).ConstraintRoleSequence as SetConstraint, false);
 		}
 		/// <summary>
+		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void SetConstraintRoleSequenceHasRoleDeletingRule(ElementDeletingEventArgs e)
+		{
+			ProcessSetConstraintPattern((e.ModelElement as ConstraintRoleSequenceHasRole).ConstraintRoleSequence as SetConstraint, false);
+		}
+		/// <summary>
+		/// ChangeRule: typeof(SetConstraint)
 		/// Verify pattern modality changes
 		/// </summary>
-		[RuleOn(typeof(SetConstraint))] // ChangeRule
-		private sealed partial class ModalityChangeRule : ChangeRule
+		private static void ModalityChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
-				{
-					ProcessSetConstraintPattern(e.ModelElement as SetConstraint, true);
-				}
+				ProcessSetConstraintPattern(e.ModelElement as SetConstraint, true);
 			}
 		}
 		private static void ProcessSetConstraintPattern(SetConstraint setConstraint, bool modalityChange)
@@ -1607,7 +1547,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Make sure the model for the constraint and fact are consistent
 		/// </summary>
-		private static void EnforceNoForeignFacts(FactSetComparisonConstraint link)
+		private static void EnforceNoForeignFactTypes(FactSetComparisonConstraint link)
 		{
 			FactType fact = link.FactType;
 			SetComparisonConstraint constraint = link.SetComparisonConstraint;
@@ -1621,7 +1561,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (factModel != constraintModel)
 				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFacts);
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFactTypes);
 				}
 			}
 			else if (constraintModel != null)
@@ -1630,88 +1570,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Ensure that a fact and constraint have a consistent owning model
+		/// AddRule: typeof(FactSetComparisonConstraint)
+		/// Ensure that a fact type and constraint have a consistent owning model
 		/// </summary>
-		[RuleOn(typeof(FactSetComparisonConstraint))] // AddRule
-		private sealed partial class FactSetComparisonConstraintAdded : AddRule
+		private static void FactSetComparisonConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				EnforceNoForeignFacts(e.ModelElement as FactSetComparisonConstraint);
-			}
+			EnforceNoForeignFactTypes(e.ModelElement as FactSetComparisonConstraint);
 		}
 		/// <summary>
-		/// Ensure that a newly added fact that is already attached to constraints
+		/// AddRule: typeof(ModelHasFactType)
+		/// Ensure that a newly added fact type that is already attached to constraints
 		/// has a consistent model for the constraints
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))] // AddRule
-		private sealed partial class FactAdded : AddRule
+		private static void FactTypeAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasFactType link = e.ModelElement as ModelHasFactType;
+			ReadOnlyCollection<FactSetComparisonConstraint> existingConstraintLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(link.FactType, FactSetComparisonConstraint.FactTypeDomainRoleId);
+			int existingLinksCount = existingConstraintLinks.Count;
+			for (int i = 0; i < existingLinksCount; ++i)
 			{
-				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				ReadOnlyCollection<FactSetComparisonConstraint> existingConstraintLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(link.FactType, FactSetComparisonConstraint.FactTypeDomainRoleId);
-				int existingLinksCount = existingConstraintLinks.Count;
-				for (int i = 0; i < existingLinksCount; ++i)
-				{
-					EnforceNoForeignFacts(existingConstraintLinks[i]);
-				}
+				EnforceNoForeignFactTypes(existingConstraintLinks[i]);
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
+		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetComparisonConstraint constraint = link.ConstraintRoleSequence.Constraint as SetComparisonConstraint;
+			if (constraint != null && constraint.Model != null)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetComparisonConstraint constraint = link.ConstraintRoleSequence.Constraint as SetComparisonConstraint;
-				if (constraint != null && constraint.Model != null)
+				bool createdAndInitialized;
+				FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
+				if (factConstraint != null && !createdAndInitialized)
 				{
-					bool createdAndInitialized;
-					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
-					if (factConstraint != null && !createdAndInitialized)
-					{
-						factConstraint.ConstrainedRoleCollection.Add(link);
-					}
-				}
-			}
-			/// <summary>
-			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
-			/// </summary>
-			public override bool FireBefore
-			{
-				get
-				{
-					return true;
+					factConstraint.ConstrainedRoleCollection.Add(link);
 				}
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(SetComparisonConstraintHasRoleSequence)
 		/// If a role sequence is added that already contains roles, then
 		/// make sure the corresponding FactConstraint and ExternalRoleConstraint
 		/// objects are created for each role.
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
-		private sealed partial class ConstraintHasRoleSequenceAdded : AddRule
+		private static void ConstraintHasRoleSequenceAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				EnsureFactConstraintForRoleSequence(e.ModelElement as SetComparisonConstraintHasRoleSequence);
-			}
-			/// <summary>
-			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
-			/// </summary>
-			public sealed override bool FireBefore
-			{
-				get
-				{
-					return true;
-				}
-			}
+			EnsureFactConstraintForRoleSequence(e.ModelElement as SetComparisonConstraintHasRoleSequence);
 		}
 		/// <summary>
 		/// Helper function to support the same fact constraint fixup
@@ -1745,53 +1653,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Rip an FactConstraint relationship when its last role
+		/// DeleteRule: typeof(ExternalRoleConstraint), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// Rip a FactConstraint relationship when its last role
 		/// goes away. Note that this rule also affects single column external
 		/// constraints, but we only need to write it once.
 		/// </summary>
-		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority + 100)] // DeleteRule
-		private sealed partial class ExternalRoleConstraintDeleted : DeleteRule
+		private static void ExternalRoleConstraintDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
+			FactConstraint factConstraint = link.FactConstraint;
+			if (!factConstraint.IsDeleted)
 			{
-				ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
-				FactConstraint factConstraint = link.FactConstraint;
-				if (!factConstraint.IsDeleted)
+				if (factConstraint.ConstrainedRoleCollection.Count == 0)
 				{
-					if (factConstraint.ConstrainedRoleCollection.Count == 0)
-					{
-						factConstraint.Delete();
-					}
+					factConstraint.Delete();
 				}
 			}
 		}
-		#region SetComparisonConstraintRoleSequenceDeleted class
+		#region SetComparisonConstraintRoleSequenceDeletedRule
 		/// <summary>
+		/// DeleteRule: typeof(SetComparisonConstraintHasRoleSequence), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
 		/// Rule that fires when a set comparison constraint has a role seqeuence removed.
 		/// The constraint itself is removed when the last sequence is removed.
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class SetComparisonConstraintRoleSequenceDeleted : DeleteRule
+		private static void SetComparisonConstraintRoleSequenceDeletedRule(ElementDeletedEventArgs e)
 		{
-			/// <summary>
-			/// Runs when ConstraintRoleSequenceHasRole element is removed. 
-			/// If there are no more roles in the role collection then the
-			/// entire ConstraintRoleSequence is removed
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+			SetComparisonConstraint constraint = link.ExternalConstraint;
+			if (!constraint.IsDeleted)
 			{
-				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
-				SetComparisonConstraint constraint = link.ExternalConstraint;
-				if (!constraint.IsDeleted)
+				if (constraint.RoleSequenceCollection.Count == 0)
 				{
-					if (constraint.RoleSequenceCollection.Count == 0)
-					{
-						constraint.Delete();
-					}
+					constraint.Delete();
 				}
 			}
 		}
-		#endregion //SetComparisonConstraintRoleSequenceDeleted class
+		#endregion //SetComparisonConstraintRoleSequenceDeletedRule
 		#endregion // SetComparisonConstraint synchronization rules
 		#region Deserialization Fixup
 		/// <summary>
@@ -2221,190 +2118,177 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // VerifyCompatibleRolePlayerTypeForRule
 		#region Add/Remove Rules
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
-		private sealed partial class EnforceRoleSequenceCardinalityForAdd : AddRule
+		/// <summary>
+		/// AddRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// </summary>
+		private static void EnforceRoleSequenceCardinalityForSequenceAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+			ORMCoreDomainModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
+		}
+		/// <summary>
+		/// AddRule: typeof(ModelHasSetComparisonConstraint)
+		/// Do initial validation when a new SetComparisonConstraint is added to a model
+		/// </summary>
+		private static void EnforceRoleSequenceCardinalityForConstraintAddRule(ElementAddedEventArgs e)
+		{
+			ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
+			IModelErrorOwner errorOwner = link.SetComparisonConstraint as IModelErrorOwner;
+			if (errorOwner != null)
 			{
-				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
-				ORMCoreDomainModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
+				errorOwner.DelayValidateErrors();
 			}
 		}
-		[RuleOn(typeof(ModelHasSetComparisonConstraint))] // AddRule
-		private sealed partial class EnforceRoleSequenceCardinalityForConstraintAdd : AddRule
+		/// <summary>
+		/// DeleteRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// </summary>
+		private static void EnforceRoleSequenceCardinalityForSequenceDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+			SetComparisonConstraint externalConstraint = link.ExternalConstraint;
+			if (externalConstraint != null && !externalConstraint.IsDeleted)
 			{
-				ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
-				IModelErrorOwner errorOwner = link.SetComparisonConstraint as IModelErrorOwner;
-				if (errorOwner != null)
+				ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// Add Rule for arity and compatibility checking when SetComparisonConstraint roles are added
+		/// </summary>
+		private static void EnforceRoleSequenceValidityForRoleAddRule(ElementAddedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
+			if (sequence != null)
+			{
+				SetComparisonConstraint constraint = sequence.ExternalConstraint;
+				if (constraint != null)
 				{
-					errorOwner.DelayValidateErrors();
+					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
+					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
-		private sealed partial class EnforceRoleSequenceCardinalityForDelete : DeleteRule
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
+		/// Delete Rule for VerifyCompatibleRolePlayer when SetComparisonConstraint roles are removed
+		/// </summary>
+		private static void EnforceRoleSequenceValidityForRoleDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
+			if (sequence != null)
 			{
-				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
-				SetComparisonConstraint externalConstraint = link.ExternalConstraint;
+				SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
 				if (externalConstraint != null && !externalConstraint.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
+					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
+					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
 		/// <summary>
-		/// Add Rule for arity and compatibility checking when ExternalConstraints roles are added
+		/// RolePlayerPositionChangeRule: typeof(ConstraintRoleSequenceHasRole)
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class EnforceRoleSequenceValidityForAdd : AddRule
+		private static void EnforceRoleSequenceValidityForRoleReorderRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			SetComparisonConstraintRoleSequence sequence;
+			if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
+				null != (sequence = e.SourceElement as SetComparisonConstraintRoleSequence))
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
-				if (sequence != null)
+				SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
+				if (externalConstraint != null && !externalConstraint.IsDeleted)
 				{
-					SetComparisonConstraint constraint = sequence.ExternalConstraint;
-					if (constraint != null)
-					{
-						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
-						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
-					}
+					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
-
-		//Remove Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are removed
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-		private sealed partial class EnforceRoleSequenceValidityForDelete : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
-				if (sequence != null)
-				{
-					SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-					if (externalConstraint != null && !externalConstraint.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
-						ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
-					}
-				}
-			}
-		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerPositionChangeRule
-		private sealed partial class EnforceRoleSequenceValidityForReorder : RolePlayerPositionChangeRule
-		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
-			{
-				SetComparisonConstraintRoleSequence sequence;
-				if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
-					null != (sequence = e.SourceElement as SetComparisonConstraintRoleSequence))
-				{
-					SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-					if (externalConstraint != null && !externalConstraint.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
-					}
-				}
-			}
-		}
-
 		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed partial class EnforceRoleSequenceValidityForRolePlayerAdd : AddRule
+		private static void EnforceRoleSequenceValidityForRolePlayerAddRule(ElementAddedEventArgs e)
 		{
-			public static void Process(ObjectTypePlaysRole link)
+			ProcessEnforceRoleSequenceValidityForRolePlayerAdd(e.ModelElement as ObjectTypePlaysRole);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessEnforceRoleSequenceValidityForRolePlayerAdd(ObjectTypePlaysRole link)
+		{
+			Role role = link.PlayedRole;
+			LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
+			int count = roleSequences.Count;
+			for (int i = 0; i < count; ++i)
 			{
-				Role role = link.PlayedRole;
+				SetComparisonConstraintRoleSequence sequence = roleSequences[i] as SetComparisonConstraintRoleSequence;
+				if (sequence != null)
+				{
+					SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
+					if (externalConstraint != null)
+					{
+						ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		/// </summary>
+		private static void EnforceRoleSequenceValidityForRolePlayerDeleteRule(ElementDeletedEventArgs e)
+		{
+			ProcessEnforceRoleSequenceValidityForRolePlayerDelete(e.ModelElement as ObjectTypePlaysRole, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessEnforceRoleSequenceValidityForRolePlayerDelete(ObjectTypePlaysRole link, Role role)
+		{
+			if (role == null)
+			{
+				role = link.PlayedRole;
+			}
+			if (!role.IsDeleted)
+			{
 				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
 				for (int i = 0; i < count; ++i)
 				{
 					SetComparisonConstraintRoleSequence sequence = roleSequences[i] as SetComparisonConstraintRoleSequence;
-					if (sequence != null)
+					if (sequence != null && !sequence.IsDeleted)
 					{
 						SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-						if (externalConstraint != null)
+						if (externalConstraint != null && !externalConstraint.IsDeleted)
 						{
 							ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 						}
 					}
 				}
 			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole);
-			}
-		}
-
-		/// <summary>
-		/// Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
-		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
-		private sealed partial class EnforceRoleSequenceValidityForRolePlayerDelete : DeleteRule
-		{
-			public static void Process(ObjectTypePlaysRole link, Role role)
-			{
-				if (role == null)
-				{
-					role = link.PlayedRole;
-				}
-				if (!role.IsDeleted)
-				{
-					LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
-					int count = roleSequences.Count;
-					for (int i = 0; i < count; ++i)
-					{
-						SetComparisonConstraintRoleSequence sequence = roleSequences[i] as SetComparisonConstraintRoleSequence;
-						if (sequence != null && !sequence.IsDeleted)
-						{
-							SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-							if (externalConstraint != null && !externalConstraint.IsDeleted)
-							{
-								ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
-							}
-						}
-					}
-				}
-			}
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole, null);
-			}
 		}
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
 		/// Forward ObjectTypePlaysRole role player changes to corresponding Add/Delete rules
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		private static void EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			if (link.IsDeleted)
 			{
-				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				Guid changedRoleGuid = e.DomainRole.Id;
-				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
-				{
-					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, (Role)e.OldRolePlayer);
-					EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
-				}
-				else
-				{
-					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, null);
-					// Both add and delete end up calling the same delay validation routine, just run one of them
-					// EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
-				}
+				return;
+			}
+			Guid changedRoleGuid = e.DomainRole.Id;
+			if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+			{
+				ProcessEnforceRoleSequenceValidityForRolePlayerDelete(link, (Role)e.OldRolePlayer);
+				ProcessEnforceRoleSequenceValidityForRolePlayerAdd(link);
+			}
+			else
+			{
+				ProcessEnforceRoleSequenceValidityForRolePlayerDelete(link, null);
+				// Both add and delete end up calling the same delay validation routine, just run one of them
+				// EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
 			}
 		}
 		#endregion // Add/Remove Rules
@@ -2800,107 +2684,94 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region Rules
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Other rules are not set up to handle role player changes on ConstraintRoleSequence.
 		/// The NORMA UI never attempts this operation.
 		/// Throw if any attempt is made to directly modify roles on a ConstraintRoleSequence
 		/// relationship after it has been created.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
-		private sealed partial class BlockRolePlayerChange : RolePlayerChangeRule
+		private static void BlockRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange);
-			}
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange);
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			if (!sequence.IsDeleted)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				if (!sequence.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
-				}
-				SetComparisonConstraintRoleSequence setComparisonSequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
-				if (setComparisonSequence != null)
-				{
-					ProcessSetComparisonConstraintPattern(
-						setComparisonSequence.ExternalConstraint,
-						link.Role,
-						null,
-						false,
-						delegate(IConstraint matchConstraint)
-						{
-							DelayValidateConstraintPatternError(matchConstraint);
-							return true;
-						});
-				}
+				ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
 			}
-		}
-
-		[RuleOn(typeof(ConstraintRoleSequence))] //DeletingRule
-		private sealed partial class SetComparisonConstraintHasRoleDeleting : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			SetComparisonConstraintRoleSequence setComparisonSequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
+			if (setComparisonSequence != null)
 			{
-				ConstraintRoleSequence theElement = e.ModelElement as ConstraintRoleSequence;
-				SetComparisonConstraint curSetComparisonConstraint = theElement.Constraint as SetComparisonConstraint;
-
-				if (curSetComparisonConstraint != null)
-				{
-					if (curSetComparisonConstraint.IsDeleting)
+				ProcessSetComparisonConstraintPattern(
+					setComparisonSequence.ExternalConstraint,
+					link.Role,
+					null,
+					false,
+					delegate(IConstraint matchConstraint)
 					{
-						HandleConstraintDeleting(null, curSetComparisonConstraint);
-					}
-				}
+						DelayValidateConstraintPatternError(matchConstraint);
+						return true;
+					});
 			}
 		}
-
-
-		[RuleOn(typeof(SetConstraint))] //DeletingRule
-		private sealed partial class SetConstraintDeleting : DeletingRule
+		/// <summary>
+		/// DeletingRule: typeof(ConstraintRoleSequence)
+		/// </summary>
+		private static void SetComparisonConstraintHasRoleDeletingRule(ElementDeletingEventArgs e)
 		{
-			public override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				SetConstraint curSetConstraint = e.ModelElement as SetConstraint;
+			ConstraintRoleSequence theElement = e.ModelElement as ConstraintRoleSequence;
+			SetComparisonConstraint curSetComparisonConstraint = theElement.Constraint as SetComparisonConstraint;
 
-				if (curSetConstraint != null)
+			if (curSetComparisonConstraint != null)
+			{
+				if (curSetComparisonConstraint.IsDeleting)
 				{
-					if (curSetConstraint.IsDeleting)
-					{
-						HandleConstraintDeleting(curSetConstraint, null);
-					}
+					HandleConstraintDeleting(null, curSetComparisonConstraint);
 				}
 			}
 		}
 		/// <summary>
-		/// Verify pattern modality changes
+		/// DeletingRule: typeof(SetConstraint)
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraint))] // ChangeRule
-		private sealed partial class ModalityChangeRule : ChangeRule
+		private static void SetConstraintDeletingRule(ElementDeletingEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			SetConstraint curSetConstraint = e.ModelElement as SetConstraint;
+
+			if (curSetConstraint != null)
 			{
-				if (e.DomainProperty.Id == SetComparisonConstraint.ModalityDomainPropertyId)
+				if (curSetConstraint.IsDeleting)
 				{
-					ProcessSetComparisonConstraintPattern(
-						(SetComparisonConstraint)e.ModelElement,
-						null,
-						null,
-						true,
-						delegate(IConstraint matchConstraint)
-						{
-							DelayValidateConstraintPatternError(matchConstraint);
-							return true;
-						});
+					HandleConstraintDeleting(curSetConstraint, null);
 				}
 			}
 		}
-		private static void HandleConstraintDeleting(SetConstraint deletedSetConstraint,
-			SetComparisonConstraint deletedSetComparisonConstraint)
+		/// <summary>
+		/// ChangeRule: typeof(SetComparisonConstraint)
+		/// Verify pattern modality changes
+		/// </summary>
+		private static void ModalityChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == SetComparisonConstraint.ModalityDomainPropertyId)
+			{
+				ProcessSetComparisonConstraintPattern(
+					(SetComparisonConstraint)e.ModelElement,
+					null,
+					null,
+					true,
+					delegate(IConstraint matchConstraint)
+					{
+						DelayValidateConstraintPatternError(matchConstraint);
+						return true;
+					});
+			}
+		}
+		private static void HandleConstraintDeleting(SetConstraint deletedSetConstraint, SetComparisonConstraint deletedSetComparisonConstraint)
 		{
 			IConstraint deletedConstraint = null;
 
@@ -2974,50 +2845,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#endregion
 			}
 		}
-
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-		private sealed partial class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 
-				if (!sequence.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
-				}
-			}
-
-		}
-		// UNDONE: This rule is garbage, it's comparing DomainRoleId values to DomainClassId values
-		// The rule should probably be a RolePlayerPositionChangeRule, not a RolePlayerChangeRule
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangeRule
-		private sealed partial class ConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
-		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			if (!sequence.IsDeleted)
 			{
-				Guid changedRole = e.DomainRole.Id;
-				ConstraintRoleSequence newSequence = null;
-				if (changedRole == ConstraintRoleSequence.DomainClassId)
-				{
-					newSequence = e.NewRolePlayer as ConstraintRoleSequence;
-					ConstraintRoleSequence oldSequence = e.OldRolePlayer as ConstraintRoleSequence;
-					ORMCoreDomainModel.DelayValidateElement(oldSequence, DelayValidateConstraintPatternError);
-				}
-				else if (changedRole == Role.DomainClassId)
-				{
-					ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ElementLink;
-					newSequence = link.ConstraintRoleSequence;
-				}
-				if (newSequence != null && newSequence.IsDeleted)
-				{
-					ORMCoreDomainModel.DelayValidateElement(newSequence, DelayValidateConstraintPatternError);
-				}
+				ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
 			}
 		}
-		#endregion
-
+		#endregion // Rules
 		#region Validation
 		/// <summary>
 		/// Validator callback for MandatoryImpliedByMandatoryError
@@ -4256,23 +4097,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //Error synchronization rules
-		#region ConstraintRoleSequenceHasRoleClasses
+		#region ConstraintRoleSequenceHasRole Rules
 		/// <summary>
+		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Check to see if mandatory constraints are still implied by equality when removing a mandatory
 		/// constraint.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed partial class ConstraintRoleSequenceHasRoleDeleting : DeletingRule
+		private static void ConstraintRoleSequenceHasRoleDeletingRule(ElementDeletingEventArgs e)
 		{
-			/// <summary>
-			/// Runs when roleset element is removing. It calls to verify that no mandatory roles are 
-			/// connected to the EqualityConstraint.
-			/// </summary>
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
+			IConstraint constraint = roleSequences.Constraint;
+			switch (constraint.ConstraintType)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
-				IConstraint constraint = roleSequences.Constraint;
+				case ConstraintType.Equality:
+					EqualityConstraint equality = constraint as EqualityConstraint;
+					if (!equality.IsDeleted)
+					{
+						equality.VerifyNotImpliedByMandatoryConstraints(null);
+					}
+					break;
+				case ConstraintType.SimpleMandatory:
+					//Find my my equality constraint and check to see if my error message can be
+					//removed.
+					MandatoryConstraint mandatory = constraint as MandatoryConstraint;
+					VerifyMandatoryDoesNotImplyEquality(mandatory);
+					break;
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// Check to see if mandatory constraints are implied by equality when adding an equality
+		/// constraint.
+		/// </summary>
+		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
+			IConstraint constraint = roleSequences.Constraint;
+			if (constraint != null)
+			{
 				switch (constraint.ConstraintType)
 				{
 					case ConstraintType.Equality:
@@ -4291,44 +4155,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		/// <summary>
-		/// Check to see if mandatory constraints are implied by equality when adding an equality
-		/// constraint.
-		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
-		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
-		{
-			/// <summary>
-			/// Runs when roleset element is being added. It calls to verify that no mandatory roles are 
-			/// connected to the EqualityConstraint.
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
-				IConstraint constraint = roleSequences.Constraint;
-				if (constraint != null)
-				{
-					switch (constraint.ConstraintType)
-					{
-						case ConstraintType.Equality:
-							EqualityConstraint equality = constraint as EqualityConstraint;
-							if (!equality.IsDeleted)
-							{
-								equality.VerifyNotImpliedByMandatoryConstraints(null);
-							}
-							break;
-						case ConstraintType.SimpleMandatory:
-							//Find my my equality constraint and check to see if my error message can be
-							//removed.
-							MandatoryConstraint mandatory = constraint as MandatoryConstraint;
-							VerifyMandatoryDoesNotImplyEquality(mandatory);
-							break;
-					}
-				}
-			}
-		}
-		#endregion
+		#endregion // ConstraintRoleSequenceHasRole Rules
 	}
 	#endregion // EqualityConstraint class
 	#region EntityTypeHasPreferredIdentifier pattern enforcement
@@ -4618,583 +4445,545 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Remove testing for preferred identifier
-		#region TestRemovePreferredIdentifierDeletingRule class
+		#region TestRemovePreferredIdentifierDeletingRule
 		/// <summary>
+		/// DeletingRule: typeof(ObjectTypePlaysRole)
+		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
 		/// A rule to determine if a mandatory condition for
 		/// a preferred identifier link has been eliminated.
 		/// Remove the preferred identifier if this happens.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed partial class TestRemovePreferredIdentifierDeletingRule : DeletingRule
+		private static void TestRemovePreferredIdentifierDeletingRule(ElementDeletingEventArgs e)
 		{
-			/// <summary>
-			/// See if a preferred identifier is still valid
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			ModelElement element = e.ModelElement;
+			ObjectTypePlaysRole rolePlayerLink;
+			ConstraintRoleSequenceHasRole roleConstraintLink;
+			ObjectType rolePlayer = null;
+			if (null != (rolePlayerLink = element as ObjectTypePlaysRole))
 			{
-				ModelElement element = e.ModelElement;
-				ObjectTypePlaysRole rolePlayerLink;
-				ConstraintRoleSequenceHasRole roleConstraintLink;
-				ObjectType rolePlayer = null;
-				if (null != (rolePlayerLink = element as ObjectTypePlaysRole))
-				{
-					rolePlayer = rolePlayerLink.RolePlayer;
-				}
-				else if (null != (roleConstraintLink = element as ConstraintRoleSequenceHasRole))
-				{
-					IConstraint constraint;
-					if (null != (constraint = roleConstraintLink.ConstraintRoleSequence.Constraint))
-					{
-						switch (constraint.ConstraintType)
-						{
-							case ConstraintType.DisjunctiveMandatory:
-							case ConstraintType.InternalUniqueness:
-							case ConstraintType.SimpleMandatory:
-								Role role = roleConstraintLink.Role;
-								if (role != null)
-								{
-									rolePlayer = role.RolePlayer;
-								}
-								break;
-							case ConstraintType.ExternalUniqueness:
-								rolePlayer = constraint.PreferredIdentifierFor;
-								break;
-						}
-					}
-				}
-				if (rolePlayer != null && !rolePlayer.IsDeleting)
-				{
-					EntityTypeHasPreferredIdentifier identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer);
-					if (identifierLink != null)
-					{
-						identifierLink.TestRemovePreferredIdentifier();
-					}
-				}
+				rolePlayer = rolePlayerLink.RolePlayer;
 			}
-		}
-		#endregion // TestRemovePreferredIdentifierDeletingRule class
-		#region TestRemovePreferredIdentifierRolePlayerChangeRule class
-		/// <summary>
-		/// A rule to determine if a mandatory condition for
-		/// a preferred identifier link has been eliminated.
-		/// Remove the preferred identifier if this happens.
-		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed partial class TestRemovePreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			else if (null != (roleConstraintLink = element as ConstraintRoleSequenceHasRole))
 			{
-				if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
-				{
-					ObjectType rolePlayer = (ObjectType)e.OldRolePlayer;
-					EntityTypeHasPreferredIdentifier identifierLink;
-					if (!rolePlayer.IsDeleted &&
-						null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer)))
-					{
-						identifierLink.TestRemovePreferredIdentifier();
-					}
-				}
-			}
-		}
-		#endregion // TestRemovePreferredIdentifierRolePlayerChangeRule class
-		#region TestRemovePreferredIdentifierRoleAddRule class
-		/// <summary>
-		/// A rule to determine if a role has been added to a fact that
-		/// has a preferred identifier attached to one of its constraints.
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class TestRemovePreferredIdentifierRoleAddRule : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasRole roleLink = e.ModelElement as FactTypeHasRole;
-				FactType fact = roleLink.FactType;
-				foreach (IFactConstraint factConstraint in fact.FactConstraintCollection)
-				{
-					UniquenessConstraint constraint = factConstraint.Constraint as UniquenessConstraint;
-					if (constraint != null)
-					{
-						ObjectType forType = constraint.PreferredIdentifierFor;
-						if (forType != null)
-						{
-							Objectification objectification;
-							if (!(null != (objectification = forType.Objectification) &&
-								fact == objectification.NestedFactType))
-							{
-								// If the preferred identifier is already there, then
-								// the fact is binary and removing the role will
-								// invalidate the prerequisites. Remove the identifier.
-								// Note that the setter for most of the constraint implementations
-								// is empty, this will only apply to internal and external
-								// uniqueness constraints.
-								constraint.PreferredIdentifierFor = null;
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion // TestRemovePreferredIdentifierRoleAddRule class
-		#region TestRemovePreferredIdentifierConstraintRoleAddRule class
-		/// <summary>
-		/// A rule to determine if a role has been added to a constraint
-		/// that is acting as a preferred identifier
-		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		// Note that Priority=0 (the default) is assumed by ValueConstraint.PreferredIdentifierRoleAddRule
-		private sealed partial class TestRemovePreferredIdentifierConstraintRoleAddRule : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole constraintLink = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequence;
-				IConstraint constraint = sequence.Constraint;
-				if (constraint != null)
+				IConstraint constraint;
+				if (null != (constraint = roleConstraintLink.ConstraintRoleSequence.Constraint))
 				{
 					switch (constraint.ConstraintType)
 					{
+						case ConstraintType.DisjunctiveMandatory:
 						case ConstraintType.InternalUniqueness:
-							ObjectType preferredFor = constraint.PreferredIdentifierFor;
-							if (preferredFor != null)
+						case ConstraintType.SimpleMandatory:
+							Role role = roleConstraintLink.Role;
+							if (role != null)
 							{
-								FactType nestedFactType = preferredFor.NestedFactType;
-								if (nestedFactType != null && nestedFactType == constraintLink.Role.FactType)
-								{
-									// Adding a link to an internal constraint that is the preferred
-									// identifier for an objectifying type is always valid
-									break;
-								}
-							}
-							// A preferred identifier on an internal uniqueness constraint requires
-							// the constraint to have one role only. If we already have a preferred
-							// identifier on this role, then we must have one already, so adding an
-							// additional role is bad.
-							constraint.PreferredIdentifierFor = null;
-							// There are also problems if the role is added to the opposite single
-							// role constraint, which must have a single-column internal uniqueness
-							// constraint over it for both internal and external identifiers.
-							UniquenessConstraint iuc = constraint as UniquenessConstraint;
-							LinkedElementCollection<FactType> facts = iuc.FactTypeCollection;
-							if (facts.Count == 1)
-							{
-								FactType fact = facts[0];
-								LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
-								if (roles.Count == 2)
-								{
-									Role oldRole = roles[0].Role;
-									if (oldRole == constraintLink.Role)
-									{
-										// Unlikely but possible (you'd need to insert instead of add)
-										oldRole = roles[1].Role;
-									}
-									ObjectType oldRolePlayer;
-									UniquenessConstraint preferredIdentifier;
-									if ((null != (oldRolePlayer = oldRole.RolePlayer)) &&
-										!oldRolePlayer.IsDeleted &&
-										(null != (preferredIdentifier = oldRolePlayer.PreferredIdentifier)))
-									{
-										LinkedElementCollection<FactType> testFacts = preferredIdentifier.FactTypeCollection;
-										int testFactsCount = testFacts.Count;
-										for (int i = 0; i < testFactsCount; ++i)
-										{
-											// If this fact is involved in the external preferred identifier, then
-											// the prerequisites for the pattern no longer hold
-											if (fact == testFacts[i])
-											{
-												oldRolePlayer.PreferredIdentifier = null;
-												break;
-											}
-										}
-									}
-								}
+								rolePlayer = role.RolePlayer;
 							}
 							break;
 						case ConstraintType.ExternalUniqueness:
-							{
-								// A preferred identifier on an external uniqueness constraint
-								// can be extended to include a new role if the role is on a binary
-								// fact opposite the object being identified. The opposite role must
-								// have a single-column internal uniqueness constraint. Given that
-								// we add the uniqueness constraint automatically when the preferred
-								// identifier is added, it is also appropriate to add it here to preserve
-								// the pattern.
-								// Note that we'll go one step further here to keep the pattern. If the
-								// opposite role player is not set then we'll set it automatically.
-								ObjectType identifierFor = constraint.PreferredIdentifierFor;
-								if (identifierFor != null)
-								{
-									bool clearIdentifier = true;
-									Role nearRole = constraintLink.Role;
-									FactType factType = nearRole.FactType;
-									if (null != factType)
-									{
-										Objectification objectification = identifierFor.Objectification;
-										RoleProxy proxy;
-										FactType impliedFact;
-										LinkedElementCollection<RoleBase> factRoles;
-										if (null != (objectification = identifierFor.Objectification) &&
-											null != (proxy = nearRole.Proxy) &&
-											null != (impliedFact = proxy.FactType) &&
-											objectification == impliedFact.ImpliedByObjectification)
-										{
-											clearIdentifier = false;
-										}
-										else if ((factRoles = factType.RoleCollection).Count == 2)
-										{
-											Role oppositeRole = factRoles[0].Role;
-											if (oppositeRole == nearRole)
-											{
-												oppositeRole = factRoles[1].Role;
-											}
-											ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
-											if (oppositeRolePlayer == null || oppositeRolePlayer == identifierFor)
-											{
-												bool haveSingleRoleInternalUniqueness = false;
-												foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
-												{
-													if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
-													{
-														haveSingleRoleInternalUniqueness = true;
-														break;
-													}
-												}
-												if (!haveSingleRoleInternalUniqueness)
-												{
-													UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(oppositeRole.Store);
-													oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
-												}
-												if (oppositeRolePlayer == null)
-												{
-													oppositeRole.RolePlayer = identifierFor;
-												}
-												clearIdentifier = false;
-											}
-										}
-									}
-									if (clearIdentifier)
-									{
-										// Could not maintain the pattern
-										constraint.PreferredIdentifierFor = null;
-									}
-								}
-							}
+							rolePlayer = constraint.PreferredIdentifierFor;
 							break;
 					}
 				}
 			}
+			if (rolePlayer != null && !rolePlayer.IsDeleting)
+			{
+				EntityTypeHasPreferredIdentifier identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer);
+				if (identifierLink != null)
+				{
+					identifierLink.TestRemovePreferredIdentifier();
+				}
+			}
 		}
-		#endregion // TestRemovePreferredIdentifierConstraintRoleAddRule class
-		#region TestRemovePreferredIdentifierObjectificationAddRule class
+		#endregion // TestRemovePreferredIdentifierDeletingRule
+		#region TestRemovePreferredIdentifierRolePlayerChangeRule
 		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// A rule to determine if a mandatory condition for
+		/// a preferred identifier link has been eliminated.
+		/// Remove the preferred identifier if this happens.
+		/// </summary>
+		private static void TestRemovePreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				ObjectType rolePlayer = (ObjectType)e.OldRolePlayer;
+				EntityTypeHasPreferredIdentifier identifierLink;
+				if (!rolePlayer.IsDeleted &&
+					null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer)))
+				{
+					identifierLink.TestRemovePreferredIdentifier();
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierRolePlayerChangeRule
+		#region TestRemovePreferredIdentifierRoleAddRule
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// A rule to determine if a role has been added to a fact that
+		/// has a preferred identifier attached to one of its constraints.
+		/// </summary>
+		private static void TestRemovePreferredIdentifierRoleAddRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasRole roleLink = e.ModelElement as FactTypeHasRole;
+			FactType fact = roleLink.FactType;
+			foreach (IFactConstraint factConstraint in fact.FactConstraintCollection)
+			{
+				UniquenessConstraint constraint = factConstraint.Constraint as UniquenessConstraint;
+				if (constraint != null)
+				{
+					ObjectType forType = constraint.PreferredIdentifierFor;
+					if (forType != null)
+					{
+						Objectification objectification;
+						if (!(null != (objectification = forType.Objectification) &&
+							fact == objectification.NestedFactType))
+						{
+							// If the preferred identifier is already there, then
+							// the fact is binary and removing the role will
+							// invalidate the prerequisites. Remove the identifier.
+							// Note that the setter for most of the constraint implementations
+							// is empty, this will only apply to internal and external
+							// uniqueness constraints.
+							constraint.PreferredIdentifierFor = null;
+						}
+					}
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierRoleAddRule
+		#region TestRemovePreferredIdentifierConstraintRoleAddRule
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// A rule to determine if a role has been added to a constraint
+		/// that is acting as a preferred identifier
+		/// </summary>
+		private static void TestRemovePreferredIdentifierConstraintRoleAddRule(ElementAddedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole constraintLink = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequence;
+			IConstraint constraint = sequence.Constraint;
+			if (constraint != null)
+			{
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+						ObjectType preferredFor = constraint.PreferredIdentifierFor;
+						if (preferredFor != null)
+						{
+							FactType nestedFactType = preferredFor.NestedFactType;
+							if (nestedFactType != null && nestedFactType == constraintLink.Role.FactType)
+							{
+								// Adding a link to an internal constraint that is the preferred
+								// identifier for an objectifying type is always valid
+								break;
+							}
+						}
+						// A preferred identifier on an internal uniqueness constraint requires
+						// the constraint to have one role only. If we already have a preferred
+						// identifier on this role, then we must have one already, so adding an
+						// additional role is bad.
+						constraint.PreferredIdentifierFor = null;
+						// There are also problems if the role is added to the opposite single
+						// role constraint, which must have a single-column internal uniqueness
+						// constraint over it for both internal and external identifiers.
+						UniquenessConstraint iuc = constraint as UniquenessConstraint;
+						LinkedElementCollection<FactType> facts = iuc.FactTypeCollection;
+						if (facts.Count == 1)
+						{
+							FactType fact = facts[0];
+							LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
+							if (roles.Count == 2)
+							{
+								Role oldRole = roles[0].Role;
+								if (oldRole == constraintLink.Role)
+								{
+									// Unlikely but possible (you'd need to insert instead of add)
+									oldRole = roles[1].Role;
+								}
+								ObjectType oldRolePlayer;
+								UniquenessConstraint preferredIdentifier;
+								if ((null != (oldRolePlayer = oldRole.RolePlayer)) &&
+									!oldRolePlayer.IsDeleted &&
+									(null != (preferredIdentifier = oldRolePlayer.PreferredIdentifier)))
+								{
+									LinkedElementCollection<FactType> testFacts = preferredIdentifier.FactTypeCollection;
+									int testFactsCount = testFacts.Count;
+									for (int i = 0; i < testFactsCount; ++i)
+									{
+										// If this fact is involved in the external preferred identifier, then
+										// the prerequisites for the pattern no longer hold
+										if (fact == testFacts[i])
+										{
+											oldRolePlayer.PreferredIdentifier = null;
+											break;
+										}
+									}
+								}
+							}
+						}
+						break;
+					case ConstraintType.ExternalUniqueness:
+						{
+							// A preferred identifier on an external uniqueness constraint
+							// can be extended to include a new role if the role is on a binary
+							// fact opposite the object being identified. The opposite role must
+							// have a single-column internal uniqueness constraint. Given that
+							// we add the uniqueness constraint automatically when the preferred
+							// identifier is added, it is also appropriate to add it here to preserve
+							// the pattern.
+							// Note that we'll go one step further here to keep the pattern. If the
+							// opposite role player is not set then we'll set it automatically.
+							ObjectType identifierFor = constraint.PreferredIdentifierFor;
+							if (identifierFor != null)
+							{
+								bool clearIdentifier = true;
+								Role nearRole = constraintLink.Role;
+								FactType factType = nearRole.FactType;
+								if (null != factType)
+								{
+									Objectification objectification = identifierFor.Objectification;
+									RoleProxy proxy;
+									FactType impliedFact;
+									LinkedElementCollection<RoleBase> factRoles;
+									if (null != (objectification = identifierFor.Objectification) &&
+										null != (proxy = nearRole.Proxy) &&
+										null != (impliedFact = proxy.FactType) &&
+										objectification == impliedFact.ImpliedByObjectification)
+									{
+										clearIdentifier = false;
+									}
+									else if ((factRoles = factType.RoleCollection).Count == 2)
+									{
+										Role oppositeRole = factRoles[0].Role;
+										if (oppositeRole == nearRole)
+										{
+											oppositeRole = factRoles[1].Role;
+										}
+										ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
+										if (oppositeRolePlayer == null || oppositeRolePlayer == identifierFor)
+										{
+											bool haveSingleRoleInternalUniqueness = false;
+											foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+											{
+												if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+												{
+													haveSingleRoleInternalUniqueness = true;
+													break;
+												}
+											}
+											if (!haveSingleRoleInternalUniqueness)
+											{
+												UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(oppositeRole.Store);
+												oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+											}
+											if (oppositeRolePlayer == null)
+											{
+												oppositeRole.RolePlayer = identifierFor;
+											}
+											clearIdentifier = false;
+										}
+									}
+								}
+								if (clearIdentifier)
+								{
+									// Could not maintain the pattern
+									constraint.PreferredIdentifierFor = null;
+								}
+							}
+						}
+						break;
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierConstraintRoleAddRule
+		#region TestRemovePreferredIdentifierObjectificationAddRule
+		/// <summary>
+		/// AddRule: typeof(Objectification)
 		/// A rule to determine if an internal constraint on one of its
 		/// roles is the preferred identifier for a direct role player. This
 		/// pattern is not allowed.
 		/// </summary>
-		[RuleOn(typeof(Objectification))] // AddRule
-		private sealed partial class TestRemovePreferredIdentifierObjectificationAddRule : AddRule
+		private static void TestRemovePreferredIdentifierObjectificationAddRule(ElementAddedEventArgs e)
 		{
-			public static void TestRemovePreferredIdentifiers(FactType factType)
-			{
-				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-				int roleCount = roles.Count;
-				for (int i = 0; i < roleCount; ++i)
-				{
-					// Implied facts cannot be objectified, we will never see
-					// role proxies here, so the exception cast is fine.
-					Role role = (Role)roles[i];
-					ObjectType rolePlayer;
-					UniquenessConstraint pid;
-					LinkedElementCollection<FactType> facts;
-					if (null != (rolePlayer = role.RolePlayer) &&
-						null != (pid = rolePlayer.PreferredIdentifier) &&
-						1 == (facts = pid.FactTypeCollection).Count &&
-						facts[0] == factType)
-					{
-						rolePlayer.PreferredIdentifier = null;
-					}
-				}
-			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				TestRemovePreferredIdentifiers((e.ModelElement as Objectification).NestedFactType);
-			}
+			TestRemovePreferredIdentifiersForObjectificationAdded((e.ModelElement as Objectification).NestedFactType);
 		}
-		#endregion // TestRemovePreferredIdentifierObjectificationAddRule class
-		#region TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule class
-		[RuleOn(typeof(Objectification))] // RolePlayerChangeRule
-		private sealed partial class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				Objectification link = e.ElementLink as Objectification;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				Guid changedRoleGuid = e.DomainRole.Id;
-				if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
-				{
-					TestRemovePreferredIdentifierObjectificationAddRule.TestRemovePreferredIdentifiers(link.NestedFactType);
-				}
-			}
-		}
-		#endregion // TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule class
-		#region PreferredIdentifierAddedRule class
 		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void TestRemovePreferredIdentifiersForObjectificationAdded(FactType factType)
+		{
+			LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+			int roleCount = roles.Count;
+			for (int i = 0; i < roleCount; ++i)
+			{
+				// Implied facts cannot be objectified, we will never see
+				// role proxies here, so the exception cast is fine.
+				Role role = (Role)roles[i];
+				ObjectType rolePlayer;
+				UniquenessConstraint pid;
+				LinkedElementCollection<FactType> facts;
+				if (null != (rolePlayer = role.RolePlayer) &&
+					null != (pid = rolePlayer.PreferredIdentifier) &&
+					1 == (facts = pid.FactTypeCollection).Count &&
+					facts[0] == factType)
+				{
+					rolePlayer.PreferredIdentifier = null;
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierObjectificationAddRule
+		#region TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Objectification)
+		/// </summary>
+		private static void TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			Objectification link = e.ElementLink as Objectification;
+			if (link.IsDeleted)
+			{
+				return;
+			}
+			Guid changedRoleGuid = e.DomainRole.Id;
+			if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
+			{
+				TestRemovePreferredIdentifiersForObjectificationAdded(link.NestedFactType);
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule
+		#region PreferredIdentifierAddedRule
+		/// <summary>
+		/// AddRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// Verify that all preconditions hold for adding a primary
 		/// identifier and extend modifiable conditions as needed.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
-		private sealed partial class PreferredIdentifierAddedRule : AddRule
+		private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Check preconditions on an internal or external uniqueness constraint.
-			/// </summary>
-			public static void Process(EntityTypeHasPreferredIdentifier link)
-			{
-				// Enforce that a preferred identifier is set only for unobjectified
-				// entity types. The other parts of this (don't allow this to be set
-				// for object types with preferred identifiers) is enforced in
-				// ObjectType.CheckForIncompatibleRelationshipRule
-				ObjectType entityType = link.PreferredIdentifierFor;
-				if (entityType.IsValueTypeCheckDeleting)
-				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType);
-				}
-
-				IConstraint constraint = link.PreferredIdentifier as IConstraint;
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.InternalUniqueness:
-						{
-							UniquenessConstraint iuc = constraint as UniquenessConstraint;
-							iuc.TestAllowPreferred(entityType, true);
-
-							// TestAllowPreferred verifies role player types, fact arities, and that
-							// no constraints need to be deleted to make this happen. Additional
-							// constraints that are automatically added all happen on the opposite
-							// role, so find it, add constraints as needed, and then let this
-							// pass through to finish creating the preferred identifier link.
-							Role role = iuc.RoleCollection[0];
-
-							// If we're adding a constraint pattern to the objectifying type from
-							// an internal constraint on its nested type, then the required opposite
-							// role pattern is already enforced by the Objectification relationship.
-							// We do not need to enforce it here.
-							if (role.Proxy == null || role.FactType != entityType.NestedFactType)
-							{
-								Role oppositeRole = null;
-								FactType factType = role.FactType;
-								foreach (RoleBase roleBase in factType.RoleCollection)
-								{
-									Role factRole = roleBase.Role;
-									if (role != factRole)
-									{
-										oppositeRole = factRole;
-										break;
-									}
-								}
-								bool needOppositeConstraint = true;
-								foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
-								{
-									if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
-										roleSequence.RoleCollection.Count == 1)
-									{
-										needOppositeConstraint = false;
-										break;
-									}
-								}
-								if (needOppositeConstraint)
-								{
-									// Create a uniqueness constraint on the opposite role to make
-									// this a 1-1 binary fact type.
-									Store store = iuc.Store;
-									UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-									oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
-								}
-								oppositeRole.IsMandatory = true; // Make sure it is mandatory
-							}
-							break;
-						}
-					case ConstraintType.ExternalUniqueness:
-						{
-							UniquenessConstraint euc = constraint as UniquenessConstraint;
-							euc.TestAllowPreferred(entityType, true);
-							Objectification objectification = entityType.Objectification;
-
-							// TestAllowPreferred verifies role player types and fact arities of the
-							// associated fact types and that no constraints need to be deleted
-							// to make this happen. Additional constraints that are automatically
-							// added all happen on the opposite role, so find it, add constraints as needed,
-							// and then let this pass through to finish creating the preferred identifier link.
-
-							// Note that we cannot automatically add mandatory constraints as we did
-							// with the internal uniqueness cases (the result is ambiguous), and we do
-							// not enforce constraints on this side of the fact. The other cases
-							// cases are handled as validation errors.
-							LinkedElementCollection<Role> roles = euc.RoleCollection;
-							int roleCount = roles.Count;
-							Store store = euc.Store;
-							for (int i = 0; i < roleCount; ++i)
-							{
-								Role role = roles[i];
-								RoleProxy proxyRole;
-								FactType impliedFactType;
-
-								if (null != objectification &&
-									null != (proxyRole = role.Proxy) &&
-									null != (impliedFactType = proxyRole.FactType) &&
-									impliedFactType.ImpliedByObjectification == objectification)
-								{
-									// The opposite role pattern is enforced by the objectification pattern
-									continue;
-								}
-
-								Role oppositeRole = null;
-								FactType factType = role.FactType;
-								foreach (RoleBase roleBase in factType.RoleCollection)
-								{
-									Role factRole = roleBase.Role;
-									if (role != factRole)
-									{
-										oppositeRole = factRole;
-										break;
-									}
-								}
-								bool needOppositeConstraint = true;
-								foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
-								{
-									if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
-										roleSequence.RoleCollection.Count == 1)
-									{
-										needOppositeConstraint = false;
-										break;
-									}
-								}
-								if (needOppositeConstraint)
-								{
-									// Create a uniqueness constraint on the opposite role to make
-									// this a 1-1 binary fact type.
-									UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-									oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
-								}
-							}
-							break;
-						}
-				}
-			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as EntityTypeHasPreferredIdentifier);
-			}
-			/// <summary>
-			/// This rule checkes preconditions for adding a primary
-			/// identifier link. Fire it before the link is added
-			/// to the transaction log.
-			/// </summary>
-			public override bool FireBefore
-			{
-				get
-				{
-					return true;
-				}
-			}
+			ProcessPreferredIdentifierAdded(e.ModelElement as EntityTypeHasPreferredIdentifier);
 		}
-		#endregion // PreferredIdentifierAddedRule class
-		#region PreferredIdentifierRolePlayerChangeRule class
 		/// <summary>
-		/// Verify that all preconditions hold for adding a primary
-		/// identifier and extend modifiable conditions as needed.
-		/// Defers to <see cref="PreferredIdentifierAddedRule"/>.
+		/// Check preconditions on an internal or external uniqueness constraint.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // RolePlayerChangeRule
-		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		private static void ProcessPreferredIdentifierAdded(EntityTypeHasPreferredIdentifier link)
 		{
-			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			// Enforce that a preferred identifier is set only for unobjectified
+			// entity types. The other parts of this (don't allow this to be set
+			// for object types with preferred identifiers) is enforced in
+			// ObjectType.CheckForIncompatibleRelationshipRule
+			ObjectType entityType = link.PreferredIdentifierFor;
+			if (entityType.IsValueTypeCheckDeleting)
 			{
-				PreferredIdentifierAddedRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier);
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType);
 			}
-		}
-		#endregion // PreferredIdentifierRolePlayerChangeRule class
-		#region ModalityChangeRule class
-		/// <summary>
-		/// Modify preferred identifier status for modality changes
-		/// </summary>
-		[RuleOn(typeof(SetConstraint))] // ChangeRule
-		private sealed partial class ModalityChangeRule : ChangeRule
-		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+
+			IConstraint constraint = link.PreferredIdentifier as IConstraint;
+			switch (constraint.ConstraintType)
 			{
-				if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
-				{
-					SetConstraint setConstraint = e.ModelElement as SetConstraint;
-					EntityTypeHasPreferredIdentifier identifierLink;
-					bool testRemoveOpposite = false;
-					bool testMandatoryRequired = false;
-					bool notAlethic = setConstraint.Modality != ConstraintModality.Alethic;
-					switch ((setConstraint as IConstraint).ConstraintType)
+				case ConstraintType.InternalUniqueness:
 					{
-						case ConstraintType.InternalUniqueness:
-							testRemoveOpposite = notAlethic;
-							goto case ConstraintType.ExternalUniqueness;
-						case ConstraintType.ExternalUniqueness:
-							if (notAlethic)
+						UniquenessConstraint iuc = constraint as UniquenessConstraint;
+						iuc.TestAllowPreferred(entityType, true);
+
+						// TestAllowPreferred verifies role player types, fact arities, and that
+						// no constraints need to be deleted to make this happen. Additional
+						// constraints that are automatically added all happen on the opposite
+						// role, so find it, add constraints as needed, and then let this
+						// pass through to finish creating the preferred identifier link.
+						Role role = iuc.RoleCollection[0];
+
+						// If we're adding a constraint pattern to the objectifying type from
+						// an internal constraint on its nested type, then the required opposite
+						// role pattern is already enforced by the Objectification relationship.
+						// We do not need to enforce it here.
+						if (role.Proxy == null || role.FactType != entityType.NestedFactType)
+						{
+							Role oppositeRole = null;
+							FactType factType = role.FactType;
+							foreach (RoleBase roleBase in factType.RoleCollection)
 							{
-								// Preferred identifiers must be alethic
-								identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifierFor(setConstraint as UniquenessConstraint);
-								if (identifierLink != null)
+								Role factRole = roleBase.Role;
+								if (role != factRole)
 								{
-									testRemoveOpposite = false;
-									identifierLink.Delete();
+									oppositeRole = factRole;
+									break;
 								}
 							}
-							break;
-						case ConstraintType.SimpleMandatory:
-							testRemoveOpposite = notAlethic;
-							testMandatoryRequired = true;
-							break;
-						case ConstraintType.DisjunctiveMandatory:
-							testMandatoryRequired = true;
-							break;
-					}
-					if (testRemoveOpposite)
-					{
-						// Remove preferred identifiers for modality changes on
-						// constraints required by the preferred identifier pattern.
-						LinkedElementCollection<Role> roles;
-						ObjectType rolePlayer;
-						if ((roles = setConstraint.RoleCollection).Count == 1 &&
-							null != (rolePlayer = roles[0].RolePlayer) &&
-							null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer)))
-						{
-							// Note that this will also call ObjectType.ValidateMandatoryRolesForPreferredIdentifier
-							testMandatoryRequired = false; // TestRemovePreferredIdentifier will do the same test
-							identifierLink.TestRemovePreferredIdentifier();
+							bool needOppositeConstraint = true;
+							foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+							{
+								if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+									roleSequence.RoleCollection.Count == 1)
+								{
+									needOppositeConstraint = false;
+									break;
+								}
+							}
+							if (needOppositeConstraint)
+							{
+								// Create a uniqueness constraint on the opposite role to make
+								// this a 1-1 binary fact type.
+								Store store = iuc.Store;
+								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+								oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+							}
+							oppositeRole.IsMandatory = true; // Make sure it is mandatory
 						}
+						break;
 					}
-					if (testMandatoryRequired)
+				case ConstraintType.ExternalUniqueness:
 					{
-						LinkedElementCollection<Role> roles = setConstraint.RoleCollection;
+						UniquenessConstraint euc = constraint as UniquenessConstraint;
+						euc.TestAllowPreferred(entityType, true);
+						Objectification objectification = entityType.Objectification;
+
+						// TestAllowPreferred verifies role player types and fact arities of the
+						// associated fact types and that no constraints need to be deleted
+						// to make this happen. Additional constraints that are automatically
+						// added all happen on the opposite role, so find it, add constraints as needed,
+						// and then let this pass through to finish creating the preferred identifier link.
+
+						// Note that we cannot automatically add mandatory constraints as we did
+						// with the internal uniqueness cases (the result is ambiguous), and we do
+						// not enforce constraints on this side of the fact. The other cases
+						// cases are handled as validation errors.
+						LinkedElementCollection<Role> roles = euc.RoleCollection;
 						int roleCount = roles.Count;
+						Store store = euc.Store;
 						for (int i = 0; i < roleCount; ++i)
 						{
 							Role role = roles[i];
-							ObjectType objectType;
-							UniquenessConstraint pid;
-							if (null != (objectType = role.RolePlayer) &&
-								null != (pid = objectType.PreferredIdentifier) &&
-								!pid.IsInternal &&
-								pid.FactTypeCollection.Contains(role.FactType))
+							RoleProxy proxyRole;
+							FactType impliedFactType;
+
+							if (null != objectification &&
+								null != (proxyRole = role.Proxy) &&
+								null != (impliedFactType = proxyRole.FactType) &&
+								impliedFactType.ImpliedByObjectification == objectification)
 							{
-								objectType.ValidateMandatoryRolesForPreferredIdentifier();
+								// The opposite role pattern is enforced by the objectification pattern
+								continue;
 							}
+
+							Role oppositeRole = null;
+							FactType factType = role.FactType;
+							foreach (RoleBase roleBase in factType.RoleCollection)
+							{
+								Role factRole = roleBase.Role;
+								if (role != factRole)
+								{
+									oppositeRole = factRole;
+									break;
+								}
+							}
+							bool needOppositeConstraint = true;
+							foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+							{
+								if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+									roleSequence.RoleCollection.Count == 1)
+								{
+									needOppositeConstraint = false;
+									break;
+								}
+							}
+							if (needOppositeConstraint)
+							{
+								// Create a uniqueness constraint on the opposite role to make
+								// this a 1-1 binary fact type.
+								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+								oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+							}
+						}
+						break;
+					}
+			}
+		}
+		#endregion // PreferredIdentifierAddedRule
+		#region PreferredIdentifierRolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
+		/// Verify that all preconditions hold for adding a primary
+		/// identifier and extend modifiable conditions as needed.
+		/// Defers to <see cref="ProcessPreferredIdentifierAdded"/>.
+		/// </summary>
+		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			ProcessPreferredIdentifierAdded(e.ElementLink as EntityTypeHasPreferredIdentifier);
+		}
+		#endregion // PreferredIdentifierRolePlayerChangeRule
+		#region ModalityChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(SetConstraint)
+		/// Modify preferred identifier status for modality changes
+		/// </summary>
+		private static void ModalityChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
+			{
+				SetConstraint setConstraint = e.ModelElement as SetConstraint;
+				EntityTypeHasPreferredIdentifier identifierLink;
+				bool testRemoveOpposite = false;
+				bool testMandatoryRequired = false;
+				bool notAlethic = setConstraint.Modality != ConstraintModality.Alethic;
+				switch ((setConstraint as IConstraint).ConstraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+						testRemoveOpposite = notAlethic;
+						goto case ConstraintType.ExternalUniqueness;
+					case ConstraintType.ExternalUniqueness:
+						if (notAlethic)
+						{
+							// Preferred identifiers must be alethic
+							identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifierFor(setConstraint as UniquenessConstraint);
+							if (identifierLink != null)
+							{
+								testRemoveOpposite = false;
+								identifierLink.Delete();
+							}
+						}
+						break;
+					case ConstraintType.SimpleMandatory:
+						testRemoveOpposite = notAlethic;
+						testMandatoryRequired = true;
+						break;
+					case ConstraintType.DisjunctiveMandatory:
+						testMandatoryRequired = true;
+						break;
+				}
+				if (testRemoveOpposite)
+				{
+					// Remove preferred identifiers for modality changes on
+					// constraints required by the preferred identifier pattern.
+					LinkedElementCollection<Role> roles;
+					ObjectType rolePlayer;
+					if ((roles = setConstraint.RoleCollection).Count == 1 &&
+						null != (rolePlayer = roles[0].RolePlayer) &&
+						null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer)))
+					{
+						// Note that this will also call ObjectType.ValidateMandatoryRolesForPreferredIdentifier
+						testMandatoryRequired = false; // TestRemovePreferredIdentifier will do the same test
+						identifierLink.TestRemovePreferredIdentifier();
+					}
+				}
+				if (testMandatoryRequired)
+				{
+					LinkedElementCollection<Role> roles = setConstraint.RoleCollection;
+					int roleCount = roles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Role role = roles[i];
+						ObjectType objectType;
+						UniquenessConstraint pid;
+						if (null != (objectType = role.RolePlayer) &&
+							null != (pid = objectType.PreferredIdentifier) &&
+							!pid.IsInternal &&
+							pid.FactTypeCollection.Contains(role.FactType))
+						{
+							objectType.ValidateMandatoryRolesForPreferredIdentifier();
 						}
 					}
 				}
 			}
 		}
-		#endregion // ModalityChangeRule class
+		#endregion // ModalityChangeRule
 	}
 	#endregion // EntityTypeHasPreferredIdentifier pattern enforcement
 	#region UniquenessConstraint class
@@ -5509,97 +5298,82 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactSetConstraint)
 		/// Only validates NMinusOneError
 		/// Checks when Internal constraint is added
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed partial class NMinusOneAddRuleModelValidation : AddRule
+		private static void NMinusOneConstraintAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			SetConstraint constraint = (e.ModelElement as FactSetConstraint).SetConstraint;
+			IModelErrorOwner errorOwner;
+			if (constraint.Constraint.ConstraintIsInternal &&
+				null != (errorOwner = constraint as IModelErrorOwner))
 			{
-				SetConstraint constraint = (e.ModelElement as FactSetConstraint).SetConstraint;
-				IModelErrorOwner errorOwner;
-				if (constraint.Constraint.ConstraintIsInternal &&
-					null != (errorOwner = constraint as IModelErrorOwner))
-				{
-					errorOwner.DelayValidateErrors();
-				}
+				errorOwner.DelayValidateErrors();
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Only validates NMinusOneError
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class NMinusOneAddRuleModelConstraintAddValidation : AddRule
+		private static void NMinusOneConstraintRoleAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+			if (constraint != null && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
-				if (constraint != null && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
-				{
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
-				}
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 			}
 		}
 		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Only validates NMinusOneError
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-		private sealed partial class NMinusOneDeleteRuleModelConstraintDeleteValidation : DeleteRule
+		private static void NMinusOneConstraintRoleDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+			if (constraint != null && !constraint.IsDeleted && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
-				if (constraint != null && !constraint.IsDeleted && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
-				{
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
-				}
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
 		/// Only validates NMinusOneError
 		/// Used for Adding roles to the role sequence check
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class NMinusOneAddRuleModelFactAddValidation : AddRule
+		private static void NMinusOneFactTypeRoleAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			FactType fact = link.FactType;
+			if (fact != null)
 			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				FactType fact = link.FactType;
-				if (fact != null)
+				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
 				{
-					foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
+					if (constraint.Modality == ConstraintModality.Alethic)
 					{
-						if (constraint.Modality == ConstraintModality.Alethic)
-						{
-							ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
-						}
+						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 					}
 				}
 			}
 		}
 		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasRole)
 		/// Only validates NMinusOneError
 		/// Used for Removing roles to the role sequence check
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
-		private sealed partial class NMinusOneDeleteRuleModelFactDeleteValidation : DeleteRule
+		private static void NMinusOneFactTypeRoleDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			FactType fact = link.FactType;
+			if (fact != null && !fact.IsDeleted)
 			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				FactType fact = link.FactType;
-				if (fact != null && !fact.IsDeleted)
+				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
 				{
-					foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
+					if (!constraint.IsDeleted && constraint.Modality == ConstraintModality.Alethic)
 					{
-						if (!constraint.IsDeleted && constraint.Modality == ConstraintModality.Alethic)
-						{
-							ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
-						}
+						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 					}
 				}
 			}
@@ -5635,79 +5409,79 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return uc;
 		}
 		#endregion // Internal constraint handling
-		#region UniquenessConstraintChangeRule class
-		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
-		private sealed partial class UniquenessConstraintChangeRule : ChangeRule
+		#region UniquenessConstraintChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(UniquenessConstraint)
+		/// Handle property changes for <see cref="UniquenessConstraint"/>
+		/// </summary>
+		private static void UniquenessConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == UniquenessConstraint.IsPreferredDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == UniquenessConstraint.IsPreferredDomainPropertyId)
+				UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
+				if ((bool)e.NewValue)
 				{
-					UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
-					if ((bool)e.NewValue)
+					// The preconditions for all of this are verified in the UI, and
+					// are verified again in the PreferredIdentifierAddedRule. If any
+					// of this throws it is because the preconditions are violated,
+					// but this will be such a rare condition that I don't go
+					// out of my way to validate it. Calling code can always use
+					// the TestAllowPreferred method to get a cleaner exception.
+					// We only use TestAllowPreferred here for role proxy cases
+					// to determine whether we should be preferred for the objectified
+					// type or an opposite role player.
+					Role constraintRole = constraint.RoleCollection[0];
+					RoleBase role = constraintRole.Proxy;
+					ObjectType objectifyingType;
+					ObjectType targetRolePlayer = null;
+					if (role == null)
 					{
-						// The preconditions for all of this are verified in the UI, and
-						// are verified again in the PreferredIdentifierAddedRule. If any
-						// of this throws it is because the preconditions are violated,
-						// but this will be such a rare condition that I don't go
-						// out of my way to validate it. Calling code can always use
-						// the TestAllowPreferred method to get a cleaner exception.
-						// We only use TestAllowPreferred here for role proxy cases
-						// to determine whether we should be preferred for the objectified
-						// type or an opposite role player.
-						Role constraintRole = constraint.RoleCollection[0];
-						RoleBase role = constraintRole.Proxy;
-						ObjectType objectifyingType;
-						ObjectType targetRolePlayer = null;
-						if (role == null)
-						{
-							role = constraintRole;
-						}
-						else if ((null != (objectifyingType = constraintRole.FactType.NestingType)) &&
-							constraint.TestAllowPreferred(objectifyingType, false))
-						{
-							targetRolePlayer = objectifyingType;
-						}
-						else
-						{
-							role = constraintRole;
-						}
-						if (targetRolePlayer == null)
-						{
-							LinkedElementCollection<RoleBase> factRoles = role.FactType.RoleCollection;
-							int roleCount = factRoles.Count;
-							for (int i = 0; i < roleCount; ++i)
-							{
-								RoleBase testRole = factRoles[i];
-								if (role != testRole)
-								{
-									targetRolePlayer = ((Role)testRole).RolePlayer;
-									break;
-								}
-							}
-						}
-
-						// Let the PreferredIdentifierAddedRule do the bulk of the work
-						constraint.PreferredIdentifierFor = targetRolePlayer;
+						role = constraintRole;
+					}
+					else if ((null != (objectifyingType = constraintRole.FactType.NestingType)) &&
+						constraint.TestAllowPreferred(objectifyingType, false))
+					{
+						targetRolePlayer = objectifyingType;
 					}
 					else
 					{
-						constraint.PreferredIdentifierFor = null;
+						role = constraintRole;
 					}
+					if (targetRolePlayer == null)
+					{
+						LinkedElementCollection<RoleBase> factRoles = role.FactType.RoleCollection;
+						int roleCount = factRoles.Count;
+						for (int i = 0; i < roleCount; ++i)
+						{
+							RoleBase testRole = factRoles[i];
+							if (role != testRole)
+							{
+								targetRolePlayer = ((Role)testRole).RolePlayer;
+								break;
+							}
+						}
+					}
+
+					// Let the PreferredIdentifierAddedRule do the bulk of the work
+					constraint.PreferredIdentifierFor = targetRolePlayer;
 				}
-				else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
+				else
 				{
-					ORMCoreDomainModel.DelayValidateElement(e.ModelElement as UniquenessConstraint, DelayValidateNMinusOneError);
-				}
-				else if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
-				{
-					// UNDONE: Support toggling IsInternal property after the object has been created
-					throw new InvalidOperationException("UniquenessConstraint.IsInternal cannot be changed");
+					constraint.PreferredIdentifierFor = null;
 				}
 			}
+			else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
+			{
+				ORMCoreDomainModel.DelayValidateElement(e.ModelElement as UniquenessConstraint, DelayValidateNMinusOneError);
+			}
+			else if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
+			{
+				// UNDONE: Support toggling IsInternal property after the object has been created
+				throw new InvalidOperationException("UniquenessConstraint.IsInternal cannot be changed");
+			}
 		}
-		#endregion // UniquenessConstraintChangeRule class
+		#endregion // UniquenessConstraintChangeRule
 	}
 	#endregion // UniquenessConstraint class
 	#region MandatoryConstraint class
@@ -5802,36 +5576,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			mc.RoleCollection.Add(role);
 			return mc;
 		}
-		#region MandatoryConstraintChangeRule class
+		#region MandatoryConstraintChangeRule
 		/// <summary>
-		/// Handle changes to the IsSimple property
+		/// ChangeRule: typeof(MandatoryConstraint)
+		/// Block changes IsSimple, IsImplied, and Modality (when IsImplied is true) properties
 		/// </summary>
-		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
-		private sealed partial class MandatoryConstraintChangeRule : ChangeRule
+		private static void MandatoryConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			// UNDONE: Localize error messages in this routine
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
 			{
-				// UNDONE: Localize error messages in this routine
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
+				// UNDONE: Support toggling IsSimple property after the object has been created.
+				throw new InvalidOperationException("MandatoryConstraint.IsSimple cannot be changed.");
+			}
+			else if (attributeId == MandatoryConstraint.IsImpliedDomainPropertyId)
+			{
+				throw new InvalidOperationException("MandatoryConstraint.IsImplied cannot be changed.");
+			}
+			else if (attributeId == MandatoryConstraint.ModalityDomainPropertyId)
+			{
+				if (((MandatoryConstraint)e.ModelElement).IsImplied)
 				{
-					// UNDONE: Support toggling IsSimple property after the object has been created.
-					throw new InvalidOperationException("MandatoryConstraint.IsSimple cannot be changed.");
-				}
-				else if (attributeId == MandatoryConstraint.IsImpliedDomainPropertyId)
-				{
-					throw new InvalidOperationException("MandatoryConstraint.IsImplied cannot be changed.");
-				}
-				else if (attributeId == MandatoryConstraint.ModalityDomainPropertyId)
-				{
-					if (((MandatoryConstraint)e.ModelElement).IsImplied)
-					{
-						throw new InvalidOperationException("MandatoryConstraint.Modality cannot be changed is MandatoryConstraint.IsImplied is true.");
-					}
+					throw new InvalidOperationException("MandatoryConstraint.Modality cannot be changed is MandatoryConstraint.IsImplied is true.");
 				}
 			}
 		}
-		#endregion // MandatoryConstraintChangeRule class
+		#endregion // MandatoryConstraintChangeRule
 		#endregion // Simple mandatory constraint handling
 		#region Implied mandatory constraint handling
 		private static PropertyAssignment[] myInitialImpliedAttributes;
@@ -6038,7 +5809,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							if (rulesEnabled && ruleType == null)
 							{
-								ruleType = typeof(RoleSequencePositionChangeRule);
+								ruleType = typeof(RoleSequencePositionChangeRuleClass);
 								Store.RuleManager.DisableRule(ruleType);
 							}
 							// Move the sequence. We'll reverify its position later.
@@ -6065,180 +5836,162 @@ namespace Neumont.Tools.ORM.ObjectModel
 			throw new InvalidOperationException(ResourceStrings.ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit);
 		}
 		#endregion // Pattern verification helper methods
-		#region CouplerDeleteRule class
+		#region CouplerDeleteRule
 		/// <summary>
+		/// DeleteRule: typeof(ExclusiveOrConstraintCoupler), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
 		/// Give the ExclusiveOrConstraintCoupler bidirection propagate delete
 		/// behavior, but only if one end is already deleted and the other is not
 		/// </summary>
-		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class CouplerDeleteRule : DeleteRule
+		private static void CouplerDeleteRule(ElementDeletedEventArgs e)
 		{
-			public override void ElementDeleted(ElementDeletedEventArgs e)
+			ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+			MandatoryConstraint mandatory = link.MandatoryConstraint;
+			ExclusionConstraint exclusion = link.ExclusionConstraint;
+			if (mandatory.IsDeleted && !exclusion.IsDeleted)
 			{
-				ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
-				MandatoryConstraint mandatory = link.MandatoryConstraint;
-				ExclusionConstraint exclusion = link.ExclusionConstraint;
-				if (mandatory.IsDeleted && !exclusion.IsDeleted)
-				{
-					exclusion.Delete();
-				}
-				else if (exclusion.IsDeleted && !mandatory.IsDeleted)
-				{
-					mandatory.Delete();
-				}
+				exclusion.Delete();
+			}
+			else if (exclusion.IsDeleted && !mandatory.IsDeleted)
+			{
+				mandatory.Delete();
 			}
 		}
-		#endregion // CouplerDeleteRule class
-		#region CouplerAddRule class
+		#endregion // CouplerDeleteRule
+		#region CouplerAddRule
 		/// <summary>
+		/// AddRule: typeof(ExclusiveOrConstraintCoupler)
 		/// Verify that the exclusion constraint has role settings compatible
 		/// with the mandatory constraint, reordering constraints as needed
 		/// </summary>
-		[RuleOn(typeof(ExclusiveOrConstraintCoupler))] // AddRule
-		private sealed partial class CouplerAddRule : AddRule
+		private static void CouplerAddRule(ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				((ExclusiveOrConstraintCoupler)e.ModelElement).SynchronizeCoupledRoles(true, true);
-			}
+			((ExclusiveOrConstraintCoupler)e.ModelElement).SynchronizeCoupledRoles(true, true);
 		}
-		#endregion // CouplerAddRule class
-		#region RoleAddRule class
+		#endregion // CouplerAddRule
+		#region RoleAddRule
 		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Enforce that any role added to a MandatoryConstraint is also
 		/// added to a coupled ExclusionConstraint.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class RoleAddRule : AddRule
+		private static void RoleAddRule(ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			MandatoryConstraint mandatoryConstraint;
+			ExclusionConstraint exclusionConstraint;
+			SetComparisonConstraintRoleSequence comparisonConstraintSequence;
+			if (null != (mandatoryConstraint = sequence as MandatoryConstraint))
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				MandatoryConstraint mandatoryConstraint;
-				ExclusionConstraint exclusionConstraint;
-				SetComparisonConstraintRoleSequence comparisonConstraintSequence;
-				if (null != (mandatoryConstraint = sequence as MandatoryConstraint))
+				if (null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
 				{
-					if (null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
-					{
-						// We need to add a new sequence with a single role in it to the corresponding exclusion constraint.
-						// Add rules can fire due to either add or insert commands, so we need to find the
-						// correct position in the sequence.
-						Store store = link.Store;
-						comparisonConstraintSequence = new SetComparisonConstraintRoleSequence(store, null);
-						comparisonConstraintSequence.RoleCollection.Add(link.Role);
-						ReadOnlyCollection<ConstraintRoleSequenceHasRole> orderedLinks = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(sequence);
-						int insertionIndex = orderedLinks.IndexOf(link);
-						RuleManager ruleManager = store.RuleManager;
-						ruleManager.DisableRule(typeof(RoleSequenceAddRule));
-						try
-						{
-							if (insertionIndex == (orderedLinks.Count - 1))
-							{
-								exclusionConstraint.RoleSequenceCollection.Add(comparisonConstraintSequence);
-							}
-							else
-							{
-								exclusionConstraint.RoleSequenceCollection.Insert(insertionIndex, comparisonConstraintSequence);
-							}
-						}
-						finally
-						{
-							ruleManager.EnableRule(typeof(RoleSequenceAddRule));
-						}
-					}
-				}
-				else if (null != (comparisonConstraintSequence = sequence as SetComparisonConstraintRoleSequence) &&
-					null != (exclusionConstraint = comparisonConstraintSequence.ExternalConstraint as ExclusionConstraint) &&
-					null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
-				{
-					// Note that this will not fire from the code earlier in this routine because
-					// the sequence is populated before it is added to the constraint, so we can
-					// always throw here.
-					ThrowDirectExclusionConstraintEditException();
-				}
-			}
-		}
-		#endregion // RoleAddRule class
-		#region RolePositionChangeRule class
-		/// <summary>
-		/// Enforce that any role moved in a MandatoryConstraint is also
-		/// moved in a coupled ExclusionConstraint.
-		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerPositionChangeRule
-		private sealed partial class RolePositionChangeRule : RolePlayerPositionChangeRule
-		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
-			{
-				// Note that we will never get a position change for a role in a coupled
-				// exclusion constraint because each sequence has exactly one role
-				MandatoryConstraint mandatoryConstraint;
-				ExclusionConstraint exclusionConstraint;
-				if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
-					null != (mandatoryConstraint = e.SourceElement as MandatoryConstraint) &&
-					null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
-				{
-					RuleManager ruleManager = exclusionConstraint.Store.RuleManager;
-					ruleManager.DisableRule(typeof(RoleSequencePositionChangeRule));
+					// We need to add a new sequence with a single role in it to the corresponding exclusion constraint.
+					// Add rules can fire due to either add or insert commands, so we need to find the
+					// correct position in the sequence.
+					Store store = link.Store;
+					comparisonConstraintSequence = new SetComparisonConstraintRoleSequence(store, null);
+					comparisonConstraintSequence.RoleCollection.Add(link.Role);
+					ReadOnlyCollection<ConstraintRoleSequenceHasRole> orderedLinks = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(sequence);
+					int insertionIndex = orderedLinks.IndexOf(link);
+					RuleManager ruleManager = store.RuleManager;
+					ruleManager.DisableRule(typeof(RoleSequenceAddRuleClass));
 					try
 					{
-						exclusionConstraint.RoleSequenceCollection.Move(e.OldOrdinal, e.NewOrdinal);
+						if (insertionIndex == (orderedLinks.Count - 1))
+						{
+							exclusionConstraint.RoleSequenceCollection.Add(comparisonConstraintSequence);
+						}
+						else
+						{
+							exclusionConstraint.RoleSequenceCollection.Insert(insertionIndex, comparisonConstraintSequence);
+						}
 					}
 					finally
 					{
-						ruleManager.EnableRule(typeof(RoleSequencePositionChangeRule));
+						ruleManager.EnableRule(typeof(RoleSequenceAddRuleClass));
 					}
 				}
 			}
-		}
-		#endregion // RolePositionChangeRule class
-		#region RoleSequencePositionChangeRule class
-		/// <summary>
-		/// Disallow direct edits to coupled exclusion constraints
-		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // RolePlayerPositionChangeRule
-		private sealed partial class RoleSequencePositionChangeRule : RolePlayerPositionChangeRule
-		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			else if (null != (comparisonConstraintSequence = sequence as SetComparisonConstraintRoleSequence) &&
+				null != (exclusionConstraint = comparisonConstraintSequence.ExternalConstraint as ExclusionConstraint) &&
+				null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
 			{
-				ExclusionConstraint exclusionConstraint;
-				if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId &&
-					null != (exclusionConstraint = e.SourceElement as ExclusionConstraint) &&
-					null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+				// Note that this will not fire from the code earlier in this routine because
+				// the sequence is populated before it is added to the constraint, so we can
+				// always throw here.
+				ThrowDirectExclusionConstraintEditException();
+			}
+		}
+		#endregion // RoleAddRule
+		#region RolePositionChangeRule
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(ConstraintRoleSequenceHasRole)
+		/// Enforce that any role moved in a MandatoryConstraint is also
+		/// moved in a coupled ExclusionConstraint.
+		/// </summary>
+		private static void RolePositionChangeRule(RolePlayerOrderChangedEventArgs e)
+		{
+			// Note that we will never get a position change for a role in a coupled
+			// exclusion constraint because each sequence has exactly one role
+			MandatoryConstraint mandatoryConstraint;
+			ExclusionConstraint exclusionConstraint;
+			if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
+				null != (mandatoryConstraint = e.SourceElement as MandatoryConstraint) &&
+				null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
+			{
+				RuleManager ruleManager = exclusionConstraint.Store.RuleManager;
+				ruleManager.DisableRule(typeof(RoleSequencePositionChangeRuleClass));
+				try
 				{
-					ThrowDirectExclusionConstraintEditException();
+					exclusionConstraint.RoleSequenceCollection.Move(e.OldOrdinal, e.NewOrdinal);
+				}
+				finally
+				{
+					ruleManager.EnableRule(typeof(RoleSequencePositionChangeRuleClass));
 				}
 			}
 		}
-		#endregion // RoleSequencePositionChangeRule class
-		#region RoleSequenceAddRule class
+		#endregion // RolePositionChangeRule
+		#region RoleSequencePositionChangeRule
 		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(SetComparisonConstraintHasRoleSequence)
 		/// Disallow direct edits to coupled exclusion constraints
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
-		private sealed partial class RoleSequenceAddRule : AddRule
+		private static void RoleSequencePositionChangeRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			ExclusionConstraint exclusionConstraint;
+			if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId &&
+				null != (exclusionConstraint = e.SourceElement as ExclusionConstraint) &&
+				null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
 			{
-				ExclusionConstraint exclusionConstraint = ((SetComparisonConstraintHasRoleSequence)e.ModelElement).ExternalConstraint as ExclusionConstraint;
-				if (null != exclusionConstraint && null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
-				{
-					ThrowDirectExclusionConstraintEditException();
-				}
+				ThrowDirectExclusionConstraintEditException();
 			}
 		}
-		#endregion // RoleSequenceAddRule class
-		#region RoleDeleteRule class
+		#endregion // RoleSequencePositionChangeRule
+		#region RoleSequenceAddRule
 		/// <summary>
-		/// Enforce that any role deleted from a MandatoryConstraint is also
-		/// deleted from a coupled ExclusionConstraint.
+		/// AddRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// Disallow direct edits to coupled exclusion constraints
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed partial class RoleDeletingRule : DeletingRule
+		private static void RoleSequenceAddRule(ElementAddedEventArgs e)
+		{
+			ExclusionConstraint exclusionConstraint = ((SetComparisonConstraintHasRoleSequence)e.ModelElement).ExternalConstraint as ExclusionConstraint;
+			if (null != exclusionConstraint && null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+			{
+				ThrowDirectExclusionConstraintEditException();
+			}
+		}
+		#endregion // RoleSequenceAddRule
+		#region RoleDeleteRule
+		partial class RoleDeletingRuleClass
 		{
 			private bool myAllowEdit;
-			public override void ElementDeleting(ElementDeletingEventArgs e)
+			/// <summary>
+			/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
+			/// Enforce that any role deleted from a MandatoryConstraint is also
+			/// deleted from a coupled ExclusionConstraint.
+			/// </summary>
+			private void RoleDeletingRule(ElementDeletingEventArgs e)
 			{
 				if (myAllowEdit)
 				{
@@ -6288,55 +6041,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RoleDeleteRule class
-		#region MandatoryConstraintChangeRule class
+		#endregion // RoleDeleteRule
+		#region MandatoryConstraintChangeRule
 		/// <summary>
-		/// Synchronize Modality between coupled exclusion and mandatory constraints
+		/// ChangeRule: typeof(MandatoryConstraint)
 		/// </summary>
-		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
-		private sealed partial class MandatoryConstraintChangeRule : ChangeRule
+		private static void MandatoryConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId)
+				MandatoryConstraint mandatoryConstraint = e.ModelElement as MandatoryConstraint;
+				if (!mandatoryConstraint.IsDeleted)
 				{
-					MandatoryConstraint mandatoryConstraint = e.ModelElement as MandatoryConstraint;
-					if (!mandatoryConstraint.IsDeleted)
+					ExclusionConstraint exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint;
+					if (exclusionConstraint != null)
 					{
-						ExclusionConstraint exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint;
-						if (exclusionConstraint != null)
-						{
-							exclusionConstraint.Modality = mandatoryConstraint.Modality;
-						}
+						exclusionConstraint.Modality = mandatoryConstraint.Modality;
 					}
 				}
 			}
 		}
-		#endregion // MandatoryConstraintChangeRule class
-		#region ExclusionConstraintChangeRule class
+		#endregion // MandatoryConstraintChangeRule
+		#region ExclusionConstraintChangeRule
 		/// <summary>
+		/// ChangeRule: typeof(ExclusionConstraint)
 		/// Synchronize Modality between coupled exclusion and mandatory constraints
 		/// </summary>
-		[RuleOn(typeof(ExclusionConstraint))] // ChangeRule
-		private sealed partial class ExclusionConstraintChangeRule : ChangeRule
+		private static void ExclusionConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == ExclusionConstraint.ModalityDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == ExclusionConstraint.ModalityDomainPropertyId)
+				ExclusionConstraint exclusionConstraint = e.ModelElement as ExclusionConstraint;
+				if (!exclusionConstraint.IsDeleted)
 				{
-					ExclusionConstraint exclusionConstraint = e.ModelElement as ExclusionConstraint;
-					if (!exclusionConstraint.IsDeleted)
+					MandatoryConstraint mandatoryConstraint = exclusionConstraint.ExclusiveOrMandatoryConstraint;
+					if (mandatoryConstraint != null)
 					{
-						MandatoryConstraint mandatoryConstraint = exclusionConstraint.ExclusiveOrMandatoryConstraint;
-						if (mandatoryConstraint != null)
-						{
-							mandatoryConstraint.Modality = exclusionConstraint.Modality;
-						}
+						mandatoryConstraint.Modality = exclusionConstraint.Modality;
 					}
 				}
 			}
 		}
-		#endregion // ExclusionConstraintChangeRule class
+		#endregion // ExclusionConstraintChangeRule
 	}
 	#endregion // ExlusiveOrConstraintCoupler class
 	#region FrequencyConstraint class
@@ -6565,57 +6311,53 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // MinMaxError Validation
-		#region FrequencyConstraintMinMaxRule class
-		[RuleOn(typeof(FrequencyConstraint))] // ChangeRule
-		private sealed partial class FrequencyConstraintMinMaxRule : ChangeRule
+		#region FrequencyConstraintMinMaxRule
+		/// <summary>
+		/// ChangeRule: typeof(FrequencyConstraint)
+		/// </summary>
+		private static void FrequencyConstraintMinMaxRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
+				attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
-					attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
+				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
+				if (!fc.IsDeleted)
 				{
-					FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
-					if (!fc.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(fc, DelayValidateFrequencyConstraintMinMaxError);
-					}
+					ORMCoreDomainModel.DelayValidateElement(fc, DelayValidateFrequencyConstraintMinMaxError);
 				}
 			}
 		}
-		#endregion // FrequencyConstraintMinMaxRule class
-		#region RemoveContradictionErrorsWithFactTypeRule class
+		#endregion // FrequencyConstraintMinMaxRule
+		#region RemoveContradictionErrorsWithFactTypeRule
 		/// <summary>
+		/// DeleteRule: typeof(FactSetConstraint)
 		/// There is no automatic delete propagation when a role used by the
 		/// frequency constraint is removed and the role is the last role of that
-		/// fact used by the constraint. However, the FactConstraint link
+		/// fact used by the constraint. However, the FactSetConstraint link
 		/// is removed automatically for us in this case, so we go ahead and clear
 		/// out the appropriate errors here.
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
-		private sealed partial class RemoveContradictionErrorsWithFactTypeRule : DeleteRule
+		private static void RemoveContradictionErrorsWithFactTypeRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			FrequencyConstraint fc = link.SetConstraint as FrequencyConstraint;
+			if (fc != null)
 			{
-				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				FrequencyConstraint fc = link.SetConstraint as FrequencyConstraint;
-				if (fc != null)
+				FactType fact = link.FactType;
+				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in fc.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
 				{
-					FactType fact = link.FactType;
-					foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in fc.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
+					Debug.Assert(!contradictionError.IsDeleted); // Removed errors should not be in the collection
+					if (contradictionError.FactType == fact)
 					{
-						Debug.Assert(!contradictionError.IsDeleted); // Removed errors should not be in the collection
-						if (contradictionError.FactType == fact)
-						{
-							contradictionError.Delete();
-							// Note we can break here because there will only be one error per fact, and we must break here because we've modified the collection
-							break;
-						}
+						contradictionError.Delete();
+						// Note we can break here because there will only be one error per fact, and we must break here because we've modified the collection
+						break;
 					}
 				}
 			}
 		}
-		#endregion // RemoveContradictionErrorsWithFactTypeRule class
+		#endregion // RemoveContradictionErrorsWithFactTypeRule
 	}
 	#endregion // FrequencyConstraint class
 	#region Ring Constraint class
@@ -6717,24 +6459,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //Type Not Specified Error Rule
-		#region RingConstraintTypeChangeRule class
-		[RuleOn(typeof(RingConstraint))] // ChangeRule
-		private sealed partial class RingConstraintTypeChangeRule : ChangeRule
+		#region RingConstraintTypeChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(RingConstraint)
+		/// </summary>
+		private static void RingConstraintTypeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == RingConstraint.RingTypeDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == RingConstraint.RingTypeDomainPropertyId)
+				RingConstraint rc = e.ModelElement as RingConstraint;
+				if (!rc.IsDeleted)
 				{
-					RingConstraint rc = e.ModelElement as RingConstraint;
-					if (!rc.IsDeleted)
-					{
-						ORMCoreDomainModel.DelayValidateElement(rc, DelayValidateRingConstraintTypeNotSpecifiedError);
-					}
+					ORMCoreDomainModel.DelayValidateElement(rc, DelayValidateRingConstraintTypeNotSpecifiedError);
 				}
 			}
 		}
-		#endregion // RingConstraintTypeChangeRule class
+		#endregion // RingConstraintTypeChangeRule
 	}
 	#endregion //Ring Constraint class
 	#region PreferredIdentifierFor implementation

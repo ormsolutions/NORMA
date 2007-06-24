@@ -172,32 +172,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Implicit Reading Support
 		#region Initialize pattern rules
 		/// <summary>
-		/// A rule to create a subtype-style FactType with all
-		/// of the required roles and constraints.
+		/// AddRule: typeof(SubtypeFact)
+		/// Make sure a SubtypeFact is a 1-1 fact with a mandatory role
+		/// on the base type (role 0)
 		/// </summary>
-		[RuleOn(typeof(SubtypeFact))] // AddRule
-		private sealed partial class InitializeSubtypeAddRule : AddRule
+		private static void InitializeSubtypeAddRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Make sure a Subtype is a 1-1 fact with a mandatory role
-			/// on the base type (role 0)
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactType fact = e.ModelElement as FactType;
-				Store store = fact.Store;
-			
-				// Establish role collecton
-				LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
-				SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(store);
-				SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(store);
-				roles.Add(subTypeMetaRole);
-				roles.Add(superTypeMetaRole);
-			
-				// Add injection constraints
-				superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
-				subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
-			}
+			FactType fact = e.ModelElement as FactType;
+			Store store = fact.Store;
+
+			// Establish role collecton
+			LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
+			SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(store);
+			SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(store);
+			roles.Add(subTypeMetaRole);
+			roles.Add(superTypeMetaRole);
+
+			// Add injection constraints
+			superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
+			subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
 		}
 		#endregion Initialize pattern rules
 		#region Role and constraint pattern locking rules
@@ -222,72 +215,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints);
 		}
 		/// <summary>
+		/// AddRule: typeof(FactSetConstraint)
 		/// Block internal constraints from being added to a subtype
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed partial class LimitSubtypeConstraintsAddRule : AddRule
+		private static void LimitSubtypeConstraintsAddRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Block internal constraint modification on subtypes
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			if (link.SetConstraint.Constraint.ConstraintIsInternal)
 			{
-				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				if (link.SetConstraint.Constraint.ConstraintIsInternal)
-				{
-					SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-					if (subtypeFact != null)
-					{
-						if (subtypeFact.Model != null)
-						{
-							// Allow before adding to model, not afterwards
-							ThrowPatternModifiedException();
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Block internal constraints from being removed from a subtype
-		/// after it is included in a model.
-		/// </summary>
-		[RuleOn(typeof(FactSetConstraint), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class LimitSubtypeConstraintsDeleteRule : DeleteRule
-		{
-			/// <summary>
-			/// Block internal constraint modification on subtypes
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				if (link.SetConstraint.Constraint.ConstraintIsInternal)
-				{
-					SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-					if (subtypeFact != null && !subtypeFact.IsDeleted)
-					{
-						if (subtypeFact.Model != null)
-						{
-							// Allow before adding to model, not afterwards
-							ThrowPatternModifiedException();
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Block roles from being added to a subtype
-		/// after it is included in a model.
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed partial class LimitSubtypeRolesAddRule : AddRule
-		{
-			/// <summary>
-			/// Block internal constraint modification on subtypes
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
 				if (subtypeFact != null)
 				{
@@ -297,29 +233,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 						ThrowPatternModifiedException();
 					}
 				}
-				else
-				{
-					RoleBase role = link.Role;
-					if (role is SubtypeMetaRole || role is SupertypeMetaRole)
-					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactMustBeParentOfMetaRole);
-					}
-				}
 			}
 		}
 		/// <summary>
-		/// Block roles from being removed from a subtype
+		/// DeleteRule: typeof(FactSetConstraint), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// Block internal constraints from being removed from a subtype
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class LimitSubtypeRolesDeleteRule : DeleteRule
+		private static void LimitSubtypeConstraintsDeleteRule(ElementDeletedEventArgs e)
 		{
-			/// <summary>
-			/// Block internal role modification on subtypes
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			if (link.SetConstraint.Constraint.ConstraintIsInternal)
 			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
 				if (subtypeFact != null && !subtypeFact.IsDeleted)
 				{
@@ -332,98 +257,136 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// Block roles from being added to a subtype
+		/// after it is included in a model.
+		/// </summary>
+		private static void LimitSubtypeRolesAddRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			SubtypeFact subtypeFact = link.FactType as SubtypeFact;
+			if (subtypeFact != null)
+			{
+				if (subtypeFact.Model != null)
+				{
+					// Allow before adding to model, not afterwards
+					ThrowPatternModifiedException();
+				}
+			}
+			else
+			{
+				RoleBase role = link.Role;
+				if (role is SubtypeMetaRole || role is SupertypeMetaRole)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactMustBeParentOfMetaRole);
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// Block roles from being removed from a subtype
+		/// after it is included in a model.
+		/// </summary>
+		private static void LimitSubtypeRolesDeleteRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			SubtypeFact subtypeFact = link.FactType as SubtypeFact;
+			if (subtypeFact != null && !subtypeFact.IsDeleted)
+			{
+				if (subtypeFact.Model != null)
+				{
+					// Allow before adding to model, not afterwards
+					ThrowPatternModifiedException();
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Block internal constraints from being modified on a subtype, block
 		/// external constraints from being added to the subtype role, and
 		/// limit external constraints being added to the supertype role
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed partial class LimitSubtypeConstraintRolesAddRule : AddRule
+		private static void LimitSubtypeConstraintRolesAddRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Block internal constraint modification on subtypes
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			Role untypedRole = link.Role;
+			SupertypeMetaRole supertypeRole = untypedRole as SupertypeMetaRole;
+			SubtypeMetaRole subtypeRole = (supertypeRole == null) ? untypedRole as SubtypeMetaRole : null;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			IConstraint constraint;
+			if (supertypeRole != null || subtypeRole != null)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				Role untypedRole = link.Role;
-				SupertypeMetaRole supertypeRole = untypedRole as SupertypeMetaRole;
-				SubtypeMetaRole subtypeRole = (supertypeRole == null) ? untypedRole as SubtypeMetaRole : null;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				IConstraint constraint;
-				if (supertypeRole != null || subtypeRole != null)
+				SetConstraint ic;
+				SetComparisonConstraintRoleSequence externalSequence;
+				bool invalidConstraintOnSubtypeRole = false;
+				bool invalidConstraintOnSupertypeRole = false;
+				if (null != (ic = sequence as SetConstraint))
 				{
-					SetConstraint ic;
-					SetComparisonConstraintRoleSequence externalSequence;
-					bool invalidConstraintOnSubtypeRole = false;
-					bool invalidConstraintOnSupertypeRole = false;
-					if (null != (ic = sequence as SetConstraint))
+					constraint = ic.Constraint;
+					if (constraint.ConstraintIsInternal)
 					{
-						constraint = ic.Constraint;
-						if (constraint.ConstraintIsInternal)
+						SubtypeFact subtypeFact = untypedRole.FactType as SubtypeFact;
+						if (subtypeFact != null && subtypeFact.Model != null)
 						{
-							SubtypeFact subtypeFact = untypedRole.FactType as SubtypeFact;
-							if (subtypeFact != null && subtypeFact.Model != null)
-							{
-								// Allow before adding to model, not afterwards
-								ThrowPatternModifiedException();
-							}
+							// Allow before adding to model, not afterwards
+							ThrowPatternModifiedException();
 						}
-						else if (constraint.ConstraintType == ConstraintType.ImpliedMandatory)
+					}
+					else if (constraint.ConstraintType == ConstraintType.ImpliedMandatory)
+					{
+						// Nothing to do
+					}
+					else if (subtypeRole != null)
+					{
+						invalidConstraintOnSubtypeRole = true;
+					}
+					else if (constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+					{
+						ORMCoreDomainModel.DelayValidateElement(ic, DelayValidateDisjunctiveMandatorySupertypeOnly);
+					}
+					else
+					{
+						invalidConstraintOnSupertypeRole = true;
+					}
+				}
+				else if (subtypeRole != null)
+				{
+					invalidConstraintOnSubtypeRole = true;
+				}
+				else if (null != (externalSequence = sequence as SetComparisonConstraintRoleSequence))
+				{
+					constraint = externalSequence.Constraint;
+					if (constraint != null)
+					{
+						if (constraint.ConstraintType == ConstraintType.Exclusion)
 						{
-							// Nothing to do
-						}
-						else if (subtypeRole != null)
-						{
-							invalidConstraintOnSubtypeRole = true;
-						}
-						else if (constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
-						{
-							ORMCoreDomainModel.DelayValidateElement(ic, DelayValidateDisjunctiveMandatorySupertypeOnly);
+							ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
 						}
 						else
 						{
 							invalidConstraintOnSupertypeRole = true;
 						}
 					}
-					else if (subtypeRole != null)
-					{
-						invalidConstraintOnSubtypeRole = true;
-					}
-					else if (null != (externalSequence = sequence as SetComparisonConstraintRoleSequence))
-					{
-						constraint = externalSequence.Constraint;
-						if (constraint != null)
-						{
-							if (constraint.ConstraintType == ConstraintType.Exclusion)
-							{
-								ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
-							}
-							else
-							{
-								invalidConstraintOnSupertypeRole = true;
-							}
-						}
-					}
-					if (invalidConstraintOnSupertypeRole)
-					{
-						ThrowInvalidSupertypeMetaRoleConstraint();
-					}
-					else if (invalidConstraintOnSubtypeRole)
-					{
-						ThrowInvalidSubtypeMetaRoleConstraint();
-					}
 				}
-				else if (null != (constraint = sequence.Constraint))
+				if (invalidConstraintOnSupertypeRole)
 				{
-					switch (constraint.ConstraintType)
-					{
-						case ConstraintType.DisjunctiveMandatory:
-							ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateDisjunctiveMandatorySupertypeOnly);
-							break;
-						case ConstraintType.Exclusion:
-							ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
-							break;
-					}
+					ThrowInvalidSupertypeMetaRoleConstraint();
+				}
+				else if (invalidConstraintOnSubtypeRole)
+				{
+					ThrowInvalidSubtypeMetaRoleConstraint();
+				}
+			}
+			else if (null != (constraint = sequence.Constraint))
+			{
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.DisjunctiveMandatory:
+						ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateDisjunctiveMandatorySupertypeOnly);
+						break;
+					case ConstraintType.Exclusion:
+						ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
+						break;
 				}
 			}
 		}
@@ -495,72 +458,102 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(SetComparisonConstraintHasRoleSequence)
 		/// Validate subtype external constraint patterns when a role sequence
 		/// is added with preexisting roles
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
-		private sealed partial class LimitSubtypeSetComparisonConstraintSequenceAddRule : AddRule
+		private static void LimitSubtypeSetComparisonConstraintSequenceAddRule(ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+			SetComparisonConstraintRoleSequence sequence = link.RoleSequence;
+			LinkedElementCollection<Role> roles = sequence.RoleCollection;
+			int roleCount = roles.Count;
+			if (roleCount != 0)
 			{
-				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
-				SetComparisonConstraintRoleSequence sequence = link.RoleSequence;
-				LinkedElementCollection<Role> roles = sequence.RoleCollection;
-				int roleCount = roles.Count;
-				if (roleCount != 0)
+				SetComparisonConstraint constraint = link.ExternalConstraint;
+				bool isExclusion = constraint is ExclusionConstraint;
+				bool addDelayValidate = false;
+				for (int i = 0; i < roleCount; ++i)
 				{
-					SetComparisonConstraint constraint = link.ExternalConstraint;
-					bool isExclusion = constraint is ExclusionConstraint;
-					bool addDelayValidate = false;
-					for (int i = 0; i < roleCount; ++i)
+					Role untypedRole = roles[i];
+					if (untypedRole is SubtypeMetaRole)
 					{
-						Role untypedRole = roles[i];
-						if (untypedRole is SubtypeMetaRole)
-						{
-							ThrowInvalidSubtypeMetaRoleConstraint();
-						}
-						else if (isExclusion)
-						{
-							addDelayValidate = true;
-						}
-						else if (untypedRole is SupertypeMetaRole)
-						{
-							ThrowInvalidSupertypeMetaRoleConstraint();
-						}
+						ThrowInvalidSubtypeMetaRoleConstraint();
 					}
-					if (addDelayValidate)
+					else if (isExclusion)
 					{
-						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateExclusionSupertypeOnly);
+						addDelayValidate = true;
+					}
+					else if (untypedRole is SupertypeMetaRole)
+					{
+						ThrowInvalidSupertypeMetaRoleConstraint();
+					}
+				}
+				if (addDelayValidate)
+				{
+					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateExclusionSupertypeOnly);
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+		/// Block roles from being removed from a subtype fact
+		/// after it is included in a model.
+		/// </summary>
+		private static void LimitSubtypeConstraintRolesDeleteRule(ElementDeletedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			SetConstraint ic = link.ConstraintRoleSequence as SetConstraint;
+			LinkedElementCollection<FactType> facts;
+			if (ic != null &&
+				!ic.IsDeleted &&
+				ic.Constraint.ConstraintIsInternal &&
+				1 == (facts = ic.FactTypeCollection).Count)
+			{
+				SubtypeFact subtypeFact = facts[0] as SubtypeFact;
+				if (subtypeFact != null && !subtypeFact.IsDeleted)
+				{
+					if (subtypeFact.Model != null)
+					{
+						// Allow before adding to model, not afterwards
+						ThrowPatternModifiedException();
 					}
 				}
 			}
 		}
 		/// <summary>
-		/// Block roles from being removed from subtype constraints
-		/// after it is included in a model.
+		/// ChangeRule: typeof(SetConstraint)
+		/// Block the IsSimple, IsInternal, and Modality properties from being changed on
+		/// internal constraints of subtype facts
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class LimitSubtypeConstraintRolesDeleteRule : DeleteRule
+		private static void LimitSubtypeConstraintChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Block internal role modification on subtypes
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			SetConstraint constraint = e.ModelElement as SetConstraint;
+			if (!constraint.IsDeleted)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint ic = link.ConstraintRoleSequence as SetConstraint;
-				LinkedElementCollection<FactType> facts;
-				if (ic != null &&
-					!ic.IsDeleted &&
-					ic.Constraint.ConstraintIsInternal &&
-					1 == (facts = ic.FactTypeCollection).Count)
+				LinkedElementCollection<FactType> testFacts = null;
+				if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId ||
+					attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
 				{
-					SubtypeFact subtypeFact = facts[0] as SubtypeFact;
-					if (subtypeFact != null && !subtypeFact.IsDeleted)
+					testFacts = constraint.FactTypeCollection;
+				}
+				else if (attributeId == SetConstraint.ModalityDomainPropertyId)
+				{
+					if (constraint.Constraint.ConstraintIsInternal)
 					{
-						if (subtypeFact.Model != null)
+						testFacts = constraint.FactTypeCollection;
+					}
+				}
+				if (testFacts != null)
+				{
+					int testFactsCount = testFacts.Count;
+					for (int i = 0; i < testFactsCount; ++i)
+					{
+						if (testFacts[i] is SubtypeFact)
 						{
-							// Allow before adding to model, not afterwards
+							// We never do this internally, so block any modification,
+							// not just those after the subtype fact is added to the model
 							ThrowPatternModifiedException();
 						}
 					}
@@ -568,71 +561,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Block the modality from being changed on internal constraints
-		/// on subtype facts
-		/// </summary>
-		[RuleOn(typeof(SetConstraint))] // ChangeRule
-		private sealed partial class LimitSubtypeConstraintChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Block internal property modification on implicit subtype constraints
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeId = e.DomainProperty.Id;
-				SetConstraint constraint = e.ModelElement as SetConstraint;
-				if (!constraint.IsDeleted)
-				{
-					LinkedElementCollection<FactType> testFacts = null;
-					if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId ||
-						attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
-					{
-						testFacts = constraint.FactTypeCollection;
-					}
-					else if (attributeId == SetConstraint.ModalityDomainPropertyId)
-					{
-						if (constraint.Constraint.ConstraintIsInternal)
-						{
-							testFacts = constraint.FactTypeCollection;
-						}
-					}
-					if (testFacts != null)
-					{
-						int testFactsCount = testFacts.Count;
-						for (int i = 0; i < testFactsCount; ++i)
-						{
-							if (testFacts[i] is SubtypeFact)
-							{
-								// We never do this internally, so block any modification,
-								// not just those after the subtype fact is added to the model
-								ThrowPatternModifiedException();
-							}
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
 		/// Ensure that a role player deletion on a subtype results in a deletion
 		/// of the subtype itself.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // DeleteRule
-		private sealed partial class DeleteSubtypeWhenRolePlayerDeleted : DeleteRule
+		private static void DeleteSubtypeWhenRolePlayerDeletedRule(ElementDeletedEventArgs e)
 		{
-			/// <summary>
-			/// Remove the full SubtypeFact when a role player is removed
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRole;
+			if (role != null && !role.IsDeleted)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
-				if (role != null && !role.IsDeleted)
+				SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+				if (subtypeFact != null && !subtypeFact.IsDeleted)
 				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					if (subtypeFact != null && !subtypeFact.IsDeleted)
-					{
-						subtypeFact.Delete();
-					}
+					subtypeFact.Delete();
 				}
 			}
 		}
@@ -643,23 +585,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 			throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeRolePlayerTypesCannotBeMixed);
 		}
 		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
 		/// Ensure consistent types (EntityType or ValueType) for role
 		/// players in a subtyping relationship
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit, Priority = ORMCoreDomainModel.BeforeDelayValidateRulePriority)] // AddRule
-		private sealed partial class EnsureConsistentRolePlayerTypesAddRule : AddRule
+		private static void EnsureConsistentRolePlayerTypesAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			SubtypeMetaRole subtypeRole;
+			SubtypeFact subtypeFact;
+			if (null != (subtypeRole = link.PlayedRole as SubtypeMetaRole) &&
+				null != (subtypeFact = subtypeRole.FactType as SubtypeFact))
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				SubtypeMetaRole subtypeRole;
-				SubtypeFact subtypeFact;
-				if (null != (subtypeRole = link.PlayedRole as SubtypeMetaRole) &&
-					null != (subtypeFact = subtypeRole.FactType as SubtypeFact))
+				ObjectType superType = subtypeFact.Supertype;
+				if (null == superType ||
+					((superType.DataType == null) != (link.RolePlayer.DataType == null)))
 				{
-					ObjectType superType = subtypeFact.Supertype;
-					if (null == superType ||
-						((superType.DataType == null) != (link.RolePlayer.DataType == null)))
+					ThrowMixedRolePlayerTypesException();
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ValueTypeHasDataType)
+		/// Stop the ValueTypeHasDataType relationship from being
+		/// added if an ObjectType participates in a subtyping relationship
+		/// </summary>
+		private static void EnsureConsistentDataTypesAddRule(ElementAddedEventArgs e)
+		{
+			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+			ObjectType objectType = link.ValueType;
+			LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
+			{
+				Role testRole = playedRoles[i];
+				if (testRole is SubtypeMetaRole ||
+					testRole is SupertypeMetaRole)
+				{
+					if (null != testRole.FactType)
 					{
 						ThrowMixedRolePlayerTypesException();
 					}
@@ -667,16 +630,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// DeleteRule: typeof(ValueTypeHasDataType)
 		/// Stop the ValueTypeHasDataType relationship from being
-		/// added if an ObjectType participates in a subtyping relationship
+		/// removed if an ObjectType participates in a subtyping relationship
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
-		private sealed partial class EnsureConsistentDataTypesAddRule : AddRule
+		private static void EnsureConsistentDataTypesDeleteRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+			ObjectType objectType = link.ValueType;
+			if (!objectType.IsDeleted)
 			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType objectType = link.ValueType;
 				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
 				for (int i = 0; i < playedRoleCount; ++i)
@@ -688,36 +651,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (null != testRole.FactType)
 						{
 							ThrowMixedRolePlayerTypesException();
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Stop the ValueTypeHasDataType relationship from being
-		/// removed if an ObjectType participates in a subtyping relationship
-		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // DeleteRule
-		private sealed partial class EnsureConsistentDataTypesDeleteRule : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType objectType = link.ValueType;
-				if (!objectType.IsDeleted)
-				{
-					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
-					int playedRoleCount = playedRoles.Count;
-					for (int i = 0; i < playedRoleCount; ++i)
-					{
-						Role testRole = playedRoles[i];
-						if (testRole is SubtypeMetaRole ||
-							testRole is SupertypeMetaRole)
-						{
-							if (null != testRole.FactType)
-							{
-								ThrowMixedRolePlayerTypesException();
-							}
 						}
 					}
 				}

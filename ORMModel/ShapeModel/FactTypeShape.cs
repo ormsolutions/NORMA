@@ -627,55 +627,54 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return AssociatedFactType.FindMatchingReadingOrder(roleOrder);
 		}
-		#region RoleDisplayOrderChanged class
-		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
-		private sealed partial class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
+		#region RoleDisplayOrderChangedRule
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void RoleDisplayOrderChangedRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			Role role;
+			if (null != (role = e.CounterpartRolePlayer as Role))
 			{
-				Role role;
-				if (null != (role = e.CounterpartRolePlayer as Role))
+				Partition sourcePartition = e.SourceElement.Partition;
+				foreach (PresentationElement pElem in PresentationViewsSubject.GetPresentation(role.FactType))
 				{
-					Partition sourcePartition = e.SourceElement.Partition;
-					foreach (PresentationElement pElem in PresentationViewsSubject.GetPresentation(role.FactType))
+					FactTypeShape factShape;
+					if (null != (factShape = pElem as FactTypeShape) && factShape.Partition == sourcePartition)
 					{
-						FactTypeShape factShape;
-						if (null != (factShape = pElem as FactTypeShape) && factShape.Partition == sourcePartition)
+						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
 						{
-							foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
+							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+							if (binaryLink != null)
 							{
-								BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-								if (binaryLink != null)
-								{
-									binaryLink.RecalculateRoute();
-								}
+								binaryLink.RecalculateRoute();
 							}
-							foreach (ShapeElement childShape in factShape.RelativeChildShapes)
+						}
+						foreach (ShapeElement childShape in factShape.RelativeChildShapes)
+						{
+							if (childShape is IProxyConnectorShape)
 							{
-								if (childShape is IProxyConnectorShape)
+								foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(childShape, LinkConnectsToNode.NodesDomainRoleId))
 								{
-									foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(childShape, LinkConnectsToNode.NodesDomainRoleId))
+									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+									if (binaryLink != null)
 									{
-										BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-										if (binaryLink != null)
-										{
-											binaryLink.RecalculateRoute();
-										}
+										binaryLink.RecalculateRoute();
 									}
 								}
 							}
-							SizeD oldSize = factShape.Size;
-							factShape.AutoResize();
-							if (oldSize == factShape.Size)
-							{
-								factShape.InvalidateRequired(true);
-							}
+						}
+						SizeD oldSize = factShape.Size;
+						factShape.AutoResize();
+						if (oldSize == factShape.Size)
+						{
+							factShape.InvalidateRequired(true);
 						}
 					}
 				}
 			}
 		}
-		#endregion // RoleDisplayOrderChanged class
+		#endregion // RoleDisplayOrderChangedRule
 		#endregion // Move Roles
 		#endregion // ConstraintBox struct
 		#region Pre-defined ConstraintBoxRoleActivity arrays
@@ -4501,566 +4500,558 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class SwitchToNestedFact : AddRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void SwitchToNestedFactTypeRule(ElementAddedEventArgs e)
 		{
-			/// <summary>
-			/// Switch to displaying a nested fact
-			/// </summary>
-			/// <param name="link">The Objectification relationship to process</param>
-			/// <param name="nestedFactType">The nestedFactType to change. If this is null, then use the NestedFactType from the link argument.</param>
-			/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
-			public static void ProcessObjectification(Objectification link, FactType nestedFactType, ObjectType nestingType)
+			ProcessObjectificationAdd(e.ModelElement as Objectification, null, null);
+		}
+		/// <summary>
+		/// Switch to displaying a nested fact
+		/// </summary>
+		/// <param name="link">The Objectification relationship to process</param>
+		/// <param name="nestedFactType">The nestedFactType to change. If this is null, then use the NestedFactType from the link argument.</param>
+		/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
+		private static void ProcessObjectificationAdd(Objectification link, FactType nestedFactType, ObjectType nestingType)
+		{
+			if (nestedFactType == null)
 			{
-				if (nestedFactType == null)
-				{
-					nestedFactType = link.NestedFactType;
-				}
-				if (nestingType == null)
-				{
-					nestingType = link.NestingType;
-				}
+				nestedFactType = link.NestedFactType;
+			}
+			if (nestingType == null)
+			{
+				nestingType = link.NestingType;
+			}
 
-				// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
-				if (!ShouldDrawObjectification(link, nestingType))
+			// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
+			if (!ShouldDrawObjectification(link, nestingType))
+			{
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
+				int pelCount = pels.Count;
+				for (int i = pelCount - 1; i >= 0; --i)
 				{
-					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
+					ObjectTypeShape pel = pels[i] as ObjectTypeShape;
+					if (pel != null)
+					{
+						pel.Delete();
+					}
+				}
+				return;
+			}
+
+			// Part1: Make sure the fact shape is visible on any diagram where the
+			// corresponding nestingType is displayed
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestingType))
+			{
+				ObjectTypeShape objectShape = pel as ObjectTypeShape;
+				if (objectShape != null)
+				{
+					ORMDiagram currentDiagram = objectShape.Diagram as ORMDiagram;
+					NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
+					if (factShape == null)
+					{
+						Diagram.FixUpDiagram(currentDiagram.ModelElement, nestedFactType);
+						factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
+					}
+					if (factShape != null)
+					{
+						factShape.Location = objectShape.Location;
+					}
+				}
+			}
+
+			// Part2: Move any links from the object type to the fact type
+			foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
+			{
+				Role playedRole = modelLink.PlayedRole;
+				SubtypeFact subType = playedRole.FactType as SubtypeFact;
+				if (subType != null)
+				{
+					LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(subType);
+					for (int i = presentationElements.Count - 1; i >= 0; i--)
+					{
+						SubtypeLink subtypeLink = presentationElements[i] as SubtypeLink;
+						if (subtypeLink != null)
+						{
+							ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
+							NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
+							if (factShape != null)
+							{
+								if (playedRole == subType.SupertypeRole)
+								{
+									subtypeLink.ToShape = factShape;
+								}
+								else
+								{
+									Debug.Assert(playedRole == subType.SubtypeRole);
+									subtypeLink.FromShape = factShape;
+								}
+							}
+							else
+							{
+								// Backup. Should only happen if the FixupDiagram call in part 1
+								// did not add the fact type.
+								subtypeLink.Delete();
+							}
+						}
+					}
+				}
+				else
+				{
+					LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
+					for (int i = presentationElements.Count - 1; i >= 0; i--)
+					{
+						RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
+						if (rolePlayer != null)
+						{
+							ORMDiagram currentDiagram = rolePlayer.Diagram as ORMDiagram;
+							NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
+							if (factShape != null)
+							{
+								rolePlayer.ToShape = factShape;
+							}
+							else
+							{
+								// Backup. Should only happen if the FixupDiagram call in part 1
+								// did not add the fact type.
+								rolePlayer.Delete();
+							}
+						}
+					}
+				}
+			}
+
+			// Part3: Remove object type shapes from the diagram. Do this before
+			// adding the labels to the objectified fact types so clearing the role
+			// players doesn't blow the labels away. Also, FixUpDiagram will attempt
+			// to fix up the existing shapes instead of creating new ones if the existing
+			// ones are not cleared away.
+			{
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
+				int pelCount = pels.Count;
+				for (int i = pelCount - 1; i >= 0; --i)
+				{
+					ObjectTypeShape pel = pels[i] as ObjectTypeShape;
+					if (pel != null)
+					{
+						pel.Delete();
+					}
+				}
+			}
+
+			// Part4: Resize the fact type wherever it is displayed and add the
+			// labels for the fact type display.
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
+			{
+				FactTypeShape shape = pel as FactTypeShape;
+				if (shape != null)
+				{
+					shape.AutoResize();
+					Diagram.FixUpDiagram(nestedFactType, nestingType);
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void SwitchFromNestedFactTypeRule(ElementDeletedEventArgs e)
+		{
+			Objectification link = e.ModelElement as Objectification;
+			// If the objectification was not being drawn, we don't need to do anything
+			if (!ShouldDrawObjectification(link))
+			{
+				return;
+			}
+			ProcessObjectificationDelete(link, null, null, false);
+		}
+		/// <summary>
+		/// Switch to displaying a nested fact
+		/// </summary>
+		/// <param name="link">The Objectification relationship to process</param>
+		/// <param name="nestedFactType">The nestedFactType to change. If this is null, then use the NestedFactType from the link argument.</param>
+		/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
+		/// <param name="switchingToImplied">Change the objectification to implied from explicit.</param>
+		private static void ProcessObjectificationDelete(Objectification link, FactType nestedFactType, ObjectType nestingType, bool switchingToImplied)
+		{
+			if (nestedFactType == null)
+			{
+				nestedFactType = link.NestedFactType;
+			}
+			if (nestingType == null)
+			{
+				nestingType = link.NestingType;
+			}
+
+			bool nestingTypeRemoved = nestingType.IsDeleted;
+			bool nestedFactTypeRemoved = nestedFactType.IsDeleted;
+
+			if (nestingTypeRemoved && nestedFactTypeRemoved)
+			{
+				return;
+			}
+
+			// Part1: Remove any existing presentation elements for the object type.
+			// This removes all of the ObjectifiedTypeNameShape objects
+			if (!nestingTypeRemoved)
+			{
+				if (nestedFactTypeRemoved)
+				{
+					// If we're just removing the fact, then we need to readd the normal object shape
+					Store store = nestingType.Store;
+					IList<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
 					int pelCount = pels.Count;
 					for (int i = pelCount - 1; i >= 0; --i)
 					{
-						ObjectTypeShape pel = pels[i] as ObjectTypeShape;
-						if (pel != null)
+						ObjectifiedFactTypeNameShape oldShape;
+						ORMDiagram shapeDiagram;
+						if (null != (oldShape = pels[i] as ObjectifiedFactTypeNameShape) &&
+							!oldShape.IsDeleted &&
+							null != (shapeDiagram = oldShape.Diagram as ORMDiagram))
 						{
-							pel.Delete();
+							ObjectTypeShape newShape = new ObjectTypeShape(store);
+							shapeDiagram.NestedChildShapes.Add(newShape);
+							newShape.AbsoluteBounds = oldShape.AbsoluteBounds;
+							oldShape.Delete();
+							newShape.Associate(nestingType);
+							newShape.AutoResize();
 						}
 					}
-					return;
 				}
-
-				// Part1: Make sure the fact shape is visible on any diagram where the
-				// corresponding nestingType is displayed
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestingType))
+				else
 				{
-					ObjectTypeShape objectShape = pel as ObjectTypeShape;
-					if (objectShape != null)
+					PresentationViewsSubject.GetPresentation(nestingType).Clear();
+				}
+			}
+
+			// Part2: Resize the fact type wherever it is displayed, and make sure
+			// the object type is made visible in the same location.
+			ORMModel nestingTypeModel = nestingTypeRemoved ? null : nestingType.Model;
+			if (!nestedFactTypeRemoved)
+			{
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
+				{
+					FactTypeShape factShape = pel as FactTypeShape;
+					if (factShape != null)
 					{
-						ORMDiagram currentDiagram = objectShape.Diagram as ORMDiagram;
-						NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-						if (factShape == null)
+						factShape.AutoResize();
+						// We don't want to add a shape for the nestingType if the objectification is switching to implied
+						if (!nestingTypeRemoved && !switchingToImplied)
 						{
-							Diagram.FixUpDiagram(currentDiagram.ModelElement, nestedFactType);
-							factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-						}
-						if (factShape != null)
-						{
-							factShape.Location = objectShape.Location;
+							ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
+							NodeShape objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
+							if (objectShape == null)
+							{
+								Diagram.FixUpDiagram(nestingTypeModel, nestingType);
+								objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
+								// We're placing the shape explicitly, don't allow an automatic placement
+								IDictionary unplacedShapes;
+								if (objectShape != null &&
+									null != (unplacedShapes = UnplacedShapesContext.GetUnplacedShapesMap(link.Store.TransactionManager.CurrentTransaction, currentDiagram.Id)) &&
+									unplacedShapes.Contains(objectShape))
+								{
+									unplacedShapes.Remove(objectShape);
+								}
+							}
+							if (objectShape != null)
+							{
+								PointD location = factShape.Location;
+								location.Offset(0.0, 2 * factShape.Size.Height);
+								objectShape.Location = location;
+							}
 						}
 					}
 				}
+			}
 
-				// Part2: Move any links from the object type to the fact type
+			// Part3: Move any links from the fact type to the object type.
+			// Note: If we are switching to implied, then we don't need to move links to the object type shape,
+			// since there won't be any object type shape.
+			if (!nestingTypeRemoved && !switchingToImplied)
+			{
 				foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
 				{
 					Role playedRole = modelLink.PlayedRole;
 					SubtypeFact subType = playedRole.FactType as SubtypeFact;
 					if (subType != null)
 					{
-						LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(subType);
-						for (int i = presentationElements.Count - 1; i >= 0; i--)
+						if (nestedFactTypeRemoved)
 						{
-							SubtypeLink subtypeLink = presentationElements[i] as SubtypeLink;
-							if (subtypeLink != null)
+							Diagram.FixUpDiagram(nestingTypeModel, subType);
+						}
+						else
+						{
+							foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(subType))
 							{
-								ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-								NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
-								if (factShape != null)
+								SubtypeLink subtypeLink = obj as SubtypeLink;
+								if (subtypeLink != null)
 								{
-									if (playedRole == subType.SupertypeRole)
+									ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
+									NodeShape objShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
+									if (objShape != null)
 									{
-										subtypeLink.ToShape = factShape;
+										if (playedRole == subType.SupertypeRole)
+										{
+											subtypeLink.ToShape = objShape;
+										}
+										else
+										{
+											Debug.Assert(playedRole == subType.SubtypeRole);
+											subtypeLink.FromShape = objShape;
+										}
 									}
 									else
 									{
-										Debug.Assert(playedRole == subType.SubtypeRole);
-										subtypeLink.FromShape = factShape;
+										// Backup. Should only happen if the FixupDiagram call in part 1
+										// did not add the fact type.
+										subtypeLink.Delete();
 									}
-								}
-								else
-								{
-									// Backup. Should only happen if the FixupDiagram call in part 1
-									// did not add the fact type.
-									subtypeLink.Delete();
 								}
 							}
 						}
 					}
 					else
 					{
-						LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
-						for (int i = presentationElements.Count - 1; i >= 0; i--)
+						if (nestedFactTypeRemoved)
 						{
-							RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
-							if (rolePlayer != null)
+							Diagram.FixUpDiagram(nestingTypeModel, modelLink);
+						}
+						else
+						{
+							LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
+							for (int i = presentationElements.Count - 1; i >= 0; i--)
 							{
-								ORMDiagram currentDiagram = rolePlayer.Diagram as ORMDiagram;
-								NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
-								if (factShape != null)
+								RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
+								if (rolePlayer == null)
 								{
-									rolePlayer.ToShape = factShape;
+									continue;
+								}
+								NodeShape objShape = ((ORMDiagram)rolePlayer.Diagram).FindShapeForElement<NodeShape>(nestingType);
+								if (objShape != null)
+								{
+									rolePlayer.ToShape = objShape;
 								}
 								else
 								{
-									// Backup. Should only happen if the FixupDiagram call in part 1
-									// did not add the fact type.
 									rolePlayer.Delete();
 								}
 							}
 						}
 					}
 				}
-
-				// Part3: Remove object type shapes from the diagram. Do this before
-				// adding the labels to the objectified fact types so clearing the role
-				// players doesn't blow the labels away. Also, FixUpDiagram will attempt
-				// to fix up the existing shapes instead of creating new ones if the existing
-				// ones are not cleared away.
-				{
-					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
-					int pelCount = pels.Count;
-					for (int i = pelCount - 1; i >= 0; --i)
-					{
-						ObjectTypeShape pel = pels[i] as ObjectTypeShape;
-						if (pel != null)
-						{
-							pel.Delete();
-						}
-					}
-				}
-
-				// Part4: Resize the fact type wherever it is displayed and add the
-				// labels for the fact type display.
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
-				{
-					FactTypeShape shape = pel as FactTypeShape;
-					if (shape != null)
-					{
-						shape.AutoResize();
-						Diagram.FixUpDiagram(nestedFactType, nestingType);
-					}
-				}
-			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ProcessObjectification(e.ModelElement as Objectification, null, null);
 			}
 		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private sealed partial class SwitchFromNestedFact : DeleteRule
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ObjectificationIsImpliedChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Switch to displaying a nested fact
-			/// </summary>
-			/// <param name="link">The Objectification relationship to process</param>
-			/// <param name="nestedFactType">The nestedFactType to change. If this is null, then use the NestedFactType from the link argument.</param>
-			/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
-			/// <param name="switchingToImplied">Change the objectification to implied from explicit.</param>
-			public static void ProcessObjectification(Objectification link, FactType nestedFactType, ObjectType nestingType, bool switchingToImplied)
+			if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId)
 			{
-				if (nestedFactType == null)
+				if ((bool)e.OldValue)
 				{
-					nestedFactType = link.NestedFactType;
-				}
-				if (nestingType == null)
-				{
-					nestingType = link.NestingType;
-				}
-
-				bool nestingTypeRemoved = nestingType.IsDeleted;
-				bool nestedFactTypeRemoved = nestedFactType.IsDeleted;
-
-				if (nestingTypeRemoved && nestedFactTypeRemoved)
-				{
-					return;
-				}
-
-				// Part1: Remove any existing presentation elements for the object type.
-				// This removes all of the ObjectifiedTypeNameShape objects
-				if (!nestingTypeRemoved)
-				{
-					if (nestedFactTypeRemoved)
+					// It was previously implied
+					if (!(bool)e.NewValue)
 					{
-						// If we're just removing the fact, then we need to readd the normal object shape
-						Store store = nestingType.Store;
-						IList<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
-						int pelCount = pels.Count;
-						for (int i = pelCount - 1; i >= 0; --i)
-						{
-							ObjectifiedFactTypeNameShape oldShape;
-							ORMDiagram shapeDiagram;
-							if (null != (oldShape = pels[i] as ObjectifiedFactTypeNameShape) &&
-								!oldShape.IsDeleted &&
-								null != (shapeDiagram = oldShape.Diagram as ORMDiagram))
-							{
-								ObjectTypeShape newShape = new ObjectTypeShape(store);
-								shapeDiagram.NestedChildShapes.Add(newShape);
-								newShape.AbsoluteBounds = oldShape.AbsoluteBounds;
-								oldShape.Delete();
-								newShape.Associate(nestingType);
-								newShape.AutoResize();
-							}
-						}
+						// It is now explicit
+						ProcessObjectificationAdd(e.ModelElement as Objectification, null, null);
 					}
-					else
-					{
-						PresentationViewsSubject.GetPresentation(nestingType).Clear();
-					}
-				}
-
-				// Part2: Resize the fact type wherever it is displayed, and make sure
-				// the object type is made visible in the same location.
-				ORMModel nestingTypeModel = nestingTypeRemoved ? null : nestingType.Model;
-				if (!nestedFactTypeRemoved)
-				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
-					{
-						FactTypeShape factShape = pel as FactTypeShape;
-						if (factShape != null)
-						{
-							factShape.AutoResize();
-							// We don't want to add a shape for the nestingType if the objectification is switching to implied
-							if (!nestingTypeRemoved && !switchingToImplied)
-							{
-								ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
-								NodeShape objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-								if (objectShape == null)
-								{
-									Diagram.FixUpDiagram(nestingTypeModel, nestingType);
-									objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-									// We're placing the shape explicitly, don't allow an automatic placement
-									IDictionary unplacedShapes;
-									if (objectShape != null &&
-										null != (unplacedShapes = UnplacedShapesContext.GetUnplacedShapesMap(link.Store.TransactionManager.CurrentTransaction, currentDiagram.Id)) &&
-										unplacedShapes.Contains(objectShape))
-									{
-										unplacedShapes.Remove(objectShape);
-									}
-								}
-								if (objectShape != null)
-								{
-									PointD location = factShape.Location;
-									location.Offset(0.0, 2 * factShape.Size.Height);
-									objectShape.Location = location;
-								}
-							}
-						}
-					}
-				}
-
-				// Part3: Move any links from the fact type to the object type.
-				// Note: If we are switching to implied, then we don't need to move links to the object type shape,
-				// since there won't be any object type shape.
-				if (!nestingTypeRemoved && !switchingToImplied)
-				{
-					foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
-					{
-						Role playedRole = modelLink.PlayedRole;
-						SubtypeFact subType = playedRole.FactType as SubtypeFact;
-						if (subType != null)
-						{
-							if (nestedFactTypeRemoved)
-							{
-								Diagram.FixUpDiagram(nestingTypeModel, subType);
-							}
-							else
-							{
-								foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(subType))
-								{
-									SubtypeLink subtypeLink = obj as SubtypeLink;
-									if (subtypeLink != null)
-									{
-										ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-										NodeShape objShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-										if (objShape != null)
-										{
-											if (playedRole == subType.SupertypeRole)
-											{
-												subtypeLink.ToShape = objShape;
-											}
-											else
-											{
-												Debug.Assert(playedRole == subType.SubtypeRole);
-												subtypeLink.FromShape = objShape;
-											}
-										}
-										else
-										{
-											// Backup. Should only happen if the FixupDiagram call in part 1
-											// did not add the fact type.
-											subtypeLink.Delete();
-										}
-									}
-								}
-							}
-						}
-						else
-						{
-							if (nestedFactTypeRemoved)
-							{
-								Diagram.FixUpDiagram(nestingTypeModel, modelLink);
-							}
-							else
-							{
-								LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
-								for (int i = presentationElements.Count - 1; i >= 0; i--)
-								{
-									RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
-									if (rolePlayer == null)
-									{
-										continue;
-									}
-									NodeShape objShape = ((ORMDiagram)rolePlayer.Diagram).FindShapeForElement<NodeShape>(nestingType);
-									if (objShape != null)
-									{
-										rolePlayer.ToShape = objShape;
-									}
-									else
-									{
-										rolePlayer.Delete();
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				Objectification link = e.ModelElement as Objectification;
-				// If the objectification was not being drawn, we don't need to do anything
-				if (!ShouldDrawObjectification(link))
-				{
-					return;
-				}
-				ProcessObjectification(link, null, null, false);
-			}
-		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed partial class ObjectificationIsImpliedChangeRule : ChangeRule
-		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId)
-				{
-					if ((bool)e.OldValue)
-					{
-						// It was previously implied
-						if (!(bool)e.NewValue)
-						{
-							// It is now explicit
-							SwitchToNestedFact.ProcessObjectification(e.ModelElement as Objectification, null, null);
-						}
-					}
-					else
-					{
-						// It was previously explicit
-						if ((bool)e.NewValue)
-						{
-							// It is now implied
-							SwitchFromNestedFact.ProcessObjectification(e.ModelElement as Objectification, null, null, true);
-						}
-					}
-				}
-			}
-		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // RolePlayerChangeRule
-		private sealed partial class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				Objectification link = e.ElementLink as Objectification;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				Guid changedRoleGuid = e.DomainRole.Id;
-				ObjectType oldObjectType = null;
-				FactType oldFactType = null;
-				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
-				{
-					oldObjectType = (ObjectType)e.OldRolePlayer;
 				}
 				else
 				{
-					oldFactType = (FactType)e.OldRolePlayer;
-				}
-				SwitchFromNestedFact.ProcessObjectification(link, oldFactType, oldObjectType, false);
-				SwitchToNestedFact.ProcessObjectification(link, null, null);
-			}
-		}
-		#region ConstraintDisplayPositionChangeRule class
-		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // ChangeRule
-		private sealed partial class ConstraintDisplayPositionChangeRule : ChangeRule
-		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeId = e.DomainProperty.Id;
-				bool orientationChange = false;
-				if (attributeId == ConstraintDisplayPositionDomainPropertyId ||
-					(orientationChange = (attributeId == DisplayOrientationDomainPropertyId)))
-				{
-					FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
-					if (!factTypeShape.IsDeleted)
+					// It was previously explicit
+					if ((bool)e.NewValue)
 					{
-						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factTypeShape, LinkConnectsToNode.NodesDomainRoleId))
-						{
-							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-							if (binaryLink != null)
-							{
-								binaryLink.RecalculateRoute();
-							}
-						}
-						if (orientationChange)
-						{
-							// Seed the RolesPosition value and adjust the location so that
-							// any AutoSize changes make the fact type shape look like it
-							// rotated around the center of the role box
-							switch ((DisplayOrientation)e.OldValue)
-							{
-								case DisplayOrientation.Horizontal:
-									{
-										RectangleD bounds = factTypeShape.AbsoluteBounds;
-										SizeD size = bounds.Size;
-										PointD location = bounds.Location;
-										double halfWidth = size.Width / 2;
-										location.Offset(0, factTypeShape.RolesPosition - halfWidth);
-										factTypeShape.AbsoluteBounds = new RectangleD(location, size);
-										factTypeShape.RolesPosition = halfWidth;
-										break;
-									}
-								case DisplayOrientation.VerticalRotatedRight:
-								case DisplayOrientation.VerticalRotatedLeft:
-									if ((DisplayOrientation)e.NewValue == DisplayOrientation.Horizontal)
-									{
-										RectangleD bounds = factTypeShape.AbsoluteBounds;
-										SizeD size = bounds.Size;
-										PointD location = bounds.Location;
-										double halfHeight = size.Height / 2;
-										location.Offset(factTypeShape.RolesPosition - halfHeight, 0);
-										factTypeShape.AbsoluteBounds = new RectangleD(location, size);
-										factTypeShape.RolesPosition = halfHeight;
-									}
-									break;
-							}
-						}
-						SizeD oldSize = factTypeShape.Size;
-						factTypeShape.AutoResize();
-						if (oldSize == factTypeShape.Size)
-						{
-							factTypeShape.InvalidateRequired(true);
-						}
+						// It is now implied
+						ProcessObjectificationDelete(e.ModelElement as Objectification, null, null, true);
 					}
 				}
 			}
 		}
-		#endregion // ConstraintDisplayPositionChangeRule class
-		#region ExternalConstraintShapeChangeRule class
 		/// <summary>
-		/// Class to force the external constraint link bars to redraw and/or reposition
+		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			Objectification link = e.ElementLink as Objectification;
+			if (link.IsDeleted)
+			{
+				return;
+			}
+			Guid changedRoleGuid = e.DomainRole.Id;
+			ObjectType oldObjectType = null;
+			FactType oldFactType = null;
+			if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
+			{
+				oldObjectType = (ObjectType)e.OldRolePlayer;
+			}
+			else
+			{
+				oldFactType = (FactType)e.OldRolePlayer;
+			}
+			ProcessObjectificationDelete(link, oldFactType, oldObjectType, false);
+			ProcessObjectificationAdd(link, null, null);
+		}
+		#region ConstraintDisplayPositionChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ConstraintDisplayPositionChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeId = e.DomainProperty.Id;
+			bool orientationChange = false;
+			if (attributeId == ConstraintDisplayPositionDomainPropertyId ||
+				(orientationChange = (attributeId == DisplayOrientationDomainPropertyId)))
+			{
+				FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
+				if (!factTypeShape.IsDeleted)
+				{
+					foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factTypeShape, LinkConnectsToNode.NodesDomainRoleId))
+					{
+						BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+						if (binaryLink != null)
+						{
+							binaryLink.RecalculateRoute();
+						}
+					}
+					if (orientationChange)
+					{
+						// Seed the RolesPosition value and adjust the location so that
+						// any AutoSize changes make the fact type shape look like it
+						// rotated around the center of the role box
+						switch ((DisplayOrientation)e.OldValue)
+						{
+							case DisplayOrientation.Horizontal:
+								{
+									RectangleD bounds = factTypeShape.AbsoluteBounds;
+									SizeD size = bounds.Size;
+									PointD location = bounds.Location;
+									double halfWidth = size.Width / 2;
+									location.Offset(0, factTypeShape.RolesPosition - halfWidth);
+									factTypeShape.AbsoluteBounds = new RectangleD(location, size);
+									factTypeShape.RolesPosition = halfWidth;
+									break;
+								}
+							case DisplayOrientation.VerticalRotatedRight:
+							case DisplayOrientation.VerticalRotatedLeft:
+								if ((DisplayOrientation)e.NewValue == DisplayOrientation.Horizontal)
+								{
+									RectangleD bounds = factTypeShape.AbsoluteBounds;
+									SizeD size = bounds.Size;
+									PointD location = bounds.Location;
+									double halfHeight = size.Height / 2;
+									location.Offset(factTypeShape.RolesPosition - halfHeight, 0);
+									factTypeShape.AbsoluteBounds = new RectangleD(location, size);
+									factTypeShape.RolesPosition = halfHeight;
+								}
+								break;
+						}
+					}
+					SizeD oldSize = factTypeShape.Size;
+					factTypeShape.AutoResize();
+					if (oldSize == factTypeShape.Size)
+					{
+						factTypeShape.InvalidateRequired(true);
+					}
+				}
+			}
+		}
+		#endregion // ConstraintDisplayPositionChangeRule
+		#region ExternalConstraintShapeChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ExternalConstraintShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// Rule to force the external constraint link bars to redraw and/or reposition
 		/// when an external constraint shape is moved.
 		/// </summary>
-		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // ChangeRule
-		private sealed partial class ExternalConstraintShapeChangeRule : ChangeRule
+		private static void ExternalConstraintShapeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ExternalConstraintShape.AbsoluteBoundsDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == ExternalConstraintShape.AbsoluteBoundsDomainPropertyId)
+				ExternalConstraintShape externalConstraintShape = e.ModelElement as ExternalConstraintShape;
+				if (!externalConstraintShape.IsDeleted)
 				{
-					ExternalConstraintShape externalConstraintShape = e.ModelElement as ExternalConstraintShape;
-					if (!externalConstraintShape.IsDeleted)
+					foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(externalConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
 					{
-						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(externalConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
+						BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+						if (binaryLink != null && !binaryLink.IsDeleted)
 						{
-							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-							if (binaryLink != null && !binaryLink.IsDeleted)
+							Debug.Assert(binaryLink.ToShape == externalConstraintShape);
+							FactTypeShape factShape = binaryLink.FromShape as FactTypeShape;
+							if (factShape != null)
 							{
-								Debug.Assert(binaryLink.ToShape == externalConstraintShape);
-								FactTypeShape factShape = binaryLink.FromShape as FactTypeShape;
-								if (factShape != null)
+								IFactConstraint factConstraint = binaryLink.ModelElement as IFactConstraint;
+								IList<Role> roles;
+								if (null != (factConstraint = binaryLink.ModelElement as IFactConstraint) &&
+									null != (roles = factConstraint.RoleCollection))
 								{
-									IFactConstraint factConstraint = binaryLink.ModelElement as IFactConstraint;
-									IList<Role> roles;
-									if (null != (factConstraint = binaryLink.ModelElement as IFactConstraint) &&
-										null != (roles = factConstraint.RoleCollection))
+									ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
+									bool constraintBarVisible;
+									LinkedElementCollection<RoleBase> factRoles = null;
+									switch (roles.Count)
 									{
-										ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
-										bool constraintBarVisible;
-										LinkedElementCollection<RoleBase> factRoles = null;
-										switch (roles.Count)
-										{
-											case 0:
-												constraintBarVisible = false;
-												break;
-											case 1:
-												constraintBarVisible = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
-												break;
-											case 2:
+										case 0:
+											constraintBarVisible = false;
+											break;
+										case 1:
+											constraintBarVisible = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
+											break;
+										case 2:
+											{
+												// Handle possible duplicates in IFactConstraint.RoleCollection
+												Role role0 = roles[0];
+												Role role1 = roles[1];
+												if (role0 == role1)
 												{
-													// Handle possible duplicates in IFactConstraint.RoleCollection
-													Role role0 = roles[0];
-													Role role1 = roles[1];
-													if (role0 == role1)
-													{
-														goto case 1;
-													}
-													else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
-													{
-														factRoles = factShape.DisplayedRoleOrder;
-														constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
-													}
-													else
-													{
-														constraintBarVisible = true;
-													}
+													goto case 1;
 												}
-												break;
-											default:
-												constraintBarVisible = true;
-												break;
+												else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
+												{
+													factRoles = factShape.DisplayedRoleOrder;
+													constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
+												}
+												else
+												{
+													constraintBarVisible = true;
+												}
+											}
+											break;
+										default:
+											constraintBarVisible = true;
+											break;
+									}
+									if (constraintBarVisible)
+									{
+										bool resized = false;
+										if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+										{
+											if (factRoles == null)
+											{
+												factRoles = factConstraint.FactType.RoleCollection;
+											}
+											if (factRoles.Count == 2)
+											{
+												// If AnyRole is on, then a binary fact can compress the display
+												// of an external constraint role. Moving the connection point from
+												// the top to the bottom will require more space and change the
+												// size of the fact shape.
+												factShape.AutoResize();
+												resized = true;
+											}
 										}
-										if (constraintBarVisible)
+										// All links going into the FactTypeShape are
+										// suspect, get rid of all of them.
+										foreach (LinkConnectsToNode factConnection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
 										{
-											bool resized = false;
-											if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+											BinaryLinkShape binaryLinkToFact = factConnection.Link as BinaryLinkShape;
+											if (binaryLinkToFact != null && binaryLink != binaryLinkToFact)
 											{
-												if (factRoles == null)
-												{
-													factRoles = factConstraint.FactType.RoleCollection;
-												}
-												if (factRoles.Count == 2)
-												{
-													// If AnyRole is on, then a binary fact can compress the display
-													// of an external constraint role. Moving the connection point from
-													// the top to the bottom will require more space and change the
-													// size of the fact shape.
-													factShape.AutoResize();
-													resized = true;
-												}
+												binaryLinkToFact.RecalculateRoute();
 											}
-											// All links going into the FactTypeShape are
-											// suspect, get rid of all of them.
-											foreach (LinkConnectsToNode factConnection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
-											{
-												BinaryLinkShape binaryLinkToFact = factConnection.Link as BinaryLinkShape;
-												if (binaryLinkToFact != null && binaryLink != binaryLinkToFact)
-												{
-													binaryLinkToFact.RecalculateRoute();
-												}
-											}
-											if (!resized)
-											{
-												factShape.UpdateRolesPosition(SizeD.Empty);
-											}
+										}
+										if (!resized)
+										{
+											factShape.UpdateRolesPosition(SizeD.Empty);
 										}
 									}
 								}
@@ -5070,52 +5061,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ExternalConstraintShapeChangeRule class
-		#region FactTypeShapeChangeRule class
+		#endregion // ExternalConstraintShapeChangeRule
+		#region FactTypeShapeChangeRule
 		/// <summary>
+		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Keep relative child elements a fixed distance away from the fact
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed partial class FactTypeShapeChangeRule : ChangeRule
+		private static void FactTypeShapeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				MaintainRelativeShapeOffsetsForBoundsChange(e);
-			}
+			MaintainRelativeShapeOffsetsForBoundsChange(e);
 		}
-		#endregion // FactTypeShapeChangeRule class
-		#region ImplicitBooleanValueChangeRule class
-		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed partial class ImplicitBooleanValueChangeRule : ChangeRule
+		#endregion // FactTypeShapeChangeRule
+		#region ImplicitBooleanValueChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+		/// </summary>
+		private static void ImplicitBooleanValueChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == ObjectType.IsImplicitBooleanValueDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == ObjectType.IsImplicitBooleanValueDomainPropertyId)
+				if ((bool)e.OldValue)
 				{
-					if ((bool)e.OldValue)
+					FactType factType;
+					LinkedElementCollection<Role> playedRoles = (e.ModelElement as ObjectType).PlayedRoleCollection;
+					if (playedRoles.Count != 0 &&
+						null != (factType = playedRoles[0].FactType))
 					{
-						FactType factType;
-						LinkedElementCollection<Role> playedRoles = (e.ModelElement as ObjectType).PlayedRoleCollection;
-						if (playedRoles.Count != 0 &&
-							null != (factType = playedRoles[0].FactType))
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 						{
-							foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+							FactTypeShape shape = pel as FactTypeShape;
+							if (shape != null)
 							{
-								FactTypeShape shape = pel as FactTypeShape;
-								if (shape != null)
-								{
-									// When a binarized Unary Fact is not longer a unary, clear the displayed role orders
-									shape.RoleDisplayOrderCollection.Clear();
-									shape.AutoResize();
-								}
+								// When a binarized Unary Fact is not longer a unary, clear the displayed role orders
+								shape.RoleDisplayOrderCollection.Clear();
+								shape.AutoResize();
 							}
 						}
 					}
 				}
 			}
 		}
-		#endregion // ImplicitBooleanValueChangeRule class
+		#endregion // ImplicitBooleanValueChangeRule
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>
@@ -5252,57 +5239,51 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // CustomFactTypeShapeGeometry
 		#region Derivation Rules
-		[RuleOn(typeof(FactTypeDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
-		private sealed partial class DerivationRuleChanged : ChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
-				{
-					FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
-					if (!ftde.IsDeleted)
-					{
-						FactType ft = ftde.FactType;
-						if (ft != null)
-						{
-							ReadingShape.InvalidateReadingShape(ft);
-						}
-					}
-				}
-			}
-		}
-
-		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // AddRule
-		private sealed partial class DerivationRuleAdd : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
-				if (null != ftde)
-				{
-					ReadingShape.InvalidateReadingShape(ftde.FactType);
-				}
-			}
-		}
-
-		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // DeleteRule
-		private sealed partial class DerivationRuleDelete : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-
-				FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
-				if (null != ftde)
+				FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
+				if (!ftde.IsDeleted)
 				{
 					FactType ft = ftde.FactType;
-					if (!ft.IsDeleted)
+					if (ft != null)
 					{
 						ReadingShape.InvalidateReadingShape(ft);
 					}
 				}
 			}
 		}
-		#endregion
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
+			if (null != ftde)
+			{
+				ReadingShape.InvalidateReadingShape(ftde.FactType);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
+			if (null != ftde)
+			{
+				FactType ft = ftde.FactType;
+				if (!ft.IsDeleted)
+				{
+					ReadingShape.InvalidateReadingShape(ft);
+				}
+			}
+		}
+		#endregion // Derivation Rules
 	}
 	#endregion // FactTypeShape class
 	#region ObjectifiedFactTypeNameShape class

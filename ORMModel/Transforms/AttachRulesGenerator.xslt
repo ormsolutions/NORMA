@@ -42,9 +42,37 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
-		<xsl:variable name="allReflectedRuleTypes" select="arg:Rule"/>
+		<xsl:variable name="allRuleContainers" select="arg:RuleContainer"/>
+		<xsl:variable name="allReflectedRuleTypesFragment">
+			<xsl:copy-of select="arg:Rule"/>
+			<!-- Merge all of the auto rules in with the normal rules for type resolution and enabled/disabled processing -->
+			<xsl:for-each select="$allRuleContainers">
+				<xsl:variable name="containerClass" select="string(@class)"/>
+				<xsl:variable name="containerNamespace" select="@namespace"/>
+				<xsl:for-each select="child::arg:*">
+					<arg:AutoRule>
+						<xsl:attribute name="class">
+							<xsl:value-of select="$containerClass"/>
+							<xsl:text>.</xsl:text>
+							<xsl:choose>
+								<xsl:when test="string(@className)">
+									<xsl:value-of select="@className"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@methodName"/>
+									<xsl:text>Class</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:copy-of select="$containerNamespace"/>
+						<xsl:copy-of select="@alwaysOn"/>
+					</arg:AutoRule>
+				</xsl:for-each>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="allReflectedRuleTypes" select="exsl:node-set($allReflectedRuleTypesFragment)/child::*"/>
 		<xsl:variable name="disabledRules" select="$allReflectedRuleTypes[not(@alwaysOn='true' or @alwaysOn='1')]"/>
-		<xsl:variable name="allReflectedOtherTypes" select="arg:*[not(self::arg:Rule)]"/>
+		<xsl:variable name="allReflectedOtherTypes" select="arg:*[not(self::arg:Rule | self::arg:RuleContainer)]"/>
 		<xsl:variable name="enableDiagramRules" select="@enableDiagramRules='true' or @enabledDiagramRules='1'"/>
 		<plx:namespace name="{$namespaceName}">
 			<xsl:variable name="copyright" select="parent::arg:Rules/arg:Copyright"/>
@@ -397,13 +425,16 @@
 					</plx:function>
 				</xsl:if>
 			</plx:class>
-			<xsl:for-each select="$disabledRules[not(@namespace) or @namespace=$namespaceName]">
+			<xsl:for-each select="$disabledRules[self::arg:Rule][not(@namespace) or @namespace=$namespaceName]">
 				<xsl:call-template name="GenerateInitiallyDisabledRuleClass"/>
+			</xsl:for-each>
+			<xsl:for-each select="$allRuleContainers[not(@namespace) or @namespace=$namespaceName]">
+				<xsl:call-template name="GenerateRuleContainerClass"/>
 			</xsl:for-each>
 		</plx:namespace>
 		<!-- Disable rules for namespaces in other classes -->
 		<!-- Note that the != predicate is intentional here -->
-		<xsl:variable name="foreignDisabledRules" select="$disabledRules[@namespace!=$namespaceName]"/>
+		<xsl:variable name="foreignDisabledRules" select="$disabledRules[self::arg:Rule][@namespace!=$namespaceName]"/>
 		<xsl:if test="$foreignDisabledRules">
 			<xsl:variable name="uniqueNamespacesFragment">
 				<xsl:variable name="sortedNamespacesFragment">
@@ -425,6 +456,34 @@
 				<plx:namespace name="{$foreignNamespace}">
 					<xsl:for-each select="$foreignDisabledRules[@namespace=$foreignNamespace]">
 						<xsl:call-template name="GenerateInitiallyDisabledRuleClass"/>
+					</xsl:for-each>
+				</plx:namespace>
+			</xsl:for-each>
+		</xsl:if>
+		<!-- Generate auto-rule classes for other namespaces -->
+		<!-- Note that the != predicate is intentional here -->
+		<xsl:variable name="foreignAutoRules" select="$allRuleContainers[@namespace!=$namespaceName]"/>
+		<xsl:if test="$foreignAutoRules">
+			<xsl:variable name="uniqueNamespacesFragment">
+				<xsl:variable name="sortedNamespacesFragment">
+					<xsl:for-each select="$foreignAutoRules">
+						<xsl:sort select="@namespace"/>
+						<dummy>
+							<xsl:copy-of select="@namespace"/>
+						</dummy>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:for-each select="exsl:node-set($sortedNamespacesFragment)/child::*">
+					<xsl:if test="not(preceding-sibling::*[@namespace=current()/@namespace])">
+						<xsl:copy-of select="."/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:for-each select="exsl:node-set($uniqueNamespacesFragment)/child::*">
+				<xsl:variable name="foreignNamespace" select="string(@namespace)"/>
+				<plx:namespace name="{$foreignNamespace}">
+					<xsl:for-each select="$foreignAutoRules[@namespace=$foreignNamespace]">
+						<xsl:call-template name="GenerateRuleContainerClass"/>
 					</xsl:for-each>
 				</plx:namespace>
 			</xsl:for-each>
@@ -572,5 +631,478 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:class>
+	</xsl:template>
+	<xsl:template name="GenerateRuleContainerClass">
+		<xsl:param name="remainingName" select="normalize-space(translate(@class, '+.', '  '))"/>
+		<xsl:param name="firstPart" select="true()"/>
+		<xsl:param name="originalClass" select="translate($remainingName,' ','.')"/>
+		<xsl:variable name="publicPart" select="substring-before($remainingName, ' ')"/>
+		<plx:class name="{$remainingName}" visibility="deferToPartial" partial="true">
+			<xsl:if test="$publicPart">
+				<xsl:attribute name="name">
+					<xsl:value-of select="$publicPart"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$firstPart">
+				<plx:leadingInfo>
+					<xsl:if test="position()=1">
+						<plx:pragma type="region" data="Auto-rule classes"/>
+					</xsl:if>
+					<plx:pragma type="region">
+						<xsl:attribute name="data">
+							<xsl:text>Rule classes for </xsl:text>
+							<xsl:value-of select="$originalClass"/>
+						</xsl:attribute>
+					</plx:pragma>
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion">
+						<xsl:attribute name="data">
+							<xsl:text>Rule classes for </xsl:text>
+							<xsl:value-of select="$originalClass"/>
+						</xsl:attribute>
+					</plx:pragma>
+					<xsl:if test="position()=last()">
+						<plx:pragma type="closeRegion" data="Auto-rule classes"/>
+					</xsl:if>
+				</plx:trailingInfo>
+			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$publicPart">
+					<xsl:call-template name="GenerateRuleContainerClass">
+						<xsl:with-param name="remainingName" select="substring($remainingName, string-length($publicPart)+2)"/>
+						<xsl:with-param name="firstPart" select="false()"/>
+						<xsl:with-param name="originalClass" select="$originalClass"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each select="child::*">
+						<xsl:variable name="methodInRuleClass" select="@methodInRuleClass='true' or @methodInRuleClass='1'"/>
+						<xsl:variable name="methodInfoFragment">
+							<xsl:apply-templates select="." mode="RuleMethodInfo"/>
+						</xsl:variable>
+						<xsl:variable name="methodInfo" select="exsl:node-set($methodInfoFragment)/child::*"/>
+						<plx:class modifier="sealed" name="{@methodName}Class" visibility="private" partial="{string($methodInRuleClass)}">
+							<xsl:if test="string(@className)">
+								<xsl:attribute name="name">
+									<xsl:value-of select="@className"/>
+								</xsl:attribute>
+							</xsl:if>
+							<xsl:for-each select="arg:RuleOn">
+								<xsl:variable name="fireTime" select="string(@fireTime)"/>
+								<xsl:variable name="standardPriority" select="normalize-space(@priority)"/>
+								<xsl:variable name="priorityAdjustment" select="arg:PriorityAdjustment/child::plx:*"/>
+								<plx:attribute dataTypeName="RuleOn" dataTypeQualifier="Microsoft.VisualStudio.Modeling">
+									<plx:passParam>
+										<plx:typeOf dataTypeName="{@targetType}" dataTypeQualifier="{@targetTypeQualifier}"/>
+									</plx:passParam>
+									<xsl:if test="string-length($fireTime) and $fireTime!='Inline'">
+										<plx:passParam>
+											<plx:binaryOperator type="assignNamed">
+												<plx:left>
+													<plx:nameRef name="FireTime" type="namedParameter"/>
+												</plx:left>
+												<plx:right>
+													<plx:callStatic name="{$fireTime}" dataTypeName="TimeToFire" dataTypeQualifier="Microsoft.VisualStudio.Modeling" type="field"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:passParam>
+									</xsl:if>
+									<xsl:if test="$standardPriority or $priorityAdjustment">
+										<plx:passParam>
+											<plx:binaryOperator type="assignNamed">
+												<plx:left>
+													<plx:nameRef name="Priority" type="namedParameter"/>
+												</plx:left>
+												<plx:right>
+													<xsl:choose>
+														<xsl:when test="$standardPriority">
+															<xsl:variable name="standardPriorityFragment">
+																<xsl:choose>
+																	<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
+																		<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" type="field"/>
+																	</xsl:when>
+																	<xsl:when test="$standardPriority='DelayValidateRulePriority'">
+																		<plx:callStatic name="DelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" type="field"/>
+																	</xsl:when>
+																	<xsl:when test="starts-with($standardPriority,'D')">
+																		<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" dataTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" type="field"/>
+																	</xsl:when>
+																	<xsl:when test="starts-with($standardPriority, '-')">
+																		<plx:unaryOperator type="negative">
+																			<plx:value data="{substring-after($standardPriority,'-')}" type="i4"/>
+																		</plx:unaryOperator>
+																	</xsl:when>
+																	<xsl:when test="starts-with($standardPriority, '+')">
+																		<plx:value data="{substring-after($standardPriority,'+')}" type="i4"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<plx:value data="{$standardPriority}" type="i4"/>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:variable>
+															<xsl:choose>
+																<xsl:when test="$priorityAdjustment">
+																	<plx:binaryOperator type="add">
+																		<plx:left>
+																			<xsl:copy-of select="$standardPriorityFragment"/>
+																		</plx:left>
+																		<plx:right>
+																			<xsl:copy-of select="$priorityAdjustment"/>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</xsl:when>
+																<xsl:otherwise>
+																	<xsl:copy-of select="$standardPriorityFragment"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:copy-of select="$priorityAdjustment"/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:passParam>
+									</xsl:if>
+								</plx:attribute>
+							</xsl:for-each>
+							<plx:derivesFromClass dataTypeName="{local-name()}" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
+							<xsl:if test="not(@alwaysOn='true' or @alwaysOn='1')">
+								<plx:function name=".construct" visibility="public">
+									<plx:assign>
+										<plx:left>
+											<plx:callThis accessor="base" name="IsEnabled" type="property"/>
+										</plx:left>
+										<plx:right>
+											<plx:falseKeyword/>
+										</plx:right>
+									</plx:assign>
+								</plx:function>
+							</xsl:if>
+							<xsl:if test="@fireBefore='true' or @fireBefore='1'">
+								<plx:property modifier="override" visibility="public" name="FireBefore">
+									<plx:returns dataTypeName=".boolean"/>
+									<plx:get>
+										<plx:return>
+											<plx:trueKeyword/>
+										</plx:return>
+									</plx:get>
+								</plx:property>
+							</xsl:if>
+							<plx:function modifier="override" visibility="public" name="{$methodInfo/@ruleMethodName}">
+								<plx:leadingInfo>
+									<plx:docComment>
+										<summary>
+											<xsl:text>&#xd;&#xa;Provide the following method in class: &#xd;&#xa;</xsl:text>
+											<xsl:choose>
+												<xsl:when test="string(../@namespace)">
+													<xsl:value-of select="../@namespace"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="$CustomToolNamespace"/>
+												</xsl:otherwise>
+											</xsl:choose>
+											<xsl:text>.</xsl:text>
+											<xsl:value-of select="$originalClass"/>
+											<xsl:text>&#xd;&#xa;</xsl:text>
+											<xsl:variable name="leadingInfo">
+												<plx:leadingInfo>
+													<plx:docComment>
+														<summary>
+															<xsl:text>&#xd;&#xa;</xsl:text>
+															<xsl:for-each select="arg:RuleOn">
+																<xsl:variable name="fireTime" select="string(@fireTime)"/>
+																<xsl:value-of select="local-name(..)"/>
+																<xsl:text>: typeof(</xsl:text>
+																<xsl:if test="string(@targetTypeQualifier)">
+																	<xsl:value-of select="@targetTypeQualifier"/>
+																	<xsl:text>.</xsl:text>
+																</xsl:if>
+																<xsl:value-of select="@targetType"/>
+																<xsl:text>)</xsl:text>
+																<xsl:if test="$fireTime and $fireTime!='Inline'">
+																	<xsl:text>, FireTime=</xsl:text>
+																	<xsl:value-of select="$fireTime"/>
+																</xsl:if>
+																<xsl:variable name="standardPriority" select="normalize-space(@priority)"/>
+																<xsl:variable name="priorityAdjustment" select="arg:PriorityAdjustment/child::plx:*"/>
+																<xsl:choose>
+																	<xsl:when test="$standardPriority or $priorityAdjustment">
+																		<xsl:text>, Priority=</xsl:text>
+																		<xsl:choose>
+																			<xsl:when test="$standardPriority">
+																				<xsl:variable name="standardPriorityFragment">
+																					<xsl:choose>
+																						<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
+																							<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" type="field"/>
+																						</xsl:when>
+																						<xsl:when test="$standardPriority='DelayValidateRulePriority'">
+																							<plx:callStatic name="DelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" type="field"/>
+																						</xsl:when>
+																						<xsl:when test="starts-with($standardPriority,'D')">
+																							<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" type="field"/>
+																						</xsl:when>
+																						<xsl:when test="starts-with($standardPriority, '-')">
+																							<plx:unaryOperator type="negative">
+																								<plx:value data="{substring-after($standardPriority,'-')}" type="i4"/>
+																							</plx:unaryOperator>
+																						</xsl:when>
+																						<xsl:when test="starts-with($standardPriority, '+')">
+																							<plx:value data="{substring-after($standardPriority,'+')}" type="i4"/>
+																						</xsl:when>
+																						<xsl:otherwise>
+																							<plx:value data="{$standardPriority}" type="i4"/>
+																						</xsl:otherwise>
+																					</xsl:choose>
+																				</xsl:variable>
+																				<xsl:choose>
+																					<xsl:when test="$priorityAdjustment">
+																						<plx:binaryOperator type="add">
+																							<plx:left>
+																								<xsl:copy-of select="$standardPriorityFragment"/>
+																							</plx:left>
+																							<plx:right>
+																								<xsl:copy-of select="$priorityAdjustment"/>
+																							</plx:right>
+																						</plx:binaryOperator>
+																					</xsl:when>
+																					<xsl:otherwise>
+																						<xsl:copy-of select="$standardPriorityFragment"/>
+																					</xsl:otherwise>
+																				</xsl:choose>
+																			</xsl:when>
+																			<xsl:otherwise>
+																				<xsl:copy-of select="$priorityAdjustment"/>
+																			</xsl:otherwise>
+																		</xsl:choose>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:text>&#xd;&#xa;</xsl:text>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:for-each>
+														</summary>
+													</plx:docComment>
+												</plx:leadingInfo>
+											</xsl:variable>
+											<xsl:choose>
+												<xsl:when test="$methodInRuleClass">
+													<plx:class visibility="deferToPartial" partial="true" name="{@methodName}Class">
+														<xsl:if test="string(@className)">
+															<xsl:attribute name="name">
+																<xsl:value-of select="@className"/>
+															</xsl:attribute>
+														</xsl:if>
+														<plx:function name="{@methodName}" visibility="private">
+															<xsl:copy-of select="$leadingInfo"/>
+															<plx:param name="e" dataTypeName="{$methodInfo/@ruleEventArgsType}"/>
+														</plx:function>
+													</plx:class>
+												</xsl:when>
+												<xsl:otherwise>
+													<plx:function modifier="static" name="{@methodName}" visibility="private">
+														<xsl:copy-of select="$leadingInfo"/>
+														<plx:param name="e" dataTypeName="{$methodInfo/@ruleEventArgsType}"/>
+													</plx:function>
+												</xsl:otherwise>
+											</xsl:choose>
+										</summary>
+									</plx:docComment>
+								</plx:leadingInfo>
+								<plx:param name="e" dataTypeName="{$methodInfo/@ruleEventArgsType}" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
+								<xsl:variable name="classFullNameString">
+									<plx:string>
+										<xsl:attribute name="data">
+											<xsl:choose>
+												<xsl:when test="string(@namespace)">
+													<xsl:value-of select="@namespace"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="$CustomToolNamespace"/>
+												</xsl:otherwise>
+											</xsl:choose>
+											<xsl:text>.</xsl:text>
+											<xsl:value-of select="$originalClass"/>
+											<xsl:text>.</xsl:text>
+											<xsl:choose>
+												<xsl:when test="string(@className)">
+													<xsl:value-of select="@className"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="@methodName"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:attribute>
+									</plx:string>
+								</xsl:variable>
+								<plx:callStatic name="TraceRuleStart" dataTypeName="TraceUtility" dataTypeQualifier="Neumont.Tools.Modeling.Diagnostics">
+									<plx:passParam>
+										<xsl:copy-of select="$methodInfo/child::*"/>
+									</plx:passParam>
+									<plx:passParam>
+										<xsl:copy-of select="$classFullNameString"/>
+									</plx:passParam>
+								</plx:callStatic>
+								<xsl:choose>
+									<xsl:when test="$methodInRuleClass">
+										<plx:callThis name="{@methodName}">
+											<plx:passParam>
+												<plx:nameRef name="e" type="parameter"/>
+											</plx:passParam>
+										</plx:callThis>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:callStatic name="{@methodName}" dataTypeName="{$remainingName}">
+											<plx:passParam>
+												<plx:nameRef name="e" type="parameter"/>
+											</plx:passParam>
+										</plx:callStatic>
+									</xsl:otherwise>
+								</xsl:choose>
+								<plx:callStatic name="TraceRuleEnd" dataTypeName="TraceUtility" dataTypeQualifier="Neumont.Tools.Modeling.Diagnostics">
+									<plx:passParam>
+										<xsl:copy-of select="$methodInfo/child::*"/>
+									</plx:passParam>
+									<plx:passParam>
+										<xsl:copy-of select="$classFullNameString"/>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:function>
+						</plx:class>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
+		</plx:class>
+	</xsl:template>
+	<xsl:template match="arg:AddRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="ElementAdded" ruleEventArgsType="ElementAddedEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="ModelElement" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:ChangeRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="ElementPropertyChanged" ruleEventArgsType="ElementPropertyChangedEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="ModelElement" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:DeleteRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="ElementDeleted" ruleEventArgsType="ElementDeletedEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="ModelElement" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:DeletingRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="ElementDeleting" ruleEventArgsType="ElementDeletingEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="ModelElement" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:MoveRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="ElementMoved" ruleEventArgsType="ElementMovedEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="ModelElement" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:RolePlayerChangeRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="RolePlayerChanged" ruleEventArgsType="RolePlayerChangedEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="ElementLink" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:RolePlayerPositionChangeRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="RolePlayerPositionChanged" ruleEventArgsType="RolePlayerOrderChangedEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="SourceElement" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:TransactionBeginningRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="TransactionBeginning" ruleEventArgsType="TransactionBeginningEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="Transaction" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:TransactionCommittingRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="TransactionCommitting" ruleEventArgsType="TransactionCommitEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="Transaction" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
+	</xsl:template>
+	<xsl:template match="arg:TransactionRollingBackRule" mode="RuleMethodInfo">
+		<names ruleType="{local-name()}" ruleMethodName="TransactionRollingBack" ruleEventArgsType="TransactionRollbackEventArgs">
+			<plx:callInstance name="Store" type="property">
+				<plx:callObject>
+					<plx:callInstance name="Transaction" type="property">
+						<plx:callObject>
+							<plx:nameRef name="e" type="parameter"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+			</plx:callInstance>
+		</names>
 	</xsl:template>
 </xsl:stylesheet>

@@ -33,408 +33,419 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region View Fixup Rules
 		#region ModelHasObjectType fixup
-		#region ObjectTypedAdded class
-		[RuleOn(typeof(ModelHasObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class ObjectTypedAdded : AddRule
+		#region ObjectTypedAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ObjectTypedAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
+			ObjectType objectType = link.ObjectType;
+			if (objectType.NestedFactType == null) // Otherwise, fix up with the fact type
 			{
-				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-				if (link != null)
-				{
-					ObjectType objectType = link.ObjectType;
-					if (objectType.NestedFactType == null) // Otherwise, fix up with the fact type
-					{
-						Diagram.FixUpDiagram(link.Model, objectType);
-					}
-				}
+				Diagram.FixUpDiagram(link.Model, objectType);
 			}
 		}
-		#endregion // ObjectTypedAdded class
+		#endregion // ObjectTypedAddedRule
 		#endregion // ModelHasObjectType fixup
 		#region ModelHasFactType fixup
-		#region ObjectTypeChangeRule class
-		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		[RuleOn(typeof(ObjectifiedFactTypeNameShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed partial class ObjectTypeShapeChangeRule : ChangeRule
+		#region ObjectTypeChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// ChangeRule: typeof(ObjectifiedFactTypeNameShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ObjectTypeShapeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			ObjectTypeShape objectTypeShape = null;
+			ObjectifiedFactTypeNameShape objectifiedShape = null;
+			Guid attributeId = e.DomainProperty.Id;
+			if ((attributeId == ObjectTypeShape.ExpandRefModeDomainPropertyId &&
+				null != (objectTypeShape = e.ModelElement as ObjectTypeShape)) ||
+				(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId &&
+				null != (objectifiedShape = e.ModelElement as ObjectifiedFactTypeNameShape)))
 			{
-				ObjectTypeShape objectTypeShape = null;
-				ObjectifiedFactTypeNameShape objectifiedShape = null;
-				Guid attributeId = e.DomainProperty.Id;
-				if ((attributeId == ObjectTypeShape.ExpandRefModeDomainPropertyId &&
-					null != (objectTypeShape = e.ModelElement as ObjectTypeShape)) ||
-					(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId &&
-					null != (objectifiedShape = e.ModelElement as ObjectifiedFactTypeNameShape)))
+				if (objectTypeShape != null)
 				{
-					if (objectTypeShape != null)
-					{
-						objectTypeShape.AutoResize();
-					}
-					else
-					{
-						objectifiedShape.AutoResize();
-					}
+					objectTypeShape.AutoResize();
+				}
+				else
+				{
+					objectifiedShape.AutoResize();
+				}
 
-					ObjectType objectType = ((objectTypeShape != null) ? objectTypeShape.ModelElement : objectifiedShape.ModelElement) as ObjectType;
-					UniquenessConstraint preferredConstraint;
-					LinkedElementCollection<Role> constraintRoles;
-					ObjectType rolePlayer;
-					if (null != (preferredConstraint = objectType.PreferredIdentifier) &&
-						preferredConstraint.IsInternal &&
-						1 == (constraintRoles = preferredConstraint.RoleCollection).Count &&
-						null != (rolePlayer = constraintRoles[0].RolePlayer) &&
-						rolePlayer.IsValueType)
+				ObjectType objectType = ((objectTypeShape != null) ? objectTypeShape.ModelElement : objectifiedShape.ModelElement) as ObjectType;
+				UniquenessConstraint preferredConstraint;
+				LinkedElementCollection<Role> constraintRoles;
+				ObjectType rolePlayer;
+				if (null != (preferredConstraint = objectType.PreferredIdentifier) &&
+					preferredConstraint.IsInternal &&
+					1 == (constraintRoles = preferredConstraint.RoleCollection).Count &&
+					null != (rolePlayer = constraintRoles[0].RolePlayer) &&
+					rolePlayer.IsValueType)
+				{
+
+					bool expandingRefMode = (bool)e.NewValue;
+					if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
 					{
-
-						bool expandingRefMode = (bool)e.NewValue;
-						if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
-						{
-							// Back up the property descriptor, which sets the ExpandRefMode property
-							// to readonly in this case
-							if (!expandingRefMode)
-							{
-								if (objectTypeShape != null)
-								{
-									objectTypeShape.ExpandRefMode = true;
-								}
-								else
-								{
-									objectifiedShape.ExpandRefMode = true;
-								}
-							}
-							return;
-						}
-						ORMDiagram parentDiagram = ((objectTypeShape != null) ? objectTypeShape.Diagram : objectifiedShape.Diagram) as ORMDiagram;
-						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
-
-						// View or Hide FactType
-						FactType factType = preferredConstraint.FactTypeCollection[0];
+						// Back up the property descriptor, which sets the ExpandRefMode property
+						// to readonly in this case
 						if (!expandingRefMode)
 						{
-							RemoveShapesFromDiagram(factType, parentDiagram);
-						}
-						else
-						{
-							// Stop the reading shape from ending up in the wrong place during refmode expansion
-							e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
-
-							if (!parentDiagram.ElementHasShape(factType))
+							if (objectTypeShape != null)
 							{
-								Diagram.FixUpDiagram(objectType.Model, factType);
-
-								foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, factType))
-								{
-									shapeElements.Add(shapeOnDiagram, true);
-								}
-
-								foreach (ReadingOrder readingOrder in factType.ReadingOrderCollection)
-								{
-									Diagram.FixUpDiagram(factType, readingOrder);
-								}
-							}
-						}
-
-						//View or Hide value type
-						ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
-						if (valueType != null)
-						{
-							if (expandingRefMode)
-							{
-								if (!parentDiagram.ElementHasShape(valueType))
-								{
-									Diagram.FixUpDiagram(objectType.Model, valueType);
-
-									foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, valueType))
-									{
-										shapeElements.Add(shapeOnDiagram, true);
-									}
-								}
-
-								foreach (ValueTypeHasValueConstraint link in DomainRoleInfo.GetElementLinks<ValueTypeHasValueConstraint>(valueType, ValueTypeHasValueConstraint.ValueTypeDomainRoleId))
-								{
-									FixupValueTypeValueConstraintLink(link, null);
-								}
+								objectTypeShape.ExpandRefMode = true;
 							}
 							else
 							{
-								if (!objectType.ReferenceModeSharesValueType || // Easy check first
-									!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
-								{
-									RemoveShapesFromDiagram(valueType, parentDiagram);
-								}
+								objectifiedShape.ExpandRefMode = true;
 							}
 						}
-
-						//View or Hide ObjectTypePlaysRole links
-						foreach (RoleBase roleBase in factType.RoleCollection)
-						{
-							Role role = roleBase.Role;
-							foreach (ObjectTypePlaysRole link in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
-							{
-								if (expandingRefMode)
-								{
-									Diagram.FixUpDiagram(objectType.Model, link);
-								}
-								else
-								{
-									RemoveShapesFromDiagram(link, parentDiagram);
-								}
-							}
-							foreach (RoleHasValueConstraint link in DomainRoleInfo.GetElementLinks<RoleHasValueConstraint>(role, RoleHasValueConstraint.RoleDomainRoleId))
-							{
-								if (expandingRefMode)
-								{
-									FixupRoleValueConstraintLink(link, null);
-								}
-								else
-								{
-									FixupValueTypeValueConstraintLink(link, null);
-									RemoveShapesFromDiagram(link, parentDiagram);
-								}
-							}
-						}
-
-						if (shapeElements.Count > 0)
-						{
-							NodeShape rootShape = e.ModelElement as NodeShape;
-							// Turn off auto placement
-							e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
-
-							// Tell the layout manager to calculate locations for the new elements
-							LayoutManager bl = new LayoutManager(parentDiagram, (parentDiagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
-							foreach (ShapeElement shape in shapeElements.Keys)
-							{
-								if (shape == rootShape)
-								{
-									continue;
-								}
-								// The bool value of shapeElements says whether to position the shape or not.  If not, it's already on the diagram, so don't move it!
-								bl.AddShape(shape, !shapeElements[shape]);
-							}
-							bl.AddShape(rootShape, true);
-							bl.SetRootShape(rootShape);
-							bl.Layout();
-						}
+						return;
 					}
-				}
-			}//end method
-			/// <summary>
-			/// Helper function to remove shapes on the diagram for a specific element.
-			/// All child shapes will also be removed.
-			/// </summary>
-			private void RemoveShapesFromDiagram(ModelElement element, Diagram diagram)
-			{
-				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
-				int pelCount = pels.Count;
-				for (int i = pelCount - 1; i >= 0; --i) // Walk backwards so we can safely remove
-				{
-					ShapeElement shape = pels[i] as ShapeElement;
-					if (shape != null && shape.Diagram == diagram)
+					ORMDiagram parentDiagram = ((objectTypeShape != null) ? objectTypeShape.Diagram : objectifiedShape.Diagram) as ORMDiagram;
+					Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
+
+					// View or Hide FactType
+					FactType factType = preferredConstraint.FactTypeCollection[0];
+					if (!expandingRefMode)
 					{
-						// Delete propagation in the CoreDesignSurface domain model will clear
-						// any nested and relative shapes
-						shape.Delete();
+						RemoveShapesFromDiagram(factType, parentDiagram);
 					}
-				}
-			}
-		}
-		#endregion // ObjectTypeShapeChangeRule class
-		#region FactTypeAdded class
-		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class FactTypedAdded : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				if (link != null)
-				{
-					Diagram.FixUpDiagram(link.Model, link.FactType);
-				}
-			}
-		}
-		#endregion // FactTypeAdded class
-		#region FactTypeChanged
-		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed partial class FactTypeShapeChanged : ChangeRule
-		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				FactTypeShape fts = e.ModelElement as FactTypeShape;
-				if (fts != null)
-				{
-					if (e.DomainProperty.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
+					else
 					{
-						FactType fact = fts.ModelElement as FactType;
-						if (fact != null)
+						// Stop the reading shape from ending up in the wrong place during refmode expansion
+						e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
+
+						if (!parentDiagram.ElementHasShape(factType))
 						{
-							RoleNameShape.SetRoleNameDisplay(fact);
+							Diagram.FixUpDiagram(objectType.Model, factType);
+
+							foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, factType))
+							{
+								shapeElements.Add(shapeOnDiagram, true);
+							}
+
+							foreach (ReadingOrder readingOrder in factType.ReadingOrderCollection)
+							{
+								Diagram.FixUpDiagram(factType, readingOrder);
+							}
 						}
 					}
+
+					//View or Hide value type
+					ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
+					if (valueType != null)
+					{
+						if (expandingRefMode)
+						{
+							if (!parentDiagram.ElementHasShape(valueType))
+							{
+								Diagram.FixUpDiagram(objectType.Model, valueType);
+
+								foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, valueType))
+								{
+									shapeElements.Add(shapeOnDiagram, true);
+								}
+							}
+
+							foreach (ValueTypeHasValueConstraint link in DomainRoleInfo.GetElementLinks<ValueTypeHasValueConstraint>(valueType, ValueTypeHasValueConstraint.ValueTypeDomainRoleId))
+							{
+								FixupValueTypeValueConstraintLink(link, null);
+							}
+						}
+						else
+						{
+							if (!objectType.ReferenceModeSharesValueType || // Easy check first
+								!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
+							{
+								RemoveShapesFromDiagram(valueType, parentDiagram);
+							}
+						}
+					}
+
+					//View or Hide ObjectTypePlaysRole links
+					foreach (RoleBase roleBase in factType.RoleCollection)
+					{
+						Role role = roleBase.Role;
+						foreach (ObjectTypePlaysRole link in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
+						{
+							if (expandingRefMode)
+							{
+								Diagram.FixUpDiagram(objectType.Model, link);
+							}
+							else
+							{
+								RemoveShapesFromDiagram(link, parentDiagram);
+							}
+						}
+						foreach (RoleHasValueConstraint link in DomainRoleInfo.GetElementLinks<RoleHasValueConstraint>(role, RoleHasValueConstraint.RoleDomainRoleId))
+						{
+							if (expandingRefMode)
+							{
+								FixupRoleValueConstraintLink(link, null);
+							}
+							else
+							{
+								FixupValueTypeValueConstraintLink(link, null);
+								RemoveShapesFromDiagram(link, parentDiagram);
+							}
+						}
+					}
+
+					if (shapeElements.Count > 0)
+					{
+						NodeShape rootShape = e.ModelElement as NodeShape;
+						// Turn off auto placement
+						e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
+
+						// Tell the layout manager to calculate locations for the new elements
+						LayoutManager bl = new LayoutManager(parentDiagram, (parentDiagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
+						foreach (ShapeElement shape in shapeElements.Keys)
+						{
+							if (shape == rootShape)
+							{
+								continue;
+							}
+							// The bool value of shapeElements says whether to position the shape or not.  If not, it's already on the diagram, so don't move it!
+							bl.AddShape(shape, !shapeElements[shape]);
+						}
+						bl.AddShape(rootShape, true);
+						bl.SetRootShape(rootShape);
+						bl.Layout();
+					}
 				}
 			}
 		}
-		#endregion // FactTypechanged
+		/// <summary>
+		/// Helper function to remove shapes on the diagram for a specific element.
+		/// All child shapes will also be removed.
+		/// </summary>
+		private static void RemoveShapesFromDiagram(ModelElement element, Diagram diagram)
+		{
+			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
+			int pelCount = pels.Count;
+			for (int i = pelCount - 1; i >= 0; --i) // Walk backwards so we can safely remove
+			{
+				ShapeElement shape = pels[i] as ShapeElement;
+				if (shape != null && shape.Diagram == diagram)
+				{
+					// Delete propagation in the CoreDesignSurface domain model will clear
+					// any nested and relative shapes
+					shape.Delete();
+				}
+			}
+		}
+		#endregion // ObjectTypeShapeChangeRule
+		#region FactTypeAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasFactType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void FactTypedAddedRule(ElementAddedEventArgs e)
+		{
+			ModelHasFactType link = e.ModelElement as ModelHasFactType;
+			if (link != null)
+			{
+				Diagram.FixUpDiagram(link.Model, link.FactType);
+			}
+		}
+		#endregion // FactTypeAddedRule
+		#region FactTypeChangedRule
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void FactTypeShapeChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			FactTypeShape fts = e.ModelElement as FactTypeShape;
+			if (fts != null)
+			{
+				if (e.DomainProperty.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
+				{
+					FactType fact = fts.ModelElement as FactType;
+					if (fact != null)
+					{
+						RoleNameShape.SetRoleNameDisplay(fact);
+					}
+				}
+			}
+		}
+		#endregion // FactTypeChangedRule
 		#endregion // ModelHasFactType fixup
 		#region ModelHasConstraint fixup
-		#region SetComparisonConstraintAdded class
-		[RuleOn(typeof(ModelHasSetComparisonConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class SetComparisonConstraintAdded : AddRule
+		#region SetComparisonConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void SetComparisonConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
+			if (link != null)
 			{
-				ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
-				if (link != null)
-				{
-					Diagram.FixUpDiagram(link.Model, link.SetComparisonConstraint);
-				}
+				Diagram.FixUpDiagram(link.Model, link.SetComparisonConstraint);
 			}
 		}
-		#endregion // SetComparisonConstraintAdded class
-		#region SetConstraintAdded class
-		[RuleOn(typeof(ModelHasSetConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class SetConstraintAdded : AddRule
+		#endregion // SetComparisonConstraintAddedRule
+		#region SetConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void SetConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
+			if (link != null)
 			{
-				ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
-				if (link != null)
-				{
-					Diagram.FixUpDiagram(link.Model, link.SetConstraint);
-				}
+				Diagram.FixUpDiagram(link.Model, link.SetConstraint);
 			}
 		}
-		#endregion // SetConstraintAdded class
+		#endregion // SetConstraintAddedRule
 		#region ConstraintSetChanged fixup
-		#region ConstraintRoleSequenceRoleAdded class
+		#region ConstraintRoleSequenceRoleAddedRule
 		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed partial class ConstraintRoleSequenceRoleAdded : AddRule
+		private static void ConstraintRoleSequenceRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			FactType factType;
+			IConstraint constraint;
+			if (null != (factType = link.Role.FactType) &&
+				null != (constraint = link.ConstraintRoleSequence.Constraint))
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				FactType factType;
-				IConstraint constraint;
-				if (null != (factType = link.Role.FactType) &&
-					null != (constraint = link.ConstraintRoleSequence.Constraint))
-				{
-					FactTypeShape.ConstraintSetChanged(factType, constraint, true);
-				}
+				FactTypeShape.ConstraintSetChanged(factType, constraint, true);
 			}
 		}
-		#endregion // ConstraintRoleSequenceRoleAdded class
-		#region ConstraintRoleSequenceRoleDeleted class
+		#endregion // ConstraintRoleSequenceRoleAddedRule
+		#region ConstraintRoleSequenceRoleDeletedRule
 		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed partial class ConstraintRoleSequenceRoleDeleted : DeleteRule
+		private static void ConstraintRoleSequenceRoleDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			FactType factType;
+			IConstraint constraint;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			if (!sequence.IsDeleted &&
+				null != (factType = link.Role.FactType) &&
+				!factType.IsDeleted &&
+				null != (constraint = sequence.Constraint)
+				)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				FactType factType;
-				IConstraint constraint;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-				if (!sequence.IsDeleted &&
-					null != (factType = link.Role.FactType) &&
-					!factType.IsDeleted &&
-					null != (constraint = sequence.Constraint)
-					)
-				{
-					FactTypeShape.ConstraintSetChanged(factType, constraint, true);
-				}
+				FactTypeShape.ConstraintSetChanged(factType, constraint, true);
 			}
 		}
-		#endregion // ConstraintRoleSequenceRoleDeleted class
-		#region ExternalRoleConstraintDeleted class
+		#endregion // ConstraintRoleSequenceRoleDeletedRule
+		#region ExternalRoleConstraintDeletedRule
 		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the fact type when constraint roles are removed. Used when
 		/// an entire role sequence is deleted from a multi-column external fact constraint
 		/// that does not also delete the fact constraint.
 		/// </summary>
-		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed partial class ExternalRoleConstraintDeleted : DeleteRule
+		private static void ExternalRoleConstraintDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
+			FactType factType;
+			FactSetComparisonConstraint factConstraint = link.FactConstraint as FactSetComparisonConstraint;
+			if (factConstraint != null &&
+				!factConstraint.IsDeleted &&
+				(null != (factType = factConstraint.FactType)) &&
+				!factType.IsDeleted)
 			{
-				ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
-				FactType factType;
-				FactSetComparisonConstraint factConstraint = link.FactConstraint as FactSetComparisonConstraint;
-				if (factConstraint != null &&
-					!factConstraint.IsDeleted &&
-					(null != (factType = factConstraint.FactType)) &&
-					!factType.IsDeleted)
-				{
-					FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraint, false);
-				}
+				FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraint, false);
 			}
 		}
-		#endregion // ExternalRoleConstraintDeleted class
+		#endregion // ExternalRoleConstraintDeletedRule
 		#endregion // ConstraintSetChanged fixup
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup
-		#region RoleAdded class
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed partial class RoleAdded : AddRule
+		#region RoleAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void RoleAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				FactType factType = link.FactType;
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			FactType factType = link.FactType;
 
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+			{
+				FactTypeShape shape = pel as FactTypeShape;
+				if (shape != null)
+				{
+					//This part handles inserting the role in the correct location if the facttypeshape has 
+					//a different display order for the roles than the native one.
+					LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
+
+					RoleBase newRole = link.Role;
+					if (factType.UnaryRole != null)
+					{
+						ObjectType rolePlayer;
+						if (!(null != (rolePlayer = newRole.Role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
+						{
+							if (!roles.Contains(newRole))
+							{
+								roles.Add(newRole);
+							}
+						}
+						return;
+					}
+					if (roles.Count != 0)
+					{
+						Store store = shape.Store;
+						Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+						int insertIndex = -1;
+						if (contextInfo.ContainsKey(FactTypeShape.InsertAfterRoleKey))
+						{
+							RoleBase insertAfter = (RoleBase)contextInfo[FactTypeShape.InsertAfterRoleKey];
+							insertIndex = roles.IndexOf(insertAfter);
+							if (insertIndex != -1)
+							{
+								++insertIndex;
+							}
+						}
+						else if (contextInfo.ContainsKey(FactTypeShape.InsertBeforeRoleKey))
+						{
+							RoleBase insertBefore = (RoleBase)contextInfo[FactTypeShape.InsertBeforeRoleKey];
+							insertIndex = roles.IndexOf(insertBefore);
+						}
+						if (insertIndex != -1)
+						{
+							roles.Insert(insertIndex, newRole);
+						}
+						else
+						{
+							roles.Add(newRole);
+						}
+					}
+					shape.AutoResize();
+				}
+			}
+		}
+		#endregion // RoleAddedRule
+		#region RoleDeletedRule
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void RoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			FactType factType = link.FactType;
+			if (!factType.IsDeleted)
+			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
 					FactTypeShape shape = pel as FactTypeShape;
 					if (shape != null)
 					{
-						//This part handles inserting the role in the correct location if the facttypeshape has 
-						//a different display order for the roles than the native one.
-						LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
-
-						RoleBase newRole = link.Role;
 						if (factType.UnaryRole != null)
 						{
-							ObjectType rolePlayer;
-							if (!(null != (rolePlayer = newRole.Role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
+							Role unaryRole = factType.UnaryRole;
+							LinkedElementCollection<RoleBase> displayOrder = shape.RoleDisplayOrderCollection;
+							if (!displayOrder.Contains(unaryRole))
 							{
-								if (!roles.Contains(newRole))
-								{
-									roles.Add(newRole);
-								}
-							}
-							return;
-						}
-						if (roles.Count != 0)
-						{
-							Store store = shape.Store;
-							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-							int insertIndex = -1;
-							if (contextInfo.ContainsKey(FactTypeShape.InsertAfterRoleKey))
-							{
-								RoleBase insertAfter = (RoleBase)contextInfo[FactTypeShape.InsertAfterRoleKey];
-								insertIndex = roles.IndexOf(insertAfter);
-								if (insertIndex != -1)
-								{
-									++insertIndex;
-								}
-							}
-							else if (contextInfo.ContainsKey(FactTypeShape.InsertBeforeRoleKey))
-							{
-								RoleBase insertBefore = (RoleBase)contextInfo[FactTypeShape.InsertBeforeRoleKey];
-								insertIndex = roles.IndexOf(insertBefore);
-							}
-							if (insertIndex != -1)
-							{
-								roles.Insert(insertIndex, newRole);
-							}
-							else
-							{
-								roles.Add(newRole);
+								displayOrder.Add(factType.UnaryRole);
 							}
 						}
 						shape.AutoResize();
@@ -442,54 +453,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // RoleAdded class
-		#region RoleDeleted class
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed partial class RoleDeleted : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				FactType factType = link.FactType;
-				if (!factType.IsDeleted)
-				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-					{
-						FactTypeShape shape = pel as FactTypeShape;
-						if (shape != null)
-						{
-							if (factType.UnaryRole != null)
-							{
-								Role unaryRole = factType.UnaryRole;
-								LinkedElementCollection<RoleBase> displayOrder = shape.RoleDisplayOrderCollection;
-								if (!displayOrder.Contains(unaryRole))
-								{
-									displayOrder.Add(factType.UnaryRole);
-								}
-							}
-							shape.AutoResize();
-						}
-					}
-				}
-			}
-		}
-		#endregion // RoleDeleted class
+		#endregion // RoleDeletedRule
 		#endregion // FactTypeHasRole fixup
 		#region ObjectTypePlaysRole fixup
-		#region ObjectTypePlaysRoleAdded class
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed partial class ObjectTypePlaysRoleAdded : AddRule
+		#region ObjectTypePlaysRoleAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ObjectTypePlaysRoleAddedRule(ElementAddedEventArgs e)
 		{
-			public static void Process(ObjectTypePlaysRole link)
-			{
-				FixupRolePlayerLink(link);
-			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole);
-			}
+			FixupRolePlayerLink((ObjectTypePlaysRole)e.ModelElement);
 		}
-		#endregion // ObjectTypePlaysRoleAdded class
+		#endregion // ObjectTypePlaysRoleAddedRule
 		#region DisplayRolePlayersFixupListener class
 		/// <summary>
 		/// A fixup class to display role player links
@@ -515,25 +490,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
-		#region ObjectTypePlaysRoleRolePlayerChange class
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // RolePlayerChangeRule
-		private sealed partial class ObjectTypePlaysRoleRolePlayerChange : RolePlayerChangeRule
+		#region ObjectTypePlaysRoleRolePlayerChangeRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// Add and remove links when a role player changes
+		/// </summary>
+		private static void ObjectTypePlaysRoleRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			/// <summary>
-			/// Add and remove links when a role player changes
-			/// </summary>
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+			if (link.IsDeleted)
 			{
-				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
-				if (link.IsDeleted)
-				{
-					return;
-				}
-				PresentationViewsSubject.GetPresentation(link).Clear();
-				ObjectTypePlaysRoleAdded.Process(link);
+				return;
 			}
+			PresentationViewsSubject.GetPresentation(link).Clear();
+			FixupRolePlayerLink(link);
 		}
-		#endregion // ObjectTypePlaysRoleRolePlayerChange class
+		#endregion // ObjectTypePlaysRoleRolePlayerChangeRule
 		/// <summary>
 		/// Helper function to display role player links.
 		/// </summary>
@@ -591,32 +563,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ObjectTypePlaysRole fixup
 		#region RoleHasValueConstraint fixup
-		#region RoleValueConstraintAdded class
-		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed partial class RoleValueConstraintAdded : AddRule
+		#region RoleValueConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
+			if (link != null)
 			{
-				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
-				if (link != null)
+				Role r = link.Role;
+				FactType factType = r.FactType;
+				ReadOnlyCollection<PresentationViewsSubject> links = PresentationViewsSubject.GetLinksToPresentation(factType);
+				//If the factType has no presentation elements, it must be hidden. In which case,
+				//we need to fixup the ValueTypeValueConstraint with this link.
+				if (links.Count > 0)
 				{
-					Role r = link.Role;
-					FactType factType = r.FactType;
-					ReadOnlyCollection<PresentationViewsSubject> links = PresentationViewsSubject.GetLinksToPresentation(factType);
-					//If the factType has no presentation elements, it must be hidden. In which case,
-					//we need to fixup the ValueTypeValueConstraint with this link.
-					if (links.Count > 0)
-					{
-						FixupRoleValueConstraintLink(link, null);
-					}
-					else
-					{
-						FixupValueTypeValueConstraintLink(link, null);
-					}
+					FixupRoleValueConstraintLink(link, null);
+				}
+				else
+				{
+					FixupValueTypeValueConstraintLink(link, null);
 				}
 			}
 		}
-		#endregion // RoleValueConstraintAdded class
+		#endregion // RoleValueConstraintAddedRule
 		#region DisplayValueConstraintFixupListener class
 		/// <summary>
 		/// A fixup class to display role player links
@@ -693,16 +664,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleHasValueConstraint fixup
 		#region ValueTypeHasValueConstraint fixup
 		#region ValueConstraintAdded class
-		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed partial class ValueTypeValueConstraintAdded : AddRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
+			if (link != null)
 			{
-				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
-				if (link != null)
-				{
-					FixupValueTypeValueConstraintLink(link, null);
-				}
+				FixupValueTypeValueConstraintLink(link, null);
 			}
 		}
 		#endregion // ValueTypeValueConstraintAdded class
@@ -803,40 +773,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ValueTypeHasValueConstraint fixup
 		#region FactConstraint fixup
-		#region FactConstraintAdded class
-		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed partial class FactConstraintAdded : AddRule
+		#region FactConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void FactConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			FactConstraint link = e.ModelElement as FactConstraint;
+			if (link != null)
 			{
-				FactConstraint link = e.ModelElement as FactConstraint;
-				if (link != null)
+				FixupExternalConstraintLink(link);
+			}
+		}
+		#endregion // FactConstraintAddedRule
+		#region FactConstraintDeletedRule
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void FactConstraintDeletedRule(ElementDeletedEventArgs e)
+		{
+			IFactConstraint link;
+			IConstraint constraint;
+			if (null != (link = e.ModelElement as IFactConstraint) &&
+				null != (constraint = link.Constraint))
+			{
+				FactType fact = link.FactType;
+				if (!fact.IsDeleted)
 				{
-					FixupExternalConstraintLink(link);
+					FactTypeShape.ConstraintSetChanged(fact, constraint, false);
 				}
 			}
 		}
-		#endregion // FactConstraintAdded class
-		#region FactConstraintDeleted class
-		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed partial class FactConstraintDeleted : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				IFactConstraint link;
-				IConstraint constraint;
-				if (null != (link = e.ModelElement as IFactConstraint) &&
-					null != (constraint = link.Constraint))
-				{
-					FactType fact = link.FactType;
-					if (!fact.IsDeleted)
-					{
-						FactTypeShape.ConstraintSetChanged(fact, constraint, false);
-					}
-				}
-			}
-		}
-		#endregion // FactConstraintDeleted class
+		#endregion // FactConstraintDeletedRule
 		#region DisplayExternalConstraintLinksFixupListener class
 		/// <summary>
 		/// A fixup class to display external constraint links for
@@ -950,13 +918,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class ReadingOrderAdded : AddRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FixupReadingOrderLink(e.ModelElement as FactTypeHasReadingOrder);
-			}
+			FixupReadingOrderLink(e.ModelElement as FactTypeHasReadingOrder);
 		}
 		#region DisplayReadingsFixupListener class
 		/// <summary>
@@ -986,36 +953,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ReadingOrder fixup
 		#region RoleName fixup
 		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Add shape elements for role names. Used during deserialization fixup
 		/// and rules.
 		/// </summary>
-		[RuleOn(typeof(Role), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed partial class RoleChange : ChangeRule
+		private static void RoleChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == Role.NameDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == Role.NameDomainPropertyId)
+				Role role = (Role)e.ModelElement;
+				if (!role.IsDeleted)
 				{
-					Role role = (Role)e.ModelElement;
-					if (!role.IsDeleted)
+					if (string.IsNullOrEmpty(role.Name))
 					{
-						if (string.IsNullOrEmpty(role.Name))
+						RoleNameShape.RemoveRoleNameShapeFromRole(role);
+					}
+					else
+					{
+						Diagram.FixUpDiagram(role.FactType, role);
+						if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
 						{
-							RoleNameShape.RemoveRoleNameShapeFromRole(role);
-						}
-						else
-						{
-							Diagram.FixUpDiagram(role.FactType, role);
-							if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
+							foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
 							{
-								foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
+								FactTypeShape fts = element as FactTypeShape;
+								if (fts != null
+									&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
 								{
-									FactTypeShape fts = element as FactTypeShape;
-									if (fts != null
-										&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
-									{
-										RoleNameShape.SetRoleNameDisplay(role.FactType);
-									}
+									RoleNameShape.SetRoleNameDisplay(role.FactType);
 								}
 							}
 						}
@@ -1106,30 +1070,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // DisplayUnaryFactTypeFixupListener class
 		#region ModelNote fixup
-		#region ModelNoteAdded class
-		[RuleOn(typeof(ModelHasModelNote), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed partial class ModelNoteAdded : AddRule
+		#region ModelNoteAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasModelNote), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ModelNoteAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			ModelHasModelNote link = e.ModelElement as ModelHasModelNote;
+			if (link != null)
 			{
-				ModelHasModelNote link = e.ModelElement as ModelHasModelNote;
-				if (link != null)
-				{
-					Diagram.FixUpDiagram(link.Model, link.Note);
-				}
+				Diagram.FixUpDiagram(link.Model, link.Note);
 			}
 		}
-		#endregion // ModelNoteAdded class
-		#region ModelNoteReferencedAdded class
-		[RuleOn(typeof(ModelNoteReferencesModelElement), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed partial class ModelNoteReferenceAdded : AddRule
+		#endregion // ModelNoteAddedRule
+		#region ModelNoteReferencedAddedRule
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ModelNoteReferenceAddedRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FixupModelNoteLink(e.ModelElement as ModelNoteReferencesModelElement);
-			}
+			FixupModelNoteLink(e.ModelElement as ModelNoteReferencesModelElement);
 		}
-		#endregion // ModelNoteReferencedAdded class
+		#endregion // ModelNoteReferencedAddedRule
 		#region DisplayModelNoteLinksFixupListener class
 		/// <summary>
 		/// A fixup class to display external constraint links for
@@ -1186,13 +1148,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ModelNote fixup
-		#region ForceClearViewFixupDataList class
-		/// <summary>
-		/// Make sure the internal diagram ViewFixupDataList is cleared once fixup is completed.
-		/// The core implementation does not clear more than a single element.
-		/// </summary>
-		[RuleOn(typeof(Diagram), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority + 1)]
-		private partial class ForceClearViewFixupDataList : ChangeRule
+		#region ForceClearViewFixupDataListRuleClass
+		partial class ForceClearViewFixupDataListRuleClass
 		{
 			#region Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ClearViewFixupDataList implementation
 			private delegate void ClearDiagramViewFixupDataListDelegate(Diagram @this);
@@ -1242,7 +1199,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return (ClearDiagramViewFixupDataListDelegate)dynamicMethod.CreateDelegate(typeof(ClearDiagramViewFixupDataListDelegate));
 			}
 			#endregion // Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ClearViewFixupDataList implementation
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			/// <summary>
+			/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority + 1;
+			/// Make sure the internal diagram ViewFixupDataList is cleared once fixup is completed.
+			/// The core implementation does not clear more than a single element.
+			/// </summary>
+			private void ForceClearViewFixupDataListRule(ElementPropertyChangedEventArgs e)
 			{
 				Diagram diagram;
 				if (e.DomainProperty.Id == Diagram.DoViewFixupDomainPropertyId &&
@@ -1252,7 +1214,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ForceClearViewFixupDataList class
+		#endregion // ForceClearViewFixupDataListRuleClass
 		#endregion // View Fixup Rules
 	}
 }

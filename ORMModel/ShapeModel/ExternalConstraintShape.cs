@@ -709,32 +709,107 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Store Event Handlers
 		#region ExclusiveOrCoupler rules
 		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Remove shapes associated with the exclusion constraint
 		/// when exclusion and mandatory constraints are coupled.
 		/// </summary>
-		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private partial class ExclusiveOrCouplerAdded : AddRule
+		private static void ExclusiveOrCouplerAddedRule(ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+			MandatoryConstraint mandatory = link.MandatoryConstraint;
+			ExclusionConstraint exclusion = link.ExclusionConstraint;
+			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(exclusion);
+			int pelCount = pels.Count;
+			for (int i = pelCount - 1; i >= 0; --i)
 			{
-				ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
-				MandatoryConstraint mandatory = link.MandatoryConstraint;
-				ExclusionConstraint exclusion = link.ExclusionConstraint;
-				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(exclusion);
+				ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
+				if (shape != null)
+				{
+					shape.Delete();
+				}
+			}
+			pels = PresentationViewsSubject.GetPresentation(mandatory);
+			pelCount = pels.Count;
+			for (int i = 0; i < pelCount; ++i)
+			{
+				ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
+				if (shape != null)
+				{
+					shape.InvalidateRequired(true);
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// Split a single shape into two shapes when a exclusion constraint
+		/// is decoupled from a mandatory constraint
+		/// </summary>
+		private static void ExclusiveOrCouplerDeletedRule(ElementDeletedEventArgs e)
+		{
+			ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+			MandatoryConstraint mandatory = link.MandatoryConstraint;
+			ExclusionConstraint exclusion = link.ExclusionConstraint;
+			if (!mandatory.IsDeleted && !exclusion.IsDeleted)
+			{
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(mandatory);
 				int pelCount = pels.Count;
-				for (int i = pelCount - 1; i >= 0; --i)
+				for (int i = 0; i < pelCount; ++i)
 				{
 					ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
 					if (shape != null)
 					{
-						shape.Delete();
+						ORMDiagram diagram = (ORMDiagram)shape.Diagram;
+						RectangleD bounds = shape.AbsoluteBounds;
+						double width = bounds.Width;
+						bounds.Offset(-width / 2, 0);
+						bounds = diagram.BoundsRules.GetCompliantBounds(shape, bounds);
+						shape.AbsoluteBounds = bounds;
+						bounds.Offset(width, 0);
+						diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, ORMPlacementOption.None);
 					}
 				}
-				pels = PresentationViewsSubject.GetPresentation(mandatory);
-				pelCount = pels.Count;
-				for (int i = 0; i < pelCount; ++i)
+			}
+		}
+		#endregion // ExclusiveOrCoupler rules
+		#region PreferredIdentifier Shape Redraw rules
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void PreferredIdentifierAddRule(ElementAddedEventArgs e)
+		{
+			ProcessPreferredIdentifier(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+		}
+		/// <summary>
+		/// Rule helper method
+		/// </summary>
+		private static void ProcessPreferredIdentifier(EntityTypeHasPreferredIdentifier link, UniquenessConstraint preferredIdentifier)
+		{
+			if (preferredIdentifier == null)
+			{
+				preferredIdentifier = link.PreferredIdentifier;
+			}
+			if (!preferredIdentifier.IsDeleted)
+			{
+				ModelElement element = preferredIdentifier;
+				if (preferredIdentifier.IsInternal)
 				{
-					ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
+					LinkedElementCollection<FactType> factTypes = preferredIdentifier.FactTypeCollection;
+					if (factTypes.Count == 1)
+					{
+						element = factTypes[0];
+					}
+					else
+					{
+						return;
+					}
+				}
+
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
+				int pelCount = pels.Count;
+				for (int i = pelCount - 1; i >= 0; --i)
+				{
+					// ORMBaseShape handles ExternalConstraintShape and FactTypeShape
+					ORMBaseShape shape = pels[i] as ORMBaseShape;
 					if (shape != null)
 					{
 						shape.InvalidateRequired(true);
@@ -743,106 +818,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Split a single shape into two shapes when a exclusion constraint
-		/// is decoupled from a mandatory constraint
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
-		[RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private partial class ExclusiveOrCouplerDeleted : DeleteRule
+		private static void PreferredIdentifierDeleteRule(ElementDeletedEventArgs e)
 		{
-			public override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
-				MandatoryConstraint mandatory = link.MandatoryConstraint;
-				ExclusionConstraint exclusion = link.ExclusionConstraint;
-				if (!mandatory.IsDeleted && !exclusion.IsDeleted)
-				{
-					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(mandatory);
-					int pelCount = pels.Count;
-					for (int i = 0; i < pelCount; ++i)
-					{
-						ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
-						if (shape != null)
-						{
-							ORMDiagram diagram = (ORMDiagram)shape.Diagram;
-							RectangleD bounds = shape.AbsoluteBounds;
-							double width = bounds.Width;
-							bounds.Offset(-width / 2, 0);
-							bounds = diagram.BoundsRules.GetCompliantBounds(shape, bounds);
-							shape.AbsoluteBounds = bounds;
-							bounds.Offset(width, 0);
-							diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, ORMPlacementOption.None);
-						}
-					}
-				}
-			}
+			ProcessPreferredIdentifier(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
 		}
-		#endregion // ExclusiveOrCoupler rules
-		#region PreferredIdentifier Shape Redraw rules
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private sealed partial class PreferredIdentifierAddRule : AddRule
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			public static void Process(EntityTypeHasPreferredIdentifier link, UniquenessConstraint preferredIdentifier)
+			UniquenessConstraint oldPreferredIdentifier = null;
+			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId)
 			{
-				if (preferredIdentifier == null)
-				{
-					preferredIdentifier = link.PreferredIdentifier;
-				}
-				if (!preferredIdentifier.IsDeleted)
-				{
-					ModelElement element = preferredIdentifier;
-					if (preferredIdentifier.IsInternal)
-					{
-						LinkedElementCollection<FactType> factTypes = preferredIdentifier.FactTypeCollection;
-						if (factTypes.Count == 1)
-						{
-							element = factTypes[0];
-						}
-						else
-						{
-							return;
-						}
-					}
-
-					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
-					int pelCount = pels.Count;
-					for (int i = pelCount - 1; i >= 0; --i)
-					{
-						// ORMBaseShape handles ExternalConstraintShape and FactTypeShape
-						ORMBaseShape shape = pels[i] as ORMBaseShape;
-						if (shape != null)
-						{
-							shape.InvalidateRequired(true);
-						}
-					}
-				}
+				oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
 			}
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
-			}
+			ProcessPreferredIdentifier(e.ElementLink as EntityTypeHasPreferredIdentifier, oldPreferredIdentifier);
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private sealed partial class PreferredIdentifierDeleteRule : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				PreferredIdentifierAddRule.Process(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
-			}
-		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private sealed partial class PreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				UniquenessConstraint oldPreferredIdentifier = null;
-				if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId)
-				{
-					oldPreferredIdentifier = (UniquenessConstraint)e.OldRolePlayer;
-				}
-				PreferredIdentifierAddRule.Process(e.ElementLink as EntityTypeHasPreferredIdentifier, oldPreferredIdentifier);
-			}
-		}
-
 		#endregion // PreferredIdentifier Shape Redraw rules
 	}
 }

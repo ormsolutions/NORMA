@@ -396,6 +396,12 @@
 	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType">
 		<comment type="summary">Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange" model="Model" resourceName="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange">
+		<comment type="summary">Exception message when an attempt is made to modify a role player associated with an implicit boolean value.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionFactTypeEnforceNoRoleMigration" model="Model" resourceName="ModelException.FactType.EnforceNoRoleMigration">
+		<comment type="summary">Exception message when an attempt is made to move a role to a different FactType.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionObjectTypeEnforceIsIndependentPattern" model="Model" resourceName="ModelException.ObjectType.EnforceIsIndependentPattern">
 		<comment type="summary">Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</comment>
 	</ResourceString>
@@ -411,10 +417,10 @@
 	<ResourceString name="ModelExceptionInvalidPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions">
 		<comment type="summary">Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionConstraintEnforceNoForeignFacts" model="Model" resourceName="ModelException.Constraint.EnforceNoForeignFacts">
+	<ResourceString name="ModelExceptionConstraintEnforceNoForeignFactTypes" model="Model" resourceName="ModelException.Constraint.EnforceNoForeignFactTypes">
 		<comment type="summary">Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionConstraintEnforceSingleFactForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactForInternalConstraint">
+	<ResourceString name="ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint">
 		<comment type="summary">Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
 	</ResourceString>
 	<ResourceString name="ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange" model="Model" resourceName="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange">

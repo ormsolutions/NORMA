@@ -619,27 +619,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // properties
 		#region Reading text display update rules
-		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrder))] is in the ORMShapeDomainModel
+		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrderRuleClass))] is in ORMShapeDomainModel
 		// for easy sharing with the deserialization fixup process
-		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private sealed partial class ReadingOrderDeleted : DeleteRule
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+			FactType factType = link.FactType;
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 			{
-				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
-				FactType factType = link.FactType;
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+				FactTypeShape factShape = pel as FactTypeShape;
+				if (factShape != null)
 				{
-					FactTypeShape factShape = pel as FactTypeShape;
-					if (factShape != null)
+					foreach (ShapeElement shape in factShape.RelativeChildShapes)
 					{
-						foreach (ShapeElement shape in factShape.RelativeChildShapes)
+						ReadingShape readingShape = shape as ReadingShape;
+						if (readingShape != null)
 						{
-							ReadingShape readingShape = shape as ReadingShape;
-							if (readingShape != null)
-							{
-								readingShape.InvalidateDisplayText();
-							}
+							readingShape.InvalidateDisplayText();
 						}
 					}
 				}
@@ -901,18 +900,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DirectionIndicatorField class
 		#region change rules
 		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Changing the position of a Reading in a ReadingOrder changes the
 		/// primary reading for that order, requiring a redraw
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
-		private sealed partial class ReadingPositionChanged : RolePlayerPositionChangeRule
+		private static void ReadingPositionChangedRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			if (e.OldOrdinal == 0 || e.NewOrdinal == 0)
 			{
-				if (e.OldOrdinal == 0 || e.NewOrdinal == 0)
+				ReadingOrder order = e.SourceElement as ReadingOrder;
+				FactType factType = order.FactType;
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
-					ReadingOrder order = e.SourceElement as ReadingOrder;
-					FactType factType = order.FactType;
+					FactTypeShape factShape = pel as FactTypeShape;
+					if (factShape != null)
+					{
+						foreach (ShapeElement shape in factShape.RelativeChildShapes)
+						{
+							ReadingShape readingShape = shape as ReadingShape;
+							if (readingShape != null)
+							{
+								readingShape.InvalidateDisplayText();
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Adding a reading at the 0 position of the ReadingOrder
+		/// changes the primary reading for that order
+		/// </summary>
+		private static void ReadingAddedRule(ElementAddedEventArgs e)
+		{
+			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+			if (!link.IsDeleted)
+			{
+				ReadingOrder order = link.ReadingOrder;
+				FactType factType;
+				if (order.ReadingCollection[0] == link.Reading &&
+					null != (factType = order.FactType))
+				{
 					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 					{
 						FactTypeShape factShape = pel as FactTypeShape;
@@ -932,133 +961,87 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Adding a reading at the 0 position of the ReadingOrder
-		/// changes the primary reading for that order
+		/// AddRule: typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed partial class ReadingAdded : AddRule
+		private static void RoleDisplayOrderAddedRule(ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			FactTypeShape factShape = (e.ModelElement as FactTypeShapeHasRoleDisplayOrder).FactTypeShape;
+			foreach (ShapeElement shape in factShape.RelativeChildShapes)
 			{
-				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-				if (!link.IsDeleted)
+				ReadingShape readingShape = shape as ReadingShape;
+				if (readingShape != null)
 				{
-					ReadingOrder order = link.ReadingOrder;
-					FactType factType;
-					if (order.ReadingCollection[0] == link.Reading &&
-						null != (factType = order.FactType))
-					{
-						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-						{
-							FactTypeShape factShape = pel as FactTypeShape;
-							if (factShape != null)
-							{
-								foreach (ShapeElement shape in factShape.RelativeChildShapes)
-								{
-									ReadingShape readingShape = shape as ReadingShape;
-									if (readingShape != null)
-									{
-										readingShape.InvalidateDisplayText();
-									}
-								}
-							}
-						}
-					}
+					readingShape.InvalidateDisplayText();
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed partial class RoleDisplayOrderAdded : AddRule
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(FactTypeShapeHasRoleDisplayOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void RoleDisplayOrderPositionChangedRule(RolePlayerOrderChangedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			FactTypeShape factShape = e.SourceElement as FactTypeShape;
+			foreach (ShapeElement shape in factShape.RelativeChildShapes)
 			{
-				FactTypeShape factShape = (e.ModelElement as FactTypeShapeHasRoleDisplayOrder).FactTypeShape;
+				ReadingShape readingShape = shape as ReadingShape;
+				if (readingShape != null)
+				{
+					readingShape.InvalidateDisplayText();
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void DisplayOrientationChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == FactTypeShape.DisplayOrientationDomainPropertyId)
+			{
+				FactTypeShape factShape = e.ModelElement as FactTypeShape;
 				foreach (ShapeElement shape in factShape.RelativeChildShapes)
 				{
 					ReadingShape readingShape = shape as ReadingShape;
 					if (readingShape != null)
 					{
 						readingShape.InvalidateDisplayText();
-					}
-				}
-			}
-		}
-		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
-		private sealed partial class RoleDisplayOrderPositionChanged : RolePlayerPositionChangeRule
-		{
-			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
-			{
-
-				FactTypeShape factShape = e.SourceElement as FactTypeShape;
-				foreach (ShapeElement shape in factShape.RelativeChildShapes)
-				{
-					ReadingShape readingShape = shape as ReadingShape;
-					if (readingShape != null)
-					{
-						readingShape.InvalidateDisplayText();
-					}
-				}
-			}
-		}
-		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed partial class DisplayOrientationChanged : ChangeRule
-		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				if (e.DomainProperty.Id == FactTypeShape.DisplayOrientationDomainPropertyId)
-				{
-					FactTypeShape factShape = e.ModelElement as FactTypeShape;
-					foreach (ShapeElement shape in factShape.RelativeChildShapes)
-					{
-						ReadingShape readingShape = shape as ReadingShape;
-						if (readingShape != null)
-						{
-							readingShape.InvalidateDisplayText();
-						}
 					}
 				}
 			}
 		}
 		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Reading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Rule to notice changes to Reading.Text properties so that the
 		/// reading shapes can have their display text invalidated.
 		/// </summary>
-		[RuleOn(typeof(Reading), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed partial class ReadingTextChanged : ChangeRule
+		private static void ReadingTextChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			/// <summary>
-			/// Notice when Text property is changed and invalidate display text of the ReadingShapes
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == Reading.TextDomainPropertyId)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == Reading.TextDomainPropertyId)
+				Reading reading = e.ModelElement as Reading;
+				ReadingOrder readingOrder;
+				FactType factType;
+				if (!reading.IsDeleted &&
+					null != (readingOrder = reading.ReadingOrder) &&
+					null != (factType = readingOrder.FactType))
 				{
-					Reading reading = e.ModelElement as Reading;
-					ReadingOrder readingOrder;
-					FactType factType;
-					if (!reading.IsDeleted &&
-						null != (readingOrder = reading.ReadingOrder) &&
-						null != (factType = readingOrder.FactType))
+					// UNDONE: We're using this and similar foreach constructs all over this
+					// file. Put some clean helper functions together and start using them.
+					LinkedElementCollection<PresentationElement> pelList = PresentationViewsSubject.GetPresentation(factType);
+					int pelCount = pelList.Count;
+					for (int i = 0; i < pelCount; ++i)
 					{
-						// UNDONE: We're using this and similar foreach constructs all over this
-						// file. Put some clean helper functions together and start using them.
-						LinkedElementCollection<PresentationElement> pelList = PresentationViewsSubject.GetPresentation(factType);
-						int pelCount = pelList.Count;
-						for (int i = 0; i < pelCount; ++i)
+						FactTypeShape factShape = pelList[i] as FactTypeShape;
+						if (factShape != null)
 						{
-							FactTypeShape factShape = pelList[i] as FactTypeShape;
-							if (factShape != null)
+							LinkedElementCollection<ShapeElement> childShapes = factShape.RelativeChildShapes;
+							int childPelCount = childShapes.Count;
+							for (int j = 0; j < childPelCount; ++j)
 							{
-								LinkedElementCollection<ShapeElement> childShapes = factShape.RelativeChildShapes;
-								int childPelCount = childShapes.Count;
-								for (int j = 0; j < childPelCount; ++j)
+								ReadingShape readingShape = childShapes[j] as ReadingShape;
+								if (readingShape != null)
 								{
-									ReadingShape readingShape = childShapes[j] as ReadingShape;
-									if (readingShape != null)
-									{
-										readingShape.InvalidateDisplayText();
-									}
+									readingShape.InvalidateDisplayText();
 								}
 							}
 						}
