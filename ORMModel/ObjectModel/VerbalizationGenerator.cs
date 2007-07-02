@@ -1068,6 +1068,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -1120,6 +1125,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1177,6 +1187,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -1218,6 +1233,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1275,6 +1295,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -1462,6 +1487,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1519,6 +1549,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -1549,6 +1584,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1606,6 +1646,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -1649,6 +1694,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -1681,6 +1731,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -2708,6 +2763,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -3521,6 +3581,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -3557,6 +3622,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -3589,6 +3659,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -4594,6 +4669,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -4651,6 +4731,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -4687,6 +4772,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -4719,6 +4809,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -5959,6 +6054,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -6016,6 +6116,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6053,6 +6158,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6271,6 +6381,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -6328,6 +6443,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6461,6 +6581,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -6518,6 +6643,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6554,6 +6684,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6586,6 +6721,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -6718,6 +6858,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -6775,6 +6920,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6818,6 +6968,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -6850,6 +7005,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -7741,6 +7901,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -7798,6 +7963,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -7841,6 +8011,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -7873,6 +8048,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -8950,6 +9130,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -9119,6 +9304,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -9196,6 +9386,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -9281,6 +9476,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+							{
+								continue;
+							}
 							if (firstErrorPending)
 							{
 								firstErrorPending = false;
@@ -9346,6 +9546,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if ((errorDisplayFilter != null) && !(errorDisplayFilter.ShouldDisplay(error)))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;

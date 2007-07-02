@@ -1413,6 +1413,50 @@
 					</plx:passParam>
 				</plx:callInstance>
 			</plx:initialize>
+			<xsl:if test="not($Primary)">
+				<plx:local name="errorDisplayFilter" dataTypeName="ModelErrorDisplayFilter">
+					<plx:initialize>
+						<plx:callInstance name="ModelErrorDisplayFilter" type="property">
+							<plx:callObject>
+								<plx:callInstance name="Model" type="property">
+									<plx:callObject>
+										<plx:nameRef name="error"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:nameRef name="errorDisplayFilter"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callInstance name="ShouldDisplay">
+										<plx:callObject>
+											<plx:nameRef name="errorDisplayFilter"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="error"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:unaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:continue/>
+				</plx:branch>
+			</xsl:if>
 			<plx:branch>
 				<plx:condition>
 					<plx:nameRef name="firstErrorPending"/>
