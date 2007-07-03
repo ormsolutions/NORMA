@@ -48,6 +48,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 	/// <summary>
 	/// The toolwindow responsible for editing facts.
 	/// </summary>
+	[Guid("13BFC0C0-AC36-41D9-B5B6-3EED71683D14")]
 	[CLSCompliant(false)]
 	public class ORMFactEditorToolWindow : ORMToolWindow, IVsWindowPane
 	{

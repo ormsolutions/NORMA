@@ -88,6 +88,15 @@
 				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
 				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{13BFC0C0-AC36-41D9-B5B6-3EED71683D14}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.FactEditor.ORMFactEditorToolWindow" Type="string"/>
+				<Registry Name="Style" Value="Tabbed" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+			</Registry>
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReferenceModeEditorToolWindow" Type="string"/>
@@ -183,6 +192,20 @@
 			<Registry Name="Single Code Window Only" Value="1" Type="integer"/>
 			<Registry Name="EnableAdvancedMembersOption" Value="0" Type="integer"/>
 			<Registry Name="Support CF_HTML" Value="1" Type="integer"/>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Languages\Language Services\New ORM Fact Editor">
+			<Registry Value="{CC5B0775-F625-4779-8917-D8740D727149}" Type="string"/>
+			<Registry Name="LangResID" Value="-1" Type="integer"/>
+			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<Registry Name="CodeSense" Value="1" Type="integer"/>
+			<Registry Name="QuickInfo" Value="1" Type="integer"/>
+			<Registry Name="RequestStockColors" Value="0" Type="integer"/>
+			<Registry Name="EnableCommenting" Value="1" Type="integer"/>
+			<Registry Name="EnableAsyncCompletion" Value="1" Type="integer"/>
+			<Registry Name="EnableLineNumbersOption" Value="1" Type="integer"/>
+			<Registry Name="ShowCompletion" Value="1" Type="integer"/>
+			<Registry Name="ShowMatchingBrace" Value="1" Type="integer"/>
 		</Registry>
 
 	</Registry>
