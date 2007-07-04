@@ -342,7 +342,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else if (constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
 					{
-						ORMCoreDomainModel.DelayValidateElement(ic, DelayValidateDisjunctiveMandatorySupertypeOnly);
+						FrameworkDomainModel.DelayValidateElement(ic, DelayValidateDisjunctiveMandatorySupertypeOnly);
 					}
 					else
 					{
@@ -360,7 +360,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (constraint.ConstraintType == ConstraintType.Exclusion)
 						{
-							ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
+							FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
 						}
 						else
 						{
@@ -382,10 +382,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				switch (constraint.ConstraintType)
 				{
 					case ConstraintType.DisjunctiveMandatory:
-						ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateDisjunctiveMandatorySupertypeOnly);
+						FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateDisjunctiveMandatorySupertypeOnly);
 						break;
 					case ConstraintType.Exclusion:
-						ORMCoreDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
+						FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
 						break;
 				}
 			}
@@ -491,7 +491,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (addDelayValidate)
 				{
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateExclusionSupertypeOnly);
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateExclusionSupertypeOnly);
 				}
 			}
 		}

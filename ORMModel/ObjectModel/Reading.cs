@@ -448,7 +448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRoleCountError);
+				FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleCountError);
 			}
 		}
 
@@ -467,7 +467,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				LinkedElementCollection<Reading> readings = ord.ReadingCollection;
 				foreach (Reading read in readings)
 				{
-					ORMCoreDomainModel.DelayValidateElement(read, DelayValidateRoleCountError);
+					FrameworkDomainModel.DelayValidateElement(read, DelayValidateRoleCountError);
 				}
 			}
 		}
@@ -531,7 +531,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRoleCountError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleCountError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{

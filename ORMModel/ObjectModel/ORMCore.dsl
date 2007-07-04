@@ -27,7 +27,6 @@
 
 	<Classes>
 
-		<DomainClass Name="DelayValidateSignal" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C6D39CF7-E8AA-4BE7-AA79-7659FBD32E54" DisplayName="ORMModelElement" InheritanceModifier="Sealed" Description=""/>
 		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
 		<DomainClass Name="ModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
 			<Properties>

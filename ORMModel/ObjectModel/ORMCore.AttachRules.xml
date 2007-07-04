@@ -482,14 +482,6 @@
 				<arg:RuleOn targetType="ValueTypeInstance"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="ORMCoreDomainModel">
-			<arg:AddRule methodName="DelayValidateElements" alwaysOn="true">
-				<arg:RuleOn targetType="DelayValidateSignal" fireTime="LocalCommit" priority="DelayValidateRulePriority"/>
-			</arg:AddRule>
-			<arg:TransactionBeginningRule methodName="ProcessTransactionBeginning" className="TransactionRulesFixupHack" alwaysOn="true" methodInRuleClass="true">
-				<arg:RuleOn targetType="CoreDomainModel" targetTypeQualifier="Microsoft.VisualStudio.Modeling"/>
-			</arg:TransactionBeginningRule>
-		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMModel">
 			<arg:DeleteRule methodName="DuplicateConstraintNameConstraintDeleteRule">
 				<arg:RuleOn targetType="SetComparisonConstraintHasDuplicateNameError"/>

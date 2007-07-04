@@ -39,12 +39,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[DslModeling::DomainObjectId("ceff4339-48d0-4ffe-b052-2f9da167b1db")]
 	public abstract partial class ORMBaseBinaryLinkShape : DslDiagrams::BinaryLinkShape
 	{
-
+		
 		#region Connector styles
 		#endregion
-
+		
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ORMBaseBinaryLinkShape domain class Id.
 		/// </summary>
@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static DslDiagrams::StyleSet classStyleSet;
 		private static global::System.Collections.Generic.IList<DslDiagrams::ShapeField> shapeFields;
 		private static global::System.Collections.Generic.IList<DslDiagrams::Decorator> decorators;
-
+		
 		/// <summary>
 		/// Per-class style set for this shape.
 		/// </summary>
@@ -92,7 +92,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return classStyleSet;
 			}
 		}
-
+		
 		/// <summary>
 		/// Per-class ShapeFields for this shape.
 		/// </summary>
@@ -107,50 +107,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return shapeFields;
 			}
 		}
-
+		
 		/// <summary>
 		/// Event fired when decorator initialization is complete for this shape type.
 		/// </summary>
 		public static event global::System.EventHandler DecoratorsInitialized;
-
+		
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
 		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
-			get
+			get 
 			{
-				if (decorators == null)
+				if(decorators == null)
 				{
 					decorators = CreateDecorators();
-
+					
 					// fire this event to allow the diagram to initialize decorator mappings for this shape type.
-					if (DecoratorsInitialized != null)
+					if(DecoratorsInitialized != null)
 					{
 						DecoratorsInitialized(this, global::System.EventArgs.Empty);
 					}
 				}
-
-				return decorators;
+				
+				return decorators; 
 			}
 		}
-
+		
 		/// <summary>
 		/// Finds a decorator associated with RolePlayerLink.
 		/// </summary>
 		public static DslDiagrams::Decorator FindRolePlayerLinkDecorator(string decoratorName)
-		{
-			if (decorators == null) return null;
+		{	
+			if(decorators == null) return null;
 			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
 		}
-
+		
 		#endregion
-
+		
 		#region Connector styles
 		#endregion
-
+		
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// RolePlayerLink domain class Id.
 		/// </summary>
@@ -164,7 +164,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -193,7 +193,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static DslDiagrams::StyleSet classStyleSet;
 		private static global::System.Collections.Generic.IList<DslDiagrams::ShapeField> shapeFields;
 		private static global::System.Collections.Generic.IList<DslDiagrams::Decorator> decorators;
-
+		
 		/// <summary>
 		/// Per-class style set for this shape.
 		/// </summary>
@@ -208,7 +208,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return classStyleSet;
 			}
 		}
-
+		
 		/// <summary>
 		/// Per-class ShapeFields for this shape.
 		/// </summary>
@@ -223,50 +223,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return shapeFields;
 			}
 		}
-
+		
 		/// <summary>
 		/// Event fired when decorator initialization is complete for this shape type.
 		/// </summary>
 		public static event global::System.EventHandler DecoratorsInitialized;
-
+		
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
 		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
-			get
+			get 
 			{
-				if (decorators == null)
+				if(decorators == null)
 				{
 					decorators = CreateDecorators();
-
+					
 					// fire this event to allow the diagram to initialize decorator mappings for this shape type.
-					if (DecoratorsInitialized != null)
+					if(DecoratorsInitialized != null)
 					{
 						DecoratorsInitialized(this, global::System.EventArgs.Empty);
 					}
 				}
-
-				return decorators;
+				
+				return decorators; 
 			}
 		}
-
+		
 		/// <summary>
 		/// Finds a decorator associated with ExternalConstraintLink.
 		/// </summary>
 		public static DslDiagrams::Decorator FindExternalConstraintLinkDecorator(string decoratorName)
-		{
-			if (decorators == null) return null;
+		{	
+			if(decorators == null) return null;
 			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
 		}
-
+		
 		#endregion
-
+		
 		#region Connector styles
 		#endregion
-
+		
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ExternalConstraintLink domain class Id.
 		/// </summary>
@@ -280,7 +280,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -309,7 +309,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static DslDiagrams::StyleSet classStyleSet;
 		private static global::System.Collections.Generic.IList<DslDiagrams::ShapeField> shapeFields;
 		private static global::System.Collections.Generic.IList<DslDiagrams::Decorator> decorators;
-
+		
 		/// <summary>
 		/// Per-class style set for this shape.
 		/// </summary>
@@ -324,7 +324,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return classStyleSet;
 			}
 		}
-
+		
 		/// <summary>
 		/// Per-class ShapeFields for this shape.
 		/// </summary>
@@ -339,50 +339,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return shapeFields;
 			}
 		}
-
+		
 		/// <summary>
 		/// Event fired when decorator initialization is complete for this shape type.
 		/// </summary>
 		public static event global::System.EventHandler DecoratorsInitialized;
-
+		
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
 		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
-			get
+			get 
 			{
-				if (decorators == null)
+				if(decorators == null)
 				{
 					decorators = CreateDecorators();
-
+					
 					// fire this event to allow the diagram to initialize decorator mappings for this shape type.
-					if (DecoratorsInitialized != null)
+					if(DecoratorsInitialized != null)
 					{
 						DecoratorsInitialized(this, global::System.EventArgs.Empty);
 					}
 				}
-
-				return decorators;
+				
+				return decorators; 
 			}
 		}
-
+		
 		/// <summary>
 		/// Finds a decorator associated with ValueRangeLink.
 		/// </summary>
 		public static DslDiagrams::Decorator FindValueRangeLinkDecorator(string decoratorName)
-		{
-			if (decorators == null) return null;
+		{	
+			if(decorators == null) return null;
 			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
 		}
-
+		
 		#endregion
-
+		
 		#region Connector styles
 		#endregion
-
+		
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ValueRangeLink domain class Id.
 		/// </summary>
@@ -396,7 +396,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -425,7 +425,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static DslDiagrams::StyleSet classStyleSet;
 		private static global::System.Collections.Generic.IList<DslDiagrams::ShapeField> shapeFields;
 		private static global::System.Collections.Generic.IList<DslDiagrams::Decorator> decorators;
-
+		
 		/// <summary>
 		/// Per-class style set for this shape.
 		/// </summary>
@@ -440,7 +440,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return classStyleSet;
 			}
 		}
-
+		
 		/// <summary>
 		/// Per-class ShapeFields for this shape.
 		/// </summary>
@@ -455,50 +455,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return shapeFields;
 			}
 		}
-
+		
 		/// <summary>
 		/// Event fired when decorator initialization is complete for this shape type.
 		/// </summary>
 		public static event global::System.EventHandler DecoratorsInitialized;
-
+		
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
 		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
-			get
+			get 
 			{
-				if (decorators == null)
+				if(decorators == null)
 				{
 					decorators = CreateDecorators();
-
+					
 					// fire this event to allow the diagram to initialize decorator mappings for this shape type.
-					if (DecoratorsInitialized != null)
+					if(DecoratorsInitialized != null)
 					{
 						DecoratorsInitialized(this, global::System.EventArgs.Empty);
 					}
 				}
-
-				return decorators;
+				
+				return decorators; 
 			}
 		}
-
+		
 		/// <summary>
 		/// Finds a decorator associated with ModelNoteLink.
 		/// </summary>
 		public static DslDiagrams::Decorator FindModelNoteLinkDecorator(string decoratorName)
-		{
-			if (decorators == null) return null;
+		{	
+			if(decorators == null) return null;
 			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
 		}
-
+		
 		#endregion
-
+		
 		#region Connector styles
 		#endregion
-
+		
 		#region Constructors, domain class Id
-
+	
 		/// <summary>
 		/// ModelNoteLink domain class Id.
 		/// </summary>
@@ -512,7 +512,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>

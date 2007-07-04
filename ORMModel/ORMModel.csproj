@@ -382,6 +382,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\FrameworkDomainModel.cs" />
     <Compile Include="Framework\Diagnostics\TraceUtility.cs" />
     <Compile Include="Framework\Design\Editors\FlagsEnumEditor.cs" />
     <Compile Include="Framework\Design\Editors\FlagsEnumListBox.cs">
@@ -397,7 +398,26 @@
     <Compile Include="Framework\Diagrams\CustomFoldShapeGeometries.cs" />
     <Compile Include="Framework\Diagrams\LayoutEngine.cs" />
     <Compile Include="Framework\Diagrams\MultiShapeUtility.cs" />
+    <Compile Include="Framework\GeneratedCode\DomainClasses.cs">
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Framework\GeneratedCode\DomainModel.cs">
+      <DependentUpon>DomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Framework\GeneratedCode\DomainRelationships.cs">
+      <DependentUpon>DomainRelationships.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Framework\ModelingEventManager.cs" />
+    <Compile Include="Framework\Framework.AttachRules.cs">
+      <DependentUpon>Framework.AttachRules.xml</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="ObjectModel\Design\ObjectificationRolePlayerPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\Editors\ModelErrorDisplayFilterEditor.cs" />
@@ -439,6 +459,11 @@
     <Compile Include="Shell\ModelErrorDisplayFilterForm.Designer.cs">
       <DependentUpon>ModelErrorDisplayFilterForm.cs</DependentUpon>
     </Compile>
+    <Content Include="Framework\Framework.AttachRules.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>Framework.AttachRules.cs</LastGenOutput>
+      <CustomToolNamespace>Neumont.Tools.Modeling</CustomToolNamespace>
+    </Content>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>
@@ -573,6 +598,23 @@
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Framework\Framework.dsl" />
+    <None Include="Framework\GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+    </None>
+    <None Include="Framework\GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+    </None>
+    <None Include="Framework\GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+    </None>
+    <None Include="Framework\GeneratedCode\DomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+    </None>
     <None Include="Framework\SystemCore.dsl" />
     <None Include="ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd">
       <SubType>Designer</SubType>
@@ -665,6 +707,13 @@
       <ResourceName>1000</ResourceName>
       <MergeTarget>Shell\PackageResources\VSPackage.resx</MergeTarget>
     </CompileVsct>
+    <EmbeddedResource Include="Framework\GeneratedCode\DomainModelResx.resx">
+      <LogicalName>Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx.resources</LogicalName>
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Designer</SubType>
+      <DesignTime>True</DesignTime>
+    </EmbeddedResource>
     <EmbeddedResource Include="Shell\PackageResources\VSPackage.resx">
       <LogicalName>VSPackage.resources</LogicalName>
       <SubType>Designer</SubType>

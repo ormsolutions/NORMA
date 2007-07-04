@@ -34,11 +34,13 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConstraintDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ObjectTypeRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ValueTypeDataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ObjectTypeRule", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ValueTypeDataTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ConstraintRoleDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ValueTypeDataTypeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ValueTypeDataTypeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMToORMAbstractionBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -49,7 +51,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems)
+			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -72,7 +74,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 5; ++i)
+			for (int i = 0; i < 7; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -83,71 +85,179 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		}
 	}
 	#endregion // Attach rules to ORMToORMAbstractionBridgeDomainModel model
-	#region Initially disable rules
+	#region Auto-rule classes
+	#region Rule classes for AbstractionModelIsForORMModel
 	partial class AbstractionModelIsForORMModel
 	{
-		partial class ConstraintRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint))]
+		private sealed class ConstraintAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			partial class ConstraintAddRule
+			public ConstraintAddRuleClass()
 			{
-				public ConstraintAddRule()
-				{
-					base.IsEnabled = false;
-				}
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint)
+			/// /// </summary>
+			/// private static void ConstraintAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintAddRule");
+				AbstractionModelIsForORMModel.ConstraintAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintAddRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint))]
+		private sealed class ConstraintChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			public ConstraintChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint)
+			/// /// </summary>
+			/// private static void ConstraintChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintChangeRule");
+				AbstractionModelIsForORMModel.ConstraintChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintChangeRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint))]
+		private sealed class ConstraintDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			public ConstraintDeleteRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint)
+			/// /// </summary>
+			/// private static void ConstraintDeleteRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintDeleteRule");
+				AbstractionModelIsForORMModel.ConstraintDeleteRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintDeleteRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
+		private sealed class ConstraintRoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			public ConstraintRoleAddRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// /// </summary>
+			/// private static void ConstraintRoleAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintRoleAddRule");
+				AbstractionModelIsForORMModel.ConstraintRoleAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintRoleAddRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
+		private sealed class ConstraintRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			public ConstraintRoleDeletingRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// /// </summary>
+			/// private static void ConstraintRoleDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintRoleDeletingRule");
+				AbstractionModelIsForORMModel.ConstraintRoleDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ConstraintRoleDeletingRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType))]
+		private sealed class ValueTypeDataTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			public ValueTypeDataTypeAddRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void ValueTypeDataTypeAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ValueTypeDataTypeAddRule");
+				AbstractionModelIsForORMModel.ValueTypeDataTypeAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ValueTypeDataTypeAddRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType))]
+		private sealed class ValueTypeDataTypeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			public ValueTypeDataTypeDeletingRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+			/// /// <summary>
+			/// /// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void ValueTypeDataTypeDeletingRule(ElementDeletingEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ValueTypeDataTypeDeletingRule");
+				AbstractionModelIsForORMModel.ValueTypeDataTypeDeletingRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ValueTypeDataTypeDeletingRule");
 			}
 		}
 	}
-	partial class AbstractionModelIsForORMModel
-	{
-		partial class ConstraintRule
-		{
-			partial class ConstraintChangeRule
-			{
-				public ConstraintChangeRule()
-				{
-					base.IsEnabled = false;
-				}
-			}
-		}
-	}
-	partial class AbstractionModelIsForORMModel
-	{
-		partial class ConstraintRule
-		{
-			partial class ConstraintDeleteRule
-			{
-				public ConstraintDeleteRule()
-				{
-					base.IsEnabled = false;
-				}
-			}
-		}
-	}
-	partial class AbstractionModelIsForORMModel
-	{
-		partial class ObjectTypeRule
-		{
-			partial class ValueTypeDataTypeAddRule
-			{
-				public ValueTypeDataTypeAddRule()
-				{
-					base.IsEnabled = false;
-				}
-			}
-		}
-	}
-	partial class AbstractionModelIsForORMModel
-	{
-		partial class ObjectTypeRule
-		{
-			partial class ValueTypeDataTypeDeleteRule
-			{
-				public ValueTypeDataTypeDeleteRule()
-				{
-					base.IsEnabled = false;
-				}
-			}
-		}
-	}
-	#endregion // Initially disable rules
+	#endregion // Rule classes for AbstractionModelIsForORMModel
+	#endregion // Auto-rule classes
 }

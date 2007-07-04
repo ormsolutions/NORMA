@@ -31,6 +31,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintLink : IReconfigureableLink
@@ -399,7 +400,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					if (!constraintShape.IsDeleting)
 					{
-						ORMCoreDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
+						FrameworkDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
 					}
 					else
 					{
@@ -435,7 +436,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeShape factTypeShape;
 				if (null != (constraintShape = oldShape as ExternalConstraintShape))
 				{
-					ORMCoreDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
+					FrameworkDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
 				}
 				else if (null != (factTypeShape = MultiShapeUtility.ResolvePrimaryShape(oldShape) as FactTypeShape))
 				{

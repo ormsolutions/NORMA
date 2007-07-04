@@ -45,7 +45,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMCoreDomainModel.DelayValidateElement(e.ModelElement, DelayGenerateDiagramTables);
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayGenerateDiagramTables);
 			}
 			private static void DelayGenerateDiagramTables(ModelElement element)
 			{
@@ -73,7 +73,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				OIALModelHasORMModel link = e.ModelElement as OIALModelHasORMModel;
-				ORMCoreDomainModel.DelayValidateElement(link.OIALModel, AddRelationalModel);
+				FrameworkDomainModel.DelayValidateElement(link.OIALModel, AddRelationalModel);
 			}
 			/// <summary>
 			/// Schedules the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel"/> to be added
@@ -107,11 +107,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				ModelElement childElement = e.ModelElement;
 				if (childElement is OIALModelHasConceptType)
 				{
-					ORMCoreDomainModel.DelayValidateElement(childElement, DelayedAddTables);
+					FrameworkDomainModel.DelayValidateElement(childElement, DelayedAddTables);
 				}
 			}
 			/// <summary>
-			/// The callback function sent to <see cref="ORMCoreDomainModel.DelayValidateElement"/> to add function to the
+			/// The callback function sent to <see cref="FrameworkDomainModel.DelayValidateElement"/> to add function to the
 			/// <see cref="RelationalModel"/>.
 			/// </summary>
 			/// <param name="element">ConceptType</param>

@@ -1292,7 +1292,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType objectType;
 					if (null != (objectType = roles[i].RolePlayer))
 					{
-						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+						FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 					}
 				}
 			}
@@ -1646,7 +1646,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void UnspecifiedDataTypeAddRule(ElementAddedEventArgs e)
 		{
-			ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
+			FrameworkDomainModel.DelayValidateElement((e.ModelElement as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
 		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
@@ -1658,12 +1658,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// If the object type changed, then validate both object types.
 			if (changedRoleGuid == ValueTypeHasDataType.DataTypeDomainRoleId)
 			{
-				ORMCoreDomainModel.DelayValidateElement((e.ElementLink as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
+				FrameworkDomainModel.DelayValidateElement((e.ElementLink as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
 			}
 			else
 			{
-				ORMCoreDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateDataTypeNotSpecifiedError);
-				ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDataTypeNotSpecifiedError);
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateDataTypeNotSpecifiedError);
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDataTypeNotSpecifiedError);
 			}
 		}
 		#endregion // DataTypeNotSpecifiedError retrieval and validation
@@ -1844,7 +1844,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public void ValidateMandatoryRolesForPreferredIdentifier()
 		{
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
 		}
 		/// <summary>
 		/// Rule helper to determine whether or not ValidatePreferredIdentifierRequiresMandatoryError
@@ -2088,10 +2088,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ProcessVerifyReferenceSchemeAdd(EntityTypeHasPreferredIdentifier link)
 		{
 			ObjectType objectType = link.PreferredIdentifierFor;
-			ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+			FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			if (!link.PreferredIdentifier.IsInternal)
 			{
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 			}
 		}
 		/// <summary>
@@ -2112,15 +2112,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (!objectType.IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				if (preferredIdentifier == null)
 				{
 					preferredIdentifier = link.PreferredIdentifier;
 				}
 				if (!preferredIdentifier.IsInternal)
 				{
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 				}
 			}
 		}
@@ -2150,7 +2150,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void VerifyValueTypeHasDataTypeAddRule(ElementAddedEventArgs e)
 		{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ORMCoreDomainModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				FrameworkDomainModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ValueTypeHasDataType)
@@ -2160,7 +2160,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ObjectType valueType = (e.ModelElement as ValueTypeHasDataType).ValueType;
 			if (!valueType.IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(valueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				FrameworkDomainModel.DelayValidateElement(valueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
 		/// <summary>
@@ -2181,15 +2181,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 			Role role = link.PlayedRole;
 			ObjectType rolePlayer = role.RolePlayer;
-			ORMCoreDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
+			FrameworkDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
 			if (role is SubtypeMetaRole)
 			{
 				ObjectType objectType = link.RolePlayer;
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 				WalkSubtypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 				{
-					ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+					FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
 					ValidateAttachedConstraintColumnCompatibility(type);
 					return ObjectTypeVisitorResult.Continue;
 				});
@@ -2217,12 +2217,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!objectType.IsDeleted)
 			{
 				// IsIndependent pattern incorporates implied mandatories, reverify when a role player is disconnected
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
 				if (role != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 				}
 			}
 		}
@@ -2240,12 +2240,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Guid changedRoleGuid = e.DomainRole.Id;
 			if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
 			{
-				ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
+				FrameworkDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
 			}
 			else
 			{
-				ORMCoreDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
-				ORMCoreDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateIsIndependent);
+				FrameworkDomainModel.DelayValidateElement(link.RolePlayer, DelayValidateIsIndependent);
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateIsIndependent);
 			}
 		}
 		/// <summary>
@@ -2260,7 +2260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 				{
-					ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+					FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
 					// Keep going while we're here to see if we need to validate compatible role
 					ValidateAttachedConstraintColumnCompatibility(type);
 					return ObjectTypeVisitorResult.Continue;
@@ -2333,7 +2333,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (objectType != null)
 					{
 						// We may need to turn off IsIndependent if it is set
-						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+						FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 					}
 					LinkedElementCollection<Role> roles = sequence.RoleCollection;
 					int roleCount = roles.Count;
@@ -2346,7 +2346,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							!pid.IsInternal &&
 							pid.FactTypeCollection.Contains(role.FactType))
 						{
-							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+							FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 						}
 					}
 					break;
@@ -2382,13 +2382,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						UniquenessConstraint pid;
 						if (null != (objectType = role.RolePlayer) && !objectType.IsDeleting)
 						{
-							ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+							FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 							if (null != (pid = objectType.PreferredIdentifier) &&
 								!pid.IsDeleting &&
 								!pid.IsInternal &&
 								pid.FactTypeCollection.Contains(role.FactType))
 							{
-								ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+								FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 							}
 						}
 					}
@@ -2402,7 +2402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (objectType != null)
 					{
 						// We may need to turn off IsIndependent if it is set
-						ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
+						FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 					}
 					break;
 			}
@@ -2503,7 +2503,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								});
 							}
 						}
-						ORMCoreDomainModel.DelayValidateElement(subtype, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 					}
 					finally
 					{
@@ -2655,12 +2655,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateDataTypeNotSpecifiedError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateEntityTypeRequiresReferenceSchemeError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateObjectTypeRequiresPrimarySupertypeError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleSupertypesError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateIsIndependent);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateDataTypeNotSpecifiedError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateEntityTypeRequiresReferenceSchemeError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleSupertypesError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateIsIndependent);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{

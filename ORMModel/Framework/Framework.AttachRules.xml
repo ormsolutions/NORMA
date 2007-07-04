@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
 		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
@@ -15,22 +15,14 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="ExtensionDomainModel">
-		<arg:RuleContainer class="MyCustomExtensionElement">
-			<arg:AddRule methodName="RoleAddRule">
-				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+	<arg:Model class="FrameworkDomainModel">
+		<arg:RuleContainer class="FrameworkDomainModel">
+			<arg:AddRule methodName="DelayValidateElements" alwaysOn="true">
+				<arg:RuleOn targetType="DelayValidateSignal" fireTime="LocalCommit" priority="DelayValidateRulePriority"/>
 			</arg:AddRule>
+			<arg:TransactionBeginningRule methodName="ProcessTransactionBeginning" className="TransactionRulesFixupHack" alwaysOn="true" methodInRuleClass="true">
+				<arg:RuleOn targetType="FrameworkDomainModel"/>
+			</arg:TransactionBeginningRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="ObjectTypeRequiresMeaningfulNameError">
-			<arg:AddRule methodName="ExtensionObjectTypeAddRule">
-				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:AddRule>
-			<arg:ChangeRule methodName="ExtensionObjectTypeChangeRule">
-				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
-			</arg:ChangeRule>
-		</arg:RuleContainer>
-		<!--<arg:Rule class="ExtensionAddRule"/>-->
-		<!--<arg:Rule class="ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule"/>
-		<arg:Rule class="ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule"/>-->
 	</arg:Model>
 </arg:Rules>

@@ -96,6 +96,7 @@ namespace Neumont.Tools.ORM.Shell
 		private static Dictionary<string, Type> InitializeStandardDomainModels()
 		{
 			Dictionary<string, Type> standardDomainModels = new Dictionary<string, Type>();
+			standardDomainModels.Add(typeof(FrameworkDomainModel).FullName, typeof(FrameworkDomainModel));
 			standardDomainModels.Add(ORMCoreDomainModel.XmlNamespace, typeof(ORMCoreDomainModel));
 			standardDomainModels.Add(ORMShapeDomainModel.XmlNamespace, typeof(ORMShapeDomainModel));
 			return standardDomainModels;

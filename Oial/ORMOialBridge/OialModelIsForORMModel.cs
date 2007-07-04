@@ -38,16 +38,19 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			return (Dictionary<ModelElement, int>)elementList;
 		}
 
-		private static bool IsValidConstraintType(ConstraintRoleSequenceHasRole constraintSequence, ref IConstraint constraint)
+		private static bool IsValidConstraintType(IConstraint constraint)
 		{
-			if ((constraint = constraintSequence.ConstraintRoleSequence.Constraint) == null)
+			if (constraint != null)
 			{
-				// This is not a constraint we care about.
-				return false;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+					case ConstraintType.ImpliedMandatory:
+					case ConstraintType.SimpleMandatory:
+						return true;
+				}
 			}
-
-			ConstraintType type = constraint.ConstraintType;
-			return (type == ConstraintType.InternalUniqueness || type == ConstraintType.SimpleMandatory);
+			return false;
 		}
 
 		private static void AddTransactedModelElement(ModelElement element, OialModelElementAction action)
@@ -167,7 +170,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
 					notifyAdded.ElementAdded(oil, true);
 				}
-				ORMCoreDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
 			}
 		}
 
@@ -206,7 +209,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
 					notifyAdded.ElementAdded(oil, true);
 				}
-				ORMCoreDomainModel.DelayValidateElement(model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 
@@ -245,7 +248,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
 					notifyAdded.ElementAdded(oil, true);
 				}
-				ORMCoreDomainModel.DelayValidateElement(model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		#endregion // Deserialization FixupListeners

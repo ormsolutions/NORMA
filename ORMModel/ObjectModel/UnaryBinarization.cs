@@ -425,7 +425,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
 				{
-					ORMCoreDomainModel.DelayValidateElement(e.ModelElement, DelayValidateUnaryBinarization);
+					FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateUnaryBinarization);
 				}
 			}
 			/// <summary>
@@ -437,7 +437,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType;
 				if (null != (factType = link.PlayedRole.FactType))
 				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 				}
 			}
 			/// <summary>
@@ -456,12 +456,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType factType = ((Role)e.OldRolePlayer).FactType;
 					if (factType != null)
 					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 					}
 					factType = ((Role)e.NewRolePlayer).FactType;
 					if (factType != null)
 					{
-						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 					}
 				}
 			}
@@ -495,9 +495,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			private static void FactTypeHasRoleAddedRule(ElementAddedEventArgs e)
 			{
-				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayValidateUnaryBinarization);
+				FrameworkDomainModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayValidateUnaryBinarization);
 			}
-			[ORMCoreDomainModel.DelayValidatePriority(-100)]
+			[DelayValidatePriority(-100)]
 			private static void DelayValidateUnaryBinarization(ModelElement element)
 			{
 				FactType factType = (FactType)element;
@@ -539,7 +539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
 				if (factType != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 				}
 			}
 			/// <summary>
@@ -550,7 +550,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
 				if (factType != null && !factType.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryBinarization);
 				}
 			}
 			#endregion Rules for ConstraintRoleSequenceHasRole

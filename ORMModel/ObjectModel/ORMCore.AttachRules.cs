@@ -167,8 +167,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ValueTypeInstanceValueChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(DelayValidateElementsClass),
-						typeof(TransactionRulesFixupHack),
 						typeof(ORMModel).GetNestedType("DuplicateConstraintNameConstraintDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateObjectTypeNameObjectTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingOrderHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -266,250 +264,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
-		private static Type[] myInitiallyDisabledRuleTypes;
-		private static Type[] InitiallyDisabledRuleTypes
-		{
-			get
-			{
-				Type[] retVal = ORMCoreDomainModel.myInitiallyDisabledRuleTypes;
-				if (retVal == null)
-				{
-					Type[] customDomainModelTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-					retVal = new Type[]{
-						customDomainModelTypes[0],
-						customDomainModelTypes[1],
-						customDomainModelTypes[2],
-						customDomainModelTypes[3],
-						customDomainModelTypes[4],
-						customDomainModelTypes[5],
-						customDomainModelTypes[6],
-						customDomainModelTypes[7],
-						customDomainModelTypes[8],
-						customDomainModelTypes[9],
-						customDomainModelTypes[10],
-						customDomainModelTypes[11],
-						customDomainModelTypes[12],
-						customDomainModelTypes[13],
-						customDomainModelTypes[14],
-						customDomainModelTypes[15],
-						customDomainModelTypes[16],
-						customDomainModelTypes[17],
-						customDomainModelTypes[18],
-						customDomainModelTypes[19],
-						customDomainModelTypes[20],
-						customDomainModelTypes[21],
-						customDomainModelTypes[22],
-						customDomainModelTypes[23],
-						customDomainModelTypes[24],
-						customDomainModelTypes[25],
-						customDomainModelTypes[26],
-						customDomainModelTypes[27],
-						customDomainModelTypes[28],
-						customDomainModelTypes[29],
-						customDomainModelTypes[30],
-						customDomainModelTypes[31],
-						customDomainModelTypes[32],
-						customDomainModelTypes[33],
-						customDomainModelTypes[34],
-						customDomainModelTypes[35],
-						customDomainModelTypes[36],
-						customDomainModelTypes[37],
-						customDomainModelTypes[38],
-						customDomainModelTypes[39],
-						customDomainModelTypes[40],
-						customDomainModelTypes[41],
-						customDomainModelTypes[42],
-						customDomainModelTypes[43],
-						customDomainModelTypes[44],
-						customDomainModelTypes[45],
-						customDomainModelTypes[46],
-						customDomainModelTypes[47],
-						customDomainModelTypes[48],
-						customDomainModelTypes[49],
-						customDomainModelTypes[50],
-						customDomainModelTypes[51],
-						customDomainModelTypes[52],
-						customDomainModelTypes[53],
-						customDomainModelTypes[54],
-						customDomainModelTypes[55],
-						customDomainModelTypes[56],
-						customDomainModelTypes[57],
-						customDomainModelTypes[58],
-						customDomainModelTypes[59],
-						customDomainModelTypes[60],
-						customDomainModelTypes[61],
-						customDomainModelTypes[62],
-						customDomainModelTypes[63],
-						customDomainModelTypes[64],
-						customDomainModelTypes[65],
-						customDomainModelTypes[66],
-						customDomainModelTypes[67],
-						customDomainModelTypes[68],
-						customDomainModelTypes[69],
-						customDomainModelTypes[70],
-						customDomainModelTypes[71],
-						customDomainModelTypes[72],
-						customDomainModelTypes[73],
-						customDomainModelTypes[74],
-						customDomainModelTypes[75],
-						customDomainModelTypes[76],
-						customDomainModelTypes[77],
-						customDomainModelTypes[78],
-						customDomainModelTypes[79],
-						customDomainModelTypes[80],
-						customDomainModelTypes[81],
-						customDomainModelTypes[82],
-						customDomainModelTypes[83],
-						customDomainModelTypes[84],
-						customDomainModelTypes[85],
-						customDomainModelTypes[86],
-						customDomainModelTypes[87],
-						customDomainModelTypes[88],
-						customDomainModelTypes[89],
-						customDomainModelTypes[90],
-						customDomainModelTypes[91],
-						customDomainModelTypes[92],
-						customDomainModelTypes[93],
-						customDomainModelTypes[94],
-						customDomainModelTypes[95],
-						customDomainModelTypes[96],
-						customDomainModelTypes[97],
-						customDomainModelTypes[98],
-						customDomainModelTypes[99],
-						customDomainModelTypes[100],
-						customDomainModelTypes[101],
-						customDomainModelTypes[102],
-						customDomainModelTypes[103],
-						customDomainModelTypes[104],
-						customDomainModelTypes[105],
-						customDomainModelTypes[106],
-						customDomainModelTypes[107],
-						customDomainModelTypes[108],
-						customDomainModelTypes[109],
-						customDomainModelTypes[110],
-						customDomainModelTypes[111],
-						customDomainModelTypes[112],
-						customDomainModelTypes[113],
-						customDomainModelTypes[114],
-						customDomainModelTypes[115],
-						customDomainModelTypes[116],
-						customDomainModelTypes[117],
-						customDomainModelTypes[118],
-						customDomainModelTypes[119],
-						customDomainModelTypes[120],
-						customDomainModelTypes[121],
-						customDomainModelTypes[122],
-						customDomainModelTypes[123],
-						customDomainModelTypes[124],
-						customDomainModelTypes[125],
-						customDomainModelTypes[126],
-						customDomainModelTypes[127],
-						customDomainModelTypes[128],
-						customDomainModelTypes[129],
-						customDomainModelTypes[130],
-						customDomainModelTypes[131],
-						customDomainModelTypes[132],
-						customDomainModelTypes[135],
-						customDomainModelTypes[136],
-						customDomainModelTypes[137],
-						customDomainModelTypes[138],
-						customDomainModelTypes[139],
-						customDomainModelTypes[140],
-						customDomainModelTypes[141],
-						customDomainModelTypes[142],
-						customDomainModelTypes[143],
-						customDomainModelTypes[144],
-						customDomainModelTypes[145],
-						customDomainModelTypes[146],
-						customDomainModelTypes[147],
-						customDomainModelTypes[148],
-						customDomainModelTypes[149],
-						customDomainModelTypes[150],
-						customDomainModelTypes[151],
-						customDomainModelTypes[152],
-						customDomainModelTypes[153],
-						customDomainModelTypes[154],
-						customDomainModelTypes[155],
-						customDomainModelTypes[156],
-						customDomainModelTypes[157],
-						customDomainModelTypes[158],
-						customDomainModelTypes[159],
-						customDomainModelTypes[160],
-						customDomainModelTypes[161],
-						customDomainModelTypes[162],
-						customDomainModelTypes[163],
-						customDomainModelTypes[164],
-						customDomainModelTypes[165],
-						customDomainModelTypes[166],
-						customDomainModelTypes[167],
-						customDomainModelTypes[168],
-						customDomainModelTypes[169],
-						customDomainModelTypes[170],
-						customDomainModelTypes[171],
-						customDomainModelTypes[172],
-						customDomainModelTypes[173],
-						customDomainModelTypes[174],
-						customDomainModelTypes[175],
-						customDomainModelTypes[176],
-						customDomainModelTypes[177],
-						customDomainModelTypes[178],
-						customDomainModelTypes[179],
-						customDomainModelTypes[180],
-						customDomainModelTypes[181],
-						customDomainModelTypes[182],
-						customDomainModelTypes[183],
-						customDomainModelTypes[184],
-						customDomainModelTypes[185],
-						customDomainModelTypes[186],
-						customDomainModelTypes[187],
-						customDomainModelTypes[188],
-						customDomainModelTypes[189],
-						customDomainModelTypes[190],
-						customDomainModelTypes[191],
-						customDomainModelTypes[192],
-						customDomainModelTypes[193],
-						customDomainModelTypes[194],
-						customDomainModelTypes[195],
-						customDomainModelTypes[196],
-						customDomainModelTypes[197],
-						customDomainModelTypes[198],
-						customDomainModelTypes[199],
-						customDomainModelTypes[200],
-						customDomainModelTypes[201],
-						customDomainModelTypes[202],
-						customDomainModelTypes[203],
-						customDomainModelTypes[204],
-						customDomainModelTypes[205],
-						customDomainModelTypes[206],
-						customDomainModelTypes[207],
-						customDomainModelTypes[208],
-						customDomainModelTypes[209],
-						customDomainModelTypes[210],
-						customDomainModelTypes[211],
-						customDomainModelTypes[212],
-						customDomainModelTypes[213],
-						customDomainModelTypes[214],
-						customDomainModelTypes[215],
-						customDomainModelTypes[216],
-						customDomainModelTypes[217],
-						customDomainModelTypes[218],
-						customDomainModelTypes[219],
-						customDomainModelTypes[220],
-						customDomainModelTypes[221],
-						customDomainModelTypes[222],
-						customDomainModelTypes[223],
-						customDomainModelTypes[224],
-						customDomainModelTypes[225]};
-					ORMCoreDomainModel.myInitiallyDisabledRuleTypes = retVal;
-				}
-				return retVal;
-			}
-		}
 		/// <summary>Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.</summary>
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems)
+			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -531,7 +290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
-			Type[] disabledRuleTypes = ORMCoreDomainModel.InitiallyDisabledRuleTypes;
+			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
 			for (int i = 0; i < 224; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
@@ -696,7 +455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Rule classes for ConstraintUtility
 	partial class ConstraintUtility
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ConstraintRoleSequenceHasRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public ConstraintRoleSequenceHasRoleDeletedRuleClass()
@@ -707,7 +466,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.ConstraintUtility
 			/// /// <summary>
-			/// /// DeleteRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void ConstraintRoleSequenceHasRoleDeletedRule(ElementDeletedEventArgs e)
 			/// {
@@ -1229,7 +988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Rule classes for EqualityConstraint
 	partial class EqualityConstraint
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ConstraintRoleSequenceHasRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			public ConstraintRoleSequenceHasRoleAddedRuleClass()
@@ -1240,7 +999,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.EqualityConstraint
 			/// /// <summary>
-			/// /// AddRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// AddRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -1306,7 +1065,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.CouplerAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusiveOrConstraintCoupler), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class CouplerDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public CouplerDeleteRuleClass()
@@ -1317,7 +1076,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler
 			/// /// <summary>
-			/// /// DeleteRule: typeof(ExclusiveOrConstraintCoupler), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(ExclusiveOrConstraintCoupler), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void CouplerDeleteRule(ElementDeletedEventArgs e)
 			/// {
@@ -2412,7 +2171,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class FactTypeInstanceHasRoleInstanceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public FactTypeInstanceHasRoleInstanceDeletedRuleClass()
@@ -2423,7 +2182,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.FactTypeInstance
 			/// /// <summary>
-			/// /// DeleteRule: typeof(FactTypeInstanceHasRoleInstance), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(FactTypeInstanceHasRoleInstance), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void FactTypeInstanceHasRoleInstanceDeletedRule(ElementDeletedEventArgs e)
 			/// {
@@ -3807,54 +3566,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ObjectTypeInstance
-	#region Rule classes for ORMCoreDomainModel
-	partial class ORMCoreDomainModel
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DelayValidateSignal), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateRulePriority)]
-		private sealed class DelayValidateElementsClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel
-			/// /// <summary>
-			/// /// AddRule: typeof(DelayValidateSignal), FireTime=LocalCommit, Priority=ORMCoreDomainModel.DelayValidateRulePriority;
-			/// /// </summary>
-			/// private static void DelayValidateElements(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElements");
-				ORMCoreDomainModel.DelayValidateElements(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DelayValidateElements");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.CoreDomainModel))]
-		private sealed partial class TransactionRulesFixupHack : Microsoft.VisualStudio.Modeling.TransactionBeginningRule
-		{
-			/// <summary>
-			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel
-			/// partial class TransactionRulesFixupHack
-			/// {
-			/// 	/// <summary>
-			/// 	/// TransactionBeginningRule: typeof(Microsoft.VisualStudio.Modeling.CoreDomainModel)
-			/// 	/// </summary>
-			/// 	private void ProcessTransactionBeginning(TransactionBeginningEventArgs e)
-			/// 	{
-			/// 	}
-			/// }
-			/// </summary>
-			public override void TransactionBeginning(Microsoft.VisualStudio.Modeling.TransactionBeginningEventArgs e)
-			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.TransactionRulesFixupHack");
-				this.ProcessTransactionBeginning(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.Transaction.Store, "Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.TransactionRulesFixupHack");
-			}
-		}
-	}
-	#endregion // Rule classes for ORMCoreDomainModel
 	#region Rule classes for ORMModel
 	partial class ORMModel
 	{
@@ -3968,7 +3679,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Rule classes for ReadingOrder
 	partial class ReadingOrder
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class EnforceNoEmptyReadingOrderDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public EnforceNoEmptyReadingOrderDeleteRuleClass()
@@ -3979,7 +3690,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.ReadingOrder
 			/// /// <summary>
-			/// /// DeleteRule: typeof(ReadingOrderHasReading), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(ReadingOrderHasReading), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void EnforceNoEmptyReadingOrderDeleteRule(ElementDeletedEventArgs e)
 			/// {
@@ -3992,7 +3703,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderDeleteRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReadingOrderHasReading), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class EnforceNoEmptyReadingOrderRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			public EnforceNoEmptyReadingOrderRolePlayerChangeRuleClass()
@@ -4003,7 +3714,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.ReadingOrder
 			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(ReadingOrderHasReading), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// RolePlayerChangeRule: typeof(ReadingOrderHasReading), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void EnforceNoEmptyReadingOrderRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 			/// {
@@ -4069,7 +3780,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Rule classes for ReferenceMode
 	partial class ReferenceMode
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasReferenceMode), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasReferenceMode), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ReferenceModeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			public ReferenceModeAddedRuleClass()
@@ -4080,7 +3791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.ReferenceMode
 			/// /// <summary>
-			/// /// AddRule: typeof(ModelHasReferenceMode), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// AddRule: typeof(ModelHasReferenceMode), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void ReferenceModeAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -4401,7 +4112,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.Role.RoleInstanceRolePlayerChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class RolePlayerRequiredAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			public RolePlayerRequiredAddRuleClass()
@@ -4412,7 +4123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.Role
 			/// /// <summary>
-			/// /// AddRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// AddRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void RolePlayerRequiredAddRule(ElementAddedEventArgs e)
 			/// {
@@ -4780,7 +4491,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExternalRoleConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExternalRoleConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class ExternalRoleConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public ExternalRoleConstraintDeletedRuleClass()
@@ -4791,7 +4502,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint
 			/// /// <summary>
-			/// /// DeleteRule: typeof(ExternalRoleConstraint), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(ExternalRoleConstraint), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void ExternalRoleConstraintDeletedRule(ElementDeletedEventArgs e)
 			/// {
@@ -4852,7 +4563,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.FactSetComparisonConstraintAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class SetComparisonConstraintRoleSequenceDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public SetComparisonConstraintRoleSequenceDeletedRuleClass()
@@ -4863,7 +4574,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint
 			/// /// <summary>
-			/// /// DeleteRule: typeof(SetComparisonConstraintHasRoleSequence), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(SetComparisonConstraintHasRoleSequence), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void SetComparisonConstraintRoleSequenceDeletedRule(ElementDeletedEventArgs e)
 			/// {
@@ -5205,7 +4916,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region Rule classes for SubtypeFact
 	partial class SubtypeFact
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class DeleteSubtypeWhenRolePlayerDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public DeleteSubtypeWhenRolePlayerDeletedRuleClass()
@@ -5216,7 +4927,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SubtypeFact
 			/// /// <summary>
-			/// /// DeleteRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void DeleteSubtypeWhenRolePlayerDeletedRule(ElementDeletedEventArgs e)
 			/// {
@@ -5277,7 +4988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.EnsureConsistentDataTypesDeleteRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class EnsureConsistentRolePlayerTypesAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			public EnsureConsistentRolePlayerTypesAddRuleClass()
@@ -5288,7 +4999,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SubtypeFact
 			/// /// <summary>
-			/// /// AddRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// AddRule: typeof(ObjectTypePlaysRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void EnsureConsistentRolePlayerTypesAddRule(ElementAddedEventArgs e)
 			/// {
@@ -5373,7 +5084,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class LimitSubtypeConstraintRolesDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public LimitSubtypeConstraintRolesDeleteRuleClass()
@@ -5384,7 +5095,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SubtypeFact
 			/// /// <summary>
-			/// /// DeleteRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(ConstraintRoleSequenceHasRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void LimitSubtypeConstraintRolesDeleteRule(ElementDeletedEventArgs e)
 			/// {
@@ -5421,7 +5132,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeConstraintsAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class LimitSubtypeConstraintsDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public LimitSubtypeConstraintsDeleteRuleClass()
@@ -5432,7 +5143,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SubtypeFact
 			/// /// <summary>
-			/// /// DeleteRule: typeof(FactSetConstraint), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(FactSetConstraint), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void LimitSubtypeConstraintsDeleteRule(ElementDeletedEventArgs e)
 			/// {
@@ -5469,7 +5180,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.LimitSubtypeRolesAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.BeforeDelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
 		private sealed class LimitSubtypeRolesDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			public LimitSubtypeRolesDeleteRuleClass()
@@ -5480,7 +5191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ObjectModel.SubtypeFact
 			/// /// <summary>
-			/// /// DeleteRule: typeof(FactTypeHasRole), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
+			/// /// DeleteRule: typeof(FactTypeHasRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
 			/// private static void LimitSubtypeRolesDeleteRule(ElementDeletedEventArgs e)
 			/// {

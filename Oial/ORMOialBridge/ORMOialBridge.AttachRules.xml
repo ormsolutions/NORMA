@@ -16,11 +16,29 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMToORMAbstractionBridgeDomainModel">
-		<arg:Rule class="AbstractionModelIsForORMModel.ConstraintRule.ConstraintAddRule"/>
-		<arg:Rule class="AbstractionModelIsForORMModel.ConstraintRule.ConstraintChangeRule"/>
-		<arg:Rule class="AbstractionModelIsForORMModel.ConstraintRule.ConstraintDeleteRule"/>
-		<arg:Rule class="AbstractionModelIsForORMModel.ObjectTypeRule.ValueTypeDataTypeAddRule"/>
-		<arg:Rule class="AbstractionModelIsForORMModel.ObjectTypeRule.ValueTypeDataTypeDeleteRule"/>
+		<arg:RuleContainer class="AbstractionModelIsForORMModel">
+			<arg:AddRule methodName="ConstraintAddRule">
+				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="ConstraintChangeRule">
+				<arg:RuleOn targetType="SetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="ConstraintDeleteRule">
+				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ConstraintRoleAddRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="ConstraintRoleDeletingRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeletingRule>
+			<arg:AddRule methodName="ValueTypeDataTypeAddRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="ValueTypeDataTypeDeletingRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			</arg:DeletingRule>
+		</arg:RuleContainer>
 		<!--
 		<arg:Rule class="OialModelIsForORMModel.ModelHasObjectTypeAddRule"/>
 		<arg:Rule class="OialModelIsForORMModel.ModelHasObjectTypeDeletingRule"/>

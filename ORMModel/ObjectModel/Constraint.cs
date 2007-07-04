@@ -542,8 +542,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
 			if (constraint != null)
 			{
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 			}
 		}
 		/// <summary>
@@ -556,8 +556,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
 			if (constraint != null && !constraint.IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 			}
 		}
 		/// <summary>
@@ -742,9 +742,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateConstraintPatternError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateConstraintPatternError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -1057,7 +1057,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SetConstraint sequence = roleSequences[i] as SetConstraint;
 				if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
 				{
-					ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
+					FrameworkDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
@@ -1086,7 +1086,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SetConstraint sequence = roleSequences[i] as SetConstraint;
 				if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
 				{
-					ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
+					FrameworkDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
@@ -1193,7 +1193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleting && !IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+				FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 			}
 		}
 		void IConstraint.ValidateColumnCompatibility()
@@ -1262,7 +1262,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					switch (validationInfo.IntersectionValidationPattern)
 					{
 						case IntersectingConstraintPattern.SetConstraintSubset:
-							ORMCoreDomainModel.DelayValidateElement(setConstraint, DelayValidateSetConstraintSubsetPattern);
+							FrameworkDomainModel.DelayValidateElement(setConstraint, DelayValidateSetConstraintSubsetPattern);
 							if (intersectingTypes.Contains(constraint.ConstraintType))
 							{
 								// Any constraint of one of the listed types that intersects this one
@@ -1284,7 +1284,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 												intersectingTypes.Contains(eligibleConstraint.ConstraintType))
 											{
 												// The delayed validation mechanism automatically takes care of any duplicates
-												ORMCoreDomainModel.DelayValidateElement(eligibleSequence, DelayValidateSetConstraintSubsetPattern);
+												FrameworkDomainModel.DelayValidateElement(eligibleSequence, DelayValidateSetConstraintSubsetPattern);
 											}
 										}
 									}
@@ -2124,7 +2124,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void EnforceRoleSequenceCardinalityForSequenceAddRule(ElementAddedEventArgs e)
 		{
 			SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
-			ORMCoreDomainModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
+			FrameworkDomainModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
 		}
 		/// <summary>
 		/// AddRule: typeof(ModelHasSetComparisonConstraint)
@@ -2148,7 +2148,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			SetComparisonConstraint externalConstraint = link.ExternalConstraint;
 			if (externalConstraint != null && !externalConstraint.IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
+				FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
 			}
 		}
 		/// <summary>
@@ -2164,8 +2164,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SetComparisonConstraint constraint = sequence.ExternalConstraint;
 				if (constraint != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
-					ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
@@ -2182,8 +2182,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
 				if (externalConstraint != null && !externalConstraint.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
-					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+					FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
+					FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
@@ -2199,7 +2199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
 				if (externalConstraint != null && !externalConstraint.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+					FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
@@ -2227,7 +2227,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
 					if (externalConstraint != null)
 					{
-						ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+						FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 					}
 				}
 			}
@@ -2261,7 +2261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
 						if (externalConstraint != null && !externalConstraint.IsDeleted)
 						{
-							ORMCoreDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+							FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 						}
 					}
 				}
@@ -2442,9 +2442,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
-			// ORMCoreDomainModel.DelayValidateElement(this, DelayValidateArityMismatchError); // This is called by DelayValidateRoleSequenceCountErrors
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
+			// FrameworkDomainModel.DelayValidateElement(this, DelayValidateArityMismatchError); // This is called by DelayValidateRoleSequenceCountErrors
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -2541,7 +2541,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleted && !IsDeleting)
 			{
-				ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+				FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 			}
 		}
 		void IConstraint.ValidateColumnCompatibility()
@@ -2703,7 +2703,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 			if (!sequence.IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
+				FrameworkDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
 			}
 			SetComparisonConstraintRoleSequence setComparisonSequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
 			if (setComparisonSequence != null)
@@ -2855,7 +2855,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			if (!sequence.IsDeleted)
 			{
-				ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
+				FrameworkDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
 			}
 		}
 		#endregion // Rules
@@ -2880,7 +2880,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					SetConstraint setConstraint = (SetConstraint)constraint;
 					if (!setConstraint.IsDeleted && !setConstraint.IsDeleting)
 					{
-						ORMCoreDomainModel.DelayValidateElement((ModelElement)setConstraint, DelayValidateConstraintPatternError);
+						FrameworkDomainModel.DelayValidateElement((ModelElement)setConstraint, DelayValidateConstraintPatternError);
 					}
 					break;
 				case ConstraintStorageStyle.SetComparisonConstraint:
@@ -2892,7 +2892,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = setComparisonConstraint.RoleSequenceCollection;
 						if (sequences.Count != 0)
 						{
-							ORMCoreDomainModel.DelayValidateElement(sequences[0], DelayValidateConstraintPatternError);
+							FrameworkDomainModel.DelayValidateElement(sequences[0], DelayValidateConstraintPatternError);
 						}
 					}
 					break;
@@ -3981,7 +3981,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			base.DelayValidateErrors();
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateEqualityImpliedByMandatoryError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateEqualityImpliedByMandatoryError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -5213,7 +5213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			base.DelayValidateErrors();
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateNMinusOneError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateNMinusOneError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -5322,7 +5322,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
 			if (constraint != null && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
 			{
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 			}
 		}
 		/// <summary>
@@ -5335,7 +5335,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
 			if (constraint != null && !constraint.IsDeleted && constraint.IsInternal && constraint.Modality == ConstraintModality.Alethic)
 			{
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 			}
 		}
 		/// <summary>
@@ -5353,7 +5353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (constraint.Modality == ConstraintModality.Alethic)
 					{
-						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+						FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 					}
 				}
 			}
@@ -5373,7 +5373,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (!constraint.IsDeleted && constraint.Modality == ConstraintModality.Alethic)
 					{
-						ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+						FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 					}
 				}
 			}
@@ -5473,7 +5473,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
 			{
-				ORMCoreDomainModel.DelayValidateElement(e.ModelElement as UniquenessConstraint, DelayValidateNMinusOneError);
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement as UniquenessConstraint, DelayValidateNMinusOneError);
 			}
 			else if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
 			{
@@ -6138,8 +6138,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			base.DelayValidateErrors();
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateFrequencyConstraintMinMaxError);
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateFrequencyConstraintContradictsInternalUniquenessConstraintError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateFrequencyConstraintMinMaxError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateFrequencyConstraintContradictsInternalUniquenessConstraintError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -6324,7 +6324,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
 				if (!fc.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(fc, DelayValidateFrequencyConstraintMinMaxError);
+					FrameworkDomainModel.DelayValidateElement(fc, DelayValidateFrequencyConstraintMinMaxError);
 				}
 			}
 		}
@@ -6409,7 +6409,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			base.DelayValidateErrors();
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRingConstraintTypeNotSpecifiedError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRingConstraintTypeNotSpecifiedError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -6471,7 +6471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				RingConstraint rc = e.ModelElement as RingConstraint;
 				if (!rc.IsDeleted)
 				{
-					ORMCoreDomainModel.DelayValidateElement(rc, DelayValidateRingConstraintTypeNotSpecifiedError);
+					FrameworkDomainModel.DelayValidateElement(rc, DelayValidateRingConstraintTypeNotSpecifiedError);
 				}
 			}
 		}

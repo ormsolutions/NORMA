@@ -34,9 +34,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
-						typeof(ExtensionAddRule),
-						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(MyCustomExtensionElement).GetNestedType("RoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ExtensionDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -47,7 +47,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems)
+			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -81,33 +81,88 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		}
 	}
 	#endregion // Attach rules to ExtensionDomainModel model
-	#region Initially disable rules
-	partial class ExtensionAddRule
+	#region Auto-rule classes
+	#region Rule classes for MyCustomExtensionElement
+	partial class MyCustomExtensionElement
 	{
-		public ExtensionAddRule()
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole))]
+		private sealed class RoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
-			base.IsEnabled = false;
-		}
-	}
-	partial class ObjectTypeRequiresMeaningfulNameError
-	{
-		partial class ExtensionObjectTypeAddRule
-		{
-			public ExtensionObjectTypeAddRule()
+			public RoleAddRuleClass()
 			{
 				base.IsEnabled = false;
 			}
-		}
-	}
-	partial class ObjectTypeRequiresMeaningfulNameError
-	{
-		partial class ExtensionObjectTypeChangeRule
-		{
-			public ExtensionObjectTypeChangeRule()
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole)
+			/// /// </summary>
+			/// private static void RoleAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				base.IsEnabled = false;
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
+				MyCustomExtensionElement.RoleAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
 			}
 		}
 	}
-	#endregion // Initially disable rules
+	#endregion // Rule classes for MyCustomExtensionElement
+	#region Rule classes for ObjectTypeRequiresMeaningfulNameError
+	partial class ObjectTypeRequiresMeaningfulNameError
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType))]
+		private sealed class ExtensionObjectTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			public ExtensionObjectTypeAddRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
+			/// /// <summary>
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType)
+			/// /// </summary>
+			/// private static void ExtensionObjectTypeAddRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
+				ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
+		private sealed class ExtensionObjectTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			public ExtensionObjectTypeChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+			/// /// </summary>
+			/// private static void ExtensionObjectTypeChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");
+				ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");
+			}
+		}
+	}
+	#endregion // Rule classes for ObjectTypeRequiresMeaningfulNameError
+	#endregion // Auto-rule classes
 }

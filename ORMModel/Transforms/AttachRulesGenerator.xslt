@@ -267,7 +267,7 @@
 					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
 					<plx:branch>
 						<plx:condition>
-							<plx:callStatic dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="InitializingToolboxItems" type="property"/>
+							<plx:callStatic dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" name="InitializingToolboxItems" type="property"/>
 						</plx:condition>
 						<plx:return>
 							<plx:callStatic dataTypeName="Type" name="EmptyTypes" type="property"/>
@@ -720,10 +720,10 @@
 															<xsl:variable name="standardPriorityFragment">
 																<xsl:choose>
 																	<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
-																		<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" type="field"/>
+																		<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
 																	</xsl:when>
 																	<xsl:when test="$standardPriority='DelayValidateRulePriority'">
-																		<plx:callStatic name="DelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" type="field"/>
+																		<plx:callStatic name="DelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
 																	</xsl:when>
 																	<xsl:when test="starts-with($standardPriority,'D')">
 																		<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" dataTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" type="field"/>
@@ -835,10 +835,10 @@
 																				<xsl:variable name="standardPriorityFragment">
 																					<xsl:choose>
 																						<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
-																							<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" type="field"/>
+																							<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" type="field"/>
 																						</xsl:when>
 																						<xsl:when test="$standardPriority='DelayValidateRulePriority'">
-																							<plx:callStatic name="DelayValidateRulePriority" dataTypeName="ORMCoreDomainModel" type="field"/>
+																							<plx:callStatic name="DelayValidateRulePriority" dataTypeName="FrameworkDomainModel" type="field"/>
 																						</xsl:when>
 																						<xsl:when test="starts-with($standardPriority,'D')">
 																							<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" type="field"/>

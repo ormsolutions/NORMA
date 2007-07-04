@@ -3,70 +3,91 @@ using System.Collections.Generic;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	public partial class AbstractionModelIsForORMModel
 	{
+		#region Constraint rules
 		/// <summary>
-		/// Covers both internal uniqueness and simple mandatory constraints.
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint)
 		/// </summary>
-		private partial class ConstraintRule
+		private static void ConstraintAddRule(ElementAddedEventArgs e)
 		{
-			[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-			private partial class ConstraintAddRule : AddRule
+			ModelHasSetConstraint link = (ModelHasSetConstraint)e.ModelElement;
+			SetConstraint constraint = link.SetConstraint;
+			if (IsValidConstraintType(constraint))
 			{
-				public override void ElementAdded(ElementAddedEventArgs e)
-				{
-					IConstraint constraint = null;
-					if (IsValidConstraintType((ConstraintRoleSequenceHasRole)e.ModelElement, ref constraint))
-					{
-						AddTransactedModelElement((ModelElement)constraint, OialModelElementAction.Add);
-
-						// HACK: we are not guarenteed that this constraint has a model attached to it.
-						if (constraint.Model != null)
-						{
-							ORMCoreDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
-						}
-					}
-				}
+				AddTransactedModelElement(constraint, OialModelElementAction.Add);
+				FrameworkDomainModel.DelayValidateElement(link.Model, DelayValidateModel);
 			}
-
-			//[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
-			//private partial class SetContraintAddRule : AddRule
-			//{
-			//    public override void ElementAdded(ElementAddedEventArgs e)
-			//    {
-			//    }
-			//}
-
-			[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-			private partial class ConstraintChangeRule : ChangeRule
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint)
+		/// </summary>
+		private static void ConstraintChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			SetConstraint constraint = (SetConstraint)e.ModelElement;
+			if (IsValidConstraintType(constraint))
 			{
-				public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == SetConstraint.NameDomainPropertyId || attributeId == SetConstraint.ModalityDomainPropertyId)
 				{
-					IConstraint constraint = null;
-					if (IsValidConstraintType((ConstraintRoleSequenceHasRole)e.ModelElement, ref constraint))
-					{
-						AddTransactedModelElement((ModelElement)constraint, OialModelElementAction.Change);
-						ORMCoreDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
-					}
-				}
-			}
-
-			[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-			private partial class ConstraintDeleteRule : DeleteRule
-			{
-				public override void ElementDeleted(ElementDeletedEventArgs e)
-				{
-					IConstraint constraint = null;
-					if (IsValidConstraintType((ConstraintRoleSequenceHasRole)e.ModelElement, ref constraint))
-					{
-						AddTransactedModelElement((ModelElement)constraint, OialModelElementAction.Delete);
-						ORMCoreDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
-					}
+					AddTransactedModelElement(constraint, OialModelElementAction.Change);
+					FrameworkDomainModel.DelayValidateElement(constraint.Model, AbstractionModelIsForORMModel.DelayValidateModel);
 				}
 			}
 		}
+		/// <summary>
+		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint)
+		/// </summary>
+		private static void ConstraintDeleteRule(ElementDeletedEventArgs e)
+		{
+			ModelHasSetConstraint link = (ModelHasSetConstraint)e.ModelElement;
+			ORMModel model = link.Model;
+			SetConstraint constraint;
+			if (!model.IsDeleted && IsValidConstraintType((constraint = link.SetConstraint)))
+			{
+				AddTransactedModelElement(constraint, OialModelElementAction.Delete);
+				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ConstraintRoleAddRule(ElementAddedEventArgs e)
+		{
+			IConstraint constraint = ((ConstraintRoleSequenceHasRole)e.ModelElement).ConstraintRoleSequence.Constraint;
+			if (IsValidConstraintType(constraint))
+			{
+				AddTransactedModelElement((ModelElement)constraint, OialModelElementAction.Change);
+				ORMModel model = constraint.Model;
+				if (model != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				}
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ConstraintRoleDeletingRule(ElementDeletingEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
+			SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+			if (constraint != null &&
+				!constraint.IsDeleting &&
+				IsValidConstraintType(constraint))
+			{
+				AddTransactedModelElement(constraint, OialModelElementAction.Change);
+				ORMModel model = constraint.Model;
+				if (model != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				}
+			}
+		}
+		#endregion // Constraint rules
 	}
 }

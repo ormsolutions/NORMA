@@ -35,6 +35,7 @@ using Neumont.Tools.ORM.Shell.FactEditor;
 
 using OleInterop = Microsoft.VisualStudio.OLE.Interop;
 using DomainModel = Microsoft.VisualStudio.Modeling.DomainModel;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -441,14 +442,14 @@ namespace Neumont.Tools.ORM.Shell
 		protected sealed override IList<ModelingToolboxItem> CreateToolboxItems()
 		{
 			IList<ModelingToolboxItem> items;
-			ORMCoreDomainModel.InitializingToolboxItems = true;
+			FrameworkDomainModel.InitializingToolboxItems = true;
 			try
 			{
 				items = new ORMShapeToolboxHelper(this).CreateToolboxItems();
 			}
 			finally
 			{
-				ORMCoreDomainModel.InitializingToolboxItems = false;
+				FrameworkDomainModel.InitializingToolboxItems = false;
 			}
 
 			// Build up a dictionary of items so we can add filter strings. This is
@@ -962,6 +963,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>IEnumerable&lt;Type&gt;</returns>
 		public static IEnumerable<Type> GetAvailableDomainModels()
 		{
+			yield return typeof(Neumont.Tools.Modeling.FrameworkDomainModel);
 			yield return typeof(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel);
 			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel);
 			foreach (ORMExtensionType extension in GetAvailableCustomExtensions())

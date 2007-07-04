@@ -43,11 +43,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				constraint.IsInternal &&
 				null != (factType = link.Role.FactType))
 			{
-				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 				ObjectType nestingType = factType.NestingType;
 				if (nestingType != null)
 				{
-					ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					FrameworkDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				}
 			}
 		}
@@ -66,7 +66,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				constraint.IsInternal &&
 				null != (factType = link.Role.FactType))
 			{
-				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ImpliedObjectificationFactTypeHasRoleAddRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
-			ORMCoreDomainModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
+			FrameworkDomainModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
 			ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule
@@ -93,12 +93,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 			if (!factType.IsDeleting)
 			{
-				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 				Objectification objectification;
 				if (null != (objectification = factType.Objectification) &&
 					!objectification.IsDeleting)
 				{
-					ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					FrameworkDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				}
 			}
 		}
@@ -147,7 +147,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType nestingType = facts[0].NestingType;
 					if (nestingType != null)
 					{
-						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+						FrameworkDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 					}
 				}
 			}
@@ -172,7 +172,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (objectification = testFact.Objectification) &&
 					!objectification.IsDeleting)
 				{
-					ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					FrameworkDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				}
 			}
 		}
@@ -202,7 +202,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				null != (objectification = objectType.Objectification) &&
 				!objectification.IsDeleting)
 			{
-				ORMCoreDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+				FrameworkDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule
@@ -312,7 +312,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				nestingType = objectification.NestingType;
 			}
-			ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+			FrameworkDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 			Store store = nestedFactType.Store;
 			ORMModel model = nestedFactType.Model;
 
@@ -415,7 +415,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Checking the implicit objectification pattern here is difficult due
 						// to the 'deleting' state, and the exception is not technically necessary
 						// given that the objects being lost are auto-generated in the first place.
-						ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
+						FrameworkDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 				if (!(nestingType.IsDeleting || nestingType.IsDeleted))
@@ -449,7 +449,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
+					FrameworkDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
 				}
 			}
 		}
@@ -822,13 +822,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			for (int i = 0; i < factsCount; ++i)
 			{
 				FactType factType = facts[i];
-				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 				if (verifyPreferredIdentifier)
 				{
 					ObjectType nestingType = factType.NestingType;
 					if (nestingType != null)
 					{
-						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+						FrameworkDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 					}
 				}
 			}
@@ -1283,7 +1283,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							// In this case, we can just let our delay process method figure out which uniqueness constraint (if any)
 							// should be used by the new objectifying type as its preferred identifier.
-							ORMCoreDomainModel.DelayValidateElement(newObjectifyingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+							FrameworkDomainModel.DelayValidateElement(newObjectifyingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 							if (!oldObjectTypeCanKeepPreferredIdentifier)
 							{
 								preferredIdentifierLink.Delete();

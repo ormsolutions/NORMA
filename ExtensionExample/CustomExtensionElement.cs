@@ -161,26 +161,22 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		{
 			return this.GetType().Name;
 		}
-	}
-	#endregion // MyCustomExtensionElement class
-	#region ExtensionAddRule class
-	/// <summary>
-	/// Rule classes are defined to respond to changes in the object
-	/// model that occur during user editing. In this case, we're adding
-	/// our custom extension element to a Role object when it is added to
-	/// a FactType via the FactTypeHasRole relationship.
-	/// </summary>
-	[RuleOn(typeof(FactTypeHasRole))] // AddRule
-	public sealed partial class ExtensionAddRule : AddRule
-	{
+		#region RoleAddRule rule
 		/// <summary>
-		/// Add our custom extension properties to a role when it is added to a fact type
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole)
+		/// Rules are defined to respond to changes in the object
+		/// model that occur during user editing. In this case, we're adding
+		/// our custom extension element to a Role object when it is added to
+		/// a FactType via the FactTypeHasRole relationship. See the
+		/// ExtensionDomainModel.AttachRules.xml file to see how this
+		/// method is attached as a rule.
 		/// </summary>
-		public sealed override void ElementAdded(ElementAddedEventArgs e)
+		private static void RoleAddRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasRole factTypeHasRole = (FactTypeHasRole)e.ModelElement;
 			ExtensionElementUtility.AddExtensionElement(factTypeHasRole.Role, new MyCustomExtensionElement(factTypeHasRole.Store));
 		}
+		#endregion // RoleAddRule rule
 	}
-	#endregion // ExtensionAddRule class
+	#endregion // MyCustomExtensionElement class
 }

@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections.ObjectModel;
+using Neumont.Tools.Modeling;
 
 #endregion
 
@@ -153,7 +154,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType factType = linkReadingOrder.FactType;
 			if (factType != null)
 			{
-				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateReadingOrderCollation);
+				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateReadingOrderCollation);
 			}
 
 			int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);

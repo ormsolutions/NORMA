@@ -63,7 +63,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems)
+			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}

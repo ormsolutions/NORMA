@@ -123,25 +123,22 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		#endregion // ModelError Overrides
 		#region ExtensionErrorRules
 		/// <summary>
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType)
 		/// This Rule calls the DelayValidateElement method when a ObjectType is added to the Diagram.
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType))] // AddRule
-		private sealed partial class ExtensionObjectTypeAddRule : AddRule
+		private static void ExtensionObjectTypeAddRule(ElementAddedEventArgs e)
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectType, DelayValidateObjectTypeHasMeaningfulNameError);
-			}
+			FrameworkDomainModel.DelayValidateElement(((ModelHasObjectType)e.ModelElement).ObjectType, DelayValidateObjectTypeHasMeaningfulNameError);
 		}
 		/// <summary>
-		/// This method calls the DelayValidateElement method when an ObjectType has been changed.
+		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+		/// This method calls the DelayValidateElement method when the name of an ObjectType has been changed.
 		/// </summary>
-		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed partial class ExtensionObjectTypeChangeRule : ChangeRule
+		private static void ExtensionObjectTypeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			if (e.DomainProperty.Id == ObjectType.NameDomainPropertyId)
 			{
-				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ObjectType), DelayValidateObjectTypeHasMeaningfulNameError);
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateObjectTypeHasMeaningfulNameError);
 			}
 		}
 		#endregion // ExtensionErrorRules

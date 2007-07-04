@@ -367,11 +367,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			if (ORMCoreDomainModel.DelayValidateElement(this, DelayValidateValueRangeValues))
+			if (FrameworkDomainModel.DelayValidateElement(this, DelayValidateValueRangeValues))
 			{
 				OnTextChanged();
 			}
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -483,12 +483,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (constraint != null && !constraint.IsDeleted)
 			{
-				if (ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeValues))
+				if (FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeValues))
 				{
 					// Add a text change the first time this is called
 					constraint.OnTextChanged();
 				}
-				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
 			}
 		}
 		#region DataTypeRolePlayerChangeRule
