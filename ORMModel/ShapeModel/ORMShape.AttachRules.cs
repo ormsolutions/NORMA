@@ -1564,7 +1564,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.RoleValueConstraintAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
 		private sealed class SetComparisonConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			public SetComparisonConstraintAddedRuleClass()
@@ -1575,7 +1575,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
 			/// /// <summary>
-			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 			/// /// </summary>
 			/// private static void SetComparisonConstraintAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -1588,7 +1588,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SetComparisonConstraintAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
 		private sealed class SetConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			public SetConstraintAddedRuleClass()
@@ -1599,7 +1599,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Provide the following method in class: 
 			/// Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel
 			/// /// <summary>
-			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 			/// /// </summary>
 			/// private static void SetConstraintAddedRule(ElementAddedEventArgs e)
 			/// {

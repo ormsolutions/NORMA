@@ -214,10 +214,10 @@
 				<arg:RuleOn targetType="RoleHasValueConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="SetComparisonConstraintAddedRule">
-				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasSetComparisonConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="SetConstraintAddedRule">
-				<arg:RuleOn targetType="ModelHasSetComparisonConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="ValueTypeValueConstraintAddedRule">
 				<arg:RuleOn targetType="ValueTypeHasValueConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>

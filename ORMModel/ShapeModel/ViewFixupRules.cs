@@ -273,7 +273,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasConstraint fixup
 		#region SetComparisonConstraintAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void SetComparisonConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -286,7 +286,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SetComparisonConstraintAddedRule
 		#region SetConstraintAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void SetConstraintAddedRule(ElementAddedEventArgs e)
 		{
