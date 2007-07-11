@@ -71,6 +71,9 @@
 	<xs:element name="ReflectedType" type="ReflectedTypeType"/>
 	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>
 	<xs:complexType name="ReflectedTypeType">
+		<xs:annotation>
+			<xs:documentation>An class that needs to be included during reflection, but is not a rule. Reflected rule types extend this type.</xs:documentation>
+		</xs:annotation>
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The simple name of the class without a namespace to treat as a rule class. If the class name contains delimiters (. or +), then the delimited names are treated as nested classes.</xs:documentation>
@@ -83,6 +86,9 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="RuleType">
+		<xs:annotation>
+			<xs:documentation>A rule class where the full class definition is included in the user code instead of the generated code.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ReflectedTypeType">
 				<xs:attributeGroup ref="alwaysOnAttributeGroup"/>
@@ -114,22 +120,68 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="AutoRule" type="AutoRuleType" abstract="true"/>
-	<xs:element name="AddRule" substitutionGroup="AutoRule"/>
-	<xs:element name="ChangeRule" substitutionGroup="AutoRule"/>
-	<xs:element name="DeleteRule" substitutionGroup="AutoRule"/>
-	<xs:element name="DeletingRule" substitutionGroup="AutoRule"/>
-	<xs:element name="MoveRule" substitutionGroup="AutoRule"/>
-	<xs:element name="RolePlayerChangeRule" substitutionGroup="AutoRule"/>
-	<xs:element name="RolePlayerPositionChangeRule" substitutionGroup="AutoRule"/>
-	<xs:element name="TransactionBeginningRule" substitutionGroup="AutoRule"/>
-	<xs:element name="TransactionCommittingRule" substitutionGroup="AutoRule"/>
-	<xs:element name="TransactionRollingBackRule" substitutionGroup="AutoRule"/>
+	<xs:element name="AddRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating an element was added. The user provides a static method with an ElementAddedEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ChangeRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that the value of a domain property on an element was changed. The user provides a static method with an ElementPropertyChangedEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DeleteRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that an element has been deleted. The user provides a static method with an ElementDeletedEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DeletingRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that an element is about to be deleted. The user provides a static method with an ElementDeletingEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="MoveRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that an element is being moved from one partition to another. The user provides a static method with an ElementMovedEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RolePlayerChangeRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that the role player of an ElementLink relationship has been modified. The user provides a static method with a RolePlayerChangedEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RolePlayerPositionChangeRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that an element has been directly moved (not as a result of an Add/Insert/Delete operation) from one position in a collection to another. The user provides a static method with a RolePlayerOrderChangedEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TransactionBeginningRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that a new top-level transaction is beginning. The user provides a static method with a TransactionBeginningEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TransactionCommittingRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that a top-level transaction has been committed. The user provides a static method with a TransactionCommitEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TransactionRollingBackRule" substitutionGroup="AutoRule">
+		<xs:annotation>
+			<xs:documentation>A rule indicating that a top-level transaction is being rolled back. The user provides a static method with a TransactionRollbackEventArgs parameter.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
 	<xs:complexType name="AutoRuleType">
+		<xs:annotation>
+			<xs:documentation>A generated rule. The user provides a static callback method, and the rule class is provided by the generator.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="RuleOn" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="PriorityAdjustment" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>A custom priority adjustment. Used to either replace or additively adjust the standard values from the priority attribute.</xs:documentation>
+							</xs:annotation>
 							<xs:complexType>
 								<xs:sequence>
 									<xs:element ref="plx:expressionElement"/>
@@ -153,9 +205,21 @@
 						</xs:annotation>
 						<xs:simpleType>
 							<xs:restriction base="xs:token">
-								<xs:enumeration value="Inline"/>
-								<xs:enumeration value="LocalCommit"/>
-								<xs:enumeration value="TopLevelCommit"/>
+								<xs:enumeration value="Inline">
+									<xs:annotation>
+										<xs:documentation>(default) The rule fires before the object model change that triggered it returns control to the calling code.</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+								<xs:enumeration value="LocalCommit">
+									<xs:annotation>
+										<xs:documentation>The rule fires when the transaction it occurred in is committed. Fires with TopLevelCommit rules if the transaction is not a nested transaction.</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+								<xs:enumeration value="TopLevelCommit">
+									<xs:annotation>
+										<xs:documentation>The rule fires when the top-level transaction it occurred in is committed. Fires with LocalCommit rules on the same transaction.</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
@@ -169,24 +233,64 @@
 									<xs:restriction base="xs:token">
 										<xs:enumeration value="BeforeDelayValidateRulePriority">
 											<xs:annotation>
-												<xs:documentation>Run this rule before delay validation</xs:documentation>
+												<xs:documentation>The rule is run before delay validation. There is plenty of space between this value and DelayValidateRulePriority for small adjustments.</xs:documentation>
 											</xs:annotation>
 										</xs:enumeration>
 										<xs:enumeration value="DelayValidateRulePriority">
 											<xs:annotation>
-												<xs:documentation>The rule priority where default validation runs.</xs:documentation>
+												<xs:documentation>The rule priority when default validation runs.</xs:documentation>
 											</xs:annotation>
 										</xs:enumeration>
-										<xs:enumeration value="DiagramFixupConstants.AddClrElementRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.AddOrphanedLinkForPresentationViewsSubjectLink"/>
-										<xs:enumeration value="DiagramFixupConstants.AddPresentationViewsSubjectLinkForOrphanedLink"/>
-										<xs:enumeration value="DiagramFixupConstants.AddShapeRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.AddShapeParentExistRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.AddConnectionRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.ResizeParentRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.ShapeAnchoringRulePriority"/>
-										<xs:enumeration value="DiagramFixupConstants.LineReroutingRulePriority"/>
+										<xs:enumeration value="DiagramFixupConstants.AddClrElementRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AddOrphanedLinkForPresentationViewsSubjectLink">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AddPresentationViewsSubjectLinkForOrphanedLink">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AddShapeRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AddShapeParentExistRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AddConnectionRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.AutoLayoutShapesRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.ResizeParentRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.ShapeAnchoringRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DiagramFixupConstants.LineReroutingRulePriority">
+											<xs:annotation>
+												<xs:documentation>Standard Diagram fixup value, prioritized in the order shown here.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:union>
