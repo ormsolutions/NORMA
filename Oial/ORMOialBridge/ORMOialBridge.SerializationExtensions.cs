@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region ORMToORMAbstractionBridgeDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction")]
 	partial class ORMToORMAbstractionBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMToORMAbstractionBridgeDomainModel' extension model</summary>

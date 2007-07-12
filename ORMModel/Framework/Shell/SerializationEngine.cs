@@ -23,6 +23,7 @@
 // To temporary disable this, uncomment the following line.
 //#define WRITE_ALL_DEFAULT_LINKS
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -959,6 +960,7 @@ namespace Neumont.Tools.Modeling.Shell
 	#endregion // CustomSerializedElementMatch struct
 	#endregion // Public Classes
 	#region Public Structures
+	#region CustomSerializedRootRelationshipContainer struct
 	/// <summary>
 	/// Used with <see cref="ICustomSerializedDomainModel.GetRootRelationshipContainers"/> method
 	/// to represent relationships that are not serialized under any model.
@@ -1035,6 +1037,8 @@ namespace Neumont.Tools.Modeling.Shell
 			return null;
 		}
 	}
+	#endregion // CustomSerializedRootRelationshipContainer struct
+	#region CustomSerializedStandaloneRelationshipRole struct
 	/// <summary>
 	/// Used with the <see cref="ICustomSerializedDomainModel.GetRootRelationshipContainers"/> method
 	/// to represent a single role to be written to a root link element as represented by the <see cref="CustomSerializedStandaloneRelationship"/> structure.
@@ -1068,6 +1072,8 @@ namespace Neumont.Tools.Modeling.Shell
 			myDomainRoleId = domainRoleId;
 		}
 	}
+	#endregion // CustomSerializedStandaloneRelationshipRole struct
+	#region CustomSerializedStandaloneRelationship struct
 	/// <summary>
 	/// Used with the <see cref="ICustomSerializedDomainModel.GetRootRelationshipContainers"/> method
 	/// to represent a single relationship serialized inside a <see cref="CustomSerializedRootRelationshipContainer"/>.
@@ -1185,6 +1191,7 @@ namespace Neumont.Tools.Modeling.Shell
 			return null;
 		}
 	}
+	#endregion // CustomSerializedStandaloneRelationship struct
 	#endregion // Public Structures
 	#region Public Interfaces
 	#region IDomainModelEnablesRulesAfterDeserialization interface
@@ -1332,6 +1339,75 @@ namespace Neumont.Tools.Modeling.Shell
 	}
 	#endregion // ICustomSerializedElement interface
 	#endregion Public Interfaces
+	#region Public Attributes
+	/// <summary>
+	/// An attribute to associated with <see cref="DomainModel"/> that indicates all of the
+	/// xml namespaces associated with that model.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+	public sealed class CustomSerializedXmlNamespacesAttribute : Attribute, IEnumerable<string>
+	{
+		private string[] myNamespaces;
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with a single xml namespace.
+		/// </summary>
+		/// <param name="xmlNamespace">The namespace to associate with this domain model.</param>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace)
+		{
+			if (xmlNamespace == null)
+			{
+				xmlNamespace = "";
+			}
+			myNamespaces = new string[] { xmlNamespace };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/>.
+		/// </summary>
+		/// <param name="xmlNamespaces">The namespace to associate with this domain model.</param>
+		public CustomSerializedXmlNamespacesAttribute(params string[] xmlNamespaces)
+		{
+			if (xmlNamespaces == null)
+			{
+				xmlNamespaces = new string[0];
+			}
+			myNamespaces = xmlNamespaces;
+		}
+		/// <summary>
+		/// Return the total number of namespaces defined on this DomainModel
+		/// </summary>
+		public int Count
+		{
+			get
+			{
+				return (myNamespaces as ICollection).Count;
+			}
+		}
+		/// <summary>
+		/// Return the namespace at this index
+		/// </summary>
+		/// <param name="index">An index, bounded by <see cref="Count"/></param>
+		/// <returns>An xml namespace string</returns>
+		public string this[int index]
+		{
+			get
+			{
+				return myNamespaces[index];
+			}
+		}
+		#region IEnumerable<string> Implementation
+		IEnumerator<string> IEnumerable<string>.GetEnumerator()
+		{
+			return (myNamespaces as IEnumerable<string>).GetEnumerator();
+		}
+		#endregion // IEnumerable<string> implementation
+		#region IEnumerable implementation
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return myNamespaces.GetEnumerator();
+		}
+		#endregion // IEnumerable implementation
+	}
+	#endregion // Public Attributes
 	#region Serialization Routines
 	/// <summary>
 	/// Serialization routines

@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.OialDcilBridge
 {
 	#region OialDcilBridgeDomainModel model serialization
+	[CustomSerializedXmlNamespaces()]
 	partial class OialDcilBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'OialDcilBridgeDomainModel' extension model</summary>

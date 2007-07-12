@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ORMShapeDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram")]
 	partial class ORMShapeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMShapeDomainModel' extension model</summary>

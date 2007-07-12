@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORM.CustomProperties
 {
 	#region CustomPropertiesDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Preview/CustomProperties")]
 	sealed partial class CustomPropertiesDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'CustomPropertiesDomainModel' extension model</summary>

@@ -30,6 +30,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -125,8 +126,6 @@ namespace Neumont.Tools.ORM.Shell
 					Debug.Assert(stream != null);
 
 					stream = CleanupStream(stream, checkedTypes);
-					string fileContents = (new StreamReader(stream)).ReadToEnd();
-					GC.KeepAlive(fileContents);
 					docData.ReloadFromStream(stream);
 				}
 				finally
@@ -144,21 +143,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private sealed class NamespaceUtility
 		{
-			private readonly List<string> _namespaces;
+			private readonly string[] _namespaces;
 			private readonly List<string> _addedNamespaces;
 			private bool _hasEnumerator;
-			private List<string>.Enumerator _enumerator;
+			private IEnumerator<string> _enumerator;
 			private bool _hasCurrent;
 			private static readonly Random random = new Random();
 			/// <summary>
 			/// Default Constructor for the <see cref="NamespaceUtility"/>.
 			/// </summary>
-			/// <param name="namespaces">a <see cref="List{String}"/> of available namespaces.</param>
-			public NamespaceUtility(List<string> namespaces)
+			/// <param name="namespaces">An array of available namespaces.</param>
+			public NamespaceUtility(string[] namespaces)
 			{
 				this._namespaces = namespaces;
-				namespaces.Sort();
-				this._addedNamespaces = new List<string>(namespaces.Count);
+				Array.Sort<string>(namespaces);
+				this._addedNamespaces = new List<string>(namespaces.Length);
 			}
 			/// <summary>
 			/// This method checks to see if the namespace was added via the ExtensionManager Dialogue
@@ -186,7 +185,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				if (!this._hasEnumerator)
 				{
-					this._enumerator = this._namespaces.GetEnumerator();
+					this._enumerator = (this._namespaces as IEnumerable<string>).GetEnumerator();
 					this._hasEnumerator = true;
 				}
 				this._hasCurrent = this._enumerator.MoveNext();
@@ -206,7 +205,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <returns>true if the namespace was selected false if it was not.</returns>
 			public bool isNamespaceSelected(string namespaceUri)
 			{
-				return this._namespaces.BinarySearch(namespaceUri) >= 0;
+				return Array.BinarySearch<string>(this._namespaces, namespaceUri) >= 0;
 			}
 			/// <summary>
 			/// This is a Randomizer to get around the fact that we do not have unique identifiers
@@ -229,10 +228,46 @@ namespace Neumont.Tools.ORM.Shell
 			MemoryStream outputStream = new MemoryStream((int)stream.Length);
 			XsltArgumentList argList = new XsltArgumentList();
 
-			List<string> namespaces = new List<string>(extensionTypes.Count);
-			foreach (ORMExtensionType ormExtensionType in extensionTypes)
+			int extensionsCount = extensionTypes.Count;
+			CustomSerializedXmlNamespacesAttribute[] namespaceAttributes = new CustomSerializedXmlNamespacesAttribute[extensionsCount];
+			int totalNamespaceCount = 0;
+			for (int i = 0; i < extensionsCount; ++i)
 			{
-				namespaces.Add(ormExtensionType.NamespaceUri);
+				object[] attributes = extensionTypes[i].Type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
+				CustomSerializedXmlNamespacesAttribute currentAttribute;
+				int currentNamespaceCount;
+				if (attributes != null &&
+					attributes.Length != 0 &&
+					0 != (currentNamespaceCount = (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count))
+				{
+					totalNamespaceCount += currentNamespaceCount;
+					namespaceAttributes[i] = currentAttribute;
+				}
+				else
+				{
+					// Just use the default one provided
+					totalNamespaceCount += 1;
+				}
+			}
+			string[] namespaces = new string[totalNamespaceCount];
+			int nextNamespaceIndex = 0;
+			for (int i = 0; i < extensionsCount; ++i)
+			{
+				CustomSerializedXmlNamespacesAttribute currentAttribute;
+				if (null != (currentAttribute = namespaceAttributes[i]))
+				{
+					int attributeCount = currentAttribute.Count;
+					for (int j = 0; j < attributeCount; ++j)
+					{
+						namespaces[nextNamespaceIndex] = currentAttribute[j];
+						++nextNamespaceIndex;
+					}
+				}
+				else
+				{
+					namespaces[nextNamespaceIndex] = extensionTypes[i].NamespaceUri;
+					++nextNamespaceIndex;
+				}
 			}
 			argList.AddExtensionObject("urn:schemas-neumont-edu:ORM:NamespacesUtility", new NamespaceUtility(namespaces));
 			XslCompiledTransform transform = GetExtensionStripperTransform();

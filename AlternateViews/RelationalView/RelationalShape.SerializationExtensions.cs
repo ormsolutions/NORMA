@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	#region RelationalShapeDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Views/RelationalView")]
 	partial class RelationalShapeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model</summary>

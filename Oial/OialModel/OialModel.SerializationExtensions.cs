@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.ORMAbstraction
 {
 	#region AbstractionDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core", "http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core")]
 	partial class AbstractionDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'AbstractionDomainModel' extension model</summary>

@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell;
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
 	#region ConceptualDatabaseDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase", "http://schemas.orm.net/DIL/DILDT")]
 	partial class ConceptualDatabaseDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ConceptualDatabaseDomainModel' extension model</summary>
