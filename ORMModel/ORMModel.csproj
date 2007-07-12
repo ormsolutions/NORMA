@@ -357,7 +357,6 @@
     <Compile Include="Shell\IORMSelectionContainer.cs" />
     <Compile Include="Shell\ORMReadingEditor.cs" />
     <Compile Include="Shell\ORMSamplePopulationToolWindow.cs" />
-    <Compile Include="Shell\SerializationEngine.cs" />
     <Compile Include="Shell\ORMDesignerSettings.cs" />
     <Compile Include="Shell\ORMToolWindow.cs" />
     <Compile Include="Shell\ORMVerbalizationToolWindow.cs" />
@@ -419,6 +418,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
+    <Compile Include="Framework\Shell\SerializationEngine.cs" />
     <Compile Include="ObjectModel\Design\ObjectificationRolePlayerPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\Editors\ModelErrorDisplayFilterEditor.cs" />
     <Compile Include="ObjectModel\ModelErrorDisplayFilter.cs" />
