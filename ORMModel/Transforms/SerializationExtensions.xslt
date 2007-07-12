@@ -2011,25 +2011,15 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$ModelName} model serialization"/>
 			</plx:trailingInfo>
-			<xsl:variable name="namespaceParamsFragment">
-				<xsl:for-each select="$namespaces">
-					<plx:passParam>
-						<plx:string data="{@URI}"/>
-					</plx:passParam>
-				</xsl:for-each>
-			</xsl:variable>
-			<plx:attribute dataTypeName="CustomSerializedXmlNamespaces">
-				<xsl:choose>
-					<xsl:when test="count($namespaces)=1">
-						<xsl:copy-of select="$namespaceParamsFragment"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:passParamArray dataTypeName=".string" dataTypeIsSimpleArray="true" >
-							<xsl:copy-of select="$namespaceParamsFragment"/>
-						</plx:passParamArray>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:attribute>
+			<xsl:if test="$namespaces">
+				<plx:attribute dataTypeName="CustomSerializedXmlNamespaces">
+					<xsl:for-each select="$namespaces">
+						<plx:passParam>
+							<plx:string data="{@URI}"/>
+						</plx:passParam>
+					</xsl:for-each>
+				</plx:attribute>
+			</xsl:if>
 			<plx:implementsInterface dataTypeName="ICustomSerializedDomainModel"/>
 			<plx:field name="XmlNamespace" visibility="public" static="true" readOnly="true" dataTypeName=".string">
 				<plx:leadingInfo>

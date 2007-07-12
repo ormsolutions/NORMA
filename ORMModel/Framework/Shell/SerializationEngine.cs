@@ -1340,6 +1340,7 @@ namespace Neumont.Tools.Modeling.Shell
 	#endregion // ICustomSerializedElement interface
 	#endregion Public Interfaces
 	#region Public Attributes
+	#region CustomSerializedXmlNamespacesAttribute class
 	/// <summary>
 	/// An attribute to associated with <see cref="DomainModel"/> that indicates all of the
 	/// xml namespaces associated with that model.
@@ -1347,31 +1348,87 @@ namespace Neumont.Tools.Modeling.Shell
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
 	public sealed class CustomSerializedXmlNamespacesAttribute : Attribute, IEnumerable<string>
 	{
+		#region Member variables
 		private string[] myNamespaces;
+		#endregion // Member variables
+		#region Constructors (lots of overrides to eliminate CLSCompliant attribute array warnings)
 		/// <summary>
 		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with a single xml namespace.
 		/// </summary>
 		/// <param name="xmlNamespace">The namespace to associate with this domain model.</param>
 		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace)
 		{
-			if (xmlNamespace == null)
-			{
-				xmlNamespace = "";
-			}
-			myNamespaces = new string[] { xmlNamespace };
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace) };
 		}
 		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/>.
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
 		/// </summary>
-		/// <param name="xmlNamespaces">The namespace to associate with this domain model.</param>
-		public CustomSerializedXmlNamespacesAttribute(params string[] xmlNamespaces)
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2)
 		{
-			if (xmlNamespaces == null)
-			{
-				xmlNamespaces = new string[0];
-			}
-			myNamespaces = xmlNamespaces;
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2) };
 		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7, string xmlNamespace8)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7), EnsureNotNull(xmlNamespace8) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7, string xmlNamespace8, string xmlNamespace9)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7), EnsureNotNull(xmlNamespace8), EnsureNotNull(xmlNamespace9) };
+		}
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
+		/// </summary>
+		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7, string xmlNamespace8, string xmlNamespace9, string xmlNamespace10)
+		{
+			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7), EnsureNotNull(xmlNamespace8), EnsureNotNull(xmlNamespace9), EnsureNotNull(xmlNamespace10) };
+		}
+		private static string EnsureNotNull(string s)
+		{
+			return s ?? "";
+		}
+		#endregion // Constructors
+		#region Public accessor properties
 		/// <summary>
 		/// Return the total number of namespaces defined on this DomainModel
 		/// </summary>
@@ -1394,6 +1451,7 @@ namespace Neumont.Tools.Modeling.Shell
 				return myNamespaces[index];
 			}
 		}
+		#endregion // Public accessor properties
 		#region IEnumerable<string> Implementation
 		IEnumerator<string> IEnumerable<string>.GetEnumerator()
 		{
@@ -1407,6 +1465,7 @@ namespace Neumont.Tools.Modeling.Shell
 		}
 		#endregion // IEnumerable implementation
 	}
+	#endregion // CustomSerializedXmlNamespacesAttribute class
 	#endregion // Public Attributes
 	#region Serialization Routines
 	/// <summary>
