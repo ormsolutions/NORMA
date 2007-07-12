@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling.Shell;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
@@ -25,11 +24,11 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.OialDcilBridge
 {
 	#region OialDcilBridgeDomainModel model serialization
-	partial class OialDcilBridgeDomainModel : IORMCustomSerializedDomainModel
+	partial class OialDcilBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'OialDcilBridgeDomainModel' extension model</summary>
 		public static readonly string XmlNamespace = "";
-		/// <summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
 			get
@@ -37,62 +36,62 @@ namespace Neumont.Tools.OialDcilBridge
 				return null;
 			}
 		}
-		string IORMCustomSerializedDomainModel.DefaultElementPrefix
+		string ICustomSerializedDomainModel.DefaultElementPrefix
 		{
 			get
 			{
 				return DefaultElementPrefix;
 			}
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[0, 3];
 			return ret;
 		}
-		string[,] IORMCustomSerializedDomainModel.GetCustomElementNamespaces()
+		string[,] ICustomSerializedDomainModel.GetCustomElementNamespaces()
 		{
 			return GetCustomElementNamespaces();
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
-		/// <summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			return true;
 		}
-		bool IORMCustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
+		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			return this.ShouldSerializeDomainClass(store, classInfo);
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[0];
 		}
-		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
+		Guid[] ICustomSerializedDomainModel.GetRootElementClasses()
 		{
 			return GetRootElementClasses();
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
-		protected static ORMCustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
+		/// <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+		protected static CustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{
 			return null;
 		}
-		ORMCustomSerializedRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		CustomSerializedRootRelationshipContainer[] ICustomSerializedDomainModel.GetRootRelationshipContainers()
 		{
 			return GetRootRelationshipContainers();
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
+		Guid ICustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
 		{
 			return MapRootElement(xmlNamespace, elementName);
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
 			Collection<string> validNamespaces = OialDcilBridgeDomainModel.myValidNamespaces;
@@ -113,7 +112,7 @@ namespace Neumont.Tools.OialDcilBridge
 			}
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedDomainModel.MapClassName(string xmlNamespace, string elementName)
+		Guid ICustomSerializedDomainModel.MapClassName(string xmlNamespace, string elementName)
 		{
 			return MapClassName(xmlNamespace, elementName);
 		}

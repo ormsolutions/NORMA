@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.Modeling.Shell;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
@@ -25,11 +24,11 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region ORMToORMAbstractionBridgeDomainModel model serialization
-	partial class ORMToORMAbstractionBridgeDomainModel : IORMCustomSerializedDomainModel
+	partial class ORMToORMAbstractionBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMToORMAbstractionBridgeDomainModel' extension model</summary>
 		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction";
-		/// <summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
 			get
@@ -37,14 +36,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				return "ormtooil";
 			}
 		}
-		string IORMCustomSerializedDomainModel.DefaultElementPrefix
+		string ICustomSerializedDomainModel.DefaultElementPrefix
 		{
 			get
 			{
 				return DefaultElementPrefix;
 			}
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[1, 3];
@@ -53,75 +52,75 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			ret[0, 2] = "ORMToORMAbstraction.xsd";
 			return ret;
 		}
-		string[,] IORMCustomSerializedDomainModel.GetCustomElementNamespaces()
+		string[,] ICustomSerializedDomainModel.GetCustomElementNamespaces()
 		{
 			return GetCustomElementNamespaces();
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
-		private static ORMCustomSerializedRootRelationshipContainer[] myRootRelationshipContainers;
-		/// <summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+		private static CustomSerializedRootRelationshipContainer[] myRootRelationshipContainers;
+		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			return true;
 		}
-		bool IORMCustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
+		bool ICustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			return this.ShouldSerializeDomainClass(store, classInfo);
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[0];
 		}
-		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
+		Guid[] ICustomSerializedDomainModel.GetRootElementClasses()
 		{
 			return GetRootElementClasses();
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
-		protected static ORMCustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
+		/// <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+		protected static CustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{
-			ORMCustomSerializedRootRelationshipContainer[] retVal = ORMToORMAbstractionBridgeDomainModel.myRootRelationshipContainers;
+			CustomSerializedRootRelationshipContainer[] retVal = ORMToORMAbstractionBridgeDomainModel.myRootRelationshipContainers;
 			if (retVal == null)
 			{
-				retVal = new ORMCustomSerializedRootRelationshipContainer[]{
-					new ORMCustomSerializedRootRelationshipContainer("ormtooil", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", new ORMCustomSerializedStandaloneRelationship[]{
-						new ORMCustomSerializedStandaloneRelationship(AbstractionModelIsForORMModel.DomainClassId, new ORMCustomSerializedStandaloneRelationshipRole[]{
-							new ORMCustomSerializedStandaloneRelationshipRole("AbstractionModel", AbstractionModelIsForORMModel.AbstractionModelDomainRoleId),
-							new ORMCustomSerializedStandaloneRelationshipRole("ORMModel", AbstractionModelIsForORMModel.ORMModelDomainRoleId)}, null, null, null),
-						new ORMCustomSerializedStandaloneRelationship(FactTypeMapsTowardsRole.DomainClassId, new ORMCustomSerializedStandaloneRelationshipRole[]{
-							new ORMCustomSerializedStandaloneRelationshipRole("FactType", FactTypeMapsTowardsRole.FactTypeDomainRoleId),
-							new ORMCustomSerializedStandaloneRelationshipRole("TowardsRole", FactTypeMapsTowardsRole.TowardsRoleDomainRoleId)}, null, null, null),
-						new ORMCustomSerializedStandaloneRelationship(ConceptTypeIsForObjectType.DomainClassId, new ORMCustomSerializedStandaloneRelationshipRole[]{
-							new ORMCustomSerializedStandaloneRelationshipRole("ConceptType", ConceptTypeIsForObjectType.ConceptTypeDomainRoleId),
-							new ORMCustomSerializedStandaloneRelationshipRole("ObjectType", ConceptTypeIsForObjectType.ObjectTypeDomainRoleId)}, null, null, null),
-						new ORMCustomSerializedStandaloneRelationship(ConceptTypeChildHasPathFactType.DomainClassId, new ORMCustomSerializedStandaloneRelationshipRole[]{
-							new ORMCustomSerializedStandaloneRelationshipRole("ConceptTypeChild", ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId),
-							new ORMCustomSerializedStandaloneRelationshipRole("PathFactType", ConceptTypeChildHasPathFactType.PathFactTypeDomainRoleId)}, null, null, null),
-						new ORMCustomSerializedStandaloneRelationship(InformationTypeFormatIsForValueType.DomainClassId, new ORMCustomSerializedStandaloneRelationshipRole[]{
-							new ORMCustomSerializedStandaloneRelationshipRole("InformationTypeFormat", InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId),
-							new ORMCustomSerializedStandaloneRelationshipRole("ValueType", InformationTypeFormatIsForValueType.ValueTypeDomainRoleId)}, null, null, null),
-						new ORMCustomSerializedStandaloneRelationship(UniquenessIsForUniquenessConstraint.DomainClassId, new ORMCustomSerializedStandaloneRelationshipRole[]{
-							new ORMCustomSerializedStandaloneRelationshipRole("AbstractionUniquenessConstraint", UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId),
-							new ORMCustomSerializedStandaloneRelationshipRole("ORMUniquenessConstraint", UniquenessIsForUniquenessConstraint.UniquenessConstraintDomainRoleId)}, null, null, null)})};
+				retVal = new CustomSerializedRootRelationshipContainer[]{
+					new CustomSerializedRootRelationshipContainer("ormtooil", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", new CustomSerializedStandaloneRelationship[]{
+						new CustomSerializedStandaloneRelationship(AbstractionModelIsForORMModel.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("AbstractionModel", AbstractionModelIsForORMModel.AbstractionModelDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ORMModel", AbstractionModelIsForORMModel.ORMModelDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(FactTypeMapsTowardsRole.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("FactType", FactTypeMapsTowardsRole.FactTypeDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("TowardsRole", FactTypeMapsTowardsRole.TowardsRoleDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(ConceptTypeIsForObjectType.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("ConceptType", ConceptTypeIsForObjectType.ConceptTypeDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ObjectType", ConceptTypeIsForObjectType.ObjectTypeDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(ConceptTypeChildHasPathFactType.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("ConceptTypeChild", ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("PathFactType", ConceptTypeChildHasPathFactType.PathFactTypeDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(InformationTypeFormatIsForValueType.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("InformationTypeFormat", InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ValueType", InformationTypeFormatIsForValueType.ValueTypeDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(UniquenessIsForUniquenessConstraint.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("AbstractionUniquenessConstraint", UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ORMUniquenessConstraint", UniquenessIsForUniquenessConstraint.UniquenessConstraintDomainRoleId)}, null, null, null)})};
 				ORMToORMAbstractionBridgeDomainModel.myRootRelationshipContainers = retVal;
 			}
 			return retVal;
 		}
-		ORMCustomSerializedRootRelationshipContainer[] IORMCustomSerializedDomainModel.GetRootRelationshipContainers()
+		CustomSerializedRootRelationshipContainer[] ICustomSerializedDomainModel.GetRootRelationshipContainers()
 		{
 			return GetRootRelationshipContainers();
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
+		Guid ICustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
 		{
 			return MapRootElement(xmlNamespace, elementName);
 		}
-		/// <summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
+		/// <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
 			Collection<string> validNamespaces = ORMToORMAbstractionBridgeDomainModel.myValidNamespaces;
@@ -143,7 +142,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedDomainModel.MapClassName(string xmlNamespace, string elementName)
+		Guid ICustomSerializedDomainModel.MapClassName(string xmlNamespace, string elementName)
 		{
 			return MapClassName(xmlNamespace, elementName);
 		}

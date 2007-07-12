@@ -30,8 +30,7 @@
 			<plx:namespaceImport name="System.Collections.Generic"/>
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling.Diagrams"/>
-			<plx:namespaceImport name="Neumont.Tools.ORM.Shell"/>
-			<plx:namespaceImport name="Neumont.Tools.ORM.ObjectModel"/>
+			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<xsl:if test="se:Copyright">
 					<plx:leadingInfo>
@@ -96,18 +95,18 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$ClassName} serialization"/>
 			</plx:trailingInfo>
-			<plx:implementsInterface dataTypeName="IORMCustomSerializedElement"/>
+			<plx:implementsInterface dataTypeName="ICustomSerializedElement"/>
 			<plx:property visibility="{$InterfaceImplementationVisibility}" name="SupportedCustomSerializedOperations" replacesName="{$ClassOverride}">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations</summary>
+						<summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="SupportedCustomSerializedOperations"/>
-				<plx:returns dataTypeName="ORMCustomSerializedElementSupportedOperations"/>
+				<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="SupportedCustomSerializedOperations"/>
+				<plx:returns dataTypeName="CustomSerializedElementSupportedOperations"/>
 				<plx:get>
 					<xsl:variable name="currentSupport">
-						<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
+						<xsl:call-template name="ReturnCustomSerializedElementSupportedOperations">
 							<xsl:with-param name="containerElements" select="boolean(se:Container)"/>
 							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
 							<xsl:with-param name="attributes" select="boolean(se:Attribute)"/>
@@ -140,20 +139,20 @@
 			<xsl:variable name="containerElementCount" select="count($allContainers)"/>
 			<xsl:variable name="haveCustomChildInfo" select="boolean($containerElementCount)"/>
 			<xsl:if test="$haveCustomChildInfo">
-				<plx:field visibility="private" static="true" dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true" name="myCustomSerializedChildElementInfo"/>
+				<plx:field visibility="private" static="true" dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true" name="myCustomSerializedChildElementInfo"/>
 			</xsl:if>
 			<xsl:if test="$haveCustomChildInfo or not($ClassOverride)">
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedChildElementInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+							<summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedChildElementInfo"/>
-					<plx:returns dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="GetCustomSerializedChildElementInfo"/>
+					<plx:returns dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true"/>
 					<xsl:choose>
 						<xsl:when test="$haveCustomChildInfo">
-							<plx:local dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true" name="ret">
+							<plx:local dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true" name="ret">
 								<plx:initialize>
 									<plx:callStatic dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" type="field"/>
 								</plx:initialize>
@@ -170,7 +169,7 @@
 									</plx:binaryOperator>
 								</plx:condition>
 								<xsl:if test="$ClassOverride">
-									<plx:local name="baseInfo" dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
+									<plx:local name="baseInfo" dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
 										<plx:initialize>
 											<plx:nullKeyword/>
 										</plx:initialize>
@@ -189,7 +188,7 @@
 												<plx:right>
 													<plx:binaryOperator type="bitwiseAnd">
 														<plx:left>
-															<plx:callStatic name="ChildElementInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" type="field"/>
+															<plx:callStatic name="ChildElementInfo" dataTypeName="CustomSerializedElementSupportedOperations" type="field"/>
 														</plx:left>
 														<plx:right>
 															<plx:callThis accessor="base" name="SupportedCustomSerializedOperations" type="property"/>
@@ -237,7 +236,7 @@
 										<plx:nameRef name="ret"/>
 									</plx:left>
 									<plx:right>
-										<plx:callNew dataTypeName="ORMCustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
+										<plx:callNew dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
 											<plx:passParam>
 												<xsl:choose>
 													<xsl:when test="$ClassOverride">
@@ -296,7 +295,7 @@
 											</xsl:message>
 										</xsl:if>
 										<xsl:variable name="outerIndex" select="position()-1"/>
-										<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+										<xsl:call-template name="CreateCustomSerializedElementInfoNameVariable">
 											<xsl:with-param name="modifier" select="$outerIndex"/>
 										</xsl:call-template>
 										<plx:assign>
@@ -311,15 +310,15 @@
 												</plx:callInstance>
 											</plx:left>
 											<plx:right>
-												<plx:callNew dataTypeName="ORMCustomSerializedContainerElementInfo">
-													<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+												<plx:callNew dataTypeName="CustomSerializedContainerElementInfo">
+													<xsl:call-template name="PassCustomSerializedElementInfoParams">
 														<xsl:with-param name="namespaces" select="$namespaces"/>
 														<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 														<xsl:with-param name="modifier" select="$outerIndex"/>
 													</xsl:call-template>
 													<xsl:for-each select="se:Link | se:Embed">
 														<plx:passParam>
-															<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
+															<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="field"/>
 														</plx:passParam>
 													</xsl:for-each>
 												</plx:callNew>
@@ -327,7 +326,7 @@
 										</plx:assign>
 										<xsl:for-each select="se:Container">
 											<xsl:variable name="innerIndex" select="$outerIndex + position()"/>
-											<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+											<xsl:call-template name="CreateCustomSerializedElementInfoNameVariable">
 												<xsl:with-param name="modifier" select="$innerIndex"/>
 											</xsl:call-template>
 											<plx:assign>
@@ -342,8 +341,8 @@
 													</plx:callInstance>
 												</plx:left>
 												<plx:right>
-													<plx:callNew dataTypeName="ORMCustomSerializedInnerContainerElementInfo">
-														<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+													<plx:callNew dataTypeName="CustomSerializedInnerContainerElementInfo">
+														<xsl:call-template name="PassCustomSerializedElementInfoParams">
 															<xsl:with-param name="namespaces" select="$namespaces"/>
 															<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 															<xsl:with-param name="modifier" select="$innerIndex"/>
@@ -360,7 +359,7 @@
 														</plx:passParam>
 														<xsl:for-each select="se:Link | se:Embed">
 															<plx:passParam>
-																<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
+																<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="field"/>
 															</plx:passParam>
 														</xsl:for-each>
 													</plx:callNew>
@@ -395,15 +394,15 @@
 				<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedElementInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.CustomSerializedElementInfo</summary>
+							<summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedElementInfo"/>
-					<plx:returns dataTypeName="ORMCustomSerializedElementInfo"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedElementInfo"/>
+					<plx:returns dataTypeName="CustomSerializedElementInfo"/>
 					<plx:get>
 						<xsl:choose>
 							<xsl:when test="$haveCustomElementInfo">
-								<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+								<xsl:call-template name="ReturnCustomSerializedElementInfo">
 									<xsl:with-param name="namespaces" select="$namespaces"/>
 									<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 								</xsl:call-template>
@@ -422,13 +421,13 @@
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedPropertyInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+							<summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedPropertyInfo"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="GetCustomSerializedPropertyInfo"/>
 					<plx:param name="domainPropertyInfo" dataTypeName="DomainPropertyInfo"></plx:param>
 					<plx:param name="rolePlayedInfo" dataTypeName="DomainRoleInfo"></plx:param>
-					<plx:returns dataTypeName="ORMCustomSerializedPropertyInfo"/>
+					<plx:returns dataTypeName="CustomSerializedPropertyInfo"/>
 					<xsl:choose>
 						<xsl:when test="$haveCustomPropertyInfo">
 							<xsl:for-each select="se:Attribute">
@@ -463,10 +462,10 @@
 													</plx:right>
 												</plx:binaryOperator>
 											</plx:condition>
-											<xsl:call-template name="ReturnORMCustomSerializedPropertyInfo"/>
+											<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
 										</plx:branch>
 									</xsl:for-each>
-									<xsl:call-template name="ReturnORMCustomSerializedPropertyInfo"/>
+									<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
 								</plx:branch>
 							</xsl:for-each>
 							<xsl:if test="$ClassOverride">
@@ -479,7 +478,7 @@
 											<plx:right>
 												<plx:binaryOperator type="bitwiseAnd">
 													<plx:left>
-														<plx:callStatic name="PropertyInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" type="field"/>
+														<plx:callStatic name="PropertyInfo" dataTypeName="CustomSerializedElementSupportedOperations" type="field"/>
 													</plx:left>
 													<plx:right>
 														<plx:callThis accessor="base" name="SupportedCustomSerializedOperations" type="property"/>
@@ -501,7 +500,7 @@
 								</plx:branch>
 							</xsl:if>
 							<plx:return>
-								<plx:callStatic dataTypeName="ORMCustomSerializedPropertyInfo" name="Default" type="field"/>
+								<plx:callStatic dataTypeName="CustomSerializedPropertyInfo" name="Default" type="field"/>
 							</plx:return>
 						</xsl:when>
 						<xsl:otherwise>
@@ -517,13 +516,13 @@
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomSerializedLinkInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+							<summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedLinkInfo"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="GetCustomSerializedLinkInfo"/>
 					<plx:param name="rolePlayedInfo" dataTypeName="DomainRoleInfo"/>
 					<plx:param name="elementLink" dataTypeName="ElementLink"/>
-					<plx:returns dataTypeName="ORMCustomSerializedElementInfo"/>
+					<plx:returns dataTypeName="CustomSerializedElementInfo"/>
 					<xsl:choose>
 						<xsl:when test="$customLinkInfo">
 							<plx:local name="roleId" dataTypeName="Guid">
@@ -545,11 +544,11 @@
 														<plx:nameRef name="roleId"/>
 													</plx:left>
 													<plx:right>
-														<plx:callStatic type="field" name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" />
+														<plx:callStatic type="field" name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}"/>
 													</plx:right>
 												</plx:binaryOperator>
 											</plx:condition>
-											<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+											<xsl:call-template name="ReturnCustomSerializedElementInfo">
 												<xsl:with-param name="namespaces" select="$namespaces"/>
 												<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 											</xsl:call-template>
@@ -608,7 +607,7 @@
 																	</plx:right>
 																</plx:binaryOperator>
 															</plx:condition>
-															<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+															<xsl:call-template name="ReturnCustomSerializedElementInfo">
 																<xsl:with-param name="namespaces" select="$namespaces"/>
 																<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 															</xsl:call-template>
@@ -628,7 +627,7 @@
 																					</plx:right>
 																				</plx:binaryOperator>
 																			</plx:condition>
-																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+																			<xsl:call-template name="ReturnCustomSerializedElementInfo">
 																				<xsl:with-param name="namespaces" select="$namespaces"/>
 																				<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 																			</xsl:call-template>
@@ -636,7 +635,7 @@
 																	</xsl:when>
 																	<xsl:otherwise>
 																		<plx:fallbackBranch>
-																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+																			<xsl:call-template name="ReturnCustomSerializedElementInfo">
 																				<xsl:with-param name="namespaces" select="$namespaces"/>
 																				<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 																			</xsl:call-template>
@@ -647,7 +646,7 @@
 														</xsl:if>
 													</xsl:when>
 													<xsl:otherwise>
-														<xsl:call-template name="ReturnORMCustomSerializedElementInfo">
+														<xsl:call-template name="ReturnCustomSerializedElementInfo">
 															<xsl:with-param name="namespaces" select="$namespaces"/>
 															<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 														</xsl:call-template>
@@ -668,7 +667,7 @@
 											<plx:right>
 												<plx:binaryOperator type="bitwiseAnd">
 													<plx:left>
-														<plx:callStatic name="LinkInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" type="field"/>
+														<plx:callStatic name="LinkInfo" dataTypeName="CustomSerializedElementSupportedOperations" type="field"/>
 													</plx:left>
 													<plx:right>
 														<plx:callThis accessor="base" name="SupportedCustomSerializedOperations" type="property"/>
@@ -690,7 +689,7 @@
 								</plx:branch>
 							</xsl:if>
 							<plx:return>
-								<plx:callStatic dataTypeName="ORMCustomSerializedElementInfo" name="Default" type="field"/>
+								<plx:callStatic dataTypeName="CustomSerializedElementInfo" name="Default" type="field"/>
 							</plx:return>
 						</xsl:when>
 						<xsl:otherwise>
@@ -842,7 +841,7 @@
 															<plx:nameRef name="domainDataDirectory"/>
 														</plx:callObject>
 														<plx:passParam>
-															<plx:callStatic dataTypeName="{@RelationshipName}" name="{@RoleName}DomainRoleId" type="field"/>
+															<plx:callStatic dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" name="{@RoleName}DomainRoleId" type="field"/>
 														</plx:passParam>
 													</plx:callInstance>
 												</plx:callObject>
@@ -982,10 +981,10 @@
 					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildRoleComparer" replacesName="{$ClassOverride}">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+								<summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
+						<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
 						<plx:returns dataTypeName="IComparer">
 							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 						</plx:returns>
@@ -1023,7 +1022,7 @@
 												<plx:right>
 													<plx:binaryOperator type="bitwiseAnd">
 														<plx:left>
-															<plx:callStatic name="CustomSortChildRoles" dataTypeName="ORMCustomSerializedElementSupportedOperations" type="field"/>
+															<plx:callStatic name="CustomSortChildRoles" dataTypeName="CustomSerializedElementSupportedOperations" type="field"/>
 														</plx:left>
 														<plx:right>
 															<plx:callThis accessor="base" name="SupportedCustomSerializedOperations" type="property"/>
@@ -1078,10 +1077,10 @@
 					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildRoleComparer">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+								<summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
+						<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
 						<plx:returns dataTypeName="IComparer">
 							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 						</plx:returns>
@@ -1148,7 +1147,7 @@
 									</plx:passParam>
 								</xsl:if>
 								<plx:passParam>
-									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="property"/>
+									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="property"/>
 								</plx:passParam>
 							</plx:callInstance>
 							<plx:callInstance name="Add">
@@ -1305,7 +1304,7 @@
 									</plx:passParam>
 								</xsl:if>
 								<plx:passParam>
-									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
+									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="field"/>
 								</plx:passParam>
 							</plx:callInstance>
 							<xsl:if test="self::se:StandaloneLink or (string(@Name) and not(@WriteStyle='NotWritten'))">
@@ -1495,24 +1494,24 @@
 			<xsl:if test="$hasMappedChildElements">
 				<plx:field name="myChildElementMappings" dataTypeName="Dictionary" visibility="private" static="true">
 					<plx:passTypeParam dataTypeName=".string"/>
-					<plx:passTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+					<plx:passTypeParam dataTypeName="CustomSerializedElementMatch"/>
 				</plx:field>
 			</xsl:if>
 			<xsl:if test="$hasMappedChildElements or not($ClassOverride)">
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapChildElement" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.MapChildElement</summary>
+							<summary>Implements ICustomSerializedElement.MapChildElement</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="MapChildElement"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="MapChildElement"/>
 					<plx:param dataTypeName=".string" name="elementNamespace"/>
 					<plx:param dataTypeName=".string" name="elementName"/>
 					<plx:param dataTypeName=".string" name="containerNamespace"/>
 					<plx:param dataTypeName=".string" name="containerName"/>
 					<plx:param dataTypeName=".string" name="outerContainerNamespace"/>
 					<plx:param dataTypeName=".string" name="outerContainerName"/>
-					<plx:returns dataTypeName="ORMCustomSerializedElementMatch"/>
+					<plx:returns dataTypeName="CustomSerializedElementMatch"/>
 					<xsl:variable name="forwardToBase">
 						<xsl:if test="$ClassOverride">
 							<plx:callThis accessor="base" name="MapChildElement">
@@ -1541,7 +1540,7 @@
 						<xsl:when test="$hasMappedChildElements">
 							<plx:local name="childElementMappings" dataTypeName="Dictionary">
 								<plx:passTypeParam dataTypeName=".string"/>
-								<plx:passTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+								<plx:passTypeParam dataTypeName="CustomSerializedElementMatch"/>
 								<plx:initialize>
 									<plx:callStatic dataTypeName="{$ClassName}" name="myChildElementMappings" type="field"/>
 								</plx:initialize>
@@ -1564,13 +1563,13 @@
 									<plx:right>
 										<plx:callNew dataTypeName="Dictionary">
 											<plx:passTypeParam dataTypeName=".string"/>
-											<plx:passTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+											<plx:passTypeParam dataTypeName="CustomSerializedElementMatch"/>
 										</plx:callNew>
 									</plx:right>
 								</plx:assign>
-								<plx:local name="match" dataTypeName="ORMCustomSerializedElementMatch">
+								<plx:local name="match" dataTypeName="CustomSerializedElementMatch">
 									<plx:initialize>
-										<plx:callNew dataTypeName="ORMCustomSerializedElementMatch"/>
+										<plx:callNew dataTypeName="CustomSerializedElementMatch"/>
 									</plx:initialize>
 								</plx:local>
 								<xsl:copy-of select="$mapChildElementBody"/>
@@ -1583,7 +1582,7 @@
 									</plx:right>
 								</plx:assign>
 							</plx:branch>
-							<plx:local name="rVal" dataTypeName="ORMCustomSerializedElementMatch"/>
+							<plx:local name="rVal" dataTypeName="CustomSerializedElementMatch"/>
 							<xsl:variable name="lookupCall">
 								<plx:callInstance name="TryGetValue">
 									<plx:callObject>
@@ -1710,7 +1709,7 @@
 										<xsl:copy-of select="$forwardToBase"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<plx:defaultValueOf dataTypeName="ORMCustomSerializedElementMatch"/>
+										<plx:defaultValueOf dataTypeName="CustomSerializedElementMatch"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</plx:return>
@@ -1729,10 +1728,10 @@
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapAttribute" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.MapAttribute</summary>
+							<summary>Implements ICustomSerializedElement.MapAttribute</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="MapAttribute"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="MapAttribute"/>
 					<plx:param dataTypeName=".string" name="xmlNamespace"/>
 					<plx:param dataTypeName=".string" name="attributeName"/>
 					<plx:returns dataTypeName="Guid"/>
@@ -1923,10 +1922,10 @@
 					</xsl:if>
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.ShouldSerialize</summary>
+							<summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="ShouldSerialize"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="ShouldSerialize"/>
 					<plx:returns dataTypeName=".boolean"/>
 					<xsl:choose>
 						<xsl:when test="$serializeBody">
@@ -2012,7 +2011,7 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$ModelName} model serialization"/>
 			</plx:trailingInfo>
-			<plx:implementsInterface dataTypeName="IORMCustomSerializedDomainModel"/>
+			<plx:implementsInterface dataTypeName="ICustomSerializedDomainModel"/>
 			<plx:field name="XmlNamespace" visibility="public" static="true" readOnly="true" dataTypeName=".string">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -2027,10 +2026,10 @@
 				<plx:property visibility="{$InterfaceImplementationVisibility}" name="DefaultElementPrefix" modifier="static">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
+							<summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="DefaultElementPrefix"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="DefaultElementPrefix"/>
 					<plx:returns dataTypeName=".string"/>
 					<plx:get>
 						<plx:return>
@@ -2049,10 +2048,10 @@
 				<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetCustomElementNamespaces" modifier="static">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+							<summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetCustomElementNamespaces"/>
+					<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="GetCustomElementNamespaces"/>
 					<plx:returns dataTypeName=".string">
 						<plx:arrayDescriptor rank="2"/>
 					</plx:returns>
@@ -2209,15 +2208,15 @@
 				<plx:passTypeParam dataTypeName=".string"/>
 			</plx:field>
 			<xsl:if test="se:RootLinks/se:Container">
-				<plx:field name="myRootRelationshipContainers" dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true" visibility="private" static="true"/>
+				<plx:field name="myRootRelationshipContainers" dataTypeName="CustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true" visibility="private" static="true"/>
 			</xsl:if>
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="ShouldSerializeDomainClass">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+						<summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="ShouldSerializeDomainClass"/>
+				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="ShouldSerializeDomainClass"/>
 				<plx:param name="store" dataTypeName="Store"/>
 				<plx:param name="classInfo" dataTypeName="DomainClassInfo"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -2285,10 +2284,10 @@
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetRootElementClasses" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
+						<summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetRootElementClasses"/>
+				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="GetRootElementClasses"/>
 				<plx:returns dataTypeName="Guid" dataTypeIsSimpleArray="true"/>
 				<plx:return>
 					<plx:callNew dataTypeName="Guid" dataTypeIsSimpleArray="true">
@@ -2313,15 +2312,15 @@
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="GetRootRelationshipContainers" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+						<summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetRootRelationshipContainers"/>
-				<plx:returns dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true"/>
+				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="GetRootRelationshipContainers"/>
+				<plx:returns dataTypeName="CustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true"/>
 				<xsl:variable name="rootLinkContainers" select="se:RootLinks/se:Container"/>
 				<xsl:choose>
 					<xsl:when test="$rootLinkContainers">
-						<plx:local name="retVal" dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true">
+						<plx:local name="retVal" dataTypeName="CustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true">
 							<plx:initialize>
 								<plx:callStatic dataTypeName="{$ModelName}" name="myRootRelationshipContainers" type="field"/>
 							</plx:initialize>
@@ -2342,10 +2341,10 @@
 									<plx:nameRef name="retVal"/>
 								</plx:left>
 								<plx:right>
-									<plx:callNew dataTypeName="ORMCustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true">
+									<plx:callNew dataTypeName="CustomSerializedRootRelationshipContainer" dataTypeIsSimpleArray="true">
 										<plx:arrayInitializer>
 											<xsl:for-each select="$rootLinkContainers">
-												<plx:callNew dataTypeName="ORMCustomSerializedRootRelationshipContainer">
+												<plx:callNew dataTypeName="CustomSerializedRootRelationshipContainer">
 													<plx:passParam>
 														<plx:string data="{$defaultNamespace/@Prefix}">
 															<xsl:if test="string(@Prefix)">
@@ -2368,7 +2367,7 @@
 														</plx:string>
 													</plx:passParam>
 													<plx:passParam>
-														<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationship" dataTypeIsSimpleArray="true">
+														<plx:callNew dataTypeName="CustomSerializedStandaloneRelationship" dataTypeIsSimpleArray="true">
 															<plx:arrayInitializer>
 																<xsl:for-each select="se:RootLink">
 																	<xsl:call-template name="CreateStandaloneRelationship">
@@ -2408,10 +2407,10 @@
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapRootElement" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
+						<summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="MapRootElement"/>
+				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="MapRootElement"/>
 				<plx:param name="xmlNamespace" dataTypeName=".string"/>
 				<plx:param name="elementName" dataTypeName=".string"/>
 				<plx:returns dataTypeName="Guid"/>
@@ -2470,10 +2469,10 @@
 			<plx:function visibility="{$InterfaceImplementationVisibility}" name="MapClassName" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
+						<summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="MapClassName"/>
+				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="MapClassName"/>
 				<plx:param name="xmlNamespace" dataTypeName=".string"/>
 				<plx:param name="elementName" dataTypeName=".string"/>
 				<plx:returns dataTypeName="Guid"/>
@@ -2638,7 +2637,7 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
-	<xsl:template name="ReturnORMCustomSerializedElementSupportedOperations">
+	<xsl:template name="ReturnCustomSerializedElementSupportedOperations">
 		<xsl:param name="containerElements"/>
 		<xsl:param name="element"/>
 		<xsl:param name="attributes"/>
@@ -2687,13 +2686,13 @@
 		<xsl:variable name="operationCount" select="count($supportedOperations/child::*)"/>
 		<xsl:choose>
 			<xsl:when test="$operationCount=0">
-				<plx:callStatic dataTypeName="ORMCustomSerializedElementSupportedOperations" name="None" type="field"/>
+				<plx:callStatic dataTypeName="CustomSerializedElementSupportedOperations" name="None" type="field"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:for-each select="$supportedOperations/SupportedOperation">
 					<xsl:if test="position()=1">
 						<xsl:call-template name="OrTogetherEnumElements">
-							<xsl:with-param name="EnumType" select="'ORMCustomSerializedElementSupportedOperations'"></xsl:with-param>
+							<xsl:with-param name="EnumType" select="'CustomSerializedElementSupportedOperations'"></xsl:with-param>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
@@ -2727,7 +2726,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template name="CreateORMCustomSerializedElementInfoNameVariable">
+	<xsl:template name="CreateCustomSerializedElementInfoNameVariable">
 		<xsl:param name="modifier"/>
 		<xsl:variable name="conditionalNames" select="se:ConditionalName"/>
 		<xsl:if test="$conditionalNames">
@@ -2745,9 +2744,9 @@
 			</plx:local>
 			<xsl:variable name="primaryWriteStyle" select="string(@WriteStyle)"/>
 			<xsl:if test="$conditionalNames/@WriteStyle[not(.=$primaryWriteStyle)]">
-				<plx:local dataTypeName="ORMCustomSerializedElementWriteStyle" name="writeStyle{$modifier}">
+				<plx:local dataTypeName="CustomSerializedElementWriteStyle" name="writeStyle{$modifier}">
 					<plx:initialize>
-						<plx:callStatic name="Element" dataTypeName="ORMCustomSerializedElementWriteStyle" type="field">
+						<plx:callStatic name="Element" dataTypeName="CustomSerializedElementWriteStyle" type="field">
 							<xsl:if test="$primaryWriteStyle">
 								<xsl:attribute name="name">
 									<xsl:value-of select="$primaryWriteStyle"/>
@@ -2802,7 +2801,7 @@
 								<plx:nameRef name="writeStyle{$modifier}"/>
 							</plx:left>
 							<plx:right>
-								<plx:callStatic name="{$currentWriteStyle}" dataTypeName="ORMCustomSerializedElementWriteStyle" type="field"/>
+								<plx:callStatic name="{$currentWriteStyle}" dataTypeName="CustomSerializedElementWriteStyle" type="field"/>
 							</plx:right>
 						</plx:assign>
 					</xsl:if>
@@ -2821,7 +2820,7 @@
 			</xsl:for-each>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template name="PassORMCustomSerializedElementInfoParams">
+	<xsl:template name="PassCustomSerializedElementInfoParams">
 		<xsl:param name="namespaces"/>
 		<xsl:param name="defaultNamespace"/>
 		<xsl:param name="modifier"/>
@@ -2873,7 +2872,7 @@
 					<plx:nameRef name="writeStyle{$modifier}"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:callStatic name="pending" type="field" dataTypeName="ORMCustomSerializedElementWriteStyle">
+					<plx:callStatic name="pending" type="field" dataTypeName="CustomSerializedElementWriteStyle">
 						<xsl:attribute name="name">
 							<xsl:choose>
 								<xsl:when test="self::se:StandaloneLink">
@@ -2932,35 +2931,35 @@
 			</plx:passParam>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template name="ReturnORMCustomSerializedElementInfo">
+	<xsl:template name="ReturnCustomSerializedElementInfo">
 		<xsl:param name="namespaces"/>
 		<xsl:param name="defaultNamespace"/>
-		<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable"/>
+		<xsl:call-template name="CreateCustomSerializedElementInfoNameVariable"/>
 		<plx:return>
-			<plx:callNew dataTypeName="ORMCustomSerializedElementInfo">
+			<plx:callNew dataTypeName="CustomSerializedElementInfo">
 				<xsl:if test="self::se:StandaloneLink">
 					<xsl:attribute name="dataTypeName">
-						<xsl:text>ORMCustomSerializedStandaloneLinkElementInfo</xsl:text>
+						<xsl:text>CustomSerializedStandaloneLinkElementInfo</xsl:text>
 					</xsl:attribute>
 				</xsl:if>
-				<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+				<xsl:call-template name="PassCustomSerializedElementInfoParams">
 					<xsl:with-param name="namespaces" select="$namespaces"/>
 					<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
 				</xsl:call-template>
 			</plx:callNew>
 		</plx:return>
 	</xsl:template>
-	<xsl:template name="ReturnORMCustomSerializedPropertyInfo">
+	<xsl:template name="ReturnCustomSerializedPropertyInfo">
 		<xsl:for-each select="se:Condition">
 			<plx:branch>
 				<plx:condition>
 					<xsl:copy-of select="child::*"/>
 				</plx:condition>
-				<xsl:call-template name="ReturnORMCustomSerializedPropertyInfo"/>
+				<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
 			</plx:branch>
 		</xsl:for-each>
 		<plx:return>
-			<plx:callNew dataTypeName="ORMCustomSerializedPropertyInfo">
+			<plx:callNew dataTypeName="CustomSerializedPropertyInfo">
 				<plx:passParam>
 					<xsl:choose>
 						<xsl:when test="string-length(@Prefix)">
@@ -3002,7 +3001,7 @@
 					</xsl:choose>
 				</plx:passParam>
 				<plx:passParam>
-					<plx:callStatic name="pending" type="field" dataTypeName="ORMCustomSerializedAttributeWriteStyle">
+					<plx:callStatic name="pending" type="field" dataTypeName="CustomSerializedAttributeWriteStyle">
 						<xsl:attribute name="name">
 							<xsl:choose>
 								<xsl:when test="string-length(@DoubleTagName)">
@@ -3038,15 +3037,15 @@
 	<xsl:template name="CreateStandaloneRelationship">
 		<xsl:param name="namespaces"/>
 		<xsl:param name="defaultNamespace"/>
-		<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationship">
+		<plx:callNew dataTypeName="CustomSerializedStandaloneRelationship">
 			<plx:passParam>
 				<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
 			</plx:passParam>
 			<plx:passParam>
-				<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationshipRole" dataTypeIsSimpleArray="true">
+				<plx:callNew dataTypeName="CustomSerializedStandaloneRelationshipRole" dataTypeIsSimpleArray="true">
 					<plx:arrayInitializer>
 						<xsl:for-each select="se:Role">
-							<plx:callNew dataTypeName="ORMCustomSerializedStandaloneRelationshipRole">
+							<plx:callNew dataTypeName="CustomSerializedStandaloneRelationshipRole">
 								<plx:passParam>
 									<plx:string data="{@RoleName}">
 										<xsl:if test="string(@Name)">

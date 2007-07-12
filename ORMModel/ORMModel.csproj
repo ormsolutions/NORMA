@@ -357,7 +357,7 @@
     <Compile Include="Shell\IORMSelectionContainer.cs" />
     <Compile Include="Shell\ORMReadingEditor.cs" />
     <Compile Include="Shell\ORMSamplePopulationToolWindow.cs" />
-    <Compile Include="Shell\ORMSerializer.cs" />
+    <Compile Include="Shell\SerializationEngine.cs" />
     <Compile Include="Shell\ORMDesignerSettings.cs" />
     <Compile Include="Shell\ORMToolWindow.cs" />
     <Compile Include="Shell\ORMVerbalizationToolWindow.cs" />
@@ -429,6 +429,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\ORMSerializationEngine.cs" />
     <Compile Include="Shell\FactEditor\FactTokenHelper.cs" />
     <Compile Include="Shell\FactEditor\FactTokenInfo.cs" />
     <Compile Include="Shell\FactEditor\NewFactAuthoringScope.cs" />

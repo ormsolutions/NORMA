@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
 	#region Attach rules to ORMToORMAbstractionBridgeDomainModel model
-	partial class ORMToORMAbstractionBridgeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
+	partial class ORMToORMAbstractionBridgeDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			this.EnableRulesAfterDeserialization(store);
 		}

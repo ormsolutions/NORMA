@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.Views.RelationalView
 {
 	#region Attach rules to RelationalShapeDomainModel model
-	partial class RelationalShapeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
+	partial class RelationalShapeDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -96,7 +96,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			this.EnableRulesAfterDeserialization(store);
 		}

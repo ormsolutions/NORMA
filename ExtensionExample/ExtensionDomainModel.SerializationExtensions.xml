@@ -51,6 +51,6 @@
 		</se:ConditionalSerialization>
 	</se:Element>
 	<se:Element Class="ObjectTypeRequiresMeaningfulNameError" Override="true">
-		<se:Link Name="ObjectType" RelationshipName="ORMModelElementHasExtensionModelError" RoleName="ExtendedElement"/>
+		<se:Link Name="ObjectType" RelationshipName="ORMModelElementHasExtensionModelError" RoleName="ExtendedElement" RelationshipTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
 	</se:Element>
 </se:CustomSerializedElements>

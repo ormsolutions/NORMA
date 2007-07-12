@@ -7,6 +7,7 @@
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
 	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
@@ -481,6 +482,11 @@
 						</xs:attribute>
 						<xs:attributeGroup ref="LinkAttributes"/>
 						<xs:attributeGroup ref="ElementAttributes"/>
+						<xs:attribute name="RelationshipTypeQualifier" type="plx:qualifierNameType">
+							<xs:annotation>
+								<xs:documentation>(optional) The type qualifier for the relationship. Generally, this is an external namespace.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 						<xs:attribute name="AllowDuplicates" type="canonicalBoolean">
 							<xs:annotation>
 								<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>

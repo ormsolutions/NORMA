@@ -125,6 +125,8 @@ namespace Neumont.Tools.ORM.Shell
 					Debug.Assert(stream != null);
 
 					stream = CleanupStream(stream, checkedTypes);
+					string fileContents = (new StreamReader(stream)).ReadToEnd();
+					GC.KeepAlive(fileContents);
 					docData.ReloadFromStream(stream);
 				}
 				finally

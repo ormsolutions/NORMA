@@ -245,7 +245,7 @@ namespace Neumont.Tools.ORM.Shell
 										string URI = reader.Value;
 										if (!string.Equals(URI, ORMCoreDomainModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
-											!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
+											!string.Equals(URI, ORMSerializationEngine.RootXmlNamespace, StringComparison.Ordinal))
 										{
 											Type extensionType = ORMDesignerPackage.GetExtensionDomainModel(URI);
 											if (extensionType != null)
@@ -344,7 +344,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				try
 				{
-					(new ORMSerializer(store)).Load(stream, fixupManager);
+					(new ORMSerializationEngine(store)).Load(stream, fixupManager);
 				}
 				catch (XmlSchemaValidationException ex)
 				{
@@ -409,7 +409,7 @@ namespace Neumont.Tools.ORM.Shell
 			// if something goes wrong while serializing.
 			using (MemoryStream memoryStream = new MemoryStream(1024 * 1024))
 			{
-				new ORMSerializer(this.Store).Save(memoryStream);
+				new ORMSerializationEngine(this.Store).Save(memoryStream);
 
 				// UNDONE: We don't yet support ORM models greater than 2GB in size
 				int memoryStreamLength = (int)memoryStream.Length;
@@ -729,7 +729,7 @@ namespace Neumont.Tools.ORM.Shell
 			if ("ORMXmlStream" == name)
 			{
 				MemoryStream stream = new MemoryStream();
-				(new ORMSerializer(Store)).Save(stream);
+				(new ORMSerializationEngine(Store)).Save(stream);
 				stream.Position = 0;
 				result = stream;
 				return;

@@ -26,7 +26,7 @@ using Neumont.Tools.Modeling;
 using System.Xml.Serialization;
 using System.Xml.Schema;
 using System.Xml;
-using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -438,7 +438,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (namespaces == null)
 					{
 						//synchronize namespaces
-						foreach (IORMCustomSerializedDomainModel serializationInfo in Utility.EnumerateDomainModels<IORMCustomSerializedDomainModel>(Store.DomainModels))
+						foreach (ICustomSerializedDomainModel serializationInfo in Utility.EnumerateDomainModels<ICustomSerializedDomainModel>(Store.DomainModels))
 						{
 							if (namespaces == null)
 							{

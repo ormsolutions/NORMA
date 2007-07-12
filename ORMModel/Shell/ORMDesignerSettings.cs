@@ -213,7 +213,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						string namespaceURI = reader.NamespaceURI;
 						string localName = reader.LocalName;
-						if (namespaceURI != ORMSerializer.RootXmlNamespace || localName != ORMSerializer.RootXmlElementName)
+						if (namespaceURI != ORMSerializationEngine.RootXmlNamespace || localName != ORMSerializationEngine.RootXmlElementName)
 						{
 							XmlElementIdentifier sourceId = new XmlElementIdentifier(namespaceURI, localName);
 							if (myXmlConverters != null)

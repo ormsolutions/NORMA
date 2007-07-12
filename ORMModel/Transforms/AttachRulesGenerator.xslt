@@ -98,7 +98,7 @@
 					<plx:pragma type="closeRegion" data="Attach rules to {@class} model"/>
 				</plx:trailingInfo>
 				<xsl:if test="$disabledRules or $enableDiagramRules">
-					<plx:implementsInterface dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+					<plx:implementsInterface dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.Modeling.Shell"/>
 				</xsl:if>
 				<plx:field visibility="private" static="true" name="myCustomDomainModelTypes" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
 				<plx:property visibility="private" modifier="static" name="CustomDomainModelTypes">
@@ -351,7 +351,7 @@
 								<summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" memberName="EnableRulesAfterDeserialization"/>
+						<plx:interfaceMember dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.Modeling.Shell" memberName="EnableRulesAfterDeserialization"/>
 						<plx:param name="store" dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 						<xsl:if test="$enableDiagramRules">
 							<plx:callStatic name="EnableDiagramRules" dataTypeName="{@class}">

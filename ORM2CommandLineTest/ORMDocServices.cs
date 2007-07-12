@@ -225,7 +225,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				ORMStore store = new ORMStore(this);
 				store.UndoManager.UndoState = UndoState.Disabled;
-				Type[] domainModels = new Type[4] { typeof(CoreDomainModel), typeof(CoreDesignSurfaceDomainModel), typeof(ORMCoreDomainModel), typeof(ORMShapeDomainModel) };
+				Type[] domainModels = new Type[5] { typeof(CoreDomainModel), typeof(CoreDesignSurfaceDomainModel), typeof(FrameworkDomainModel), typeof(ORMCoreDomainModel), typeof(ORMShapeDomainModel) };
 				store.LoadDomainModels(domainModels);
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))
 				{
@@ -236,7 +236,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 						{
 							fixupManager.AddListener(listener);
 						}
-						(new ORMSerializer(store)).Load(stream, fixupManager);
+						(new ORMSerializationEngine(store)).Load(stream, fixupManager);
 					}
 					t.Commit();
 				}
@@ -263,7 +263,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					using (MemoryStream currentStream = new MemoryStream())
 					{
 						// Get the current data into a stream
-						(new ORMSerializer(store)).Save(currentStream);
+						(new ORMSerializationEngine(store)).Save(currentStream);
 						currentStream.Seek(0, SeekOrigin.Begin);
 
 						string compareString = (referenceName.Length == 0) ? ".Compare" : ".Compare.";

@@ -144,19 +144,4 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void ManageSurveyQuestionModelingEventHandlers(ModelingEventManager eventManager, EventHandlerAction action);
 	}
 	#endregion // IORMModelEventSubscriber
-	#region IDomainModelEnablesRulesAfterDeserialization interface
-	/// <summary>
-	/// Interface implemented on a DomainModel to enable
-	/// initially disabled rules after deserialization.
-	/// </summary>
-	public interface IDomainModelEnablesRulesAfterDeserialization
-	{
-		/// <summary>
-		/// Called after successful deserialization to enable
-		/// rules that were initially disabled.
-		/// </summary>
-		/// <param name="store">The <see cref="Store"/> that loaded the rules. Enable rules using the <see cref="Store.RuleManager">RuleManager</see> from the store.</param>
-		void EnableRulesAfterDeserialization(Store store);
-	}
-	#endregion // IDomainModelEnablesRulesAfterDeserialization interface
 }
