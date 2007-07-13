@@ -2558,6 +2558,170 @@ namespace Neumont.Tools.Modeling.Shell
 	#region Deserialization Routines
 	public partial class SerializationEngine
 	{
+		#region DeserializationFixupManager class
+		/// <summary>
+		/// A class to manage post-deserialization model fixup
+		/// </summary>
+		private class DeserializationFixupManager : INotifyElementAdded
+		{
+			#region Member Variables
+			private Store myStore;
+			private List<IDeserializationFixupListener> myListeners;
+			private int[] myPhases;
+			#endregion // Member Variables
+			#region Constructors
+			/// <summary>
+			/// A class to manage the complex process of post-deserialization
+			/// model fixup. Generally, rules are suspended during loading as
+			/// it is difficult to enforce any complex rules when only portions
+			/// off the model are in place. This means that there is no guarantee
+			/// after a load sequence that the model is in workable valid state.
+			/// The invalid state can occur because certain model elements are not
+			/// serialized, or because of the Notepad factor (edits to the model file
+			/// outside a sanctioned editor). Post-deserialization fixups allow different
+			/// elements in the model to bring the model up to a consistent state
+			/// so that all subsequent edits run against a model in a known state.
+			/// </summary>
+			/// <param name="store">The store being deserialized to.</param>
+			public DeserializationFixupManager(Store store)
+			{
+				myStore = store;
+				List<IDeserializationFixupListener> listeners = new List<IDeserializationFixupListener>();
+				Dictionary<int, int> allPhases = new Dictionary<int, int>();
+				myListeners = listeners;
+				int[] phases;
+				foreach (IDeserializationFixupListenerProvider provider in Utility.EnumerateDomainModels<IDeserializationFixupListenerProvider>(store.DomainModels))
+				{
+					foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
+					{
+						listeners.Add(listener);
+					}
+					Type phaseType = provider.DeserializationFixupPhaseType;
+					if (phaseType != null)
+					{
+						phases = (int[])Enum.GetValues(phaseType);
+						for (int i = 0; i < phases.Length; ++i)
+						{
+							// The keyed insertion keeps the values unique
+							allPhases[phases[i]] = phases[i];
+						}
+					}
+				}
+				int phaseCount = allPhases.Count;
+				phases = new int[phaseCount];
+				allPhases.Values.CopyTo(phases, 0);
+				Array.Sort<int>(phases);
+				myPhases = phases;
+			}
+			#endregion // Constructors
+			#region INotifyElementAdded Implementation
+			/// <summary>
+			/// Note that this matches the signature for the
+			/// System.VisualStudio.Modeling.Diagnostics.XmlSerialization.Deserialized
+			/// delegate, so can be used as the callback point for the
+			/// Microsoft-provided IMS deserialization engine.
+			/// </summary>
+			/// <param name="element">The newly added element</param>
+			void INotifyElementAdded.ElementAdded(ModelElement element)
+			{
+				ElementAdded(element);
+			}
+			/// <summary>
+			/// Implements INotifyElementAdded.ElementAdded(ModelElement).
+			/// </summary>
+			/// <param name="element">The newly added element</param>
+			protected void ElementAdded(ModelElement element)
+			{
+				List<IDeserializationFixupListener> listeners = myListeners;
+				int listenerCount = listeners.Count;
+				for (int i = 0; i < listenerCount; ++i)
+				{
+					listeners[i].ElementAdded(element);
+				}
+			}
+			/// <summary>
+			/// Implements INotifyElementAdded.ElementAdded(ModelElement, bool)
+			/// </summary>
+			/// <param name="element">The newly added element</param>
+			/// <param name="addLinks">true if all links attached directly to the
+			/// element should also be added. Defaults to false.</param>
+			protected void ElementAdded(ModelElement element, bool addLinks)
+			{
+				// Call through the interface to support overrides
+				INotifyElementAdded notify = this;
+				notify.ElementAdded(element);
+				if (addLinks)
+				{
+					ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(element);
+					int linkCount = links.Count;
+					for (int i = 0; i < linkCount; ++i)
+					{
+						notify.ElementAdded(links[i]);
+					}
+				}
+			}
+			void INotifyElementAdded.ElementAdded(ModelElement element, bool addLinks)
+			{
+				ElementAdded(element, addLinks);
+			}
+			#endregion // INotifyElementAdded Implementation
+			#region DeserializationFixupManager specific
+			/// <summary>
+			/// Deserialization has been completed. Proceed with the
+			/// fixup process.
+			/// </summary>
+			public virtual void DeserializationComplete()
+			{
+				int[] phases = myPhases;
+				int phaseCount = phases.Length;
+				List<IDeserializationFixupListener> listeners = myListeners;
+				int listenerCount = listeners.Count;
+				Store store = myStore;
+				for (int phaseIndex = 0; phaseIndex < phaseCount; ++phaseIndex)
+				{
+					int phase = phases[phaseIndex];
+					bool phaseComplete = false;
+					// Process elements on the current phase until HasElements
+					// returns false for all listeners in the phase.
+					while (!phaseComplete)
+					{
+						phaseComplete = true;
+						for (int i = 0; i < listenerCount; ++i)
+						{
+							IDeserializationFixupListener listener = listeners[i];
+							if (listener.HasElements(phase, store))
+							{
+								phaseComplete = false;
+								listener.ProcessElements(phase, store, this);
+							}
+						}
+					}
+					for (int i = 0; i < listenerCount; ++i)
+					{
+						listeners[i].PhaseCompleted(phase, store);
+					}
+				}
+#if DEBUG
+				// Walk through one more time and assert if elements
+				// were added to the listener for any phase after
+				// it was completed.
+				for (int phaseIndex = 0; phaseIndex < phaseCount; ++phaseIndex)
+				{
+					int phase = phases[phaseIndex];
+					for (int i = 0; i < listenerCount; ++i)
+					{
+						IDeserializationFixupListener listener = listeners[i];
+						if (listener.HasElements(phase, store))
+						{
+							Debug.Fail(string.Format(CultureInfo.InvariantCulture, "A fixup phase after phase {0} added elements to an IDeserializationFixupListener of type {1}.", phase, listener.GetType().FullName));
+						}
+					}
+				}
+#endif // DEBUG
+			}
+			#endregion // DeserializationFixupManager specific
+		}
+		#endregion // DeserializationFixupManager class
 		/// <summary>
 		/// Structure used to map a guid to one or multiple
 		/// placeholder elements. Because the type to create
@@ -2844,10 +3008,9 @@ namespace Neumont.Tools.Modeling.Shell
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
-		/// <param name="fixupManager">Class used to perfom fixup operations
-		/// after the load is complete.</param>
-		public void Load(Stream stream, DeserializationFixupManager fixupManager)
+		public void Load(Stream stream)
 		{
+			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore);
 			myNotifyAdded = fixupManager as INotifyElementAdded;
 			XmlReaderSettings settings = new XmlReaderSettings();
 			XmlSchemaSet schemas = settings.Schemas;

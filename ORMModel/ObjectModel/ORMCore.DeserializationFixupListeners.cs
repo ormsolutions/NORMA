@@ -24,7 +24,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>
-		/// Implements IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
+		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection"/>
 		/// </summary>
 		protected static IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection
 		{
@@ -50,6 +50,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get 
 			{
 				return DeserializationFixupListenerCollection;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupPhaseType"/>
+		/// </summary>
+		protected static Type DeserializationFixupPhaseType
+		{
+			get
+			{
+				return typeof(ORMDeserializationFixupPhase);
+			}
+		}
+		Type IDeserializationFixupListenerProvider.DeserializationFixupPhaseType
+		{
+			get
+			{
+				return DeserializationFixupPhaseType;
 			}
 		}
 		#endregion // IDeserializationFixupListenerProvider Implementation

@@ -152,7 +152,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// <see cref="OialObjectTypeFixupListener"/> Constructor.
 			/// </summary>
 			public OialObjectTypeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
 
@@ -191,7 +191,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// <see cref="OialFactTypeFixupListener"/> Constructor.
 			/// </summary>
 			public OialFactTypeFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
 
@@ -230,7 +230,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// <see cref="OialModelHasSetConstraintFixupListener"/> Constructor.
 			/// </summary>
 			public OialModelHasSetConstraintFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
 

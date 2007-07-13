@@ -337,14 +337,9 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (stream.Length > 1)
 			{
-				DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-				foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
-				{
-					fixupManager.AddListener(listener);
-				}
 				try
 				{
-					(new ORMSerializationEngine(store)).Load(stream, fixupManager);
+					(new ORMSerializationEngine(store)).Load(stream);
 				}
 				catch (XmlSchemaValidationException ex)
 				{
@@ -690,35 +685,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Tab Restoration Hack
-		#region ORMDesignerDocData specific
-		/// <summary>
-		/// Retrieve the phase enum to use with the
-		/// deserialization manager.
-		/// </summary>
-		protected virtual Type DeserializationFixupPhaseType
-		{
-			get
-			{
-				return typeof(ORMDeserializationFixupPhase);
-			}
-		}
-		/// <summary>
-		/// Return a set of listeners for deserialization fixup
-		/// </summary>
-		protected virtual IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
-		{
-			get
-			{
-				foreach (IDeserializationFixupListenerProvider provider in Utility.EnumerateDomainModels<IDeserializationFixupListenerProvider>(Store.DomainModels))
-				{
-					foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
-					{
-						yield return listener;
-					}
-				}
-			}
-		}
-		#endregion // ORMDesignerDocData specific
 		#region Automation support
 		/// <summary>
 		/// Implements IExtensibleObject.GetAutomationObject. Returns the ORM XML stream for

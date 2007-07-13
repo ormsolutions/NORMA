@@ -24,7 +24,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>
-		/// Implements IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
+		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection"/>
 		/// </summary>
 		protected static IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection
 		{
@@ -46,6 +46,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return DeserializationFixupListenerCollection;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupPhaseType"/>
+		/// The shape model uses the same fixup phases as the core domain model, so this returns null.
+		/// </summary>
+		protected static Type DeserializationFixupPhaseType
+		{
+			get
+			{
+				return null;
+			}
+		}
+		Type IDeserializationFixupListenerProvider.DeserializationFixupPhaseType
+		{
+			get
+			{
+				return DeserializationFixupPhaseType;
 			}
 		}
 		#endregion // IDeserializationFixupListenerProvider Implementation

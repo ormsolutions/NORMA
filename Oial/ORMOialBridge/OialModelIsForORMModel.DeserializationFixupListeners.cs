@@ -23,6 +23,20 @@ using Neumont.Tools.ORMAbstraction;
 
 namespace Neumont.Tools.ORMToORMAbstractionBridge
 {
+	/// <summary>
+	/// The public fixup phase for the ORM abstraction bridge model
+	/// </summary>
+	public enum ORMToORMAbstractionBridgeDeserializationFixupPhase
+	{
+		/// <summary>
+		/// Validate bridge elements after all core ORM validation is complete
+		/// </summary>
+		ValidateImplicitStoredElements = (int)ORMDeserializationFixupPhase.ValidateErrors + 10,
+		/// <summary>
+		/// Make sure implicit elements are if there were not stored
+		/// </summary>
+		ValidateImplicitElements = (int)ORMDeserializationFixupPhase.ValidateErrors + 20,
+	}
 	public partial class ORMToORMAbstractionBridgeDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation
@@ -46,6 +60,23 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				return DeserializationFixupListenerCollection;
 			}
 		}
+		/// <summary>
+		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupPhaseType"/>
+		/// </summary>
+		protected static Type DeserializationFixupPhaseType
+		{
+			get
+			{
+				return typeof(ORMToORMAbstractionBridgeDeserializationFixupPhase);
+			}
+		}
+		Type IDeserializationFixupListenerProvider.DeserializationFixupPhaseType
+		{
+			get
+			{
+				return DeserializationFixupPhaseType;
+			}
+		}
 		#endregion // IDeserializationFixupListenerProvider Implementation
 		#region Deserialization Fixup Classes
 		/// <summary>
@@ -61,7 +92,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// ExternalConstraintFixupListener constructor
 			/// </summary>
 			public ORMModelFixupListener()
-				: base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitElements)
 			{
 			}
 			/// <summary>

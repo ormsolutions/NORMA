@@ -231,12 +231,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				{
 					if (stream.Length > 1)
 					{
-						DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-						foreach (IDeserializationFixupListener listener in GetDeserializationFixupListeners(store))
-						{
-							fixupManager.AddListener(listener);
-						}
-						(new ORMSerializationEngine(store)).Load(stream, fixupManager);
+						(new ORMSerializationEngine(store)).Load(stream);
 					}
 					t.Commit();
 				}
@@ -885,39 +880,6 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				return new ORMToolTestSuiteReport(writer);
 			}
 			#endregion // IORMToolTestSuiteReportFactory Implementation
-			#region DeserializationFixup methods
-			/// <summary>
-			/// Retrieve the phase enum to use with the
-			/// deserialization manager.
-			/// </summary>
-			private Type DeserializationFixupPhaseType
-			{
-				get
-				{
-					// UNDONE: We need a way of extending the fixup phases for extension
-					// models, both for the core implementation and the command line bits
-					return typeof(ORMDeserializationFixupPhase);
-				}
-			}
-
-			/// <summary>
-			/// Return a set of listeners for deserialization fixup
-			/// </summary>
-			private IEnumerable<IDeserializationFixupListener> GetDeserializationFixupListeners(Store store)
-			{
-				foreach (object domainModel in store.DomainModels)
-				{
-					IDeserializationFixupListenerProvider provider = domainModel as IDeserializationFixupListenerProvider;
-					if (provider != null)
-					{
-						foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
-						{
-							yield return listener;
-						}
-					}
-				}
-			}
-			#endregion // DeserializationFixup methods
 			#region Model Event Manipulation
 			private void AddErrorReportingEvents(Store store)
 			{

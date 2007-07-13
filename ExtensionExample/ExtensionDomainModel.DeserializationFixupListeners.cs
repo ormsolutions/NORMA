@@ -27,6 +27,24 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				return DeserializationFixupListenerCollection;
 			}
 		}
+		/// <summary>
+		/// Implements <see cref="IDeserializationFixupListenerProvider.DeserializationFixupPhaseType"/>
+		/// The shape model uses the same fixup phases as the core domain model, so this returns null.
+		/// </summary>
+		protected static Type DeserializationFixupPhaseType
+		{
+			get
+			{
+				return null;
+			}
+		}
+		Type IDeserializationFixupListenerProvider.DeserializationFixupPhaseType
+		{
+			get
+			{
+				return DeserializationFixupPhaseType;
+			}
+		}
 		#endregion // IDeserializationFixupListenerProvider Implementation
 		#region Deserialization Fixup Classes
 		/// <summary>
