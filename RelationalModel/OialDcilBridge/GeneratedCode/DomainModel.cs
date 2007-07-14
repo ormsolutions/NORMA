@@ -24,24 +24,25 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
-	/// DomainModel OialDcilBridgeDomainModel
-	/// Description for Neumont.Tools.OialDcilBridge.OialDcilBridge
+	/// DomainModel ORMAbstractionToConceptualDatabaseBridgeDomainModel
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridge
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"/*Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("005cbd56-3ba5-4947-9f46-5608bd563ced")]
-	public partial class OialDcilBridgeDomainModel : DslModeling::DomainModel
+	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// OialDcilBridgeDomainModel domain model Id.
+		/// ORMAbstractionToConceptualDatabaseBridgeDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0x005cbd56, 0x3ba5, 0x4947, 0x9f, 0x46, 0x56, 0x08, 0xbd, 0x56, 0x3c, 0xed);
 	
@@ -49,7 +50,7 @@ namespace Neumont.Tools.OialDcilBridge
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public OialDcilBridgeDomainModel(DslModeling::Store store)
+		public ORMAbstractionToConceptualDatabaseBridgeDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -186,7 +187,7 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -196,7 +197,7 @@ namespace Neumont.Tools.OialDcilBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return OialDcilBridgeDomainModel.SingletonResourceManager;
+				return ORMAbstractionToConceptualDatabaseBridgeDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -208,11 +209,11 @@ namespace Neumont.Tools.OialDcilBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (OialDcilBridgeDomainModel.resourceManager == null)
+				if (ORMAbstractionToConceptualDatabaseBridgeDomainModel.resourceManager == null)
 				{
-					OialDcilBridgeDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(OialDcilBridgeDomainModel).Assembly);
+					ORMAbstractionToConceptualDatabaseBridgeDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMAbstractionToConceptualDatabaseBridgeDomainModel).Assembly);
 				}
-				return OialDcilBridgeDomainModel.resourceManager;
+				return ORMAbstractionToConceptualDatabaseBridgeDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -236,9 +237,9 @@ namespace Neumont.Tools.OialDcilBridge
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return OialDcilBridgeDomainModel.CopyClosure;
+					return ORMAbstractionToConceptualDatabaseBridgeDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return OialDcilBridgeDomainModel.DeleteClosure;
+					return ORMAbstractionToConceptualDatabaseBridgeDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -250,14 +251,14 @@ namespace Neumont.Tools.OialDcilBridge
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (OialDcilBridgeDomainModel.copyClosure == null)
+				if (ORMAbstractionToConceptualDatabaseBridgeDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new OialDcilBridgeCopyClosure());
+					copyFilter.AddFilter(new ORMAbstractionToConceptualDatabaseBridgeCopyClosure());
 					
-					OialDcilBridgeDomainModel.copyClosure = copyFilter;
+					ORMAbstractionToConceptualDatabaseBridgeDomainModel.copyClosure = copyFilter;
 				}
-				return OialDcilBridgeDomainModel.copyClosure;
+				return ORMAbstractionToConceptualDatabaseBridgeDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -268,14 +269,14 @@ namespace Neumont.Tools.OialDcilBridge
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (OialDcilBridgeDomainModel.removeClosure == null)
+				if (ORMAbstractionToConceptualDatabaseBridgeDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new OialDcilBridgeDeleteClosure());
+					removeFilter.AddFilter(new ORMAbstractionToConceptualDatabaseBridgeDeleteClosure());
 		
-					OialDcilBridgeDomainModel.removeClosure = removeFilter;
+					ORMAbstractionToConceptualDatabaseBridgeDomainModel.removeClosure = removeFilter;
 				}
-				return OialDcilBridgeDomainModel.removeClosure;
+				return ORMAbstractionToConceptualDatabaseBridgeDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -286,12 +287,12 @@ namespace Neumont.Tools.OialDcilBridge
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class OialDcilBridgeDeleteClosure : OialDcilBridgeDeleteClosureBase, DslModeling::IElementVisitorFilter
+	public partial class ORMAbstractionToConceptualDatabaseBridgeDeleteClosure : ORMAbstractionToConceptualDatabaseBridgeDeleteClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialDcilBridgeDeleteClosure() : base()
+		public ORMAbstractionToConceptualDatabaseBridgeDeleteClosure() : base()
 		{
 		}
 	}
@@ -299,7 +300,7 @@ namespace Neumont.Tools.OialDcilBridge
 	/// <summary>
 	/// Base class for remove closure visitor filter
 	/// </summary>
-	public partial class OialDcilBridgeDeleteClosureBase : DslModeling::IElementVisitorFilter
+	public partial class ORMAbstractionToConceptualDatabaseBridgeDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -308,7 +309,7 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialDcilBridgeDeleteClosureBase()
+		public ORMAbstractionToConceptualDatabaseBridgeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -359,19 +360,19 @@ namespace Neumont.Tools.OialDcilBridge
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public partial class OialDcilBridgeCopyClosure : OialDcilBridgeCopyClosureBase, DslModeling::IElementVisitorFilter
+	public partial class ORMAbstractionToConceptualDatabaseBridgeCopyClosure : ORMAbstractionToConceptualDatabaseBridgeCopyClosureBase, DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialDcilBridgeCopyClosure() : base()
+		public ORMAbstractionToConceptualDatabaseBridgeCopyClosure() : base()
 		{
 		}
 	}
 	/// <summary>
 	/// Base class for copy closure visitor filter
 	/// </summary>
-	public partial class OialDcilBridgeCopyClosureBase : DslModeling::IElementVisitorFilter
+	public partial class ORMAbstractionToConceptualDatabaseBridgeCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -380,7 +381,7 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OialDcilBridgeCopyClosureBase()
+		public ORMAbstractionToConceptualDatabaseBridgeCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion

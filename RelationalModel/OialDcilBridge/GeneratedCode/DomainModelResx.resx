@@ -117,203 +117,203 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.OialDcilBridge</value>
-    <comment>Description for DslLibrary &apos;OialDcilBridge&apos;</comment>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridge</value>
+    <comment>Description for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.DisplayName" xml:space="preserve">
     <value>(Preliminary) ORMAbstraction/ConceptualDatabase Bridge</value>
-    <comment>DisplayName for DslLibrary &apos;OialDcilBridge&apos;</comment>
+    <comment>DisplayName for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel</value>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel</value>
     <comment>Description for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.DisplayName" xml:space="preserve">
     <value>Schema Is For Abstraction Model</value>
     <comment>DisplayName for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.PropertyDisplayName" xml:space="preserve">
     <value>Abstraction Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.DisplayName" xml:space="preserve">
     <value>Abstraction Model</value>
     <comment>DisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>PropertyDisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType</value>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType</value>
     <comment>Description for DomainClass &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.DisplayName" xml:space="preserve">
     <value>Table Is Primarily For Concept Type</value>
     <comment>DisplayName for DomainClass &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/Table.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/Table.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/ConceptType.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType</value>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType</value>
     <comment>Description for DomainClass &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.DisplayName" xml:space="preserve">
     <value>Table Is Also For Concept Type</value>
     <comment>DisplayName for DomainClass &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/Table.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/Table.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/ConceptType.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild</value>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild</value>
     <comment>Description for DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Column Has Concept Type Child</value>
     <comment>DisplayName for DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/Column.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/Column.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.DisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/Column.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Child Path</value>
     <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Concept Type Child</value>
     <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness</value>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness</value>
     <comment>Description for DomainClass &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.DisplayName" xml:space="preserve">
     <value>Uniqueness Constraint Is For Uniqueness</value>
     <comment>DisplayName for DomainClass &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Uniqueness Constraint</value>
     <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Concept Type Child</value>
     <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat</value>
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat</value>
     <comment>Description for DomainClass &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.DisplayName" xml:space="preserve">
     <value>Domain Is For Information Type Format</value>
     <comment>DisplayName for DomainClass &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/Domain.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/Domain.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.DisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/Domain.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.PropertyDisplayName" xml:space="preserve">
     <value>Information Type Format</value>
     <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
     <value>Information Type Format</value>
     <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>
-  <data name="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
   </data>

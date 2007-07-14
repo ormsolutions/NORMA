@@ -2,7 +2,7 @@
 <xs:schema
 	targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
-	xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
+	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -73,7 +73,7 @@
 	<!--<xs:complexType name="dataType" abstract="true">-->
 	<xs:complexType name="dataType">
 		<xs:complexContent>
-			<xs:extension base="oil:identified"/>
+			<xs:extension base="oial:identified"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<!-- Return to abstract status when oial does something real with data types -->

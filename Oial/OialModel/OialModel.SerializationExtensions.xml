@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="AbstractionDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="oil" URI="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" SchemaFile="OIAL.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="oial" URI="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" SchemaFile="OIAL.xsd" DefaultPrefix="true"/>
 			<se:Namespace Prefix="odt" URI="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" SchemaFile="OIALDatatypes.xsd"/>
 		</se:Namespaces>
 		<se:RootElements>

@@ -31,6 +31,15 @@
 		</se:OmittedDomainElements>
 	</se:DomainModel>
 	<se:Element Class="Catalog">
+		<se:Attribute ID="Name">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="Name" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Schemas">
 			<se:Embed RelationshipName="CatalogContainsSchema" RoleName="Schema"/>
 		</se:Container>

@@ -21,19 +21,20 @@ using Neumont.Tools.Modeling.Shell;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
-	#region OialDcilBridgeDomainModel model serialization
-	partial class OialDcilBridgeDomainModel : ICustomSerializedDomainModel
+	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel model serialization
+	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase")]
+	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : ICustomSerializedDomainModel
 	{
-		/// <summary>The default XmlNamespace associated with the 'OialDcilBridgeDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "";
+		/// <summary>The default XmlNamespace associated with the 'ORMAbstractionToConceptualDatabaseBridgeDomainModel' extension model</summary>
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
 			get
 			{
-				return null;
+				return "oialtocdb";
 			}
 		}
 		string ICustomSerializedDomainModel.DefaultElementPrefix
@@ -46,7 +47,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
-			string[,] ret = new string[0, 3];
+			string[,] ret = new string[1, 3];
+			ret[0, 0] = "oialtocdb";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase";
+			ret[0, 2] = "ORMAbstractionToConceptualDatabase.xsd";
 			return ret;
 		}
 		string[,] ICustomSerializedDomainModel.GetCustomElementNamespaces()
@@ -55,6 +59,7 @@ namespace Neumont.Tools.OialDcilBridge
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
+		private static CustomSerializedRootRelationshipContainer[] myRootRelationshipContainers;
 		/// <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -76,7 +81,32 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
 		protected static CustomSerializedRootRelationshipContainer[] GetRootRelationshipContainers()
 		{
-			return null;
+			CustomSerializedRootRelationshipContainer[] retVal = ORMAbstractionToConceptualDatabaseBridgeDomainModel.myRootRelationshipContainers;
+			if (retVal == null)
+			{
+				retVal = new CustomSerializedRootRelationshipContainer[]{
+					new CustomSerializedRootRelationshipContainer("oialtocdb", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase", new CustomSerializedStandaloneRelationship[]{
+						new CustomSerializedStandaloneRelationship(SchemaIsForAbstractionModel.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("Schema", SchemaIsForAbstractionModel.SchemaDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("AbstractionModel", SchemaIsForAbstractionModel.AbstractionModelDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(ColumnHasConceptTypeChild.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("Column", ColumnHasConceptTypeChild.ColumnDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ConceptTypeChild", ColumnHasConceptTypeChild.ConceptTypeChildDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(DomainIsForInformationTypeFormat.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("Domain", DomainIsForInformationTypeFormat.DomainDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("InformationTypeFormat", DomainIsForInformationTypeFormat.InformationTypeFormatDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(TableIsPrimarilyForConceptType.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("Table", TableIsPrimarilyForConceptType.TableDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ConceptType", TableIsPrimarilyForConceptType.ConceptTypeDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(TableIsAlsoForConceptType.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("Table", TableIsAlsoForConceptType.TableDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ConceptType", TableIsAlsoForConceptType.ConceptTypeDomainRoleId)}, null, null, null),
+						new CustomSerializedStandaloneRelationship(UniquenessConstraintIsForUniqueness.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
+							new CustomSerializedStandaloneRelationshipRole("UniquenessConstraint", UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId),
+							new CustomSerializedStandaloneRelationshipRole("ConceptTypeChild", UniquenessConstraintIsForUniqueness.ConceptTypeChildDomainRoleId)}, null, null, null)})};
+				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myRootRelationshipContainers = retVal;
+			}
+			return retVal;
 		}
 		CustomSerializedRootRelationshipContainer[] ICustomSerializedDomainModel.GetRootRelationshipContainers()
 		{
@@ -94,17 +124,18 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
-			Collection<string> validNamespaces = OialDcilBridgeDomainModel.myValidNamespaces;
-			Dictionary<string, Guid> classNameMap = OialDcilBridgeDomainModel.myClassNameMap;
+			Collection<string> validNamespaces = ORMAbstractionToConceptualDatabaseBridgeDomainModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = ORMAbstractionToConceptualDatabaseBridgeDomainModel.myClassNameMap;
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				OialDcilBridgeDomainModel.myValidNamespaces = validNamespaces;
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase");
+				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
-				OialDcilBridgeDomainModel.myClassNameMap = classNameMap;
+				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
 			{
@@ -117,5 +148,5 @@ namespace Neumont.Tools.OialDcilBridge
 			return MapClassName(xmlNamespace, elementName);
 		}
 	}
-	#endregion // OialDcilBridgeDomainModel model serialization
+	#endregion // ORMAbstractionToConceptualDatabaseBridgeDomainModel model serialization
 }

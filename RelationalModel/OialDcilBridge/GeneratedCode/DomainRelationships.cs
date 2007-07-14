@@ -24,14 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainRelationship SchemaIsForAbstractionModel
-	/// Description for Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("9ca44cef-1787-41bc-a0ac-5ac79753dabb")]
@@ -108,9 +109,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole Schema
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("6ed59846-e0d8-4980-81ac-b3541ad9d7dd")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema Schema
 		{
@@ -158,9 +159,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole AbstractionModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("3c18d01e-2687-42a1-9536-b23f91a247d0")]
 		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel AbstractionModel
 		{
@@ -204,9 +205,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel GetLinkToAbstractionModel (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema schemaInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel GetLinkToAbstractionModel (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema schemaInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel>(schemaInstance, global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.SchemaDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel>(schemaInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.SchemaDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Schema not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -224,9 +225,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel GetLinkToSchema (global::Neumont.Tools.ORMAbstraction.AbstractionModel abstractionModelInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel GetLinkToSchema (global::Neumont.Tools.ORMAbstraction.AbstractionModel abstractionModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel>(abstractionModelInstance, global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.AbstractionModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel>(abstractionModelInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.AbstractionModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of AbstractionModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -245,11 +246,11 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel>(source, global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.SchemaDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel link in links )
 			{
 				if ( target.Equals(link.AbstractionModel) )
 				{
@@ -263,10 +264,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel>(source, global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.SchemaIsForAbstractionModel link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.SchemaDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel link in links )
 			{
 				if ( target.Equals(link.AbstractionModel) )
 				{
@@ -279,14 +280,15 @@ namespace Neumont.Tools.OialDcilBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainRelationship TableIsPrimarilyForConceptType
-	/// Description for Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("3598c529-7d90-47bf-92ae-f77575b8bfd9")]
@@ -363,9 +365,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/Table.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/Table.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("daeb8db4-c3a6-497d-ba4c-74d1af6ccdc0")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table Table
 		{
@@ -413,9 +415,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole ConceptType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/ConceptType.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("64f5ec66-1af4-4368-a1a2-5913681de491")]
 		public virtual global::Neumont.Tools.ORMAbstraction.ConceptType ConceptType
 		{
@@ -459,9 +461,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType GetLinkToConceptType (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType GetLinkToConceptType (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType>(tableInstance, global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.TableDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType>(tableInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.TableDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Table not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -479,9 +481,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType GetLinkToTable (global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType GetLinkToTable (global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType>(conceptTypeInstance, global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.ConceptTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType>(conceptTypeInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.ConceptTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ConceptType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -500,11 +502,11 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType>(source, global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.TableDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{
@@ -518,10 +520,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType>(source, global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.TableIsPrimarilyForConceptType link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.TableDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{
@@ -534,14 +536,15 @@ namespace Neumont.Tools.OialDcilBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainRelationship TableIsAlsoForConceptType
-	/// Description for Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("058e26e9-85e8-4da4-8979-bfa0455d41cc")]
@@ -618,9 +621,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/Table.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/Table.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("e2f7dd3b-8e40-45a5-ac39-863abfa35020")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table Table
 		{
@@ -658,9 +661,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole ConceptType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/ConceptType.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("51d93721-0758-4405-b36e-e807309f8ca8")]
 		public virtual global::Neumont.Tools.ORMAbstraction.ConceptType ConceptType
 		{
@@ -694,9 +697,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType> GetLinksToConceptType ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType> GetLinksToConceptType ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType>(tableInstance, global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.TableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType>(tableInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.TableDomainRoleId);
 		}
 		#endregion
 		#region ConceptType link accessor
@@ -705,9 +708,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType> GetLinksToTable ( global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType> GetLinksToTable ( global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType>(conceptTypeInstance, global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.ConceptTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType>(conceptTypeInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.ConceptTypeDomainRoleId);
 		}
 		#endregion
 		#region TableIsAlsoForConceptType instance accessors
@@ -717,11 +720,11 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType>(source, global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.TableDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{
@@ -735,10 +738,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType>(source, global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.TableIsAlsoForConceptType link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.TableDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{
@@ -751,14 +754,15 @@ namespace Neumont.Tools.OialDcilBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainRelationship ColumnHasConceptTypeChild
-	/// Description for Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("ccbcab63-ade4-43fa-8e29-8a598b0969f5")]
@@ -835,9 +839,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole Column
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/Column.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/Column.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildPath", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildPath", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("bc7ea8a8-8772-4ca4-b914-b78b4b583338")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column Column
 		{
@@ -875,9 +879,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Column", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Column", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("b162a279-a4c1-4271-ad37-9cddfc421722")]
 		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeChild ConceptTypeChild
 		{
@@ -911,9 +915,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild> GetLinksToConceptTypeChildPath ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column columnInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> GetLinksToConceptTypeChildPath ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column columnInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild>(columnInstance, global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild>(columnInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild link accessor
@@ -922,9 +926,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild> GetLinksToColumn ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> GetLinksToColumn ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild>(conceptTypeChildInstance, global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.ConceptTypeChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild>(conceptTypeChildInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region ColumnHasConceptTypeChild instance accessors
@@ -934,11 +938,11 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild>(source, global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild link in links )
 			{
 				if ( target.Equals(link.ConceptTypeChild) )
 				{
@@ -952,10 +956,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild>(source, global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.ColumnHasConceptTypeChild link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.ColumnDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild link in links )
 			{
 				if ( target.Equals(link.ConceptTypeChild) )
 				{
@@ -968,14 +972,15 @@ namespace Neumont.Tools.OialDcilBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainRelationship UniquenessConstraintIsForUniqueness
-	/// Description for Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("5da169bb-5439-4f61-926f-6b789503511e")]
@@ -1052,9 +1057,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole UniquenessConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Uniqueness", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Uniqueness", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("2c58f935-e736-401f-b22f-e38f71ab33e5")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint UniquenessConstraint
 		{
@@ -1092,9 +1097,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Column", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Column", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("78ab7c46-d141-4136-b1da-2f5a64e820dc")]
 		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeChild ConceptTypeChild
 		{
@@ -1128,9 +1133,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness> GetLinksToUniqueness ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> GetLinksToUniqueness ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness>(uniquenessConstraintInstance, global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>(uniquenessConstraintInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild link accessor
@@ -1139,9 +1144,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness> GetLinksToColumn ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> GetLinksToColumn ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness>(conceptTypeChildInstance, global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.ConceptTypeChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>(conceptTypeChildInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region UniquenessConstraintIsForUniqueness instance accessors
@@ -1151,11 +1156,11 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness>(source, global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness link in links )
 			{
 				if ( target.Equals(link.ConceptTypeChild) )
 				{
@@ -1169,10 +1174,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness>(source, global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.UniquenessConstraintIsForUniqueness link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness link in links )
 			{
 				if ( target.Equals(link.ConceptTypeChild) )
 				{
@@ -1185,14 +1190,15 @@ namespace Neumont.Tools.OialDcilBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainRelationship DomainIsForInformationTypeFormat
-	/// Description for Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat
+	/// Description for
+	/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a9f82d26-1d87-4808-b618-37ff179466fc")]
@@ -1269,9 +1275,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole Domain
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/Domain.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/Domain.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InformationTypeFormat", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InformationTypeFormat", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("eec22052-39cd-4f93-ac66-6634dd6423b4")]
 		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain Domain
 		{
@@ -1309,9 +1315,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// <summary>
 		/// DomainRole InformationTypeFormat
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.Description", typeof(global::Neumont.Tools.OialDcilBridge.OialDcilBridgeDomainModel), "Neumont.Tools.OialDcilBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Domain", PropertyDisplayNameKey="Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Domain", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("64e89755-37f7-43d6-a6c5-654b1c315d1b")]
 		public virtual global::Neumont.Tools.ORMAbstraction.InformationTypeFormat InformationTypeFormat
 		{
@@ -1355,9 +1361,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat GetLinkToInformationTypeFormat (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance)
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat GetLinkToInformationTypeFormat (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat>(domainInstance, global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.DomainDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat>(domainInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.DomainDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Domain not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1375,9 +1381,9 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat> GetLinksToDomain ( global::Neumont.Tools.ORMAbstraction.InformationTypeFormat informationTypeFormatInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat> GetLinksToDomain ( global::Neumont.Tools.ORMAbstraction.InformationTypeFormat informationTypeFormatInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat>(informationTypeFormatInstance, global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.InformationTypeFormatDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat>(informationTypeFormatInstance, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.InformationTypeFormatDomainRoleId);
 		}
 		#endregion
 		#region DomainIsForInformationTypeFormat instance accessors
@@ -1387,11 +1393,11 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.ORMAbstraction.InformationTypeFormat target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.ORMAbstraction.InformationTypeFormat target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat>(source, global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.DomainDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.DomainDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat link in links )
 			{
 				if ( target.Equals(link.InformationTypeFormat) )
 				{
@@ -1405,10 +1411,10 @@ namespace Neumont.Tools.OialDcilBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.ORMAbstraction.InformationTypeFormat target )
+		public static global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.ORMAbstraction.InformationTypeFormat target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat>(source, global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat.DomainDomainRoleId);
-			foreach ( global::Neumont.Tools.OialDcilBridge.DomainIsForInformationTypeFormat link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat>(source, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.DomainDomainRoleId);
+			foreach ( global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat link in links )
 			{
 				if ( target.Equals(link.InformationTypeFormat) )
 				{

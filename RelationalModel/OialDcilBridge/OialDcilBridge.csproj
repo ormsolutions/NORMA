@@ -7,8 +7,8 @@
     <ProjectGuid>{2972026A-6C28-4BB8-A5CF-3ABD2FD0E79F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.OialDcilBridge</RootNamespace>
-    <AssemblyName>Neumont.Tools.OialDcilBridge</AssemblyName>
+    <RootNamespace>Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge</RootNamespace>
+    <AssemblyName>Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -22,7 +22,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.Dil.OialDcilBridge.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Neumont.Tools.ORMToORMAbstractionBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
@@ -94,6 +97,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainRelationships.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="ORMAbstractionToConceptualDatabase.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="GeneratedCode\DomainModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -129,6 +135,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>OialDcilBridge.SerializationExtensions.cs</LastGenOutput>
     </Content>
+    <Compile Include="OialDcilBridge.DeserializationFixupListeners.cs" />
     <Compile Include="OialDcilBridge.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>OialDcilBridge.SerializationExtensions.xml</DependentUpon>

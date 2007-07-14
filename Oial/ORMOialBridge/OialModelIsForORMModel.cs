@@ -110,7 +110,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				oialModelIsForORMModel.Delete();
 			}
 
-			AbstractionModel oial = new AbstractionModel(model.Store);
+			AbstractionModel oial = new AbstractionModel(
+				model.Store,
+				new PropertyAssignment[]{
+				new PropertyAssignment(AbstractionModel.NameDomainPropertyId, model.Name)});
 			oialModelIsForORMModel = new AbstractionModelIsForORMModel(oial, model);
 
 			// Apply ORM to OIAL algorithm
@@ -133,125 +136,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			}
 		}
 		#endregion
-		#region Deserialization FixupListeners
-		/// <summary>
-		/// This accessor returns an <see cref="OialObjectTypeFixupListener"/>.
-		/// </summary>
-		public static IDeserializationFixupListener ORMModelHasObjectTypeFixupListener
-		{
-			get { return new OialObjectTypeFixupListener(); }
-		}
-
-		/// <summary>
-		/// This class is the <see cref="ObjectType"/> fixuplistener.
-		/// We listen for <see cref="ObjectType"/> objects as they deserialize and DelayValidate the Model.
-		/// </summary>
-		private sealed class OialObjectTypeFixupListener : DeserializationFixupListener<ObjectType>
-		{
-			/// <summary>
-			/// <see cref="OialObjectTypeFixupListener"/> Constructor.
-			/// </summary>
-			public OialObjectTypeFixupListener()
-				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitStoredElements)
-			{
-			}
-
-			/// <summary>
-			/// When an <see cref="ObjectType"/> is deserialized we DelayValidate the Model.
-			/// </summary>
-			protected sealed override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
-			{
-				ObjectType objectType = element as ObjectType;
-				ORMModel model = objectType.Model;
-				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(model);
-				if (oil == null)
-				{
-					oil = new AbstractionModel(store);
-					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
-					notifyAdded.ElementAdded(oil, true);
-				}
-				FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
-			}
-		}
-
-		/// <summary>
-		/// This accessor returns an <see cref="OialFactTypeFixupListener"/>.
-		/// </summary>
-		public static IDeserializationFixupListener ORMModelHasFactTypeFixupListener
-		{
-			get { return new OialFactTypeFixupListener(); }
-		}
-
-		/// <summary>
-		/// This FixupListener listens for <see cref="FactType"/> objects that are being Deserialized.
-		/// </summary>
-		private sealed class OialFactTypeFixupListener : DeserializationFixupListener<FactType>
-		{
-			/// <summary>
-			/// <see cref="OialFactTypeFixupListener"/> Constructor.
-			/// </summary>
-			public OialFactTypeFixupListener()
-				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitStoredElements)
-			{
-			}
-
-			/// <summary>
-			/// When a <see cref="FactType"/> is deserialized we DelayValidate the Model.
-			/// </summary>
-			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
-			{
-				FactType fact = element as FactType;
-				ORMModel model = fact.Model;
-				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(model);
-				if (oil == null)
-				{
-					oil = new AbstractionModel(store);
-					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
-					notifyAdded.ElementAdded(oil, true);
-				}
-				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
-			}
-		}
-
-		/// <summary>
-		/// This accessor returns an <see cref="OialModelHasSetConstraintFixupListener"/>.
-		/// </summary>
-		public static IDeserializationFixupListener ORMModelModelHasSetConstraintFixupListener
-		{
-			get { return new OialModelHasSetConstraintFixupListener(); }
-		}
-
-		/// <summary>
-		/// This FixupListener listens for <see cref="SetConstraint"/> objects during deserialization.
-		/// </summary>
-		private sealed class OialModelHasSetConstraintFixupListener : DeserializationFixupListener<ModelHasSetConstraint>
-		{
-			/// <summary>
-			/// <see cref="OialModelHasSetConstraintFixupListener"/> Constructor.
-			/// </summary>
-			public OialModelHasSetConstraintFixupListener()
-				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitStoredElements)
-			{
-			}
-
-			/// <summary>
-			/// When a <see cref="SetConstraint"/> is deserialized we DelayValidate the Model.
-			/// </summary>
-			protected sealed override void ProcessElement(ModelHasSetConstraint element, Store store, INotifyElementAdded notifyAdded)
-			{
-				ModelHasSetConstraint setConstraint = element as ModelHasSetConstraint;
-				ORMModel model = setConstraint.Model;
-				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(model);
-				if (oil == null)
-				{
-					oil = new AbstractionModel(store);
-					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, model);
-					notifyAdded.ElementAdded(oil, true);
-				}
-				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
-			}
-		}
-		#endregion // Deserialization FixupListeners
 		#region ORM to OIAL Algorithm Methods
 		/// <summary>
 		/// Transforms the data in <see cref="ORMModel"/> into this <see cref="AbstractionModel"/>.

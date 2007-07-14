@@ -17,25 +17,37 @@
 		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
 		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:DomainModel Class="OialDcilBridgeDomainModel">
+	<se:DomainModel Class="ORMAbstractionToConceptualDatabaseBridgeDomainModel">
 		<se:Namespaces>
-			<!--<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-04/ORMCore" SchemaFile="ORM2Core.xsd" DefaultPrefix="true"/>-->
+			<se:Namespace Prefix="oialtocdb" URI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" SchemaFile="ORMAbstractionToConceptualDatabase.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
-		<se:RootElements>
-			<!--<se:RootElement Class="ORMModel"/>
-			<se:RootElement Class="ModelErrorDisplayFilter"/>-->
-		</se:RootElements>
-		<se:OmittedDomainElements>
-			<!--<se:OmitRelationship Class="FactConstraint"/>
-			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
-			<se:OmitRelationship Class="ExternalRoleConstraint"/>
-			<se:OmitRelationship Class="RoleInstance"/>
-			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
-			<se:OmitRelationship Class="JoinHasRole"/>
-			<se:OmitRelationship Class="ORMModelElementHasJoinPath"/>
-			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
-			<se:OmitClass Class="IntrinsicReferenceMode"/>-->
-		</se:OmittedDomainElements>
+		<se:RootLinks>
+			<se:Container Name="Bridge">
+				<se:RootLink Class="SchemaIsForAbstractionModel" PrimaryLinkElement="true">
+					<se:Role RoleName="Schema"/>
+					<se:Role RoleName="AbstractionModel"/>
+				</se:RootLink>
+				<se:RootLink Class="ColumnHasConceptTypeChild" PrimaryLinkElement="true">
+					<se:Role RoleName="Column"/>
+					<se:Role RoleName="ConceptTypeChild"/>
+				</se:RootLink>
+				<se:RootLink Class="DomainIsForInformationTypeFormat" PrimaryLinkElement="true">
+					<se:Role RoleName="Domain"/>
+					<se:Role RoleName="InformationTypeFormat"/>
+				</se:RootLink>
+				<se:RootLink Class="TableIsPrimarilyForConceptType" PrimaryLinkElement="true">
+					<se:Role RoleName="Table"/>
+					<se:Role RoleName="ConceptType"/>
+				</se:RootLink>
+				<se:RootLink Class="TableIsAlsoForConceptType" PrimaryLinkElement="true">
+					<se:Role RoleName="Table"/>
+					<se:Role RoleName="ConceptType"/>
+				</se:RootLink>
+				<se:RootLink Class="UniquenessConstraintIsForUniqueness" Name="UniquenessConstraintIsForConceptTypeChild" PrimaryLinkElement="true">
+					<se:Role RoleName="UniquenessConstraint"/>
+					<se:Role RoleName="ConceptTypeChild"/>
+				</se:RootLink>
+			</se:Container>
+		</se:RootLinks>
 	</se:DomainModel>
-
 </se:CustomSerializedElements>

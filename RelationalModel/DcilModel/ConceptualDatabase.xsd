@@ -73,7 +73,7 @@
 				</xs:element>
 			</xs:sequence>
 			<xs:attributeGroup ref="rcd:SurrogateIdentifier"/>
-			<xs:attribute name="Name" use="required">
+			<xs:attribute name="Name">
 				<xs:annotation>
 					<xs:documentation>The name of the catalog.</xs:documentation>
 				</xs:annotation>

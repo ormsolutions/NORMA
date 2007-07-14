@@ -16,17 +16,17 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.OialDcilBridge
+namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 {
-	#region Attach rules to OialDcilBridgeDomainModel model
-	partial class OialDcilBridgeDomainModel
+	#region Attach rules to ORMAbstractionToConceptualDatabaseBridgeDomainModel model
+	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = OialDcilBridgeDomainModel.myCustomDomainModelTypes;
+				Type[] retVal = ORMAbstractionToConceptualDatabaseBridgeDomainModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -34,7 +34,7 @@ namespace Neumont.Tools.OialDcilBridge
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{};
-					OialDcilBridgeDomainModel.myCustomDomainModelTypes = retVal;
+					ORMAbstractionToConceptualDatabaseBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -50,7 +50,7 @@ namespace Neumont.Tools.OialDcilBridge
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = OialDcilBridgeDomainModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = ORMAbstractionToConceptualDatabaseBridgeDomainModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -63,5 +63,5 @@ namespace Neumont.Tools.OialDcilBridge
 			}
 		}
 	}
-	#endregion // Attach rules to OialDcilBridgeDomainModel model
+	#endregion // Attach rules to ORMAbstractionToConceptualDatabaseBridgeDomainModel model
 }

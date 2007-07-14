@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			get
 			{
-				return "ormtooil";
+				return "ormtooial";
 			}
 		}
 		string ICustomSerializedDomainModel.DefaultElementPrefix
@@ -48,7 +48,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[1, 3];
-			ret[0, 0] = "ormtooil";
+			ret[0, 0] = "ormtooial";
 			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction";
 			ret[0, 2] = "ORMToORMAbstraction.xsd";
 			return ret;
@@ -85,7 +85,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			if (retVal == null)
 			{
 				retVal = new CustomSerializedRootRelationshipContainer[]{
-					new CustomSerializedRootRelationshipContainer("ormtooil", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", new CustomSerializedStandaloneRelationship[]{
+					new CustomSerializedRootRelationshipContainer("ormtooial", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", new CustomSerializedStandaloneRelationship[]{
 						new CustomSerializedStandaloneRelationship(AbstractionModelIsForORMModel.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 							new CustomSerializedStandaloneRelationshipRole("AbstractionModel", AbstractionModelIsForORMModel.AbstractionModelDomainRoleId),
 							new CustomSerializedStandaloneRelationshipRole("ORMModel", AbstractionModelIsForORMModel.ORMModelDomainRoleId)}, null, null, null),

@@ -29,13 +29,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	public enum ORMToORMAbstractionBridgeDeserializationFixupPhase
 	{
 		/// <summary>
-		/// Validate bridge elements after all core ORM validation is complete
+		/// Create bridge for model if no bridge currently exists
 		/// </summary>
-		ValidateImplicitStoredElements = (int)ORMDeserializationFixupPhase.ValidateErrors + 10,
-		/// <summary>
-		/// Make sure implicit elements are if there were not stored
-		/// </summary>
-		ValidateImplicitElements = (int)ORMDeserializationFixupPhase.ValidateErrors + 20,
+		CreateImplicitElements = (int)ORMDeserializationFixupPhase.ValidateErrors + 10,
 	}
 	public partial class ORMToORMAbstractionBridgeDomainModel : IDeserializationFixupListenerProvider
 	{
@@ -48,9 +44,6 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			get
 			{
 				yield return new ORMModelFixupListener();
-				yield return AbstractionModelIsForORMModel.ORMModelHasObjectTypeFixupListener;
-				yield return AbstractionModelIsForORMModel.ORMModelHasFactTypeFixupListener;
-				yield return AbstractionModelIsForORMModel.ORMModelModelHasSetConstraintFixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
@@ -92,7 +85,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			/// ExternalConstraintFixupListener constructor
 			/// </summary>
 			public ORMModelFixupListener()
-				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.ValidateImplicitElements)
+				: base((int)ORMToORMAbstractionBridgeDeserializationFixupPhase.CreateImplicitElements)
 			{
 			}
 			/// <summary>
@@ -106,9 +99,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				AbstractionModel oil = AbstractionModelIsForORMModel.GetAbstractionModel(element);
 				if (oil == null)
 				{
-					oil = new AbstractionModel(store);
-					AbstractionModelIsForORMModel oialModelIsForORMModel = new AbstractionModelIsForORMModel(oil, element);
-					notifyAdded.ElementAdded(oil, true);
+					// UNDONE: DelayValidateModel currently deletes and recreates any existing
+					// bridge relationship, so there is no point deleting it up front, we'll
+					// just retrieve it later. Also not that DelayValidateModel does not call notifyAdded.
+					AbstractionModelIsForORMModel.DelayValidateModel(element);
+					oil = AbstractionModelIsForORMModel.GetAbstractionModel(element);
+					if (oil != null)
+					{
+						notifyAdded.ElementAdded(oil, true);
+					}
 				}
 			}
 		}

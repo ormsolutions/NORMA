@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="ORMToORMAbstractionBridgeDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="ormtooil" URI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" SchemaFile="ORMToORMAbstraction.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormtooial" URI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" SchemaFile="ORMToORMAbstraction.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootLinks>
 			<se:Container Name="Bridge">

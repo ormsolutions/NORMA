@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			get
 			{
-				return "oil";
+				return "oial";
 			}
 		}
 		string ICustomSerializedDomainModel.DefaultElementPrefix
@@ -48,7 +48,7 @@ namespace Neumont.Tools.ORMAbstraction
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[2, 3];
-			ret[0, 0] = "oil";
+			ret[0, 0] = "oial";
 			ret[0, 1] = "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core";
 			ret[0, 2] = "OIAL.xsd";
 			ret[1, 0] = "odt";

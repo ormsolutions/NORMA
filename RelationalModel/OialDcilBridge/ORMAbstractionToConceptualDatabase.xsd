@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
-	xmlns="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" 
-	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
+	xmlns="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" 
+	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -17,7 +17,7 @@
 				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
 					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
-					<dc:title>ORM To ORM Intermediate Abstraction Language</dc:title>
+					<dc:title>ORM Intermediate Abstraction Language To Conceptual Database Language</dc:title>
 					<dc:creator>Kevin M. Owen</dc:creator>
 					<dc:contributor>Corey Kaylor</dc:contributor>
 					<dc:contributor>Korvyn Dornseif</dc:contributor>
@@ -27,6 +27,9 @@
 					<dc:contributor>David DeWinter</dc:contributor>
 					<dc:contributor>Brice Lambson</dc:contributor>
 					<dc:contributor>Sterling Bates</dc:contributor>
+					<dc:contributor>Noah Langenweiler</dc:contributor>
+					<dc:contributor>Jeremy Robertson</dc:contributor>
+					<dc:contributor>Jason Barnes</dc:contributor>
 					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>
 					<dcterms:rightsHolder>Neumont University</dcterms:rightsHolder>
 					<dcterms:license>
@@ -44,51 +47,40 @@
 	<xs:element name="Bridge">
 		<xs:complexType>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="AbstractionModelIsForORMModel" type="AbstractionModelIsForORMModelType"/>
-				<xs:element name="FactTypeMapsTowardsRole" type="FactTypeMapsTowardsRoleType"/>
-				<xs:element name="ConceptTypeIsForObjectType" type="ConceptTypeIsForObjectTypeType"/>
-				<xs:element name="ConceptTypeChildHasPathFactType" type="ConceptTypeChildHasPathFactTypeType"/>
-				<xs:element name="InformationTypeFormatIsForValueType" type="InformationTypeFormatIsForValueTypeType"/>
-				<xs:element name="UniquenessIsForUniquenessConstraint" type="UniquenessIsForUniquenessConstraintType"/>
+				<xs:element name="SchemaIsForAbstractionModel" type="SchemaIsForAbstractionModelType"/>
+				<xs:element name="ColumnHasConceptTypeChild" type="ColumnHasConceptTypeChildType"/>
+				<xs:element name="DomainIsForInformationTypeFormat" type="DomainIsForInformationTypeFormatType"/>
+				<xs:element name="TableIsPrimarilyForConceptType" type="TableIsForConceptTypeType"/>
+				<xs:element name="TableIsAlsoForConceptType" type="TableIsForConceptTypeType"/>
+				<!-- UNDONE: Not sure what this relationship does, the relationship name doesn't match up with the role name -->
+				<xs:element name="UniquenessConstraintIsForConceptTypeChild" type="UniquenessConstraintIsForConceptTypeChildType"/>
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
-	<xs:complexType name="AbstractionModelIsForORMModelType">
+	<xs:complexType name="SchemaIsForAbstractionModelType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Schema" type="xs:IDREF" use="required"/>
 		<xs:attribute name="AbstractionModel" type="xs:IDREF" use="required"/>
-		<xs:attribute name="ORMModel" type="xs:IDREF" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeMapsTowardsRoleType">
+	<xs:complexType name="ColumnHasConceptTypeChildType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="FactType" type="xs:IDREF" use="required"/>
-		<xs:attribute name="TowardsRole" type="xs:IDREF" use="required"/>
-		<xs:attribute name="Depth" use="required">
-			<xs:simpleType>
-				<xs:restriction base="xs:token">
-					<xs:enumeration value="Shallow"/>
-					<xs:enumeration value="Deep"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-	</xs:complexType>
-	<xs:complexType name="ConceptTypeIsForObjectTypeType">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="ConceptType" type="xs:IDREF" use="required"/>
-		<xs:attribute name="ObjectType" type="xs:IDREF" use="required"/>
-	</xs:complexType>
-	<xs:complexType name="ConceptTypeChildHasPathFactTypeType">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Column" type="xs:IDREF" use="required"/>
 		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
-		<xs:attribute name="PathFactType" type="xs:IDREF" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="InformationTypeFormatIsForValueTypeType">
+	<xs:complexType name="DomainIsForInformationTypeFormatType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Domain" type="xs:IDREF" use="required"/>
 		<xs:attribute name="InformationTypeFormat" type="xs:IDREF" use="required"/>
-		<xs:attribute name="ValueType" type="xs:IDREF" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="UniquenessIsForUniquenessConstraintType">
+	<xs:complexType name="TableIsForConceptTypeType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="AbstractionUniquenessConstraint" type="xs:IDREF" use="required"/>
-		<xs:attribute name="ORMUniquenessConstraint" type="xs:IDREF" use="required"/>
+		<xs:attribute name="Table" type="xs:IDREF" use="required"/>
+		<xs:attribute name="ConceptType" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<!-- UNDONE: Not sure what this relationship does, the relationship name doesn't match up with the role name -->
+	<xs:complexType name="UniquenessConstraintIsForConceptTypeChildType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="UniquenessConstraint" type="xs:IDREF" use="required"/>
+		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 </xs:schema>

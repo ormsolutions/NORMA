@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
 	targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
-	xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
+	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
@@ -61,7 +61,7 @@
 	<xs:element name="model">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="oil:identified">
+				<xs:extension base="oial:identified">
 					<xs:sequence>
 						<xs:element name="informationTypeFormats" minOccurs="0">
 							<xs:annotation>
@@ -79,7 +79,7 @@
 							</xs:annotation>
 							<xs:complexType>
 								<xs:choice minOccurs="0" maxOccurs="unbounded">
-									<xs:element ref="oil:conceptType"/>
+									<xs:element ref="oial:conceptType"/>
 									<!-- KL stuff might go here. -->
 								</xs:choice>
 							</xs:complexType>
@@ -98,25 +98,25 @@
 			<xs:field xpath="@name"/>
 		</xs:key>-->
 		<xs:key name="informationTypeFormatIdKey">
-			<xs:selector xpath="oil:informationTypeFormats/*"/>
+			<xs:selector xpath="oial:informationTypeFormats/*"/>
 			<xs:field xpath="@id"/>
 		</xs:key>
 		<!-- Relax name restrictions for design-time model use -->
 		<!--<xs:key name="informationTypeFormatNameKey">
-			<xs:selector xpath="oil:informationTypeFormats/*"/>
+			<xs:selector xpath="oial:informationTypeFormats/*"/>
 			<xs:field xpath="@name"/>
 		</xs:key>-->
 		<xs:key name="conceptTypeIdKey">
-			<xs:selector xpath="oil:conceptTypes/oil:conceptType"/>
+			<xs:selector xpath="oial:conceptTypes/oial:conceptType"/>
 			<xs:field xpath="@id"/>
 		</xs:key>
 		<!-- Relax name restrictions for design-time model use -->
 		<!--<xs:key name="conceptTypeNameKey">
-			<xs:selector xpath="oil:conceptTypes/oil:conceptType"/>
+			<xs:selector xpath="oial:conceptTypes/oial:conceptType"/>
 			<xs:field xpath="@name"/>
 		</xs:key>-->
 		<xs:key name="modelConceptTypeChildIdKey">
-			<xs:selector xpath="oil:conceptTypes/oil:conceptType/oil:children/oil:informationType | oil:conceptTypes/oil:conceptType/oil:children/oil:relatedConceptType | oil:conceptTypes/oil:conceptType/oil:children/oil:assimilatedConceptType"/>
+			<xs:selector xpath="oial:conceptTypes/oial:conceptType/oial:children/oial:informationType | oial:conceptTypes/oial:conceptType/oial:children/oial:relatedConceptType | oial:conceptTypes/oial:conceptType/oial:children/oial:assimilatedConceptType"/>
 			<xs:field xpath="@id"/>
 		</xs:key>
 	</xs:element>
@@ -127,7 +127,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="oil:identified">
+				<xs:extension base="oial:identified">
 					<xs:sequence>
 						<xs:element name="children" minOccurs="0">
 							<xs:annotation>
@@ -135,14 +135,14 @@
 							</xs:annotation>
 							<xs:complexType>
 								<xs:choice minOccurs="0" maxOccurs="unbounded">
-									<xs:element name="informationType" type="oil:informationType">
-										<xs:keyref name="informationTypeFormatRef" refer="oil:informationTypeFormatIdKey">
+									<xs:element name="informationType" type="oial:informationType">
+										<xs:keyref name="informationTypeFormatRef" refer="oial:informationTypeFormatIdKey">
 											<xs:selector xpath="."/>
 											<xs:field xpath="@ref"/>
 										</xs:keyref>
 									</xs:element>
-									<xs:element name="relatedConceptType" type="oil:conceptTypeRef">
-										<xs:keyref name="relatedConceptTypeRef" refer="oil:conceptTypeIdKey">
+									<xs:element name="relatedConceptType" type="oial:conceptTypeRef">
+										<xs:keyref name="relatedConceptTypeRef" refer="oial:conceptTypeIdKey">
 											<xs:selector xpath="."/>
 											<xs:field xpath="@ref"/>
 										</xs:keyref>
@@ -155,18 +155,18 @@
 										</xs:annotation>
 										<xs:complexType>
 											<xs:complexContent>
-												<xs:extension base="oil:conceptTypeRef">
-													<xs:attribute name="refersToSubtype" use="optional" type="oil:trueOnlyBoolean">
+												<xs:extension base="oial:conceptTypeRef">
+													<xs:attribute name="refersToSubtype" use="optional" type="oial:trueOnlyBoolean">
 														<xs:annotation>
 															<xs:documentation>If present, indicates that this concept type assimilation represents a subtyping relationship.</xs:documentation>
 														</xs:annotation>
 													</xs:attribute>
-													<xs:attribute name="isPreferredForTarget" use="optional" type="oil:trueOnlyBoolean">
+													<xs:attribute name="isPreferredForTarget" use="optional" type="oial:trueOnlyBoolean">
 														<xs:annotation>
 															<xs:documentation>If present, indicates that the implied alethic uniqueness constraint on this concept type assimilation represents the preferred identifier for the concept type being assimilated.</xs:documentation>
 														</xs:annotation>
 													</xs:attribute>
-													<xs:attribute name="isPreferredForParent" use="optional" type="oil:trueOnlyBoolean">
+													<xs:attribute name="isPreferredForParent" use="optional" type="oial:trueOnlyBoolean">
 														<xs:annotation>
 															<xs:documentation>If present, indicates that the implied alethic uniqueness constraint on this concept type assimilation represents the preferred identifier for the containing concept type.</xs:documentation>
 															<xs:documentation>This attribute must not be present if refersToSubtype is present. A subtype cannot be the preferred identifier of its supertype.</xs:documentation>
@@ -176,7 +176,7 @@
 												</xs:extension>
 											</xs:complexContent>
 										</xs:complexType>
-										<xs:keyref name="assimilatedConceptTypeRef" refer="oil:conceptTypeIdKey">
+										<xs:keyref name="assimilatedConceptTypeRef" refer="oial:conceptTypeIdKey">
 											<xs:selector xpath="."/>
 											<xs:field xpath="@ref"/>
 										</xs:keyref>
@@ -185,21 +185,21 @@
 							</xs:complexType>
 							<!-- Relax name restrictions for design-time model use -->
 							<!--<xs:key name="conceptTypeChildNameKey">
-								<xs:selector xpath="oil:informationType | oil:relatedConceptType | oil:assimilatedConceptType"/>
+								<xs:selector xpath="oial:informationType | oial:relatedConceptType | oial:assimilatedConceptType"/>
 								<xs:field xpath="@name"/>
 							</xs:key>-->
 							<xs:key name="assimilatedConceptTypeRefKey">
 								<xs:annotation>
 									<xs:documentation>We can only assimilate a given concept type at most once.</xs:documentation>
 								</xs:annotation>
-								<xs:selector xpath="oil:assimilatedConceptType"/>
+								<xs:selector xpath="oial:assimilatedConceptType"/>
 								<xs:field xpath="@ref"/>
 							</xs:key>
 							<xs:unique name="assimilatedConceptTypeIsPreferredForParentUnique">
 								<xs:annotation>
 									<xs:documentation>We can only have at most one preferred concept type assimilation.</xs:documentation>
 								</xs:annotation>
-								<xs:selector xpath="oil:assimilatedConceptType"/>
+								<xs:selector xpath="oial:assimilatedConceptType"/>
 								<xs:field xpath="@isPreferredForParent"/>
 							</xs:unique>
 						</xs:element>
@@ -215,10 +215,10 @@
 										</xs:annotation>
 										<xs:complexType>
 											<xs:complexContent>
-												<xs:extension base="oil:identified">
+												<xs:extension base="oial:identified">
 													<xs:sequence>
-														<xs:element name="uniquenessChild" minOccurs="0" maxOccurs="unbounded" type="oil:conceptTypeChildRef">
-															<xs:keyref name="uniquenessChildRef" refer="oil:informationTypeAndRelatedConceptTypeIdKey">
+														<xs:element name="uniquenessChild" minOccurs="0" maxOccurs="unbounded" type="oial:conceptTypeChildRef">
+															<xs:keyref name="uniquenessChildRef" refer="oial:informationTypeAndRelatedConceptTypeIdKey">
 																<xs:annotation>
 																	<xs:documentation>Since concept type assimilations always uniquely identify the containing concept type, they can not be included in a uniqueness constraint (since it would be implied).</xs:documentation>
 																	<xs:documentation>Implementation Note: Depending on what we choose to do in the future with implied / derived uniqueness constraints, this restriction may need to be relaxed.</xs:documentation>
@@ -228,7 +228,7 @@
 															</xs:keyref>
 														</xs:element>
 													</xs:sequence>
-													<xs:attribute name="isPreferred" use="optional" type="oil:trueOnlyBoolean">
+													<xs:attribute name="isPreferred" use="optional" type="oial:trueOnlyBoolean">
 														<xs:annotation>
 															<xs:documentation>If present, indicates that this uniqueness constraint represents the preferred identifier for the containing concept type.</xs:documentation>
 														</xs:annotation>
@@ -240,19 +240,19 @@
 								</xs:sequence>
 							</xs:complexType>
 							<xs:key name="uniquenessIdKey">
-								<xs:selector xpath="oil:uniquenessConstraint"/>
+								<xs:selector xpath="oial:uniquenessConstraint"/>
 								<xs:field xpath="@id"/>
 							</xs:key>
 							<!-- Relax name restrictions for design-time model use -->
 							<!--<xs:key name="uniquenessNameKey">
-								<xs:selector xpath="oil:uniquenessConstraint"/>
+								<xs:selector xpath="oial:uniquenessConstraint"/>
 								<xs:field xpath="@name"/>
 							</xs:key>-->
 							<xs:unique name="uniquenessIsPreferredUnique">
 								<xs:annotation>
 									<xs:documentation>We can only have at most one preferred uniqueness.</xs:documentation>
 								</xs:annotation>
-								<xs:selector xpath="oil:uniquenessConstraint"/>
+								<xs:selector xpath="oial:uniquenessConstraint"/>
 								<xs:field xpath="@isPreferred"/>
 							</xs:unique>
 						</xs:element>
@@ -262,14 +262,14 @@
 							</xs:annotation>
 							<xs:complexType>
 								<xs:complexContent>
-									<xs:extension base="oil:openAttributes">
+									<xs:extension base="oial:openAttributes">
 										<xs:sequence>
-											<xs:element name="associationChild" minOccurs="1" maxOccurs="unbounded" type="oil:conceptTypeChildRef">
+											<xs:element name="associationChild" minOccurs="1" maxOccurs="unbounded" type="oial:conceptTypeChildRef">
 												<xs:annotation>
 													<xs:documentation>Indicates one of the concept type children that was part of the association that resulted in the creation of the containing concept type.</xs:documentation>
 													<xs:documentation>If the concept type child referred to is contained within another concept type, it must be a related concept type or an assimilated concept type (not an information type).</xs:documentation>
 												</xs:annotation>
-												<xs:keyref name="associationChildRefTargetKeyRef" refer="oil:modelConceptTypeChildIdKey">
+												<xs:keyref name="associationChildRefTargetKeyRef" refer="oial:modelConceptTypeChildIdKey">
 													<xs:selector xpath="."/>
 													<xs:field xpath="@ref"/>
 												</xs:keyref>
@@ -285,7 +285,7 @@
 			</xs:complexContent>
 		</xs:complexType>
 		<xs:key name="informationTypeAndRelatedConceptTypeIdKey">
-			<xs:selector xpath="oil:children/oil:informationType | oil:children/oil:relatedConceptType"/>
+			<xs:selector xpath="oial:children/oial:informationType | oial:children/oial:relatedConceptType"/>
 			<xs:field xpath="@id"/>
 		</xs:key>
 	</xs:element>
@@ -296,17 +296,17 @@
 
 	<xs:complexType name="identified" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="oil:openAttributes">
+			<xs:extension base="oial:openAttributes">
 				<xs:attribute name="id" use="required" type="xs:ID"/>
-				<xs:attribute name="name" use="required" type="oil:name"/>
+				<xs:attribute name="name" use="required" type="oial:name"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 
 	<xs:complexType name="conceptTypeChild" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="oil:identified">
-				<xs:attribute name="isMandatory" use="optional" type="oil:trueOnlyBoolean">
+			<xs:extension base="oial:identified">
+				<xs:attribute name="isMandatory" use="optional" type="oial:trueOnlyBoolean">
 					<xs:annotation>
 						<xs:documentation>If present, indicates that this concept type child is alethicly mandatory.</xs:documentation>
 					</xs:annotation>
@@ -317,13 +317,13 @@
 
 	<xs:complexType name="conceptTypeRef">
 		<xs:complexContent>
-			<xs:extension base="oil:conceptTypeChild">
+			<xs:extension base="oial:conceptTypeChild">
 				<xs:attribute name="ref" use="required" type="xs:IDREF">
 					<xs:annotation>
 						<xs:documentation>The id of the concept type being referred to.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
-				<xs:attribute name="oppositeName" use="required" type="oil:name">
+				<xs:attribute name="oppositeName" use="required" type="oial:name">
 					<xs:annotation>
 						<xs:documentation>The name used to refer to this relationship by the concept type being referred to.</xs:documentation>
 					</xs:annotation>
@@ -334,7 +334,7 @@
 
 	<xs:complexType name="informationType">
 		<xs:complexContent>
-			<xs:extension base="oil:conceptTypeChild">
+			<xs:extension base="oial:conceptTypeChild">
 				<xs:attribute name="ref" use="required" type="xs:IDREF">
 					<xs:annotation>
 						<xs:documentation>The id of the information type format used by this information type.</xs:documentation>
@@ -346,7 +346,7 @@
 
 	<xs:complexType name="conceptTypeChildRef">
 		<xs:complexContent>
-			<xs:extension base="oil:openAttributes">
+			<xs:extension base="oial:openAttributes">
 				<xs:attribute name="ref" use="required" type="xs:IDREF">
 					<xs:annotation>
 						<xs:documentation>The id of the concept type child being referred to.</xs:documentation>

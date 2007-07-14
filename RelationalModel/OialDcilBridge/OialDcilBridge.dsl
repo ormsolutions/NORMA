@@ -16,9 +16,8 @@
 	xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="005CBD56-3BA5-4947-9F46-5608BD563CED"
-	Namespace="Neumont.Tools.OialDcilBridge"
-	PackageNamespace="Neumont.Tools.ORM.Shell"
-	Name="OialDcilBridge"
+	Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge"
+	Name="ORMAbstractionToConceptualDatabaseBridge"
 	DisplayName="(Preliminary) ORMAbstraction/ConceptualDatabase Bridge"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
@@ -38,7 +37,7 @@
 	</Attributes>
 	
 	<Relationships>
-		<DomainRelationship Id="9CA44CEF-1787-41BC-A0AC-5AC79753DABB" Name="SchemaIsForAbstractionModel" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="9CA44CEF-1787-41BC-A0AC-5AC79753DABB" Name="SchemaIsForAbstractionModel" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="6ED59846-E0D8-4980-81AC-B3541AD9D7DD" Description="" Name="Schema" PropertyName="AbstractionModel" Multiplicity="One">
 					<RolePlayer>
@@ -54,7 +53,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="3598C529-7D90-47BF-92AE-F77575B8BFD9" Name="TableIsPrimarilyForConceptType" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="3598C529-7D90-47BF-92AE-F77575B8BFD9" Name="TableIsPrimarilyForConceptType" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="DAEB8DB4-C3A6-497D-BA4C-74D1AF6CCDC0" Description="" Name="Table" PropertyName="ConceptType" Multiplicity="One">
 					<RolePlayer>
@@ -70,7 +69,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="058E26E9-85E8-4DA4-8979-BFA0455D41CC" Name="TableIsAlsoForConceptType" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="058E26E9-85E8-4DA4-8979-BFA0455D41CC" Name="TableIsAlsoForConceptType" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="E2F7DD3B-8E40-45A5-AC39-863ABFA35020" Description="" Name="Table" PropertyName="ConceptType" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -86,7 +85,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="CCBCAB63-ADE4-43FA-8E29-8A598B0969F5" Name="ColumnHasConceptTypeChild" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="CCBCAB63-ADE4-43FA-8E29-8A598B0969F5" Name="ColumnHasConceptTypeChild" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="BC7EA8A8-8772-4CA4-B914-B78B4B583338" Description="" Name="Column" PropertyName="ConceptTypeChildPath" Multiplicity="OneMany">
 					<RolePlayer>
@@ -102,7 +101,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="5DA169BB-5439-4F61-926F-6B789503511E" Name="UniquenessConstraintIsForUniqueness" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="5DA169BB-5439-4F61-926F-6B789503511E" Name="UniquenessConstraintIsForUniqueness" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="2C58F935-E736-401F-B22F-E38F71AB33E5" Description="" Name="UniquenessConstraint" PropertyName="Uniqueness" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -118,7 +117,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="A9F82D26-1D87-4808-B618-37FF179466FC" Name="DomainIsForInformationTypeFormat" Namespace="Neumont.Tools.OialDcilBridge">
+		<DomainRelationship Id="A9F82D26-1D87-4808-B618-37FF179466FC" Name="DomainIsForInformationTypeFormat" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
 				<DomainRole Id="EEC22052-39CD-4F93-AC66-6634DD6423B4" Description="" Name="Domain" PropertyName="InformationTypeFormat" Multiplicity="One">
 					<RolePlayer>
@@ -136,5 +135,5 @@
 		</DomainRelationship>
 	</Relationships>
 
-	<XmlSerializationBehavior Name="OialDcilBridgeSerializationBehavior" Namespace="Neumont.Tools.OialDcilBridge"/>	
+	<XmlSerializationBehavior Name="ORMAbstractionToConceptualDatabaseBridgeSerializationBehavior" Namespace="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge"/>	
 </Dsl>
