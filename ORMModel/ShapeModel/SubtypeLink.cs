@@ -419,7 +419,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected NodeShape GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor)
 		{
-			Debug.Assert(oppositeShape is ExternalConstraintShape);
 			LinkConnectorShape retVal = null;
 			LinkedElementCollection<ShapeElement> childShapes = RelativeChildShapes;
 			foreach (ShapeElement shape in childShapes)
