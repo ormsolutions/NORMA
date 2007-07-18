@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public interface IORMPropertyProviderService
 	{
 		/// <summary>
-		/// Registers the <see cref="ORMPropertyProvisioning"/> specified by <paramref name="propertyProvisioning"/> for the
+		/// Registers or unregisters the <see cref="ORMPropertyProvisioning"/> specified by <paramref name="propertyProvisioning"/> for the
 		/// type specified by <typeparamref name="TExtendableElement"/>.
 		/// </summary>
 		/// <typeparam name="TExtendableElement">
@@ -136,25 +136,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Specifies whether the <see cref="ORMPropertyProvisioning"/> should also be registered for subtypes of
 		/// <typeparamref name="TExtendableElement"/>.
 		/// </param>
-		void RegisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
-			where TExtendableElement : ModelElement, IORMExtendableElement;
-
-		/// <summary>
-		/// Unregisters the <see cref="ORMPropertyProvisioning"/> specified by <paramref name="propertyProvisioning"/> for the
-		/// type specified by <typeparamref name="TExtendableElement"/>.
-		/// </summary>
-		/// <typeparam name="TExtendableElement">
-		/// The type for which the <see cref="ORMPropertyProvisioning"/> should be removed. This type specified must
-		/// by a subtype of <see cref="ModelElement"/> and implement <see cref="IORMExtendableElement"/>.
-		/// </typeparam>
-		/// <param name="propertyProvisioning">
-		/// The <see cref="ORMPropertyProvisioning"/> being unregistered.
-		/// </param>
-		/// <param name="includeSubtypes">
-		/// Specifies whether the <see cref="ORMPropertyProvisioning"/> should also be unregistered for subtypes of
-		/// <typeparamref name="TExtendableElement"/>.
-		/// </param>
-		void UnregisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+		/// <param name="action">
+		/// Specifies whether the property provider is being added or removed. See <see cref="EventHandlerAction"/></param>
+		void AddOrRemovePropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes, EventHandlerAction action)
 			where TExtendableElement : ModelElement, IORMExtendableElement;
 
 		/// <summary>

@@ -904,7 +904,7 @@ namespace Neumont.Tools.ORM.Shell
 				this.myProvisioningDictionary.Clear();
 			}
 
-			public void RegisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+			public void AddOrRemovePropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes, EventHandlerAction action)
 				where TExtendableElement : ModelElement, IORMExtendableElement
 			{
 				if ((object)propertyProvisioning == null)
@@ -912,16 +912,32 @@ namespace Neumont.Tools.ORM.Shell
 					throw new ArgumentNullException("propertyProvisioning");
 				}
 
+				bool register = action == EventHandlerAction.Add;
+
 				Type extendableElementType = typeof(TExtendableElement);
 
-				this.RegisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
+				if (register)
+				{
+					this.RegisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
+				}
+				else
+				{
+					this.UnregisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
+				}
 				if (includeSubtypes)
 				{
 					Store store = this.myStore;
 					DomainClassInfo domainClassInfo = store.DomainDataDirectory.GetDomainClass(extendableElementType);
 					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
 					{
-						this.RegisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
+						if (register)
+						{
+							this.RegisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
+						}
+						else
+						{
+							this.UnregisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
+						}
 					}
 				}
 			}
@@ -933,27 +949,6 @@ namespace Neumont.Tools.ORM.Shell
 				provisioningDictionary[extendableElementRuntimeTypeHandle] = (ORMPropertyProvisioning)Delegate.Combine(existingPropertyProvider, propertyProvisioning);
 			}
 
-			public void UnregisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
-				where TExtendableElement : ModelElement, IORMExtendableElement
-			{
-				if ((object)propertyProvisioning == null)
-				{
-					throw new ArgumentNullException("propertyProvisioning");
-				}
-
-				Type extendableElementType = typeof(TExtendableElement);
-
-				this.UnregisterPropertyProvider(extendableElementType.TypeHandle, propertyProvisioning);
-				if (includeSubtypes)
-				{
-					Store store = this.myStore;
-					DomainClassInfo domainClassInfo = store.DomainDataDirectory.GetDomainClass(extendableElementType);
-					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
-					{
-						this.UnregisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, propertyProvisioning);
-					}
-				}
-			}
 			private void UnregisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ORMPropertyProvisioning propertyProvisioning)
 			{
 				Dictionary<RuntimeTypeHandle, ORMPropertyProvisioning> provisioningDictionary = this.myProvisioningDictionary;

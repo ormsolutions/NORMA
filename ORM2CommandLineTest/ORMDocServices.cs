@@ -125,11 +125,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				// We don't yet need to support this for testing.
 			}
-			void IORMPropertyProviderService.RegisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
-			{
-				// We don't yet need to support this for testing.
-			}
-			void IORMPropertyProviderService.UnregisterPropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes)
+			void IORMPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(ORMPropertyProvisioning propertyProvisioning, bool includeSubtypes, EventHandlerAction action)
 			{
 				// We don't yet need to support this for testing.
 			}
